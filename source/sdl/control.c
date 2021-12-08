@@ -678,6 +678,8 @@ struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
 
 int InputCount;			// Number of Inputs in InputList
 
+int hat_for_moves;
+
 static void set_key_from_default(INPUT *inp)
 {
 
@@ -1175,6 +1177,9 @@ void load_emulator_joys(char *section)
    char joy_name[64];
    int nb = raine_get_emu_nb_ctrl();
 
+#if SDL == 2
+   hat_for_moves = raine_get_config_int(section,"hat_for_moves", 1);
+#endif
    for(ta=0;ta<nb;ta++){
       sprintf(joy_name,"%s",def_input_emu[ta].name);
       no_spaces(joy_name);
@@ -1201,6 +1206,7 @@ void save_emulator_joys(char *section)
        SDL_JoystickGetGUIDString(guid,guid_str,35);
        raine_set_config_int(section,guid_str,joy[ta].index);
    }
+   raine_set_config_int(section,"hat_for_moves",hat_for_moves);
 #endif
 }
 
@@ -1573,34 +1579,38 @@ void control_handle_event(SDL_Event *event) {
 #if SDL == 2
   case SDL_CONTROLLERBUTTONDOWN:
       which = get_joy_index_from_instance(event->cbutton.which);
-      switch (event->cbutton.button) {
-      case SDL_CONTROLLER_BUTTON_DPAD_UP:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-16000);
-	  return;
-      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,16000);
-	  return;
-      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,-16000);
-	  return;
-      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,16000);
-	  return;
+      if (hat_for_moves) {
+	  switch (event->cbutton.button) {
+	  case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-16000);
+	      return;
+	  case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,16000);
+	      return;
+	  case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,-16000);
+	      return;
+	  case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,16000);
+	      return;
+	  }
       }
       add_joy_event((jevent = get_joy_input(which,0,event->cbutton.button+1,0)));
       check_emu_joy_event(jevent);
       break;
   case SDL_CONTROLLERBUTTONUP:
       which = get_joy_index_from_instance(event->cbutton.which);
-      switch (event->cbutton.button) {
-      case SDL_CONTROLLER_BUTTON_DPAD_UP:
-      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,0);
-	  return;
-      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-	  handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,0);
-	  return;
+      if (hat_for_moves) {
+	  switch (event->cbutton.button) {
+	  case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	  case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,0);
+	      return;
+	  case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	  case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,0);
+	      return;
+	  }
       }
       remove_joy_event(get_joy_input(which,0,event->cbutton.button+1,0));
       break;

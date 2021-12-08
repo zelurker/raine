@@ -55,6 +55,7 @@ void set_joy_playerindex(int n, int index);
 
 extern char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
+extern int hat_for_moves; // use hats for movements (game controllers)
 
 extern int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
   analog_maxy,analog_normx,analog_normy, app_state, pause_on_focus;

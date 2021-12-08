@@ -124,6 +124,10 @@ static char *my_get_joy_name(int code) {
       case SDL_CONTROLLER_BUTTON_RIGHTSTICK: strcat(name,_("Right Stick")); break;
       case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: strcat(name,_("Left shoulder")); break;
       case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: strcat(name,_("Right shoulder")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_UP: strcat(name,_("dpad up")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN: strcat(name,_("dpad down")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT: strcat(name,_("dpad left")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: strcat(name,_("dpad right")); break;
       default: sprintf(&name[strlen(name)],"Btn %d",btn);
       }
   } else
@@ -273,27 +277,29 @@ void TInput::handle_joystick(SDL_Event *event) {
       break;
     case SDL_CONTROLLERBUTTONUP:
       which = get_joy_index_from_instance(event->cbutton.which);
-      switch (event->cbutton.button) {
-      case SDL_CONTROLLER_BUTTON_DPAD_UP:
-	  event->type = SDL_CONTROLLERAXISMOTION;
-	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
-	  event->caxis.value = -16000;
-	  return handle_joystick(event);
-      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-	  event->type = SDL_CONTROLLERAXISMOTION;
-	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
-	  event->caxis.value = 16000;
-	  return handle_joystick(event);
-      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-	  event->type = SDL_CONTROLLERAXISMOTION;
-	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
-	  event->caxis.value = -16000;
-	  return handle_joystick(event);
-      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-	  event->type = SDL_CONTROLLERAXISMOTION;
-	  event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
-	  event->caxis.value = 16000;
-	  return handle_joystick(event);
+      if (hat_for_moves) {
+	  switch (event->cbutton.button) {
+	  case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	      event->type = SDL_CONTROLLERAXISMOTION;
+	      event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
+	      event->caxis.value = -16000;
+	      return handle_joystick(event);
+	  case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	      event->type = SDL_CONTROLLERAXISMOTION;
+	      event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTY;
+	      event->caxis.value = 16000;
+	      return handle_joystick(event);
+	  case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	      event->type = SDL_CONTROLLERAXISMOTION;
+	      event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
+	      event->caxis.value = -16000;
+	      return handle_joystick(event);
+	  case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	      event->type = SDL_CONTROLLERAXISMOTION;
+	      event->caxis.axis = SDL_CONTROLLER_AXIS_LEFTX;
+	      event->caxis.value = 16000;
+	      return handle_joystick(event);
+	  }
       }
       inp_joy = get_joy_input(which,0,event->cbutton.button+1,0);
       exit_menu = 1;
@@ -687,7 +693,7 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
-      if (n >= 9) // all load/save inputs
+      if (n >= 10) // all load/save inputs
 	  return use_custom_keys;
       return 1;
     }
@@ -1183,6 +1189,7 @@ static menu_item_t controls_menu[] =
   { _("Analog controls..."), &setup_analog },
   { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
   { _("Joysticks indexes"), &do_joy_index },
+  { _("Gamepads hats for movement"), NULL, &hat_for_moves, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
