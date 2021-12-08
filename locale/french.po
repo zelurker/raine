@@ -1242,11 +1242,11 @@ msgstr "Contrôles analogiques"
 
 #, c-format
 msgid "Applied speed hack %d at %x"
-msgstr "Hack de vitesse %d appliqué à %x"
+msgstr "Hack de vitesse %d applique a %x"
 
 #, c-format
 msgid "Applied speed hack at %x:%s"
-msgstr "Appliqué le hack de vitesse à %x:%s"
+msgstr "Applique le hack de vitesse a %x:%s"
 
 msgid "Applying GFX Layouts and stuff..."
 msgstr "Conversion des sprites..."
