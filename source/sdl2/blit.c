@@ -14,6 +14,7 @@
 #include "display_sdl.h"
 #include "newspr.h" // init_video_core
 #include "opengl.h"
+#include <SDL_opengl.h> // for GL_NEAREST, GL_LINEAR
 #include "demos.h"
 
 SDL_Surface *sdl_game_bitmap;
@@ -398,7 +399,12 @@ void SetupScreenBitmap(void)
      if (!game_tex) {
 	 fatal_error("couldn't create game texture : %s",SDL_GetError());
      }
-     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");  // make the scaled rendering look smoother.
+     if (ogl.filter == GL_NEAREST)
+	 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+     else if (ogl.filter == GL_LINEAR)
+	 SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+     else
+	 printf("weird filter\n");
      if (display_cfg.video_mode == 0)
 	 ScreenChange();
      else
