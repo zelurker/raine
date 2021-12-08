@@ -14,8 +14,13 @@
 #include "display_sdl.h"
 #include "newspr.h" // init_video_core
 #include "opengl.h"
-#include <SDL_opengl.h> // for GL_NEAREST, GL_LINEAR
 #include "demos.h"
+
+#ifndef GL_NEAREST
+// windows names collisions... !
+#define GL_NEAREST 0x2600
+#define GL_LINEAR 0x2601
+#endif
 
 SDL_Surface *sdl_game_bitmap;
 extern int disp_screen_x, disp_screen_y;
