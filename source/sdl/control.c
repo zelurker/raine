@@ -199,9 +199,9 @@ typedef enum
 struct DEF_INPUT def_input[KB_DEF_COUNT] =
 {
  { SDL_SCANCODE_3,       JOY(1,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin A",P1S        },      // KB_DEF_COIN1,
- { SDL_SCANCODE_4,       JOY(2,0,0,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
- { SDL_SCANCODE_7,       JOY(3,0,0,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
- { SDL_SCANCODE_8,       JOY(4,0,0,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
+ { SDL_SCANCODE_4,       JOY(2,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin B",P2S        },      // KB_DEF_COIN2,
+ { SDL_SCANCODE_7,       JOY(3,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin C",P3S        },      // KB_DEF_COIN3,
+ { SDL_SCANCODE_8,       JOY(4,0,SDL_CONTROLLER_BUTTON_BACK+1,0), 0, "Def Coin D",P4S        },      // KB_DEF_COIN4,
 
  { SDL_SCANCODE_T,       0x00, 0, "Def Tilt",    SYS      },      // KB_DEF_TILT,
  { SDL_SCANCODE_Y,       0x00, 0, "Def Service", SYS      },      // KB_DEF_SERVICE,
@@ -1567,7 +1567,7 @@ static void handle_joy_axis(int which, int axis, int value) {
 void control_handle_event(SDL_Event *event) {
   int input,which,axis,value,modifier,jevent,  ta;
   DEF_INPUT_EMU *emu_input;
-  int input_valid,nb,hat,changed,base_axis;
+  int input_valid,nb,hat,changed;
 
   switch (event->type) {
 #if SDL == 2
@@ -1783,47 +1783,22 @@ void control_handle_event(SDL_Event *event) {
       if (is_game_controller(which)) {
 	  return;
       }
-      hat = event->jhat.hat+1;
+      hat = event->jhat.hat;
       value = event->jhat.value;
       changed = joy[which].jstate.hat[hat] & (~value);
-      // Emulate the hat like a virtual stick
-      base_axis = get_axis_from_hat(which,hat-1);
       // changed contains the bitmask of the axis which need to be centered !
-      event->jaxis.which = event->jhat.which;
-      event->type = SDL_JOYAXISMOTION;
 
-      event->jaxis.value = 0;
-      if (changed & (SDL_HAT_LEFT | SDL_HAT_RIGHT)) {
-	event->jaxis.axis = base_axis;
-	control_handle_event(event);
-      }
-      if (changed & (SDL_HAT_UP | SDL_HAT_DOWN)) {
-	event->jaxis.axis = base_axis+1;
-	control_handle_event(event);
-      }
+      if (changed & SDL_HAT_LEFT)
+	remove_joy_event(get_joy_input(which, 0,0,HAT(hat,SDL_HAT_LEFT)));
+      if (changed & SDL_HAT_RIGHT)
+	remove_joy_event(get_joy_input(which, 0,0,HAT(hat,SDL_HAT_RIGHT)));
+      if (changed & SDL_HAT_UP)
+	remove_joy_event(get_joy_input(which, 0,0,HAT(hat,SDL_HAT_UP)));
+      if (changed & SDL_HAT_DOWN)
+	remove_joy_event(get_joy_input(which, 0,0,HAT(hat,SDL_HAT_DOWN)));
 
-      // Now send the events corresponding to the current position
-      if (value & SDL_HAT_LEFT) {
-	event->jaxis.axis = base_axis + 0;
-	event->jaxis.value = -32700;
-	control_handle_event(event);
-      }
-      if (value & SDL_HAT_RIGHT) {
-	event->jaxis.axis = base_axis + 0;
-	event->jaxis.value = 32700;
-	control_handle_event(event);
-      }
-      if (value & SDL_HAT_UP) {
-	event->jaxis.axis = base_axis + 1;
-	event->jaxis.value = -32700;
-	control_handle_event(event);
-      }
-      if (value & SDL_HAT_DOWN) {
-	event->jaxis.axis = base_axis + 1;
-	event->jaxis.value = 32000;
-	control_handle_event(event);
-      }
       joy[which].jstate.hat[hat] = event->jhat.value;
+      add_joy_event(get_joy_input(which,0,0,HAT(hat,value)));
       break;
     case SDL_JOYAXISMOTION:
       which = get_joy_index_from_instance(event->jaxis.which);

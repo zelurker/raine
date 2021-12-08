@@ -47,7 +47,7 @@ void set_joy_playerindex(int n, int index);
       the positions are a bit mask in sdl from 0 to 8, it should not change
       soon, so it uses the first 4 bits in this byte. The upper 4 bits are the
       hat number but I don't expect to have so many hats one day ! */
-#define HAT(NUM,POS) ((NUM<<4)|pos)
+#define HAT(NUM,POS) ((NUM<<4)|POS)
 
 #define MAX_AXIS 16
 #define MAX_JOY 16

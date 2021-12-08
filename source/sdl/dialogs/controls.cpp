@@ -52,6 +52,19 @@ static char *my_get_joy_name(int code) {
 
   int stick = (code >> 8) & 0xff;
   int btn = (code >> 16) & 0xff;
+  int hat = (code >> 24);
+  if (hat) {
+      char *direction;
+      switch(hat & 0xf) {
+      case SDL_HAT_LEFT: direction = _("LEFT"); break;
+      case SDL_HAT_RIGHT: direction = _("RIGHT"); break;
+      case SDL_HAT_DOWN: direction = _("DOWN"); break;
+      case SDL_HAT_UP: direction = _("UP");
+      }
+      sprintf(&name[strlen(name)],"Hat %d %s",hat >> 4,direction);
+      return strdup(name);
+  }
+
   if (!btn) {
     char *direction;
     if (!is_controller) {
@@ -293,25 +306,9 @@ void TInput::handle_joystick(SDL_Event *event) {
 	  return;
       }
       hat = event->jhat.hat;
-      axis = get_axis_from_hat(which,hat);
-      switch(event->jhat.value) { // take only 1 of the 4 positions
-	case SDL_HAT_LEFT:
-	  inp_joy = get_joy_input(which,AXIS_LEFT(axis),0,0);
-	  exit_menu = 1;
-	  break;
-	case SDL_HAT_UP:
-	  inp_joy = get_joy_input(which,AXIS_LEFT(axis+1),0,0);
-	  exit_menu = 1;
-	  break;
-	case SDL_HAT_RIGHT:
-	  inp_joy = get_joy_input(which,AXIS_RIGHT(axis),0,0);
-	  exit_menu = 1;
-	  break;
-	case SDL_HAT_DOWN:
-	  inp_joy = get_joy_input(which,AXIS_RIGHT(axis+1),0,0);
-	  exit_menu = 1;
-	  break;
-      }
+      // axis = get_axis_from_hat(which,hat);
+      inp_joy = get_joy_input(which, 0, 0, HAT(hat,event->jhat.value));
+      exit_menu = 1;
       break;
   }
 }
