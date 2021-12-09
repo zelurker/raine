@@ -3058,7 +3058,7 @@ void execute_cps2_frame(void)
       cps1_port[port1] = 0;
       cpu_interrupt(CPU_68K_0,4);
       draw_cps1_partial(min1);
-      blit(GameBitmap, raster_bitmap, 16, 16, 0, 0, GameScreen.xview, min1);
+      blit(GameBitmap, raster_bitmap, 32, 32, 0, 0, GameScreen.xview, min1);
 
       if (min2 < 240) {
 	  if (!stopped_68k)
@@ -3066,7 +3066,7 @@ void execute_cps2_frame(void)
 	  cpu_interrupt(CPU_68K_0,4);
 	  draw_cps1_partial(min2);
 	  cps1_port[port1 == 0x28 ? 0x2a : 0x28] = 0;
-	  blit(GameBitmap, raster_bitmap, 16, 16+min1, 0, min1, GameScreen.xview, min2-min1);
+	  blit(GameBitmap, raster_bitmap, 32, 32+min1, 0, min1, GameScreen.xview, min2-min1);
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min2)/262);	  // Main 68000
       } else {
@@ -4097,9 +4097,9 @@ void draw_cps1() {
     draw_cps1_partial(-1);
     if (cps_version == 2) {
 	if (min2 < 240) {
-	    blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min2);
+	    blit(raster_bitmap,GameBitmap,0,0,32,32,GameScreen.xview,min2);
 	} else if (min1 < 240) {
-	    blit(raster_bitmap,GameBitmap,0,0,16,16,GameScreen.xview,min1);
+	    blit(raster_bitmap,GameBitmap,0,0,32,32,GameScreen.xview,min1);
 	}
     }
 }
