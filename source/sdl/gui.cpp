@@ -613,6 +613,7 @@ static void gui_end() {
     // Actually a simple call to reset_shaders might be enough here
     // the problem is that calling glsl functions is messy and doing it from the gui wouldn't be nice
     // so maybe it's better to keep the hook for now with this inside...
+    if (raine_cfg.req_load_game) return;
     if (GameScreen.xview) {
 	if (display_cfg.video_mode > 0)
 	    SDL_RenderSetLogicalSize(rend, GameScreen.xview, GameScreen.yview);

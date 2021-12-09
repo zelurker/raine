@@ -34,7 +34,7 @@ int disp_screen_y;
 int desktop_w,desktop_h;
 
 void display_read_config() {
-   display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 3);
+   display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0); // default = opengl, the most tested
    if (display_cfg.video_mode != 0 && display_cfg.video_mode != 3)
        display_cfg.video_mode = 3;
    int x = 0,y = 0;
