@@ -2184,7 +2184,7 @@ static int upload_type,mx,my;
 
 static void neogeo_hreset(void)
 {
-    if (strcmp(current_game->main_name,"neocd")) // different
+    if (is_neocd() && strcmp(current_game->main_name,"neocd")) // different
 	save_game_config(); // to save the region when it has just changed !
     // Setting these 2 to 255 emulates standard inputs, it's not really required, but it makes a cleaner test mode for inputs
     mx = my = 255;
