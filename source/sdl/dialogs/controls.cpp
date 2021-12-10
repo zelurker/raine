@@ -51,6 +51,7 @@ static char *my_get_joy_name(int code) {
   strcat(name,") ");
 
   int stick = (code >> 8) & 0xff;
+  if (stick) stick -= 2; // Just to be sure it's not 0 for stick 0 left
   int btn = (code >> 16) & 0xff;
   int hat = (code >> 24);
   if (hat) {
@@ -61,7 +62,7 @@ static char *my_get_joy_name(int code) {
       case SDL_HAT_DOWN: direction = _("DOWN"); break;
       case SDL_HAT_UP: direction = _("UP");
       }
-      sprintf(&name[strlen(name)],"Hat %d %s",hat >> 4,direction);
+      sprintf(&name[strlen(name)],"Hat %d %s",(hat >> 4)-1,direction);
       return strdup(name);
   }
 

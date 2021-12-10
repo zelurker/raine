@@ -40,18 +40,18 @@ void set_joy_playerindex(int n, int index);
  * Same thing for button number which must start at 1
  * and probably the hat number too (not tested yet !) */
 
-#define AXIS_LEFT(NUM) (NUM)*2
-#define AXIS_RIGHT(NUM) ((NUM)*2+1)
+#define AXIS_LEFT(NUM) (NUM+1)*2
+#define AXIS_RIGHT(NUM) ((NUM+1)*2+1)
 
    /* Use this way : HAT(1,SDL_HAT_UP)
       the positions are a bit mask in sdl from 0 to 8, it should not change
       soon, so it uses the first 4 bits in this byte. The upper 4 bits are the
       hat number but I don't expect to have so many hats one day ! */
-#define HAT(NUM,POS) ((NUM<<4)|POS)
+#define HAT(NUM,POS) (((NUM+1)<<4)|POS)
 
-#define MAX_AXIS 16
+#define MAX_AXIS 15
 #define MAX_JOY 16
-#define MAX_HAT 16
+#define MAX_HAT 15
 
 extern char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
