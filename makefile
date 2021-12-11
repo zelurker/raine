@@ -317,11 +317,11 @@ endif
    DEFINE = -D__RAINE__ \
 	   -DRAINE_WIN32 \
 
-   LIBS = $(PNG_LFLAGS) -lopengl32 -lglu32 -lz
+   LIBS = $(PNG_LFLAGS) -lopengl32 -lz
    LIBS_STATIC = -lz $(PNG_STATIC_LFLAGS)
    INCDIR += $(PNG_CFLAGS)
 
-LIBS_DEBUG = -lz $(PNG_LFLAGS) -lopengl32 -lglu32
+LIBS_DEBUG = -lz $(PNG_LFLAGS) -lopengl32
 
 ifndef SDL
 LIBS += -lalleg
@@ -437,7 +437,7 @@ else
    LIBS_STATIC = -lz $(shell libpng-config --static --ldflags) -lm
 endif
 ifndef DARWIN
-	LIBS += -lGL -lGLU
+	LIBS += -lGL
 	LIBS_DEBUG += -lGL -lGLU
 endif
 endif
