@@ -3031,7 +3031,7 @@ void execute_cps2_frame(void)
       min2 = MIN(cps1_port[0x28],240);
   }
 
-  if (min1 < 240) {
+  if (min1 < 224) {
       if (speed_hack) {
 	  int size_code = get_region_size(REGION_CPU1);
 	  int nb=0;
@@ -3060,7 +3060,7 @@ void execute_cps2_frame(void)
       draw_cps1_partial(min1);
       blit(GameBitmap, raster_bitmap, 32, 32, 0, 0, GameScreen.xview, min1);
 
-      if (min2 < 240) {
+      if (min2 < 224) {
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(min2-min1)/262);	  // Main 68000
 	  cpu_interrupt(CPU_68K_0,4);
@@ -4072,10 +4072,12 @@ static void draw_cps1_partial(int scanline)
        }
      }
 
-     // if (scanline < 0) {
+     if (scanline == 240 || scanline == -1) {
+	 // Confirmed for example in xmvsf, the sprite priorities is updated only during the vbl
+	 // which makes sense
 	 pri_ctrl = cps2_port(CPS2_OBJ_PRI);
 	 memcpy(cps2_buffered_obj, cps2_objbase(), cps2_obj_size);
-     //}
+     }
 
    } else {
 
@@ -4096,9 +4098,9 @@ static void draw_cps1_partial(int scanline)
 void draw_cps1() {
     draw_cps1_partial(-1);
     if (cps_version == 2) {
-	if (min2 < 240) {
+	if (min2 < 224) {
 	    blit(raster_bitmap,GameBitmap,0,0,32,32,GameScreen.xview,min2);
-	} else if (min1 < 240) {
+	} else if (min1 < 224) {
 	    blit(raster_bitmap,GameBitmap,0,0,32,32,GameScreen.xview,min1);
 	}
     }
