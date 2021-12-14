@@ -1636,6 +1636,7 @@ void control_handle_event(SDL_Event *event) {
       which = get_joy_index_from_instance(event->caxis.which);
       axis = event->caxis.axis;
       value = event->caxis.value;
+      if (abs(value) < 2500) return;
       handle_joy_axis(which,axis,value);
       break;
 #endif
@@ -1817,6 +1818,7 @@ void control_handle_event(SDL_Event *event) {
       }
       axis = event->jaxis.axis;
       value = event->jaxis.value;
+      if (abs(value) < 2500) return;
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
 	return;
       } else if (which == analog_num+1 && axis/2 == analog_stick) {
