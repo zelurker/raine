@@ -1324,7 +1324,7 @@ msgid "Average FPS"
 msgstr "FPS moyen"
 
 msgid "Average FPS Counter Enabled"
-msgstr "Compteur de FPS moyen activé"
+msgstr "Compteur de FPS moyen active"
 
 msgid "B"
 msgstr ""
@@ -2268,7 +2268,7 @@ msgid "FPS"
 msgstr ""
 
 msgid "FPS Counter Disabled"
-msgstr "Compteur FPS inactiv"
+msgstr "Compteur FPS desactive"
 
 msgid "FPS Counter Enabled"
 msgstr "FPS compteur actif"
