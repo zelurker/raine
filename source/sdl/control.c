@@ -1915,7 +1915,6 @@ void update_inputs(void)
     }
   }
 
-  SDL_PumpEvents();
   while (SDL_PollEvent(&event)) {
     control_handle_event(&event);
   }

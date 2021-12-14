@@ -133,6 +133,13 @@ void sdl_init() {
 	buffer[99] = 0;
 	putenv(buffer);
 #endif
+	// The whole hints used by testgamecontroller, some of them are not even documented !
+	SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
+	SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS, "1");
+	SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE, "1");
+	SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE, "1");
+	SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
+	SDL_SetHint(SDL_HINT_LINUX_JOYSTICK_DEADZONES, "1");
 	if ( SDL_Init(
 		    SDL_INIT_TIMER|SDL_INIT_AUDIO| SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER|SDL_INIT_EVENTS | SDL_INIT_JOYSTICK
 		    ) < 0 ) {
