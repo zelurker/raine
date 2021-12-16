@@ -197,6 +197,11 @@ static void winprotect(void *adr) {
 
 int main(int argc,char *argv[])
 {
+#ifdef RAINE_WIN32
+    // For stupid windows terminals which insist on buffering stdout/stderr (msys2)
+    setvbuf(stdout,NULL,_IONBF,0);
+    setvbuf(stderr,NULL,_IONBF,0);
+#endif
    int i;
    unsigned int version_id;
 #ifndef SDL
