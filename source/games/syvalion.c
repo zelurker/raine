@@ -218,8 +218,8 @@ static void load_syvalion(void)
 
 
    Add68000Code(0,0,REGION_ROM1);
-   if (is_current_game("syvalion")) apply_rom_hack(ROM,0x72a,4);
-   else if (is_current_game("tetristh")) apply_rom_hack(ROM,0x72c,4);
+   if (is_current_game("syvalion")) apply_hack(0x72a,4);
+   else if (is_current_game("tetristh")) apply_hack(0x72c,4);
 
    add_68000_ram(0,0x100000, 0x10FFFF, RAM+0x000000);			// 68000 RAM
    AddReadBW(0x400000, 0x420FFF, NULL, RAM+0x010000);			// SCREEN RAM

@@ -1190,21 +1190,21 @@ static void load_ddonpach(void)
 
      // Disable rom check
 
-     pWriteWord(&ROM[0x53f6],0x4e71);
-     pWriteWord(&ROM[0x5400],0x6008);
+     pWriteWord(0x53f6,0x4e71);
+     pWriteWord(0x5400,0x6008);
 
      // remove pause between letters on copyright screen
-     pWriteWord(&ROM[0x56dc2],0x4e75);
+     pWriteWord(0x56dc2,0x4e75);
    } else { // international version (new set)
      apply_hack(0x571b2,1);
 
      // Disable rom check
 
-     pWriteWord(&ROM[0x53ea],0x4e71);
-     pWriteWord(&ROM[0x53f4],0x6008);
+     pWriteWord(0x53ea,0x4e71);
+     pWriteWord(0x53f4,0x6008);
 
      // remove pause between letters on copyright screen
-     pWriteWord(&ROM[0x5717a],0x4e75);
+     pWriteWord(0x5717a,0x4e75);
    }
 
    // WriteWord(&ROM[0x56e00],0x4e71);
@@ -1322,11 +1322,11 @@ static void load_donpachi(void)
    // Disable rom check
 
    if (!strcmp(current_game->main_name,"donpachj")) { // normal
-     pWriteWord(&ROM[0x3428a],0x6008);
+     pWriteWord(0x3428a,0x6008);
    } else if (!strcmp(current_game->main_name,"donpachk")) { // Korean version
-     pWriteWord(&ROM[0x348ce],0x6008);
+     pWriteWord(0x348ce,0x6008);
    } else if (!strcmp(current_game->main_name,"donpachi")) { // usa
-     pWriteWord(&ROM[0x3437c],0x6008);
+     pWriteWord(0x3437c,0x6008);
    }
 
    setup_cave_game();
@@ -1762,7 +1762,7 @@ static void init_sailormn_hardware(int type)
 
     // Speed hack
      apply_hack(0xcdb8,4);
-     pWriteWord(&ROM[0xcdbe],0x600c);
+     pWriteWord(0xcdbe,0x600c);
 
 /*      HACK(0xe460); */
 /*      WriteWord(&ROM[0xe466],0x6002); */
@@ -1781,30 +1781,30 @@ static void init_sailormn_hardware(int type)
      // sound_irq = 0;
      // But it's a rough approximation, and patching the rom is better !
 
-     pWriteWord(&ROM[0x2ce],0x4e71);
-     pWriteWord(&ROM[0x33c],0x4e71);
-     pWriteWord(&ROM[0xc884],0x4e71);
-     pWriteWord(&ROM[0xcdca],0x4e71);
-     pWriteWord(&ROM[0xd3c4],0x4e71);
-     pWriteWord(&ROM[0xd3da],0x4e71);
-     pWriteWord(&ROM[0xd404],0x4e71);
-     pWriteWord(&ROM[0xd41a],0x4e71);
-     pWriteWord(&ROM[0xd89e],0x4e71);
-     pWriteWord(&ROM[0xd932],0x4e71);
-     pWriteWord(&ROM[0xd958],0x4e71);
-     pWriteWord(&ROM[0xd988],0x4e71);
-     pWriteWord(&ROM[0xe468],0x4e71);
+     pWriteWord(0x2ce,0x4e71);
+     pWriteWord(0x33c,0x4e71);
+     pWriteWord(0xc884,0x4e71);
+     pWriteWord(0xcdca,0x4e71);
+     pWriteWord(0xd3c4,0x4e71);
+     pWriteWord(0xd3da,0x4e71);
+     pWriteWord(0xd404,0x4e71);
+     pWriteWord(0xd41a,0x4e71);
+     pWriteWord(0xd89e,0x4e71);
+     pWriteWord(0xd932,0x4e71);
+     pWriteWord(0xd958,0x4e71);
+     pWriteWord(0xd988,0x4e71);
+     pWriteWord(0xe468,0x4e71);
 
-     pWriteWord(&ROM[0xd14c],0x4e71);
-     pWriteWord(&ROM[0xd162],0x4e71);
-     pWriteWord(&ROM[0xd178],0x4e71);
-     pWriteWord(&ROM[0xd0e8],0x4e71);
-     pWriteWord(&ROM[0xd2f2],0x4e71);
-     pWriteWord(&ROM[0xb4ae],0x4e71);
-     pWriteWord(&ROM[0xb4be],0x4e71);
-     pWriteWord(&ROM[0xb4ce],0x4e71);
-     pWriteWord(&ROM[0xb4de],0x4e71);
-     pWriteWord(&ROM[0xcede],0x4e71);
+     pWriteWord(0xd14c,0x4e71);
+     pWriteWord(0xd162,0x4e71);
+     pWriteWord(0xd178,0x4e71);
+     pWriteWord(0xd0e8,0x4e71);
+     pWriteWord(0xd2f2,0x4e71);
+     pWriteWord(0xb4ae,0x4e71);
+     pWriteWord(0xb4be,0x4e71);
+     pWriteWord(0xb4ce,0x4e71);
+     pWriteWord(0xb4de,0x4e71);
+     pWriteWord(0xcede,0x4e71);
   } else if (type == 0) {
     apply_hack(0x738,1); // clr.b $aa0000
     // disable rom check (tricky...)
@@ -1817,9 +1817,9 @@ static void init_sailormn_hardware(int type)
     // The or below forces at least the rom correct.
     // Notice the game seems to work correctly even when it detects the rom
     // is bad, but I prefer to avoid bad surprises later...
-    pWriteWord(&ROM[0x504],0); // or
-    pWriteWord(&ROM[0x506],0x14);
-    pWriteWord(&ROM[0x508],0x4e71);
+    pWriteWord(0x504,0); // or
+    pWriteWord(0x506,0x14);
+    pWriteWord(0x508,0x4e71);
   }
 
   setup_cave_game();
@@ -2113,14 +2113,14 @@ static void load_guwange(void)
 
    if (is_current_game("guwange")) {
        apply_hack(0x6d6de,4);
-       pWriteWord(&ROM[0x6d6e4],0x6010);
+       pWriteWord(0x6d6e4,0x6010);
    } else if (is_current_game("guwanges")) {
        apply_hack(0x6ec44,4);
-       pWriteWord(&ROM[0x6ec4a],0x6010);
+       pWriteWord(0x6ec4a,0x6010);
    }
 
-   pWriteWord(&ROM[0x6d76],0x4e71); // disable rom check : nop
-   pWriteWord(&ROM[0x6d80],0x6008); // bra
+   pWriteWord(0x6d76,0x4e71); // disable rom check : nop
+   pWriteWord(0x6d80,0x6008); // bra
 
    setup_cave_game();
 }
@@ -2201,24 +2201,24 @@ static void load_dfeveron(void)
    if (is_current_game("dfeveron")) {
      // Speed hack
      apply_hack(0x772f2,4); // clr.b $aa0000
-     pWriteWord(&ROM[0x772f8],0x6012);
+     pWriteWord(0x772f8,0x6012);
 
-     pWriteWord(&ROM[0x8dba],0x4e71); // disable rom check : nop
-     pWriteWord(&ROM[0x8dc4],0x600a); // bra
-     pWriteWord(&ROM[0x8f10],0x6006); // speed up starting, esp with musashi
+     pWriteWord(0x8dba,0x4e71); // disable rom check : nop
+     pWriteWord(0x8dc4,0x600a); // bra
+     pWriteWord(0x8f10,0x6006); // speed up starting, esp with musashi
    } else {
      // fever sos
      // Speed hack
      apply_hack(0x7766c,4); // clr.b $aa0000
-     pWriteWord(&ROM[0x77672],0x6012);
+     pWriteWord(0x77672,0x6012);
 
-     pWriteWord(&ROM[0x8ddc],0x4e71); // disable rom check : nop
-     pWriteWord(&ROM[0x8de6],0x600a); // bra
+     pWriteWord(0x8ddc,0x4e71); // disable rom check : nop
+     pWriteWord(0x8de6,0x600a); // bra
 
-     pWriteWord(&ROM[0x8f46],0x4e71); // disable eeprom test (nop)
-     pWriteWord(&ROM[0x8f48],0x4e71); // if it does not find this value in the eeprom
+     pWriteWord(0x8f46,0x4e71); // disable eeprom test (nop)
+     pWriteWord(0x8f48,0x4e71); // if it does not find this value in the eeprom
      // then it just resets
-     pWriteWord(&ROM[0x8f32],0x6006); // speed up starting, esp with musashi
+     pWriteWord(0x8f32,0x6006); // speed up starting, esp with musashi
   }
    setup_cave_game();
 }
@@ -2301,7 +2301,7 @@ static void load_uopoko(void)
 
    apply_hack(0xc36,1);
 
-   pWriteWord(&ROM[0x6bc],0x600a); // disable rom check : bra
+   pWriteWord(0x6bc,0x600a); // disable rom check : bra
 
    setup_cave_game();
 }
@@ -2355,7 +2355,7 @@ static void execute_esprade(void)
    agallet_vblank_irq = 1;
    if (stopped_68k) {
      // return to the speed hack
-     s68000_pc = get_speed_hack_adr(0)-ROM;
+     s68000_pc = get_speed_hack_adr(0);
      stopped_68k = 0;
    }
    update_irq_state();

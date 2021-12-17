@@ -133,7 +133,6 @@ static void load_tetrist(void)
    set_colour_mapper(&col_map_rrrr_gggg_bbbb_xxxx);
    InitPaletteMap(RAM+0x11000, 0x100, 0x10, 0x1000);
    ByteSwap(ROM,0x80000);
-   apply_rom_hack(ROM,0x72e,4);
 
    add_68000_rom(0,0x000000, 0x07FFFF, ROM+0x000000-0x000000);	// 68000 ROM
 
@@ -157,6 +156,7 @@ static void load_tetrist(void)
    AddWriteWord(0x600000, 0x60000F, tc0220ioc_ww, NULL);		// INPUT
 
    finish_conf_68000(0);
+   apply_hack(0x72e,4);
 }
 
 static void execute_tetrist(void)

@@ -2082,7 +2082,6 @@ void load_common(int cps2)
 
    memset(RAM+0x00000,0x00,RAMSize);
 
-   speed_hack = 0; // Not found yet...
    frame_68k = CPU_FRAME_MHz(32,60); // 32 Mhz at the begining...
 
    if (cps2)
@@ -2716,34 +2715,34 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
       int n;
       my_hack = 1;
       for (n=0; n<8; n+=2) {
-	  pWriteWord(&space_hack[n],ReadWord(&ROM[loop_start+n]));
+	  pWriteWord(0x500000 + n,ReadWord(&ROM[loop_start+n]));
       }
-      apply_rom_hack(space_hack,8,0);
-      pWriteWord(&space_hack[14],0x4e75);
+      apply_hack(0x500000 + 8,0);
+      pWriteWord(0x500000 + 14,0x4e75);
 
-      pWriteWord(&ROM[loop_start],0x4eb9);
-      pWriteWord(&ROM[loop_start+2],(free>>16));
-      pWriteWord(&ROM[loop_start+4],(free & 0xffff));
-      pWriteWord(&ROM[loop_start+6],0x4e71); // nop
+      pWriteWord(loop_start,0x4eb9);
+      pWriteWord(loop_start+2,(free>>16));
+      pWriteWord(loop_start+4,(free & 0xffff));
+      pWriteWord(loop_start+6,0x4e71); // nop
       return;
   }
   my_hack = 2;
   free+=22;
-  apply_rom_hack(space_hack,22-12,4);
+  apply_hack(0x500000 + 22-12,4);
   print_ingame(300,gettext("Long hack jump at %x..."),loop_end);
   print_debug("Long hack jump at %x to %x...",loop_end,free-16);
   dbf = ReadWord(&ROM[loop_end]);
-  pWriteWord(&ROM[loop_end],0x4ef9); // jmp start of hack
-  pWriteWord(&ROM[loop_end+2],(free-16) >> 16);
-  pWriteWord(&ROM[loop_end+4],(free-16) & 0xffff);
+  pWriteWord(loop_end,0x4ef9); // jmp start of hack
+  pWriteWord(loop_end+2,(free-16) >> 16);
+  pWriteWord(loop_end+4,(free-16) & 0xffff);
 
-  pWriteWord(&space_hack[22-22],0x4ef9); // jmp back
-  pWriteWord(&space_hack[22-20],loop_start >> 16);
-  pWriteWord(&space_hack[22-18],loop_start & 0xffff);
-  pWriteWord(&space_hack[22-16],dbf);
-  pWriteWord(&space_hack[22-14],0xfff8);
+  pWriteWord(0x500000 + 22-22,0x4ef9); // jmp back
+  pWriteWord(0x500000 + 22-20,loop_start >> 16);
+  pWriteWord(0x500000 + 22-18,loop_start & 0xffff);
+  pWriteWord(0x500000 + 22-16,dbf);
+  pWriteWord(0x500000 + 22-14,0xfff8);
   // free-12...free-8 : speed hack
-  pWriteWord(&space_hack[22-6],0x4ef9);
+  pWriteWord(0x500000 + 22-6,0x4ef9);
 
   // Normally the 1st loop is 12 bytes before the 2nd loop
   if (exit)
@@ -2753,8 +2752,8 @@ static void apply_long_hack(UINT32 loop_start,UINT32 loop_end,UINT32 exit) {
       if (ReadWord(&ROM[pc+2]) == 0x422d) // variation
 	  pc+=2;
   }
-  pWriteWord(&space_hack[22-4],(pc) >> 16);
-  pWriteWord(&space_hack[22-2],(pc) & 0xffff);
+  pWriteWord(0x500000 + 22-4,(pc) >> 16);
+  pWriteWord(0x500000 + 22-2,(pc) & 0xffff);
 }
 
 static void dynamic_hack() {
@@ -2907,11 +2906,11 @@ LAB_002F:
   } else {
     print_ingame(120,gettext("Speed hack not found, slowing down..."));
     print_debug("Failed to find speed hack\n");
-    speed_hack = 1;
+    set_speed_hack();
     frame_68k = default_frame;
     printf("default_frame %d\n",default_frame);
   }
-  if (speed_hack)
+  if (get_speed_hack())
     undo_counter = 10;
 #else
     frame_68k = default_frame;
@@ -2943,7 +2942,7 @@ void execute_cps1_frame(void)
    execute_z80_audio_frame();
   cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
 
-  if (!speed_hack) {
+  if (!get_speed_hack()) {
     dynamic_hack();
   }
 
@@ -2957,7 +2956,7 @@ void execute_ganbare(void)
   cpu_interrupt(CPU_68K_0, 4);
   cpu_execute_cycles(CPU_68K_0, frame_68k);	  // Main 68000
 
-  if (!speed_hack) {
+  if (!get_speed_hack()) {
     dynamic_hack();
   }
 
@@ -2983,7 +2982,7 @@ void execute_qsound_frame(void)
     cpu_interrupt(CPU_Z80_0, 0x38);
 
   }
-  if (!speed_hack) {
+  if (!get_speed_hack()) {
     dynamic_hack();
   }
   cpu_interrupt(CPU_68K_0, 2);
@@ -3032,7 +3031,7 @@ void execute_cps2_frame(void)
   }
 
   if (min1 < 224) {
-      if (speed_hack) {
+      if (get_speed_hack()) {
 	  int size_code = get_region_size(REGION_CPU1);
 	  int nb=0;
 	  while (s68000_pc > size_code || s68000_sr & 0x200) {
@@ -3104,10 +3103,10 @@ void execute_cps2_frame(void)
   }
   if (min1 > 240) {
       // only when no rasters
-      if (!speed_hack) {
+      if (!get_speed_hack()) {
 	  dynamic_hack();
       }
-      if (!hack_counter && speed_hack && cpu_frame_count < 800 && undo_counter--<=0)
+      if (!hack_counter && get_speed_hack() && cpu_frame_count < 800 && undo_counter--<=0)
 	  undo_hack();
   }
 

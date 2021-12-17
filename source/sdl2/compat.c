@@ -25,7 +25,7 @@ void sdl_fatal_error(const char *file, const char *func, int line, char *format,
     va_list ap;
     va_start(ap,format);
     snprintf(msg,512,"function %s file %s line %d\n",func,file,line);
-    snprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
+    vsnprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
     va_end(ap);
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
 	    "Error",

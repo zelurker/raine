@@ -2,12 +2,12 @@
 extern "C" {
 #endif
 
-extern int speed_hack;
 void undo_hack();
+void set_speed_hack();
+int get_speed_hack();
 void apply_hack(UINT32 pc, int kind);
-void apply_rom_hack(UINT8 *ROM, UINT32 pc, int kind);
-void pWriteWord(UINT8* myadr, UINT16 val);
-UINT8 *get_speed_hack_adr(int n);
+void pWriteWord(UINT32 myadr, UINT16 val);
+UINT32 get_speed_hack_adr(int n);
 
 #ifdef __cplusplus
 }
