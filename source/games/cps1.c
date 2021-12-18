@@ -1355,6 +1355,7 @@ static void cps1_init_machine(void)
    int sf2ee;
    // memset(&input_buffer[0x1a],0xff,0x20);
    input_buffer[5] = 0xff; // for cawing, freezes after loading weapon otherwise
+   // For xmcota during the intro there is some kind of aquarium level with big fishes which get a bad priority with the pbitmap
    no_pbitmap = !strncmp(gamename,"xmcot",5); // xmcota and clones
 
    input_buffer[0x15] &= ~16;
@@ -4034,23 +4035,51 @@ static void draw_cps1_partial(int scanline)
      render_cps2_layer(0,0); // sprites
      TerminateTileQueue();
 
-     if (l0) { layer[nb] = l0; layerpri[nb++] = l0pri; }
-     if (l1) { layer[nb] = l1; layerpri[nb++] = l1pri; }
-     if (l2) { layer[nb] = l2; layerpri[nb++] = l2pri; }
-     if (l3) { layer[nb] = l3; layerpri[nb++] = l3pri; }
+     int maxpri = 0,maxl = 0,maxi;
+     if (l0) { layer[nb] = l0; layerpri[nb++] = l0pri;
+	 if (l0pri > maxpri) { maxpri = l0pri; maxl = l0; maxi = nb-1; }
+     }
+     if (l1) { layer[nb] = l1; layerpri[nb++] = l1pri;
+	 if (l1pri > maxpri) { maxpri = l1pri; maxl = l1; maxi = nb-1;}
+     }
+     if (l2) { layer[nb] = l2; layerpri[nb++] = l2pri;
+	 if (l2pri > maxpri) { maxpri = l2pri; maxl = l2; maxi = nb-1;}
+     }
+     if (l3) { layer[nb] = l3; layerpri[nb++] = l3pri;
+	 if (l3pri > maxpri) { maxpri = l3pri; maxl = l3; maxi = nb-1;}
+     }
 
      if (nb) {
        if (pbitmap_needed) {
 	 clear_bitmap(pbitmap);
-	 render_cps2_sprites_pbitmap();
 #if 0
 	 render_cps2_layer(layer[2],layerpri[2]);
 	 render_cps2_layer(layer[1],layerpri[1]);
 	 render_cps2_layer(layer[0],layerpri[0]);
 #else
-	 render_cps2_layer(layer[0],layerpri[0]);
-	 render_cps2_layer(layer[1],layerpri[1]);
-	 render_cps2_layer(layer[2],layerpri[2]);
+	 // printf("layers %d pri %d, %d pri %d, %d pri %d, scanlilne %d\n",
+	 //	 layer[0],layerpri[0],layer[1],layerpri[1],layer[2],layerpri[2],scanline);
+	 if (maxl == 3) {
+	     /* This is simply a dirty hack : in xmvsf there is a point where a boss becomes giant, its upper part (shoulders) are drawn on scroll2, and with default priorities, it's overwritten by
+	      * scroll3. Now it's obvious that scroll3 is done for background and not foreground, so even without emulating these broken masks, I can detect if scroll3 would be in the foreground like
+	      * here, and move it forcefully in the background in this case... Yeah I know it's really not very nice, but at least it works for xmvsf, see the thread with a savegame there :
+	      * https://www.1emulation.com/forums/topic/36589-raine-0923-mer-curious-version/page/2/ */
+	     layerpri[maxi] = 0;
+	 }
+	 if (!strncmp(current_game->main_name,"csclu",5)) {
+	     // while I don't find a reliable way to emulate these priority masks for cps2, I'll be forced to add hacks like this one
+	     // for csclub in the intro you see only yellow in the projector light with the default draw order
+	     render_cps2_sprites_pbitmap();
+	     render_cps2_layer(layer[0],layerpri[0]);
+	     render_cps2_layer(layer[1],layerpri[1]);
+	     render_cps2_layer(layer[2],layerpri[2]);
+	 } else {
+	     // This order seems to be the best for most of the others, that is sprites on top.
+	     render_cps2_layer(layer[0],layerpri[0]);
+	     render_cps2_layer(layer[1],layerpri[1]);
+	     render_cps2_layer(layer[2],layerpri[2]);
+	     render_cps2_sprites_pbitmap();
+	 }
 #endif
        } else {
 	 for (nb=0; nb<=layerpri[0]; nb++) {
