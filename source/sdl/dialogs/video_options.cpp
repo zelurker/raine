@@ -257,7 +257,9 @@ static menu_item_t video_items[] =
     // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
+#if SDL < 2
 { _("Use double buffer (ignored by opengl)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
+#endif
 { _("Blend file options..."), &do_bld },
 { _("Video info..."), &do_video, },
 { _("Renderer options"), &renderer_options },
