@@ -34,6 +34,8 @@ void sdl_fatal_error(const char *file, const char *func, int line, char *format,
     exit(1);
 }
 
+UINT32 sdl2_color_format;
+
 struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
   // Init a fake bitmap to point to a newly created sdl_surface
   UINT32 r=0,g=0,b=0,a=0; // masks if necessary...
@@ -49,10 +51,19 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  // A considerable change compared to sdl-1.2... !
 	  // The format here is just one I chose, 32 bits is almost mandatory in 3d, but for GameBitmap we don't need alpha
 	  // so rgbx becomes the 1st choice
-	  if (!SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a))
+	  sdl2_color_format = SDL_PIXELFORMAT_RGB565;
+	  if (current_colour_mapper == &col_map_24bit_rgb || // macrossp
+		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) // f3 games
+	      sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
+	  if (!SDL_PixelFormatEnumToMasks(sdl2_color_format,&bpp,&r,&g,&b,&a))
 	  {
 	      fatal_error("masks pas ok");
 	  }
+	  display_cfg.bpp = bpp;
+	  if (color_format)
+	      SDL_FreeFormat(color_format);
+	  color_format = SDL_AllocFormat( sdl2_color_format);
+	  set_colour_mapper(current_colour_mapper);
       }
   }
 
@@ -207,7 +218,6 @@ void sdl_init() {
 	// if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1)< 0 || SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3) < 0)
 	//    printf("pb setting opengl version\n");
 
-	color_format = SDL_AllocFormat( SDL_PIXELFORMAT_RGBX8888);
 	inputs_preinit();
 
 	atexit(sdl_done);

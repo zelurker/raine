@@ -130,7 +130,11 @@ void TRaineDesktop::draw() {
 
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(rend);
-    SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+    if (sdl2_color_format == SDL_PIXELFORMAT_RGBX8888) {
+	SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+    } else {
+	SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*2);
+    }
     if (work_area.w) {
 	// The SetLogicalSize can't move the origin, so it's not appropriate here
 	// and we have to make our dest rect

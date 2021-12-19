@@ -7,12 +7,11 @@
 // #include <GLES2/gl2.h>
 #else
 
-#ifdef RAINE_UNIX
+#if SDL<2 && defined(RAINE_UNIX)
 // apparently windows doesn't like this !
 #define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
 #endif
 #include <SDL_opengl.h>
-#include <GL/glu.h>
 
 #endif
 #undef WINAPI
@@ -76,31 +75,23 @@ void ogl_save_png(char *name) {
 #else
     UINT32 r,g,b,a;
     int bpp;
-    SDL_PixelFormatEnumToMasks(SDL_PIXELFORMAT_RGBX8888,&bpp,&r,&g,&b,&a);
-    // Why are a and r inverted here ? Good question... !
+    SDL_PixelFormatEnumToMasks(sdl2_color_format,&bpp,&r,&g,&b,&a);
     s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
-	    bpp,a,g,b,r);
+	    bpp,r,g,b,a);
 #endif
 
     // Read bits from color buffer
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-#ifndef ANDROID
-    // Available in GLES3 only, and for now it's hard to get gles3 !
     glPixelStorei(GL_PACK_ROW_LENGTH, 0);
     glPixelStorei(GL_PACK_SKIP_ROWS, 0);
     glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-#endif
 
     // Get the current read buffer setting and save it. Switch to
     // the front buffer and do the read operation. Finally, restore
     // the read buffer state
     glReadPixels(0, 0, iViewport[2], iViewport[3],
-#ifdef ANDROID
 	    (bpp == 32 ? GL_RGBA : GL_RGB),
-#else
-	    (bpp == 32 ? GL_BGRA : GL_BGR),
-#endif
-	    GL_UNSIGNED_BYTE, s->pixels);
+	    (bpp == 32 ? GL_UNSIGNED_INT_8_8_8_8 : GL_UNSIGNED_SHORT_5_6_5), s->pixels);
     save_png_surf_rev(name,s);
 }
 
@@ -192,19 +183,10 @@ void get_ogl_infos() {
         switch(display_cfg.bpp) {
 #endif
 	case 16:
-		gl_format = GL_RGB;
-#ifdef ANDROID
-		gl_type = GL_UNSIGNED_SHORT_5_6_5;
-#else
-		gl_type = GL_UNSIGNED_SHORT_5_6_5_REV;
-#endif
-		break;
+	    gl_format = GL_RGB;
+	    gl_type = GL_UNSIGNED_SHORT_5_6_5;
+	    break;
 	case 32:
-#ifdef ANDROID
-		// No such flexibility with opengl/es !
-		gl_format = GL_RGBA;
-		gl_type = GL_UNSIGNED_INT_24_8_OES;
-#else
 #if SDL == 1
 		switch (sdl_screen->format->Bshift) {
 		case 0:
@@ -223,9 +205,8 @@ void get_ogl_infos() {
 			format_error = 1;
 		}
 #else
-			gl_format = GL_RGBA;
-			gl_type = GL_UNSIGNED_INT_8_8_8_8;
-#endif
+		gl_format = GL_RGBA;
+		gl_type = GL_UNSIGNED_INT_8_8_8_8;
 #endif
 		break;
 	default:

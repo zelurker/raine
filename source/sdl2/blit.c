@@ -400,7 +400,7 @@ void SetupScreenBitmap(void)
      if (game_tex) {
 	 fatal_error("Already a game texture");
      }
-     game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
+     game_tex = SDL_CreateTexture(rend,sdl2_color_format,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
      if (!game_tex) {
 	 fatal_error("couldn't create game texture : %s",SDL_GetError());
      }
@@ -493,11 +493,15 @@ void DrawNormal(void)
    }
 
    if (!game_tex)
-       game_tex = SDL_CreateTexture(rend,SDL_PIXELFORMAT_RGBX8888,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
+       game_tex = SDL_CreateTexture(rend,sdl2_color_format,SDL_TEXTUREACCESS_STREAMING,GameScreen.xview,GameScreen.yview);
    if (!game_tex) {
        fatal_error("no texture");
    }
-   SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+   if (sdl2_color_format == SDL_PIXELFORMAT_RGBX8888) {
+       SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*sizeof(UINT32));
+   } else {
+       SDL_UpdateTexture(game_tex,NULL,GameViewBitmap->line[0],GameScreen.xfull*2);
+   }
    SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
    SDL_RenderClear(rend);
    SDL_RenderCopy(rend,game_tex,NULL,NULL);

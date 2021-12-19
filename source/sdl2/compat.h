@@ -26,6 +26,8 @@ typedef struct al_bitmap            /* a bitmap structure */
    Uint8 *line[0];
 } al_bitmap;
 
+extern UINT32 sdl2_color_format;
+
 // Bitmap functions
 #define fatal_error(format, ...) sdl_fatal_error(__FILE__,__func__,__LINE__, format, ## __VA_ARGS__)
 void sdl_fatal_error(const char *file, const char*func, int line, char *format, ...);
