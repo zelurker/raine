@@ -2188,10 +2188,10 @@ void inputs_preinit() {
   int n;
   SDL_Event event;
   int handled;
-  FILE *f = fopen(get_shared("mappings"),"r");
+  FILE *f = fopen(get_shared("gamecontrollerdb.txt"),"r");
   if (f) {
       fclose(f);
-      int ret = SDL_GameControllerAddMappingsFromFile(get_shared("mappings"));
+      int ret = SDL_GameControllerAddMappingsFromFile(get_shared("gamecontrollerdb.txt"));
       printf("mappings added %d\n",ret);
   }
 

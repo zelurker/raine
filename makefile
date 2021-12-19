@@ -1655,6 +1655,7 @@ else
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/*.shader $(shaders_dir)
 	@cp -rfva scripts/* $(scripts_dir)
+	$(INSTALL_DATA) gamecontrollerdb.txt $(rainedata)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
