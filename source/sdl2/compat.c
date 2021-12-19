@@ -63,7 +63,8 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  if (color_format)
 	      SDL_FreeFormat(color_format);
 	  color_format = SDL_AllocFormat( sdl2_color_format);
-	  set_colour_mapper(current_colour_mapper);
+	  if (current_colour_mapper)
+	      set_colour_mapper(current_colour_mapper);
       }
   }
 
