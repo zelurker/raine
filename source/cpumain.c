@@ -42,7 +42,7 @@ void switch_cpu(UINT32 cpu_id)
        m68k_set_context(&M68000_context[new_num]);
        current_cpu_num[new_type] = new_num;
        return;
-   } else if (new_type == (CPU_M68020_0 >> 4) && MC68020 && m68ki_cpu.cpu_type != CPU_TYPE_020) {
+   } else if (new_type == (CPU_M68020_0 >> 4) && MC68020 && m68ki_cpu.cpu_type == CPU_TYPE_000) {
        m68k_get_context(&M68000_context[new_num]);
        m68k_set_context(&m68020_context);
        current_cpu_num[new_type] = new_num;

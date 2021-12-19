@@ -58,6 +58,9 @@
 #include "mz80help.h"
 #include "starhelp.h"
 
+#if USE_MUSASHI == 2
+extern "C" m68ki_cpu_core m68020_context;
+#endif
 extern "C" void init_glsl();
 static int WantScreen;
 static int WantQuit;
@@ -102,11 +105,19 @@ void TRaineDesktop::end_preinit() {
     // start_cpu_main will be recalled by run_game_emulation which will force a cpu context switch
     // if there's only 1 cpu active in a category, it means its context will be cleared
     // so to be safe we save the context if there is only 1 cpu in a category
-    // 68020 & 6502 should be safe
+    // Trouble between 68020 & 68000 if using musashi for both... !
     if (MZ80Engine == 1)
 	mz80GetContext(&Z80_context[0]);
-    if (StarScreamEngine == 1)
+    if (StarScreamEngine == 1) {
+	switch_cpu(CPU_68K_0);
 	s68000GetContext(&M68000_context[0]);
+    }
+#if USE_MUSASHI == 2
+    if (MC68020) {
+	switch_cpu(CPU_M68020_0);
+	m68k_get_context(&m68020_context);
+    }
+#endif
 
 }
 

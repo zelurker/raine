@@ -1005,11 +1005,13 @@ void ExecuteF3SystemFrameB(void)
   }
   else {
       cpu_interrupt(CPU_M68020_0, 2);	// Interrupt#2 [Video End]
-      cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
+#if USE_MUSASHI
+      // I don't see why executing 100 cycles here harms the asm emulation, but it does, puchicar has a black screen on boot
+      // I didn't investigate any further, just added the #IF USE_MUSASHI to limit this to musashi even though it shouldn't harm anything !
+      cpu_execute_cycles(CPU_M68020_0, 100);
+#endif
       cpu_interrupt(CPU_M68020_0, 3);	// Interrupt#3 [Video Start]
-      cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
-      cpu_interrupt(CPU_M68020_0, 5);	// Interrupt#5 [Occasionally used, for timing I think]
-      cpu_execute_cycles(CPU_M68020_0, 100); //1600000/f3_slices)
+      // cpu_interrupt(CPU_M68020_0, 5);	// Interrupt#5 [Occasionally used, for timing I think]
   }
 }
 
