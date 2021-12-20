@@ -216,7 +216,7 @@ static void read_font_config() {
 void read_gui_config() {
 #if SDL == 2
 #define SDL_DEFAULT_REPEAT_DELAY 500
-#define SDL_DEFAULT_REPEAT_INTERVAL 30
+#define SDL_DEFAULT_REPEAT_INTERVAL 50
 #endif
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
   repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
@@ -249,10 +249,11 @@ void write_gui_config() {
   raine_set_config_int("GUI","pause_on_focus",pause_on_focus);
 }
 
-#if SDL < 2
 static int set_repeat_rate(int sel) {
+#if SDL < 2
   SDL_EnableKeyRepeat(repeat_delay,
 		      repeat_interval);
+#endif
   return 0;
 }
 
@@ -267,11 +268,6 @@ int add_gui_options(menu_item_t *menu) {
   menu[1] = gui_options_menu[1];
   return 2;
 }
-#else
-int add_gui_options(menu_item_t *menu) {
-    return 0;
-}
-#endif
 
 static TDialog *loading_dialog;
 static int progress_count;
