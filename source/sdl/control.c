@@ -1790,7 +1790,7 @@ void control_handle_event(SDL_Event *event) {
 #endif
     case SDL_JOYHATMOTION:
       // Ok here we remap automatically hats to joysticks events on axes which don't exist...
-      which = event->jhat.which;
+      which = get_joy_index_from_instance(event->jhat.which);
       if (is_game_controller(which)) {
 	  return;
       }
