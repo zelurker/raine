@@ -233,10 +233,8 @@ void read_gui_config() {
 }
 
 void write_gui_config() {
-#if SDL < 2
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
-#endif
   save_game_list_config();
 #if HAS_NEO
   save_cdrom_config();

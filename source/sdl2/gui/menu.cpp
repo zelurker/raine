@@ -1516,31 +1516,48 @@ void TMenu::produce_joystick_event() {
 }
 
 void TMenu::handle_joystick(SDL_Event *event) {
-  int hat;
   switch (event->type) {
-    case SDL_JOYHATMOTION:
-      /* Emulate joystick movement with a hat - what linux does automatically
-       * but it's for windows... */
-      hat = event->jhat.value;
-      axis_x = 0;
-      axis_y = 0;
-      jmoved = 0;
-
-      if (hat == SDL_HAT_UP)
-	axis_y = -1;
-      if (hat == SDL_HAT_DOWN)
-	axis_y = 1;
-      if (hat == SDL_HAT_LEFT)
-	axis_x = -1;
-      if (hat == SDL_HAT_RIGHT)
-	axis_x = 1;
-      if (hat) {
+  case SDL_CONTROLLERBUTTONDOWN:
+      axis_x = axis_y = jmoved = 0;
+      switch (event->cbutton.button) {
+      case SDL_CONTROLLER_BUTTON_DPAD_UP:
+	  axis_y = -1;
+	  break;
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	  axis_y = 1;
+	  break;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+	  axis_x = -1;
+	  break;
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	  axis_x = 1;
+	  break;
+      }
+      if (axis_x || axis_y) {
 	jmoved = 1;
 	timer = update_count;
 	produce_joystick_event();
       } else
 	phase_repeat = 0;
       break;
+  case SDL_CONTROLLERBUTTONUP:
+      switch (event->cbutton.button) {
+      case SDL_CONTROLLER_BUTTON_DPAD_UP:
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+	  if (axis_y) phase_repeat = 0;
+	  axis_y = 0;
+	  jmoved = 0;
+	  break;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+	  if (axis_x) phase_repeat = 0;
+	  axis_x = 0;
+	  jmoved = 0;
+	  break;
+      }
+      break;
+      // We have to remove the joyhatmotion handling here for the gamepads which don't advertise their dpad as a hat
+      // We'll handle the d-pad only from the code above
   case SDL_JOYAXISMOTION:
     switch(event->jaxis.axis) {
       case 0: // x axis normally
@@ -1716,6 +1733,8 @@ void TMenu::execute() {
     if (focus) oldsel = hsel;
     int oldtop = top;
     while (SDL_PollEvent(&event)) {
+	if (*event_hook)
+	    (*event_hook)(&event);
       switch(event.type) {
       case SDL_KEYDOWN:
       case SDL_KEYUP:
@@ -1741,8 +1760,6 @@ void TMenu::execute() {
       case SDL_WINDOWEVENT:
       case SDL_CONTROLLERDEVICEADDED:
       case SDL_CONTROLLERDEVICEREMOVED:
-	if (*event_hook)
-	    (*event_hook)(&event);
 	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	    if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
 		SDL_SetWindowSize(win,640,480);
