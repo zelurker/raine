@@ -593,6 +593,9 @@ static void my_event(SDL_Event *event) {
     switch (event->type) {
     case SDL_CONTROLLERDEVICEADDED:
     case SDL_CONTROLLERDEVICEREMOVED:
+    case SDL_CONTROLLERBUTTONDOWN:
+    case SDL_CONTROLLERAXISMOTION:
+    case SDL_JOYAXISMOTION:
 	control_handle_event(event);
 	break;
     case SDL_WINDOWEVENT:

@@ -80,7 +80,7 @@ typedef struct {
     int index,instance;
     joystick_state jstate;
 } tjoy;
-static int nb_joy;
+static int nb_joy,cancel_sticks;
 
 tjoy joy[MAX_JOY];
 
@@ -1573,14 +1573,21 @@ static void handle_joy_axis(int which, int axis, int value) {
 void control_handle_event(SDL_Event *event) {
   int input,which,axis,value,modifier,jevent,  ta;
   DEF_INPUT_EMU *emu_input;
-  int input_valid,nb,hat,changed;
+  int input_valid,nb,hat,changed,btn;
 
   switch (event->type) {
 #if SDL == 2
   case SDL_CONTROLLERBUTTONDOWN:
       which = get_joy_index_from_instance(event->cbutton.which);
+      btn = event->cbutton.button;
+      if (btn == SDL_CONTROLLER_BUTTON_DPAD_UP ||
+	      btn == SDL_CONTROLLER_BUTTON_DPAD_DOWN ||
+	      btn == SDL_CONTROLLER_BUTTON_DPAD_LEFT ||
+	      btn == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
+	  cancel_sticks = 1; // ignore all inputs coming from sticks if using the d-pad
+      }
       if (hat_for_moves) {
-	  switch (event->cbutton.button) {
+	  switch (btn) {
 	  case SDL_CONTROLLER_BUTTON_DPAD_UP:
 	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-16000);
 	      return;
@@ -1636,7 +1643,13 @@ void control_handle_event(SDL_Event *event) {
       which = get_joy_index_from_instance(event->caxis.which);
       axis = event->caxis.axis;
       value = event->caxis.value;
-      if (hat_for_moves && abs(value) < 2500) return;
+      if (cancel_sticks) {
+	  if (abs(value) < 16000) {
+	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
+	      return;
+	  }
+	  cancel_sticks = 0; // back to work
+      }
       handle_joy_axis(which,axis,value);
       break;
 #endif
@@ -1813,12 +1826,19 @@ void control_handle_event(SDL_Event *event) {
       break;
     case SDL_JOYAXISMOTION:
       which = get_joy_index_from_instance(event->jaxis.which);
-      if (is_game_controller(which)) {
-	  return;
-      }
       axis = event->jaxis.axis;
       value = event->jaxis.value;
-      // No reason to try to handle the dead zone here, it's necessary only when the dpad interfers and it can't since it's not a recognized game controller here
+      if (cancel_sticks) {
+	  if (abs(value) < 16000) {
+	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
+	      return;
+	  }
+	  cancel_sticks = 0; // back to work
+      }
+      if (is_game_controller(which)) {
+	  event->type = SDL_FIRSTEVENT;
+	  return;
+      }
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
 	return;
       } else if (which == analog_num+1 && axis/2 == analog_stick) {

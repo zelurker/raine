@@ -1516,6 +1516,7 @@ void TMenu::produce_joystick_event() {
 }
 
 void TMenu::handle_joystick(SDL_Event *event) {
+    int axis,val;
   switch (event->type) {
   case SDL_CONTROLLERBUTTONDOWN:
       axis_x = axis_y = jmoved = 0;
@@ -1559,46 +1560,52 @@ void TMenu::handle_joystick(SDL_Event *event) {
       // We have to remove the joyhatmotion handling here for the gamepads which don't advertise their dpad as a hat
       // We'll handle the d-pad only from the code above
   case SDL_JOYAXISMOTION:
-    switch(event->jaxis.axis) {
+  case SDL_CONTROLLERAXISMOTION:
+      // Notice for the axis, joyaxismotion for the ps3 has axis 0,1 for leftx,lefty but then 4,3 for rightx,righty
+      // so we take events from the right stick only if the event comes from a controller, otherwise we take only the 1st stick
+      // which is usually in the right order
+      axis = (event->type == SDL_JOYAXISMOTION ? event->jaxis.axis : event->caxis.axis & 1);
+      val = (event->type == SDL_JOYAXISMOTION ? event->jaxis.value : event->caxis.value);
+    switch(axis) {
       case 0: // x axis normally
-        if (event->jaxis.value < -16000) {
+        if (val < -16000) {
 	  if (axis_x > -1) {
 	    axis_x = -1;
 	    jmoved = 1;
 	    timer = update_count;
 	    produce_joystick_event();
 	  }
-	} else if (event->jaxis.value > 16000) {
+	} else if (val > 16000) {
 	  if (axis_x < 1) {
 	    axis_x = 1;
 	    jmoved = 1;
 	    timer = update_count;
 	    produce_joystick_event();
 	  }
-	} else if ((axis_x == -1 && event->jaxis.value > -16000) ||
-	           (axis_x == 1 && event->jaxis.value < 16000)) {
+	} else if ((axis_x == -1 && val > -16000) ||
+	           (axis_x == 1 && val < 16000)) {
 	  axis_x = 0;
 	  jmoved = 0;
 	  phase_repeat = 0;
 	}
 	break;
       case 1: // y axis
-        if (event->jaxis.value < -16000) {
+        if (val < -16000) {
 	  if (axis_y > -1) {
 	    axis_y = -1;
 	    jmoved = 1;
 	    timer = update_count;
 	    produce_joystick_event();
 	  }
-	} else if (event->jaxis.value > 16000) {
+	} else if (val > 16000) {
 	  if (axis_y < 1) {
 	    axis_y = 1;
 	    jmoved = 1;
 	    timer = update_count;
 	    produce_joystick_event();
 	  }
-	} else if ((axis_y == -1 && event->jaxis.value > -16000) ||
-	           (axis_y == 1 && event->jaxis.value < 16000)) {
+	} else if ((axis_y == -1 && val > -16000) ||
+	           (axis_y == 1 && val < 16000)) {
 	  axis_y = 0;
 	  jmoved = 0;
 	  phase_repeat = 0;
