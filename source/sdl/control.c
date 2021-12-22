@@ -79,9 +79,10 @@ typedef struct {
     // the instance is what is returned in the which field for its events... !
     int index,instance;
     joystick_state jstate;
+    int cancel_sticks;
 } tjoy;
-static int nb_joy,cancel_sticks;
 
+static int nb_joy;
 tjoy joy[MAX_JOY];
 
 char analog_name[80]; // analog device saved by name because its index
@@ -1584,7 +1585,7 @@ void control_handle_event(SDL_Event *event) {
 	      btn == SDL_CONTROLLER_BUTTON_DPAD_DOWN ||
 	      btn == SDL_CONTROLLER_BUTTON_DPAD_LEFT ||
 	      btn == SDL_CONTROLLER_BUTTON_DPAD_RIGHT) {
-	  cancel_sticks = 1; // ignore all inputs coming from sticks if using the d-pad
+	  joy[which].cancel_sticks = 1; // ignore all inputs coming from sticks if using the d-pad
       }
       if (hat_for_moves) {
 	  switch (btn) {
@@ -1643,12 +1644,12 @@ void control_handle_event(SDL_Event *event) {
       which = get_joy_index_from_instance(event->caxis.which);
       axis = event->caxis.axis;
       value = event->caxis.value;
-      if (cancel_sticks) {
+      if (joy[which].cancel_sticks) {
 	  if (abs(value) < 16000) {
 	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
 	      return;
 	  }
-	  cancel_sticks = 0; // back to work
+	  joy[which].cancel_sticks = 0; // back to work
       }
       handle_joy_axis(which,axis,value);
       break;
@@ -1828,12 +1829,12 @@ void control_handle_event(SDL_Event *event) {
       which = get_joy_index_from_instance(event->jaxis.which);
       axis = event->jaxis.axis;
       value = event->jaxis.value;
-      if (cancel_sticks) {
+      if (joy[which].cancel_sticks) {
 	  if (abs(value) < 16000) {
 	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
 	      return;
 	  }
-	  cancel_sticks = 0; // back to work
+	  joy[which].cancel_sticks = 0; // back to work
       }
       if (is_game_controller(which)) {
 	  event->type = SDL_FIRSTEVENT;
