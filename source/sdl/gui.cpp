@@ -594,8 +594,11 @@ static void my_event(SDL_Event *event) {
     case SDL_CONTROLLERDEVICEADDED:
     case SDL_CONTROLLERDEVICEREMOVED:
     case SDL_CONTROLLERBUTTONDOWN:
+    case SDL_CONTROLLERBUTTONUP:
     case SDL_CONTROLLERAXISMOTION:
     case SDL_JOYAXISMOTION:
+	// Notice button up must be passed if button down is passed, so that
+	// both cancel each other
 	control_handle_event(event);
 	break;
     case SDL_WINDOWEVENT:
