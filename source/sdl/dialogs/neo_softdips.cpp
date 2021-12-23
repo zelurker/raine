@@ -20,8 +20,9 @@ static char* get_str(int &strings) {
     // Get a string from the string array
     UINT8 *ptr = (is_neocd() ? RAM : ROM);
     char str[13];
-    while (ptr[strings ^ 1] == 32)
-	strings++;
+    // This commented code was probably about samsho3 neocd, but it creates problems for kof97 neogeo, disabling for now...
+    // while (ptr[strings ^ 1] == 32)
+    // strings++;
     memcpy(str,&ptr[strings],12);
 
     int n;
