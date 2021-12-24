@@ -39,11 +39,15 @@ void switch_cpu(UINT32 cpu_id)
    if (new_type == (CPU_68K_0 >> 4) && m68ki_cpu.cpu_type == CPU_TYPE_020) {
        // Only 68020 tested, will have to change if using 68EC020.
        m68k_get_context(&m68020_context);
-       m68k_set_context(&M68000_context[new_num]);
+       // This is called on init, switch_cpu(0x1f) to reset all cpu contexts
+       // except f is an invald number, so at least try to to switch to an invalid cpu !
+       if (StarScreamEngine > new_num)
+	   m68k_set_context(&M68000_context[new_num]);
        current_cpu_num[new_type] = new_num;
        return;
    } else if (new_type == (CPU_M68020_0 >> 4) && MC68020 && m68ki_cpu.cpu_type == CPU_TYPE_000) {
-       m68k_get_context(&M68000_context[new_num]);
+       if (StarScreamEngine > new_num)
+	   m68k_get_context(&M68000_context[new_num]);
        m68k_set_context(&m68020_context);
        current_cpu_num[new_type] = new_num;
        return;
