@@ -7,6 +7,7 @@
 #include "timer.h"
 #include "2203intf.h"
 #include "streams.h"
+#include "savegame.h"
 
 
 static int stream[MAX_2203];
@@ -22,7 +23,7 @@ static void IRQHandler(int n,int irq)
 }
 
 /* Timer overflow callback from timer.c */
-static void timer_callback_2203(int param)
+void timer_callback_2203(int param)
 {
 	int n=param&0x7f;
 	int c=param>>7;
@@ -73,6 +74,8 @@ static void FMTimerInit( void )
 
 	for( i = 0 ; i < MAX_2203 ; i++ )
 		Timer[i][0] = Timer[i][1] = 0;
+	save_timers();
+	AddSaveData_ext("2203 timers",(UINT8*)&Timer,sizeof(Timer));
 }
 
 int YM2203_sh_start(const struct YM2203interface *msound)

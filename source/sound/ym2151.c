@@ -795,7 +795,7 @@ static inline void envelope_KONKOFF(YM2151Operator * op, int v)
 
 
 #ifdef USE_MAME_TIMERS
-static void timer_callback_a (int n)
+void timer_callback_a (int n)
 {
 	YM2151 *chip = &YMPSG[n];
 	if (chip->timer_A) {
@@ -814,7 +814,7 @@ static void timer_callback_a (int n)
 	if (chip->irq_enable & 0x80)
 		chip->csm_req = 2;		/* request KEY ON / KEY OFF sequence */
 }
-static void timer_callback_b (int n)
+void timer_callback_b (int n)
 {
 	YM2151 *chip = &YMPSG[n];
 	if (chip->timer_B) {
@@ -1491,6 +1491,10 @@ int YM2151Init(int num, int clock, int rate)
 
 	for (i=0 ; i<YMNumChips; i++)
 	{
+	    char name[10];
+	    snprintf(name,10,"2151%d timer",i);
+	    AddSaveData_ext(name,(UINT8*)&YMPSG[i].timer_A,((UINT8*)&YMPSG[i].timer_B)-((UINT8*)&YMPSG[i].timer_A)+sizeof(void*));
+
 		YMPSG[i].clock = clock;
 		/*rate = clock/64;*/
 		YMPSG[i].sampfreq = rate ? rate : 44100;	/* avoid division by 0 in init_chip_tables() */
@@ -1506,8 +1510,8 @@ int YM2151Init(int num, int clock, int rate)
 
 #ifdef USE_MAME_TIMERS
 /* this must be done _before_ a call to YM2151ResetChip() */
-/* 		YMPSG[i].timer_A = timer_alloc(timer_callback_a); */
-/* 		YMPSG[i].timer_B = timer_alloc(timer_callback_b); */
+ 		YMPSG[i].timer_A = NULL; // timer_alloc(timer_callback_a);
+ 		YMPSG[i].timer_B = NULL; // timer_alloc(timer_callback_b);
 #else
 		YMPSG[i].tim_A      = 0;
 		YMPSG[i].tim_B      = 0;
@@ -1523,6 +1527,7 @@ int YM2151Init(int num, int clock, int rate)
 	else
 		logerror("Could not create file 2151_.cym\n");
 #endif
+	save_timers();
 
 	return 0;
 }

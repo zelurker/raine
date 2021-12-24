@@ -21,6 +21,7 @@
 #include <string.h> // memset
 #include "timer.h"
 #include "streams.h"
+#include "savegame.h"
 
 #define OPL3CONVERTFREQUENCY
 #define TIME_IN_HZ(hz)        (1.0 / (double)(hz))
@@ -64,7 +65,7 @@ static int ( *read_port_r )( int chip );
 	Begin of non-emulated YM3812 interface block
  **********************************************************************************************/
 
-static void timer1_callback (int chip)
+void cb_3812a (int chip)
 {
 	NE_OPL_STATE *st = &nonemu_state[chip];
 	if (!(st->timer_register & 0x40))
@@ -76,10 +77,10 @@ static void timer1_callback (int chip)
 	}
 
 	/* next! */
-	st->timer1 = timer_set ((double)st->timer1_val*4*timer_step, chip, timer1_callback);
+	st->timer1 = timer_set ((double)st->timer1_val*4*timer_step, chip, cb_3812a);
 }
 
-static void timer2_callback (int chip)
+void cb_3812b (int chip)
 {
 	NE_OPL_STATE *st = &nonemu_state[chip];
 	if (!(st->timer_register & 0x20))
@@ -91,7 +92,7 @@ static void timer2_callback (int chip)
 	}
 
 	/* next! */
-	st->timer2 = timer_set ((double)st->timer2_val*16*timer_step, chip, timer2_callback);
+	st->timer2 = timer_set ((double)st->timer2_val*16*timer_step, chip, cb_3812b);
 }
 
 static int nonemu_YM3812_sh_start(const struct YM3812interface *msound)
@@ -114,6 +115,8 @@ static int nonemu_YM3812_sh_start(const struct YM3812interface *msound)
 		nonemu_state[i].timer2_val = 256;
 	}
 	timer_step = TIME_IN_HZ((double)intf->baseclock / 72.0);
+	save_timers();
+	AddSaveData_ext("3812 timers",(UINT8*)nonemu_state,intf->num * sizeof(NE_OPL_STATE));
 	return 0;
 }
 
@@ -209,7 +212,7 @@ static void nonemu_YM3812_write_port_w(int chip,int data)
 				if (data & 0x01)
 				{
 					if (!st->timer1)
-					  st->timer1 = timer_set ((double)st->timer1_val*4*timer_step, chip, timer1_callback);
+					  st->timer1 = timer_set ((double)st->timer1_val*4*timer_step, chip, cb_3812a);
 				}
 				else
 				  if (st->timer1)
@@ -222,7 +225,7 @@ static void nonemu_YM3812_write_port_w(int chip,int data)
 				if (data & 0x02)
 				{
 					if (!st->timer2)
-					  st->timer2 = timer_set ((double)st->timer2_val*16*timer_step, chip, timer2_callback);
+					  st->timer2 = timer_set ((double)st->timer2_val*16*timer_step, chip, cb_3812b);
 				}
 				else if (st->timer2)
 				{
@@ -288,7 +291,7 @@ static void Y8950KeyboardHandler_w(int chip,unsigned char data)
 #endif
 
 /* Timer overflow callback from timer.c */
-static void timer_callback_3812(int param)
+void timer_callback_3812(int param)
 {
 	int n=param>>1;
 	int c=param&1;
@@ -361,6 +364,8 @@ static int emu_YM3812_sh_start(const struct YM3812interface *msound)
 		YM3812SetIRQHandler   (i, IRQHandler, i);
 		YM3812SetUpdateHandler(i, stream_update, stream[i]);
 	}
+	save_timers();
+	// Hopefully since F3812 is in fm.c its state is already saved, nothing to add
 	return 0;
 }
 

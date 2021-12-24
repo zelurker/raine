@@ -30,6 +30,7 @@ double emu_get_time();
 double pos_in_frame();
 INT32 get_min_cycles(UINT32 frame);
 void execute_z80_audio_frame_with_nmi(int nb);
+void save_timers();
 
 #endif
 

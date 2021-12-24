@@ -19,6 +19,7 @@
 #include "timer.h"
 #include "loadroms.h"
 #include "streams.h"
+#include "savegame.h"
 
 #undef VERBOSE
 
@@ -304,7 +305,7 @@ static void ymf278b_irq_check(int num)
 		chip->irq_callback(chip->irq_line);
 }
 
-static void ymf278b_timer_a_tick(int num)
+void ymf278b_timer_a_tick(int num)
 {
 	YMF278BChip *chip = &YMF278B[num];
 	if(!(chip->enable & 0x40))
@@ -314,7 +315,7 @@ static void ymf278b_timer_a_tick(int num)
 	}
 }
 
-static void ymf278b_timer_b_tick(int num)
+void ymf278b_timer_b_tick(int num)
 {
 	YMF278BChip *chip = &YMF278B[num];
 	if(!(chip->enable & 0x20))
@@ -629,12 +630,23 @@ static void ymf278b_init(INT8 num, UINT8 *rom, void (*cb)(int), int clock)
 	YMF278B[num].clock_ratio = (float)clock / (float)YMF278B_STD_CLOCK;
 }
 
+static const struct YMF278B_interface *my_intf;
+
+static void restore_ymf278b() {
+    int i;
+    for(i=0; i<my_intf->num; i++) {
+	YMF278B[i].rom = load_region[my_intf->region[0]];
+	YMF278B[i].irq_callback = my_intf->irq_callback[i];
+    }
+}
+
 int YMF278B_sh_start( const struct YMF278B_interface *intf )
 {
 	char buf[2][40];
 	const char *name[2];
 	int  vol[2];
 	int i;
+	my_intf = intf;
 
 	for(i=0; i<intf->num; i++)
 	{
@@ -666,6 +678,9 @@ int YMF278B_sh_start( const struct YMF278B_interface *intf )
 		mix_level[i] = volume[8*i+8];
 	mix_level[7] = 0;
 
+	save_timers();
+	AddSaveData_ext("ymf278b timers", (UINT8*)YMF278B, sizeof(YMF278B));
+	AddLoadCallback(restore_ymf278b);
 	return 0;
 }
 

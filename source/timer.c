@@ -7,6 +7,7 @@
 #include "mz80help.h"
 #include "sasound.h"
 #include "gui.h" // goto_debuger
+#include "savegame.h"
 
 // Number of cycles before reseting the cycles counter and the timers
 #define MAX_CYCLES 0x40000000
@@ -40,6 +41,7 @@ typedef struct {
   UINT32 cycles;
   UINT32 id;
   UINT32 period;
+  char name[10];
 } TimerStruct;
 
 UINT32 audio_cpu;
@@ -129,6 +131,17 @@ double pos_in_frame() {
 
 static int called_adjust;
 
+extern void timer_callback_2203(int param);
+extern void timer_callback_2610(int param);
+extern void cb_3812a (int chip);
+extern void cb_3812b (int chip);
+extern void timer_callback_a (int n);
+extern void timer_callback_b (int n);
+extern void timer_callback_b (int n);
+extern void ymf278b_timer_a_tick(int num);
+extern void ymf278b_timer_b_tick(int num);
+extern void timer_callback_3812(int param);
+
 void *timer_adjust(double duration, int param, double period, void (*callback)(int))
 {
   UINT32 remaining = duration * fps * z80_frame;
@@ -145,6 +158,18 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     timer[free_timer].cycles = elapsed + remaining;
     timer[free_timer].id = timer_id;
     timer[free_timer].period = cycles_period;
+    if (callback == &timer_callback_2203) strcpy(timer[free_timer].name,"2203");
+    else if (callback == &timer_callback_2610) strcpy(timer[free_timer].name, "2610");
+    else if (callback == &cb_3812a) strcpy(timer[free_timer].name, "3812a");
+    else if (callback == &cb_3812b) strcpy(timer[free_timer].name, "3812b");
+    else if (callback == &timer_callback_a) strcpy(timer[free_timer].name, "2151a");
+    else if (callback == &timer_callback_b) strcpy(timer[free_timer].name, "2151b");
+    else if (callback == &ymf278b_timer_a_tick) strcpy(timer[free_timer].name, "ymf278b1");
+    else if (callback == &ymf278b_timer_b_tick) strcpy(timer[free_timer].name, "ymf278b2");
+    else if (callback == &timer_callback_3812) strcpy(timer[free_timer].name,"3812");
+    else {
+	fatal_error("timer_set: handler unknown");
+    }
     free_timer++;
   } else {
     printf("free timers overflow !!!\n");
@@ -152,6 +177,28 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     // exit(1);
   }
   return (void*)timer_id++;
+}
+
+static void restore_timers() {
+    printf("restore timers %d\n",free_timer);
+    for (int n=0; n<free_timer; n++) {
+	if (!strcmp(timer[n].name,"ymf278b1")) timer[n].handler = &ymf278b_timer_a_tick;
+	else if (!strcmp(timer[n].name,"ymf278b2")) timer[n].handler = &ymf278b_timer_b_tick;
+	else if (!strcmp(timer[n].name,"2203")) timer[n].handler = &timer_callback_2203;
+	else if (!strcmp(timer[n].name,"2610")) timer[n].handler = &timer_callback_2610;
+	else if (!strcmp(timer[n].name,"3812a")) timer[n].handler = &cb_3812a;
+	else if (!strcmp(timer[n].name,"3812b")) timer[n].handler = &cb_3812b;
+	else if (!strcmp(timer[n].name,"2151a")) timer[n].handler = &timer_callback_a;
+	else if (!strcmp(timer[n].name,"2151b")) timer[n].handler = &timer_callback_b;
+	else if (!strcmp(timer[n].name,"3812")) timer[n].handler = &timer_callback_3812;
+    }
+}
+
+void save_timers() {
+    // Add the relevant data to save timers, must be called by those who need timers, not automatic
+    AddSaveData_ext("timers",((UINT8*)&timer),((UINT8*)&free_timer)-((UINT8*)&timer)+sizeof(int));
+    AddLoadCallback(&restore_timers);
+    AddSaveData_ext("cpu_frame_count",(UINT8*)&cpu_frame_count,sizeof(UINT32));
 }
 
 void timer_remove(void *the_timer) {

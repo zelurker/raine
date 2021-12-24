@@ -27,6 +27,7 @@
 #include "zoom/16x16.h"		// 16x8 zoomed sprite routines
 #include "sound/assoc.h"
 #include "video/pdraw.h"
+#include "savegame.h"
 
 void load_gunbird(void);
 void execute_gunbird(void);
@@ -43,26 +44,35 @@ void load_samuraia(void);
 static int  oldmem13;
 static UINT8 *z80_8200; /* Fast bankswitch for z80 */
 
+static int z80_bank;
+
+static void restore_z80() {
+    z80_8200 = Z80ROM+0x10200+z80_bank*0x8000;
+}
+
+static void restore_sngkace_z80() {
+    z80_8200 = Z80ROM+0x10000+z80_bank*0x8000;
+}
 
 /* In realtà c'è una funzione Z80ASetbank */
-WRITE_HANDLER(gunbird_sound_bankswitch_w)
+static WRITE_HANDLER(gunbird_sound_bankswitch_w)
 {
-  int bank = ((data>>4)&3);
+  z80_bank = ((data>>4)&3);
 	/* The banked rom is seen at 8200-ffff, so the last 0x200 bytes
 	   of the rom not reachable. */
 
-  z80_8200 = Z80ROM+0x10200+bank*0x8000;
+  z80_8200 = Z80ROM+0x10200+z80_bank*0x8000;
 }
 
-UINT16 z80_read8200b(UINT16 offset) {
+static UINT16 z80_read8200b(UINT16 offset) {
   offset -= 0x8200;
   return z80_8200[offset];
 }
 
 WRITE_HANDLER(sngkace_sound_bankswitch_w)
 {
-  int bank = (data&3);
-  z80_8200 = Z80ROM+0x10000+bank*0x8000;
+  z80_bank = (data&3);
+  z80_8200 = Z80ROM+0x10000+z80_bank*0x8000;
 }
 
 UINT16 z80_read8000b(UINT16 offset) {
@@ -667,6 +677,9 @@ static void setup_z80_gunbird() {
 
   finish_z80();
   z80_8200 = Z80ROM+0x10200;
+  AddSaveData_ext("gunbird z80",(UINT8*)&z80_bank,sizeof(int));
+  AddLoadCallback(restore_z80);
+  AddSaveData_ext("z80ram",Z80RAM+0x8000,0x200);
 }
 
 void setup_z80_s1945() {
@@ -693,6 +706,9 @@ void setup_z80_s1945() {
 
    finish_z80();
    z80_8200 = Z80ROM+0x10200;
+   AddSaveData_ext("gunbird z80",(UINT8*)&z80_bank,sizeof(int));
+   AddLoadCallback(restore_z80);
+   AddSaveData_ext("z80ram",Z80RAM+0x8000,0x200);
 }
 
 void setup_z80_sngkace() {
@@ -720,6 +736,9 @@ void setup_z80_sngkace() {
 
    finish_z80();
    z80_8200 = Z80ROM+0x10000;
+   AddSaveData_ext("gunbird z80",(UINT8*)&z80_bank,sizeof(int));
+   AddLoadCallback(restore_sngkace_z80);
+   AddSaveData_ext("z80ram",Z80RAM+0x7800,0x800);
 }
 
 static UINT8 *mcu_table;

@@ -19,6 +19,7 @@
 #include "2610intf.h"
 #include "streams.h"
 #include "games.h"
+#include "savegame.h"
 
 UINT8 *YM2610_Rompointers[2];
 UINT32 YM2610_Romsizes[2];
@@ -46,7 +47,7 @@ static void IRQHandler(int n,int irq)
 }
 
 /* Timer overflow callback from timer.c */
-static void timer_callback_2610(int param)
+void timer_callback_2610(int param)
 {
 	int n=param&0x7f;
 	int c=param>>7;
@@ -86,6 +87,8 @@ static void FMTimerInit( void )
 
 	for( i = 0 ; i < MAX_2610 ; i++ )
 		Timer[i][0] = Timer[i][1] = 0;
+	save_timers();
+	AddSaveData_ext("timers_2610",(UINT8*)&Timer,sizeof(Timer));
 }
 
 /* update request from fm.c */

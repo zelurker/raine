@@ -4235,6 +4235,7 @@ static void load_sstriker(void)
    AddZ80AWritePort(  -1,   -1, NULL,                   NULL);
 
    AddZ80AInit();
+   AddSaveData_ext("br zram",Z80ROM+0xc000,0x2000);
 
    /*-----------------------*/
 
@@ -4922,6 +4923,7 @@ static void load_batrider(void)
    AddZ80AWritePort(0x00, 0xFF, batrider_z80_port_wb,           NULL);          // IOC
    AddZ80AWritePort(0x00, 0xFF, DefBadWriteZ80,                 NULL);
    AddZ80AWritePort(  -1,   -1, NULL,                           NULL);
+   AddSaveData_ext("br zram",Z80ROM+0xc000,0x2000);
 
    AddZ80AInit();
 
@@ -5196,6 +5198,7 @@ static void setup_garega_z80() {
    AddZ80AWritePort(  -1,   -1, NULL,                           NULL);
 
    AddZ80AInit();
+   AddSaveData_ext("br zram",Z80ROM+0xc000,0x2000);
 }
 
 static void setup_bakraid_z80() {
@@ -5233,6 +5236,7 @@ static void setup_bakraid_z80() {
    AddZ80AWritePort(  -1,   -1, NULL,                           NULL);
 
    AddZ80AInit();
+   AddSaveData_ext("br zram",Z80ROM+0xc000,0x2000);
 }
 
 // Well maybe we don't need all these 512 bytes, but I really don't know what
