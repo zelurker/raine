@@ -116,7 +116,6 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
   }
   for (n=0; n<SaveDataCount; n++) {
     if (save_data_list[n].id == id && save_data_list[n].source != src) {
-	print_debug("AddSaveData: collision for id %x\n",id);
       save_data_list[n].source = src;
       save_data_list[n].size   = size;
       return;
@@ -450,10 +449,12 @@ void read_safe_data(UINT8 *dest, UINT32 dest_size, UINT32 data_size, gzFile fin)
       return;
    }
    if(dest_size<data_size){
-      print_debug("Actual size is smaller than load data!\n");
-      if(dest_size>0) gzread(fin,dest,dest_size);
-			gzseek(fin,data_size - dest_size,SEEK_CUR);
-			print_debug("read_safe_data: skiping %d bytes\n",data_size - dest_size);
+      if (dest_size > 0) {
+	  print_debug("Actual size is smaller than load data!\n");
+	  gzread(fin,dest,dest_size);
+      }
+      gzseek(fin,data_size - dest_size,SEEK_CUR);
+      print_debug("read_safe_data: skiping %d bytes\n",data_size - dest_size);
       return;
    }
 }
@@ -587,8 +588,8 @@ void NewLoad(gzFile fin)
             }
          }
          if(tb==0){
-            print_debug("Unexpected ID in savefile: %08x/%08x\n",t_id,t_size);
 	    dump_id(t_id,t_size);
+            print_debug("%s",dbuf);
             read_safe_data(NULL,0,t_size,fin);
 	    if (t_size <= 0) {
 	      print_debug("early exit for savefile\n");
