@@ -568,11 +568,6 @@ int main(int argc,char *argv[])
 
    sound_load_cfg();
 
-   if (audio_sample_rate < 15000)
-      audio_sample_rate = 11025;
-   else if (audio_sample_rate > 48000)
-       audio_sample_rate = 48000;
-
    // KEYBOARD DEFAULT
 
    load_default_keys("default_game_" KEYCONF);

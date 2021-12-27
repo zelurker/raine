@@ -43,6 +43,10 @@
 #define TEST_OVERFLOW
 #endif
 
+#if SDL < 2
+#define SDL_PauseAudioDevice(dev,pause) SDL_PauseAudio(pause)
+#endif
+
 #include <time.h>
 #include "raine.h"
 #include "sasound.h"
@@ -63,7 +67,7 @@
 #include "control_internal.h"
 #include "assoc.h" // just for use_music
 
-int GameSound;
+int GameSound,dev;
 static int fadeout,fade_nb,fade_frame;
 
 static char driver_name[40];
@@ -175,11 +179,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    pause_sound = 0;		/* pause flag off */
    if (!opened_audio) {
        SDL_AudioSpec spec;
-       spec.freq = sample_rate;
-       spec.format = AUDIO_S16LSB;
-       spec.channels = 2;
-       int len = sample_rate/fps;
-       spec.samples = (len); // should be pow2, but doesn't change anything!
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
        /* Notice : creative labs semms to make sound drivers which do not respect specs
 	  in windows, since they are unable to handle small buffers for the updates.
@@ -203,28 +202,55 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
 #endif
 #endif
-       spec.userdata = NULL;
-       spec.callback = my_callback;
-       if ( SDL_OpenAudio(&spec, &gotspec) < 0 ) {
-	   fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
-	   RaineSoundCard = 0;
-	   return 1;
-       }
-       printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
-       audio_sample_rate = gotspec.freq;
-       opened_audio = 1;
+#if SDL == 2
+       for (int i=0; i<SDL_GetNumAudioDevices(0); i++) {
+	   const char *name = SDL_GetAudioDeviceName(i,0);
+	   printf("%d: %s\n",i,name);
+	   SDL_GetAudioDeviceSpec(i,0,&spec);
+	   spec.userdata = NULL;
+	   spec.callback = my_callback;
+	   if (sample_rate) {
+	       spec.freq = sample_rate;
+	       int len = sample_rate/fps;
+	       spec.samples = (len); // should be pow2, but doesn't change anything!
+	   }
+	   spec.format = AUDIO_S16LSB;
+	   spec.channels = 2;
+	   if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) < 0 ) {
+#else
+	   spec.userdata = NULL;
+	   spec.callback = my_callback;
+	   spec.freq = sample_rate ? sample_rate : 44100;
+	   int len = sample_rate/fps;
+	   spec.samples = (len); // should be pow2, but doesn't change anything!
+	   spec.format = AUDIO_S16LSB;
+	   spec.channels = 2;
+	   if (SDL_OpenAudio(&spec,&gotspec)) {
+#endif
+
+	       fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
+	       RaineSoundCard = 0;
+	       return 1;
+	   }
+	   printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
+	   audio_sample_rate = gotspec.freq;
+	   opened_audio = 1;
 #if HAS_NEO
-       if (!sound_init)
-	   Sound_Init(); // init sdl_sound
+	   if (!sound_init)
+	       Sound_Init(); // init sdl_sound
 #endif
-       sound_init = 1;
+	   sound_init = 1;
 #if SDL == 1
-       strcpy(driver_name,"SDL ");
-       SDL_AudioDriverName(&driver_name[4], 32);
-       print_debug("sound driver name : %s\n",driver_name);
+	   strcpy(driver_name,"SDL ");
+	   SDL_AudioDriverName(&driver_name[4], 32);
+	   print_debug("sound driver name : %s\n",driver_name);
 #endif
-       // set_sound_variables(0);
-       SDL_PauseAudio(0);
+	   // set_sound_variables(0);
+	   SDL_PauseAudioDevice(dev,0);
+#if SDL == 2
+	   break;
+       }
+#endif
    }
    if(!init_sound_emulators()) {
      return FALSE;  // Everything fine
@@ -303,6 +329,7 @@ static volatile playsound_global_state global_state;
 static Sound_Sample *sample;
 
 static int done_flag = 0,skip_silence;
+static SDL_AudioCVT cvt;
 
 static int read_more_data(Sound_Sample *sample)
 {
@@ -356,6 +383,8 @@ static int read_more_data(Sound_Sample *sample)
 	return(read_more_data(sample));
 } /* read_more_data */
 
+static int buf_len;
+
 static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 {
   // flac files seem to arrive in S16MSB format, maybe there is a way to pre
@@ -365,6 +394,21 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
   int n,vol;
   if (fadeout) vol = fade_vol;
   else vol = music_volume;
+  if (cvt.needed) {
+      if (buf_len < len) {
+	  if (cvt.buf) free(cvt.buf);
+	  printf("alloc buf %d\n",len);
+	  cvt.buf = malloc(len*cvt.len_mult);
+	  buf_len = len;
+      }
+      cvt.len = len;
+      memcpy(cvt.buf,src,len);
+      if (SDL_ConvertAudio(&cvt) == -1) {
+	  fatal_error("conversion failed : %s",SDL_GetError());
+      }
+      src = cvt.buf;
+      len = cvt.len_cvt;
+  }
   switch (format)
   {
     case AUDIO_U8:
@@ -396,6 +440,8 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
 	WriteWord(&dst[n],sample);
       }
       break;
+    default:
+      print_ingame(1,_("audio format not supported"));
   }
 }
 
@@ -408,7 +454,7 @@ void load_sample(char *filename) {
 
 void init_samples() {
     fadeout = 0;
-  if (!pause_sound) SDL_PauseAudio(0);
+  if (!pause_sound && dev>0) SDL_PauseAudioDevice(dev,0);
 }
 
 #if HAS_NEO
@@ -441,6 +487,11 @@ static void close_sample() {
   }
   sample = NULL;
 #endif
+  if (cvt.needed) {
+      if (cvt.buf) free(cvt.buf);
+      memset(&cvt,0,sizeof(cvt));
+  }
+
   // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
   global_state.decoded_bytes = 0;
   global_state.decoded_ptr = NULL;
@@ -471,7 +522,7 @@ void saDestroySound( int remove_all_resources )
       * mode iso for example. Simply not calling ever sound_quit seems fine. */
      // int quit = Sound_Quit();
      // printf("sound_quit %d\n",quit);
-     SDL_CloseAudio();
+     SDL_CloseAudioDevice(dev);
    }
 
    if(remove_all_resources){
@@ -499,7 +550,8 @@ void sa_pause_sound(void)
      pause_sound	    = 1;
 
      //pause_raine_ym3812();
-     SDL_PauseAudio(1);
+     if (dev>0)
+	 SDL_PauseAudioDevice(dev,1);
 #ifdef HAS_NEO
      do_cdda(6,0); // pause cd audio, just in case...
 #endif
@@ -511,7 +563,8 @@ void sa_unpause_sound(void)
    if(GameSound && RaineSoundCard){
      if (pause_sound) {
        pause_sound	   = 0;
-       SDL_PauseAudio(0);
+       if (dev > 0)
+	   SDL_PauseAudioDevice(dev,0);
 #ifdef HAS_NEO
      do_cdda(3,0); // unpause cd audio, just in case...
 #endif
@@ -547,8 +600,16 @@ INT16 get_average(signed short *din, int distance, double rapport) {
 static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
   UINT8 buff[1024];
   int bw = 0;
+  int len = 1024;
   while (cpysize) {
-    int chunk = (cpysize < 1024 ? cpysize : 1024);
+    int chunk = (cpysize < len ? cpysize : len);
+    if (cvt.needed && chunk > cvt.len_mult) {
+	// Clearly the conversion refuses to convert anything with size < len_mult...
+	cpysize = (len - bw)*44100/audio_sample_rate;
+	if (cpysize & (cvt.len_mult-1)) {
+	    cpysize &= ~(cvt.len_mult-1);
+	}
+    }
     int red = fread(buff,1,chunk,fbin);
     if (red != chunk) {
 	printf("read %d expected %d\n",red,chunk);
@@ -557,7 +618,10 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
     memcpy_with_volume(stream + bw,
 	buff,
 	red,neocd_cdda_format);
-    bw += red;
+    if (cvt.needed)
+	bw += cvt.len_cvt;
+    else
+	bw += red;
     cpysize -= chunk;
   }
 }
@@ -568,6 +632,9 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     int i,channel;
     short *wstream = (short*) stream;
     if (pause_sound) {
+#if SDL == 2
+	memset(stream,0,len);
+#endif
 	return;
     }
     if (callback_busy)
@@ -594,7 +661,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	Sound_AudioInfo info;
 	info.format = gotspec.format;
 	info.channels = gotspec.channels;
-	info.rate = gotspec.freq;
+	info.rate = 44100; // It's for raw, we need to put something there but the data doesn't matter
 	char *ext = strrchr(track_to_read,'.');
 	if (!ext || (strcasecmp(ext+1,"wav") &&
 		    strcasecmp(ext+1,"ogg") &&
@@ -603,6 +670,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    print_debug("unknown extension for track to read, switching to raw...\n");
 	    SDL_RWops *rw = SDL_RWFromFile(track_to_read,"rb");
 	    sample = Sound_NewSample(rw,"raw",&info,16384);
+	    if (audio_sample_rate != 44100) {
+		if (SDL_BuildAudioCVT(&cvt, gotspec.format, gotspec.channels, 44100,
+			gotspec.format, gotspec.channels, gotspec.freq) == -1) {
+		    fatal_error("SDL_BuildAudioCVT: %s",SDL_GetError());
+		}
+	    }
 	} else
 	    sample = Sound_NewSampleFromFile(track_to_read,
 		    &info,
@@ -644,7 +717,14 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 
 	    /* decoded_bytes and decoder_ptr are updated as necessary... */
 
-	    cpysize = len - bw;
+	    if (cvt.needed && len - bw > cvt.len_mult) {
+		// Clearly the conversion refuses to convert anything with size < len_mult...
+		cpysize = (len - bw)*44100/audio_sample_rate;
+		if (cpysize & (cvt.len_mult-1)) {
+		    cpysize &= ~(cvt.len_mult-1);
+		}
+	    } else
+		cpysize = len - bw;
 	    if (cpysize > global_state.decoded_bytes)
 		cpysize = global_state.decoded_bytes;
 
@@ -654,7 +734,10 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 			(Uint8 *) global_state.decoded_ptr,
 			cpysize,sample->desired.format);
 
-		bw += cpysize;
+		if (cvt.needed) {
+		    bw += cvt.len_cvt;
+		} else
+		    bw += cpysize;
 		global_state.decoded_ptr += cpysize;
 		global_state.decoded_bytes -= cpysize;
 		cdda.pos += cpysize;

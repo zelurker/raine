@@ -64,6 +64,15 @@ class TSoundDlg : public TMenu {
 
 int do_sound_options(int sel) {
     int old = recording;
+#if SDL == 2
+    if (!audio_sample_rate) {
+	// Really basic initialization : 1st audio device
+	SDL_AudioSpec spec;
+	SDL_GetAudioDeviceSpec(0,0,&spec);
+	audio_sample_rate = spec.freq;
+    }
+#endif
+
   menu = new TSoundDlg("", sound_menu);
   menu->execute();
   delete menu;
