@@ -537,8 +537,13 @@ void reset_game_hardware(void)
 
    // Must be restarted here in case we are called from a game hardware
    // if(GameSound && RaineSoundCard){
-     init_sound_emulators();
-     sa_unpause_sound();
+     if (audio_sample_rate) {
+	 // audio_sample_rate can now be 0 on initialization to get
+	 // the best value from the driver, but in this case it's better not
+	 // to call these !
+	 init_sound_emulators();
+	 sa_unpause_sound();
+     }
    // }
 
    start_cpu_main();

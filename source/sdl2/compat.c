@@ -132,19 +132,6 @@ void sdl_init() {
     static int init;
     if (!init) {
 	init = 1;
-#ifdef RAINE_WIN32
-	// The only way to get decent parameters from SDL_OpenAudio is to use
-	// the directsound driver. The default is to use something called
-	// wasapi for me, which gives me F32LSB samples ! I would have to
-	// write a callback for float numbers for this one !
-	// Using SDL_OpenAudioDevice instead allows to choose which parameters
-	// can be changed, a way to remember my device prefers 48 KHz, now
-	// the audio takes very little cpu in the emulation...
-	static char buffer[100];
-	snprintf(buffer,100,"SDL_AUDIODRIVER=directsound");
-	buffer[99] = 0;
-	putenv(buffer);
-#endif
 	// The whole hints used by testgamecontroller, some of them are not even documented !
 	SDL_SetHint(SDL_HINT_ACCELEROMETER_AS_JOYSTICK, "0");
 	SDL_SetHint(SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS, "1");
