@@ -1074,7 +1074,6 @@ static UINT16 audio_cpu_bank_select(UINT16 offset) {
 
 static void z80_set_audio_bank(UINT16 region, UINT16 bank) {
     audio_cpu_bank_select((bank << 8)|(region+8));
-    return;
 }
 
 static void set_68k_bank(UINT32 offset, UINT16 data) {

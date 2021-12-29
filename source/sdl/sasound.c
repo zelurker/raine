@@ -180,28 +180,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    if (!opened_audio) {
        SDL_AudioSpec spec;
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
-       /* Notice : creative labs semms to make sound drivers which do not respect specs
-	  in windows, since they are unable to handle small buffers for the updates.
-	  For their drivers, spec.samples should be :
-	  spec.samples = 512 * audio_sample_rate / 11025; // 1 << (nb);
-	  But unfortunately this makes the correction of the sound delays much more
-	  unprecise and you hear cracks if you play long enough (they don't last long, but
-	  they come back regularly). So the best is to switch back windows to the allegro
-	  sound driver, and use an optimum value for spec.samples here.
-
-	  I NEVER heard about this bug in linux. They respect specs in linux usually.
-	  So I just put this in an ifndef, and I should probably add some configuration
-	  variable to force precise updates in win32 too ! */
-
-#if 0
-#ifndef RAINE_UNIX
-       /* This insanity never happens in linux afaik ! */
-       if (spec.samples < LEN_SAMPLES && !smallest_sound_buffer) {
-	   // printf("forçage len_samples\n");
-	   spec.samples = LEN_SAMPLES;
-       }
-#endif
-#endif
 #if SDL == 2
        for (int i=0; i<SDL_GetNumAudioDevices(0); i++) {
 	   const char *name = SDL_GetAudioDeviceName(i,0);
@@ -874,8 +852,6 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
     }
     callback_busy = 0;
 }
-
-extern int smallest_sound_buffer;
 
 void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, int freq, int volume, int bits , int pan ){
 	/* This version works at low level, creating a sample, and following its

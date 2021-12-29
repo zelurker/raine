@@ -7,8 +7,6 @@
 
 #ifdef ALLEGRO_SOUND
 int max_mixer_volume;
-#else
-int smallest_sound_buffer;
 #endif
 
 void sound_load_cfg() {
@@ -63,10 +61,6 @@ void sound_load_cfg() {
    // enh_stereo = raine_get_config_int( "Sound",        "enh_stereo",0 );
 #ifdef ALLEGRO_SOUND
    max_mixer_volume = raine_get_config_int( "Sound",        "max_mixer_volume",0 );
-#else
-#ifdef RAINE_WIN32
-   smallest_sound_buffer = raine_get_config_int( "Sound",        "smallest_sound_buffer",0 );
-#endif
 #endif
 }
 
@@ -83,9 +77,5 @@ void sound_save_cfg() {
    // raine_set_config_int(	"Sound",        "enh_stereo",         enh_stereo);
 #ifdef ALLEGRO_SOUND
    raine_set_config_int(	"Sound",        "max_mixer_volume",         max_mixer_volume);
-#else
-#ifdef RAINE_WIN32
-   raine_set_config_int(	"Sound",        "smallest_sound_buffer",         smallest_sound_buffer);
-#endif
 #endif
 }
