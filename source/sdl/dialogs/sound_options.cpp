@@ -10,6 +10,7 @@
 #include "dialogs/messagebox.h"
 #include "sound/assoc.h"
 #include "compat.h"
+#include "gui.h"
 
 static TMenu *menu;
 
@@ -50,8 +51,6 @@ static int choose_driver(int sel) {
 	    if (ret < 0) {
 		fatal_error("We lost the audio subsystem, bye !");
 	    }
-	    init_sound_driver();
-	    return 0;
 	}
     }
     init_sound_driver();
@@ -63,7 +62,7 @@ static int driver_id;
 menu_item_t sound_menu[] =
 {
     { _("Sound driver"), &choose_driver,&driver_id  },
-  { _("Emulate sound"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Sound device"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
   // we are obliged to give labels for the sample rates because a list of
   // 3 values is now considered to be an interval (start, end, step).
   { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 },
@@ -98,8 +97,16 @@ static void init_sound_driver() {
 	    driver_id = i;
 	    SDL_AudioSpec spec;
 	    SDL_GetAudioDeviceSpec(i,0,&spec);
-	    audio_sample_rate = spec.freq;
+	    if (spec.freq)
+		audio_sample_rate = spec.freq;
 	}
+    }
+    // Must also init the names of the devices, they depend on the driver... !
+    sound_menu[1].values_list_size = SDL_GetNumAudioDevices(0)+1;
+    sound_menu[1].values_list_label[0] = "None";
+    for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
+	sound_menu[1].values_list_label[i+1] = (char*)SDL_GetAudioDeviceName(i, 0);
+	sound_menu[1].values_list[i+1] = i+1;
     }
     if (menu)
 	menu->draw();
@@ -123,6 +130,10 @@ class TSoundDlg : public TMenu {
 
 int do_sound_options(int sel) {
     int old = recording;
+    if (current_game) {
+	rdesktop->end_preinit();
+	saDestroySound(0);
+    }
 #if SDL == 2
     init_sound_driver();
 #endif
@@ -130,6 +141,7 @@ int do_sound_options(int sel) {
   menu = new TSoundDlg("", sound_menu);
   menu->execute();
   delete menu;
+  menu = NULL;
   if (recording == 2)
     monitoring = 1;
   else

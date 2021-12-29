@@ -149,7 +149,6 @@ static void my_callback(void *userdata, Uint8 *stream, int len);
 /******************************************/
 BOOL saInitSoundCard( int soundcard, int sample_rate )
 {
-
    int i;
    if (opened_audio)
      return TRUE;
@@ -181,54 +180,51 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        SDL_AudioSpec spec;
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
-       for (int i=0; i<SDL_GetNumAudioDevices(0); i++) {
-	   const char *name = SDL_GetAudioDeviceName(i,0);
-	   printf("%d: %s\n",i,name);
-	   SDL_GetAudioDeviceSpec(i,0,&spec);
-	   spec.userdata = NULL;
-	   spec.callback = my_callback;
-	   if (sample_rate) {
-	       spec.freq = sample_rate;
-	       int len = sample_rate/fps;
-	       spec.samples = (len); // should be pow2, but doesn't change anything!
-	   }
-	   spec.format = AUDIO_S16LSB;
-	   spec.channels = 2;
-	   if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) < 0 ) {
-#else
-	   spec.userdata = NULL;
-	   spec.callback = my_callback;
-	   spec.freq = sample_rate ? sample_rate : 44100;
+       int i = soundcard -1;
+       const char *name = SDL_GetAudioDeviceName(i,0);
+       printf("%d: %s\n",i,name);
+       SDL_GetAudioDeviceSpec(i,0,&spec);
+       spec.userdata = NULL;
+       spec.callback = my_callback;
+       if (sample_rate) {
+	   spec.freq = sample_rate;
 	   int len = sample_rate/fps;
 	   spec.samples = (len); // should be pow2, but doesn't change anything!
-	   spec.format = AUDIO_S16LSB;
-	   spec.channels = 2;
-	   if (SDL_OpenAudio(&spec,&gotspec)) {
-#endif
-
-	       fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
-	       RaineSoundCard = 0;
-	       return 0;
-	   }
-	   printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
-	   audio_sample_rate = gotspec.freq;
-	   opened_audio = 1;
-#if HAS_NEO
-	   if (!sound_init)
-	       Sound_Init(); // init sdl_sound
-#endif
-	   sound_init = 1;
-#if SDL == 1
-	   strcpy(driver_name,"SDL ");
-	   SDL_AudioDriverName(&driver_name[4], 32);
-	   print_debug("sound driver name : %s\n",driver_name);
-#endif
-	   // set_sound_variables(0);
-	   SDL_PauseAudioDevice(dev,0);
-#if SDL == 2
-	   break;
        }
+       spec.format = AUDIO_S16LSB;
+       spec.channels = 2;
+       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) < 0 )
+#else
+	   spec.userdata = NULL;
+       spec.callback = my_callback;
+       spec.freq = sample_rate ? sample_rate : 44100;
+       int len = sample_rate/fps;
+       spec.samples = (len); // should be pow2, but doesn't change anything!
+       spec.format = AUDIO_S16LSB;
+       spec.channels = 2;
+       if (SDL_OpenAudio(&spec,&gotspec))
 #endif
+       {
+
+	   fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
+	   RaineSoundCard = 0;
+	   return 0;
+       }
+       printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
+       audio_sample_rate = gotspec.freq;
+       opened_audio = 1;
+#if HAS_NEO
+       if (!sound_init)
+	   Sound_Init(); // init sdl_sound
+#endif
+       sound_init = 1;
+#if SDL == 1
+       strcpy(driver_name,"SDL ");
+       SDL_AudioDriverName(&driver_name[4], 32);
+       print_debug("sound driver name : %s\n",driver_name);
+#endif
+       // set_sound_variables(0);
+       SDL_PauseAudioDevice(dev,0);
    }
    if(!init_sound_emulators()) {
      return 1;  // Everything fine
@@ -501,6 +497,7 @@ void saDestroySound( int remove_all_resources )
      // int quit = Sound_Quit();
      // printf("sound_quit %d\n",quit);
      SDL_CloseAudioDevice(dev);
+     dev = 0;
    }
 
    if(remove_all_resources){
