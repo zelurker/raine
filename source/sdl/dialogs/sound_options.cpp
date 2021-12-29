@@ -105,7 +105,9 @@ static void init_sound_driver() {
     sound_menu[1].values_list_size = SDL_GetNumAudioDevices(0)+1;
     sound_menu[1].values_list_label[0] = "None";
     for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
-	sound_menu[1].values_list_label[i+1] = (char*)SDL_GetAudioDeviceName(i, 0);
+	if (sound_menu[1].values_list_label[i+1])
+	    free(sound_menu[1].values_list_label[i+1]);
+	sound_menu[1].values_list_label[i+1] = strdup(SDL_GetAudioDeviceName(i, 0));
 	sound_menu[1].values_list[i+1] = i+1;
     }
     if (menu)
@@ -142,6 +144,9 @@ int do_sound_options(int sel) {
   menu->execute();
   delete menu;
   menu = NULL;
+  for (int i=1; i<sound_menu[1].values_list_size; i++) {
+      free(sound_menu[1].values_list_label[i]);
+  }
   if (recording == 2)
     monitoring = 1;
   else
