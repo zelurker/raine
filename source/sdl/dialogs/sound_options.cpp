@@ -7,7 +7,9 @@
 #include "neocd/cdda.h"
 #include "games.h"
 #include "dialogs/sound_commands.h"
+#include "dialogs/messagebox.h"
 #include "sound/assoc.h"
+#include "compat.h"
 
 static TMenu *menu;
 
@@ -21,8 +23,46 @@ static int set_default_volumes(int sel) {
 }
 #endif
 
+static void init_sound_driver();
+
+static int choose_driver(int sel) {
+    char buf[512];
+    const char *current = SDL_GetCurrentAudioDriver();
+    buf[0] = 0;
+    for (int i = 0; i < SDL_GetNumAudioDrivers(); ++i) {
+        snprintf(&buf[strlen(buf)],512-strlen(buf),"%s|", SDL_GetAudioDriver(i));
+    }
+    buf[strlen(buf)-1] = 0; // remove last |
+    int ret = MessageBox("Sound driver",_("Choose one of the available drivers :"),buf);
+    if (ret > 0 && strcmp(SDL_GetAudioDriver(ret-1),current)) {
+	const char *driver = SDL_GetAudioDriver(ret-1);
+	snprintf(buf,512,"SDL_AUDIODRIVER=%s",driver);
+	putenv(buf);
+	saDestroySound(1);
+	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+
+	ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
+	if (ret < 0) {
+	    MessageBox("Error",_("Could not even initialize the audio subsystem with this driver\nForget it"),"Ok");
+	    snprintf(buf,512,"SDL_AUDIODRIVER=%s",current);
+	    putenv(buf);
+	    ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
+	    if (ret < 0) {
+		fatal_error("We lost the audio subsystem, bye !");
+	    }
+	    init_sound_driver();
+	    return 0;
+	}
+    }
+    init_sound_driver();
+    return 0;
+}
+
+static int driver_id;
+
 menu_item_t sound_menu[] =
 {
+    { _("Sound driver"), &choose_driver,&driver_id  },
   { _("Emulate sound"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
   // we are obliged to give labels for the sample rates because a list of
   // 3 values is now considered to be an interval (start, end, step).
@@ -47,6 +87,25 @@ menu_item_t sound_menu[] =
   { NULL },
 };
 
+#if SDL == 2
+static void init_sound_driver() {
+    sound_menu[0].values_list_size = SDL_GetNumAudioDrivers();
+    const char *driver = SDL_GetCurrentAudioDriver();
+    for (int i = 0; i < SDL_GetNumAudioDrivers(); ++i) {
+        sound_menu[0].values_list_label[i] = (char*)SDL_GetAudioDriver(i);
+        sound_menu[0].values_list[i] = i;
+	if (!strcmp(driver,SDL_GetAudioDriver(i))) {
+	    driver_id = i;
+	    SDL_AudioSpec spec;
+	    SDL_GetAudioDeviceSpec(i,0,&spec);
+	    audio_sample_rate = spec.freq;
+	}
+    }
+    if (menu)
+	menu->draw();
+}
+#endif
+
 class TSoundDlg : public TMenu {
   public:
     TSoundDlg(char *title,menu_item_t *menu) :
@@ -65,12 +124,7 @@ class TSoundDlg : public TMenu {
 int do_sound_options(int sel) {
     int old = recording;
 #if SDL == 2
-    if (!audio_sample_rate) {
-	// Really basic initialization : 1st audio device
-	SDL_AudioSpec spec;
-	SDL_GetAudioDeviceSpec(0,0,&spec);
-	audio_sample_rate = spec.freq;
-    }
+    init_sound_driver();
 #endif
 
   menu = new TSoundDlg("", sound_menu);

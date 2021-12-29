@@ -208,7 +208,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 
 	       fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
 	       RaineSoundCard = 0;
-	       return 1;
+	       return 0;
 	   }
 	   printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
 	   audio_sample_rate = gotspec.freq;
@@ -231,10 +231,10 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 #endif
    }
    if(!init_sound_emulators()) {
-     return FALSE;  // Everything fine
+     return 1;  // Everything fine
    }
 
-   return TRUE;
+   return 0;
 }
 
 /******************************************/

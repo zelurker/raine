@@ -17,6 +17,18 @@ void sound_load_cfg() {
 #endif
 
    RaineSoundCard = 0;
+#if SDL == 2
+#ifdef RAINE_WIN32
+   char *driver = raine_get_config_string("Sound","driver","directsound");
+#else
+   char *driver = raine_get_config_string("Sound","driver",NULL);
+#endif
+   if (driver) {
+       char buf[80];
+       snprintf(buf,80,"SDL_AUDIODRIVER=%s",driver);
+       putenv(buf);
+   }
+#endif
 #ifndef ALLEGRO_SOUND
    // sdl, default to sound enabled (1)
    id = raine_get_config_id(    "Sound",        "sound_card",  1);
@@ -66,6 +78,9 @@ void sound_load_cfg() {
 
 void sound_save_cfg() {
    // SOUND
+#if SDL == 2
+    raine_set_config_string("Sound","driver",(char*)SDL_GetCurrentAudioDriver());
+#endif
    raine_set_config_id( 	"Sound",        "sound_card",           sound_card_id(RaineSoundCard));
    raine_set_config_int(	"Sound",        "sample_rate",          audio_sample_rate);
 #ifdef RAINE_DOS
