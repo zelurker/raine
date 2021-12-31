@@ -130,6 +130,12 @@ void load_emudx(const char *name, int tiles, int sprites,
 #endif
     return;
   }
+#if SDL == 2
+  // With sdl2 display_cfg.bpp is initialized too late for emudx games
+  // considering the color mapper of these games it will be 16bpp
+  // maybe it would be interesting to see what it's worth in 32bpp ?
+  display_cfg.bpp = 16;
+#endif
   video->draw_game = draw_emudx;
 
   // one more tile for dkong but different dimensions (so... crazy !!!)

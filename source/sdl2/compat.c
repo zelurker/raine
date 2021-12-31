@@ -208,6 +208,10 @@ void sdl_init() {
 
 	inputs_preinit();
 
+	sdl2_color_format = SDL_PIXELFORMAT_RGB565;
+	// sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
+	// default color_format for emudx games
+	color_format = SDL_AllocFormat( sdl2_color_format);
 	atexit(sdl_done);
     }
 }

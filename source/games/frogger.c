@@ -1289,6 +1289,10 @@ static void load_frogger() {
   AddZ80AWritePort(0x00, 0xFF, DefBadWritePortZ80,			NULL);	// <bad reads>
   AddZ80AWritePort(-1, -1, NULL, NULL);
   AddZ80AInit();
+  if (!strncmp(current_game->main_name,"frogg",5)) {
+      // Actually useful only for the game running in the desktop in sdl2... !
+      MZ80Engine = 2;
+  }
 
 /***************************************************************************
 
