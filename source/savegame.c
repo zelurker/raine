@@ -29,7 +29,6 @@
 #include "dialogs/messagebox.h"
 #endif
 
-#include "timer.h" // update_timers
 #include "dejap.h" // default eeproms in raine.dat
 #include "hiscore.h"
 #include "newmem.h"
@@ -659,7 +658,6 @@ void do_load_state(char *name) {
 	 } else if (hiscores_loaded())
 	     hs_load();
 	 print_ingame(120,"Loaded from: %s", disp_str);
-	 update_timers();
       break;
       default:
 	print_ingame(120,"savegame" SLASH "%s.sv%d is not recognised", current_game->main_name, SaveSlot);

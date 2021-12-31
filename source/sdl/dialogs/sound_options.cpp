@@ -63,10 +63,7 @@ menu_item_t sound_menu[] =
 {
     { _("Sound driver"), &choose_driver,&driver_id  },
   { _("Sound device"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
-  // we are obliged to give labels for the sample rates because a list of
-  // 3 values is now considered to be an interval (start, end, step).
-  { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 },
-      } ,
+  { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 }},
 #if HAS_ES5506
   { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
 #endif
@@ -74,7 +71,7 @@ menu_item_t sound_menu[] =
 { _("Always stop CD music while loading"), NULL, &auto_stop_cdda, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Sfx volume"), NULL, &sfx_volume, 3, { 0, 200, 10 }, },
   { _("Music volume"), NULL, &music_volume, 3, { 0, 200, 10 }, },
-  { _("Audio tracks format"), NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { _("lsb"),_("msb") }},
+  { _("Raw audio tracks format"), NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { _("lsb"),_("msb") }},
   { _("Mute SFX"), NULL, &mute_sfx, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Mute CD"), NULL, &mute_music, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Default volumes"), &set_default_volumes },

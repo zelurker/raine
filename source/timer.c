@@ -53,20 +53,6 @@ static int free_timer = 0; // index of first availale timer
 static size_t timer_id = 1;   // id of next allocated timer
 static int z80_frame;
 
-void update_timers() {
-  // Called after loading a game to try to recalibrate timers...
-  /* The best would probably be to save the timer array. The problem is */
-  /* how to find the callbacks ??? So for now I prefer to try to guess */
-  /* the correct timers... I know it's risky. */
-  int n,cpu = audio_cpu & 0xf;
-  int elapsed = Z80_context[cpu].dwElapsedTicks;
-  for (n=0; n<free_timer; n++)
-    if ((timer[n].cycles < elapsed) ||
-	(timer[n].cycles > elapsed + z80_frame)) {
-      timer[n].cycles = elapsed + MIN_CYCLES;
-    }
-}
-
 void z80_irq_handler(int irq) {
   // printf("z80_irq_handler %d\n",irq);
 #ifdef MAME_Z80

@@ -24,7 +24,6 @@ void timer_remove(void *timer);
 void reset_timers();
 int execute_one_z80_audio_frame(UINT32 frame);
 void triger_timers();
-void update_timers();
 void z80_irq_handler(int irq);
 double emu_get_time();
 double pos_in_frame();
