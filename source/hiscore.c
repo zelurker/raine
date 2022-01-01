@@ -23,7 +23,7 @@ Taken from xmame 37b7.1
 static char *db_filename = "hiscore.dat"; /* high score definition file */
 #define MAX_NCHECK 16
 static UINT32 adr_check[MAX_NCHECK];
-static int ncheck,max_ncheck;
+static int ncheck;
 
 static struct
 {
@@ -244,7 +244,6 @@ void hs_load (void)
 	}
       fclose (f);
     }
-  max_ncheck = ncheck;
 }
 
 static void hs_save (void)
@@ -402,14 +401,14 @@ void hs_update (void)
 	  } else {
 	    LOG("hiscores not safe\n");
 	  }
-	} else if (max_ncheck) {
+	} else if (ncheck) {
 	    int nzero = 0;
 	    int n;
-	    for (n=0; n<max_ncheck; n++) {
+	    for (n=0; n<ncheck; n++) {
 		if (gen_cpu_read_byte(adr_check[n]) == 0)
 		    nzero++;
 	    }
-	    if (nzero == max_ncheck) { // area was cleared, probably in service mode...
+	    if (nzero == ncheck) { // area was cleared, probably in service mode...
 		state.hiscores_have_been_loaded = 0;
 		ncheck = 0;
 	    }
