@@ -21,8 +21,9 @@ Taken from xmame 37b7.1
 #endif
 
 static char *db_filename = "hiscore.dat"; /* high score definition file */
-static UINT32 adr_check[3];
-static int ncheck;
+#define MAX_NCHECK 16
+static UINT32 adr_check[MAX_NCHECK];
+static int ncheck,max_ncheck;
 
 static struct
 {
@@ -59,7 +60,7 @@ static void copy_to_memory (int cpu, int addr, const UINT8 *source, int num_byte
 	for (i=0; i<num_bytes; i++)
 	{
 		computer_writemem_byte (cpu, addr+i, source[i]);
-		if (source[i] && ncheck < 3)
+		if (source[i] && ncheck < MAX_NCHECK)
 		    adr_check[ncheck++] = addr+i;
 	}
 }
@@ -243,6 +244,7 @@ void hs_load (void)
 	}
       fclose (f);
     }
+  max_ncheck = ncheck;
 }
 
 static void hs_save (void)
@@ -378,8 +380,8 @@ void hs_init (void)
 	{
 
 	  if (safe_to_load()) {
-	    LOG("hiscores loaded\n");
 	    hs_load();
+	    LOG("hiscores loaded\n");
 	  } else {
 	    LOG("hiscores not safe to load\n");
 	  }
@@ -400,14 +402,14 @@ void hs_update (void)
 	  } else {
 	    LOG("hiscores not safe\n");
 	  }
-	} else if (ncheck == 3) {
+	} else if (max_ncheck) {
 	    int nzero = 0;
 	    int n;
-	    for (n=0; n<3; n++) {
+	    for (n=0; n<max_ncheck; n++) {
 		if (gen_cpu_read_byte(adr_check[n]) == 0)
 		    nzero++;
 	    }
-	    if (nzero == 3) { // area was cleared, probably in service mode...
+	    if (nzero == max_ncheck) { // area was cleared, probably in service mode...
 		state.hiscores_have_been_loaded = 0;
 		ncheck = 0;
 	    }
