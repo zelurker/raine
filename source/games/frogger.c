@@ -1056,7 +1056,7 @@ static void draw_emudx_gal() {
 		    Draw16x16_Rot(&emudx_sprites[corresp_tiles[code]<<(8+bpp)],x,sy,0);
 		}
 
-		if(code==193) raine_play_sample(explode,200);
+		if(code==193) raine_play_sample(explode,100);
 	}
       }
     }

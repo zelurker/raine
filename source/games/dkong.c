@@ -428,7 +428,7 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 	  break;
 
 	case 0x0d:
-	  raine_play_sample(jump_over,160);
+	  raine_play_sample(jump_over,100);
 	  break;
 
 	case 0x0f:
@@ -453,7 +453,7 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
   }
 
   if(dwAddr==0x7d01 && bVal)
-    raine_play_sample(jump,160);
+    raine_play_sample(jump,100);
 
   if(dwAddr==0x7d02 && bVal)
     raine_play_sample(stomp,200);
@@ -517,8 +517,8 @@ static void draw_debug_tile() {
       Draw8x8_Mapped_Rot(&gfx_bg[code<<6],x,sy,map);
     sprintf(str,"%02x",code);
     textout_fast(str,448+BORDER*2-8-sy,x+8,get_white_pen());
-    sprintf(str,"%x",color);
-    textout_fast(str,448+BORDER*2-8-sy+8,x,get_white_pen());
+    // sprintf(str,"%x",color);
+    // textout_fast(str,448+BORDER*2-8-sy+8,x,get_white_pen());
   }
     // }
   END_SCROLL_n_16(512,512,1);
@@ -534,7 +534,7 @@ static void draw_emudx() {
   UINT8 *map,*gfx;
   int offs;
   int curlev = 0;
-  static int bpp;
+  static int bpp,gorilla_center;
 
   if (RefreshBuffers) {
       bpp = display_cfg.bpp / 8;
@@ -608,7 +608,13 @@ static void draw_emudx() {
 	// code -= 5;
 	Draw16x16_Trans_Mapped_Rot(&emudx_chars[code<<8],x,sy,map);
       } else {
-	if (code != 0xc0 || curlev == 4) {
+	if (code != 0xc0 || curlev == 4 || (curlev == 1 && gorilla_center)) {
+	    // This gorilla_center thing is an attempt to draw something to emulate the very 1st screen of the game
+	    // when kong climbs up all the ladders. It would be nice to simply disable the bg layer and draw directly the sprites
+	    // except there is no emudx sprite for these codes (all transparent). So for now I use this "in-between" solution,
+	    // forcing the draw of at least the ladders when kong is climbing at the center of the screen... Not perfect sure, but
+	    // to do better than that I would need to extract some correct sprites from the bg picture... !
+
 	  // only draw the ladders (c0) in level 4.
 	  // The other dx levels have the ladders already drawn.
 	  Draw16x16_Trans_Rot(&emudx_sprites[code<<(8+bpp/2)],x,sy,0);
@@ -619,6 +625,7 @@ static void draw_emudx() {
   }
 
   /* Draw the sprites. */
+  gorilla_center = 0;
   if( check_layer_enabled(layer_id_data[1])) {
     for (offs = 0;offs < spriteram_size;offs += 4){
       if (spriteram[offs]){
@@ -671,6 +678,9 @@ static void draw_emudx() {
 	      /* Barrels are supposed to rotate, but it would be messy to do and almost
 		 unnoticable considering the size of the details of the barrel... */
 	      // rotate_sprite(prime_display,sprites[V], x, y-3,itofix(x*2+y*2)); //Our beautiful barrel rolls
+
+		if (y == 222 && (code == 0x34 || code == 0x35))
+		    gorilla_center = 1;
 
 	      Draw32x32_Trans_flip_Rot(&emudx_sprites32[code<<(10+bpp/2)],x,y,0,
 					  ((spriteram[offs + 2] & 0x80)>>7) | ((spriteram[offs + 1] & 0x80)>>6));
