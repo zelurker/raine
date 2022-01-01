@@ -167,7 +167,9 @@ void ScreenChange(void)
     int w,h;
     SDL_GetRendererOutputSize(rend,&w,&h);
     ReClipScreen();
-    sdl_screen->w = w; sdl_screen->h = h;
+    if (sdl_screen) {
+	sdl_screen->w = w; sdl_screen->h = h;
+    }
     opengl_reshape(w,h);
 }
 
