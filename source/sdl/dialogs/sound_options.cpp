@@ -62,7 +62,7 @@ static int driver_id;
 menu_item_t sound_menu[] =
 {
     { _("Sound driver"), &choose_driver,&driver_id  },
-  { _("Sound device"), NULL, &RaineSoundCard, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Sound device"), NULL, &RaineSoundCard, 1, { 0 }, { _("No") } },
   { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 }},
 #if HAS_ES5506
   { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
