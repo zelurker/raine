@@ -18,8 +18,8 @@
 #ifdef SDL
 #include "dialogs/messagebox.h"
 #endif
-
-extern void hs_load (void);
+#include "galaxian.h"
+#include "timer.h"
 
 // defined in rgui.c for allegro, but it should be generic...
 extern int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, int c1, int c2);
@@ -313,6 +313,12 @@ static struct SOUND_INFO sound_frogger[] =
 static struct SOUND_INFO sound_galaxian[] =
 {
   { SOUND_DXSMP, &galax_emudx_interface, },
+  { 0, NULL }
+};
+
+static struct SOUND_INFO sound_galaxian2[] =
+{
+    { SOUND_GALAXIAN, NULL },
   { 0, NULL }
 };
 
@@ -1166,6 +1172,10 @@ static void clear_frogger() {
 }
 
 static void shot_enable_w(UINT32 offset, UINT16 data) {
+    if (current_game->sound == sound_galaxian2) {
+	galaxian_shoot_enable_w(offset,data);
+	return;
+    }
   static int shot_playing;
   if (data == 1) {
     if (!shot_playing) {
@@ -1239,8 +1249,8 @@ static void load_frogger() {
     AddZ80BReadPort(0x00, 0xFF, DefBadReadZ80,		NULL);	// <bad reads>
     AddZ80BReadPort(-1, -1, NULL, NULL);
 
-    AddZ80BWritePort(0x40, 0x40, AY8910_write_port_0_w,	NULL);	// Trap Idle Z80
-    AddZ80BWritePort(0x80, 0x80, AY8910_control_port_0_w,	NULL);	// Trap Idle Z80
+    AddZ80BWritePort(0x40, 0x40, AY8910_write_port_0_w,	NULL);
+    AddZ80BWritePort(0x80, 0x80, AY8910_control_port_0_w,	NULL);
     AddZ80BWritePort(0x00, 0xFF, DefBadWriteZ80,		NULL);	// <bad reads>
     AddZ80BWritePort(-1, -1, NULL, NULL);
     AddZ80BInit();
@@ -1248,6 +1258,20 @@ static void load_frogger() {
   } else {
     // Galaxian
     romset = 1;
+    setup_z80_frame(CPU_Z80_0,3072000/60);
+    if (exists_emudx_file("galdxm.dx2")) {
+#ifndef SDL
+      if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX sound ?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
+#else
+      if(MessageBox(gettext("EmuDX"),gettext("EmuDX sound ?"),gettext("Yes|No")) == 1)
+#endif
+	  current_game->sound = sound_galaxian;
+      else {
+	  current_game->sound = sound_galaxian2;
+      }
+    } else {
+	current_game->sound = sound_galaxian2;
+    }
     AddZ80ARead(0x0000, 0x3fff, NULL, ROM);
     AddZ80ARW(0x4000, 0x47ff, NULL, RAM);
     AddZ80ARW(0x5000, 0x53ff, NULL, gfx_ram);
@@ -1257,11 +1281,16 @@ static void load_frogger() {
     AddZ80AWrite(0x7006, 0x7006, NULL, flip_screen_x);
     AddZ80AWrite(0x7007, 0x7007, NULL, flip_screen_y);
     AddZ80AWrite(0x7004, 0x7004, NULL, stars_enable);
-    AddZ80AWrite(0xd000, 0xd000, frogger_sound_w, NULL);
 
     AddZ80ARead(0x6000, 0x6000, NULL, input_buffer);
-    // AddZ80AWrite(0x6004, 0x6007, galaxian_lfo_freq_w, NULL);
     AddZ80ARead(0x6800, 0x6800, NULL, &input_buffer[2]);
+    if (current_game->sound == sound_galaxian2) {
+	AddZ80AWrite(0x6004, 0x6007, galaxian_lfo_freq_w, NULL);
+	AddZ80AWrite(0x6800, 0x6802, galaxian_background_enable_w, NULL);
+	AddZ80AWrite(0x6803, 0x6803, galaxian_noise_enable_w, NULL);
+	AddZ80AWrite(0x6806, 0x6807, galaxian_vol_w, NULL);
+	AddZ80AWrite(0x7800, 0x7800, galaxian_pitch_w, NULL);
+    }
     AddZ80AWrite(0x6805, 0x6805, shot_enable_w, NULL);
     AddZ80ARead(0x7000, 0x7000, NULL, &input_buffer[4]);
   }
@@ -1435,9 +1464,9 @@ static void load_frogger() {
   } else { // galaxian
     if (exists_emudx_file("galdxg.dx2")) {
 #ifndef SDL
-      if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
+      if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX sprites ?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
+	if(MessageBox(gettext("EmuDX"),gettext("EmuDX sprites ?"),gettext("Yes|No")) == 1)
 #endif
 	{
 	  load_emudx("galdxg.dx2",1,393,395,488,
@@ -1714,23 +1743,11 @@ static void execute_frogger() {
 }
 
 static void execute_galaxian() {
-  static int hs_loaded;
-  cpu_execute_cycles(CPU_Z80_0,3072000/60);
+    galaxian_sh_update();
+    execute_z80_audio_frame();
   if (*nmi_enable) {
     cpu_int_nmi(CPU_Z80_0);
-    if (!hs_loaded) {
-      /* For some reason, the hiscore detection of hiscore.dat doesn't work :
-       * it detects it can load the hiscores, then this ram location is cleared
-       * again by the game ! If it works in mame, then it means it doesn't
-       * execute the same number of cycles before updating the hiscores.
-       * Anyway, there are 2 ways to fix this : the hard one, patching the rom
-       * code to avoid to clear this twice, or the easy one here, just load the
-       * hiscores when the interrupts start, and not before. */
-      hs_load();
-      hs_loaded = 1;
-    }
-  } else
-    hs_loaded = 0;
+  }
 }
 
 GMEI( frogger,
@@ -1746,9 +1763,11 @@ GMEI( galaxian,
      "Galaxian (Namco set 1)",
      NAMCO,
      1979,
-     GAME_SHOOT);
+     GAME_SHOOT,
+     );
 CLNEI(superg, galaxian, "Super galaxians (hack)", BOOTLEG, 1979, GAME_SHOOT,
 	.dsw = dsw_superg);
 CLNEI(galapx, galaxian, "Galaxian Part X", BOOTLEG, 1979, GAME_SHOOT,
-	.dsw = dsw_superg);
+	.dsw = dsw_superg,
+	);
 

@@ -24,7 +24,6 @@ void ADPCMSetBuffers(const struct ADPCMinterface *msound,UINT8 *region,int banks
 void ADPCMSetBuffersOne(const struct ADPCMinterface *msound,UINT8 *region,int banksize); // Init 1 chip only, 2 banks (wrestlef...)
 int ADPCM_sh_start(const struct ADPCMinterface *msound);
 void ADPCM_sh_stop(void);
-void ADPCM_sh_update(void);
 
 void ADPCM_play(int num, int offset, int length);
 void ADPCM_setvol(int num, int vol);

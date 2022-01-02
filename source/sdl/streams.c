@@ -90,7 +90,7 @@ int streams_sh_start(void)
 	for (i = 0;i < MAX_STREAM_CHANNELS;i++)
 	{
 		stream_joined_channels[i] = 1;
-		stream_buffer[i] = 0;
+		// stream_buffer[i] = 0;
 	}
 
 	return 0;
@@ -206,10 +206,12 @@ void streams_sh_update(void)
 	if (pos >= 3) {
 	    buflen /= 2;
 	} else if (pos >= 2) {
-	    buflen = buflen*3/4;
+	    buflen = buflen*2/3;
 	} else if (pos) {
 	    buflen = buflen*0.8;
 	}
+	buflen &= ~3; // divide by what exactly ?
+	// at least 2 for 16 bits, maybe 4 for 2 channels ? Let's say 4, it seems safer...
       if (stream_buffer_pos[channel] + buflen > gotspec.samples*4)
 	  buflen = gotspec.samples*4-stream_buffer_pos[channel];
       if (buflen) {

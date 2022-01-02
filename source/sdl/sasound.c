@@ -258,7 +258,7 @@ void init_sound(void)
 
     ta = 0;
 
-    while(sound_src[ta].interface){
+    while(sound_src[ta].type){
 
       SndMachine->init[ta] = sound_src[ta].type;
       SndMachine->intf[ta] = sound_src[ta].interface;
@@ -359,15 +359,126 @@ static int read_more_data(Sound_Sample *sample)
 
 static int buf_len;
 
-static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format)
+typedef struct {
+    INT16 *src;
+    INT16 *orig;
+    int len; // in bytes
+    int len_orig;
+    int volume;
+    int playing;
+    int loop;
+    int pos;
+    int freq;
+    int converted;
+} tsample;
+
+#define MAX_SAMPLE 10
+
+static tsample samp[MAX_SAMPLE];
+static int nb_samples;
+
+int create_sample(INT16 *src, int len, int rate, int loop, int vol) {
+    SDL_AudioCVT cvt;
+    if (nb_samples == MAX_SAMPLE) {
+	fatal_error("max samples reached");
+    }
+    if (!gotspec.format)
+	saInitSoundCard(RaineSoundCard,audio_sample_rate);
+    if (SDL_BuildAudioCVT(&cvt, gotspec.format, 1, rate,
+		gotspec.format, 1, gotspec.freq) == -1) {
+	fatal_error("can't build cvt");
+    }
+    if (cvt.needed) {
+	cvt.buf = AllocateMem(len*cvt.len_mult);
+	cvt.len = len;
+	memcpy(cvt.buf,src,len);
+	if (SDL_ConvertAudio(&cvt) == -1) {
+	    fatal_error("conversion failed : %s",SDL_GetError());
+	}
+	samp[nb_samples].src = (INT16*)cvt.buf;
+	samp[nb_samples].len = cvt.len_cvt;
+	samp[nb_samples].converted = 1;
+	samp[nb_samples].orig = src;
+    } else {
+	samp[nb_samples].src = src;
+	samp[nb_samples].len = len;
+	samp[nb_samples].converted = 0;
+    }
+    samp[nb_samples].len_orig = len;
+    samp[nb_samples].playing = 1;
+    samp[nb_samples].loop = loop;
+    samp[nb_samples].volume = vol;
+    samp[nb_samples].pos = 0;
+    samp[nb_samples].freq = rate;
+    nb_samples++;
+    return nb_samples-1;
+}
+
+void del_sample(int n) {
+    if (samp[n].src) {
+	if (samp[n].converted)
+	    FreeMem(samp[n].src);
+	samp[n].src = NULL;
+	samp[n].playing = 0;
+    }
+    while (!samp[nb_samples-1].src && nb_samples > 0)
+	nb_samples--;
+}
+
+void set_sample_volume(int n, int vol) {
+    samp[n].volume = vol;
+}
+
+void set_sample_frequency(int n, int freq) {
+    SDL_AudioCVT cvt;
+    if (samp[n].freq == freq) return;
+    int len = samp[n].len_orig;
+    INT16 *src = samp[n].orig;
+    if (samp[n].converted)
+	FreeMem(samp[n].src);
+    if (SDL_BuildAudioCVT(&cvt, gotspec.format, 1, freq,
+		gotspec.format, 1, gotspec.freq) == -1) {
+	fatal_error("can't build cvt");
+    }
+    if (cvt.needed) {
+	cvt.buf = AllocateMem(len*cvt.len_mult);
+	cvt.len = len;
+	memcpy(cvt.buf,src,len);
+	if (SDL_ConvertAudio(&cvt) == -1) {
+	    fatal_error("conversion failed : %s",SDL_GetError());
+	}
+	samp[n].src = (INT16*)cvt.buf;
+	samp[n].len = cvt.len_cvt;
+	samp[n].converted = 1;
+	// printf("set_sample_freq chan %d freq %d len %d -> %d pos %d\n",n,freq,samp[n].len_orig,samp[n].len,samp[n].pos);
+    } else {
+	samp[n].src = src;
+	samp[n].len = len;
+	samp[n].converted = 0;
+    }
+    if (samp[n].pos >= samp[n].len/2)
+	samp[n].pos = 0;
+}
+
+void play_sample(int chan, INT16 *src, int len, int rate, int loop,int vol) {
+    del_sample(chan);
+    int old = nb_samples;
+    nb_samples = chan;
+    create_sample(src,len,rate,loop,vol);
+    nb_samples = old;
+}
+
+static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format,int vol)
 {
   // flac files seem to arrive in S16MSB format, maybe there is a way to pre
   // convert the sample by passing a specific format to Sound_NewSample, but
   // since this conversion remains very easy and there shouldn't be any other
   // conversion needed...
-  int n,vol;
-  if (fadeout) vol = fade_vol;
-  else vol = music_volume;
+  int n;
+  if (vol == 0) {
+      memset(dst,0,len);
+      return;
+  }
   if (cvt.needed) {
       if (buf_len < len) {
 	  if (cvt.buf) free(cvt.buf);
@@ -592,7 +703,7 @@ static void read_buff(FILE *fbin, int cpysize, UINT8 *stream) {
     }
     memcpy_with_volume(stream + bw,
 	buff,
-	red,neocd_cdda_format);
+	red,neocd_cdda_format,fadeout ? fade_vol : music_volume);
     if (cvt.needed)
 	bw += cvt.len_cvt;
     else
@@ -707,7 +818,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	    {
 		memcpy_with_volume(stream + bw,
 			(Uint8 *) global_state.decoded_ptr,
-			cpysize,sample->desired.format);
+			cpysize,sample->desired.format,fadeout ? fade_vol : music_volume);
 
 		if (cvt.needed) {
 		    bw += cvt.len_cvt;
@@ -778,12 +889,11 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
       int num_sem = channel;
       while (!sem[num_sem]) num_sem--;
 	    SDL_SemWait(sem[num_sem]);
-	    // printf("my_callback chan %d len %d\n",channel,len);
 	    int volume = SampleVol[channel];
 	    int vol_l = (255-SamplePan[channel])*volume/255;
 	    int vol_r = (SamplePan[channel])*volume/255;
 #if HAS_NEO
-	    if (use_music) {
+	    if (use_music) { // use_music = 1 only if an association is created or if we run a neocd game
 		vol_l = vol_l*sfx_volume/100;
 		vol_r = vol_r*sfx_volume/100;
 	    }
@@ -839,6 +949,47 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	}
     }
 
+    for (int n=0; n<nb_samples; n++) {
+	if (samp[n].src && samp[n].playing && samp[n].volume) {
+	    INT16 *src = samp[n].src + samp[n].pos;
+	    for (i=0; i<len; i+=2) {
+#ifdef TEST_OVERFLOW
+		INT32 sample = wstream[i]+*src*samp[n].volume/100;
+		if (sample > 0x7fff) {
+		    printf("overflow left %x\n",sample);
+		    sample = 0x7fff;
+		} else if (sample < -0x8000) {
+		    printf("underflow left %x\n",sample);
+		    sample = -0x8000;
+		}
+		wstream[i] = sample;
+		sample = wstream[i+1]+*src*samp[n].volume/100;
+		if (sample > 0x7fff) {
+		    printf("overflow right %x\n",sample);
+		    sample = 0x7fff;
+		} else if (sample < -0x8000) {
+		    printf("underflow right %x\n",sample);
+		    sample = -0x8000;
+		}
+		wstream[i+1] = sample;
+#else
+		wstream[i] += *src*samp[n].volume/100;
+		wstream[i+1] += *src*samp[n].volume/100;
+#endif
+		src ++;
+		samp[n].pos ++;
+		if (samp[n].pos >= samp[n].len/2) {
+		    if (samp[n].loop) {
+			samp[n].pos = 0;
+			src = samp[n].src;
+		    } else {
+			samp[n].playing = 0;
+			break;
+		    }
+		}
+	    }
+	}
+    }
 
     if (recording) {
 	mixing_buff_len = len;

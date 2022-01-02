@@ -12,7 +12,7 @@ use strict;
 my ($use_68k, $use_z80, $use_6502, $use_020,$use_68705, # cpus
   $use_2151,$use_2203,$use_2413,$use_2610,$use_3812,$use_adpcm,$use_ay8910,
   $use_dac, $use_dxsmp, $use_ensoniq, $use_m6585, $use_msm5205, $use_namco,
-  $use_msm5232,
+  $use_msm5232, $use_galaxian,
   $use_qsound,$use_smp16bit,$use_toaplan2,$use_x1_010,$use_ymf278b,
   $use_ymz280b,$use_neo,
   $use_f3system,$use_nichi,$use_taitosnd,$use_tchnosnd,
@@ -44,6 +44,8 @@ while ($_ = shift @ARGV) {
       $use_decode = 1;
     } elsif (/neocd.h/) {
 		$use_neo = 1;
+	} elsif (/galaxian.h/) {
+		$use_galaxian = 1;
     } elsif (/cps2crpt.h/) {
       $use_cps2crpt = 1;
     } elsif (/f3system.h/) {
@@ -231,7 +233,9 @@ if ($use_ensoniq) {
 }
 print F "\t\$(M6585) \\\n" if ($use_m6585);
 print G "#define HAS_M6585 1\n" if ($use_m6585);
+print G "#define HAS_GALAXIAN 1\n" if ($use_galaxian);
 print F "\t\$(MSM5205) \\\n" if ($use_msm5205);
+print F "\t\$(GALAXIAN) \\\n" if ($use_galaxian);
 print F "\t\$(MSM5232) \\\n" if ($use_msm5232);
 print G "#define HAS_MSM5205_BUFF 1\n" if ($use_msm5205);
 print G "#define HAS_MSM5232 1\n" if ($use_msm5232);

@@ -20,6 +20,7 @@
 #include "dxsmp.h"
 #include "2413intf.h"
 #include "debug.h"
+#include "galaxian.h"
 
 int change_sample_rate;
 
@@ -27,6 +28,9 @@ struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 {
 #if HAS_YM2203
    { "ym2203",     YM2203_sh_stop,        },
+#endif
+#if HAS_GALAXIAN
+   { "galaxian", galaxian_sh_stop, },
 #endif
 #if HAS_YM2151
    { "ym2151",     YM2151_sh_stop,        },
@@ -117,6 +121,12 @@ int init_sound_emulators(void)
       streams_sh_start();	/* streaming system initialize & start */
       for( j = 0; j < SndMachine->control_max; j++ ){
 	switch( SndMachine->init[j] ){
+
+#if HAS_GALAXIAN
+	case SOUND_GALAXIAN:
+	    i = galaxian_sh_start();
+	    break;
+#endif
 #if HAS_YM2203
 	case SOUND_YM2203:
 	  i = YM2203_sh_start( SndMachine->intf[j] );

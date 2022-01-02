@@ -24,3 +24,4 @@
 #define HAS_YMZ280B 1
 #define HAS_YMF278B 1
 #define HAS_X1_010 1
+#define HAS_GALAXIAN 1

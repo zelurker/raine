@@ -8,6 +8,7 @@
 #include "sasound.h"
 #include "gui.h" // goto_debuger
 #include "savegame.h"
+#include "galaxian.h"
 
 // Number of cycles before reseting the cycles counter and the timers
 #define MAX_CYCLES 0x40000000
@@ -153,6 +154,8 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     else if (callback == &ymf278b_timer_a_tick) strcpy(timer[free_timer].name, "ymf278b1");
     else if (callback == &ymf278b_timer_b_tick) strcpy(timer[free_timer].name, "ymf278b2");
     else if (callback == &timer_callback_3812) strcpy(timer[free_timer].name,"3812");
+    else if (callback == &galaxian_noise_timer_cb) strcpy(timer[free_timer].name,"galax_n");
+    else if (callback == &galaxian_lfo_timer_cb) strcpy(timer[free_timer].name,"galax_lfo");
     else {
 	fatal_error("timer_set: handler unknown");
     }

@@ -99,8 +99,9 @@ do not modify this order without updating sound_chip_list[] in sasound.c as well
 
 enum inittype
 {
+    SOUND_NONE = 0,
 #if HAS_YM2203
-  SOUND_YM2203 = 0,
+  SOUND_YM2203,
 #endif
 #if HAS_YM2151
   SOUND_YM2151S,
@@ -164,7 +165,10 @@ enum inittype
 #if HAS_DXSMP
   SOUND_DXSMP,
 #endif
-  SOUND_NONE,
+#if HAS_GALAXIAN
+  SOUND_GALAXIAN,
+#endif
+  SOUND_LAST,
 };
 
 /* volume level for YM2203 */
@@ -213,6 +217,12 @@ void load_sample(char *filename);
 void init_samples();
 void set_sample_pos(int pos);
 void start_music_fadeout(double time);
+
+int create_sample(INT16 *src, int len, int rate, int loop, int vol);
+void del_sample(int n);
+void set_sample_frequency(int n, int freq);
+void set_sample_volume(int n, int vol);
+void play_sample(int chan, INT16 *src, int len, int rate, int loop,int vol);
 #endif
 
 void end_recording();

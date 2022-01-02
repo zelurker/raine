@@ -189,5 +189,6 @@ OBJS += \
 	$(YMF278B) \
 	$(X1_010) \
 	$(TOAPLAN2) \
+	$(GALAXIAN)
 
 HAS_NEO = 1
