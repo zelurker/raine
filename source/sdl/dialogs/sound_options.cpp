@@ -143,6 +143,7 @@ int do_sound_options(int sel) {
   menu = NULL;
   for (int i=1; i<sound_menu[1].values_list_size; i++) {
       free(sound_menu[1].values_list_label[i]);
+      sound_menu[1].values_list_label[i] = NULL;
   }
   if (recording == 2)
     monitoring = 1;
