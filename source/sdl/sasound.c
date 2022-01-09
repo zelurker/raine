@@ -747,7 +747,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	Sound_AudioInfo info;
 	info.format = gotspec.format;
 	info.channels = gotspec.channels;
-	info.rate = 44100; // It's for raw, we need to put something there but the data doesn't matter
+	info.rate = gotspec.freq;
 	char *ext = strrchr(track_to_read,'.');
 	if (!ext || (strcasecmp(ext+1,"wav") &&
 		    strcasecmp(ext+1,"ogg") &&
