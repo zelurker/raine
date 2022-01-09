@@ -597,11 +597,10 @@ OBJDIRS += \
 	$(OBJDIR)/sdl/console
 
 ifeq (${SDL},2)
-OBJDIRS += $(OBJDIR)/sdl2                   \
-        $(OBJDIR)/sdl2/SDL_gfx              \
-        $(OBJDIR)/sdl2/sdl_sound            \
-        $(OBJDIR)/sdl2/sdl_sound/libmodplug \
-        $(OBJDIR)/sdl2/gui
+OBJDIRS += $(OBJDIR)/sdl2 \
+	$(OBJDIR)/sdl2/SDL_gfx \
+	$(OBJDIR)/sdl2/sdl_sound \
+	$(OBJDIR)/sdl2/gui
 endif
 
 else
@@ -1223,26 +1222,12 @@ else
 # avoid allegro when we can, sdl is much more reliable for sound
 OBJS += $(OBJDIR)/sdl/sasound.o
 ifeq (${SDL},2)
-OBJS += $(OBJDIR)/sdl2/sdl_sound/SDL_sound.o                   \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_mp3.o       \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_wav.o       \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_vorbis.o    \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_raw.o       \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_flac.o      \
-                $(OBJDIR)/sdl2/sdl_sound/SDL_sound_modplug.o   \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/modplug.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/fastmix.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/sndfile.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/sndmix.o   \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/snd_flt.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/snd_fx.o   \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/snd_dsp.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/load_it.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/load_xm.o  \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/load_s3m.o \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/load_mod.o \
-                $(OBJDIR)/sdl2/sdl_sound/libmodplug/mmcmp.o
-
+OBJS += $(OBJDIR)/sdl2/sdl_sound/SDL_sound.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_mp3.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_wav.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_vorbis.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_raw.o \
+		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_flac.o
 endif
 ifdef target
 CFLAGS += $(shell /usr/${target}/bin/${SDLCONFIG} --cflags)
