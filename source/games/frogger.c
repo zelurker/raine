@@ -20,6 +20,7 @@
 #endif
 #include "galaxian.h"
 #include "timer.h"
+#include "files.h"
 
 // defined in rgui.c for allegro, but it should be generic...
 extern int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, int c1, int c2);
