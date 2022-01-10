@@ -24,7 +24,7 @@ static int set_default_volumes(int sel) {
 }
 #endif
 
-static void init_sound_driver();
+static void init_sound_driver(int changed);
 
 static int choose_driver(int sel) {
     char buf[512];
@@ -53,7 +53,7 @@ static int choose_driver(int sel) {
 	    }
 	}
     }
-    init_sound_driver();
+    init_sound_driver(1);
     return 0;
 }
 
@@ -84,15 +84,17 @@ menu_item_t sound_menu[] =
 };
 
 #if SDL == 2
-static void init_sound_driver() {
+static void init_sound_driver(int changed) {
     sound_menu[0].values_list_size = SDL_GetNumAudioDrivers();
     const char *driver = SDL_GetCurrentAudioDriver();
     for (int i = 0; i < SDL_GetNumAudioDrivers(); ++i) {
         sound_menu[0].values_list_label[i] = (char*)SDL_GetAudioDriver(i);
         sound_menu[0].values_list[i] = i;
-	if (!strcmp(driver,SDL_GetAudioDriver(i))) {
+	if (!strcmp(driver,SDL_GetAudioDriver(i)) && changed) {
+	    // If the driver was just changed and it has a default audio frequency, then change audio_sample_rate
 	    driver_id = i;
 	    SDL_AudioSpec spec;
+	    spec.freq = 0;
 	    SDL_GetAudioDeviceSpec(i,0,&spec);
 	    if (spec.freq)
 		audio_sample_rate = spec.freq;
@@ -134,7 +136,7 @@ int do_sound_options(int sel) {
 	saDestroySound(0);
     }
 #if SDL == 2
-    init_sound_driver();
+    init_sound_driver(0);
 #endif
 
   menu = new TSoundDlg("", sound_menu);
