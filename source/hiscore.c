@@ -90,8 +90,15 @@ static UINT32 hexstr2num (const char **pString)
 	if (*string == '@') {
 	    // New format
 	    const char *s = strchr(string,',');
+	    /* Normal syntax of this @ tag is @maincpu,program,field,field...
+	     * But I added an old entry to some hiscore.dat, which reads like that :
+	     * @:field:field...
+	     * I should have checked it better, but now that it's done (and it's old !), let's handle it...
+	     * it's for viewpoint */
 	    if (s)
 		s = strchr(s+1,',');
+	    else
+		s = strchr(string,':');
 	    if (s) {
 		*pString = s+1;
 		return 0;
