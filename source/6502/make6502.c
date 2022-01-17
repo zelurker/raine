@@ -3568,9 +3568,10 @@ static void GetTicksCode()
 	fprintf(fp, "		global	_%sGetElapsedTicks\n", cpubasename);
 	fprintf(fp, "		global	%sGetElapsedTicks_\n", cpubasename);
 
-	if (bPlain)
+	if (bPlain) {
+		fprintf(fp, "		global	%sGetElapsedTicks\n", cpubasename);
 		snprintf(string,150, "%sGetElapsedTicks", cpubasename);
-	else
+	} else
 		snprintf(string,150, "%sGetElapsedTicks_", cpubasename);
 
 	ProcBegin(string, 0xffffffff);
