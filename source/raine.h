@@ -247,6 +247,7 @@ static DEF_INLINE void WriteF3SystemLong(UINT32 i, UINT32 data)
 #endif
 
 #define CPU_FRAME_MHz(speed,slice) ((speed*1000000)/slice)
+#define MHz(speed) ((speed*1000000.0)/fps)
 
 
 #ifndef SDL
@@ -378,7 +379,7 @@ typedef struct DIR_CFG
    char artwork_dir[FILENAME_MAX];		// screenshot path
    char **rom_dir;		// rom paths
    char config_file[FILENAME_MAX];		// config file (no path)
-   char m68kdis[FILENAME_MAX],dz80[FILENAME_MAX];
+   char m68kdis[FILENAME_MAX],dz80[FILENAME_MAX],d6502[FILENAME_MAX];
    UINT32 long_file_names;		// enable long file name support
    UINT32 last_screenshot_num;		// counter for last screenshot
 } DIR_CFG;
