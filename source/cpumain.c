@@ -18,6 +18,7 @@
 #endif
 
 UINT32 current_cpu_num[0x10];
+UINT32 cycles_68k[2],cycles_6502[3];
 
 /*
 
@@ -277,21 +278,38 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
     if (goto_debuger) return;
 #endif
    switch_cpu(cpu_id);
+   int ret;
 
    switch(cpu_id){
 #if HAVE_68000
       case CPU_68K_0:
       case CPU_68K_1:
 #if USE_MUSASHI == 2
-	  m68k_execute(cycles);
+	  ret = m68k_execute(cycles);
 #else
-         s68000exec(cycles);
+         ret = s68000exec(cycles);
 #endif
 	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000_pc,s68000_sr,s68000_areg[7]);
+#if USE_MUSASHI < 2
 #ifdef RAINE_DEBUG
+	 if (ret == 0x80000001) {
+	     printf("starscream out of bounds\n");
+	     exit(1);
+	 }
+	 if (ret < 0x80000000)
+	     fatal_error("starscream invalid instruction at %x",ret);
 	 if (s68000_pc & 0xff000000) {
 	   printf("pc out of bounds for 68k%d\n",cpu_id & 15);
 	 }
+	 if (ret == 0xffffffff) {
+	     fatal_error("starscream : double fault");
+	 }
+#endif
+	 cycles_68k[cpu_id & 0xf] += s68000readOdometer();
+	 // Musashi always resets this number of cycles returned for each call to m68k_execute
+	 s68000tripOdometer(); // we just reset it here explicitely for starscream
+#else
+	 cycles_68k[cpu_id & 0xf] += ret; // Musashi just returns the cycles executed...
 #endif
       break;
 #endif
@@ -317,10 +335,40 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
       case CPU_M6502_0:
       case CPU_M6502_1:
       case CPU_M6502_2:
-	m6502exec(cycles);
+#ifndef MAME_6502
+	ret = m6502exec(cycles);
+#ifdef RAINE_DEBUG
+	if (ret != 0x80000000) {
+	    fatal_error("6502 : invalid instruction at %x",ret);
+	}
+#endif
+	cycles_6502[cpu_id & 0xf] += m6502GetElapsedTicks(1);
+#else
+	ret = m6502exec(cycles);
+	cycles_6502[cpu_id & 0xf] += ret;
 	break;
 #endif
+#endif
    }
+}
+
+UINT32 cpu_get_cycles_done(UINT32 cpu) {
+   switch_cpu(cpu);
+   switch(cpu >> 4) {
+   case CPU_Z80: return mz80GetCyclesDone();
+   case CPU_6502: return cycles_6502[cpu & 0xf];
+   case CPU_68000: return cycles_68k[cpu & 0xf];
+   }
+   return 0;
+}
+
+void cpu_set_cycles_done(UINT32 cpu, int cycles) {
+    switch_cpu(cpu);
+    switch(cpu >> 4) {
+    case CPU_Z80: mz80AddCyclesDone(cycles); break;
+    case CPU_6502: cycles_6502[cpu & 0xf] += cycles; break;
+    case CPU_68000: cycles_68k[cpu & 0xf] += cycles; break;
+    }
 }
 
 /*
@@ -342,6 +390,7 @@ void cpu_reset(UINT32 cpu_id)
 #else
 	  s68000reset();
 #endif
+	  cycles_68k[cpu_id & 0xf] = 0;
       break;
 #endif
 #if HAVE_Z80
@@ -362,6 +411,7 @@ void cpu_reset(UINT32 cpu_id)
       case CPU_M6502_1:
       case CPU_M6502_2:
 	m6502reset();
+	cycles_6502[cpu_id & 0xf] = 0;
 	break;
 #endif
    }
@@ -421,13 +471,16 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
     switch(cpu>>4) {
 #if HAVE_68000
-    case 1: s68000_get_ram(cpu & 0xf,range,count); break;
+    case CPU_68000: s68000_get_ram(cpu & 0xf,range,count); break;
 #endif
 #if HAVE_Z80
-    case 2: z80_get_ram(cpu & 0xf, range, count); break;
+    case CPU_Z80: z80_get_ram(cpu & 0xf, range, count); break;
+#endif
+#if HAVE_6502
+    case CPU_6502: m6502_get_ram(cpu & 0xf, range, count); break;
 #endif
 #ifndef NO020
-    case 3:
+    case CPU_68020:
 	    {
 		int n;
 		*count = 0;
@@ -456,12 +509,12 @@ void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
 UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
     switch(cpu >> 4) {
 #if HAVE_68000
-    case 1:
+    case CPU_68000:
 	return s68k_get_code_range(cpu & 0xf, adr, start, end);
 	break;
 #endif
 #if HAVE_Z80
-    case 2:
+    case CPU_Z80:
 	// For the z80 all the rombase is executable, so...
 	*start = 0;
 	*end = 0xffff;
@@ -475,11 +528,24 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	return base;
 #endif
 #ifndef NO020
-    case 3:
+    case CPU_68020:
 	// For the 020, the whole R24 array is executable, so...
 	*start = (adr>>16)<<16;
 	*end = *start + 0xffff;
 	return R24[adr>>16]-*start;
+#endif
+#if HAVE_6502
+    case CPU_6502:
+	// Similar to the z80, end is ffff by default, and for the 6502 it's actually very rare that base is mapped to a load region
+	*start = 0;
+	*end = 0xffff;
+	base = M6502_context[cpu & 0xf].m6502Base;
+	for (n=REGION_CPU1; n<=REGION_CPU4; n++)
+	    if (base == load_region[n]) {
+		*end = get_region_size(n)-1;
+		break;
+	    }
+	return base;
 #endif
     }
     return NULL;

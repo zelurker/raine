@@ -123,6 +123,7 @@ void M6502CSetBank(UINT8 *src);
 void M6502_disp_context(int nb);
 void M6502WriteByte(UINT32 address, UINT16 data);
 UINT8 M6502ReadByte(UINT32 address);
+void m6502_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count);
 
 #ifdef __cplusplus
 }

@@ -12,6 +12,7 @@
 #include "conf-cpu.h"
 #include "cpumain.h"
 #include "z80/mz80help.h"
+#include "m6502hlp.h"
 #include "68020/u020help.h"
 #include "neocd/cache.h"
 #include "arpro.h"
@@ -540,7 +541,7 @@ void do_regs(int argc, char **argv) {
   set_regs(cpu_id);
   int num = cpu_id & 0xf;
   switch (cpu_id >> 4) {
-  case 1:
+  case CPU_68000:
       for (int n=0; n<8; n++) {
 	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,s68000_dreg[n]);
 	  if (n==3 || n==7) {
@@ -558,7 +559,7 @@ void do_regs(int argc, char **argv) {
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000_sr,
 	      s68000_pc);
       break;
-  case 2:
+  case CPU_Z80:
       cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"
 	      " \E[36mDE:\E[0m%04x \E[36mHL:\E[0m%04x\n",
 	      Z80_context[num].z80af,
@@ -578,7 +579,7 @@ void do_regs(int argc, char **argv) {
 	      Z80_context[num].z80iy);
       break;
 #ifndef NO020
-  case 3:
+  case CPU_68020:
       for (int n=0; n<8; n++) {
 #ifdef USE_MUSASHI
 	  sprintf(buf+strlen(buf),"\E[36mD%d:\E[0m%08x ",n,m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_D0+n)));
@@ -606,6 +607,20 @@ void do_regs(int argc, char **argv) {
 #else
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",regs.sr,regs.pc);
 #endif
+      break;
+#endif
+#ifdef HAVE_6502
+  case CPU_6502:
+      cons->print("\E[36mPC:\E[0m%04x \E[36mSP:\E[0m%04x"
+	      " \E[36mA:\E[0m%02x \E[36mX:\E[0m%02x \E[36mY:\E[0m%02x\n",
+#ifdef MAME_6502
+	      M6502_context[num].pc,M6502_context[num].sp,
+	      M6502_context[num].a,M6502_context[num].x,M6502_context[num].y
+#else
+	      M6502_context[num].m6502pc,M6502_context[num].m6502s,
+	      M6502_context[num].m6502af & 0xff,M6502_context[num].m6502x,M6502_context[num].m6502y
+#endif
+	      );
       break;
 #endif
   }
@@ -1173,7 +1188,7 @@ static void do_search(int argc, char **argv) {
 static void do_cpu(int argc, char **argv) {
     char buff[80];
     sprintf(buff,"active cpu : ");
-    int has_68020=0, has_68k=0,has_z80=0;
+    int has_68020=0, has_68k=0,has_z80=0,has_6502=0;
 #ifndef NO020
   if (MC68020) {
       strcat(buff,"68020 ");
@@ -1194,9 +1209,17 @@ static void do_cpu(int argc, char **argv) {
    if(MZ80Engine>=1) {		// Guess it's a z80 game
        for (int n=0; n<4; n++) {
 	   if (Z80_context[n].z80Base) {
-	       sprintf(buff+strlen(buff)," z80%c ",'a'+n);
+	       sprintf(buff+strlen(buff)," z80%c",'a'+n);
 	       has_z80 |= (1<<n);
 	   }
+       }
+   }
+#endif
+#if HAVE_6502
+   for (int n=0; n<4; n++) {
+       if (M6502_context[n].m6502Base) {
+	   sprintf(buff+strlen(buff)," 6502%c",'a'+n);
+	   has_6502 |= (1<<n);
        }
    }
 #endif
@@ -1213,16 +1236,23 @@ static void do_cpu(int argc, char **argv) {
        else if (!strncmp(argv[1],"z80",3) &&
 	       (has_z80 & (1<<(nb = argv[1][3] - 'a'))))
 	   cpu_id = CPU_Z80_0 + nb;
+       else if (!strncmp(argv[1],"6502",4) &&
+	       (has_6502 & (1<<(nb = argv[1][4] - 'a'))))
+	   cpu_id = CPU_M6502_0 + nb;
        else if (!strcmp(argv[1],"main")) {
 	   // try to guess the main cpu then...
 	   if (has_68020) cpu_id = CPU_M68020_0;
 	   else if (has_68k) cpu_id = CPU_68K_0;
 	   else if (has_z80 & 1) cpu_id = CPU_Z80_0;
 	   else if (has_z80 & 2) cpu_id = CPU_Z80_1;
+	   else if (has_6502 & 1) cpu_id = CPU_M6502_0;
+	   else if (has_6502 & 2) cpu_id = CPU_M6502_1;
        } else if (!strcmp(argv[1],"audio")) {
 	   cpu_id = 0;
-	   for (int n=4; n>=1; n--)
+	   for (int n=4; n>=1; n--) {
 	       if (has_z80 & n) cpu_id = CPU_Z80_0+(n-1);
+	       if (has_6502 & n) cpu_id = CPU_M6502_0+(n-1);
+	   }
 	   if (!cpu_id) {
 	       if (has_68k & 2) cpu_id = CPU_68K_1;
 	       else if (has_68k & 1) cpu_id = CPU_68K_0;

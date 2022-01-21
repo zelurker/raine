@@ -13,21 +13,15 @@ This is untested
 
 UINT8 *M6502ROM;
 int M6502Engine;
-struct MemoryReadByte	M6502A_memoryreadbyte[32];
-struct MemoryWriteByte	M6502A_memorywritebyte[32];
-struct MemoryReadByte	M6502B_memoryreadbyte[32];
-struct MemoryWriteByte	M6502B_memorywritebyte[32];
-struct MemoryReadByte	M6502C_memoryreadbyte[32];
-struct MemoryWriteByte	M6502C_memorywritebyte[32];
+struct MemoryReadByte	M6502_memory_rb[3][32];
+struct MemoryWriteByte	M6502_memory_wb[3][32];
 #ifndef MAME_6502
 struct m6502context	M6502_context[MAX_6502];
 UINT8 *m6502Base;		// Must make global in the asm
 #else
 m6502_Regs M6502_context[MAX_6502];
 #endif
-static int c1,c2,c3,c4;
-static int b1,b2,b3,b4;
-static int e1,e2,e3,e4;
+static int memory_count_rb[3],memory_count_wb[3];
 
 typedef struct M6502_BANKLIST
 {
@@ -73,35 +67,35 @@ UINT8 m6502_read8(UINT32 adr) {
     // rather than globally like that...
     switch(cpu) {
     case 0:
-	for (n=0; n<c1; n++) {
-	    if (M6502A_memoryreadbyte[n].lowAddr <= adr &&
-		    adr <= M6502A_memoryreadbyte[n].highAddr) {
-		if (M6502A_memoryreadbyte[n].memoryCall)
-		    return ((read_func)(M6502A_memoryreadbyte[n].memoryCall))(adr);
+	for (n=0; n<memory_count_rb[0]; n++) {
+	    if (M6502_memory_rb[0][n].lowAddr <= adr &&
+		    adr <= M6502_memory_rb[0][n].highAddr) {
+		if (M6502_memory_rb[0][n].memoryCall)
+		    return ((read_func)(M6502_memory_rb[0][n].memoryCall))(adr);
 		else
-		    return ((UINT8*)M6502A_memoryreadbyte[n].pUserArea)[adr];
+		    return ((UINT8*)M6502_memory_rb[0][n].pUserArea)[adr];
 	    }
 	}
 	break;
     case 1:
-	for (n=0; n<b1; n++) {
-	    if (M6502B_memoryreadbyte[n].lowAddr <= adr &&
-		    adr <= M6502B_memoryreadbyte[n].highAddr) {
-		if (M6502B_memoryreadbyte[n].memoryCall)
-		    return ((read_func)(M6502B_memoryreadbyte[n].memoryCall))(adr);
+	for (n=0; n<memory_count_rb[1]; n++) {
+	    if (M6502_memory_rb[1][n].lowAddr <= adr &&
+		    adr <= M6502_memory_rb[1][n].highAddr) {
+		if (M6502_memory_rb[1][n].memoryCall)
+		    return ((read_func)(M6502_memory_rb[1][n].memoryCall))(adr);
 		else
-		    return ((UINT8*)M6502B_memoryreadbyte[n].pUserArea)[adr];
+		    return ((UINT8*)M6502_memory_rb[1][n].pUserArea)[adr];
 	    }
 	}
 	break;
     case 2:
-	for (n=0; n<e1; n++) {
-	    if (M6502C_memoryreadbyte[n].lowAddr <= adr &&
-		    adr <= M6502C_memoryreadbyte[n].highAddr) {
-		if (M6502C_memoryreadbyte[n].memoryCall)
-		    return ((read_func)(M6502C_memoryreadbyte[n].memoryCall))(adr);
+	for (n=0; n<memory_count_rb[2]; n++) {
+	    if (M6502_memory_rb[2][n].lowAddr <= adr &&
+		    adr <= M6502_memory_rb[2][n].highAddr) {
+		if (M6502_memory_rb[2][n].memoryCall)
+		    return ((read_func)(M6502_memory_rb[2][n].memoryCall))(adr);
 		else
-		    return ((UINT8*)M6502C_memoryreadbyte[n].pUserArea)[adr];
+		    return ((UINT8*)M6502_memory_rb[2][n].pUserArea)[adr];
 	    }
 	}
 	break;
@@ -114,42 +108,42 @@ void m6502_write8(UINT32 adr,UINT8 data) {
     int n;
     switch(cpu) {
     case 0:
-	for (n=0; n<c2; n++) {
-	    if (M6502A_memorywritebyte[n].lowAddr <= adr &&
-		    adr <= M6502A_memorywritebyte[n].highAddr) {
-		if (M6502A_memorywritebyte[n].memoryCall) {
-		    ((write_func)(M6502A_memorywritebyte[n].memoryCall))(adr,data);
+	for (n=0; n<memory_count_wb[0]; n++) {
+	    if (M6502_memory_wb[0][n].lowAddr <= adr &&
+		    adr <= M6502_memory_wb[0][n].highAddr) {
+		if (M6502_memory_wb[0][n].memoryCall) {
+		    ((write_func)(M6502_memory_wb[0][n].memoryCall))(adr,data);
 		    return;
 		} else {
-		    ((UINT8*)M6502A_memorywritebyte[n].pUserArea)[adr] = data;
+		    ((UINT8*)M6502_memory_wb[0][n].pUserArea)[adr] = data;
 		    return;
 		}
 	    }
 	}
 	break;
     case 1:
-	for (n=0; n<b2; n++) {
-	    if (M6502B_memorywritebyte[n].lowAddr <= adr &&
-		    adr <= M6502B_memorywritebyte[n].highAddr) {
-		if (M6502B_memorywritebyte[n].memoryCall) {
-		    ((write_func)(M6502B_memorywritebyte[n].memoryCall))(adr,data);
+	for (n=0; n<memory_count_wb[1]; n++) {
+	    if (M6502_memory_wb[1][n].lowAddr <= adr &&
+		    adr <= M6502_memory_wb[1][n].highAddr) {
+		if (M6502_memory_wb[1][n].memoryCall) {
+		    ((write_func)(M6502_memory_wb[1][n].memoryCall))(adr,data);
 		    return;
 		} else {
-		    ((UINT8*)M6502B_memorywritebyte[n].pUserArea)[adr] = data;
+		    ((UINT8*)M6502_memory_wb[1][n].pUserArea)[adr] = data;
 		    return;
 		}
 	    }
 	}
 	break;
     case 2:
-	for (n=0; n<e2; n++) {
-	    if (M6502C_memorywritebyte[n].lowAddr <= adr &&
-		    adr <= M6502C_memorywritebyte[n].highAddr) {
-		if (M6502C_memorywritebyte[n].memoryCall) {
-		    ((write_func)(M6502C_memorywritebyte[n].memoryCall))(adr,data);
+	for (n=0; n<memory_count_wb[2]; n++) {
+	    if (M6502_memory_wb[2][n].lowAddr <= adr &&
+		    adr <= M6502_memory_wb[2][n].highAddr) {
+		if (M6502_memory_wb[2][n].memoryCall) {
+		    ((write_func)(M6502_memory_wb[2][n].memoryCall))(adr,data);
 		    return;
 		} else {
-		    ((UINT8*)M6502C_memorywritebyte[n].pUserArea)[adr] = data;
+		    ((UINT8*)M6502_memory_wb[2][n].pUserArea)[adr] = data;
 		    return;
 		}
 	    }
@@ -194,11 +188,11 @@ void M6502ASetBank(UINT8 *src)
 
    for(ta=0; ta<m6502_data[0].read_bank.count; ta++){
       tb = m6502_data[0].read_bank.list[ta];			// Get bank pos
-      M6502A_memoryreadbyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_rb[0][tb].pUserArea = src;			// Write new pointer
    }
    for(ta=0; ta<m6502_data[0].write_bank.count; ta++){
       tb = m6502_data[0].write_bank.list[ta];			// Get bank pos
-      M6502A_memorywritebyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_wb[0][tb].pUserArea = src;			// Write new pointer
    }
 }
 
@@ -218,11 +212,11 @@ void M6502BSetBank(UINT8 *src)
 
    for(ta=0; ta<m6502_data[1].read_bank.count; ta++){
       tb = m6502_data[1].read_bank.list[ta];			// Get bank pos
-      M6502B_memoryreadbyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_rb[1][tb].pUserArea = src;			// Write new pointer
    }
    for(ta=0; ta<m6502_data[1].write_bank.count; ta++){
       tb = m6502_data[1].write_bank.list[ta];			// Get bank pos
-      M6502B_memorywritebyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_wb[1][tb].pUserArea = src;			// Write new pointer
    }
 }
 
@@ -242,11 +236,11 @@ void M6502CSetBank(UINT8 *src)
 
    for(ta=0; ta<m6502_data[2].read_bank.count; ta++){
       tb = m6502_data[2].read_bank.list[ta];			// Get bank pos
-      M6502C_memoryreadbyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_rb[2][tb].pUserArea = src;			// Write new pointer
    }
    for(ta=0; ta<m6502_data[2].write_bank.count; ta++){
       tb = m6502_data[2].write_bank.list[ta];			// Get bank pos
-      M6502C_memorywritebyte[tb].pUserArea = src;			// Write new pointer
+      M6502_memory_wb[2][tb].pUserArea = src;			// Write new pointer
    }
 }
 #endif
@@ -259,18 +253,18 @@ void AddM6502AReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[0].m6502Base;
          ta = m6502_data[0].read_bank.count;	// Add to bankswitching queue
-         m6502_data[0].read_bank.list[ta] = c1;
+         m6502_data[0].read_bank.list[ta] = memory_count_rb[0];
          m6502_data[0].read_bank.count++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502A_memoryreadbyte[c1].lowAddr=d0;
-   M6502A_memoryreadbyte[c1].highAddr=d1;
-   M6502A_memoryreadbyte[c1].memoryCall=d2;
-   M6502A_memoryreadbyte[c1].pUserArea=d3;
-   c1++;
+   M6502_memory_rb[0][memory_count_rb[0]].lowAddr=d0;
+   M6502_memory_rb[0][memory_count_rb[0]].highAddr=d1;
+   M6502_memory_rb[0][memory_count_rb[0]].memoryCall=d2;
+   M6502_memory_rb[0][memory_count_rb[0]].pUserArea=d3;
+   memory_count_rb[0]++;
 }
 
 void AddM6502AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -281,18 +275,18 @@ void AddM6502AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[0].m6502Base;
          ta = m6502_data[0].write_bank.count;	// Add to bankswitching queue
-         m6502_data[0].write_bank.list[ta] = c2;
+         m6502_data[0].write_bank.list[ta] = memory_count_wb[0];
          m6502_data[0].write_bank.count++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502A_memorywritebyte[c2].lowAddr=d0;
-   M6502A_memorywritebyte[c2].highAddr=d1;
-   M6502A_memorywritebyte[c2].memoryCall=d2;
-   M6502A_memorywritebyte[c2].pUserArea=d3;
-   c2++;
+   M6502_memory_wb[0][memory_count_wb[0]].lowAddr=d0;
+   M6502_memory_wb[0][memory_count_wb[0]].highAddr=d1;
+   M6502_memory_wb[0][memory_count_wb[0]].memoryCall=d2;
+   M6502_memory_wb[0][memory_count_wb[0]].pUserArea=d3;
+   memory_count_wb[0]++;
 }
 
 void AddM6502ARW(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
@@ -305,8 +299,8 @@ void AddM6502AInit(void)
 #ifdef MAME_6502
    AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
 #else
-   M6502_context[0].m6502MemoryRead  = M6502A_memoryreadbyte;
-   M6502_context[0].m6502MemoryWrite = M6502A_memorywritebyte;
+   M6502_context[0].m6502MemoryRead  = M6502_memory_rb[0];
+   M6502_context[0].m6502MemoryWrite = M6502_memory_wb[0];
 
    AddLoadCallback(M6502A_load_update);
    AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], sizeof(M6502_context[0]));
@@ -343,18 +337,18 @@ void AddM6502BReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[1].m6502Base;
          ta = m6502_data[1].read_bank.count;	// Add to bankswitching queue
-         m6502_data[1].read_bank.list[ta] = b1;
+         m6502_data[1].read_bank.list[ta] = memory_count_rb[1];
          m6502_data[1].read_bank.count++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502B_memoryreadbyte[b1].lowAddr=d0;
-   M6502B_memoryreadbyte[b1].highAddr=d1;
-   M6502B_memoryreadbyte[b1].memoryCall=d2;
-   M6502B_memoryreadbyte[b1].pUserArea=d3;
-   b1++;
+   M6502_memory_rb[1][memory_count_rb[1]].lowAddr=d0;
+   M6502_memory_rb[1][memory_count_rb[1]].highAddr=d1;
+   M6502_memory_rb[1][memory_count_rb[1]].memoryCall=d2;
+   M6502_memory_rb[1][memory_count_rb[1]].pUserArea=d3;
+   memory_count_rb[1]++;
 }
 
 void AddM6502BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -365,18 +359,18 @@ void AddM6502BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[1].m6502Base;
          ta = m6502_data[1].write_bank.count;	// Add to bankswitching queue
-         m6502_data[1].write_bank.list[ta] = b2;
+         m6502_data[1].write_bank.list[ta] = memory_count_wb[1];
          m6502_data[1].write_bank.count ++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502B_memorywritebyte[b2].lowAddr=d0;
-   M6502B_memorywritebyte[b2].highAddr=d1;
-   M6502B_memorywritebyte[b2].memoryCall=d2;
-   M6502B_memorywritebyte[b2].pUserArea=d3;
-   b2++;
+   M6502_memory_wb[1][memory_count_wb[1]].lowAddr=d0;
+   M6502_memory_wb[1][memory_count_wb[1]].highAddr=d1;
+   M6502_memory_wb[1][memory_count_wb[1]].memoryCall=d2;
+   M6502_memory_wb[1][memory_count_wb[1]].pUserArea=d3;
+   memory_count_wb[1]++;
 }
 
 void AddM6502BInit(void)
@@ -384,8 +378,8 @@ void AddM6502BInit(void)
 #ifdef MAME_6502
    AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
 #else
-   M6502_context[1].m6502MemoryRead  = M6502B_memoryreadbyte;
-   M6502_context[1].m6502MemoryWrite = M6502B_memorywritebyte;
+   M6502_context[1].m6502MemoryRead  = M6502_memory_rb[1];
+   M6502_context[1].m6502MemoryWrite = M6502_memory_wb[1];
 
    AddLoadCallback(M6502B_load_update);
    AddSaveData(SAVE_M6502_1, (UINT8 *) &M6502_context[1], sizeof(M6502_context[1]));
@@ -422,18 +416,18 @@ void AddM6502CReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[2].m6502Base;
          ta = m6502_data[2].read_bank.count;	// Add to bankswitching queue
-         m6502_data[2].read_bank.list[ta] = e1;
+         m6502_data[2].read_bank.list[ta] = memory_count_rb[2];
          m6502_data[2].read_bank.count++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502C_memoryreadbyte[e1].lowAddr=d0;
-   M6502C_memoryreadbyte[e1].highAddr=d1;
-   M6502C_memoryreadbyte[e1].memoryCall=d2;
-   M6502C_memoryreadbyte[e1].pUserArea=d3;
-   e1++;
+   M6502_memory_rb[2][memory_count_rb[2]].lowAddr=d0;
+   M6502_memory_rb[2][memory_count_rb[2]].highAddr=d1;
+   M6502_memory_rb[2][memory_count_rb[2]].memoryCall=d2;
+   M6502_memory_rb[2][memory_count_rb[2]].pUserArea=d3;
+   memory_count_rb[2]++;
 }
 
 void AddM6502CWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
@@ -444,18 +438,18 @@ void AddM6502CWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
       if(d3==NULL){
          d3 = M6502_context[2].m6502Base;
          ta = m6502_data[2].write_bank.count;	// Add to bankswitching queue
-         m6502_data[2].write_bank.list[ta] = e2;
+         m6502_data[2].write_bank.list[ta] = memory_count_wb[2];
          m6502_data[2].write_bank.count++;
       }
       else{
       d3 = d3 - d0;
       }
    }
-   M6502C_memorywritebyte[e2].lowAddr=d0;
-   M6502C_memorywritebyte[e2].highAddr=d1;
-   M6502C_memorywritebyte[e2].memoryCall=d2;
-   M6502C_memorywritebyte[e2].pUserArea=d3;
-   e2++;
+   M6502_memory_wb[2][memory_count_wb[2]].lowAddr=d0;
+   M6502_memory_wb[2][memory_count_wb[2]].highAddr=d1;
+   M6502_memory_wb[2][memory_count_wb[2]].memoryCall=d2;
+   M6502_memory_wb[2][memory_count_wb[2]].pUserArea=d3;
+   memory_count_wb[2]++;
 }
 
 void AddM6502CInit(void)
@@ -463,8 +457,8 @@ void AddM6502CInit(void)
 #ifdef MAME_6502
    AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
 #else
-   M6502_context[2].m6502MemoryRead  = M6502C_memoryreadbyte;
-   M6502_context[2].m6502MemoryWrite = M6502C_memorywritebyte;
+   M6502_context[2].m6502MemoryRead  = M6502_memory_rb[2];
+   M6502_context[2].m6502MemoryWrite = M6502_memory_wb[2];
 
    AddLoadCallback(M6502C_load_update);
    AddSaveData(SAVE_M6502_2, (UINT8 *) &M6502_context[2], sizeof(M6502_context[2]));
@@ -480,8 +474,8 @@ void M6502A_load_update(void)
    print_debug("M6502A Load Callback()\n");
    #endif
 
-   M6502_context[0].m6502MemoryRead  = M6502A_memoryreadbyte;
-   M6502_context[0].m6502MemoryWrite = M6502A_memorywritebyte;
+   M6502_context[0].m6502MemoryRead  = M6502_memory_rb[0];
+   M6502_context[0].m6502MemoryWrite = M6502_memory_wb[0];
    M6502_context[0].m6502Base     = m6502_data[0].base_ram;
 }
 
@@ -491,8 +485,8 @@ void M6502B_load_update(void)
    print_debug("M6502B Load Callback()\n");
    #endif
 
-   M6502_context[1].m6502MemoryRead  = M6502B_memoryreadbyte;
-   M6502_context[1].m6502MemoryWrite = M6502B_memorywritebyte;
+   M6502_context[1].m6502MemoryRead  = M6502_memory_rb[1];
+   M6502_context[1].m6502MemoryWrite = M6502_memory_wb[1];
    M6502_context[1].m6502Base     = m6502_data[1].base_ram;
 }
 
@@ -502,8 +496,8 @@ void M6502C_load_update(void)
    print_debug("M6502C Load Callback()\n");
    #endif
 
-   M6502_context[2].m6502MemoryRead  = M6502C_memoryreadbyte;
-   M6502_context[2].m6502MemoryWrite = M6502C_memorywritebyte;
+   M6502_context[2].m6502MemoryRead  = M6502_memory_rb[2];
+   M6502_context[2].m6502MemoryWrite = M6502_memory_wb[2];
    M6502_context[2].m6502Base     = m6502_data[2].base_ram;
 }
 #endif
@@ -522,18 +516,12 @@ void M6502_disp_context(int nb) {
 
 void ClearM6502List(void)
 {
-   c1=0;
-   c2=0;
-   c3=0;
-   c4=0;
-   b1=0;
-   b2=0;
-   b3=0;
-   b4=0;
-   e1=0;
-   e2=0;
-   e3=0;
-   e4=0;
+   memory_count_rb[0]=0;
+   memory_count_wb[0]=0;
+   memory_count_rb[1]=0;
+   memory_count_wb[1]=0;
+   memory_count_rb[2]=0;
+   memory_count_wb[2]=0;
 
    m6502_data[0].read_bank.count = 0;
    m6502_data[0].write_bank.count = 0;
@@ -620,14 +608,14 @@ UINT8 M6502ReadByte(UINT32 address)
   int ta;
 
   for(ta=0;ta<99;ta++){
-    if((M6502A_memoryreadbyte[ta].lowAddr)==-1){
+    if((M6502_memory_rb[0][ta].lowAddr)==-1){
       // reached the end
       return ReadByte( M6502_context[0].m6502Base + address);
     }
     else{
-      if((address>=M6502A_memoryreadbyte[ta].lowAddr)&&(M6502A_memoryreadbyte[ta].highAddr>=address)){
-	if(M6502A_memoryreadbyte[ta].memoryCall==NULL){
-	  return ReadByte( ((UINT8 *) M6502A_memoryreadbyte[ta].pUserArea) + address);
+      if((address>=M6502_memory_rb[0][ta].lowAddr)&&(M6502_memory_rb[0][ta].highAddr>=address)){
+	if(M6502_memory_rb[0][ta].memoryCall==NULL){
+	  return ReadByte( ((UINT8 *) M6502_memory_rb[0][ta].pUserArea) + address);
 	}
       }
     }
@@ -645,16 +633,30 @@ void M6502WriteByte(UINT32 address, UINT16 data)
   int ta;
 
   for(ta=0;ta<99;ta++){
-    if((M6502A_memorywritebyte[ta].lowAddr)==-1){
+    if((M6502_memory_wb[0][ta].lowAddr)==-1){
       WriteByte( M6502_context[0].m6502Base + address,data);
       return;
     }
     else{
-      if((address>=M6502A_memorywritebyte[ta].lowAddr)&&(M6502A_memorywritebyte[ta].highAddr>=address)){
-	if(M6502A_memorywritebyte[ta].memoryCall==NULL){
-	  WriteByte( ((UINT8 *) M6502A_memorywritebyte[ta].pUserArea) + address,data);
+      if((address>=M6502_memory_wb[0][ta].lowAddr)&&(M6502_memory_wb[0][ta].highAddr>=address)){
+	if(M6502_memory_wb[0][ta].memoryCall==NULL){
+	  WriteByte( ((UINT8 *) M6502_memory_wb[0][ta].pUserArea) + address,data);
 	}
       }
+    }
+  }
+}
+
+void m6502_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
+  *count = 0;
+  int max = memory_count_rb[cpu];
+  int n;
+  for (n=0; n<max; n++) {
+    if (!M6502_memory_rb[cpu][n].memoryCall &&
+         M6502_memory_rb[cpu][n].pUserArea &&
+	 (M6502_memory_rb[cpu][n].lowAddr & 0xff000000) == 0) {
+	range[(*count)++] = M6502_memory_rb[cpu][n].lowAddr;
+	range[(*count)++] = M6502_memory_rb[cpu][n].highAddr;
     }
   }
 }

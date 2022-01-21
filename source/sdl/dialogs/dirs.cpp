@@ -27,8 +27,15 @@ static int do_dz80(int sel) {
   return 0;
 }
 
+static int do_d6502(int sel) {
+  char *exts[] = { "disa_6502.pl", NULL };
+  fsel(dir_cfg.share_path,exts,dir_cfg.d6502,"Find 6502 disasm command");
+  strcpy(menu[sel].values_list_label[0], dir_cfg.d6502);
+  return 0;
+}
+
 int do_dirs(int sel) {
-  int nb = 5;
+  int nb = 6;
   int bidon = 1;
   int n;
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+2));
@@ -47,6 +54,10 @@ int do_dirs(int sel) {
 
   menu[4].label = _("dz80 (console)");
   menu[4].values_list_label[0] = dir_cfg.dz80;
+
+  menu[5].label = _("d6502 (console)");
+  menu[5].values_list_label[0] = dir_cfg.d6502;
+
   for (n=0; n< nb; n++) {
     menu[n].value_int = &bidon;
     menu[n].values_list_size = 1;
@@ -55,6 +66,7 @@ int do_dirs(int sel) {
   }
   menu[3].menu_func = &do_m68kdis;
   menu[4].menu_func = &do_dz80;
+  menu[5].menu_func = &do_d6502;
 
   TMenu *mbox = new TMenu("",menu);
   mbox->execute();

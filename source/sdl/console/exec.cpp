@@ -447,19 +447,22 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       }
   }
   switch(cpu_id) {
-  case 1: // 68k
+  case CPU_68000:
       snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
       snprintf(cmd+strlen(cmd),1024-strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
-  case 3:
+  case CPU_68020:
       snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
       snprintf(cmd+strlen(cmd),1024-strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
       break;
-  case 2:
+  case CPU_Z80:
       snprintf(cmd,1024,"%s \"%s\" prg.z80",dir_cfg.dz80,name);
+      break;
+  case CPU_6502:
+      snprintf(cmd,1024,"%s \"%s\" > prg.6502",dir_cfg.d6502,name);
       break;
   }
   save_file(name,&ptr[start],end-start);
@@ -508,13 +511,16 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
 static void get_asm_file(char *str, UINT32 target = cpu_get_pc(get_cpu_id())) {
   int cpu_id = get_cpu_id();
   switch(cpu_id>>4) {
-  case 1:
+  case CPU_68000:
       sprintf(str,"%s/prg_%02x.s",get_shared("debug"),target/0x10000);
       break;
-  case 2:
+  case CPU_Z80:
       sprintf(str,"%s/prg.z80",get_shared("debug"));
       break;
-  case 3:
+  case CPU_6502:
+      sprintf(str,"%s/prg.6502",get_shared("debug"));
+      break;
+  case CPU_68020:
       sprintf(str,"%s/prg020_%02x.s",get_shared("debug"),target/0x10000);
       break;
   }
@@ -577,6 +583,12 @@ static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
     if (buff[0] == ';')
       continue;
     sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
+    if ((target >> 4) == CPU_6502) {
+	char *s = buff;
+	while (*s == ' ' || (*s >= '0' && *s<='9') || (*s >= 'A' && *s <= 'F') || *s == '-' || *s == ' ')
+	    s++;
+	sscanf(s,"%s %s",instruction,args);
+    }
     if (cur_pc >= target) break;
     if (!(cur_pc & 0xffff)) set_offs(cur_pc,offset,line);
     line++;
@@ -700,8 +712,8 @@ void do_next(int argc, char **argv) {
     get_instruction();
   do_cycles();
   switch(cpu>>4) {
-  case 1:
-  case 3:
+  case CPU_68000:
+  case CPU_68020:
       if (!strcasecmp(instruction,"JSR") || !strcasecmp(instruction,"BSR") ||
 	      !strcasecmp(instruction,"TRAP")) {
 	  while (cpu_get_pc(cpu) != next_pc) {
@@ -709,11 +721,16 @@ void do_next(int argc, char **argv) {
 	  }
       }
       break;
-  case 2:
+  case CPU_Z80:
       if (!strcasecmp(instruction,"CALL")) {
 	  while (cpu_get_pc(cpu) != next_pc) {
 	      do_cycles();
 	  }
+      }
+      break;
+  case CPU_6502:
+      while (cpu_get_pc(cpu) != next_pc) {
+	  do_cycles();
       }
       break;
   default:

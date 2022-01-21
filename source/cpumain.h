@@ -1,3 +1,5 @@
+#ifndef CPUMAIN_H
+#define CPUMAIN_H 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,6 +21,12 @@ high nibble is for cpu type
 */
 
 #define CPU_NONE             (0x00)
+
+    enum{
+	    CPU_68000 = 1,
+	    CPU_Z80,
+	    CPU_68020,
+	    CPU_6502};
 
 #define CPU_68K_0            (0x10)
 #define CPU_68K_1            (0x11)
@@ -76,6 +84,8 @@ execute a cpu for some cycles
 */
 
 void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles);
+UINT32 cpu_get_cycles_done(UINT32 cpu);
+void cpu_set_cycles_done(UINT32 cpu, int cycles);
 
 /*
 
@@ -101,4 +111,5 @@ extern UINT32 current_cpu_num[0x10];
 
 #ifdef __cplusplus
 }
+#endif
 #endif

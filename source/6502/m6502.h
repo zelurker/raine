@@ -198,11 +198,7 @@ extern UINT8 *m6502bspbBankSwitch[32];	// Bank switching registers
 }
 #define m6502ReleaseTimeslice() m6502_release_time_slice()
 #define m6502exec(cycles)                 \
-    if (m6502.subtype == SUBTYPE_65C02) { \
-        m65c02_execute(cycles);           \
-    } else {                              \
-        m6502_execute(cycles);            \
-    }
+    (m6502.subtype == SUBTYPE_65C02 ? m65c02_execute(cycles) : m6502_execute(cycles))
 #define m6502GetContext m6502_get_context
 #define m6502SetContext m6502_set_context
 #endif
