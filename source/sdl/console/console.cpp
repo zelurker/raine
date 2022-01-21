@@ -639,7 +639,7 @@ static void do_poke(int argc, char **argv) {
   }
 
   if (!strcasecmp(argv[0],"poke")) {
-      if (cpu_id >> 4== 1) // 68k
+      if (cpu_id >> 4== CPU_68000) // 68k
 	  ptr[adr^1] = val;
       else
 	  ptr[adr] = val;

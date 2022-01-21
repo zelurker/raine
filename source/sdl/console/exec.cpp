@@ -211,6 +211,8 @@ int check_breakpoint() {
     int irq = 0;
     if (goto_debuger > 0 && goto_debuger <= MAX_BREAK) {
 	int n = goto_debuger-1;
+	goto_debuger = 0;
+	if (n >= used_break) return irq;
 	int cpu_id = breakp[n].cpu;
 	set_cpu_id(cpu_id);
 	switch_cpu(cpu_id);
