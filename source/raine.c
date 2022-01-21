@@ -512,6 +512,8 @@ int main(int argc,char *argv[])
        strcpy(dir_cfg.m68kdis, raine_get_config_string( "Directories", "m68kdis", "m68kdis"));
    if (!*dir_cfg.dz80)
        strcpy(dir_cfg.dz80, raine_get_config_string( "Directories", "dz80", "dz80"));
+   if (!*dir_cfg.d6502)
+       strcpy(dir_cfg.d6502, raine_get_config_string( "Directories", "d6502", "disa_6502.pl"));
    mystrcpy(dir_cfg.artwork_dir,	 raine_get_config_string( "Directories", "artwork",   dir_cfg.artwork_dir));
    i=0;
    do {
@@ -779,6 +781,7 @@ int main(int argc,char *argv[])
    raine_set_config_string(	"Directories",  "ScreenShots",          dir_cfg.screen_dir);
    raine_set_config_string(     "Directories", "m68kdis", dir_cfg.m68kdis);
    raine_set_config_string(     "Directories", "dz80", dir_cfg.dz80);
+   raine_set_config_string(     "Directories", "d6502", dir_cfg.d6502);
 #if HAS_NEO
    raine_set_config_string("neocd", "neocd_dir", neocd_dir);
    raine_set_config_string("neocd", "neocd_bios", neocd_bios_file);
