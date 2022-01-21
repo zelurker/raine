@@ -156,8 +156,8 @@ INLINE void m6502_take_irq(void)
 		LOG(("M6502 takes IRQ ($%04x)\n", PCD));
 		m6502.irq_state = 0;
 		change_pc(PCD);
+		m6502.pending_irq = 0;
 	}
-	m6502.pending_irq = 0;
 }
 
 int m6502_execute(int cycles)
