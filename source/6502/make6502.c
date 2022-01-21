@@ -6,6 +6,9 @@
 
    1.6raine2 : add the missing addressing modes for the BIT instruction
    - fixed bad inc instruction
+
+   1.6raine3 : fix interrupts disabled on reset, and 2 mismatches between zero & overflow flags, the comment said overflow while the instruction changed the zero, that's what happens when you don't
+   use constants for such things... Didn't check in the docs if the comments were right, but I assumed so.
  */
 
 /* Multi-6502 32 Bit emulator */
@@ -60,7 +63,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define	VERSION 	"1.6raine2"
+#define	VERSION 	"1.6raine3"
 
 #define TRUE            0xff
 #define FALSE           0x0
@@ -69,6 +72,14 @@
 #define UINT32          unsigned long int
 #define UINT16          unsigned short int
 #define UINT8                   unsigned char
+
+/* Some flags used for F (upper part of AF, stored in ah) :
+ * 01 carry
+ * 04 interrupts
+ * 10 overflow
+ * 20 always 1 as a comment, never tested afaik
+ * 40 zero
+ * 80 sign */
 
 FILE *fp = NULL;
 char string[150];
@@ -2587,7 +2598,7 @@ static void AdcHandler(UINT16 dwOpcode)
 		fprintf(fp, "		and	ch, cl	; And 'em together\n");
 		fprintf(fp, "		or		ch, ch	; See if we've overflowed\n");
 		fprintf(fp, "		jns	noOv%ld\n", dwAnotherLabel);
-		fprintf(fp, "		or		ah, 040h	; Set overflow\n");
+		fprintf(fp, "		or		ah, 010h	; Set overflow\n");
 		fprintf(fp, "noOv%ld:\n", dwAnotherLabel);
 
 		fprintf(fp, "		cmp	bh, 9		; Greater than 9?\n");
@@ -2717,7 +2728,7 @@ static void SbcHandler(UINT16 dwOpcode)
 		fprintf(fp, "		and	bl, bh		; See if we overflow\n");
 		fprintf(fp,	"		and	bl, 80h		; Only the top bit\n");
 		fprintf(fp, "		jns	noOverflow%ld ; No overflow\n", dwAnotherLabel);
-		fprintf(fp, "		or		ah, 40h		; Indicate an overflow\n");
+		fprintf(fp, "		or		ah, 10h		; Indicate an overflow\n");
 		fprintf(fp, "noOverflow%ld:\n", dwAnotherLabel);
 
 		fprintf(fp, "		mov	bl, al		; Get our low value\n");
@@ -3638,7 +3649,7 @@ static void ResetCode()
 	fprintf(fp, "		mov	[_%sy], al\n", cpubasename);
 	fprintf(fp, "		mov	[_irqPending], al\n");
 	fprintf(fp, "		mov	[_%ss], byte 0ffh\n", cpubasename);
-	fprintf(fp, "		mov	[_%saf], word 2200h\n", cpubasename);
+	fprintf(fp, "		mov	[_%saf], word 2600h\n", cpubasename);
 	fprintf(fp, "		mov	ax, [ebp + 0fffch] ; Get reset address\n");
 	fprintf(fp, "		mov	[_%spc], ax\n", cpubasename);
 	fprintf(fp,	"		pop	ebp\n");
