@@ -159,6 +159,7 @@ STARSCREAM_IDENTIFIERS(S68020,s68020)
 #define s68000_sr m68ki_get_sr()
 #define s68000_interrupts m68ki_cpu.int_level
 #define s68000_pc REG_PC
+#define s68000readPC() REG_PC
 #define s68000_read_pc REG_PC
 #define s68000_areg REG_A
 #define s68000_dreg REG_D
