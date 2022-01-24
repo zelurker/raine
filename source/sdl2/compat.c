@@ -31,6 +31,7 @@ void sdl_fatal_error(const char *file, const char *func, int line, char *format,
 	    "Error",
 	    msg,
 	    NULL);
+    if (current_game->clear) (*current_game->clear)();
     exit(1);
 }
 

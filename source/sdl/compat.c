@@ -27,6 +27,7 @@ void sdl_fatal_error(const char *file, const char *func, int line, char *format,
     vsnprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
     va_end(ap);
     fprintf(stderr,"Error: %s",msg);
+    if (current_game->clear) (*current_game->clear)();
     exit(1);
 }
 
