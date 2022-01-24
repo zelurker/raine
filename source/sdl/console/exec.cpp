@@ -20,7 +20,7 @@ typedef struct {
   int cpu;
 } tbreak;
 
-static int used_break;
+static int used_break,old_f3_init;
 tbreak breakp[MAX_BREAK];
 #if USE_MUSASHI < 2
 static void (*resethandler)();
@@ -90,8 +90,6 @@ void do_print_ingame(int argc, char **argv) {
     else if (nb == 2) print_ingame(nbf,argv[2],arg[0],arg[1]);
     else if (nb == 3) print_ingame(nbf,argv[2],arg[0],arg[1],arg[2]);
 }
-
-static int old_f3_init;
 
 void do_break(int argc, char **argv) {
     if ((old_f3 != F3SystemEEPROMAccess || !old_f3) && !old_f3_init) {
@@ -352,6 +350,7 @@ void done_breakpoints() {
     if (breakp[n].cond)
       free(breakp[n].cond);
   }
+  old_f3_init = 0;
 }
 
 static char buff[256];
@@ -720,7 +719,7 @@ void do_next(int argc, char **argv) {
   case CPU_68000:
   case CPU_68020:
       if (!strcasecmp(instruction,"JSR") || !strcasecmp(instruction,"BSR") ||
-	      !strcasecmp(instruction,"TRAP")) {
+	      !strcasecmp(instruction,"TRAP") || !strcasecmp(instruction,"DBRA")) {
 	  while (cpu_get_pc(cpu) != next_pc) {
 	      do_cycles();
 	  }
@@ -771,10 +770,9 @@ void do_irq(int argc, char **argv) {
 
 void do_until(int argc, char **argv) {
   if (argc < 2) {
-    throw "syntax : until pc";
+    throw "syntax : until <expression>";
   }
-  UINT32 target_pc = parse(argv[1]);
-  while (pc != target_pc)
+  while (!parse(argv[1]) && !goto_debuger)
     do_cycles();
   disp_instruction();
 }
