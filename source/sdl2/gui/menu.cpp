@@ -1274,6 +1274,7 @@ void TMenu::handle_key(SDL_Event *event) {
 	      // look for the new selection then, starting at sel
 	      // 1 : find sel in the menu_disp array
 	      n = get_seldisp();
+	      if (n < 0) return; // no selection
 	      int found = 0;
 	      for (; n<nb_disp_items; n++) {
 		  const char *s = skip_esc(menu[menu_disp[n]].label);
