@@ -1571,6 +1571,10 @@ static void handle_joy_axis(int which, int axis, int value) {
 	check_emu_joy_event(jevent);
 }
 
+#if SDL < 2
+#define SDL_FIRSTEVENT 0
+#endif
+
 void control_handle_event(SDL_Event *event) {
   int input,which,axis,value,modifier,jevent,  ta;
   DEF_INPUT_EMU *emu_input;
@@ -2206,9 +2210,10 @@ char MSG_ALT[]        = _("Alternate");
 /******************************************************************************/
 
 void inputs_preinit() {
-  int n;
   SDL_Event event;
   int handled;
+#if SDL == 2
+  int n;
   FILE *f = fopen(get_shared("gamecontrollerdb.txt"),"r");
   if (f) {
       fclose(f);
@@ -2219,6 +2224,7 @@ void inputs_preinit() {
   for (n=0; n<SDL_NumJoysticks(); n++) {
       add_game_controller(n);
   }
+#endif
 
   // Some peripherals like a certain microsoft keyboard is recognized as a
   // joystick when pluged in usb, and they send a few faulty events at start

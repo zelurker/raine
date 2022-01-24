@@ -20,6 +20,7 @@ class TMain_menu : public TMenu
   virtual char* get_top_string();
 };
 
+#if SDL == 2
 class TRaineDesktop : public TDesktop
 {
     private:
@@ -34,6 +35,7 @@ class TRaineDesktop : public TDesktop
 // A Raine desktop, which starts the game in the background as soon as it's loaded, but only until it's played
 // or interrupted by a call to end_preinit()
 #define rdesktop ((TRaineDesktop*)desktop)
+#endif
 
 extern "C" {
 #endif

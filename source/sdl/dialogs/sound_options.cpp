@@ -26,6 +26,7 @@ static int set_default_volumes(int sel) {
 
 static void init_sound_driver(int changed);
 
+#if SDL == 2
 static int choose_driver(int sel) {
     char buf[512];
     const char *current = SDL_GetCurrentAudioDriver();
@@ -56,13 +57,16 @@ static int choose_driver(int sel) {
     init_sound_driver(1);
     return 0;
 }
+#endif
 
 static int driver_id;
 
 menu_item_t sound_menu[] =
 {
+#if SDL == 2
     { _("Sound driver"), &choose_driver,&driver_id  },
   { _("Sound device"), NULL, &RaineSoundCard, 1, { 0 }, { _("No") } },
+#endif
   { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 }},
 #if HAS_ES5506
   { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
@@ -132,7 +136,9 @@ class TSoundDlg : public TMenu {
 int do_sound_options(int sel) {
     int old = recording;
     if (current_game) {
+#if SDL == 2
 	rdesktop->end_preinit();
+#endif
 	saDestroySound(0);
     }
 #if SDL == 2

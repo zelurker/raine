@@ -176,7 +176,13 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
    //reserved_channel = 0;
 
    pause_sound = 0;		/* pause flag off */
-   if (!opened_audio) {
+   if (!opened_audio
+#if SDL < 2
+	   // For use with normal blits and libefence, it became allergic to opengl and the audio libs !
+	   // the only way to use it is to really disable audio and to use normal blits
+	   && soundcard
+#endif
+	   ) {
        SDL_AudioSpec spec;
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
@@ -607,7 +613,11 @@ void saDestroySound( int remove_all_resources )
       * mode iso for example. Simply not calling ever sound_quit seems fine. */
      // int quit = Sound_Quit();
      // printf("sound_quit %d\n",quit);
+#if SDL == 2
      SDL_CloseAudioDevice(dev);
+#else
+     SDL_CloseAudio();
+#endif
      dev = 0;
    }
 
