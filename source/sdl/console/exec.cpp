@@ -91,8 +91,11 @@ void do_print_ingame(int argc, char **argv) {
     else if (nb == 3) print_ingame(nbf,argv[2],arg[0],arg[1],arg[2]);
 }
 
+static int old_f3_init;
+
 void do_break(int argc, char **argv) {
-    if (old_f3 != F3SystemEEPROMAccess || !old_f3) {
+    if ((old_f3 != F3SystemEEPROMAccess || !old_f3) && !old_f3_init) {
+	old_f3_init = 1;
 	old_f3 = F3SystemEEPROMAccess;
 	F3SystemEEPROMAccess=&my_illg;
     }
@@ -760,7 +763,7 @@ void do_irq(int argc, char **argv) {
       if ((int(sr) & 0x2700) <= 0x2000)
 	  throw "not in an irq !";
       int current = int(sr) & 0x2700;
-      while ((int(sr) & 0x2700) == current)
+      while ((int(sr) & 0x2700) == current && !goto_debuger)
 	  do_cycles();
   }
   disp_instruction();
