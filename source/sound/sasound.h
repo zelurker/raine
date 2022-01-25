@@ -168,6 +168,12 @@ enum inittype
 #if HAS_GALAXIAN
   SOUND_GALAXIAN,
 #endif
+#if HAS_TMS5220
+  SOUND_5220,
+#endif
+#if HAS_POKEY
+  SOUND_POKEY,
+#endif
   SOUND_LAST,
 };
 

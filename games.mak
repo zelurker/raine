@@ -51,6 +51,7 @@ OBJS += \
 	$(OBJDIR)/games/flstory.o \
 	$(OBJDIR)/games/frogger.o \
 	$(OBJDIR)/games/galpanic.o \
+	$(OBJDIR)/games/gauntlet.o \
 	$(OBJDIR)/games/gcpball.o \
 	$(OBJDIR)/games/gekridan.o \
 	$(OBJDIR)/games/gridseek.o \
@@ -173,6 +174,7 @@ OBJS += \
 	$(OBJDIR)/cat93c46.o \
 	$(OBJDIR)/decode.o \
 	$(OBJDIR)/cps2crpt.o \
+	$(OBJDIR)/slapstic.o \
 	$(3812) \
 	$(ADPCM) \
 	$(AY8910) \
@@ -189,6 +191,8 @@ OBJS += \
 	$(YMF278B) \
 	$(X1_010) \
 	$(TOAPLAN2) \
-	$(GALAXIAN)
+	$(GALAXIAN) \
+	$(TMS5220) \
+	$(POKEY)
 
 HAS_NEO = 1

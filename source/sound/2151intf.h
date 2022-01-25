@@ -29,6 +29,7 @@ WRITE_HANDLER( YM2151_register_port_2_w );
 WRITE_HANDLER( YM2151_data_port_0_w );
 WRITE_HANDLER( YM2151_data_port_1_w );
 WRITE_HANDLER( YM2151_data_port_2_w );
+WRITE_HANDLER( YM2151_word_0_w );
 int YM2151_sh_start(const struct YM2151interface *msound);
 int YM2151_ALT_sh_start(const struct YM2151interface *msound);
 void YM2151_sh_stop(void);

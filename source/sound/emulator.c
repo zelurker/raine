@@ -21,6 +21,8 @@
 #include "2413intf.h"
 #include "debug.h"
 #include "galaxian.h"
+#include "5220intf.h"
+#include "pokey.h"
 
 int change_sample_rate;
 
@@ -31,6 +33,12 @@ struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 #endif
 #if HAS_GALAXIAN
    { "galaxian", galaxian_sh_stop, },
+#endif
+#if HAS_POKEY
+   { "pokey", pokey_sh_stop, },
+#endif
+#if HAS_TMS5220
+   { "tms5220", tms5220_sh_stop, },
 #endif
 #if HAS_YM2151
    { "ym2151",     YM2151_sh_stop,        },
@@ -125,6 +133,16 @@ int init_sound_emulators(void)
 #if HAS_GALAXIAN
 	case SOUND_GALAXIAN:
 	    i = galaxian_sh_start();
+	    break;
+#endif
+#if HAS_POKEY
+	case SOUND_POKEY:
+	    i = pokey_sh_start(SndMachine->intf[j]);
+	    break;
+#endif
+#if HAS_TMS5220
+	case SOUND_5220:
+	    i = tms5220_sh_start(SndMachine->intf[j]);
 	    break;
 #endif
 #if HAS_YM2203

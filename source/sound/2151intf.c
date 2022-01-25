@@ -329,7 +329,7 @@ WRITE_HANDLER( YM2151_data_port_2_w )
 
 WRITE_HANDLER( YM2151_word_0_w )
 {
-	if (offset)
+	if (offset & 1)
 		YM2151_data_port_0_w(0,data);
 	else
 		YM2151_register_port_0_w(0,data);

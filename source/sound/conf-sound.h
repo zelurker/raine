@@ -25,3 +25,6 @@
 #define HAS_YMF278B 1
 #define HAS_X1_010 1
 #define HAS_GALAXIAN 1
+#define HAS_TMS5220 1
+#define HAS_POKEY 1
+
