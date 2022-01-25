@@ -9,6 +9,7 @@
 #include "gui.h" // goto_debuger
 #include "savegame.h"
 #include "galaxian.h"
+#include "pokey.h"
 
 // Number of cycles before reseting the cycles counter and the timers
 #define MAX_CYCLES 0x40000000
@@ -42,7 +43,8 @@ typedef struct {
   UINT32 cycles;
   UINT32 id;
   UINT32 period;
-  char name[10];
+  char name[16];
+  int active;
 } TimerStruct;
 
 UINT32 audio_cpu;
@@ -95,14 +97,10 @@ void reset_timers() {
 }
 
 double emu_get_time() {
-  // returns the time for the running cpu in seocnds (double)
-  // the problem is we guess the running cpu and actually we can only handle the z80
-  // if there is no z80 running, we return the time on the real computer, using rdtsc
-  if (MZ80Engine) {
-    double time =  (double)mz80GetCyclesDone()/(z80_frame*fps);
+    // returns the time for the running cpu in seocnds (double)
+
+    double time =  (double)cpu_get_cycles_done(audio_cpu)/(z80_frame*fps);
     return time;
-  }
-  return timer_get_time();
 }
 
 double trunc(double);
@@ -133,7 +131,7 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
 {
   UINT32 remaining = duration * fps * z80_frame;
   UINT32 cycles_period = period * fps * z80_frame;
-  UINT32 elapsed = mz80GetCyclesDone();
+  UINT32 elapsed = cpu_get_cycles_done(audio_cpu);
 
   called_adjust = 1;
   if (free_timer < MAX_TIMERS) {
@@ -145,6 +143,7 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     timer[free_timer].cycles = elapsed + remaining;
     timer[free_timer].id = timer_id;
     timer[free_timer].period = cycles_period;
+    timer[free_timer].active = 1;
     if (callback == &timer_callback_2203) strcpy(timer[free_timer].name,"2203");
     else if (callback == &timer_callback_2610) strcpy(timer[free_timer].name, "2610");
     else if (callback == &cb_3812a) strcpy(timer[free_timer].name, "3812a");
@@ -156,6 +155,8 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     else if (callback == &timer_callback_3812) strcpy(timer[free_timer].name,"3812");
     else if (callback == &galaxian_noise_timer_cb) strcpy(timer[free_timer].name,"galax_n");
     else if (callback == &galaxian_lfo_timer_cb) strcpy(timer[free_timer].name,"galax_lfo");
+    else if (callback == &pokey_timer_expire) strcpy(timer[free_timer].name,"pokey1");
+    else if (callback == &pokey_pot_trigger) strcpy(timer[free_timer].name,"pokey2");
     else {
 	fatal_error("timer_set: handler unknown");
     }
@@ -180,6 +181,10 @@ static void restore_timers() {
 	else if (!strcmp(timer[n].name,"2151a")) timer[n].handler = &timer_callback_a;
 	else if (!strcmp(timer[n].name,"2151b")) timer[n].handler = &timer_callback_b;
 	else if (!strcmp(timer[n].name,"3812")) timer[n].handler = &timer_callback_3812;
+	else if (!strcmp(timer[n].name,"galax_n")) timer[n].handler = &galaxian_noise_timer_cb;
+	else if (!strcmp(timer[n].name,"galax_lfo")) timer[n].handler = &galaxian_lfo_timer_cb;
+	else if (!strcmp(timer[n].name,"pokey1")) timer[n].handler = &pokey_timer_expire;
+	else if (!strcmp(timer[n].name,"pokey2")) timer[n].handler = &pokey_pot_trigger;
     }
 }
 
@@ -217,7 +222,7 @@ void timer_remove(void *the_timer) {
 }
 
 void triger_timers() {
-  UINT32 elapsed = mz80GetCyclesDone();
+  UINT32 elapsed = cpu_get_cycles_done(audio_cpu);
   int n;
 #if VERBOSE
   int count=0;
@@ -235,7 +240,7 @@ void triger_timers() {
 #endif
 
   for (n=0; n<free_timer; n++) {
-    if (timer[n].cycles <= elapsed) { // Trigered !
+    if (timer[n].cycles <= elapsed && timer[n].active) { // Trigered !
 #if VERBOSE
       printf("timer %d elapsed %d diff %d\n",n,elapsed,elapsed - timer[n].cycles);
       count++;
@@ -244,46 +249,49 @@ void triger_timers() {
       // after that, if there is a while here, it's an infinite loop
       // (the logic of the driver might be wrong, but it works this way anyway)
       // Only for mz80, to be tested in cz80 !
-      if (!_z80iff) {
-	// Sometimes 2 timers trigger too close to each other and the z80
-	// needs time to handle the interrupt.
-	// I really wonder how the original hardware handled this.
-	// Maybe there was a minimum delay on the line ?
+      if ((audio_cpu >> 4) == CPU_Z80) {
+	  // Don't know yet how this will work with other cpus, I expect trouble !
+	  if (!_z80iff) {
+	      // Sometimes 2 timers trigger too close to each other and the z80
+	      // needs time to handle the interrupt.
+	      // I really wonder how the original hardware handled this.
+	      // Maybe there was a minimum delay on the line ?
 
-	// Anyway this has to happen BEFORE the timer is trigered because
-	// if an external interrupt blocks the timer int, even if it makes
-	// it pending, it can produce 2 interrupts too close to each other
-	// which has the effect of completely stopping the music !
-	ExitOnEI = 1; // Exit at the end of the interrupt
-	cpu_execute_cycles(audio_cpu, 240000 );
-	// printf("%d cycles more\n",dwElapsedTicks - elapsed);
-	ExitOnEI = 0;
-	dwElapsedTicks = elapsed; // This frame must not count for the timers
-	cyclesRemaining=0;
+	      // Anyway this has to happen BEFORE the timer is trigered because
+	      // if an external interrupt blocks the timer int, even if it makes
+	      // it pending, it can produce 2 interrupts too close to each other
+	      // which has the effect of completely stopping the music !
+	      ExitOnEI = 1; // Exit at the end of the interrupt
+	      cpu_execute_cycles(audio_cpu, 240000 );
+	      // printf("%d cycles more\n",dwElapsedTicks - elapsed);
+	      ExitOnEI = 0;
+	      dwElapsedTicks = elapsed; // This frame must not count for the timers
+	      cyclesRemaining=0;
+	  }
       }
       called_adjust = 0;
       (*(timer[n].handler))(timer[n].param);
       // Normally, I would call timer_remove here :
       // timer_remove((void*)timer[n].id);
       // but it is rather unefficient since it's looking for a timer
-      // when we know whcih one we want to delete...
+      // when we know which one we want to delete...
       // Also, it allows to handle periodic timers
       if (!called_adjust) {
-	if (timer[n].period) {
-	  timer[n].cycles = elapsed + timer[n].period;
-	} else {
-	  if (n<free_timer-1) // not the last timer ?
-	    memmove(&timer[n],&timer[n+1],sizeof(TimerStruct)*(free_timer-n-1));
-	  free_timer--;
-	  n--;
-	}
+	  if (timer[n].period) {
+	      timer[n].cycles = elapsed + timer[n].period;
+	  } else {
+	      if (n<free_timer-1) // not the last timer ?
+		  memmove(&timer[n],&timer[n+1],sizeof(TimerStruct)*(free_timer-n-1));
+	      free_timer--;
+	      n--;
+	  }
       }
     }
   }
   if (elapsed > MAX_CYCLES) { // time to reset the cpu...
     for (n=0; n<free_timer; n++)
       timer[n].cycles -= MAX_CYCLES;
-    mz80AddCyclesDone(-MAX_CYCLES);
+    cpu_set_cycles_done(audio_cpu,-MAX_CYCLES);
   }
 #if VERBOSE
   if (count > 1)
@@ -296,7 +304,7 @@ INT32 get_min_cycles(UINT32 frame) {
   UINT32 elapsed;
   INT32 min_cycles;
 
-  elapsed = mz80GetCyclesDone();
+  elapsed = cpu_get_cycles_done(audio_cpu);
   if (free_timer > 0) {
     min_cycles = timer[0].cycles;
     for (n=1; n<free_timer; n++)
@@ -330,14 +338,14 @@ int execute_one_z80_audio_frame(UINT32 frame) {
       return 0;
 #endif
   if (RaineSoundCard) {
-    UINT32 elapsed = mz80GetCyclesDone();
+    UINT32 elapsed = cpu_get_cycles_done(audio_cpu);
     INT32 min_cycles = get_min_cycles(frame);
 
     cpu_execute_cycles(audio_cpu, min_cycles );        // Sound Z80
-    frame = (mz80GetCyclesDone() - elapsed); // min_cycles;
+    frame = (cpu_get_cycles_done(audio_cpu) - elapsed); // min_cycles;
 #if VERBOSE
     if (abs(frame - min_cycles) > 16)
-      printf("diff %d (pc %x)\n",dwElapsedTicks - elapsed - min_cycles,z80pc);
+      printf("diff %d (pc %x)\n",cpu_get_cycles_done(audio_cpu) - elapsed - min_cycles,cpu_get_pc(audio_cpu));
 #endif
 
     triger_timers();
@@ -350,7 +358,7 @@ void finish_speed_hack(INT32 diff) {
   INT32 min;
   while (diff > 0) {
     min = get_min_cycles(diff);
-    mz80AddCyclesDone(min);
+    cpu_set_cycles_done(audio_cpu,min);
     triger_timers();
     diff -= min;
   }
@@ -367,6 +375,18 @@ void execute_z80_audio_frame() {
     frame -= execute_one_z80_audio_frame(frame);
   }
 }
+
+void timer_enable(void *t, int active) {
+    int n;
+    UINT32 id = (UINT32)t;
+    for (n=0; n<free_timer; n++) {
+	if (timer[n].id == id) {
+	    timer[n].active = active;
+	    break;
+	}
+    }
+}
+
 
 // For now this thing always runs the 68k at 4 times the speed of the z80.
 void execute_z80_audio_frame_with_nmi(int nb) {
