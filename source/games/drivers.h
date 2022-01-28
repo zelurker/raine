@@ -1334,3 +1334,5 @@
 // zerozone.c
   DRV(zerozone)
 
+DRV(gauntlet)
+

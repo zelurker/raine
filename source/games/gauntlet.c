@@ -83,31 +83,20 @@ static UINT8 read_eeprom(UINT32 offset) {
 
 static void write_eeprom(UINT32 offset, UINT8 data) {
     if (!eeprom_unlocked) return;
-    printf("write_eeprom %x,%x\n",offset,data);
     offset = (offset & 0xfff) >> 1;
-    if (offset == 0x37 || offset == 0x19)
-	printf("write eeprom %x,%x from %x\n",offset,data,s68000readPC());
-    eeprom[offset] = data & 0xff;
+    eeprom[offset] = data;
     eeprom_unlocked = 0;
 }
 
 static void update_interrupts() {
-    int level = (s68000_sr >> 8) & 0x7;
     if (atarigen_video_int_state) {
-	if (level < 4) {
-	    cpu_interrupt(CPU_68K_0, 4);
-	    atarigen_video_int_state = 0;
-	} else
-	    printf("no vbl, level %d\n",level);
-	// printf("vbl (4)\n");
+	cpu_interrupt(CPU_68K_0, 4);
+	atarigen_video_int_state = 0;
+	if (atarigen_sound_int_state) cpu_execute_cycles(CPU_68K_0,100);
     }
     if (atarigen_sound_int_state) {
-	if (level < 6) {
 	    cpu_interrupt(CPU_68K_0, 6);
 	    atarigen_sound_int_state = 0;
-	} else
-	    printf("no sound irq, level %d\n",level);
-	printf("sound (6)\n");
     }
 }
 
@@ -115,7 +104,6 @@ static UINT16 atarigen_sound_r(UINT32 offset) {
     atarigen_sound_to_cpu_ready = 0;
     atarigen_sound_int_state = 0;
     input_buffer[8] &= ~0x10;
-    printf("atarigen_sound_r read %x from %x\n",atarigen_sound_to_cpu,s68000_read_pc);
     return atarigen_sound_to_cpu;
 }
 
@@ -126,7 +114,6 @@ static void sound_reset_w(UINT32 offset, UINT16 data) {
     sound_reset_val = data;
     if ((sound_reset_val ^ oldword) & 1) {
 	print_debug("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
-	printf("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
 	atarigen_sound_to_cpu_ready = 0;
 	atarigen_sound_int_state = 0;
 	input_buffer[8] &= ~0x10;
@@ -148,7 +135,6 @@ static void eeprom_enable_w(UINT32 offset, UINT16 data) {
 static void atarigen_sound_w_byte(UINT32 offset, UINT16 data) {
     atarigen_cpu_to_sound = data;
     atarigen_cpu_to_sound_ready = 1;
-    printf("sound_w %x\n",data);
     print_debug("sound_w %x\n",data);
     if (made_reset) {
 	// Crazy sync code for the 6502, the reset code expects that a command byte is ready to read at the very beginning
@@ -174,24 +160,21 @@ static void swap_mem(void *ptr1, void *ptr2, int bytes)
 }
 
 static void m6502_sound_w(UINT32 offset, UINT8 data) {
-    printf("*** m6502_sound_w %x,%x from %x\n",offset,data,cpu_get_pc(CPU_M6502_0));
     print_debug("*** m6502_sound_w %x,%x\n",offset,data);
     if (atarigen_sound_to_cpu_ready) {
-	printf("Missed result from 6502\n");
 	print_debug("Missed result from 6502\n");
     }
 
     /* set up the states and signal the sound interrupt to the main CPU */
     atarigen_sound_to_cpu = data;
     atarigen_sound_to_cpu_ready = 1;
+    input_buffer[8] |= 0x10;
     atarigen_sound_int_state = 1;
     update_interrupts();
-    // StopM6502(0,0);
 }
 
 static UINT8 m6502_sound_r(UINT32 offset) {
     atarigen_cpu_to_sound_ready = 0;
-    printf("6502 sound read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
     print_debug("6502 read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
     return atarigen_cpu_to_sound;
 }
@@ -224,7 +207,6 @@ void atarigen_set_tms5220_vol(int volume)
 }
 
 static UINT8 input_port_5_r(UINT32 offset) {
-    printf("input_port_5_r %x from %x\n",input_buffer[10],cpu_get_pc(CPU_M6502_0));
     return input_buffer[10];
 }
 
@@ -244,7 +226,6 @@ static UINT8 switch_6502_r(UINT32 offset)
         if (atarigen_sound_to_cpu_ready) temp ^= 0x40;
         if (tms5220_ready_r()) temp ^= 0x20;
         if (!(input_buffer[8] & 8)) temp ^= 0x10;
-	printf("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
 	// print_debug("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
 
         return temp;
@@ -284,7 +265,6 @@ static INLINE void update_bank(int bank)
         /* if the bank has changed, copy the memory; Pit Fighter needs this */
         if (bank != atarigen_slapstic_bank)
         {
-	    printf("slap bank %x\n",bank);
                 /* bank 0 comes from the copy we made earlier */
                 if (bank == 0)
                         memcpy(&ROM[0x38000], atarigen_slapstic_bank0, 0x2000);
@@ -298,7 +278,6 @@ static INLINE void update_bank(int bank)
 
 static void slapstic_ww(UINT32 offset,UINT16 data)
 {
-    printf("slapstic_ww %x\n",offset);
         update_bank(slapstic_tweak((offset-0x38000)/2));
 }
 
@@ -312,7 +291,6 @@ static UINT8 slapstic_rb(UINT32 offset) {
     // Adapted from the word version
     UINT8 result = ROM[0x38000 + ((offset & 0x1fff) ^ 1)];
     update_bank(slapstic_tweak((offset-0x38000)/2));
-    printf("slapstic_rb %x\n",offset);
     return result;
 }
 
@@ -323,7 +301,6 @@ static UINT16 slapstic_rw(UINT32 offset)
 
         /* then determine the new one */
         update_bank(slapstic_tweak((offset-0x38000)/2));
-	printf("slapstic_rw %x\n",offset);
         return result;
 }
 
@@ -332,12 +309,10 @@ static void watchdog_w(UINT32 offset, UINT16 data) {
 }
 
 static UINT16 read_port_4(UINT32 offset) {
-    printf("read_port_4 %x from %x\n",ReadWord(&input_buffer[8]),s68000_read_pc);
     return ReadWord(&input_buffer[8]);
 }
 
 static UINT16 read_port_4b(UINT32 offset) {
-    printf("read_port_4b from %x = %x\n",s68000_read_pc,input_buffer[8]);
     return input_buffer[8];
 }
 
@@ -352,7 +327,6 @@ static void load_gauntlet() {
 	2; // xscroll
     if(!(RAM=AllocateMem(RAMSize))) return;
     memset(RAM,0,RAMSize);
-    printf("fps on load %g\n",fps);
     setup_z80_frame(CPU_M6502_0,ATARI_CLOCK_14MHz/8/fps);
     eeprom = AllocateMem(0x800);
     if (!eeprom) return;
@@ -365,6 +339,13 @@ static void load_gauntlet() {
     ram6502 = RAM_PAL + 0x800;
     InitPaletteMap(RAM_PAL, 0x40*4, 0x4, 0x8000); // banks of 4 colors only because of alpha !
     set_colour_mapper(&col_map_nnnn_rrrr_gggg_bbbb_atari);
+    // xor the sprites of this region...
+    UINT16 *p = (UINT16*)load_region[REGION_GFX2];
+    int s = get_region_size(REGION_GFX2)/2-1;
+    do {
+	p[s--] ^= 0xffff;
+    } while (s >= 0);
+
 
     ByteSwap(ROM, get_region_size(REGION_ROM1) );
     swap_mem(ROM + 0x000000, ROM + 0x008000, 0x8000);
@@ -374,6 +355,7 @@ static void load_gauntlet() {
     // swap_mem(ROM + 0x070000, ROM + 0x078000, 0x8000);
 
     atarigen_slapstic_bank0 = AllocateMem(0x2000);
+    save_debug("rom",ROM,0x50000,0);
     if (atarigen_slapstic_bank0)
 	memcpy(atarigen_slapstic_bank0, &ROM[0x38000], 0x2000);
     slapstic_init(104);
@@ -462,10 +444,7 @@ extern int goto_debuger;
 
 static void execute_gauntlet()
 {
-    if (s68000_pc > 0x10000 && s68000_pc < 0x38000) {
-	printf("game over at %x sr %x frame %d\n",s68000_pc,s68000_sr,cpu_frame_count);
-	exit(1);
-    }
+    input_buffer[8] |= 0x40;
 #if 0
     if (((s68000_sr >> 8) & 7) == 4) {
 	printf("level still 4 at frame %d pc %x\n",cpu_frame_count,s68000_pc);
@@ -475,43 +454,19 @@ static void execute_gauntlet()
     if (goto_debuger) return;
     for (int n=0; n<4; n++) {
 	int frame = ATARI_CLOCK_14MHz/8/fps/4,diff;
+	if (n == 3) {
+	    input_buffer[8] &= ~0x40;
+	    atarigen_video_int_state = 1;
+	    update_interrupts();
+	}
 	while (frame > 16) {
 	    diff = execute_one_z80_audio_frame(frame);
 	    cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
-#if 0
-	    while ((s68000_sr & 0x700) == 0x600) {
-		printf("still in irq6...\n");
-		cpu_execute_cycles(CPU_68K_0, 500); // 68010
-	    }
-#endif
 	    frame -= diff;
 	    if (diff == 0) break;
 	}
 	cpu_interrupt(CPU_M6502_0,1);
     }
-    atarigen_video_int_state = 1;
-    if ((s68000_sr & 0xf00) >= 0x400) {
-	printf("sr %x at frame %d\n",s68000_sr,cpu_frame_count);
-    }
-    // printf("68k pc before vbl %x\n",s68000_read_pc);
-    update_interrupts();
-#if 0
-    int cycles = 0,last_pc,last2_pc;
-    while ((s68000_sr & 0x700) == 0x400) {
-	cycles += 10;
-	last2_pc = last_pc;
-	last_pc = s68000_pc;
-	cpu_execute_cycles(CPU_68K_0,10);
-	if (s68000_pc >= 0x10000 && s68000_pc < 0x38000) {
-	    printf("game over end frame at %x sr %x frame %d last_pc %x last2_pc %x\n",s68000_pc,s68000_sr,cpu_frame_count,last_pc,last2_pc);
-	    exit(1);
-	}
-	if (goto_debuger) return;
-    }
-    if (cycles)
-	printf("vbl in %d cycles\n",cycles);
-#endif
-    // printf("904002 : %x 904f0c : %x\n",ReadWord(&RAM[0x3002]),ReadWord(&RAM[0xf0c]));
 }
 
 static struct INPUT_INFO input_gauntlet[] =
@@ -551,7 +506,7 @@ static struct INPUT_INFO input_gauntlet[] =
 
   INP1( UNUSED,  0x08, 0x07),
   INP1( UNUSED,  0x08, 0x30), // ?
-  INP1( UNUSED,  0x08, 0x40), // vblank
+  INP0( UNUSED,  0x08, 0x40), // vblank
   INP1( UNUSED,  0x08, 0x80),
 
   INP0( COIN4, 0x0a, 0x01),
@@ -606,50 +561,52 @@ static struct GFX_LIST gauntlet_gfx[] =
 static void draw_gauntlet()
 {
     ClearPaletteMap();
-    int xscroll, yscroll, ta, code;
+
+    int xscroll, yscroll, ta, code, color;
     SCROLL_REGS;
     UINT8 *map;
-    static int bank;
+    int bank,size;
+    static int bank_mask;
+    if (!bank_mask) {
+	size = get_region_size(REGION_GFX2);
+	bank_mask = (size>>6)-1;
+    }
 
     yscroll = ReadWord(&alpha[0xf6e]);
     xscroll = ReadWord(ram6502+0x10000) & 0x1ff;
-    if (yscroll & 3)
-	print_ingame(1,"tilebank %d",yscroll & 3);
+    int tilebank = yscroll & 3;
     yscroll >>= 7;
     yscroll &= 0x1ff;
-    bank = 0x80+0x18; // ??!!!!
+    // if (bank < 0x40 || bank > 0x80) bank = 0x40;
+    bank = 0x80+0x20;
 
     if( check_layer_enabled(layer_id_data[0])) {
-	MAKE_SCROLL_512x512_2_8_YX(xscroll,yscroll+8);
+	MAKE_SCROLL_512x512_2_8_YX(yscroll,xscroll);
 	START_SCROLL_8_YX(16,16,336,240) {
 	    ta = ReadWord(&playfield[zz]);
-	    code = (ta & 0xfff) ^ 0x800;
+	    code = (((tilebank*0x1000) & bank_mask) + (ta & 0xfff)) ^ 0x800;
+	    color = (bank)+ (((ta >> 12) & 7)*4);
+	    // Oh well, this layer has 16 colors when the other one has 4 only, I could maybe use the multi_mapped_new macro
+	    // but it obliges to count in banks of 16 colors which could create problems, I'll just use 4 map calls, anyway the palette is mapped only once
 	    MAP_PALETTE_MAPPED_NEW(
-		    ((bank)| (((ta >> 12) & 7)*1))+1,
+		    color+3,
 		    4,
 		    map);
 	    MAP_PALETTE_MAPPED_NEW(
-		    ((bank)| (((ta >> 12) & 7)*1))+2,
+		    color+2,
 		    4,
 		    map);
 	    MAP_PALETTE_MAPPED_NEW(
-		    ((bank)| (((ta >> 12) & 7)*1))+3,
+		    color+1,
 		    4,
 		    map);
 	    MAP_PALETTE_MAPPED_NEW(
-		    (bank)| (((ta >> 12) & 7)*1),
+		    color,
 		    4,
 		    map);
-#if 0
-	    UINT8 *p = &gfx[1][code << 6];
-	    for (int n=0; n<64; n++)
-		if (p[n] > max) max = p[n];
-#endif
-#if 0
 	    if (ta >> 15)
-		Draw8x8_Trans_Packed_Mapped_Rot(&gfx[0][code<<5],x,y,map);
+		Draw8x8_Mapped_FlipY_Rot(&gfx[1][code<<6],x,y,map);
 	    else
-#endif
 		Draw8x8_Mapped_Rot(&gfx[1][code<<6],x,y,map);
 	}
 	END_SCROLL_512x512_2_8();

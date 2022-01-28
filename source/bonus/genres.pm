@@ -60,6 +60,8 @@ sub get_genre($$) {
 				$genre = "GAME_MAZE";
 			} elsif ($genre =~ /Action/) {
 				$genre = "GAME_MISC";
+			} elsif ($genre =~ /Hack and/i) {
+				$genre = "GAME_HACK";
 			} else {
 				print STDERR "genre unknown $genre for $name - using GAME_MISC\n";
 				$genre = "GAME_MISC";

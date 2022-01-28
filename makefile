@@ -950,6 +950,10 @@ MSM5205 = $(OBJDIR)/sound/msm5205.o
 
 GALAXIAN = $(OBJDIR)/sound/galaxian.o
 
+TMS5220 = $(OBJDIR)/sound/tms5220.o $(OBJDIR)/sound/5220intf.o
+
+POKEY = $(OBJDIR)/sound/pokey.o
+
 MSM5232 = $(OBJDIR)/sound/msm5232.o
 
 NAMCO = $(OBJDIR)/sound/namco.o

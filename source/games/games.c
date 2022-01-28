@@ -28,6 +28,7 @@ char *game_type[NB_GAME_TYPE] =
   "Quizz",
   "Maze",
   "Fight",
+  "Hack and slash",
 };
 
 char *company_name[] =
