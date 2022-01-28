@@ -9,8 +9,6 @@
 #include "sasound.h"		// sample support routines
 #include "tchnosnd.h"
 #include "adpcm.h"
-#include "blit.h" // clear_game_screen
-
 
 static struct ROM_INFO rom_wwfwfest[] =
 {

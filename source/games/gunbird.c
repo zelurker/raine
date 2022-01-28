@@ -19,7 +19,6 @@
 #include "2610intf.h"
 #include "ymf278b.h"
 #include "memory.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "f3system.h"
 #include "lspr16.h"

@@ -23,6 +23,7 @@ missw96 and fantsia2 do not seem to have any service mode ??!
 
 
 #include "gameinc.h"
+#include "compat_sdl.h" // for makecol15 !!!
 #include "taitosnd.h"
 #include "sasound.h"
 #include "adpcm.h"
@@ -447,7 +448,8 @@ static void galpanic_fg_write_w_rot( UINT32 address, UINT16 data ){
 		offs &= 0xFFFF;
 		// write to foreground ram
 		VIDEO_FG[ offs] = data&0xFF;
-		VIDEO_FG[ offs - 256] = data>>8;
+		if (offs >= 256)
+		    VIDEO_FG[ offs - 256] = data>>8;
 	}
 }
 

@@ -11,9 +11,7 @@
 
 #include "gameinc.h"
 #include "nichisnd.h"
-#include "blit.h" // clear_game_screen
 #include "profile.h" // fps
-
 
 static struct ROM_INFO rom_terraf[] =
 {

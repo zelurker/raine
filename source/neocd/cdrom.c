@@ -1,5 +1,6 @@
 #include <unistd.h> // chdir
 #include "raine.h"
+#include "compat_sdl.h"
 #include "starhelp.h" // ByteSwap
 #include "sasound.h"
 #include <string.h>
@@ -27,7 +28,7 @@
 #endif
 #include "ingame.h"
 #include "7z.h"
-#include "compat.h"
+#include "gameinc.h" // clear_game_screen
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;

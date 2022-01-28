@@ -100,7 +100,6 @@ Issue confirmed, it happens also in the original hardware.
 #include "gameinc.h"
 #include "sasound.h"
 #include "namco.h"
-#include "blit.h" // clear_game_screen
 #include "decode.h"
 #include "emudx.h"
 #include "alpha.h"
@@ -109,10 +108,10 @@ Issue confirmed, it happens also in the original hardware.
 #include "savegame.h"
 #include "history.h"
 #include "hiscore.h"
+#include "blit.h"
 #ifdef SDL
 #include "dialogs/messagebox.h"
 #endif
-
 
 static struct DSW_DATA dsw_data_pengo_2[] =
 {

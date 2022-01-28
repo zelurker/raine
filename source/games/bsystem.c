@@ -12,8 +12,7 @@
 #include "cat93c46.h"
 #include "sasound.h"            // sample support routines
 #include "savegame.h"
-#include "blit.h"
-
+#include "blit.h" // direct bitmap access, but according to bpp
 
 static struct ROM_INFO rom_qzshowby[] =
 {

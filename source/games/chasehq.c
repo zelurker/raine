@@ -16,7 +16,6 @@
 #ifdef SDL
 #include "control_internal.h" // analog support
 #endif
-#include "blit.h"
 #include "files.h"
 
 extern struct ROMSW_DATA romsw_data_taito_jap_us[];

@@ -2,6 +2,7 @@
 #define MENUITEM_H
 
 #include "deftypes.h"
+#include <SDL.h>
 
 #ifdef __cplusplus
 extern "C" {

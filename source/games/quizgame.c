@@ -15,7 +15,6 @@
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
-#include "blit.h" // clear_game_screen
 
 /*********************
    QUIZ TORIMONOCHOU

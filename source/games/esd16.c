@@ -5,7 +5,6 @@
 #include "sasound.h"		// sample support routines
 #include "adpcm.h"
 #include "3812intf.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "eeprom.h"
 #include "savegame.h" // load_eeprom

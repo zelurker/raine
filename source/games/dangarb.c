@@ -9,8 +9,6 @@
 
 #include "gameinc.h"
 #include "nichisnd.h"
-#include "blit.h" // clear_game_screen
-
 
 static struct ROM_INFO rom_dangarb[] =
 {

@@ -36,7 +36,6 @@
 #include "sasound.h"
 #include "adpcm.h"
 #include "taitosnd.h"
-#include "blit.h" // clear_game_screen
 
 
 static struct ROM_INFO rom_biomtoy[] =

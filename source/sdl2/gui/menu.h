@@ -1,7 +1,7 @@
 #ifndef MENU_CPP
 #define MENU_CPP
 
-#include <SDL.h>
+#include "compat_sdl.h"
 #include "SDL_gfx/SDL_framerate.h"
 #include "menuitem.h" // C only
 

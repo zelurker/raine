@@ -12,7 +12,6 @@
 #include "2151intf.h"
 #include "adpcm.h"
 #include "3812intf.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "savegame.h"
 #include "emumain.h" // set_reset_function

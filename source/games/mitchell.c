@@ -15,7 +15,6 @@
 #include "sound/2413intf.h"
 #include "sasound.h"
 #include "cps1.h" // eeprom
-#include "blit.h"
 #include "savegame.h"
 
 static struct ROM_INFO rom_pkladies[] =

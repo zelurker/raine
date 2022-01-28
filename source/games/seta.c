@@ -49,7 +49,6 @@
 #include "2203intf.h"
 #include "3812intf.h"
 #include "adpcm.h"
-#include "blit.h" // clear_game_screen
 #ifdef USE_XSYSTEM
 #include "setax1.h"
 #endif

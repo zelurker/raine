@@ -14,6 +14,7 @@
 #endif
 
 #include "raine.h"		// General defines and stuff
+#include "compat_sdl.h"
 #include "gui.h"		// Interface stuff
 
 #include "savegame.h"		// Save/Load game stuff

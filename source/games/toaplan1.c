@@ -13,7 +13,6 @@
 #include "gameinc.h"
 #include "3812intf.h"
 #include "sasound.h"		// sample support routines
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "profile.h" // fps
 

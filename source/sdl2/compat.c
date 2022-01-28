@@ -61,6 +61,9 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	      fatal_error("masks pas ok");
 	  }
 	  display_cfg.bpp = bpp;
+	  // Notice that here display_cfg.bpp is 16 or 32, and the default video mode sets it at 32
+	  // so update_pal_banks will eventually reduce the banks which is ok
+	  update_pal_banks();
 	  if (color_format)
 	      SDL_FreeFormat(color_format);
 	  color_format = SDL_AllocFormat( sdl2_color_format);

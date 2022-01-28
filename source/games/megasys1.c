@@ -20,7 +20,6 @@
 #include "2151intf.h"
 #include "2203intf.h"
 #include "adpcm.h"
-#include "blit.h" // clear_game_screen
 #include "def_dsw.h"
 
 #define ROM_COUNT       23

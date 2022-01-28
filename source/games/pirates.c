@@ -16,11 +16,9 @@
 #include "taitosnd.h"
 #include "sasound.h"		// sample support routines
 #include "adpcm.h"
-#include "blit.h" // clear_game_screen
 #include "mame/eeprom.h"
 #include "savegame.h" // load_eeprom
 #include "decode.h"
-
 
 static struct ROM_INFO rom_pirates[] =
 {

@@ -1,4 +1,5 @@
 #include "raine.h"
+#include "compat_sdl.h"
 #include "sasound.h"
 #include "es5506.h"
 #if HAS_YM3812

@@ -4,6 +4,7 @@
 #define _included_loadpng_h_
 
 #include "unzip.h"
+#include "compat_sdl.h"
 
 #ifdef __cplusplus
 extern "C" {

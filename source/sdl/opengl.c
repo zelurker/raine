@@ -1,6 +1,6 @@
 #define NOGDI // define this before including windows.h to avoid al_bitmap !
 #define GL_GLEXT_PROTOTYPES
-#include <SDL.h>
+#include "compat_sdl.h"
 #ifdef ANDROID
 #include <GLES/gl.h>
 #include <GLES/glext.h>

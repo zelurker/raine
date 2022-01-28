@@ -13,6 +13,7 @@ from rgb values of the color).
 #include <limits.h>
 #include "raine.h"
 #include "gameinc.h"
+#include "compat_sdl.h"
 #include "palette.h"
 #include "blitasm.h"
 #include "profile.h"
@@ -75,6 +76,14 @@ static UINT8 *pmap_2a;		// extra buffer
 PALETTE pal_screen;
 
 static UINT8 white_pen;
+
+void update_pal_banks() {
+    int ta;
+   for(ta=0; ta<pal_banks; ta++){
+      coltab[ta] = bankmap + (ta * bank_cols * (internal_bpp(display_cfg.bpp) / 8));
+   }
+}
+
 
 // mapsize is the size of the buffer taken to make conversions to 8bits colors
 void InitPaletteMap(UINT8 *src, int banks, int bankcols, int mapsize)
@@ -589,6 +598,55 @@ struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_cps2 =
    map_12bit_nnnn_cps2_16,
    map_12bit_nnnn_cps2_24,
    map_12bit_nnnn_cps2_32,
+};
+
+// and this one is for atari games, gauntlet...
+#undef BUILD_MAPPER
+#define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)                                                  \
+void NAME(UINT32 bank, UINT32 cols)                                                         \
+{                                                                                           \
+   UINT16 yy;                                                                       \
+   UINT16 *ta;                                                                              \
+   TYPE *ct,res;                                                                            \
+   UINT8 red,green,blue,bright;                                                                    \
+                                                                                            \
+   bank_status[bank] = cols;                                                                \
+   ta = (UINT16 *) (RAM_PAL+(bank*cols*2));                                                     \
+   ct = (TYPE *)coltab[bank];                                                               \
+   do{                                                                                      \
+      yy = (*ta++);                                                                         \
+      static const int ztable[16] =                                                         \
+      { 0x0, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x11 }; \
+      bright = ztable[(yy >> 12)];                                                          \
+                                                                                            \
+      red = (((yy&0x0F00)>>8) * bright);                                                    \
+      green = (((yy&0x00F0)>>4) * bright);                                                  \
+      blue = (((yy&0x000F)) * bright);                                                      \
+                                                                                            \
+      PEN_FUNC(                                                                             \
+                           red,green,blue,                                                  \
+         res                                                                                \
+      );                                                                                    \
+                                                                                            \
+      *ct++ = res;                                                                          \
+                                                                                            \
+   }while(--cols);                                                                          \
+}
+
+BUILD_MAPPER(map_12bit_nnnn_atari_8,UINT8,GET_PEN_FOR_COLOUR_8)
+BUILD_MAPPER(map_12bit_nnnn_atari_15,UINT16,GET_PEN_FOR_COLOUR_15)
+BUILD_MAPPER(map_12bit_nnnn_atari_16,UINT16,GET_PEN_FOR_COLOUR_16)
+BUILD_MAPPER(map_12bit_nnnn_atari_24,UINT32,GET_PEN_FOR_COLOUR_24)
+BUILD_MAPPER(map_12bit_nnnn_atari_32,UINT32,GET_PEN_FOR_COLOUR_32)
+
+struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_atari =
+{
+   "12bit nnnn atari",
+   map_12bit_nnnn_atari_8,
+   map_12bit_nnnn_atari_15,
+   map_12bit_nnnn_atari_16,
+   map_12bit_nnnn_atari_24,
+   map_12bit_nnnn_atari_32,
 };
 
 // Map_12bit_xxxxRRRRGGGGBBBB_Rev

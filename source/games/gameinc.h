@@ -22,6 +22,7 @@ extern "C" {
 #include "u020help.h"		// M68020 support interface
 #include "games.h"		// game struct info
 
+void clear_game_screen(int pen); // from blit.c, but without all the bitmaps definitions
 
 #ifdef __cplusplus
 }

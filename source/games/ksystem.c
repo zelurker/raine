@@ -6,15 +6,17 @@
 /*                  NOTE: K-SYSTEM is not the official name.                  */
 /*                                                                            */
 /******************************************************************************/
+/* outdated driver : still uses functions to output in 8bpp, but didn't use the flag NEEDS_8BPP so I missed it when converting to sdl2
+ * apparently it's quite easy to convert, todo ASAP then... ! */
 
 #include "gameinc.h"
+#include "compat_sdl.h"
 #include "tc220ioc.h"
 #include "taitosnd.h"
 #include "2203intf.h"
 #include "decode.h"
 #include "sasound.h"		// sample support routines
 #include "emumain.h"
-#include "blit.h" // clear_game_screen
 
 /*
 

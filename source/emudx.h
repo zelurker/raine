@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "unzip.h"
+#include "compat_sdl.h"
 
 typedef unzFile emudx_file;
 char *exists_emudx_file(const char *db_filename);

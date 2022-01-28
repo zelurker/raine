@@ -18,6 +18,7 @@
 #include "loadpng.h"
 #else
 #include "gui.h"
+#include <SDL.h>
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif

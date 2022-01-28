@@ -172,6 +172,14 @@ extern "C" {
    zzzz|=(zzz&0x1F8)<<4;                     \
    y16=zzz&7;
 
+#define MAKE_SCROLL_512x512_2_8_YX(scr_x,scr_y) \
+   zzz=(scr_x);                              \
+   zzzz=(zzz&0x1F8)>>2;                      \
+   y16=zzz&7;                                \
+   zzz=(scr_y);                              \
+   zzzz|=(zzz&0x1F8)<<4;                     \
+   x16=zzz&7;
+
 #define MAKE_SCROLL_512x512_2_8_no16(scr_x,scr_y) \
    zzz=(scr_x);                                   \
    zzzz=(zzz&0x1F8)>>2;                           \

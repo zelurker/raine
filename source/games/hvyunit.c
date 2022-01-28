@@ -11,7 +11,6 @@
 #include "decode.h"
 #include "sasound.h"		// sample support routines
 #include "savegame.h"
-#include "blit.h" // clear_game_screen
 
 /*
 

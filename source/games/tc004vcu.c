@@ -7,7 +7,6 @@
 #include "gameinc.h"
 #include "tc004vcu.h"
 #include "zoom/16x16.h"		// 16x16 zoomed sprite routines
-#include "blit.h"
 
 struct TC0004VCU tc0004vcu;
 

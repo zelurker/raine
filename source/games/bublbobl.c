@@ -12,7 +12,6 @@
 #include "2203intf.h"
 #include "3812intf.h"
 #include "savegame.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "decode.h"
 #include "emumain.h"

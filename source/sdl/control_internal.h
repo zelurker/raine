@@ -1,6 +1,8 @@
 #ifndef __CONTROL_INTERNAL
 #define __CONTROL_INTERNAL
 
+#include "compat_sdl.h"
+
 /* These types/variables are only needed by the gui to be able to change
  * the inputs, no game driver should need those */
 

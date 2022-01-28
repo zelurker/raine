@@ -20,7 +20,6 @@ control how many colors to take to draw the sprites ??!!!
 
 #include "gameinc.h"
 #include "f3system.h"
-#include "blit.h" // clear_game_screen (necessary when the solid layer is
 // disabled by the function keys).
 #include "es5506.h"
 #include "sasound.h"

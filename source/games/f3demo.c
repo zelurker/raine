@@ -9,8 +9,6 @@
 #include "tc003vcu.h"
 #include "tc200obj.h"
 #include "savegame.h"
-#include "blit.h" // clear_game_screen
-
 
 static struct ROM_INFO rom_f3demo[] =
 {

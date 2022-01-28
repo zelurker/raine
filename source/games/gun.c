@@ -4,6 +4,7 @@
 */
 
 #include "raine.h"
+#include "compat_sdl.h"
 #include "palette.h"
 #include "spr16x16.h"
 

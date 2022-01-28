@@ -76,7 +76,6 @@ Stephh's notes (based on the games M68000 code and some tests) :
 #include "2610intf.h"
 #include "sasound.h"
 #include "timer.h"
-#include "blit.h"
 #include "emumain.h" // reset_game_hardware
 #include "pdraw.h"
 #include "priorities.h"

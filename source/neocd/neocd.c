@@ -49,7 +49,7 @@
 #include "bld.h"
 #include "alpha.h"
 #include "version.h"
-#include "compat.h"
+#include "compat_sdl.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 

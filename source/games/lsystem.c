@@ -18,7 +18,6 @@
 #include "savegame.h"
 #include "sasound.h"		// sample support routines
 #include "emumain.h" // set_reset_function
-#include "blit.h" // clear_game_screen
 
 static struct ROMSW_DATA romsw_data_fighting_hawk_0[] =
 {

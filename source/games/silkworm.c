@@ -25,7 +25,6 @@
 #include "msm5205.h"
 #include "sasound.h"		// sample support routines
 #include "3812intf.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 
 static int sound_command;

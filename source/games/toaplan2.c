@@ -21,7 +21,6 @@
 #include "ymz280b.h"
 #include "adpcm.h"
 #include "savegame.h"
-#include "blit.h" // clear_game_screen
 #include "timer.h"
 #include "mame/eeprom.h"
 #ifndef USE_TILEQUEUE

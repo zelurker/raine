@@ -1,4 +1,5 @@
-
+#ifndef INGAME_H
+#define INGAME_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,4 +52,5 @@ void overlay_ingame_interface(int ogl);
 
 #ifdef __cplusplus
 }
+#endif
 #endif

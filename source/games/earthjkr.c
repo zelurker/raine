@@ -20,7 +20,6 @@
 #include "msm5205.h"
 #include "2151intf.h"
 #include "timer.h"
-#include "blit.h" // clear_game_screen
 #include "asuka.h"
 #include "def_dsw.h"
 

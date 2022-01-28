@@ -10,8 +10,6 @@
 #include "tc200obj.h"
 #include "sasound.h"		// sample support routines
 #include "taitosnd.h"
-#include "blit.h" // clear_game_screen
-
 
 static struct ROM_INFO rom_ninjak[] =
 {

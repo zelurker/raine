@@ -11,8 +11,6 @@
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
-#include "blit.h"
-
 
 static struct ROM_INFO rom_twinqix[] =
 {

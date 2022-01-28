@@ -26,7 +26,6 @@ MAIN BOARD:
 ***************************************************************************/
 
 #include "gameinc.h"
-#include "blit.h" // clear_game_screen
 #include "sasound.h"
 #include "ay8910.h"
 #include "m6502hlp.h"

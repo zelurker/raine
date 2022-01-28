@@ -32,6 +32,7 @@
  */
 
 #include "gameinc.h"
+#include "compat_sdl.h"
 #include "cps1.h"
 #include "mame/eeprom.h"
 #include "savegame.h"

@@ -1,6 +1,5 @@
 #include "gameinc.h"
 #include "decode.h"
-#include "dkongm.h"
 #include "sasound.h"
 #include "emudx.h"
 #include "blit.h"
@@ -15,6 +14,7 @@
 // disable draw_trans_sprite for now
 #define draw_trans_sprite(dst,src,x,y)
 #endif
+#include "dkongm.h" // include at the end to avoid collision with start !
 
 #define MASKRED 0xF800
 #define MASKGREEN 0x07E0

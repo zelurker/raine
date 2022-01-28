@@ -5,7 +5,6 @@
 #include "gameinc.h"
 #include "debug.h"
 #include "ymz280b.h"
-#include "blit.h"
 #include "sasound.h"
 
 static struct YMZ280Binterface ymz280b_intf =

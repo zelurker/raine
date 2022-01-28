@@ -54,7 +54,6 @@ extern "C" {
 
 #endif
 
-extern PALETTE pal;			// 256 Colour palette for the game
 extern UINT8 *RAM_PAL;
 
 typedef void CMAP_FUNC(UINT32 bank, UINT32 cols);
@@ -82,6 +81,7 @@ extern struct COLOUR_MAPPER col_map_xxxxRrrgggbbb;
 extern struct COLOUR_MAPPER col_map_xxxx_rrrr_gggg_bbbb;
 extern struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_cps1;
 extern struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_cps2;
+extern struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_atari;
 extern struct COLOUR_MAPPER col_map_xxxx_bbbb_gggg_rrrr;
 extern struct COLOUR_MAPPER col_map_xxxx_bbbb_gggg_rrrr_rev;
 extern struct COLOUR_MAPPER col_map_xrrr_rrgg_gggb_bbbb;
@@ -232,6 +232,7 @@ void Map_15bit_xBGR(int bank, int cols);
 void Map_12bit_RGBxxxxx(int bank, int cols);
 
 void Map_24bit_xRGB(int bank, int cols);
+void update_pal_banks(); // call this when changing display_cfg.bpp after the game was loaded
 
 #endif // _palette_h_
 

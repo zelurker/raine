@@ -10,7 +10,6 @@
 #include "2203intf.h"
 #include "decode.h"
 #include "savegame.h"
-#include "blit.h" // clear_game_screen
 
 /*
 

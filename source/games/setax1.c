@@ -6,7 +6,6 @@
 
 #include "gameinc.h"
 #include "setax1.h"
-#include "blit.h" // clear_game_screen
 
 struct SETA_X1 seta_x1;
 

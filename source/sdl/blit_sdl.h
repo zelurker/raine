@@ -3,6 +3,8 @@
 #ifndef BLIT_SDL_H
 #define BLIT_SDL_H
 
+#include "compat_sdl.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

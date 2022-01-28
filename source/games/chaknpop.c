@@ -21,6 +21,7 @@ Todo:
 #include "2203intf.h"
 #include "decode.h"
 #include "blit.h"
+#include "compat_sdl.h"
 
 
 static struct ROM_INFO rom_chaknpop[] =

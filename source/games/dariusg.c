@@ -10,7 +10,6 @@
 #include "tc200obj.h"
 #include "savegame.h"
 #include "sasound.h"
-#include "blit.h" // clear_game_screen
 
 static struct ROM_INFO rom_dariusg[] =
 {

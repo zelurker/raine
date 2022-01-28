@@ -24,7 +24,6 @@
 #include "timer.h"
 #include "2203intf.h"
 #include "savegame.h"
-#include "blit.h" // clear_game_screen (when bg0 is disabled)
 #include "nmk004.h"
 #include "gui.h" // goto_debuger
 #include "profile.h" // fps

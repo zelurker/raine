@@ -2,6 +2,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef struct raine_bitmap
 {
    int xfull;		// Full bitmap width
@@ -39,7 +40,6 @@ void DestroyScreenBitmap(void);
 
 void ReClipScreen(void);
 
-void clear_game_screen(int pen);
 void DrawNormal(void);
 void DrawPaused(void);
 
