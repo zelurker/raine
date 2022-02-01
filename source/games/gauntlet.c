@@ -21,7 +21,9 @@ static struct ROM_INFO rom_gauntlet[] =
   LOAD_16_8( CPU1, "136037-1410.7b", 0x040001, 0x008000, 0x931bd2a0),
   LOAD( ROM2, "136037-120.16r", 0x004000, 0x004000, 0x6ee7f3cc),
   LOAD( ROM2, "136037-119.16s", 0x008000, 0x008000, 0xfa19861f),
-  LOAD( GFX1, "136037-104.6p", 0x000000, 0x004000, 0x6c276a1d), // 27128, second half 0x00
+
+  LOAD( GFX1, "136037-104.6p", 0x000000, 0x004000, 0x6c276a1d),
+
   LOAD( GFX2, "136037-111.1a", 0x000000, 0x008000, 0x91700f33),
   LOAD( GFX2, "136037-112.1b", 0x008000, 0x008000, 0x869330be),
   LOAD( GFX2, "136037-113.1l", 0x010000, 0x008000, 0xd497d0a8),
@@ -30,6 +32,9 @@ static struct ROM_INFO rom_gauntlet[] =
   LOAD( GFX2, "136037-116.2b", 0x028000, 0x008000, 0x11e0ac5b),
   LOAD( GFX2, "136037-117.2l", 0x030000, 0x008000, 0x29a5db41),
   LOAD( GFX2, "136037-118.2mn", 0x038000, 0x008000, 0x8bf3b263),
+
+  // FILL( GFX3, 0, 0x40000, 0 ),
+
   LOAD( PROMS, "74s472-136037-101.7u", 0x000, 0x200, 0x2964f76f), /* MO timing */
   LOAD( PROMS, "74s472-136037-102.5l", 0x200, 0x200, 0x4d4fec6c), /* MO flip control */
   LOAD( PROMS, "74s287-136037-103.4r", 0x400, 0x100, 0x6c5ccf08), /* MO position/size */
@@ -103,6 +108,7 @@ static void update_interrupts() {
 static UINT16 atarigen_sound_r(UINT32 offset) {
     atarigen_sound_to_cpu_ready = 0;
     atarigen_sound_int_state = 0;
+    printf("atarigen_sound_r read %x from %x\n",atarigen_sound_to_cpu,s68000_read_pc);
     input_buffer[8] &= ~0x10;
     return atarigen_sound_to_cpu;
 }
@@ -114,6 +120,7 @@ static void sound_reset_w(UINT32 offset, UINT16 data) {
     sound_reset_val = data;
     if ((sound_reset_val ^ oldword) & 1) {
 	print_debug("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
+	printf("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
 	atarigen_sound_to_cpu_ready = 0;
 	atarigen_sound_int_state = 0;
 	input_buffer[8] &= ~0x10;
@@ -136,6 +143,7 @@ static void atarigen_sound_w_byte(UINT32 offset, UINT16 data) {
     atarigen_cpu_to_sound = data;
     atarigen_cpu_to_sound_ready = 1;
     print_debug("sound_w %x\n",data);
+    printf("sound_w %x\n",data);
     if (made_reset) {
 	// Crazy sync code for the 6502, the reset code expects that a command byte is ready to read at the very beginning
 	// so the best way to be sure it happens is to reset when the command is sent !
@@ -161,6 +169,7 @@ static void swap_mem(void *ptr1, void *ptr2, int bytes)
 
 static void m6502_sound_w(UINT32 offset, UINT8 data) {
     print_debug("*** m6502_sound_w %x,%x\n",offset,data);
+    printf("*** m6502_sound_w %x,%x from %x\n",offset,data,cpu_get_pc(CPU_M6502_0));
     if (atarigen_sound_to_cpu_ready) {
 	print_debug("Missed result from 6502\n");
     }
@@ -176,6 +185,7 @@ static void m6502_sound_w(UINT32 offset, UINT8 data) {
 static UINT8 m6502_sound_r(UINT32 offset) {
     atarigen_cpu_to_sound_ready = 0;
     print_debug("6502 read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
+    printf("6502 read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
     return atarigen_cpu_to_sound;
 }
 
@@ -227,6 +237,7 @@ static UINT8 switch_6502_r(UINT32 offset)
         if (tms5220_ready_r()) temp ^= 0x20;
         if (!(input_buffer[8] & 8)) temp ^= 0x10;
 	// print_debug("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
+	// printf("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
 
         return temp;
 }
@@ -317,6 +328,8 @@ static UINT16 read_port_4b(UINT32 offset) {
 }
 
 static void load_gauntlet() {
+    // memcpy(load_region[REGION_GFX3],load_region[REGION_GFX2],get_region_size(REGION_GFX2));
+
     RAMSize = 0x2000 + // main ram
 	0x1000 + // 2nd ram
 	0x2000 + // playfield
@@ -461,7 +474,22 @@ static void execute_gauntlet()
 	}
 	while (frame > 16) {
 	    diff = execute_one_z80_audio_frame(frame);
-	    cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
+	    if (s68000_read_pc == 0x46c4 || s68000_read_pc == 0x46ca || s68000_read_pc == 0x4694 || s68000_read_pc == 0x148 || s68000_read_pc == 0x46b8 || s68000_read_pc == 0x468c || s68000_pc == 0x4244) {
+		int n=0;
+		int cycles = diff*4;
+		while (s68000_read_pc != 0x10000 && cycles > 0) {
+		    int pc = s68000_read_pc;
+		    int cyc = 10;
+		    do {
+			cpu_execute_cycles(CPU_68K_0,cyc);
+			cyc *= 2;
+		    } while (s68000_read_pc == pc && cyc < 1000);
+		    printf("%d: %x (cycles %d, sr=%x)\n",n++,s68000_read_pc,cyc,s68000_sr);
+		    cycles -= 128;
+		}
+	    } else
+		cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
+	    printf("68k pc %x\n",s68000_read_pc);
 	    frame -= diff;
 	    if (diff == 0) break;
 	}
@@ -558,10 +586,71 @@ static struct GFX_LIST gauntlet_gfx[] =
    { 0,           NULL,             },
 };
 
+static char visited[1024];
+
+static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
+    /* The sprites are a bizarre bunch, as shown by the memory map in mame :
+     * 902000-903FFF   R/W   xxxxxxxx xxxxxxxx   Motion object RAM (1024 entries x 4 words)
+     R/W   -xxxxxxx xxxxxxxx      (0: Tile index)
+     R/W   xxxxxxxx x-------      (1024: X position)
+     R/W   -------- ----xxxx      (1024: Palette select)
+     R/W   xxxxxxxx x-------      (2048: Y position)
+     R/W   -------- -x------      (2048: Horizontal flip)
+     R/W   -------- --xxx---      (2048: Number of X tiles - 1)
+     R/W   -------- -----xxx      (2048: Number of Y tiles - 1)
+     R/W   ------xx xxxxxxxx      (3072: Link to next object)
+     */
+    UINT8 *map;
+    int nb = 0;
+    while (!visited[n]) {
+	visited[n] = 1;
+	nb++;
+	UINT16 code = (ReadWord(&sprites[n*2]) ^ 0x800);
+	UINT16 link = ReadWord(&sprites[(n*2)+3072*2]) & 0x3ff;
+	code &= 0x1fff;
+	int x = ReadWord(&sprites[(n*2)+1024*2]);
+	UINT16 color = 0x40 + (x & 0xf)*4;
+	x >>= 7;
+	int y = ReadWord(&sprites[(n*2)+2048*2]);
+	int flipx = (y & 0x40);
+	int nx = (y >> 3) & 7;
+	int ny = (y & 7);
+	y >>= 7;
+	// The y is coded inverted !!! Crazy old hardware... !!!
+	y = -y;
+	x -= xscroll; y -= yscroll;
+	y -= (ny+1)*8;
+	x &= 0x1ff; y &= 0x1ff;
+	if (x > 335) x -= 512;
+	if (y > 239) y -= 512;
+	MAP_PALETTE_MAPPED_NEW(color+3,4,map);
+	MAP_PALETTE_MAPPED_NEW(color+2,4,map);
+	MAP_PALETTE_MAPPED_NEW(color+1,4,map);
+	MAP_PALETTE_MAPPED_NEW(color,4,map);
+	for (int cy=0; cy <= ny; cy++) {
+	    int px,py;
+	    py = y+16+cy*8;
+	    if (py < miny-7) continue;
+	    if (py > maxy) break;
+	    for (int cx=0; cx <= nx; cx++) {
+		px = (x+16+cx*8);
+		if (px > 8 && px < 336+16 && gfx_solid[1]) {
+		    if (flipx)
+			Draw8x8_Trans_Mapped_FlipY_Rot(&gfx[1][(code+cx+cy*(nx+1))<<6],px,py,map);
+		    else
+			Draw8x8_Trans_Mapped_Rot(&gfx[1][(code+cx+cy*(nx+1))<<6],px,py,map);
+		}
+	    }
+	}
+	n = link;
+    }
+}
+
 static void draw_gauntlet()
 {
     ClearPaletteMap();
 
+    printf("sizes %x,%x\n",get_region_size(REGION_GFX1),get_region_size(REGION_GFX2));
     int xscroll, yscroll, ta, code, color;
     SCROLL_REGS;
     UINT8 *map;
@@ -610,6 +699,19 @@ static void draw_gauntlet()
 		Draw8x8_Mapped_Rot(&gfx[1][code<<6],x,y,map);
 	}
 	END_SCROLL_512x512_2_8();
+    }
+
+    if( check_layer_enabled(layer_id_data[2])) {
+	for (int ta=0xf80; ta<=0xfff; ta+=2) {
+	    // Not only does these addresses give the start index for the sprites, they also indicate miny and maxy !
+	    // each word is for 8 pixels high, so we stop when we reach the max screen coordinate (240)
+	    int miny = (ta-0xf80)/2*8+8;
+	    if (miny >= 240) break;
+	    int maxy = miny+7;
+	    memset(visited,0,1024);
+	    int link = ReadWord(&alpha[ta]) & 0x3ff;
+	    render_sprites(link,xscroll,yscroll,miny+16,maxy+16);
+	}
     }
 
     if( check_layer_enabled(layer_id_data[1])) {
