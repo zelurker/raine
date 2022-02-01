@@ -840,7 +840,7 @@ static int alt2_kludge(offs_t offset)
 	/* 68k case is fairly complex: we need to look for special triplets */
 	if (access_68k)
 	{
-		UINT32 pc = s68000_read_pc-2; // ? Supposed to be previous pc, not sure about this one...
+		UINT32 pc = m68ki_cpu.ppc; // ? Supposed to be previous pc, not sure about this one...
 
 		/* first verify that the prefetched PC matches the first alternate */
 		if (MATCHES_MASK_VALUE((pc + 2) >> 1, slapstic.alt1))
