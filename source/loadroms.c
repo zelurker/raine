@@ -1191,7 +1191,7 @@ beg:
 	   else if (!strcmp(dir,"batrider") || !strcmp(dir,"gauntlet") || !strcmp(dir,"gaunt2") || !strcmp(dir,"gauntlets") ||
 		   !strcmp(dir,"batriderja") || !strcmp(dir,"batsuguna") || !strcmp(dir,"batsugunsp") || !strcmp(dir,"bgareggacn") ||
 		   !strcmp(dir,"bgaregganv") || !strcmp(dir,"bgareggat2") || !strcmp(dir,"bbakraidja") || !strcmp(dir,"kingdmgp") ||
-		   !strcmp(dir,"sstrikerk"))
+		   !strcmp(dir,"sstrikerk") || !strcmp(dir,"batsugun"))
 	       // they have the romset for 0.91.4, so there are a few exceptions...
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	   else
