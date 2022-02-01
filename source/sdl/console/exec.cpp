@@ -31,6 +31,7 @@ static void exec_break() {
   for (n=0; n<used_break; n++) {
     if (breakp[n].adr == s68000_read_pc-2) {
       goto_debuger = n+1;
+      printf("exec break : pc = %x\n",s68000_read_pc);
       Stop68000(0,0);
       /* Sadly, there is no way to correct the pc from here in starscream, so
        * we must update it later (in check_breakpoint), which is much more
@@ -99,10 +100,10 @@ void do_break(int argc, char **argv) {
     }
     int cpu_id = get_cpu_id();
 #ifdef USE_MUSASHI
-    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2 && cpu_id >> 4 != 3)
+    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2 && cpu_id >> 4 != 3 && cpu_id >> 4 != CPU_68010)
 	throw "breakpoints only for 68000 & 68020 & z80 for now";
 #else
-    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2)
+    if (cpu_id >> 4 != 1 && cpu_id >> 4 != 2 && cpu_id >> 4 != CPU_68010)
 	throw "breakpoints only for 68000 & z80 for now (use musashi for the 68020)";
 #endif
   if (argc == 1) {
@@ -160,7 +161,7 @@ void do_break(int argc, char **argv) {
     if (cpu_id >> 4 == 1 || cpu_id >> 4 == 3)
 	WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
 #else
-    if (cpu_id >> 4 == 1)
+    if (cpu_id >> 4 == 1 || cpu_id >> 4 == CPU_68010)
 	WriteWord(&ptr[adr],0x4e70); // reset
 #endif
     if (cpu_id >> 4 == 2) { // z80
@@ -169,9 +170,16 @@ void do_break(int argc, char **argv) {
     }
     breakp[used_break++].adr = adr;
 #if USE_MUSASHI < 2
-    if (s68000context.resethandler != &exec_break) {
-      resethandler = s68000context.resethandler;
-      M68000_context[0].resethandler = s68000context.resethandler = &exec_break;
+    if (M68010Engine) {
+	if (s68010context.resethandler != &exec_break) {
+	    resethandler = s68010context.resethandler;
+	    s68010context.resethandler = &exec_break;
+	}
+    } else {
+	if (s68000context.resethandler != &exec_break) {
+	    resethandler = s68000context.resethandler;
+	    M68000_context[0].resethandler = s68000context.resethandler = &exec_break;
+	}
     }
 #endif
     if (cons) cons->print("breakpoint #%d inserted at %x",used_break-1,adr);
@@ -184,7 +192,7 @@ void do_break(int argc, char **argv) {
 int check_irq(UINT32 adr) {
     int irq = 0;
     int cpu_id = get_cpu_id();
-    if (cpu_id >> 4 != 1 && cpu_id != 3)
+    if (cpu_id >> 4 != 1 && cpu_id != 3 && cpu_id != CPU_68010)
 	// 68000 & 68020 only
 	return 0;
     if (s68000_sr >= 0x2100) {
@@ -457,6 +465,12 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       snprintf(cmd+strlen(cmd),1024-strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
       ByteSwap(&ptr[start],end-start);
       break;
+  case CPU_68010:
+      snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
+      if (has_pc) strcat(cmd," -i pc ");
+      snprintf(cmd+strlen(cmd),1024-strlen(cmd)," -010 -pc %d -o \"%s\" \"%s\"",start,name2,name);
+      ByteSwap(&ptr[start],end-start);
+      break;
   case CPU_68020:
       snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
       if (has_pc) strcat(cmd," -i pc ");
@@ -470,7 +484,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
       break;
   }
   save_file(name,&ptr[start],end-start);
-  if (cpu_id == 1)
+  if (cpu_id == CPU_68000 || cpu_id == CPU_68010)
 	  ByteSwap(&ptr[start],end-start);
   if (used_offs[start/0x10000]) {
       used_offs[start/0x10000] = 0;
@@ -515,6 +529,7 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
 static void get_asm_file(char *str, UINT32 target = cpu_get_pc(get_cpu_id())) {
   int cpu_id = get_cpu_id();
   switch(cpu_id>>4) {
+  case CPU_68010:
   case CPU_68000:
       sprintf(str,"%s/prg_%02x.s",get_shared("debug"),target/0x10000);
       break;
@@ -716,6 +731,7 @@ void do_next(int argc, char **argv) {
     get_instruction();
   do_cycles();
   switch(cpu>>4) {
+  case CPU_68010:
   case CPU_68000:
   case CPU_68020:
       if (!strcasecmp(instruction,"JSR") || !strcasecmp(instruction,"BSR") ||

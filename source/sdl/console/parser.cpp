@@ -72,15 +72,16 @@ value_type lpeek(value_type fadr) {
 void get_regs(int cpu) {
     int num;
     switch (cpu >> 4) {
-    case 1: // 68k
+    case CPU_68010:
+    case CPU_68000:
 	for (int n=0; n<8; n++) {
 	    a[n] = (long)s68000_areg[n];
 	    d[n] = (long)s68000_dreg[n];
 	}
 	sr = s68000_sr;
-	pc = s68000_pc;
+	pc = s68000_read_pc;
 	break;
-    case 2:
+    case CPU_Z80:
 	num = cpu & 0xf;
 	switch_cpu(cpu+1);
 	switch_cpu(cpu);
@@ -123,18 +124,25 @@ void get_regs(int cpu) {
 void set_regs(int cpu) {
     int num = cpu & 0xf;
     switch (cpu >> 4) {
-    case 1:
+    case CPU_68010:
+    case CPU_68000:
 	for (int n=0; n<8; n++) {
 	    s68000_areg[n] = a[n];
 	    s68000_dreg[n] = d[n];
 	}
 #if USE_MUSASHI < 2
-	M68000_context[num].sr = s68000context.sr = sr;
+	if ((cpu >> 4) == CPU_68010) {
+	    s68010context.sr = sr;
+	    s68010context.pc = pc;
+	} else {
+	    M68000_context[num].sr = s68000context.sr = sr;
 #else
-	m68ki_set_sr_noint_nosp(sr);
+	    m68ki_set_sr_noint_nosp(sr);
 #endif
-	s68000_pc = pc;
-	s68000GetContext(&M68000_context[num]);
+	    s68000_pc = pc;
+#if USE_MUSASHI < 2
+	}
+#endif
 	break;
     case 2:
 	Z80_context[num].z80af = (int(za)<<8)|int(zf);

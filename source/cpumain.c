@@ -63,41 +63,41 @@ void switch_cpu(UINT32 cpu_id)
 
       switch(old_id){
 #ifdef HAVE_68000
-         case CPU_68K_0:
-            s68000GetContext(&M68000_context[0]);
-         break;
-         case CPU_68K_1:
-            s68000GetContext(&M68000_context[1]);
-         break;
+      case CPU_68K_0:
+	  s68000GetContext(&M68000_context[0]);
+	  break;
+      case CPU_68K_1:
+	  s68000GetContext(&M68000_context[1]);
+	  break;
 #endif
 #if HAVE_Z80
-         case CPU_Z80_0:
-            mz80GetContext(&Z80_context[0]);
-         break;
-         case CPU_Z80_1:
-            mz80GetContext(&Z80_context[1]);
-         break;
-         case CPU_Z80_2:
-            mz80GetContext(&Z80_context[2]);
-         break;
-         case CPU_Z80_3:
-            mz80GetContext(&Z80_context[3]);
-         break;
+      case CPU_Z80_0:
+	  mz80GetContext(&Z80_context[0]);
+	  break;
+      case CPU_Z80_1:
+	  mz80GetContext(&Z80_context[1]);
+	  break;
+      case CPU_Z80_2:
+	  mz80GetContext(&Z80_context[2]);
+	  break;
+      case CPU_Z80_3:
+	  mz80GetContext(&Z80_context[3]);
+	  break;
 #endif
 #ifndef NO020
-	 case CPU_M68020_0:
-	 break;
+      case CPU_M68020_0:
+	  break;
 #endif
 #ifdef HAVE_6502
-         case CPU_M6502_0:
-            m6502GetContext(&M6502_context[0]);
-         break;
-         case CPU_M6502_1:
-            m6502GetContext(&M6502_context[1]);
-         break;
-         case CPU_M6502_2:
-            m6502GetContext(&M6502_context[2]);
-         break;
+      case CPU_M6502_0:
+	  m6502GetContext(&M6502_context[0]);
+	  break;
+      case CPU_M6502_1:
+	  m6502GetContext(&M6502_context[1]);
+	  break;
+      case CPU_M6502_2:
+	  m6502GetContext(&M6502_context[2]);
+	  break;
 #endif
       }
 
@@ -105,42 +105,47 @@ void switch_cpu(UINT32 cpu_id)
 
       switch(cpu_id){
 #if HAVE_68000
-         case CPU_68K_0:
-            s68000SetContext(&M68000_context[0]);
-         break;
-         case CPU_68K_1:
-            s68000SetContext(&M68000_context[1]);
-         break;
+#if USE_MUSASHI == 2
+      case CPU_68010_0:
+	  current_cpu_num[CPU_68000] = 0;
+	  break;
+#endif
+      case CPU_68K_0:
+	  s68000SetContext(&M68000_context[0]);
+	  break;
+      case CPU_68K_1:
+	  s68000SetContext(&M68000_context[1]);
+	  break;
 #endif
 #if HAVE_Z80
-         case CPU_Z80_0:
-            mz80SetContext(&Z80_context[0]);
-         break;
-         case CPU_Z80_1:
-            mz80SetContext(&Z80_context[1]);
-         break;
-         case CPU_Z80_2:
-            mz80SetContext(&Z80_context[2]);
-         break;
-         case CPU_Z80_3:
-            mz80SetContext(&Z80_context[3]);
-         break;
+      case CPU_Z80_0:
+	  mz80SetContext(&Z80_context[0]);
+	  break;
+      case CPU_Z80_1:
+	  mz80SetContext(&Z80_context[1]);
+	  break;
+      case CPU_Z80_2:
+	  mz80SetContext(&Z80_context[2]);
+	  break;
+      case CPU_Z80_3:
+	  mz80SetContext(&Z80_context[3]);
+	  break;
 #endif
 #ifndef NO020
-         case CPU_M68020_0:
-	 break;
+      case CPU_M68020_0:
+	  break;
 #endif
 
 #ifdef HAVE_6502
-         case CPU_M6502_0:
-            m6502SetContext(&M6502_context[0]);
-         break;
-         case CPU_M6502_1:
-            m6502SetContext(&M6502_context[1]);
-         break;
-         case CPU_M6502_2:
-            m6502SetContext(&M6502_context[2]);
-         break;
+      case CPU_M6502_0:
+	  m6502SetContext(&M6502_context[0]);
+	  break;
+      case CPU_M6502_1:
+	  m6502SetContext(&M6502_context[1]);
+	  break;
+      case CPU_M6502_2:
+	  m6502SetContext(&M6502_context[2]);
+	  break;
 #endif
       }
 
@@ -199,6 +204,12 @@ void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 
    switch(cpu_id){
 #if HAVE_68000
+   case CPU_68010_0:
+#if USE_MUSASHI < 2
+       s68010interrupt(vector, -1);
+       s68010flushInterrupts();
+       break;
+#endif
       case CPU_68K_0:
       case CPU_68K_1:
 #if USE_MUSASHI == 2
@@ -272,6 +283,30 @@ execute a cpu for some cycles
 
 */
 
+static void post_exec_68k(int ret, int cpu_id) {
+#if USE_MUSASHI < 2
+#ifdef RAINE_DEBUG
+    if (ret == 0x80000001) {
+	printf("starscream out of bounds pc=%x\n",(M68010Engine ? s68010context.pc : s68000context.pc));
+	exit(1);
+    }
+    if (ret < 0x80000000)
+	fatal_error("starscream invalid instruction at %x",ret);
+    if (s68000_pc & 0xff000000) {
+	printf("pc out of bounds for 68k%d\n",cpu_id & 15);
+    }
+    if (ret == 0xffffffff) {
+	fatal_error("starscream : double fault");
+    }
+#endif
+    cycles_68k[cpu_id & 0xf] += s68000readOdometer();
+    // Musashi always resets this number of cycles returned for each call to m68k_execute
+    s68000tripOdometer(); // we just reset it here explicitely for starscream
+#else
+    cycles_68k[cpu_id & 0xf] += ret; // Musashi just returns the cycles executed...
+#endif
+}
+
 void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 {
 #ifdef SDL
@@ -282,36 +317,21 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 
    switch(cpu_id){
 #if HAVE_68000
-      case CPU_68K_0:
-      case CPU_68K_1:
-#if USE_MUSASHI == 2
-	  ret = m68k_execute(cycles);
-#else
-         ret = s68000exec(cycles);
-#endif
-	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000_pc,s68000_sr,s68000_areg[7]);
+   case CPU_68010_0:
 #if USE_MUSASHI < 2
-#ifdef RAINE_DEBUG
-	 if (ret == 0x80000001) {
-	     printf("starscream out of bounds\n");
-	     exit(1);
-	 }
-	 if (ret < 0x80000000)
-	     fatal_error("starscream invalid instruction at %x",ret);
-	 if (s68000_pc & 0xff000000) {
-	   printf("pc out of bounds for 68k%d\n",cpu_id & 15);
-	 }
-	 if (ret == 0xffffffff) {
-	     fatal_error("starscream : double fault");
-	 }
+       ret = s68010exec(cycles);
+       post_exec_68k(ret,cpu_id);
+       break;
 #endif
-	 cycles_68k[cpu_id & 0xf] += s68000readOdometer();
-	 // Musashi always resets this number of cycles returned for each call to m68k_execute
-	 s68000tripOdometer(); // we just reset it here explicitely for starscream
+   case CPU_68K_0:
+   case CPU_68K_1:
+#if USE_MUSASHI == 2
+       ret = m68k_execute(cycles);
 #else
-	 cycles_68k[cpu_id & 0xf] += ret; // Musashi just returns the cycles executed...
+       ret = s68000exec(cycles);
 #endif
-      break;
+       post_exec_68k(ret,cpu_id);
+       break;
 #endif
 #if HAVE_Z80
       case CPU_Z80_0:
@@ -357,6 +377,7 @@ UINT32 cpu_get_cycles_done(UINT32 cpu) {
    switch(cpu >> 4) {
    case CPU_Z80: return mz80GetCyclesDone();
    case CPU_6502: return cycles_6502[cpu & 0xf];
+   case CPU_68010:
    case CPU_68000: return cycles_68k[cpu & 0xf];
    }
    return 0;
@@ -367,6 +388,7 @@ void cpu_set_cycles_done(UINT32 cpu, int cycles) {
     switch(cpu >> 4) {
     case CPU_Z80: mz80AddCyclesDone(cycles); break;
     case CPU_6502: cycles_6502[cpu & 0xf] += cycles; break;
+    case CPU_68010:
     case CPU_68000: cycles_68k[cpu & 0xf] += cycles; break;
     }
 }
@@ -383,36 +405,41 @@ void cpu_reset(UINT32 cpu_id)
 
    switch(cpu_id){
 #if HAVE_68000
-      case CPU_68K_0:
-      case CPU_68K_1:
-#if USE_MUSASHI == 2
-	  m68k_pulse_reset();
-#else
-	  s68000reset();
+   case CPU_68010_0:
+#if USE_MUSASHI < 2
+       s68010reset();
+       break;
 #endif
-	  cycles_68k[cpu_id & 0xf] = 0;
-      break;
+   case CPU_68K_0:
+   case CPU_68K_1:
+#if USE_MUSASHI == 2
+       m68k_pulse_reset();
+#else
+       s68000reset();
+#endif
+       cycles_68k[cpu_id & 0xf] = 0;
+       break;
 #endif
 #if HAVE_Z80
-      case CPU_Z80_0:
-      case CPU_Z80_1:
-      case CPU_Z80_2:
-      case CPU_Z80_3:
-         mz80reset();
-      break;
+   case CPU_Z80_0:
+   case CPU_Z80_1:
+   case CPU_Z80_2:
+   case CPU_Z80_3:
+       mz80reset();
+       break;
 #endif
 #ifndef NO020
-      case CPU_M68020_0:
-         Reset68020();
-      break;
+   case CPU_M68020_0:
+       Reset68020();
+       break;
 #endif
 #ifdef HAVE_6502
-      case CPU_M6502_0:
-      case CPU_M6502_1:
-      case CPU_M6502_2:
-	m6502reset();
-	cycles_6502[cpu_id & 0xf] = 0;
-	break;
+   case CPU_M6502_0:
+   case CPU_M6502_1:
+   case CPU_M6502_2:
+       m6502reset();
+       cycles_6502[cpu_id & 0xf] = 0;
+       break;
 #endif
    }
 }
@@ -431,38 +458,49 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 
    switch(cpu_id){
 #if HAVE_68000
+   case CPU_68010_0:
+#if USE_MUSASHI < 2
+       ret = s68010readPC();
+       break;
+#endif
    case CPU_68K_0:
    case CPU_68K_1:
-     ret = s68000_pc;
-     break;
+#if USE_MUSASHI < 2
+       ret = s68000readPC();
+#else
+       // s68000_pc is a generic macro for compatibility with musashi working for read and write to pc
+       // convenient but to get the real pc from a handler we can't use this and have to call s680x0readPC() instead
+       ret = s68000_pc;
+#endif
+       break;
 #endif
 #if HAVE_Z80
    case CPU_Z80_0:
    case CPU_Z80_1:
    case CPU_Z80_2:
    case CPU_Z80_3:
-     ret = mz80GetPC();
-     break;
+       ret = mz80GetPC();
+       break;
 #endif
 #ifndef NO020
    case CPU_M68020_0:
 #ifdef USE_MUSASHI
-     ret = m68k_get_reg(NULL,M68K_REG_PC);
+       ret = m68k_get_reg(NULL,M68K_REG_PC);
 #else
-     ret = regs.pc;
+       ret = regs.pc;
 #endif
-     break;
+       break;
 #endif
 #ifdef HAVE_6502
    case CPU_M6502_0:
    case CPU_M6502_1:
    case CPU_M6502_2:
-     ret = m6502pc;
-     break;
+       ret = m6502pc;
+       break;
 #endif
    default:
-     ret = 0;
-     break;
+       ret = 0;
+       break;
    }
 
    return ret;
@@ -471,6 +509,7 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
 void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
     switch(cpu>>4) {
 #if HAVE_68000
+    case CPU_68010:
     case CPU_68000: s68000_get_ram(cpu & 0xf,range,count); break;
 #endif
 #if HAVE_Z80
@@ -509,6 +548,7 @@ void cpu_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
 UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
     switch(cpu >> 4) {
 #if HAVE_68000
+    case CPU_68010:
     case CPU_68000:
 	return s68k_get_code_range(cpu & 0xf, adr, start, end);
 	break;
@@ -554,13 +594,14 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
     switch(cpu >> 4) {
 #if HAVE_68000
-    case 1: return s68k_get_userdata(cpu & 0xf,adr);
+    case CPU_68010:
+    case CPU_68000: return s68k_get_userdata(cpu & 0xf,adr);
 #endif
 #if HAVE_Z80
-    case 2: return z80_get_userdata(cpu & 0xf,adr);
+    case CPU_Z80: return z80_get_userdata(cpu & 0xf,adr);
 #endif
 #ifndef NO020
-    case 3: return R24[adr >> 16]-adr;
+    case CPU_68020: return R24[adr >> 16]-adr;
 #endif
     }
     return NULL;

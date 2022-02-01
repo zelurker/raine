@@ -29,7 +29,7 @@ static struct STARSCREAM_DATAREGION    M68000_dataregion_wb[MAX_68000][MAX_DATA]
 struct STARSCREAM_DATAREGION    M68000_dataregion_ww[MAX_68000][MAX_DATA];
 static void *M68000_resethandler[MAX_68000];
 
-int StarScreamEngine;
+int StarScreamEngine,M68010Engine;
 
 /*
  *  Fill in the basic structures via these functions...
@@ -632,6 +632,16 @@ static void m68k_write32(uint32 adr,uint32 data) {
 }
 #endif
 
+void upgrade_to_68010() {
+#if USE_MUSASHI < 2
+    memcpy(&s68010context,&M68000_context[StarScreamEngine-1],sizeof(struct S68000CONTEXT));
+    M68010Engine = 1;
+#else
+    m68k_set_cpu_type(M68K_CPU_TYPE_68010);
+    m68k_get_context(&M68000_context[0]);
+#endif
+}
+
 void AddInitMemory(void)
 {
 #if USE_MUSASHI < 2
@@ -847,9 +857,14 @@ void AddInitMemoryMC68000B(void)
 
 void Stop68000(UINT32 address, UINT8 data)
 {
-	(void)(address);
-	(void)(data);
-   s68000releaseTimeslice();
+    (void)(address);
+    (void)(data);
+#if USE_MUSASHI < 2
+    if (M68010Engine)
+	s68010releaseTimeslice();
+    else
+#endif
+	s68000releaseTimeslice();
    print_debug("[Stop68000]\n");
 }
 

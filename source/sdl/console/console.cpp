@@ -46,7 +46,9 @@ static void init_cpuid() {
   else
 #endif
 #if HAVE_68000
-    if(StarScreamEngine>=1){
+      if (M68010Engine)
+	  cpu_id = CPU_68010_0;
+  else if(StarScreamEngine>=1){
 	cpu_id = CPU_68K_0; // default : 68k, 1st cpu
     } else
 #endif
@@ -1188,7 +1190,7 @@ static void do_search(int argc, char **argv) {
 static void do_cpu(int argc, char **argv) {
     char buff[80];
     sprintf(buff,"active cpu : ");
-    int has_68020=0, has_68k=0,has_z80=0,has_6502=0;
+    int has_68020=0, has_68k=0,has_z80=0,has_6502=0,has_68010=0;
 #ifndef NO020
   if (MC68020) {
       strcat(buff,"68020 ");
@@ -1196,13 +1198,18 @@ static void do_cpu(int argc, char **argv) {
   }
 #endif
 #if HAVE_68000
-  if(StarScreamEngine>=1){
-      strcat(buff," 68000a ");
-      has_68k |= 1;
-  }
-  if(StarScreamEngine>=2){
-      strcat(buff," 68000b ");
-      has_68k |= 2;
+  if (M68010Engine) {
+      strcat(buff," 68010a ");
+      has_68010 = 1;
+  } else {
+      if(StarScreamEngine>=1){
+	  strcat(buff," 68000a ");
+	  has_68k |= 1;
+      }
+      if(StarScreamEngine>=2){
+	  strcat(buff," 68000b ");
+	  has_68k |= 2;
+      }
   }
 #endif
 #if HAVE_Z80
@@ -1230,6 +1237,8 @@ static void do_cpu(int argc, char **argv) {
        strlwr(argv[1]);
        if (!strcmp(argv[1],"68020") && has_68020)
 	   cpu_id = CPU_M68020_0;
+       else if (!strncmp(argv[1],"68010",5) && has_68010)
+	   cpu_id = CPU_68010_0;
        else if (!strncmp(argv[1],"68000",5) &&
 	       (has_68k & (1<<(nb = argv[1][5] - 'a'))))
 	   cpu_id = CPU_68K_0+nb;
@@ -1356,10 +1365,12 @@ static int lastw,lasth;
 char *get_cpu_name_from_cpu_id(int cpu_id) {
     static char buff[10];
     switch (cpu_id >> 4) {
-    case 1:
+    case CPU_68000:
 	sprintf(buff,"68000"); break;
-    case 2: sprintf(buff,"Z80"); break;
-    case 3: sprintf(buff,"68020"); break;
+    case CPU_Z80: sprintf(buff,"Z80"); break;
+    case CPU_68020: sprintf(buff,"68020"); break;
+    case CPU_68010: sprintf(buff,"68010"); break;
+    case CPU_6502: sprintf(buff,"6502"); break;
     default:
 	    cons->print("unknown cpu");
 	    cpu_id = 0;

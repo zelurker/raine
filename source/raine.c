@@ -713,6 +713,9 @@ int main(int argc,char *argv[])
 
 #if HAVE_68000
    s68000init();
+#if USE_MUSASHI < 2
+   s68010init();
+#endif
 #endif
 
 #if defined(SDL) && defined(USE_CURL)

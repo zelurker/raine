@@ -20,6 +20,8 @@ extern "C" {
 #define ReadLongSc(a) ((ReadWord(a)<<16) | ReadWord(a+2))
 #define WriteLongSc(a,b) WriteWord(a,(b)>>16); WriteWord(a+2,((b)&0xffff))
 
+extern int M68010Engine;
+
 #if USE_MUSASHI < 2
 extern struct S68000CONTEXT            M68000_context[MAX_68000];
 #else
@@ -66,6 +68,7 @@ void Add68000Code(int cpu, int offset, int region);
  */
 
 void AddInitMemory(void);
+void upgrade_to_68010();
 void AddInitMemoryMC68000B(void);
 
 void M68000A_load_update(void);

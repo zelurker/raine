@@ -59,6 +59,7 @@
 #ifdef HAS_CONSOLE
 #include "console/scripts.h"
 #endif
+#include "starhelp.h"
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
@@ -552,8 +553,13 @@ void reset_game_hardware(void)
 
 #if HAVE_68000
    if(StarScreamEngine>=1){
-      cpu_reset(CPU_68K_0);
-      print_ingame(120,gettext("CPU M68000#0 Reset"));
+       if (M68010Engine) {
+	   cpu_reset(CPU_68010_0);
+	   print_ingame(120,_("CPU 68010#0 Reset"));
+       } else {
+	   cpu_reset(CPU_68K_0);
+	   print_ingame(120,gettext("CPU M68000#0 Reset"));
+       }
    }
    if(StarScreamEngine>=2){
       cpu_reset(CPU_68K_1);

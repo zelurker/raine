@@ -783,6 +783,7 @@ ifeq ($(USE_MUSASHI),2)
 SC000= $(OBJDIR)/68000/starhelp.o
 else
 SC000=	$(OBJDIR)/68000/s68000.o \
+	$(OBJDIR)/68000/s68010.o \
 	$(OBJDIR)/68000/starhelp.o
 endif
 
@@ -1479,6 +1480,14 @@ $(OBJDIR)/68000/s68000.o: $(OBJDIR)/68000/s68000.asm
                 -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
             rm -f $*.d
 
+$(OBJDIR)/68000/s68010.o: $(OBJDIR)/68000/s68010.asm
+	@echo Assembling $<...
+	$(ASM) -MD $*.d -o $@ $(AFLAGS) $<
+	@cp $*.d $*.P; \
+            sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+                -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+            rm -f $*.d
+
 ifdef CROSSCOMPILE
 $(OBJDIR)/68000/s68000.asm: $(NATIVE)/object/68000/star.exe
 	cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
@@ -1492,6 +1501,15 @@ endif
 # just after the hardware tests, just before the title screen with "pc out
 # of bounds" in the console. So it's not used for now.
 	$(OBJDIR)/68000/star.exe -hog $@
+
+ifdef CROSSCOMPILE
+$(OBJDIR)/68000/s68010.asm: $(NATIVE)/object/68000/star.exe
+	cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
+else
+$(OBJDIR)/68000/s68010.asm: $(OBJDIR)/68000/star.o
+	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
+endif
+	$(OBJDIR)/68000/star.exe -hog -cputype 68010 $@
 
 # generate mz80.asm
 

@@ -109,7 +109,7 @@ struct S68000CONTEXT {
 
 struct S68010CONTEXT {
 	STARSCREAM_CONTEXTINFO_MEM16
-	STARSCREAM_CONTEXTINFO_MEM16FC
+	// STARSCREAM_CONTEXTINFO_MEM16FC // doesn't seem to be used at all !!!
 	STARSCREAM_CONTEXTINFO_COMMON
 	STARSCREAM_CONTEXTINFO_68010
 	STARSCREAM_CONTEXTINFO_68010SPECIFIC
@@ -144,13 +144,13 @@ unsigned SN##readPC           (void);                         \
 
 STARSCREAM_IDENTIFIERS(S68000,s68000)
 STARSCREAM_IDENTIFIERS(S68010,s68010)
-STARSCREAM_IDENTIFIERS(S68020,s68020)
-#define s68000_sr s68000context.sr
+// STARSCREAM_IDENTIFIERS(S68020,s68020)
+#define s68000_sr (M68010Engine ? s68010context.sr : s68000context.sr)
 #define s68000_interrupts s68000context.interrupts[0]
 #define s68000_pc s68000context.pc
-#define s68000_read_pc s68000readPC()
-#define s68000_areg s68000context.areg
-#define s68000_dreg s68000context.dreg
+#define s68000_read_pc (M68010Engine ? s68010readPC() : s68000readPC())
+#define s68000_areg (M68010Engine ? s68010context.areg : s68000context.areg)
+#define s68000_dreg (M68010Engine ? s68010context.dreg : s68000context.dreg)
 #define s68000_cycles_run s68000context.odometer
 #else
 #include "Musashi/m68kcpu.h"
