@@ -1335,4 +1335,6 @@
   DRV(zerozone)
 
 DRV(gauntlet)
+DRV(gauntlets)
+DRV(gaunt2)
 

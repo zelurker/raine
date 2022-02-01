@@ -33,11 +33,56 @@ static struct ROM_INFO rom_gauntlet[] =
   LOAD( GFX2, "136037-117.2l", 0x030000, 0x008000, 0x29a5db41),
   LOAD( GFX2, "136037-118.2mn", 0x038000, 0x008000, 0x8bf3b263),
 
-  // FILL( GFX3, 0, 0x40000, 0 ),
+  // LOAD( PROMS, "74s472-136037-101.7u", 0x000, 0x200, 0x2964f76f), /* MO timing */
+  // LOAD( PROMS, "74s472-136037-102.5l", 0x200, 0x200, 0x4d4fec6c), /* MO flip control */
+  // LOAD( PROMS, "74s287-136037-103.4r", 0x400, 0x100, 0x6c5ccf08), /* MO position/size */
+  { NULL, 0, 0, 0, 0, 0 }
+};
 
-  LOAD( PROMS, "74s472-136037-101.7u", 0x000, 0x200, 0x2964f76f), /* MO timing */
-  LOAD( PROMS, "74s472-136037-102.5l", 0x200, 0x200, 0x4d4fec6c), /* MO flip control */
-  LOAD( PROMS, "74s287-136037-103.4r", 0x400, 0x100, 0x6c5ccf08), /* MO position/size */
+static struct ROM_INFO rom_gauntlets[] = // clone of gauntlet
+{
+  LOAD_16_8( CPU1, "136037-1507.9a", 0x000000, 0x008000, 0xb5183228),
+  LOAD_16_8( CPU1, "136037-1508.9b", 0x000001, 0x008000, 0xafd3c501),
+  LOAD_16_8( CPU1, "136037-205.10a", 0x038000, 0x004000, 0x6d99ed51),
+  LOAD_16_8( CPU1, "136037-206.10b", 0x038001, 0x004000, 0x545ead91),
+  LOAD_16_8( CPU1, "136037-1509.7a", 0x040000, 0x008000, 0x69e50ae9),
+  LOAD_16_8( CPU1, "136037-1510.7b", 0x040001, 0x008000, 0x54e2692c),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_gaunt2[] =
+{
+  LOAD_16_8( CPU1, "136037-1307.9a", 0x000000, 0x008000, 0x46fe8743),
+  LOAD_16_8( CPU1, "136037-1308.9b", 0x000001, 0x008000, 0x276e15c4),
+  LOAD_16_8( CPU1, "136043-1105.10a", 0x038000, 0x004000, 0x45dfda47),
+  LOAD_16_8( CPU1, "136043-1106.10b", 0x038001, 0x004000, 0x343c029c),
+  LOAD_16_8( CPU1, "136043-1109.7a", 0x040000, 0x008000, 0x58a0a9a3),
+  LOAD_16_8( CPU1, "136043-1110.7b", 0x040001, 0x008000, 0x658f0da8),
+  LOAD_16_8( CPU1, "136043-1121.6a", 0x050000, 0x008000, 0xae301bba),
+  LOAD_16_8( CPU1, "136043-1122.6b", 0x050001, 0x008000, 0xe94aaa8a),
+  LOAD( ROM2, "136043-1120.16r", 0x004000, 0x004000, 0x5c731006),
+  LOAD( ROM2, "136043-1119.16s", 0x008000, 0x008000, 0xdc3591e7),
+  LOAD( GFX1, "136043-1104.6p", 0x000000, 0x002000, 0x1343cf6f),
+  FILL( GFX1, 0x2000, 0x2000, 0 ),
+  LOAD( GFX2, "136043-1111.1a", 0x000000, 0x008000, 0x09df6e23),
+  LOAD( GFX2, "136037-112.1b", 0x008000, 0x008000, 0x869330be),
+  LOAD( GFX2, "136043-1123.1c", 0x010000, 0x004000, 0xe4c98f01),
+  LOAD( GFX2, "136043-1123.1c", 0x014000, 0x004000, 0xe4c98f01),
+  LOAD( GFX2, "136043-1113.1l", 0x018000, 0x008000, 0x33cb476e),
+  LOAD( GFX2, "136037-114.1mn", 0x020000, 0x008000, 0x29ef9882),
+  LOAD( GFX2, "136043-1124.1p", 0x028000, 0x004000, 0xc4857879),
+  LOAD( GFX2, "136043-1124.1p", 0x02c000, 0x004000, 0xc4857879),
+  LOAD( GFX2, "136043-1115.2a", 0x030000, 0x008000, 0xf71e2503),
+  LOAD( GFX2, "136037-116.2b", 0x038000, 0x008000, 0x11e0ac5b),
+  LOAD( GFX2, "136043-1125.2c", 0x040000, 0x004000, 0xd9c2c2d1),
+  LOAD( GFX2, "136043-1125.2c", 0x044000, 0x004000, 0xd9c2c2d1),
+  LOAD( GFX2, "136043-1117.2l", 0x048000, 0x008000, 0x9e30b2e9),
+  LOAD( GFX2, "136037-118.2mn", 0x050000, 0x008000, 0x8bf3b263),
+  LOAD( GFX2, "136043-1126.2p", 0x058000, 0x004000, 0xa32c732a),
+  LOAD( GFX2, "136043-1126.2p", 0x05c000, 0x004000, 0xa32c732a),
+  // LOAD( PROMS, "74s472-136037-101.7u", 0x000, 0x200, 0x2964f76f), /* MO timing */
+  // LOAD( PROMS, "74s472-136037-102.5l", 0x200, 0x200, 0x4d4fec6c), /* MO flip control */
+  // LOAD( PROMS, "82s129-136043-1103.4r", 0x400, 0x100, 0x32ae1fa9), /* MO position/size */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -108,7 +153,6 @@ static void update_interrupts() {
 static UINT16 atarigen_sound_r(UINT32 offset) {
     atarigen_sound_to_cpu_ready = 0;
     atarigen_sound_int_state = 0;
-    printf("atarigen_sound_r read %x from %x\n",atarigen_sound_to_cpu,s68000_read_pc);
     input_buffer[8] &= ~0x10;
     return atarigen_sound_to_cpu;
 }
@@ -120,7 +164,6 @@ static void sound_reset_w(UINT32 offset, UINT16 data) {
     sound_reset_val = data;
     if ((sound_reset_val ^ oldword) & 1) {
 	print_debug("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
-	printf("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
 	atarigen_sound_to_cpu_ready = 0;
 	atarigen_sound_int_state = 0;
 	input_buffer[8] &= ~0x10;
@@ -143,7 +186,6 @@ static void atarigen_sound_w_byte(UINT32 offset, UINT16 data) {
     atarigen_cpu_to_sound = data;
     atarigen_cpu_to_sound_ready = 1;
     print_debug("sound_w %x\n",data);
-    printf("sound_w %x\n",data);
     if (made_reset) {
 	// Crazy sync code for the 6502, the reset code expects that a command byte is ready to read at the very beginning
 	// so the best way to be sure it happens is to reset when the command is sent !
@@ -169,7 +211,6 @@ static void swap_mem(void *ptr1, void *ptr2, int bytes)
 
 static void m6502_sound_w(UINT32 offset, UINT8 data) {
     print_debug("*** m6502_sound_w %x,%x\n",offset,data);
-    printf("*** m6502_sound_w %x,%x from %x\n",offset,data,cpu_get_pc(CPU_M6502_0));
     if (atarigen_sound_to_cpu_ready) {
 	print_debug("Missed result from 6502\n");
     }
@@ -185,7 +226,6 @@ static void m6502_sound_w(UINT32 offset, UINT8 data) {
 static UINT8 m6502_sound_r(UINT32 offset) {
     atarigen_cpu_to_sound_ready = 0;
     print_debug("6502 read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
-    printf("6502 read %x pc %x\n",atarigen_cpu_to_sound,cpu_get_pc(CPU_M6502_0));
     return atarigen_cpu_to_sound;
 }
 
@@ -237,7 +277,6 @@ static UINT8 switch_6502_r(UINT32 offset)
         if (tms5220_ready_r()) temp ^= 0x20;
         if (!(input_buffer[8] & 8)) temp ^= 0x10;
 	// print_debug("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
-	// printf("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
 
         return temp;
 }
@@ -328,8 +367,6 @@ static UINT16 read_port_4b(UINT32 offset) {
 }
 
 static void load_gauntlet() {
-    // memcpy(load_region[REGION_GFX3],load_region[REGION_GFX2],get_region_size(REGION_GFX2));
-
     RAMSize = 0x2000 + // main ram
 	0x1000 + // 2nd ram
 	0x2000 + // playfield
@@ -359,19 +396,21 @@ static void load_gauntlet() {
 	p[s--] ^= 0xffff;
     } while (s >= 0);
 
-
-    ByteSwap(ROM, get_region_size(REGION_ROM1) );
+    int size_code = get_region_size(REGION_ROM1);
+    ByteSwap(ROM, size_code );
     swap_mem(ROM + 0x000000, ROM + 0x008000, 0x8000);
     swap_mem(ROM + 0x040000, ROM + 0x048000, 0x8000);
-    // swap_mem(ROM + 0x050000, ROM + 0x058000, 0x8000);
-    // swap_mem(ROM + 0x060000, ROM + 0x068000, 0x8000);
-    // swap_mem(ROM + 0x070000, ROM + 0x078000, 0x8000);
+    if (size_code > 0x50000) swap_mem(ROM + 0x050000, ROM + 0x058000, 0x8000);
+    if (size_code > 0x60000) swap_mem(ROM + 0x060000, ROM + 0x068000, 0x8000);
+    if (size_code > 0x70000) swap_mem(ROM + 0x070000, ROM + 0x078000, 0x8000);
 
     atarigen_slapstic_bank0 = AllocateMem(0x2000);
-    save_debug("rom",ROM,0x50000,0);
     if (atarigen_slapstic_bank0)
 	memcpy(atarigen_slapstic_bank0, &ROM[0x38000], 0x2000);
-    slapstic_init(104);
+    if (is_current_game("gaunt2"))
+	slapstic_init(107);
+    else
+	slapstic_init(104);
     slapstic_reset();
     update_bank(slapstic_bank());
 
@@ -379,7 +418,7 @@ static void load_gauntlet() {
     AddReadWord(0x38000, 0x38000 + 0x7fff, slapstic_rw, NULL);
     AddWriteWord(0x38000, 0x38000 + 0x7fff, slapstic_ww, NULL);
     AddWriteByte(0x38000, 0x38000 + 0x7fff, slapstic_wb, NULL);
-    add_68000_rom(0, 0, get_region_size(REGION_ROM1)-1, ROM);
+    add_68000_rom(0, 0, size_code-1, ROM);
     add_68000_ram(0,0x800000,0x801fff, RAM);
     add_68000_ram(0,0x900000,0x901fff, playfield);
     add_68000_ram(0,0x902000,0x903fff, sprites);
@@ -450,7 +489,9 @@ static void load_gauntlet() {
 }
 
 static void clear_gauntlet() {
-    save_file(get_shared("savedata/gauntlet.epr"),eeprom,0x800);
+    char path[80];
+    snprintf(path,80,"savedata/%s.epr",current_game->main_name);
+    save_file(get_shared(path),eeprom,0x800);
 }
 
 extern int goto_debuger;
@@ -458,12 +499,6 @@ extern int goto_debuger;
 static void execute_gauntlet()
 {
     input_buffer[8] |= 0x40;
-#if 0
-    if (((s68000_sr >> 8) & 7) == 4) {
-	printf("level still 4 at frame %d pc %x\n",cpu_frame_count,s68000_pc);
-    }
-#endif
-    // cpu_execute_cycles(CPU_68K_0, ATARI_CLOCK_14MHz/8/fps); // 68010
     if (goto_debuger) return;
     for (int n=0; n<4; n++) {
 	int frame = ATARI_CLOCK_14MHz/8/fps/4,diff;
@@ -474,22 +509,7 @@ static void execute_gauntlet()
 	}
 	while (frame > 16) {
 	    diff = execute_one_z80_audio_frame(frame);
-	    if (s68000_read_pc == 0x46c4 || s68000_read_pc == 0x46ca || s68000_read_pc == 0x4694 || s68000_read_pc == 0x148 || s68000_read_pc == 0x46b8 || s68000_read_pc == 0x468c || s68000_pc == 0x4244) {
-		int n=0;
-		int cycles = diff*4;
-		while (s68000_read_pc != 0x10000 && cycles > 0) {
-		    int pc = s68000_read_pc;
-		    int cyc = 10;
-		    do {
-			cpu_execute_cycles(CPU_68K_0,cyc);
-			cyc *= 2;
-		    } while (s68000_read_pc == pc && cyc < 1000);
-		    printf("%d: %x (cycles %d, sr=%x)\n",n++,s68000_read_pc,cyc,s68000_sr);
-		    cycles -= 128;
-		}
-	    } else
-		cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
-	    printf("68k pc %x\n",s68000_read_pc);
+	    cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
 	    frame -= diff;
 	    if (diff == 0) break;
 	}
@@ -624,7 +644,7 @@ static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
 	nb++;
 	UINT16 code = (ReadWord(&sprites[n*2]) ^ 0x800);
 	UINT16 link = ReadWord(&sprites[(n*2)+3072*2]) & 0x3ff;
-	code &= 0x1fff;
+	code &= 0x7fff;
 	int x = ReadWord(&sprites[(n*2)+1024*2]);
 	UINT16 color = 0x40 + (x & 0xf)*4;
 	x >>= 7;
@@ -696,7 +716,8 @@ static void draw_gauntlet()
 	MAKE_SCROLL_512x512_2_8_YX(yscroll,xscroll);
 	START_SCROLL_8_YX(16,16,336,240) {
 	    ta = ReadWord(&playfield[zz]);
-	    code = (((tilebank*0x1000) & bank_mask) + (ta & 0xfff)) ^ 0x800;
+	    code = (((tilebank*0x1000)) + (ta & 0xfff)) ^ 0x800;
+	    code &= 0x7fff;
 	    color = (bank)+ (((ta >> 12) & 7)*4);
 	    // Oh well, this layer has 16 colors when the other one has 4 only, I could maybe use the multi_mapped_new macro
 	    // but it obliges to count in banks of 16 colors which could create problems, I'll just use 4 map calls, anyway the palette is mapped only once
@@ -767,5 +788,7 @@ static struct VIDEO_INFO video_gauntlet =
    60
 };
 
-GMEI( gauntlet,"Gauntlet (rev 14)",ATARI,1985, GAME_MISC,
+GMEI( gauntlet,"Gauntlet (rev 14)",ATARI,1985, GAME_HACK,
 	.clear= clear_gauntlet);
+CLNEI(gauntlets, gauntlet,"Gauntlet (Spanish, rev 15)",ATARI,1985,GAME_HACK); // rom has a lot of differences compared to english version 14, no region switch then ?
+CLNEI(gaunt2, gauntlet,"Gauntlet II",ATARI,1986,GAME_HACK | GAME_NOT_WORKING); // graphics broken for playfield layer, didn't have time to investigate yet
