@@ -770,7 +770,8 @@ static void draw_gauntlet()
 	    if (ta & 0x8000) // opaque
 		Draw8x8_Mapped_Rot(&gfx[0][code<<6],x,y,map);
 	    else
-		Draw8x8_Trans_Mapped_Rot(&gfx[0][code<<6],x,y,map);
+		if (gfx_solid[0][code])
+		    Draw8x8_Trans_Mapped_Rot(&gfx[0][code<<6],x,y,map);
 	}
 	END_SCROLL_512x256_2_8();
     }
