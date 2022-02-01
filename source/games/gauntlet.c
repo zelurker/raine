@@ -586,7 +586,24 @@ static struct GFX_LIST gauntlet_gfx[] =
    { 0,           NULL,             },
 };
 
-static char visited[1024];
+// I won't go out of my way for this visited thing
+// the idea is that render_sprites is passed often the same starting index, but with different clipping values
+// so it must be able to quickly test if a given sprite was already visited or not.
+// I did it first with a normal char[1024], but a memset of 1024 bytes for all the render_sprites call can be considered expensive
+// so here is the bitmask version, 1024/8 is 128 only, really reasonable at this point, and greatly simplifies the code
+static char visited[1024/8];
+
+static inline int is_visited(int total) {
+    int n = total / 8;
+    int bit = total & 7;
+    return visited[n] & (1 << bit);
+}
+
+static inline void set_visited(int total) {
+    int n = total / 8;
+    int bit = total & 7;
+    visited[n] |= (1 << bit);
+}
 
 static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
     /* The sprites are a bizarre bunch, as shown by the memory map in mame :
@@ -602,8 +619,8 @@ static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
      */
     UINT8 *map;
     int nb = 0;
-    while (!visited[n]) {
-	visited[n] = 1;
+    while (!is_visited(n)) {
+	set_visited(n);
 	nb++;
 	UINT16 code = (ReadWord(&sprites[n*2]) ^ 0x800);
 	UINT16 link = ReadWord(&sprites[(n*2)+3072*2]) & 0x3ff;
@@ -634,11 +651,19 @@ static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
 	    if (py > maxy) break;
 	    for (int cx=0; cx <= nx; cx++) {
 		px = (x+16+cx*8);
-		if (px > 8 && px < 336+16 && gfx_solid[1]) {
-		    if (flipx)
-			Draw8x8_Trans_Mapped_FlipY_Rot(&gfx[1][(code+cx+cy*(nx+1))<<6],px,py,map);
-		    else
-			Draw8x8_Trans_Mapped_Rot(&gfx[1][(code+cx+cy*(nx+1))<<6],px,py,map);
+		int ncode = code+cx+cy*(nx+1);
+		if (px > 8 && px < 336+16 && gfx_solid[1][ncode]) {
+		    if (gfx_solid[1][ncode] == 2) {
+			if (flipx)
+			    Draw8x8_Mapped_FlipY_Rot(&gfx[1][(ncode)<<6],px,py,map);
+			else
+			    Draw8x8_Mapped_Rot(&gfx[1][ncode<<6],px,py,map);
+		    } else {
+			if (flipx)
+			    Draw8x8_Trans_Mapped_FlipY_Rot(&gfx[1][ncode<<6],px,py,map);
+			else
+			    Draw8x8_Trans_Mapped_Rot(&gfx[1][ncode<<6],px,py,map);
+		    }
 		}
 	    }
 	}
@@ -650,7 +675,6 @@ static void draw_gauntlet()
 {
     ClearPaletteMap();
 
-    printf("sizes %x,%x\n",get_region_size(REGION_GFX1),get_region_size(REGION_GFX2));
     int xscroll, yscroll, ta, code, color;
     SCROLL_REGS;
     UINT8 *map;
@@ -666,7 +690,6 @@ static void draw_gauntlet()
     int tilebank = yscroll & 3;
     yscroll >>= 7;
     yscroll &= 0x1ff;
-    // if (bank < 0x40 || bank > 0x80) bank = 0x40;
     bank = 0x80+0x20;
 
     if( check_layer_enabled(layer_id_data[0])) {
@@ -705,10 +728,10 @@ static void draw_gauntlet()
 	for (int ta=0xf80; ta<=0xfff; ta+=2) {
 	    // Not only does these addresses give the start index for the sprites, they also indicate miny and maxy !
 	    // each word is for 8 pixels high, so we stop when we reach the max screen coordinate (240)
-	    int miny = (ta-0xf80)/2*8+8;
+	    int miny = (ta-0xf80)/2*8;
 	    if (miny >= 240) break;
 	    int maxy = miny+7;
-	    memset(visited,0,1024);
+	    memset(visited,0,1024/8);
 	    int link = ReadWord(&alpha[ta]) & 0x3ff;
 	    render_sprites(link,xscroll,yscroll,miny+16,maxy+16);
 	}
