@@ -2244,7 +2244,7 @@ static UINT16 tp2vcu_0_rw(UINT32 offset)
        // in batsugun if this returns 0 "too often", then you'll get some red garbage instead of the "insert coin"
        // at the bottom of the screen for player 2. Maybe it was a way to show on screen that something is wrong ?
        // weird anyway... ! By the way this is tested by a test $50000d, so the read byte here is important !
-       cycles = s68000readOdometer() - start_frame;
+       cycles = cpu_get_cycles_done(CPU_68K_0) - start_frame;
        vpos = cycles*262/CPU_FRAME_MHz(16,60);
        // printf("vpos %d tested at %x\n",vpos,s68000readPC());
        return vpos >= 250 || vpos < 5;
@@ -4858,6 +4858,8 @@ static void br_init_z80_bank(UINT8 *src)
    AddSaveData(SAVE_USER_1, (UINT8 *) &object_bank,         sizeof(object_bank));
    AddSaveData(SAVE_USER_2, (UINT8 *) &sound_data,          sizeof(sound_data));
    AddSaveData(SAVE_USER_3, (UINT8 *) &sound_nmi,           sizeof(sound_nmi));
+   memset(object_bank,0,sizeof(object_bank));
+   sound_nmi = 0;
 }
 
 static UINT8 batrider_68k_z80rom_rb(UINT32 offset)
@@ -5688,12 +5690,9 @@ static const int toaplan2_interrupt[ROM_COUNT] =
    2,                   // 15 - Fix Eight Bootleg
 };
 
-#ifndef MAME_Z80
-extern UINT16 z80sp;
-#endif
 static void execute_kbash(void)
 {
-    start_frame = s68000readOdometer();
+    start_frame = cpu_get_cycles_done(CPU_68K_0);
    if((romset==8)){
 
       update_paddle();

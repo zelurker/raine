@@ -19,6 +19,7 @@
 
 UINT32 current_cpu_num[0x10];
 UINT32 cycles_68k[2],cycles_6502[3];
+static char active[4];
 
 /*
 
@@ -284,11 +285,13 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #if HAVE_68000
       case CPU_68K_0:
       case CPU_68K_1:
+	  active[cpu_id & 0xf] = 1;
 #if USE_MUSASHI == 2
 	  ret = m68k_execute(cycles);
 #else
          ret = s68000exec(cycles);
 #endif
+	  active[cpu_id & 0xf] = 0;
 	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000_pc,s68000_sr,s68000_areg[7]);
 #if USE_MUSASHI < 2
 #ifdef RAINE_DEBUG
@@ -357,7 +360,15 @@ UINT32 cpu_get_cycles_done(UINT32 cpu) {
    switch(cpu >> 4) {
    case CPU_Z80: return mz80GetCyclesDone();
    case CPU_6502: return cycles_6502[cpu & 0xf];
-   case CPU_68000: return cycles_68k[cpu & 0xf];
+   case CPU_68000:
+#if USE_MUSASHI < 2
+		  return cycles_68k[cpu & 0xf] + s68000readOdometer();
+#else
+		  if (active[cpu & 0xf])
+		      return cycles_68k[cpu & 0xf] + m68k_cycles_run();
+		  else
+		      return cycles_68k[cpu & 0xf];
+#endif
    }
    return 0;
 }
