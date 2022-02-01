@@ -87,9 +87,10 @@ int get_url(char *file, char *url)
   // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
   s = strrchr(url,'/');
   s++;
-  char fname[20];
+  char fname[20],fname2[30];
   strcpy(fname,"roms/");
-  strcat(fname,s);
+  strncat(fname,s,20);
+  snprintf(fname2,30,"Roms.zip/%s",s);
   total_size = 0;
   FILE *f = fopen("index_roms.html","r");
   if (f) {
@@ -97,6 +98,7 @@ int get_url(char *file, char *url)
       while (!feof(f)) {
 	  myfgets(buff,256,f);
 	  char *s2 = strstr(buff,fname);
+	  if (!s2) s2 = strstr(buff,fname2);
 	  if (s2) {
 	      s2 = strstr(s2+1,"size");
 	      total_size = atol(s2+6);

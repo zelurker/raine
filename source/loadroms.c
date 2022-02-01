@@ -1187,10 +1187,13 @@ beg:
 	   if (!strcmp(dir,"neogeo"))
 	       // neogeo is in all the roms directories, there is probably a redirect
 	       // or space is not an issue... !
-	       sprintf(url,"http://archive.org/download/arcade_2020bb/%s.zip",dir);
+	       snprintf(url,512,"http://archive.org/download/arcade_2020bb/%s.zip",dir);
+	   else if (!strcmp(dir,"batrider") || !strcmp(dir,"gauntlet") || !strcmp(dir,"gaunt2") || !strcmp(dir,"gauntlets"))
+	       // they have the romset for 0.91.4, so there are a few exceptions...
+	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	   else
 	       // There is a raine all roms directory for 0.91.4 !
-	       sprintf(url,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
+	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
 	   printf("would try %s\n",url);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
