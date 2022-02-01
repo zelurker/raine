@@ -249,7 +249,7 @@ void triger_timers() {
       // after that, if there is a while here, it's an infinite loop
       // (the logic of the driver might be wrong, but it works this way anyway)
       // Only for mz80, to be tested in cz80 !
-      if ((audio_cpu >> 4) == CPU_Z80) {
+      if ((audio_cpu >> 4) == CPU_Z80 && MZ80Engine) {
 	  // Don't know yet how this will work with other cpus, I expect trouble !
 	  if (!_z80iff) {
 	      // Sometimes 2 timers trigger too close to each other and the z80
