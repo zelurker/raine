@@ -1,0 +1,208 @@
+script "Infinite Bonus Time"  
+run:
+    dpoke $9049E8 $04B0
+script "Freeze All Monsters"  
+run:
+    poke $904007 $35
+script "Open all doors Now!" \
+ "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"  
+on:
+    poke $90490C $04
+    poke $90490D $9F
+script "Turn walls to Exits Now!" \
+ "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"  
+on:
+    poke $9048C6 $51
+    poke $9048C7 $F7
+script " "  
+script "Infinite Health (Red)"  
+run:
+    poke $904980 $27
+    poke $904983 $10
+script "Infinite Keys (Red)"  
+run:
+    poke $90405A $03
+script "Infinite Potions (Red)"  
+run:
+    poke $904055 $03
+script "Always Invisible (Red)"  
+run:
+    poke $9048E0 $01|(peek($9048E0)&~$01)
+script "Always Repulsive (Red)"  
+run:
+    poke $9048E0 $02|(peek($9048E0)&~$02)
+script "Reflective Shots (Red)"  
+run:
+    poke $9048E0 $04|(peek($9048E0)&~$04)
+script "Transportability (Red)"  
+run:
+    poke $9048E0 $08|(peek($9048E0)&~$08)
+script "Supershots (Red)"  
+run:
+    poke $9048E0 $10|(peek($9048E0)&~$10)
+    poke $905F68 $0A
+script "Always Invulnerable (Red)"  
+run:
+    poke $9048E0 $20|(peek($9048E0)&~$20)
+script "Get Enhanced Speed (Red)"  
+on:
+    poke $9048E1 $01|(peek($9048E1)&~$01)
+script "Get Enhanced Armor (Red)"  
+on:
+    poke $9048E1 $02|(peek($9048E1)&~$02)
+script "Get More Fight Power (Red)"  
+on:
+    poke $9048E1 $04|(peek($9048E1)&~$04)
+script "Get Faster Shot (Red)"  
+on:
+    poke $9048E1 $08|(peek($9048E1)&~$08)
+script "Get More Shot Power (Red)"  
+on:
+    poke $9048E1 $10|(peek($9048E1)&~$10)
+script "Get Enhanced Magic (Red)"  
+on:
+    poke $9048E1 $20|(peek($9048E1)&~$20)
+script " "  
+script "Infinite Health (Blue)"  
+run:
+    poke $904984 $27
+    poke $904987 $10
+script "Infinite Keys (Blue)"  
+run:
+    poke $90405B $03
+script "Infinite Potions (Blue)"  
+run:
+    poke $904056 $03
+script "Always Invisible (Blue)"  
+run:
+    poke $9048E2 $01|(peek($9048E2)&~$01)
+script "Always Repulsive (Blue)"  
+run:
+    poke $9048E2 $02|(peek($9048E2)&~$02)
+script "Reflective Shots (Blue)"  
+run:
+    poke $9048E2 $04|(peek($9048E2)&~$04)
+script "Transportability (Blue)"  
+run:
+    poke $9048E2 $08|(peek($9048E2)&~$08)
+script "Supershots (Blue)"  
+run:
+    poke $9048E2 $10|(peek($9048E2)&~$10)
+    poke $905F69 $0A
+script "Always Invulnerable (Blue)"  
+run:
+    poke $9048E2 $20|(peek($9048E2)&~$20)
+script "Get Enhanced Speed (Blue)"  
+on:
+    poke $9048E3 $01|(peek($9048E3)&~$01)
+script "Get Enhanced Armor (Blue)"  
+on:
+    poke $9048E3 $02|(peek($9048E3)&~$02)
+script "Get More Fight Power (Blue)"  
+on:
+    poke $9048E3 $04|(peek($9048E3)&~$04)
+script "Get Faster Shot (Blue)"  
+on:
+    poke $9048E3 $08|(peek($9048E3)&~$08)
+script "Get More Shot Power (Blue)"  
+on:
+    poke $9048E3 $10|(peek($9048E3)&~$10)
+script "Get Enhanced Magic (Blue)"  
+on:
+    poke $9048E3 $20|(peek($9048E3)&~$20)
+script " "  
+script "Infinite Health (Yellow)"  
+run:
+    poke $904988 $27
+    poke $90498B $10
+script "Infinite Keys (Yellow)"  
+run:
+    poke $90405C $03
+script "Infinite Potions (Yellow)"  
+run:
+    poke $904057 $03
+script "Always Invisible (Yellow)"  
+run:
+    poke $9048E4 $01|(peek($9048E4)&~$01)
+script "Always Repulsive (Yellow)"  
+run:
+    poke $9048E4 $02|(peek($9048E4)&~$02)
+script "Reflective Shots (Yellow)"  
+run:
+    poke $9048E4 $04|(peek($9048E4)&~$04)
+script "Transportability (Yellow)"  
+run:
+    poke $9048E4 $08|(peek($9048E4)&~$08)
+script "Supershots (Yellow)"  
+run:
+    poke $9048E4 $10|(peek($9048E4)&~$10)
+    poke $905F6A $0A
+script "Always Invulnerable (Yellow)"  
+run:
+    poke $9048E4 $20|(peek($9048E4)&~$20)
+script "Get Enhanced Speed (Yellow)"  
+on:
+    poke $9048E5 $01|(peek($9048E5)&~$01)
+script "Get Enhanced Armor (Yellow)"  
+on:
+    poke $9048E5 $02|(peek($9048E5)&~$02)
+script "Get More Fight Power (Yellow)"  
+on:
+    poke $9048E5 $04|(peek($9048E5)&~$04)
+script "Get Faster Shot (Yellow)"  
+on:
+    poke $9048E5 $08|(peek($9048E5)&~$08)
+script "Get More Shot Power (Yellow)"  
+on:
+    poke $9048E5 $10|(peek($9048E5)&~$10)
+script "Get Enhanced Magic (Yellow)"  
+on:
+    poke $9048E5 $20|(peek($9048E5)&~$20)
+script " "  
+script "Infinite Health (Green)"  
+run:
+    poke $90498C $27
+    poke $90498F $10
+script "Infinite Keys (Green)"  
+run:
+    poke $90405D $03
+script "Infinite Potions (Green)"  
+run:
+    poke $904058 $03
+script "Always Invisible (Green)"  
+run:
+    poke $9048E6 $01|(peek($9048E6)&~$01)
+script "Always Repulsive (Green)"  
+run:
+    poke $9048E6 $02|(peek($9048E6)&~$02)
+script "Reflective Shots (Green)"  
+run:
+    poke $9048E6 $04|(peek($9048E6)&~$04)
+script "Transportability (Green)"  
+run:
+    poke $9048E6 $08|(peek($9048E6)&~$08)
+script "Supershots (Green)"  
+run:
+    poke $9048E6 $10|(peek($9048E6)&~$10)
+    poke $905F6B $0A
+script "Always Invulnerable (Green)"  
+run:
+    poke $9048E6 $20|(peek($9048E6)&~$20)
+script "Get Enhanced Speed (Green)"  
+on:
+    poke $9048E7 $01|(peek($9048E7)&~$01)
+script "Get Enhanced Armor (Green)"  
+on:
+    poke $9048E7 $02|(peek($9048E7)&~$02)
+script "Get More Fight Power (Green)"  
+on:
+    poke $9048E7 $04|(peek($9048E7)&~$04)
+script "Get Faster Shot (Green)"  
+on:
+    poke $9048E7 $08|(peek($9048E7)&~$08)
+script "Get More Shot Power (Green)"  
+on:
+    poke $9048E7 $10|(peek($9048E7)&~$10)
+script "Get Enhanced Magic (Green)"  
+on:
+    poke $9048E7 $20|(peek($9048E7)&~$20)
