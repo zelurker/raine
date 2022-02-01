@@ -6701,9 +6701,9 @@ CLONE( kbash2, kbash, "Knuckle Bash 2 (bootleg)", TOAPLAN, 1993, GAME_BEAT,
 );
 static struct DIR_INFO dir_pipibibsbl[] =
 {
+   { "pipibibsbl", },
    { "pipi_and_bibi", },
    { "pipibibi", },
-   { "pipibibsbl", },
    { NULL, },
 };
 GAME(pipibibsbl, "Pipi and Bibi's", BOOTLEG, 1991, GAME_PLATFORM | GAME_ADULT,
@@ -6775,7 +6775,6 @@ GAME(vfive, "V Five", TOAPLAN, 1993, GAME_SHOOT,
 static struct DIR_INFO dir_whoopee[] =
 {
    { "whoopee", },
-   { "pipibibs", },
    { ROMOF("pipibibsbl"), },
    { CLONEOF("pipibibsbl"), },
    { NULL, },
