@@ -768,6 +768,13 @@ static UINT32 load_rom_region(UINT32 region)
    return 1;
 }
 
+static void copy_gfx(GFX_LIST *src, GFX_LIST *dst) {
+   for (int n=0; n<10; n++) {
+       dst[n] = src[n];
+       if (dst[n].region == 0 || dst[n].region > REGION_MAX) break;
+   }
+}
+
 static UINT32 load_gfx_region(UINT32 region)
 {
    UINT32 reg_size = 0;
@@ -807,8 +814,9 @@ static UINT32 load_gfx_region(UINT32 region)
    // now this function is called after the roms have been loaded in the region...
    buffer = load_region[region];
    reg_size = get_region_size(region);
-   if (!buffer)
-     return 1; // this region is empty
+   if (!buffer) {
+       return 1; // this region is empty
+   }
 
    do {
      while(gfx_list->region) // region 0 is NONE or end of list
@@ -901,6 +909,7 @@ char *get_region_name(int reg) {
 void load_game_rom_info(void)
 {
    UINT32 i;
+   GFX_LIST *gfx_list, copie[10];
 
    for(i = 0; i < REGION_MAX; i++) {
       load_region[i] = NULL;
@@ -981,6 +990,9 @@ void load_game_rom_info(void)
      return;
    }
 
+   gfx_list = current_game->video->gfx_list;
+   if (gfx_list)
+       copy_gfx(gfx_list,copie);
    load_message(_("Applying graphics layouts..."));
    if(!load_gfx_region(REGION_GFX1)) return;
    if(!load_gfx_region(REGION_GFX2)) return;
@@ -1003,6 +1015,8 @@ void load_game_rom_info(void)
      call_init_tile_cache = 0;
    }
 
+   if (gfx_list)
+       copy_gfx(copie,gfx_list);
    free_temp_buffer();
 
 #if USE_BEZELS
