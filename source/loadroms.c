@@ -1188,7 +1188,10 @@ beg:
 	       // neogeo is in all the roms directories, there is probably a redirect
 	       // or space is not an issue... !
 	       snprintf(url,512,"http://archive.org/download/arcade_2020bb/%s.zip",dir);
-	   else if (!strcmp(dir,"batrider") || !strcmp(dir,"gauntlet") || !strcmp(dir,"gaunt2") || !strcmp(dir,"gauntlets"))
+	   else if (!strcmp(dir,"batrider") || !strcmp(dir,"gauntlet") || !strcmp(dir,"gaunt2") || !strcmp(dir,"gauntlets") ||
+		   !strcmp(dir,"batriderja") || !strcmp(dir,"batsuguna") || !strcmp(dir,"batsugunsp") || !strcmp(dir,"bgareggacn") ||
+		   !strcmp(dir,"bgaregganv") || !strcmp(dir,"bgareggat2") || !strcmp(dir,"bbakraidja") || !strcmp(dir,"kingdmgp") ||
+		   !strcmp(dir,"sstrikerk"))
 	       // they have the romset for 0.91.4, so there are a few exceptions...
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	   else
