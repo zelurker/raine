@@ -323,12 +323,15 @@ static void gen_variables(void) {
 		emit("__u_readword           dd 0\n");
 		emit("__u_writebyte          dd 0\n");
 		emit("__u_writeword          dd 0\n");
+#if 0
+		// These are unused and prevent a memmove from a 68000 context to a 68010 one
 		if(cputype == 68010) {
 			emit("__f_readbyte           dd 0\n");
 			emit("__f_readword           dd 0\n");
 			emit("__f_writebyte          dd 0\n");
 			emit("__f_writeword          dd 0\n");
 		}
+#endif
 	/*
 	** CONTEXTINFO_MEM32
 	**
@@ -3778,7 +3781,7 @@ static void i_rte(void){
 		emit("mov edx,[__a7]\n");
 		emit("add edx,byte 6\n");
 		emit("call readmemory%s\n",sizename[2]);
-		emit("test ch,70h\n");
+		emit("test cl,70h\n"); // not ch, checked in gdb !
 		emit("jnz short ln%d_formatok\n",myline);
 		/* Generate Format Error exception where necessary */
 		emit("mov edx,38h\n");
