@@ -31,7 +31,6 @@
 typedef struct
 {
 	UINT8	subtype;		/* currently selected cpu sub type */
-	void	(*const *insn)(void); /* pointer to the function pointer table */
 	PAIR	ppc;			/* previous program counter */
 	PAIR	pc; 			/* program counter */
 	PAIR	sp; 			/* stack pointer (always 100 - 1FF) */
@@ -55,6 +54,7 @@ typedef struct
 	void	(*port_write)(UINT8 direction, UINT8 data);
 #endif
 	UINT8 *m6502Base;               /* 32 Bit pointer to base memory address */
+	void	(*const *insn)(void); /* pointer to the function pointer table */
 
 }	m6502_Regs;
 

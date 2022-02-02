@@ -297,7 +297,7 @@ void AddM6502ARW(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3) {
 void AddM6502AInit(void)
 {
 #ifdef MAME_6502
-   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
+   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[0].m6502Base - (UINT8*)&M6502_context[0]);
 #else
    M6502_context[0].m6502MemoryRead  = M6502_memory_rb[0];
    M6502_context[0].m6502MemoryWrite = M6502_memory_wb[0];
