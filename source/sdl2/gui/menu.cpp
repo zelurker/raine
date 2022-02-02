@@ -103,11 +103,6 @@
 #include "sasound.h"
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
-#ifdef RAINE_UNIX
-#define NOGDI // define this before including windows.h to avoid al_bitmap !
-#define GL_GLEXT_LEGACY // to try not to include glext.h which redefines the GL_GLEXT_VERSION which shouldn't have gone to SDL_opengl.h !
-#include <SDL_opengl.h> // super annoying windows.h collides here !
-#endif
 
 int return_mandatory = 0, use_transparency = 1;
 int keep_vga = 1,gui_level;
