@@ -408,7 +408,7 @@ static void load_gauntlet() {
     if (atarigen_slapstic_bank0)
 	memcpy(atarigen_slapstic_bank0, &ROM[0x38000], 0x2000);
     if (is_current_game("gaunt2"))
-	slapstic_init(107);
+	slapstic_init(106);
     else
 	slapstic_init(104);
     slapstic_reset();
@@ -699,10 +699,10 @@ static void draw_gauntlet()
     SCROLL_REGS;
     UINT8 *map;
     int bank,size;
-    static int bank_mask;
-    if (!bank_mask) {
+    static int max_gfx2;
+    if (!max_gfx2) {
 	size = get_region_size(REGION_GFX2);
-	bank_mask = (size>>6)-1;
+	max_gfx2 = size>>6;
     }
 
     yscroll = ReadWord(&alpha[0xf6e]);
@@ -717,7 +717,7 @@ static void draw_gauntlet()
 	START_SCROLL_8_YX(16,16,336,240) {
 	    ta = ReadWord(&playfield[zz]);
 	    code = (((tilebank*0x1000)) + (ta & 0xfff)) ^ 0x800;
-	    code &= 0x7fff;
+	    if (code > max_gfx2) code %= max_gfx2; // can't make a mask for gauntlet2
 	    color = (bank)+ (((ta >> 12) & 7)*4);
 	    // Oh well, this layer has 16 colors when the other one has 4 only, I could maybe use the multi_mapped_new macro
 	    // but it obliges to count in banks of 16 colors which could create problems, I'll just use 4 map calls, anyway the palette is mapped only once
