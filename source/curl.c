@@ -82,6 +82,7 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
+  curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
 
   /* open the file */
   // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
