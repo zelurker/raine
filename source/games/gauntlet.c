@@ -10,6 +10,7 @@
 #include "files.h"
 #include "slapstic.h"
 #include "emumain.h"
+#include "savegame.h"
 
 static struct ROM_INFO rom_gauntlet[] =
 {
@@ -88,7 +89,7 @@ static struct ROM_INFO rom_gaunt2[] =
 
 static UINT8 *eeprom,*playfield, *sprites, *alpha,*ram6502,last_speech_write,speech_val,*atarigen_slapstic_bank0;
 static int eeprom_unlocked,atarigen_sound_to_cpu_ready,atarigen_sound_int_state,atarigen_video_int_state,atarigen_sound_to_cpu,sound_reset_val,
-	   atarigen_cpu_to_sound,atarigen_cpu_to_sound_ready,atarigen_slapstic_bank,watchdog_counter;
+	   atarigen_cpu_to_sound,atarigen_cpu_to_sound_ready,atarigen_slapstic_bank;
 static int layer_id_data[3];
 
 #define ATARI_CLOCK_14MHz       14318180
@@ -326,6 +327,12 @@ static INLINE void update_bank(int bank)
         }
 }
 
+static void restore_bank() {
+    int bank = atarigen_slapstic_bank;
+    atarigen_slapstic_bank = -1;
+    update_bank(bank);
+}
+
 static void slapstic_ww(UINT32 offset,UINT16 data)
 {
         update_bank(slapstic_tweak((offset-0x38000)/2));
@@ -355,7 +362,7 @@ static UINT16 slapstic_rw(UINT32 offset)
 }
 
 static void watchdog_w(UINT32 offset, UINT16 data) {
-    watchdog_counter = 180;
+    // watchdog_counter = 180;
 }
 
 static UINT16 read_port_4(UINT32 offset) {
@@ -478,7 +485,7 @@ static void load_gauntlet() {
     // WriteWord(&ROM[0x47ee],1); // huge acceleration of the boot, just remove some useless loop...
     // WriteWord(&ROM[0x78a],0x6062); // disable rom check, produces annoying error message, particularly in service mode where it waits for a vbl without irq... !
     // Wondering if this huge loop is not for the 6502 to finish some long init ? But it receives 0 command before this loop, and so it's stuck in its infinite loop waiting...
-    watchdog_counter = 180;
+    // watchdog_counter = 180;
     atarigen_cpu_to_sound = atarigen_sound_to_cpu = 0;
     atarigen_cpu_to_sound_ready = atarigen_sound_to_cpu_ready = 0;
     // ram6502[0x59a5] = 0xea;
@@ -486,6 +493,8 @@ static void load_gauntlet() {
     // 40184 : increment a counter inside the vbl, if the counter reaches $40, the program makes suicide !
     // looks like an alternate watchdog. It's related to the slapstic (verified).
     // The counter is at $904002
+    AddSaveData(SAVE_USER_0, (UINT8 *)&eeprom_unlocked, (UINT8*)&atarigen_slapstic_bank - (UINT8*)&eeprom_unlocked+sizeof(int));
+    AddLoadCallback(&restore_bank);
 }
 
 static void clear_gauntlet() {
@@ -792,4 +801,4 @@ static struct VIDEO_INFO video_gauntlet =
 GMEI( gauntlet,"Gauntlet (rev 14)",ATARI,1985, GAME_HACK,
 	.clear= clear_gauntlet);
 CLNEI(gauntlets, gauntlet,"Gauntlet (Spanish, rev 15)",ATARI,1985,GAME_HACK); // rom has a lot of differences compared to english version 14, no region switch then ?
-CLNEI(gaunt2, gauntlet,"Gauntlet II",ATARI,1986,GAME_HACK | GAME_NOT_WORKING); // graphics broken for playfield layer, didn't have time to investigate yet
+CLNEI(gaunt2, gauntlet,"Gauntlet II",ATARI,1986,GAME_HACK); // graphics broken for playfield layer, didn't have time to investigate yet
