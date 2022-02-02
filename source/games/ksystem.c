@@ -6,8 +6,6 @@
 /*                  NOTE: K-SYSTEM is not the official name.                  */
 /*                                                                            */
 /******************************************************************************/
-/* outdated driver : still uses functions to output in 8bpp, but didn't use the flag NEEDS_8BPP so I missed it when converting to sdl2
- * apparently it's quite easy to convert, todo ASAP then... ! */
 
 #include "gameinc.h"
 #include "compat_sdl.h"
@@ -725,6 +723,8 @@ static void load_kikikai(void)
    }
 
    FreeMem(TMP);
+   InitPaletteMap(RAM_COLOUR,0x10,0x10,0x8000);
+   set_colour_mapper(&col_map_xxxx_rrrr_gggg_bbbb);
 
    GFX_BG0_SOLID = make_solid_mask_8x8(GFX, 0x2000);
 }
@@ -898,6 +898,8 @@ static void load_knightb(void)
       WriteWord(&RAM_COLOUR[tb+0x000],tc);
       WriteWord(&RAM_COLOUR[tb+0x100],tc);
    }
+   InitPaletteMap(RAM_COLOUR,0x10,0x10,0x8000);
+   set_colour_mapper(&col_map_xxxx_rrrr_gggg_bbbb);
 
    FreeMem(TMP);
 
@@ -1080,6 +1082,8 @@ static void load_kicknrun(void)
       tc |= (TMP[td+0x200]&0x0F)<<0;
       WriteWord(&RAM_COLOUR[tb],tc);
    }
+   InitPaletteMap(RAM_COLOUR,0x10,0x10,0x8000);
+   set_colour_mapper(&col_map_xxxx_rrrr_gggg_bbbb);
 
    FreeMem(TMP);
 
@@ -1146,28 +1150,9 @@ static void execute_kikikai(void)
 
 static void DrawKikiKaiKai(void)
 {
-   int x,y,ta;
+   int x,y,ta,color;
    int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
-   UINT8 map;
-
-   // PALETTE
-
-   if (RefreshBuffers)
-   {
-      for(x=0;x<0x200;x+=2)
-      {
-         ta = ReadWord(&RAM_COLOUR[x]);
-#ifdef SDL
-         pal[x >> 1].r = (ta & 0x0F00) >> 4;
-         pal[x >> 1].g = (ta & 0x00F0);
-         pal[x >> 1].b = (ta & 0x000F) << 4;
-#else
-         pal[x >> 1].r = (ta & 0x0F00) >> 6;
-         pal[x >> 1].g = (ta & 0x00F0) >> 2;
-         pal[x >> 1].b = (ta & 0x000F) << 2;
-#endif
-      }
-   }
+   UINT8 *map;
 
    // No Solid BG0
 
@@ -1214,19 +1199,20 @@ static void DrawKikiKaiKai(void)
             ta = ReadWord(&RAM[0xc000+goffs]) & 0x1FFF;
             if (!GFX_BG0_SOLID[ta]) continue;       // No pixels; skip
 
-            map = (RAM[0xc001 + goffs] >> 1) & 0x70;
+            color = ((RAM[0xc001 + goffs] >> 1) & 0x70) >> 4;
 
             x = (sx + xc * 8) & 0xff;
             y = ((sy + yc * 8) & 0xff) -16;
+	    MAP_PALETTE_MAPPED_NEW(color,16,map);
 
             /* Kiki Kai Kai appears not to have a X/Y flip (eh?) */
             if ((x > -8) && (y > -8) && (x < 256) && (y < 224))
             {
                if (GFX_BG0_SOLID[ta] == 1)       // Some pixels; trans
                {
-                  Draw8x8_Trans_8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                  Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6], x+8, y+8, map);
                } else {                          // all pixels; solid
-                  Draw8x8_8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                  Draw8x8_Mapped_Rot(&GFX[ta<<6], x+8, y+8, map);
                }
             }
          }
@@ -1238,28 +1224,9 @@ static void DrawKikiKaiKai(void)
 
 static void DrawKickRun(void)
 {
-   int x,y,ta;
+   int x,y,ta,color;
    int sx,sy,offs,goffs,gfx_offs,gfx_num,gfx_attr,height,xc,yc;
-   UINT8 map;
-
-   // PALETTE
-
-   if (RefreshBuffers)
-   {
-      for(x=0;x<0x200;x+=2)
-      {
-         ta = ReadWord(&RAM_COLOUR[x]);
-#ifdef SDL
-         pal[x >> 1].r = (ta & 0x0F00) >> 4;
-         pal[x >> 1].g = (ta & 0x00F0);
-         pal[x >> 1].b = (ta & 0x000F) << 4;
-#else
-         pal[x >> 1].r = (ta & 0x0F00) >> 6;
-         pal[x >> 1].g = (ta & 0x00F0) >> 2;
-         pal[x >> 1].b = (ta & 0x000F) << 2;
-#endif
-      }
-   }
+   UINT8 *map;
 
    // No Solid BG0
 
@@ -1315,8 +1282,9 @@ static void DrawKickRun(void)
 
             if (!GFX_BG0_SOLID[ta]) continue;       // No pixels; skip
 
-            map = (RAM[0xc001 + goffs] << 1) & 0x70;
-            map |= (gfx_attr & 0x02) << 6;
+            color = ((RAM[0xc001 + goffs] << 1) & 0x70) >> 4;
+            color |= (gfx_attr & 0x02) << 2;
+	    MAP_PALETTE_MAPPED_NEW(color,16,map);
 
             x = (sx + xc * 8) & 0xff;
             y = ((sy + yc * 8) & 0xff) -16;
@@ -1326,14 +1294,14 @@ static void DrawKickRun(void)
                if (GFX_BG0_SOLID[ta] == 1)       // Some pixels; trans
                {
                   if (RAM[0xc000+goffs+1] & 0x40)
-                     Draw8x8_Trans_8_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Trans_Mapped_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
                   else
-                     Draw8x8_Trans_8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Trans_Mapped_Rot(&GFX[ta<<6], x+8, y+8, map);
                } else {                          // all pixels; solid
                   if (RAM[0xc000+goffs+1] & 0x40)
-                     Draw8x8_8_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Mapped_FlipY_Rot(&GFX[ta<<6], x+8, y+8, map);
                   else
-                     Draw8x8_8_Rot(&GFX[ta<<6], x+8, y+8, map);
+                     Draw8x8_Mapped_Rot(&GFX[ta<<6], x+8, y+8, map);
                }
             }
          }
