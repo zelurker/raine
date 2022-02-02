@@ -198,6 +198,8 @@ int TEdit::handle_key(SDL_Event *event) {
 			     current_hist = -1;
 			     add_history();
 			     return 1; // call the handler !!!
+	default:
+			     return 0; // unknown
 	}
 	break;
     case SDL_TEXTINPUT:
