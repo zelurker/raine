@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.92.6"
+VERSION = "0.93"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -57,6 +57,7 @@ USE_CURL = 1
 ASM_VIDEO_CORE = 1
 
 # console ?
+# Notice that if you disable this, you also loose all the cheats !
 HAS_CONSOLE = 1
 
 # target build for cross compilation, the 2 defaults are for mingw32, 32
