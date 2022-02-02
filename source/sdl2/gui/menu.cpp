@@ -1108,8 +1108,8 @@ void TMenu::find_new_sel_from_end() {
 }
 
 void TMenu::next_page() {
-  if (top+rows < nb_disp_items) {
-    top += rows;
+  if (top+rows/2 < nb_disp_items) {
+    top += rows/2;
     if (top + rows > nb_disp_items)
       top = nb_disp_items - rows;
     find_new_sel();
@@ -1119,7 +1119,7 @@ void TMenu::next_page() {
 
 void TMenu::prev_page() {
   if (top > 0) {
-    top -= rows;
+    top -= rows/2;
     if (top < 0)
       top = 0;
     find_new_sel();
@@ -1433,7 +1433,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
     event->button.x -= fgdst.x;
     event->button.y -= fgdst.y;
   }
-  if (lift && mx > fgdst.x+fgdst.w-lift->get_width()) {
+  if (event->type != SDL_MOUSEWHEEL && lift && mx > fgdst.x+fgdst.w-lift->get_width()) {
     lift->handle_mouse(event);
     return;
   }
