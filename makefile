@@ -1243,13 +1243,10 @@ ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first
 ifdef HAS_NEO
 ifdef CROSSCOMPILE
+ifeq (${SDL},1)
+	# only for sdl1 !
   LIBS += -lSDL_sound -lFLAC # -lmodplug
-else
-ifeq (,$(wildcard /usr/local/lib/libSDL_sound.a))
-LIBS += -lSDL_sound
-else
-LIBS += /usr/local/lib/libSDL_sound.a /usr/local/lib/libFLAC.a /usr/local/lib/libsmpeg.a
-endif # wildcard
+endif
 endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
