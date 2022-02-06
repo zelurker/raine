@@ -57,6 +57,7 @@
 #include "cpumain.h"
 #include "mz80help.h"
 #include "starhelp.h"
+#include "m6502hlp.h"
 
 #if USE_MUSASHI == 2
 extern "C" m68ki_cpu_core m68020_context;
@@ -104,6 +105,8 @@ void TRaineDesktop::end_preinit() {
 	m68k_get_context(&m68020_context);
     }
 #endif
+    if (M6502Engine>=1)
+	m6502GetContext(&M6502_context[0]);
 
 }
 
