@@ -11,6 +11,7 @@
 #include "slapstic.h"
 #include "emumain.h"
 #include "savegame.h"
+#include "speed_hack.h"
 
 static struct ROM_INFO rom_gauntlet[] =
 {
@@ -139,6 +140,8 @@ static void write_eeprom(UINT32 offset, UINT8 data) {
     eeprom_unlocked = 0;
 }
 
+static int stopped_68k;
+
 static void update_interrupts() {
     if (atarigen_video_int_state) {
 	cpu_interrupt(CPU_68K_0, 4);
@@ -148,6 +151,9 @@ static void update_interrupts() {
     if (atarigen_sound_int_state) {
 	    cpu_interrupt(CPU_68K_0, 6);
 	    atarigen_sound_int_state = 0;
+    }
+    if (stopped_68k) {
+	cpu_execute_cycles(CPU_68K_0,100);
     }
 }
 
@@ -373,6 +379,11 @@ static UINT16 read_port_4b(UINT32 offset) {
     return input_buffer[8];
 }
 
+static void myStop68000(UINT32 offset, UINT16 data) {
+    stopped_68k = 1;
+    Stop68000(0,0);
+}
+
 static void load_gauntlet() {
     RAMSize = 0x2000 + // main ram
 	0x1000 + // 2nd ram
@@ -444,6 +455,7 @@ static void load_gauntlet() {
     AddWriteBW(0x803140, 0x803141, atarigen_video_int_ack_w, NULL);
     AddWriteBW(0x803150, 0x803151, eeprom_enable_w, NULL);
     AddWriteWord(0x803170, 0x803171, atarigen_sound_w_byte, NULL);
+    AddWriteByte(0xaa0000, 0xaa0000, myStop68000, NULL);
 
     finish_conf_68000(0);
     // m68k_set_cpu_type(M68K_CPU_TYPE_68010);
@@ -482,9 +494,13 @@ static void load_gauntlet() {
     layer_id_data[1] = add_layer_info("alpha");
     layer_id_data[2] = add_layer_info("sprites");
 
-    // WriteWord(&ROM[0x47ee],1); // huge acceleration of the boot, just remove some useless loop...
-    // WriteWord(&ROM[0x78a],0x6062); // disable rom check, produces annoying error message, particularly in service mode where it waits for a vbl without irq... !
-    // Wondering if this huge loop is not for the 6502 to finish some long init ? But it receives 0 command before this loop, and so it's stuck in its infinite loop waiting...
+    if (is_current_game("gauntlet") || is_current_game("gauntlets")) {
+	WriteWord(&ROM[0x78a],0x6062); // disable rom check, produces annoying error message, particularly in service mode where it waits for a vbl without irq... !
+	WriteWord(&ROM[0x86c],0x6016); // 2nd rom check, from 0x40000 to 0x50000
+	WriteWord(&ROM[0x886],0x4e71); // skip a loop
+	apply_hack(0x40c22,0);
+	WriteWord(&ROM[0x40c28],0x4253);
+    }
     // watchdog_counter = 180;
     atarigen_cpu_to_sound = atarigen_sound_to_cpu = 0;
     atarigen_cpu_to_sound_ready = atarigen_sound_to_cpu_ready = 0;
@@ -507,6 +523,7 @@ extern int goto_debuger;
 
 static void execute_gauntlet()
 {
+    stopped_68k = 0;
     input_buffer[8] |= 0x40;
     if (goto_debuger) return;
     for (int n=0; n<4; n++) {
@@ -518,7 +535,7 @@ static void execute_gauntlet()
 	}
 	while (frame > 16) {
 	    diff = execute_one_z80_audio_frame(frame);
-	    cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
+	    if (!stopped_68k) cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
 	    frame -= diff;
 	    if (diff == 0) break;
 	}
