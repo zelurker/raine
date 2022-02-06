@@ -1370,7 +1370,7 @@ char *get_cpu_name_from_cpu_id(int cpu_id) {
 }
 
 int do_console(int sel) {
-    int irq;
+    int irq = 0;
     if (goto_debuger > 0 && goto_debuger < 100)
 	irq = check_breakpoint();
     else
