@@ -384,6 +384,17 @@ static void myStop68000(UINT32 offset, UINT16 data) {
     Stop68000(0,0);
 }
 
+static void preinit() {
+    // This preinit function is mainly for the memcpy here, because when reseting the game (F1) cold_boot clears the ram !
+    memcpy(ram6502+0x4000, Z80ROM+0x4000, 0xc000);
+    last_speech_write = 0x80;
+    sound_reset_val = 1;
+    eeprom_unlocked = 0;
+    atarigen_video_int_state = atarigen_sound_int_state = 0;
+    atarigen_cpu_to_sound = atarigen_sound_to_cpu = 0;
+    atarigen_cpu_to_sound_ready = atarigen_sound_to_cpu_ready = 0;
+}
+
 static void load_gauntlet() {
     RAMSize = 0x2000 + // main ram
 	0x1000 + // 2nd ram
@@ -485,11 +496,6 @@ static void load_gauntlet() {
     AddM6502AWrite(    -1,    -1, NULL, NULL);
     AddM6502AInit();
 
-    last_speech_write = 0x80;
-    sound_reset_val = 1;
-    eeprom_unlocked = 0;
-    atarigen_video_int_state = atarigen_sound_int_state = 0;
-
     layer_id_data[0] = add_layer_info("playfield");
     layer_id_data[1] = add_layer_info("alpha");
     layer_id_data[2] = add_layer_info("sprites");
@@ -502,8 +508,7 @@ static void load_gauntlet() {
 	WriteWord(&ROM[0x40c28],0x4253);
     }
     // watchdog_counter = 180;
-    atarigen_cpu_to_sound = atarigen_sound_to_cpu = 0;
-    atarigen_cpu_to_sound_ready = atarigen_sound_to_cpu_ready = 0;
+    set_reset_function(preinit);
     // ram6502[0x59a5] = 0xea;
     // ram6502[0x59a6] = 0xf7;
     // 40184 : increment a counter inside the vbl, if the counter reaches $40, the program makes suicide !
