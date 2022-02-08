@@ -140,9 +140,10 @@ static void write_eeprom(UINT32 offset, UINT8 data) {
     eeprom_unlocked = 0;
 }
 
-static int stopped_68k;
+static int stopped_68k,in_68k;
 
 static void update_interrupts() {
+#if USE_MUSASHI == 2
     if (atarigen_video_int_state) {
 	cpu_interrupt(CPU_68K_0, 4);
 	atarigen_video_int_state = 0;
@@ -155,11 +156,31 @@ static void update_interrupts() {
     if (stopped_68k) {
 	cpu_execute_cycles(CPU_68K_0,100);
     }
+#else
+    if (atarigen_video_int_state) {
+	if (!in_68k) {
+	    cpu_interrupt(CPU_68K_0, 4);
+	    if (atarigen_sound_int_state) cpu_execute_cycles(CPU_68K_0,100);
+	}
+    }
+    else
+	s68000_interrupts &= ~(1<<4);
+    if (atarigen_sound_int_state) {
+	if (!in_68k) {
+	    cpu_interrupt(CPU_68K_0, 6);
+	}
+    }
+    else
+	s68000_interrupts &= ~(1<<6);
+#endif
 }
 
 static UINT16 atarigen_sound_r(UINT32 offset) {
     atarigen_sound_to_cpu_ready = 0;
     atarigen_sound_int_state = 0;
+#if USE_MUSASHI < 2
+    update_interrupts();
+#endif
     input_buffer[8] &= ~0x10;
     return atarigen_sound_to_cpu;
 }
@@ -170,9 +191,11 @@ static void sound_reset_w(UINT32 offset, UINT16 data) {
     int oldword = sound_reset_val;
     sound_reset_val = data;
     if ((sound_reset_val ^ oldword) & 1) {
-	print_debug("reset 6502 from 68k val,old %d %d pc %x sr %x\n",sound_reset_val,oldword,s68000readPC(),s68000_sr);
 	atarigen_sound_to_cpu_ready = 0;
 	atarigen_sound_int_state = 0;
+#if USE_MUSASHI < 2
+	update_interrupts();
+#endif
 	input_buffer[8] &= ~0x10;
 	if (!(sound_reset_val & 1)) {
 	    // cpu_reset(CPU_M6502_0);
@@ -183,6 +206,9 @@ static void sound_reset_w(UINT32 offset, UINT16 data) {
 
 static void atarigen_video_int_ack_w(UINT32 offset, UINT16 data) {
     atarigen_video_int_state = 0;
+#if USE_MUSASHI < 2
+    update_interrupts();
+#endif
 }
 
 static void eeprom_enable_w(UINT32 offset, UINT16 data) {
@@ -284,6 +310,14 @@ static UINT8 switch_6502_r(UINT32 offset)
         if (tms5220_ready_r()) temp ^= 0x20;
         if (!(input_buffer[8] & 8)) temp ^= 0x10;
 	// print_debug("*** switch_6502_r %x from %x\n",temp,cpu_get_pc(CPU_M6502_0));
+	int pc = cpu_get_pc(CPU_M6502_0);
+	// printf("*** switch_6502_r %x from %x\n",temp,pc);
+	if ((pc == 0x410d && !(temp & 0x80)) ||
+		(pc == 0x44c9 && (temp & 0x40))
+	    ) {
+	    // m6502.p &= ~4;
+	    StopM6502(0,0);
+	}
 
         return temp;
 }
@@ -531,20 +565,28 @@ static void execute_gauntlet()
     stopped_68k = 0;
     input_buffer[8] |= 0x40;
     if (goto_debuger) return;
-    for (int n=0; n<4; n++) {
-	int frame = ATARI_CLOCK_14MHz/8/fps/4,diff;
-	if (n == 3) {
+    for (int n=0; n<32; n++) {
+	int frame = ATARI_CLOCK_14MHz/8/fps/4/8,diff;
+	if (n == 30) {
 	    input_buffer[8] &= ~0x40;
 	    atarigen_video_int_state = 1;
 	    update_interrupts();
 	}
 	while (frame > 16) {
 	    diff = execute_one_z80_audio_frame(frame);
-	    if (!stopped_68k) cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
+	    if (!stopped_68k) {
+		in_68k = 1;
+		cpu_execute_cycles(CPU_68K_0, diff*4); // 68010
+		in_68k = 0;
+#if USE_MUSASHI < 2
+		update_interrupts();
+#endif
+	    }
 	    frame -= diff;
 	    if (diff == 0) break;
 	}
-	cpu_interrupt(CPU_M6502_0,1);
+	if ((n & 7) == 7)
+	    cpu_interrupt(CPU_M6502_0,1);
     }
 }
 
