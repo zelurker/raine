@@ -293,6 +293,7 @@ void m6502_get_context (void *dst);
 void m6502_set_context (void *src);
 int m6502_execute(int cycles);
 void m6502_release_time_slice();
+int m6502_get_cycles_done();
 void m6502_set_irq_line(int irqline, int state);
 
 void m65c02_init();

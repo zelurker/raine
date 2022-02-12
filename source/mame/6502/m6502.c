@@ -160,9 +160,11 @@ INLINE void m6502_take_irq(void)
 	}
 }
 
+static int last_cycles;
+
 int m6502_execute(int cycles)
 {
-	m6502_ICount = cycles;
+	last_cycles = m6502_ICount = cycles;
 
 	change_pc(PCD);
 
@@ -209,6 +211,10 @@ int m6502_execute(int cycles)
 	} while (m6502_ICount > 0);
 
 	return cycles - m6502_ICount;
+}
+
+int m6502_get_cycles_done() {
+    return last_cycles - m6502_ICount;
 }
 
 void m6502_release_time_slice() {

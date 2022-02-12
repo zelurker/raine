@@ -206,7 +206,7 @@ void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 	  m68k_set_irq(vector);
 #else
 	  s68000interrupt(vector, -1);
-	  s68000flushInterrupts();
+	  // s68000flushInterrupts();
 #endif
 	  break;
 #endif
@@ -359,7 +359,7 @@ UINT32 cpu_get_cycles_done(UINT32 cpu) {
    switch_cpu(cpu);
    switch(cpu >> 4) {
    case CPU_Z80: return mz80GetCyclesDone();
-   case CPU_6502: return cycles_6502[cpu & 0xf];
+   case CPU_6502: return cycles_6502[cpu & 0xf] + m6502GetElapsedTicks(0);
    case CPU_68000:
 #if USE_MUSASHI < 2
 		  return cycles_68k[cpu & 0xf] + s68000readOdometer();

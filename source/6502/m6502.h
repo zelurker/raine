@@ -201,6 +201,7 @@ extern UINT8 *m6502bspbBankSwitch[32];	// Bank switching registers
     (m6502.subtype == SUBTYPE_65C02 ? m65c02_execute(cycles) : m6502_execute(cycles))
 #define m6502GetContext m6502_get_context
 #define m6502SetContext m6502_set_context
+#define m6502GetElapsedTicks(n) m6502_get_cycles_done()
 #endif
 
 #ifdef __cplusplus

@@ -9,6 +9,7 @@
 
    1.6raine3 : fix interrupts disabled on reset, and 2 mismatches between zero & overflow flags, the comment said overflow while the instruction changed the zero, that's what happens when you don't
    use constants for such things... Didn't check in the docs if the comments were right, but I assumed so.
+   Also ReleaseTimeSlice now adds cyclesRemaining to dwElapsedTicks before clearing it, so that the number of executed cycles doesn't become crazily low.
  */
 
 /* Multi-6502 32 Bit emulator */
@@ -3621,6 +3622,8 @@ static void ReleaseTimesliceCode()
 
 	fprintf(fp, "_%sReleaseTimeslice:\n", cpubasename);
 
+	fprintf(fp, "           mov     eax,[cyclesRemaining]\n");
+	fprintf(fp, "           add     [dwElapsedTicks],eax\n");
 	fprintf(fp, "		mov	[cyclesRemaining], dword 1\n");
 	fprintf(fp, "		ret\n");
 
