@@ -113,7 +113,10 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
 {
   int n;
   if (size <= 0) {
-      fatal_error("AddSaveData section %c%c%c%c size %d",ASC((id>>24)),ASC((id>>16)&0xff),ASC((id>>8)&0xff),ASC(id & 0xff),size);
+      char msg[80];
+      snprintf(msg,80,"AddSaveData section %c%c%c%c size %d",ASC((id>>24)),ASC((id>>16)&0xff),ASC((id>>8)&0xff),ASC(id & 0xff),size);
+      MessageBox("Error",msg,"Ok");
+      return;
   }
   if (SaveDataCount == alloc_save_list) {
       alloc_save_list += 10;
@@ -136,7 +139,10 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
 {
   int n;
   if (size <= 0) {
-      fatal_error("AddSaveData_ext name %s size %d",name,size);
+      char msg[80];
+      snprintf(msg,80,"AddSaveData_ext name %s size %d",name,size);
+      MessageBox("Error",msg,"Ok");
+      return;
   }
   if (SaveDataCount == alloc_save_list) {
       alloc_save_list += 10;
