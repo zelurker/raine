@@ -190,7 +190,9 @@ static void restore_timers() {
 
 void save_timers() {
     // Add the relevant data to save timers, must be called by those who need timers, not automatic
-    AddSaveData_ext("timers",((UINT8*)&timer),((UINT8*)&free_timer)-((UINT8*)&timer)+sizeof(int));
+    AddSaveData_ext("timers",((UINT8*)&timer),sizeof(timer));
+    AddSaveData_ext("free_timer",((UINT8*)&free_timer),sizeof(int));
+    AddSaveData_ext("timer_id",((UINT8*)&timer_id),sizeof(size_t));
     AddLoadCallback(&restore_timers);
     AddSaveData_ext("cpu_frame_count",(UINT8*)&cpu_frame_count,sizeof(UINT32));
 }

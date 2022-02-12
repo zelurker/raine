@@ -67,6 +67,8 @@ Todo:
 
 #include "ingame.h"
 
+#define print_dbg print_debug
+
 int RAMSize,RefreshBuffers;
 UINT8 *RAM;
 
@@ -78,6 +80,7 @@ UINT8 *RAM;
 #define SAVE_END              ASCII_ID('E','N','D',0x00)
 #define SAVE_PICT              ASCII_ID('P','I','C','T')
 #define SAVE_EXT		0
+#define ASC(x) ((x)<32?((x)<10?(x)+0x30:(x)+65-10):(x))
 
 // -----------------------------------------------------
 
@@ -109,6 +112,9 @@ void reset_savegames() {
 void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
 {
   int n;
+  if (size <= 0) {
+      fatal_error("AddSaveData section %c%c%c%c size %d",ASC((id>>24)),ASC((id>>16)&0xff),ASC((id>>8)&0xff),ASC(id & 0xff),size);
+  }
   if (SaveDataCount == alloc_save_list) {
       alloc_save_list += 10;
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
@@ -129,6 +135,9 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
 void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
 {
   int n;
+  if (size <= 0) {
+      fatal_error("AddSaveData_ext name %s size %d",name,size);
+  }
   if (SaveDataCount == alloc_save_list) {
       alloc_save_list += 10;
       save_data_list = realloc(save_data_list,sizeof(struct SAVE_DATA)*alloc_save_list);
@@ -277,6 +286,7 @@ void ProcessCallbackList(UINT32 flags)
 }
 
 #define MAX_DYN 10
+
 static struct {
   void (*load)(UINT8 *buff, int len);
   void (*save)(UINT8 **buff, int *len);
@@ -312,6 +322,7 @@ void NewSave(gzFile fout)
 
    // ram header
 
+   print_dbg("NewSave: ram size %d\n",RAMSize);
    mputl(SAVE_RAM, fout);
    iputl(RAMSize, fout);
    gzwrite( fout,RAM, RAMSize);
@@ -321,8 +332,12 @@ void NewSave(gzFile fout)
    for(ta=0;ta<SaveDataCount;ta++){
       mputl(save_data_list[ta].id, fout);
       if (save_data_list[ta].id == SAVE_EXT) {
+	  print_dbg("NewSave: extended section %s size %d\n",save_data_list[ta].name,save_data_list[ta].size);
 	  gzputc(fout,strlen(save_data_list[ta].name));
 	  gzwrite(fout,save_data_list[ta].name, strlen(save_data_list[ta].name));
+      } else {
+	  int t_id = save_data_list[ta].id;
+	  print_dbg("NewSave: section %c%c%c%c size %d\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff),save_data_list[ta].size);
       }
       iputl(save_data_list[ta].size, fout);
       gzwrite( fout,save_data_list[ta].source, save_data_list[ta].size);
@@ -341,7 +356,7 @@ void NewSave(gzFile fout)
        dyn_callbacks[ta].save(&buff,&len);
        if (len) {
 	 mputl(ASCII_ID('D','Y','N',ta),fout);
-	 print_debug("storing %d bytes for dynamic callback %d\n",len,ta);
+	 print_dbg("storing %d bytes for dynamic callback %d\n",len,ta);
 	 iputl(len,fout);
 	 gzwrite(fout,buff,len);
 	 FreeMem(buff);
@@ -388,7 +403,7 @@ void do_save_state(char *name) {
       print_ingame(120,"Game does not support Saving.");
    }
 
-   print_debug("END: GameSave()\n");
+   print_dbg("END: GameSave()\n");
 }
 
 static void get_save_name(char *str) {
@@ -402,7 +417,7 @@ void GameSave(void)
 {
    char str[FILENAME_MAX];
 
-   print_debug("BEGIN: GameSave()\n");
+   print_dbg("BEGIN: GameSave()\n");
    get_save_name(str);
 
    do_save_state(str);
@@ -412,7 +427,7 @@ void GameSaveName(void)
 {
   char str[FILENAME_MAX];
 
-   print_debug("BEGIN: GameSaveName()\n");
+   print_dbg("BEGIN: GameSaveName()\n");
 
    sprintf(str,"savegame" SLASH "%s" SLASH,current_game->main_name);
    mkdir_rwx(str);
@@ -443,22 +458,20 @@ void read_safe_data(UINT8 *dest, UINT32 dest_size, UINT32 data_size, gzFile fin)
       return;
    }
    if(dest_size>data_size){
-      print_debug("Actual size is bigger than load data!\n");
+      print_dbg("Actual size is bigger than load data!\n");
       if(data_size>0) gzread(fin,dest,data_size);
       return;
    }
    if(dest_size<data_size){
       if (dest_size > 0) {
-	  print_debug("Actual size is smaller than load data!\n");
+	  print_dbg("Actual size is smaller than load data!\n");
 	  gzread(fin,dest,dest_size);
       }
       gzseek(fin,data_size - dest_size,SEEK_CUR);
-      print_debug("read_safe_data: skiping %d bytes\n",data_size - dest_size);
+      print_dbg("read_safe_data: skiping %d bytes\n",data_size - dest_size);
       return;
    }
 }
-
-#define ASC(x) ((x)<32?(x)+0x30:(x))
 
 #define LEN_DUMP 240
 static char dbuf[LEN_DUMP];
@@ -510,13 +523,13 @@ void NewLoad(gzFile fin)
        for(ta=0;ta<SaveDataCount;ta++){
 	   if(save_data_list[ta].id == SAVE_EXT &&
 		   !strcmp(save_data_list[ta].name,name)){
-	       print_debug("NewLoad: extended section %s\n",name);
+	       print_dbg("NewLoad: extended section %s\n",name);
 	       read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
 	       break;
 	   }
        }
        if (ta == SaveDataCount) {
-	   print_debug("NewLoad: extended section %s not found\n",name);
+	   print_dbg("NewLoad: extended section %s not found\n",name);
 	   read_safe_data(NULL,0,t_size,fin);
        }
        continue;
@@ -529,36 +542,36 @@ void NewLoad(gzFile fin)
    switch(t_id){
       case SAVE_RAM:
 	 if (abs(t_size-RAMSize) > 0x10000) {
-		 print_debug("endianess bug detected, ramsize = %x instead of %x\n",t_size,RAMSize);
+		 print_dbg("endianess bug detected, ramsize = %x instead of %x\n",t_size,RAMSize);
 		 gzseek(fin,-4,SEEK_CUR);
 		 t_size = mgetl(fin);
 		 endianess_bug = 1;
 	 }
-	 print_debug("NewLoad: SAVE_RAM section\n");
+	 print_dbg("NewLoad: SAVE_RAM section size %d\n",RAMSize);
          read_safe_data(RAM,RAMSize,t_size,fin);
       break;
       case SAVE_PICT:
-        print_debug("NewLoad: SAVE_PICT section\n");
+        print_dbg("NewLoad: SAVE_PICT section size %d\n",t_size);
         gzseek(fin,t_size,SEEK_CUR);
 	break;
 
       case SAVE_END:
-         print_debug("Load Completed Successfully\n");
+         print_dbg("Load Completed Successfully\n");
          load_done=1;
       break;
       case EOF:
-         print_debug("Load Completed, but 'END.' marker was not found\n");
+         print_dbg("Load Completed, but 'END.' marker was not found\n");
          load_done=1;
       break;
       case SAVE_MOUSE: // Only saved when GameMouse is true
-	print_debug("NewLoad: SAVE_MOUSE section\n");
+	print_dbg("NewLoad: SAVE_MOUSE section\n");
       	p1_trackball_x = t_size & 0xffff;
 	p1_trackball_y = t_size >> 16;
 	break;
       default:
          for (ta=0; ta<MAX_DYN; ta++) {
 	   if (t_id == ASCII_ID('D','Y','N',ta)) {
-	     print_debug("NewLoad: SAVE_DYN%d section\n",ta);
+	     print_dbg("NewLoad: SAVE_DYN%d section size %d\n",ta,t_size);
 	     if (dyn_callbacks[ta].load) {
 	       UINT8 *buff = AllocateMem(t_size);
 	       if (buff) {
@@ -567,11 +580,11 @@ void NewLoad(gzFile fin)
 		 FreeMem(buff);
 		 break;
 	       } else {
-		 print_debug("could not allocate %d bytes for dyn callback\n",t_size);
+		 print_dbg("could not allocate %d bytes for dyn callback\n",t_size);
 		 gzseek(fin,t_size,SEEK_CUR);
 	       }
 	     } else {
-	       print_debug("found dyn callback %d but I have no loading function\n",ta);
+	       print_dbg("found dyn callback %d but I have no loading function\n",ta);
 	     }
 	   }
 	 }
@@ -581,17 +594,17 @@ void NewLoad(gzFile fin)
          tb=0;
          for(ta=0;ta<SaveDataCount && tb==0;ta++){
             if(save_data_list[ta].id == t_id){
-	      print_debug("NewLoad: section %c%c%c%c\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff));
+	      print_dbg("NewLoad: section %c%c%c%c size %d\n",ASC((t_id>>24)),ASC((t_id>>16)&0xff),ASC((t_id>>8)&0xff),ASC(t_id & 0xff),t_size);
                read_safe_data(save_data_list[ta].source,save_data_list[ta].size,t_size,fin);
                tb=1;
             }
          }
          if(tb==0){
 	    dump_id(t_id,t_size);
-            print_debug("%s",dbuf);
+            print_dbg("%s",dbuf);
             read_safe_data(NULL,0,t_size,fin);
 	    if (t_size <= 0) {
-	      print_debug("early exit for savefile\n");
+	      print_dbg("early exit for savefile\n");
 	      load_done = 1;
 	    }
 
@@ -684,14 +697,14 @@ void do_load_state(char *name) {
 
    reset_ingame_timer();
 
-   print_debug("END: GameLoad()\n");
+   print_dbg("END: GameLoad()\n");
 }
 
 void GameLoad(void)
 {
    char str[FILENAME_MAX];
 
-   print_debug("BEGIN: GameLoad()\n");
+   print_dbg("BEGIN: GameLoad()\n");
 
    get_save_name(str);
    do_load_state(str);
@@ -701,7 +714,7 @@ void GameLoadName(void)
 {
   char str[256];
 
-   print_debug("BEGIN: GameLoadName()\n");
+   print_dbg("BEGIN: GameLoadName()\n");
 
    sprintf(str,"savegame" SLASH "%s" SLASH,current_game->main_name);
    sa_pause_sound();
