@@ -889,7 +889,7 @@ int pokey_register_r(int chip, int offs)
 			}
 		}
 		else
-		printf("PC %04x: warning - read p[chip] #%d POT%d\n", m6502pc, chip, pot);
+		// printf("PC %04x: warning - read p[chip] #%d POT%d\n", m6502pc, chip, pot);
 		break;
 
     case ALLPOT_C:
