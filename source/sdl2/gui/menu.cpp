@@ -178,6 +178,7 @@ TDesktop::TDesktop() {
     w = usable.w; h = usable.h;
     pic = NULL;
     fg_format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
+    work_area.w = work_area.h = 0; // TDesktop is independant, need to init this here
 }
 
 void TDesktop::draw() {
