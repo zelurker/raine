@@ -2220,6 +2220,12 @@ void inputs_preinit() {
       int ret = SDL_GameControllerAddMappingsFromFile(get_shared("gamecontrollerdb.txt"));
       printf("mappings added %d\n",ret);
   }
+  f = fopen(get_shared("config/userdb.txt"),"r");
+  if (f) {
+      fclose(f);
+      int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config/userdb.txt"));
+      printf("mappings added %d from userdb.txt\n",ret);
+  }
 
   for (n=0; n<SDL_NumJoysticks(); n++) {
       add_game_controller(n);

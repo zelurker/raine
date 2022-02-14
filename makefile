@@ -1176,6 +1176,7 @@ OBJS += $(OBJDIR)/sdl/blit.o \
 else
 OBJS += $(OBJDIR)/sdl2/blit.o \
 	$(OBJDIR)/sdl2/display.o \
+	$(OBJDIR)/sdl2/controllermap.o \
 	$(OBJDIR)/sdl2/compat.o
 endif
 

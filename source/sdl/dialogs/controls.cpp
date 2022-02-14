@@ -679,7 +679,7 @@ class TControl : public TMenu {
     TControl(char *myname, menu_item_t *menu) : TMenu(myname,menu)
     {}
     int can_be_displayed(int n) {
-      if (n == 1 && !current_game)
+      if ((n == 1 || n == 2 || n == 4 || n == 5) && !current_game)
 	return 0;
       if (n == 5) { // autofire controls
 	int n,nb = InputCount,nb_autofire;
@@ -694,7 +694,7 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
-      if (n >= 10) // all load/save inputs
+      if (n >= 10 && n <= 12) // all load/save inputs
 	  return use_custom_keys;
       return 1;
     }
@@ -1179,6 +1179,76 @@ static int do_joy_index(int sel) {
     return 0;
 }
 
+extern "C" char *my_map(SDL_Joystick *joy);
+
+static int do_mapping(int sel) {
+    int nb = SDL_NumJoysticks();
+    if (nb <= 0) {
+	MessageBox("Error", "This command is to map the controls of a\njoystick, and none is detected","ok");
+	return 0;
+    }
+    if (nb > 1) {
+	menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
+	memset(menu,0,sizeof(menu_item_t)*(nb+1));
+	selected = -1;
+	for (int n=0; n<nb; n++) {
+	    menu[n].label = strdup(get_joy_name(n));
+	    menu[n].menu_func = &select_joy;
+	}
+	TMenu *dlg = new TMenu(_("Select joystick"),menu);
+	dlg->execute();
+	delete dlg;
+	if (selected < 0) return 0;
+    } else
+	selected = 0;
+    MessageBox("Info","Press the buttons on your controller when indicated\n"
+    "(Your controller may look different than the picture)\n"
+    "If you want to correct a mistake, press backspace or the back button on your device\n"
+    "To skip a button, press SPACE or click/touch the screen\n"
+    "To exit, press ESC","Ok");
+    SDL_Joystick *joy = SDL_JoystickOpen(selected);
+    if (!joy) {
+	printf("can't open joy %d\n",selected);
+	return 0;
+    }
+    char *map = my_map(joy);
+    SDL_JoystickClose(joy);
+    if (*map) {
+	int l = strlen(map);
+	FILE *f = fopen(get_shared("config/userdb.txt"),"r");
+	if (f) {
+	    char *s = strchr(map,',');
+	    if (!s) {
+		printf("can't find coma in mapping !\n");
+		return 0;
+	    }
+	    *s = 0;
+	    FILE *g = fopen(get_shared("config/userdb2.txt"),"w");
+	    while (!feof(f)) {
+		char buf[1024];
+		myfgets(buf,1024,f);
+		if (!strncmp(buf,map,l)) { // found an old entry
+		    *s = ',';
+		    fprintf(g,"%s\n",map);
+		    *s = 0;
+		} else
+		    fprintf(g,"%s\n",buf);
+	    }
+	    fclose(f);
+	    fclose(g);
+	    unlink(get_shared("config/userdb.txt"));
+	    rename(get_shared("config/userdb2.txt"),get_shared("config/userdb.txt"));
+	} else {
+	    f = fopen(get_shared("config/userdb.txt"),"w");
+	    fprintf(f,"%s\n",map);
+	    fclose(f);
+	}
+	int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config/userdb.txt"));
+	printf("mappings added %d from userdb.txt\n",ret);
+    }
+    return 0;
+}
+
 static menu_item_t controls_menu[] =
 {
   { _("Raine controls"), &do_emu_controls },
@@ -1194,6 +1264,7 @@ static menu_item_t controls_menu[] =
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
+  { _("Controller mapping"), &do_mapping },
   { NULL },
 };
 
@@ -1235,8 +1306,7 @@ int do_controls(int sel) {
     switch_to_custom(0);
   } else if (current_game) {
     revert_to_default(0);
-  } else
-    controls_menu[2].label = NULL;
+  }
 
   ctrl = new TControl("", controls_menu);
   ctrl->execute();
