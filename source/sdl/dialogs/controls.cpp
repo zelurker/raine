@@ -1,9 +1,5 @@
 #include "../gui/menu.h"
-#if SDL == 1
-#include "../compat.h"
-#else
-#include "sdl2/compat.h"
-#endif
+#include "compat.h"
 #include "control.h"
 #include "control_internal.h"
 #include "dialogs/messagebox.h"
@@ -1224,6 +1220,7 @@ static int do_mapping(int sel) {
 	    }
 	    *s = 0;
 	    FILE *g = fopen(get_shared("config/userdb2.txt"),"w");
+	    int found = 0;
 	    while (!feof(f)) {
 		char buf[1024];
 		myfgets(buf,1024,f);
@@ -1231,10 +1228,15 @@ static int do_mapping(int sel) {
 		    *s = ',';
 		    fprintf(g,"%s\n",map);
 		    *s = 0;
+		    found = 1;
 		} else
 		    fprintf(g,"%s\n",buf);
 	    }
 	    fclose(f);
+	    if (!found) { // New entry
+		*s = ',';
+		fprintf(g,"%s\n",map);
+	    }
 	    fclose(g);
 	    unlink(get_shared("config/userdb.txt"));
 	    rename(get_shared("config/userdb2.txt"),get_shared("config/userdb.txt"));
