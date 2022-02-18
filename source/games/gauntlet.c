@@ -160,7 +160,6 @@ static void update_interrupts() {
     if (atarigen_video_int_state) {
 	if (!in_68k) {
 	    cpu_interrupt(CPU_68K_0, 4);
-	    if (atarigen_sound_int_state) cpu_execute_cycles(CPU_68K_0,100);
 	}
     }
     else
@@ -487,6 +486,7 @@ static void load_gauntlet() {
     add_68000_ram(0,0x902000,0x903fff, sprites);
     add_68000_ram(0,0x904000,0x904fff, RAM+0x2000);
     add_68000_ram(0,0x905000,0x905fff, alpha);
+    AddMemFetch(0x905000,0x905fff,alpha-0x905000); // Yep, apparently gaunt2 executes some code from alpha ram !!! Got a crash with starscream very early in stage1 without this (pc out of bounds)
     add_68000_ram(0,0x910000,0x9107ff, RAM_PAL);
     add_68000_ram(0,0x930000,0x930001, ram6502+0x10000); // xscroll
     AddReadByte(0x802000,0x802fff, read_eeprom, NULL);
@@ -540,6 +540,12 @@ static void load_gauntlet() {
 	WriteWord(&ROM[0x886],0x4e71); // skip a loop
 	apply_hack(0x40c22,0);
 	WriteWord(&ROM[0x40c28],0x4253);
+    } else if (is_current_game("gaunt2")) {
+	apply_hack(0x42a7e,0);
+	WriteWord(&ROM[0x42a84],0x4253);
+	WriteWord(&ROM[0x862],0x6000); // high romcheck
+	WriteWord(&ROM[0x864],0xe2);
+	WriteWord(&ROM[0x77c],0x6070); // low romcheck
     }
     // watchdog_counter = 180;
     set_reset_function(preinit);
