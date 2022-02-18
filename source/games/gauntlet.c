@@ -1,3 +1,4 @@
+#define DRV_DEF_CLEAR clear_gauntlet
 #include "gameinc.h"
 #include "streams.h"
 #include "m6502hlp.h"
@@ -572,7 +573,12 @@ static void execute_gauntlet()
     input_buffer[8] |= 0x40;
     if (goto_debuger) return;
     for (int n=0; n<32; n++) {
+#if USE_MUSASHI == 2
 	int frame = ATARI_CLOCK_14MHz/8/fps/4/8,diff;
+#else
+	// Starscream seems to need a little more cycles. This fixes the intro music in gaunt2, and avoid to have 4 welcomes when starting the game for gauntlet !
+	int frame = ATARI_CLOCK_14MHz/8/fps/4/7,diff;
+#endif
 	if (n == 30) {
 	    input_buffer[8] &= ~0x40;
 	    atarigen_video_int_state = 1;
@@ -868,7 +874,6 @@ static struct VIDEO_INFO video_gauntlet =
    60
 };
 
-GMEI( gauntlet,"Gauntlet (rev 14)",ATARI,1985, GAME_HACK,
-	.clear= clear_gauntlet);
+GMEI( gauntlet,"Gauntlet (rev 14)",ATARI,1985, GAME_HACK);
 CLNEI(gauntlets, gauntlet,"Gauntlet (Spanish, rev 15)",ATARI,1985,GAME_HACK); // rom has a lot of differences compared to english version 14, no region switch then ?
-CLNEI(gaunt2, gauntlet,"Gauntlet II",ATARI,1986,GAME_HACK); // graphics broken for playfield layer, didn't have time to investigate yet
+CLNEI(gaunt2, gauntlet,"Gauntlet II",ATARI,1986,GAME_HACK);
