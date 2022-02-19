@@ -151,8 +151,9 @@ static void update_interrupts() {
 	if (atarigen_sound_int_state) cpu_execute_cycles(CPU_68K_0,100);
     }
     if (atarigen_sound_int_state) {
-	    cpu_interrupt(CPU_68K_0, 6);
-	    atarigen_sound_int_state = 0;
+	cpu_interrupt(CPU_68K_0, 6);
+	stopped_68k = 0;
+	atarigen_sound_int_state = 0;
     }
     if (stopped_68k) {
 	cpu_execute_cycles(CPU_68K_0,100);
@@ -168,6 +169,7 @@ static void update_interrupts() {
     if (atarigen_sound_int_state) {
 	if (!in_68k) {
 	    cpu_interrupt(CPU_68K_0, 6);
+	    stopped_68k = 0;
 	}
     }
     else
