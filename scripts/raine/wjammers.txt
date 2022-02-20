@@ -78,19 +78,19 @@ script "Select Player Mode" \
  "0x02/CPU vs P2"\
  "0x03/CPU vs CPU" 
 run:
-    if param==$00or(peek($10008D)==$00andparam==$03)
+    if (param==$00)or((peek($10008D)==$00)and(param==$03))
       poke $100801 $00
       poke $100881 $03
     endif
-    if peek($10008D)!=$00andparam==$01
+    if (peek($10008D)!=$00)and(param==$01)
       poke $100801 $00
       poke $100881 $01
     endif
-    if peek($10008D)!=$00andparam==$02
+    if (peek($10008D)!=$00)and(param==$02)
       poke $100801 $02
       poke $100881 $01
     endif
-    if peek($10008D)!=$00andparam==$03
+    if (peek($10008D)!=$00)and(param==$03)
       poke $100801 $02
       poke $100881 $03
     endif

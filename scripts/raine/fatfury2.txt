@@ -27,6 +27,17 @@ script "Select Stage (Background)" \
  "0x0C/Krauser (Germany)" 
 run:
     poke $10AAD5 param
+script "Walk Through Stage Boundaries"  
+run:
+    dpoke $018FF6 $6000
+    dpoke $019020 $6000
+    dpoke $012CCE $6000
+    dpoke $012CDE $6000
+off:
+    dpoke $018FF6 $6E00
+    dpoke $019020 $6D00
+    dpoke $012CCE $6C00
+    dpoke $012CDE $6F00
 script " "  
 script "P1 Infinite Energy"  
 run:
@@ -88,7 +99,7 @@ run:
       poke $100920 $20
       poke $10092B $3C
     endif
-    if (peek($100002)==$43and(peek($100003)&$80)!=$00)
+    if ((peek($100002)==$43)and((peek($100003)&$80)!=$00))
       poke $1051C9 $10
       poke $1041C1 $40
       dpoke $1041C3 $00

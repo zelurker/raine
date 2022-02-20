@@ -47,8 +47,17 @@ sub handle_arg {
 	$cond =~ s/ GT />/gi;
 	$cond =~ s/ GE />=/gi;
 	$cond =~ s/ LE /<=/gi;
-	$cond =~ s/ AND /and/gi;
-	$cond =~ s/ OR /or/gi;
+	if ($cond =~ / (AND|OR) /i) {
+		my @arg = split(/ (and|or) /i,$cond); # adding () around and and or becomes mandatory !
+		for (my $n=0; $n<=$#arg; $n++) {
+			if ($n & 1) {
+				$arg[$n] = lc($arg[$n]);
+			} else {
+				$arg[$n] = "($arg[$n])";
+			}
+		}
+		$cond = join("",@arg);
+	}
 	$cond =~ s/ BAND /\&/gi;
 	$cond =~ s/ BOR /\|/gi;
 	$cond =~ s/ //g;

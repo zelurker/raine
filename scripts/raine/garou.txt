@@ -172,10 +172,10 @@ run:
 script "Hide Background" \
  "comm:Activate before match start; works in round 1 only"  
 run:
-    if (peek($10748A)==$38andpeek($10743D)==$01)
+    if ((peek($10748A)==$38)and(peek($10743D)==$01))
       poke $10748A $33
     endif
-    if (peek($10748A)!=$00andpeek($10743D)==$01)
+    if ((peek($10748A)!=$00)and(peek($10743D)==$01))
       poke $106FE8 $00
       dpoke $401FFE $8F8F
     endif

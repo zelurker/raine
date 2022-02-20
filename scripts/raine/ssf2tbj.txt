@@ -1,6 +1,6 @@
 script "Infinite Time"  
 run:
-    if peek($FF8CD2)==$00andpeek($FF8CCE)>01
+    if (peek($FF8CD2)==$00)and(peek($FF8CCE)>$01)
       dpoke $FF8CCE $9928
       dpoke $FFE0D2 $253C
     endif
@@ -9,7 +9,7 @@ on:
     dpoke $FF8CCE $0101
 script "Disable projectile impact slowdown"  
 run:
-    if peek($FF83F8)!=$FFandpeek($FF87F8)!=$FF
+    if (peek($FF83F8)!=$FF)and(peek($FF87F8)!=$FF)
       poke $FF82F2 $00
     endif
 script "Always in Turbo Mode" \
@@ -33,7 +33,7 @@ script "Select Starting Stage" \
  "0x0A03/Stage 11 (Sagat)"\
  "0x0B03/Stage 12 (Dictator)" 
 run:
-    if (dpeek($FF8C01)==$0000)or(peek($FF8BD1)=$00)or(dpeek($FF8C01)==param)
+    if ((dpeek($FF8C01)==$0000))or((peek($FF8BD1)=$00))or((dpeek($FF8C01)==param))
       poke $FF8BD1 param/$100
       dpoke $FF8C01 param
     endif
@@ -52,7 +52,7 @@ run:
 script " "  
 script "P1 Infinite Energy"  
 run:
-    if dpeek($FF83F8)<60and(peek($FF83D1)&$10)==$00andpeek($FF8BE4)==$0
+    if (dpeek($FF83F8)<$60)and((peek($FF83D1)&$10)==$00)and(peek($FF8BE4)==$0)
       dpoke $FF83F8 $90
       dpoke $FF858A $90
     endif
@@ -109,22 +109,22 @@ run:
     if peek($FF83CE)==$0
       temp0=$FF
     endif
-    if temp0==$1andpeek($FF83CE+$9A)<2
+    if (temp0==$1)and(peek(FF83CE+$9A)<$2)
       poke ($FF83CE+$9A) $2
     endif
-    if temp0==$1andpeek($FF83CE+$9C)<2
+    if (temp0==$1)and(peek(FF83CE+$9C)<$2)
       poke ($FF83CE+$9C) $2
     endif
-    if temp0==$1andpeek($FF83CE+$9E)<2
+    if (temp0==$1)and(peek(FF83CE+$9E)<$2)
       poke ($FF83CE+$9E) $2
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF83CE+$9A)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF83CE+$9A)<$3)
       poke ($FF83CE+$9A) $3
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF83CE+$9C)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF83CE+$9C)<$3)
       poke ($FF83CE+$9C) $3
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF83CE+$9E)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF83CE+$9E)<$3)
       poke ($FF83CE+$9E) $3
     endif
 script "P1 Easy Tatsumaki (Ryu / Ken)"  
@@ -265,7 +265,7 @@ run:
 script " "  
 script "P2 Infinite Energy"  
 run:
-    if dpeek($FF87F8)<60and(peek($FF87D1)&$10)==$00andpeek($FF8BE4)==$0
+    if (dpeek($FF87F8)<$60)and((peek($FF87D1)&$10)==$00)and(peek($FF8BE4)==$0)
       dpoke $FF87F8 $90
       dpoke $FF898A $90
     endif
@@ -322,22 +322,22 @@ run:
     if peek($FF87CE)==$0
       temp0=$FF
     endif
-    if temp0==$1andpeek($FF87CE+$9A)<2
+    if (temp0==$1)and(peek(FF87CE+$9A)<$2)
       poke ($FF87CE+$9A) $2
     endif
-    if temp0==$1andpeek($FF87CE+$9C)<2
+    if (temp0==$1)and(peek(FF87CE+$9C)<$2)
       poke ($FF87CE+$9C) $2
     endif
-    if temp0==$1andpeek($FF87CE+$9E)<2
+    if (temp0==$1)and(peek(FF87CE+$9E)<$2)
       poke ($FF87CE+$9E) $2
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF87CE+$9A)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF87CE+$9A)<$3)
       poke ($FF87CE+$9A) $3
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF87CE+$9C)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF87CE+$9C)<$3)
       poke ($FF87CE+$9C) $3
     endif
-    if (temp0==$2ortemp0==$5)andpeek(FF87CE+$9E)<3
+    if ((temp0==$2)or(temp0==$5))and(peek(FF87CE+$9E)<$3)
       poke ($FF87CE+$9E) $3
     endif
 script "P2 Easy Tatsumaki (Ryu / Ken)"  

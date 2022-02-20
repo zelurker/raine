@@ -31,6 +31,17 @@ script "Select Perm. Background" \
  "0x0F/Geese Tower(2)" 
 run:
     poke $105627 param
+script "Walk Through Stage Boundaries"  
+run:
+    dpoke $00EDF2 $6002
+    dpoke $00EDFE $6002
+    dpoke $0103D4 $6000
+    dpoke $0103E0 $6000
+off:
+    dpoke $00EDF2 $6F00
+    dpoke $00EDFE $6F00
+    dpoke $0103D4 $6C00
+    dpoke $0103E0 $6F00
 script " "  
 script "Once you activate Easy Supers you can do"  
 script "all the SDMs of any character (even the"  
@@ -153,7 +164,7 @@ on:
     temp0=lpeek($00371C)
 run:
     lpoke $00371C temp0
-    if (peek($10567A)!=$00andpeek($10567B)==$00andpeek($10562D)==$01)
+    if ((peek($10567A)!=$00)and(peek($10567B)==$00)and(peek($10562D)==$01))
       lpoke $00371C $4E714E71
       poke $1051E3 $00
       poke $1051E5 $01
