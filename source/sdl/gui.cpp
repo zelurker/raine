@@ -138,11 +138,27 @@ void TRaineDesktop::draw() {
     if (work_area.w) {
 	// The SetLogicalSize can't move the origin, so it's not appropriate here
 	// and we have to make our dest rect
-	double ratio1 = work_area.w*1.0/GameScreen.xview;
-	double ratio2 = work_area.h*1.0/GameScreen.yview;
+	int x = GameScreen.xview, y = GameScreen.yview;
+	if (display_cfg.fix_aspect_ratio ) {
+	     if (x > y) {
+		 double ratio = y*1.0/x;
+		 double dif_ratio = fabs(ratio-0.75);
+		 if (display_cfg.fix_aspect_ratio == 2 || (dif_ratio > 0.001 && dif_ratio < 0.05)) {
+		     y = 0.75*x;
+		 }
+	     } else {
+		 double ratio = x*1.0/x;
+		 double dif_ratio = fabs(ratio-0.75);
+		 if (display_cfg.fix_aspect_ratio == 2 || (dif_ratio > 0.001 && dif_ratio < 0.05)) {
+		     x = 0.75*y;
+		 }
+	     }
+	}
+	double ratio1 = work_area.w*1.0/x;
+	double ratio2 = work_area.h*1.0/y;
 	double ratio = MIN(ratio1,ratio2);
 	SDL_Rect dest;
-	int w = GameScreen.xview*ratio, h = GameScreen.yview*ratio;
+	int w = x*ratio, h = y*ratio;
 	dest.x = (work_area.w-w)/2+work_area.x;
 	dest.y = (work_area.h-h)/2+work_area.y;
 	dest.w = w;
