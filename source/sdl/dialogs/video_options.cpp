@@ -92,7 +92,7 @@ static int update_scaler(int sel) {
 static menu_item_t overlays_options[] =
 {
     { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), _("YV12 (mpeg)") } },
-    { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
+    { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 3, {0,1,2}, {_("No"), _("Close"), _("Always") } },
 #ifdef DARWIN
     { _("Overlays workarounds"), NULL, &overlays_workarounds, 2, { 0, 1}, {_("No"),_("Yes")}},
 #endif
@@ -160,7 +160,7 @@ static menu_item_t ogl_options[] =
     { _("Save opengl screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
     { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
     { _("OpenGL overlay interface"), NULL, &ogl.overlay, 2, { 0, 1 }, {_("No"),_("Yes")} },
-    { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 2, {0,1}, {_("No"), _("Yes") } },
+    { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 3, {0,1,2}, {_("No"), _("Close"), _("Always") } },
     { _("Keep aspect ratio"), NULL, &display_cfg.keep_ratio, 2, {0, 1}, {_("No"),_("Yes")} },
     { _("OpenGL filtering"), NULL, &ogl.filter, 2, { GL_NEAREST, GL_LINEAR }, { _("Nearest"), _("Linear") } },
     { _("Integer scaling"), NULL, &integer_scaling, 2, {0, 1}, {_("No"),_("Yes")} },

@@ -154,8 +154,6 @@ void ReClipScreen(void)
      // if (reading_demo) display_cfg.screen_y -= 8;
      game_x = xxx;
      game_y = yyy;
-     ratio1 = display_cfg.screen_x*1.0/game_x;
-     ratio2 = display_cfg.screen_y*1.0/game_y;
      // printf("ratio1 %g ratio2 %g game_x %d game_y %d\n",ratio1,ratio2,game_x,game_y);
 
      if (display_cfg.video_mode == 0) { // opengl
@@ -166,17 +164,19 @@ void ReClipScreen(void)
 	     if (game_x > game_y) {
 		 double ratio = game_y*1.0/game_x;
 		 double dif_ratio = fabs(ratio-0.75);
-		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
+		 if (display_cfg.fix_aspect_ratio == 2 || (dif_ratio > 0.001 && dif_ratio < 0.05)) {
 		     game_y = 0.75*game_x;
 		 }
 	     } else {
 		 double ratio = game_x*1.0/game_x;
 		 double dif_ratio = fabs(ratio-0.75);
-		 if (dif_ratio > 0.001 && dif_ratio < 0.05) {
+		 if (display_cfg.fix_aspect_ratio == 2 || (dif_ratio > 0.001 && dif_ratio < 0.05)) {
 		     game_x = 0.75*game_y;
 		 }
 	     }
 	 }
+	 ratio1 = display_cfg.screen_x*1.0/game_x;
+	 ratio2 = display_cfg.screen_y*1.0/game_y;
 
 	 /* Now fix the aspect ratio of the overlay inside the game screen */
 	 int xxx2,yyy2,destx2,desty2;
