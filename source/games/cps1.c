@@ -1533,10 +1533,10 @@ static void protection_ww(UINT32 offset, UINT16 data)
        cps1_port[cps1_game_config->layer_control/2] = data;
    else if (sf2m3 && offset >= 0xa0/2 && offset < 0xc4/2) {
        cps1_port[offset - 0xa0/2] = data;
-   } else if (offset == 0x50/2) {
+   } else if (offset == 0x28) {
        scanline1 = data & 0x1ff;
        cps1_port[offset] = data;
-   } else if (offset == 0x52/2) {
+   } else if (offset == 0x29) {
        scanline2 = data & 0x1ff;
        cps1_port[offset] = data;
    } else {
@@ -3020,15 +3020,15 @@ void execute_cps2_frame(void)
 
 #if EMULATE_RASTERS
   cps1_port[0x28] &= 0x1ff;
-  cps1_port[0x2a] &= 0x1ff;
+  cps1_port[0x29] &= 0x1ff;
   int port1;
-  if (cps1_port[0x28] < cps1_port[0x2a]) {
+  if (cps1_port[0x28] < cps1_port[0x29]) {
       min1 = cps1_port[0x28];
       port1 = 0x28;
-      min2 = MIN(cps1_port[0x2a],240);
+      min2 = MIN(cps1_port[0x29],240);
   } else {
-      min1 = cps1_port[0x2a];
-      port1 = 0x2a;
+      min1 = cps1_port[0x29];
+      port1 = 0x29;
       min2 = MIN(cps1_port[0x28],240);
   }
 
@@ -3066,12 +3066,13 @@ void execute_cps2_frame(void)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(min2-min1)/262);	  // Main 68000
 	  cpu_interrupt(CPU_68K_0,4);
 	  draw_cps1_partial(min2);
-	  cps1_port[port1 == 0x28 ? 0x2a : 0x28] = 0;
+	  cps1_port[port1 == 0x28 ? 0x29 : 0x28] = 0;
 	  blit(GameBitmap, raster_bitmap, 32, 32+min1, 0, min1, GameScreen.xview, min2-min1);
-	  if (!stopped_68k)
+	  // if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min2)/262);	  // Main 68000
       } else {
-	  if (!stopped_68k)
+	  // Ignore the stopped status : it's in a raster interrupt, we can't afford to stop here !
+	  // if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min1)/262);	  // Main 68000
       }
   } else {
@@ -3116,7 +3117,7 @@ void execute_cps2_frame(void)
       draw_cps1_partial(240); // the vbl replaces the scroll registers to their normal values so we must draw the bitmap now !
   cpu_interrupt(CPU_68K_0, 2);
   cps1_port[0x28] = scanline1;
-  cps1_port[0x2a] = scanline2;
+  cps1_port[0x29] = scanline2;
 #if EMULATE_RASTERS
   if (min1 < 240 && !stopped_68k)
       cpu_execute_cycles(CPU_68K_0, frame_68k*22/262);	  // Main 68000
