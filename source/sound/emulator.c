@@ -26,19 +26,11 @@
 
 int change_sample_rate;
 
+/* Warning : this array must be in the same order as the enum inittype in sasound.h (declaration of the SOUND_xxx constants */
 struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 {
 #if HAS_YM2203
    { "ym2203",     YM2203_sh_stop,        },
-#endif
-#if HAS_GALAXIAN
-   { "galaxian", galaxian_sh_stop, },
-#endif
-#if HAS_POKEY
-   { "pokey", pokey_sh_stop, },
-#endif
-#if HAS_TMS5220
-   { "tms5220", tms5220_sh_stop, },
 #endif
 #if HAS_YM2151
    { "ym2151",     YM2151_sh_stop,        },
@@ -101,6 +93,15 @@ struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 #endif
 #if HAS_DXSMP
    { "DX samples", dxsmp_sh_stop },
+#endif
+#if HAS_GALAXIAN
+   { "galaxian", galaxian_sh_stop, },
+#endif
+#if HAS_POKEY
+   { "pokey", pokey_sh_stop, },
+#endif
+#if HAS_TMS5220
+   { "tms5220", tms5220_sh_stop, },
 #endif
    { NULL,	   NULL,		  },
 };
