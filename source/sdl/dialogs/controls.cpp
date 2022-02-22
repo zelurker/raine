@@ -1262,7 +1262,7 @@ static menu_item_t controls_menu[] =
   { _("Analog controls..."), &setup_analog },
   { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
   { _("Joysticks indexes"), &do_joy_index },
-  { _("d-pads for movement"), NULL, &hat_for_moves, 2, { 0, 1 }, { _("No"), _("d-pad + main stick") } },
+  { _("D-pads for movement"), NULL, &hat_for_moves, 2, { 0, 1 }, { _("No"), _("d-pad + main stick") } },
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
