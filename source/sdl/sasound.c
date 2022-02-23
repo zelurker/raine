@@ -230,10 +230,10 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        print_debug("sound driver name : %s\n",driver_name);
 #endif
        // set_sound_variables(0);
-       SDL_PauseAudioDevice(dev,0);
    }
    if(!init_sound_emulators()) {
-     return 1;  // Everything fine
+       SDL_PauseAudioDevice(dev,0);
+       return 1;  // Everything fine
    }
 
    return 0;
