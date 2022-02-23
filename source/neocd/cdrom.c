@@ -1,5 +1,5 @@
-#include <unistd.h> // chdir
 #include "raine.h"
+#include <unistd.h> // chdir
 #include "compat_sdl.h"
 #include "starhelp.h" // ByteSwap
 #include "sasound.h"

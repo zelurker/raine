@@ -409,5 +409,14 @@ void finish_opengl() {
 // Called when sdl_done is called
 void opengl_done() {
     if (font) free(font);
+    font = NULL;
+    if (opaque_bmp)
+	free(opaque_bmp);
     delete_shaders();
+    if (ogl.vendor) {
+	free(ogl.vendor);
+	free(ogl.renderer);
+	free(ogl.version);
+	ogl.vendor = ogl.renderer = ogl.version = NULL;
+    }
 }

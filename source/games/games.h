@@ -309,6 +309,7 @@ int game_exists(GAME_MAIN **my_game_list,int num);
 void update_cache(int i);
 void add_cache(int i);
 void del_cache(int i);
+void free_cache();
 
 #endif // __raine_games_h_
 

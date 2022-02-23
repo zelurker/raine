@@ -279,6 +279,7 @@ static void hs_save (void)
 	      */
 	      copy_from_memory (mem_range->cpu, mem_range->addr, data, mem_range->num_bytes);
 	      fwrite(data, mem_range->num_bytes,1,f);
+	      free(data);
 	    }
 	  mem_range = mem_range->next;
 	}

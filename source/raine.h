@@ -41,6 +41,10 @@ extern "C" {
 #include "confile.h"
 #include "debug.h" // if needed
 
+#ifdef MEMWATCH
+#include "memwatch.h"
+#endif
+
 // Compilation Options
 
 #define FASTF3MEM		// Use Faster (no bad address checking) memory access in F3-System

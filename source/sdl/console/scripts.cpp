@@ -80,7 +80,7 @@ int atoh(char *s) {
     return val;
 }
 
-void init_scripts() {
+void done_scripts() {
   if (nb_scripts) {
     for (int n=0; n<nb_scripts; n++) {
       free(script[n].title);
@@ -114,6 +114,10 @@ void init_scripts() {
     script = NULL;
     nb_scripts = 0;
   }
+}
+
+void init_scripts() {
+  done_scripts();
   // rb should allow fseek in windoze...
   FILE *f = fopen(get_script_name(0),"rb");
   int nb_alloc = 0;

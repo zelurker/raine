@@ -15,6 +15,7 @@ extern int nb_commands;
 extern char **commands_buff;
 
 void hist_open(char *name,const char *game);
+void done_commands();
 
 
 #ifdef __cplusplus

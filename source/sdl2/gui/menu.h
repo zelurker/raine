@@ -11,6 +11,10 @@
 #include "widget.h"
 #include "translate.h"
 
+#ifdef MEMWATCH
+#include "memwatch.h"
+#endif
+
 extern SDL_PixelFormat *fg_format;
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 

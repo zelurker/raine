@@ -345,6 +345,11 @@ void del_cache(int i) {
 	memmove(&cache[i],&cache[i+1],(nb_cache-i)*sizeof(struct TNode*));
 }
 
+void free_cache() {
+    while (nb_cache > 0)
+	del_cache(nb_cache-1);
+}
+
 void update_cache(int i) {
     free_tree(cache[i]);
     cache[i] = dir2cache(dir_cfg.rom_dir[i]);

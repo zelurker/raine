@@ -809,6 +809,7 @@ int main(int argc,char *argv[])
        raine_set_config_string("Directories",str,"");
    } while (s);
    free(dir_cfg.rom_dir);
+   free_cache();
 #ifndef SDL
    raine_set_config_string(	"Directories",  "language_file",        dir_cfg.language_file);
 #endif

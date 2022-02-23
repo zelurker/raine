@@ -2181,6 +2181,7 @@ void save_game_config(void)
 
    raine_pop_config_state();
 #endif
+   done_scripts();
 
 }
 

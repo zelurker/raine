@@ -286,6 +286,7 @@ int do_video_options(int sel) {
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("", video_items);
     video_options->execute();
+    delete video_options;
 #if defined(RAINE_WIN32) && SDL==1
     if (old_driver != display_cfg.video_driver) {
 	if (sdl_overlay) {

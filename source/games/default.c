@@ -40,6 +40,7 @@
 #include "control_internal.h"
 #endif
 #include "bld.h"
+#include "history.h"
 
 void LoadDefault(void)
 {
@@ -226,5 +227,6 @@ void ClearDefault(void)
 #ifdef HAS_CONSOLE
    done_console();
 #endif
+   done_commands();
 }
 

@@ -17,10 +17,10 @@
 VERSION = "0.93.2"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
-# VERBOSE = 1
+VERBOSE = 1
 
 # use curl to try to get unavailable roms from rom archive ?
 # curl is a nice idea, the problem is that it requires a ton of dlls in
@@ -72,6 +72,10 @@ HAS_CONSOLE = 1
 # which lib to use :
 # SDL = 1 or SDL = 2, or comment the line for allegro
 SDL = 2
+
+# memwatch : some small tool to have some basic checks on allocated memory
+# for now usable in linux only
+# USE_MEMWATCH = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -422,6 +426,10 @@ endif
 
    DEFINE = -D__RAINE__ \
 	   -DRAINE_UNIX
+
+ifdef USE_MEMWATCH
+	DEFINE += -DMEMWATCH -DMW_STDIO
+endif
 
 ifndef SDL
    LIBS = -lz $(shell allegro-config --libs) $(shell libpng-config --ldflags) -lm
@@ -1078,6 +1086,10 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/speed_hack.o \
 	$(OBJDIR)/savepng.o \
  	$(OBJDIR)/loadroms.o
+
+ifdef USE_MEMWATCH
+	CORE += $(OBJDIR)/memwatch.o
+endif
 
 ifdef USE_BEZELS
 CORE +=	$(OBJDIR)/bezel.o

@@ -5,6 +5,7 @@ extern "C" {
 #include "gui/menuitem.h"
 
 void init_scripts();
+void done_scripts();
 void add_scripts(menu_item_t *menu);
 void update_scripts();
 void do_script(int argc, char **argv);

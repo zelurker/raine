@@ -7,6 +7,7 @@
  * and commands_buff contains the associated text */
 menu_item_t *menu_commands;
 #endif
+#include "history.h"
 
 int nb_commands;
 char **commands_buff;
@@ -23,19 +24,7 @@ void hist_open(char *name,const char *game) {
   char *old_commands;
   char *commands = NULL;
   if (strcmp(name,"history.dat")) { // not history.dat -> free old commands
-      int n;
-      for (n=0; n<nb_commands; n++) {
-	  free(commands_buff[n]);
-#ifdef SDL
-	  free((void*)menu_commands[n].label);
-#endif
-      }
-#ifdef SDL
-      if (menu_commands)
-	  free(menu_commands);
-      menu_commands = NULL;
-#endif
-      nb_commands = 0;
+      done_commands();
   }
   f = fopen (get_shared(name), "r");
   if (!f) return;
@@ -136,3 +125,20 @@ void hist_open(char *name,const char *game) {
 	  free(commands);
   }
 }
+
+void done_commands() {
+    int n;
+    for (n=0; n<nb_commands; n++) {
+	free(commands_buff[n]);
+#ifdef SDL
+	free((void*)menu_commands[n].label);
+#endif
+    }
+#ifdef SDL
+    if (menu_commands)
+	free(menu_commands);
+    menu_commands = NULL;
+#endif
+    nb_commands = 0;
+}
+
