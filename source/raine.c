@@ -865,6 +865,8 @@ int main(int argc,char *argv[])
 
    raine_pop_config_state();
    raine_config_cleanup();
+   if (ingame_font)
+       free(ingame_font);
 #ifndef SDL
    unload_datafile(RaineData);
 #if 0

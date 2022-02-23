@@ -348,6 +348,9 @@ void del_cache(int i) {
 void free_cache() {
     while (nb_cache > 0)
 	del_cache(nb_cache-1);
+    free(cache);
+    alloc_cache = 0;
+    cache = NULL;
 }
 
 void update_cache(int i) {

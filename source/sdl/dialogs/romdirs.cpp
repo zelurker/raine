@@ -53,7 +53,7 @@ int do_romdir(int sel) {
     TMenu *mbox = new TMenu(_("rom dirs"),menu);
     mbox->execute();
     delete mbox;
+    free(menu);
   } while (!end);
-  free(menu);
   return 0;
 }

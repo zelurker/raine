@@ -354,6 +354,15 @@ void TMenu::update_list_label(int nb, int index, char *str) {
     menu[nb].values_list_label[index] = str;
 }
 
+void TMenu::free_hchild() {
+  if (h_child) {
+      for (int n=0; header[n].label; n++)
+	  delete(h_child[n]);
+      free(h_child);
+      h_child = NULL;
+  }
+}
+
 TMenu::~TMenu() {
     if (translated)
 	free(menu);
@@ -363,12 +372,7 @@ TMenu::~TMenu() {
     free(child);
     child = NULL;
   }
-  if (h_child) {
-      for (int n=0; header[n].label; n++)
-	  free(h_child[n]);
-      free(h_child);
-      h_child = NULL;
-  }
+  free_hchild();
 
   delete font;
   if (menu_disp)
@@ -455,6 +459,7 @@ void TMenu::compute_nb_items() {
 	menu_item_t *old_menu = menu;
 	int nb;
 	for (nb=0; header[nb].label; nb++);
+	free_hchild();
 	h_child = child = (TStatic **)malloc(sizeof(TStatic*)*nb);
 	menu = header;
 	n = 0;
@@ -1759,11 +1764,11 @@ void TMenu::execute() {
       case SDL_CONTROLLERBUTTONUP:
       case SDL_CONTROLLERBUTTONDOWN:
       case SDL_CONTROLLERAXISMOTION:
+      case SDL_CONTROLLERDEVICEADDED:
+      case SDL_CONTROLLERDEVICEREMOVED:
         handle_joystick(&event);
 	break;
       case SDL_WINDOWEVENT:
-      case SDL_CONTROLLERDEVICEADDED:
-      case SDL_CONTROLLERDEVICEREMOVED:
 	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	    if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
 		SDL_SetWindowSize(win,640,480);

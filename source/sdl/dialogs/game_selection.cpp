@@ -129,6 +129,7 @@ class TGame_sel : public TMenu
     }
 #if SDL == 2
     ~TGame_sel() {
+	free(menu);
 	desktop->set_picture(NULL);
     }
 #endif

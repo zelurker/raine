@@ -38,6 +38,7 @@ class TFileSel : public TMain_menu
     virtual void set_dir(char *mypath);
     virtual int mychdir(int n);
     virtual int myexec_file(int sel);
+    void free_files();
 };
 
 static int selected_path;
@@ -268,7 +269,7 @@ void TFileSel::compute_nb_items() {
   char *oldsel = strrchr(res_file,SLASH[0]);
   if (oldsel) oldsel++;
   if (menu)
-    free(menu);
+    free_files();
   menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
   memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
 
@@ -334,10 +335,6 @@ void TFileSel::compute_nb_items() {
       /* The big stupidity of readdir is that it doesn't set d_type (posix
        * compliant !!!).  */
       struct stat buf;
-      int ret = stat(tmp_path,&buf);
-      if (ret) {
-	  printf("got %d for stat for %s\n",ret,tmp_path);
-      }
       if (!stat(tmp_path,&buf) && S_ISDIR(buf.st_mode)) {
 	menu[nb_files].menu_func = &exec_dir;
 	nb_files++;
@@ -377,6 +374,8 @@ void TFileSel::compute_nb_items() {
 	  }
 	} else
 	  nb_files++;
+      } else { // we got a file, and we want only dirs !
+	  free((void*)menu[nb_files].label);
       }
 
       if (nb_files == nb_menu) {
@@ -421,9 +420,9 @@ void TFileSel::compute_nb_items() {
       sel = tmpsel; // blocks find_new_sel from compute_nb_items
 }
 
-TFileSel::~TFileSel() {
+void TFileSel::free_files() {
   int nb;
-  for (nb=2; nb<nb_files; nb++) {
+  for (nb=1; nb<nb_files; nb++) {
     free((void*)menu[nb].label);
     if (menu[nb].values_list_label[0]) {
 	free(menu[nb].values_list_label[0]);
@@ -431,6 +430,11 @@ TFileSel::~TFileSel() {
   }
   if (menu)
     free(menu);
+  menu = NULL;
+}
+
+TFileSel::~TFileSel() {
+    free_files();
 }
 
 int TFileSel::get_fgcolor(int n) {
