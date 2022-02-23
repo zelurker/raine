@@ -1181,11 +1181,10 @@ beg:
        tried_curl = 1;
        do {
 	   dir = dlist[0].maindir;
-	   while (dir && (IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_'))) {
-	       dlist++;
-	       dir = dlist[0].maindir;
-	   }
 	   if (!dir) break;
+	   if (IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_')) {
+	       dir++;
+	   }
 
 	   // Then find a writable rom dir if there is one
 	   for(ta = 0; dir_cfg.rom_dir[ta]; ta ++){
@@ -1197,6 +1196,10 @@ beg:
 		   sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir );
 		   break;
 	       }
+	   }
+	   if (exists(path)) {
+	       printf("curl: file already exists!\n");
+	       break;
 	   }
 	   if (!strcmp(dir,"neogeo"))
 	       // neogeo is in all the roms directories, there is probably a redirect
@@ -1216,16 +1219,15 @@ beg:
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
 	   setup_curl_dlg(name);
 	   int ret = get_url(path,url);
-	   if (!ret) {
-	       break;
-	   } else {
+	   if (ret) {
 	       sprintf(load_debug+strlen(load_debug),"No %s.zip on internet archive\n",dir);
+	   }
+	   do { // Search for a parent
 	       dlist++;
 	       dir = dlist[0].maindir;
-	   }
+	   } while (dir && !(IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_')));
        } while (dir);
-       if (dir)
-	   goto beg;
+       goto beg;
    }
 #endif
 
