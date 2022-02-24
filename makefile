@@ -14,13 +14,13 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.93.2"
+VERSION = "0.93.3"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
-VERBOSE = 1
+# VERBOSE = 1
 
 # use curl to try to get unavailable roms from rom archive ?
 # curl is a nice idea, the problem is that it requires a ton of dlls in
@@ -72,10 +72,6 @@ HAS_CONSOLE = 1
 # which lib to use :
 # SDL = 1 or SDL = 2, or comment the line for allegro
 SDL = 2
-
-# memwatch : some small tool to have some basic checks on allocated memory
-# for now usable in linux only
-# USE_MEMWATCH = 1
 
 # compile bezels (artwork) support ? (ignored if building neocd)
 # This option hasn't been tested for ages, not sure it still works
@@ -232,6 +228,12 @@ else
 CCV=@$(CC)
 CXXV=@$(CXX)
 LDV=@$(LD)
+endif
+
+ifdef RAINE_DEBUG
+	# I don't see any reason why not to use this for all debug builds from
+	# now on...
+	USE_MEMWATCH = 1
 endif
 
 GCC_MAJOR := $(shell echo $(CC) -dumpversion|sed 's/\..*//')
