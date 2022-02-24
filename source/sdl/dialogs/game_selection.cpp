@@ -8,6 +8,7 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "dialogs/romdirs.h"
 #include "gui.h"
+#include "game_selection.h"
 
 /* This is so far the most complex dialog in the sdl version :
  *  - it changes the bg picture while browsing the list of games
@@ -460,5 +461,12 @@ int do_game_sel(int sel) {
   game_sel->execute();
   delete game_sel;
   return raine_cfg.req_load_game;
+}
+
+void done_game_selection() {
+    if (avail) {
+	free(avail);
+	avail = NULL;
+    }
 }
 

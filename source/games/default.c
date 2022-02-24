@@ -228,5 +228,9 @@ void ClearDefault(void)
    done_console();
 #endif
    done_commands();
+    if (history) {
+	free(history);
+	history = NULL;
+    }
 }
 

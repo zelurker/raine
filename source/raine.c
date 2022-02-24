@@ -19,6 +19,7 @@
 #else
 #include "gui.h"
 #include <SDL.h>
+#include "sdl/dialogs/game_selection.h"
 #ifdef USE_CURL
 #include <curl/curl.h>
 #endif
@@ -860,6 +861,8 @@ int main(int argc,char *argv[])
 
 #ifndef SDL
    save_joystick_data(str);
+#else
+   done_game_selection();
 #endif
    raine_set_config_string("General","language",language);
 

@@ -134,6 +134,10 @@ void done_commands() {
 	free((void*)menu_commands[n].label);
 #endif
     }
+    if (commands_buff) {
+	free(commands_buff);
+	commands_buff = NULL;
+    }
 #ifdef SDL
     if (menu_commands)
 	free(menu_commands);
