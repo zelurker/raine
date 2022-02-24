@@ -138,6 +138,9 @@ class TMenu {
     virtual void handle_button(SDL_Event *event, int index);
     void update_label(int nb, char *str,int (*menu_func)(int) = NULL);
     void update_list_label(int nb, int index, char *str);
+    void update_list_size(int nb, int size) {
+	menu[nb].values_list_size = size;
+    }
     virtual void handle_mouse(SDL_Event *event);
     virtual void produce_joystick_event();
     virtual void handle_joystick(SDL_Event *event);

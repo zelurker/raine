@@ -107,11 +107,16 @@ static void init_sound_driver(int changed) {
     // Must also init the names of the devices, they depend on the driver... !
     sound_menu[1].values_list_size = SDL_GetNumAudioDevices(0)+1;
     sound_menu[1].values_list_label[0] = "None";
+    if (menu) {
+	menu->update_list_label(1,0,_("None"));
+	menu->update_list_size(1,sound_menu[1].values_list_size);
+    }
     for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
 	if (sound_menu[1].values_list_label[i+1])
 	    free(sound_menu[1].values_list_label[i+1]);
 	sound_menu[1].values_list_label[i+1] = strdup(SDL_GetAudioDeviceName(i, 0));
 	sound_menu[1].values_list[i+1] = i+1;
+	if (menu) menu->update_list_label(1,i+1,sound_menu[1].values_list_label[i+1]);
     }
     if (menu)
 	menu->draw();

@@ -286,6 +286,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
       /* Now this thing is really starting to become bothersome, but for now
        * I see no way to get back to the easy dyanmic dialogs handling while
        * keeping the translations ! */
+      /* See update_list_label and update_list_size to update this kind of dynamic dialog */
       int nb = 0;
       while (menu->label) {
 	  nb++;
@@ -351,7 +352,9 @@ void TMenu::update_label(int nb, char *str,int (*menu_func)(int)) {
 }
 
 void TMenu::update_list_label(int nb, int index, char *str) {
+    // Actually this is used only in the sound options menu so far
     menu[nb].values_list_label[index] = str;
+    menu[nb].values_list[index] = index;
 }
 
 void TMenu::free_hchild() {
