@@ -562,9 +562,11 @@ static void load_gauntlet() {
 }
 
 static void clear_gauntlet() {
-    char path[80];
-    snprintf(path,80,"savedata/%s.epr",current_game->main_name);
-    save_file(get_shared(path),eeprom,0x800);
+    if (eeprom) {
+	char path[80];
+	snprintf(path,80,"savedata/%s.epr",current_game->main_name);
+	save_file(get_shared(path),eeprom,0x800);
+    }
 }
 
 extern int goto_debuger;
