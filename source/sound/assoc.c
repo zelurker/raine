@@ -40,7 +40,7 @@ int use_music;
 
 static int search(int len, UINT8 *needle, int n) {
     int index = 0;
-    while (index < len && n < 0x1000) {
+    while (index < len && n < 0x8000) {
 	if (Z80ROM[n] == needle[index])
 	    index++;
 	else
@@ -161,12 +161,15 @@ void init_assoc(int kind) {
 		return;
 	    }
 	    adr = ReadWord(&Z80ROM[adr]);
-	    adr2 = ReadWord(&Z80ROM[0x10fe]);
+	    // finding adr2 is more complex, was bad for kof2k
+	    UINT8 needle[] = { 0x47, // ld b,a
+		0x5f, // ld e,a
+		0x16,0, // ld d,#00
+		0x21 }; // ld hl,#adr2 !
+	    adr2 = search(5,needle,0);
+	    adr2 = ReadWord(&Z80ROM[adr2]);
 	    print_debug("assoc adr %x adr2 %x\n",adr,adr2);
-	    if (ReadWord(&Z80ROM[adr2]) != 0) {
-		print_debug("adr2 invalid\n");
-		adr2 = 0;
-	    }
+	    // The table starts by 0 for garou, but not kof98 !
 	}
     } else if (kind == 2) {
 	type = 10; // gunbird
