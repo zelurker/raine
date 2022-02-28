@@ -140,6 +140,7 @@ extern "C" {
 /* ============================ GENERAL DEFINES =========================== */
 /* ======================================================================== */
 
+#undef EXCEPTION_ILLEGAL_INSTRUCTION
 /* Exception Vectors handled by emulation */
 #define EXCEPTION_BUS_ERROR                2 /* This one is not emulated! */
 #define EXCEPTION_ADDRESS_ERROR            3 /* This one is partially emulated (doesn't stack a proper frame yet) */
