@@ -22,6 +22,7 @@
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_MIDI;
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_MODPLUG;
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_MP3;
+extern const Sound_DecoderFunctions __Sound_DecoderFunctions_MPG123;
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_WAV;
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_AIFF;
 extern const Sound_DecoderFunctions __Sound_DecoderFunctions_AU;
@@ -49,6 +50,9 @@ static decoder_element decoders[] =
 #endif
 #if SOUND_SUPPORTS_MP3
     { 0, &__Sound_DecoderFunctions_MP3 },
+#endif
+#if SOUND_SUPPORTS_MPG123
+    { 0, &__Sound_DecoderFunctions_MPG123 },
 #endif
 #if SOUND_SUPPORTS_WAV
     { 0, &__Sound_DecoderFunctions_WAV },

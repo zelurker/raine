@@ -1243,7 +1243,7 @@ else
 OBJS += $(OBJDIR)/sdl/sasound.o
 ifeq (${SDL},2)
 OBJS += $(OBJDIR)/sdl2/sdl_sound/SDL_sound.o \
-		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_mp3.o \
+		$(OBJDIR)/sdl2/sdl_sound/mpg123.o \
 		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_wav.o \
 		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_vorbis.o \
 		$(OBJDIR)/sdl2/sdl_sound/SDL_sound_raw.o \
@@ -1298,6 +1298,8 @@ endif
 endif # HAS_NEO
 endif
 endif
+
+LIBS += -lmpg123
 
 all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/raine.pot \
