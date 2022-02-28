@@ -14,15 +14,21 @@ extern "C" {
 // Margin from the left border of menus for the start of text
 #define HMARGIN 10
 
+// converts a gfx to SDL_Color format :
+#if SDL == 2
+#define gfx_to_sdlcolor(format,c) SDL_MapRGBA(format,(c)>>0,((c)>>8)&0xff,((c>>16)&0xff),(c>>24)&0xff)
+// SDL_gfx does its own mapping of colors and requires to be passed colors
+// in this format... format is abgr confirmed (intel)
+#define mymakecol(r,g,b) (((r)<<0)|((g)<<8)|((b)<<16)|(255<<24))
+#define makecol_alpha(r,g,b,a) (((r&0xff)<<0)|((g&0xff)<<8)|((b&0xff)<<16)|(a&0xff)<<24)
+// rgb on 24 bits to sdl_gfx format, which is also used for TStatic
+#define rgb2gfx(c) (c>>16)|((c&0xff)<<16)|(c&0xff00)|(255<<24)
+#else
+#define gfx_to_sdlcolor(surf,c) SDL_MapRGBA(surf->format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
 // SDL_gfx does its own mapping of colors and requires to be passed colors
 // in this format...
 #define mymakecol(r,g,b) (((r)<<24)|((g)<<16)|((b)<<8)|255)
 #define makecol_alpha(r,g,b,a) (((r&0xff)<<24)|((g&0xff)<<16)|((b&0xff)<<8)|(a&0xff))
-// converts a gfx to SDL_Color format :
-#if SDL == 2
-#define gfx_to_sdlcolor(format,c) SDL_MapRGBA(format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
-#else
-#define gfx_to_sdlcolor(surf,c) SDL_MapRGBA(surf->format,(c)>>24,((c)>>16)&0xff,((c>>8)&0xff),(c)&0xff)
 #endif
 
 #define NB_VALUES 75

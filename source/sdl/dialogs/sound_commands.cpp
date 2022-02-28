@@ -53,9 +53,6 @@ static int stop(int sel) {
 }
 
 #define TICKS_PER_SEC 258
-/* Thanks to mame for pointing super gem fighters to calibrate this timer.
-   We don't seem to find the same number as mame, but on the other hand we use 60 fps
-   and not 59.633 so maybe it counts for something ! */
 #define Z80_FRAME CPU_FRAME_MHz(8,30)
 
 static int nb_ticks, nb_executed;

@@ -154,11 +154,7 @@ void TFont::put_string(int x, int y, const char *s, int color, int bgcolor) {
   surf_string(sdl_screen,x,y,s,color,bgcolor,0);
 }
 
-#define conv_col(col) ((col&255)<<24)|(((col>>8)&255)<<16)|(((col>>16)&255)<<8)|((col>>24)&255)
 void TFont::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int color,int w) {
-#if SDL==2
-    color = conv_col(color);
-#endif
   if (loaded_font)
     gfxPrimitivesSetFont(loaded_font,charWidth,charHeight);
   if (charWidth*strlen(s) > (unsigned)w && w!=0) {
@@ -172,9 +168,6 @@ void TFont::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, int co
 }
 
 void TFont::surf_string(SDL_Surface *surf,int x, int y, const char *s, int color, int bgcolor, int w) {
-#if SDL == 2
-    bgcolor = conv_col(bgcolor);
-#endif
   if (charWidth*strlen(s) > (unsigned)w && w!=0) {
       int len = w/charWidth;
       char *dup = strdup(s);
@@ -232,11 +225,15 @@ void TFont_ttf::surf_string_tr(SDL_Surface *surf,int x, int y, const char *s, in
     return TFont::surf_string_tr(surf,x,y,s,color,w);
   SDL_Rect dest;
   SDL_Color sc;
+#if SDL == 2
+  sc.b = (color >> 16) & 0xff;
+  sc.g = (color >> 8) & 0xff;
+  sc.r = (color >> 0) & 0xff;
+  sc.a = 0xff;
+#else
   sc.b = (color >> 8) & 0xff;
   sc.g = (color >> 16) & 0xff;
   sc.r = (color >> 24) & 0xff;
-#if SDL == 2
-  sc.a = 0xff;
 #endif
   SDL_Surface *sf;
   int is_utf = test_utf((const unsigned char*)s);
@@ -279,15 +276,22 @@ void TFont_ttf::surf_string(SDL_Surface *surf,int x, int y, const char *s, int c
     return surf_string_tr(surf,x,y,s,color,w);
   SDL_Rect dest;
   SDL_Color sc,bg;
+#if SDL == 2
+  bg.a = 255;
+  sc.a = 255;
+  sc.b = (color >> 16) & 0xff;
+  sc.g = (color >> 8) & 0xff;
+  sc.r = (color >> 0) & 0xff;
+  bg.b = (bgcolor >> 16) & 0xff;
+  bg.g = (bgcolor >> 8) & 0xff;
+  bg.r = (bgcolor >> 0) & 0xff;
+#else
   sc.b = (color >> 8) & 0xff;
   sc.g = (color >> 16) & 0xff;
   sc.r = (color >> 24) & 0xff;
   bg.b = (bgcolor >> 8) & 0xff;
   bg.g = (bgcolor >> 16) & 0xff;
   bg.r = (bgcolor >> 24) & 0xff;
-#if SDL == 2
-  bg.a = 255;
-  sc.a = 255;
 #endif
   SDL_Surface *sf;
   int is_utf = test_utf((const unsigned char*)s);

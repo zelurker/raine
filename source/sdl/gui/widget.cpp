@@ -151,9 +151,9 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
       }
       if (*s == 'm' || *s == ';') {
 	if (col >= 30 && col <= 37)
-	  fg = (ansi_color[col - 30]<<8) | 255;
+	  fg = rgb2gfx(ansi_color[col - 30]);
 	else if (col >= 40 && col <= 47)
-	  bg = (ansi_color[col - 40]<<8) | 255;
+	  bg = rgb2gfx(ansi_color[col - 40]);
 	else if (col == 1)
 	    font->set_style(TTF_STYLE_BOLD);
 	else if (col == 0) {
@@ -191,11 +191,7 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
   for (pcent=5; pcent<=*(menu->value_int); pcent += 5) {
     int cur = x+(pcent * (w-2)/100);
     int color = 255*pcent/100;
-#if SDL==2
-    boxColor(s,prev,y+1,cur,y+h-2,makecol_alpha(255,0,0,color));
-#else
     boxColor(s,prev,y+1,cur,y+h-2,mymakecol(color,0,0));
-#endif
     prev = cur;
   }
   rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));

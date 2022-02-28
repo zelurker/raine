@@ -136,7 +136,7 @@ int fg_color = mymakecol(255,255,255),
     cslider_bar = mymakecol(0xc0,0xc0,0xc0),
     cslider_lift = mymakecol(0xff,0xff,0xff),
     bg_dialog_bar = mymakecol(0,0,0),
-    bg_dialog_bar_gfx = makecol_alpha(255,0,0,0);
+    bg_dialog_bar_gfx = makecol_alpha(0,0,0,255);
 
 int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
@@ -329,9 +329,9 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
     bg_frame = bgframe_color;
   } else
     bg_frame = mybg_frame;
-  int a = bg_frame & 0xff, b = (bg_frame >> 8) & 0xff, g = (bg_frame >> 16) & 0xff, r = (bg_frame >> 24);
+  int a = bg_frame >> 24, b = (bg_frame >> 16) & 0xff, g = (bg_frame >> 8) & 0xff, r = (bg_frame >> 0);
   // sdl_gfx has an arbitrary mapping for colors, abgr intel !
-  bg_frame_gfx = makecol_alpha(a,b,g,r);
+  bg_frame_gfx = makecol_alpha(r,g,b,a);
   font_name = "Vera.ttf";
   lift = NULL;
   keybuf[0] = 0;
