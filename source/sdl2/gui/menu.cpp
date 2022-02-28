@@ -2074,7 +2074,16 @@ void TMenuPostCb::disp_menu(int n,int y,int w,int h) {
       rectangleColor(rend,x,y,x+wcb,y+h-1,fg);
       if (cb[n]) {
 	  lineColor(rend,x,y,x+wcb,y+h-1,mymakecol(0,255,0));
+#ifdef RAINE_WIN32
+	  // Totally crazy bug in windows with sdl-2.0.20 at lest :
+	  // the color chosen for the lines here is applied as a filter to the game bitmap when returning to the game
+	  // as if using some kind of blend mode, but even calling SDL_SetBlendMode(BLEND_NONE) doesn't change anything
+	  // to it. The only way to work around it seems to be to use a white color for the last line !!!
+	  // windows only !
+	  lineColor(rend,x+wcb,y,x,y+h-1,mymakecol(255,255,255));
+#else
 	  lineColor(rend,x+wcb,y,x,y+h-1,mymakecol(0,255,0));
+#endif
       }
   }
 }
