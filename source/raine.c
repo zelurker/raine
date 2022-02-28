@@ -173,7 +173,7 @@ static void mymprotect(void* adr) {
 
 char *current_year = __DATE__; // used also in sdl/dialogs/about.cpp
 
-#ifdef RAINE_WIN32
+#if defined(RAINE_WIN32) && USE_MUSASHI < 2
 static void winprotect(void *adr) {
    MEMORY_BASIC_INFORMATION info;
    /* The solution to query the areas : problem is there not a single area in windows, but many
