@@ -337,7 +337,7 @@ static int read_more_data(Sound_Sample *sample)
 		    int n = 0;
 		    UINT16 *ptr = (UINT16*)sample->buffer;
 		    while (n < global_state.decoded_bytes/2 &&
-			    ptr[n] < 10 )
+			    abs(ptr[n]) < 10 )
 			n += 100;
 		    if (n >= global_state.decoded_bytes/2) {
 			global_state.decoded_bytes = 0; // need more then !
