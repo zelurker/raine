@@ -175,6 +175,7 @@ int menu_asso(int sel) {
 	if (t && *t) {
 	    cdda.skip_silence = 1;
 	    load_sample(t);
+	    cdda.loop = get_asso_loop(cmd);
 	    menu = new TSoundCmd(_("Playback"), playback);
 	    menu->execute();
 	    delete menu;
@@ -290,6 +291,8 @@ int do_sound_cmd(int sel) {
     sound_menu[0].values_list_size = 0;
     int adr;
     if (get_assoc_type() < 10) add_value(2);
+    int old_pos = cdda.pos;
+    int old_cdda = cdda.playing;
     cdda.playing = CDDA_STOP;
     switch (get_assoc_type()) {
     case 1: // garou
@@ -372,5 +375,9 @@ int do_sound_cmd(int sel) {
     dwElapsedTicks = ticks;
     if (disable_assoc && !is_neocd())
 	cdda.playing = CDDA_STOP;
+    if (!disable_assoc && old_cdda == CDDA_PLAY) {
+	load_sample(get_assoc(cdda.track));
+	cdda.pos = old_pos;
+    }
     return 0;
 }
