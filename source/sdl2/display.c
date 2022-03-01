@@ -82,9 +82,6 @@ void set_opengl_filter(int filter) {
 void display_write_config() {
 
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
-#if defined(RAINE_WIN32) && SDL<2
-   raine_set_config_int("Display", "video_driver", display_cfg.video_driver);
-#endif
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
@@ -218,10 +215,6 @@ void clear_raine_screen() {
     // it doesn't seem necessary anymore with sdl2
 }
 
-// Sadly, I have to make this because I can't switch res as soon as I want.
-// I have to indicate to the game being loaded the mode it will work in
-// but wait for the gui to be redrawn before switching the res for real...
-// Note also that the default values are 0 (no change)
 int bestw,besth,bestbpp;
 
 // Chooses a resolution with the variables bestw, besth and bestbpp
