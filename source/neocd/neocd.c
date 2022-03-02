@@ -1357,7 +1357,7 @@ const NEOCD_GAME games[] =
   { "aof3",       0x0096, 304 },
   { "sonicwi3",   0x0097, 320 },
   { "fromanc2",   0x0098 },
-  { "turfmast",   0x0200 },
+  { "turfmast",   0x0200 }, // if speed hack -> arcade game on title screen -> black screen !
   { "mslug",      0x0201,304 },
   { "puzzledp",   0x0202 },
   { "mosyougi",   0x0203 },
@@ -1434,6 +1434,7 @@ void neogeo_read_gamename(void)
     game++;
 
   if (neocd_id == 0x48 || neocd_id == 0x0221 || neocd_id == 0x96 ||
+	  neocd_id == 0x200 || // neo turf master
 	  neocd_id == 0x92 ) { // kabukikl tst/bmi
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
