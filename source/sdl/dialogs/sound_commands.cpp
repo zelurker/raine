@@ -377,6 +377,7 @@ int do_sound_cmd(int sel) {
 	cdda.playing = CDDA_STOP;
     if (!disable_assoc && old_cdda == CDDA_PLAY) {
 	load_sample(get_assoc(cdda.track));
+	cdda.loop = get_asso_loop(cdda.track);
 	cdda.pos = old_pos;
     }
     return 0;
