@@ -138,7 +138,7 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
       *s = 0;
       int w,h;
       font->dimensions(old,&w,&h);
-      font->surf_string(sf,x,y,old,fg,bg,w);
+      font->surf_string(sf,x,y,old,fg,bg);
       x += w;
       *s = 27;
     }
@@ -156,7 +156,10 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	  bg = rgb2gfx(ansi_color[col - 40]);
 	else if (col == 1)
 	    font->set_style(TTF_STYLE_BOLD);
-	else if (col == 0) {
+	else if (col == 7) {
+	    fg = mybg;
+	    bg = myfg;
+	} else if (col == 0) {
 	  fg = myfg;
 	  bg = mybg;
 	  font->set_style(TTF_STYLE_NORMAL);
@@ -170,7 +173,7 @@ void TStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
     } while (s[-1] != 'm' && s[-1] != 0);
   }
 
-  font->surf_string(sf,x,y,old,fg,bg,w);
+  font->surf_string(sf,x,y,old,fg,bg);
 }
 
 void TStatic::next_list_item() {}

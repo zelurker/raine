@@ -333,9 +333,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
       int my = event->motion.y;
       int cw = font->get_font_width();
       int y = HMARGIN;
-      static SDL_Rect r;
       skip_fglayer_header(y);
-      int y0 = y;
       my -= y;
       mx -= HMARGIN;
       if ((mx & 0x8000) || (my & 0x8000)) return;
@@ -354,18 +352,14 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 	if (pointer_on==1 && (pointer_x != cx || pointer_n != n)) {
 	  if (pointer_n >= top && pointer_n < top+rows &&
 	      pointer_top == top && pointer_rows == rows) {
-	    disp_cursor(sdl_screen,r.x,r.y,r.w,r.h);
-	    r.x = (7+pointer_x*3)*cw+fgdst.x+HMARGIN;
-	    r.w = 2*cw;
-	    disp_cursor(sdl_screen,r.x,r.y,r.w,r.h);
+	      draw(); // restore normal text
 	  }
 	} else if (pointer_on == 2) {
 	  if (pointer_top == top) {
 	    int dx = mx/cw;
 	    if (n == pointer_n && dx >= pointer_x && dx <= pointer_end)
 	      break; // still on the number
-	    disp_cursor(sdl_screen,pointer_x*cw+fgdst.x+HMARGIN,
-		y0+(pointer_n-pointer_top)*ch+fgdst.y,(pointer_end-pointer_x)*cw,font->get_font_height());
+	    draw();
 	  }
 	  pointer_top = top;
 	  pointer_on = 0;
@@ -373,7 +367,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 	if (my < 0) {
 	  if (n>=0) {
 	    int x = 0;
-	    const char *s = menu[n].label;
+	    char *s = menu[n].label;
 	    while (isdigit(s[x]) || (s[x] >= 'a' && s[x]<='f')) {
 	      x++;
 	    }
@@ -381,14 +375,18 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 	      if (cx >= 0 && (!pointer_on ||
 		  (pointer_on && (cx != pointer_x || pointer_n != n)))) {
 		if (cx >= 0 && cx < dump_cols) {
-		  r.x = (7+cx*3)*cw+fgdst.x+HMARGIN;
-		  r.y = y+fgdst.y;
-		  r.w = 2*cw;
-		  r.h = font->get_font_height();
-		  disp_cursor(sdl_screen,r.x,r.y,r.w,r.h);
-		  r.x = (dump_cols*3+7+cx)*cw+fgdst.x+HMARGIN;
-		  r.w = cw;
-		  disp_cursor(sdl_screen,r.x,r.y,r.w,r.h);
+		    // Give up the idea to draw an inverted square here with sdl2
+		    // instead we'll just use the ansi inverse video !
+		    char *s2 = (char*)malloc(strlen(s)+4*4);
+		    strcpy(s2,s);
+		    int posx = x+cx*3+1; // 1st, inversion of the xx hex digits...
+		    sprintf(&s2[posx],"\x1b[7m%c%c\x1b[0m%s",s[posx],s[posx+1],&s[posx+2]);
+		    posx = x+dump_cols*3+cx+1; // then the ascii character in the end... !
+		    sprintf(&s2[posx+8],"\x1b[7m%c\x1b[0m%s",s[posx],&s[posx+1]);
+		    menu[n].label = s2;
+		    draw();
+		    menu[n].label = s;
+		    free(s2);
 		  pointer_on = 1;
 		  pointer_n = n;
 		  pointer_x = cx;
@@ -417,8 +415,20 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		  pointer_top = top;
 		  pointer_rows = rows;
 		  pointer_end = end;
-		  disp_cursor(sdl_screen,pointer_x*cw+fgdst.x+HMARGIN,
-		    y+fgdst.y,(pointer_end-pointer_x)*cw,font->get_font_height());
+		  int ansi = strlen(s2) != strlen(s);
+		  s2 = (char*)malloc(strlen(s)+4*2);
+		  if (ansi) {
+		      // We suppose (and hope !) the only ansi used is to draw the line in green for current pc...
+		      start += 7;
+		      end += 7;
+		  }
+		  strcpy(s2,s);
+		  sprintf(&s2[start],"\x1b[7m%s",&s[start]);
+		  sprintf(&s2[end+4],"\x1b[0m%s",&s[end]);
+		  menu[n].label = s2;
+		  draw();
+		  menu[n].label = s;
+		  free(s2);
 		  break;
 		}
 	      }
