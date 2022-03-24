@@ -114,7 +114,7 @@ void TRaineDesktop::draw() {
     // tgame values :
     // 0 : the normal desktop
     // 1 : run the game until we play
-    // 2 : just take the last screeshot of the game
+    // 2 : just take the last screenshot of the game
     if (!current_game || !game_tex) tgame = 0;
     if (!tgame) return TDesktop::draw();
     if (tgame == 1) {
@@ -642,11 +642,13 @@ static void gui_end() {
     }
     if (!main_menu)
 	sa_unpause_sound();
+    SDL_ShowCursor(0);
 }
 
 static void gui_start() {
     if (!main_menu)
 	sa_pause_sound();
+    SDL_ShowCursor(1);
 }
 #endif
 

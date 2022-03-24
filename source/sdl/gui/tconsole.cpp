@@ -9,6 +9,7 @@
 #include "tconsole.h"
 #include "dialogs/messagebox.h"
 #include "games.h"
+#include "gui.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {
@@ -117,6 +118,7 @@ TConsole::~TConsole() {
 } */
 
 void TConsole::draw() {
+  ((TRaineDesktop*)desktop)->end_preinit();
   TDialog::draw();
   visible = 1;
 }
@@ -135,6 +137,28 @@ UINT32 ansilen(const char *s) {
     s++;
   }
   return len;
+}
+
+int ansi_pos(char *s,int pos) {
+    // skip ansi sequences to reach pos in string s
+    char *orig = s;
+    do {
+	while (*s == 27) {
+	    while (*s != 'm')
+		s++;
+	    s++;
+	}
+	if (pos) {
+	    s++;
+	    pos--;
+	}
+    } while (pos);
+    while (*s == 27) {
+	while (*s != 'm')
+	    s++;
+	s++;
+    }
+    return s-orig;
 }
 
 char* ansistr(char *s,int n) {

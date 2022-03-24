@@ -380,9 +380,10 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		    char *s2 = (char*)malloc(strlen(s)+4*4);
 		    strcpy(s2,s);
 		    int posx = x+cx*3+1; // 1st, inversion of the xx hex digits...
-		    sprintf(&s2[posx],"\x1b[7m%c%c\x1b[0m%s",s[posx],s[posx+1],&s[posx+2]);
+		    sprintf(&s2[ansi_pos(s2,posx)],"\x1b[7m%s",&s[ansi_pos(s,posx)]);
+		    sprintf(&s2[ansi_pos(s2,posx+2)],"\x1b[0m%s",&s[ansi_pos(s,posx+2)]);
 		    posx = x+dump_cols*3+cx+1; // then the ascii character in the end... !
-		    sprintf(&s2[posx+8],"\x1b[7m%c\x1b[0m%s",s[posx],&s[posx+1]);
+		    sprintf(&s2[ansi_pos(s2,posx)],"\x1b[7m%c\x1b[0m%s",s[ansi_pos(s,posx)],&s[ansi_pos(s,posx+1)]);
 		    menu[n].label = s2;
 		    draw();
 		    menu[n].label = s;
@@ -415,13 +416,9 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		  pointer_top = top;
 		  pointer_rows = rows;
 		  pointer_end = end;
-		  int ansi = strlen(s2) != strlen(s);
 		  s2 = (char*)malloc(strlen(s)+4*2);
-		  if (ansi) {
-		      // We suppose (and hope !) the only ansi used is to draw the line in green for current pc...
-		      start += 7;
-		      end += 7;
-		  }
+		  start = ansi_pos(s,start);
+		  end = ansi_pos(s,end);
 		  strcpy(s2,s);
 		  sprintf(&s2[start],"\x1b[7m%s",&s[start]);
 		  sprintf(&s2[end+4],"\x1b[0m%s",&s[end]);
