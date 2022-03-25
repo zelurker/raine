@@ -72,6 +72,7 @@ static SDL_INLINE int read_uint8(SDL_RWops *rw, Uint8 *ui8)
 
 #define FMT_NORMAL 0x0001    /* Uncompressed waveform data.     */
 #define FMT_ADPCM  0x0002    /* ADPCM compressed waveform data. */
+#define FMT_IEEE_FLOAT  0x0003    /* Uncompressed IEEE floating point waveform data. */
 
 typedef struct
 {
@@ -98,10 +99,10 @@ typedef struct S_WAV_FMT_T
     Uint16 wBlockAlign;
     Uint16 wBitsPerSample;
 
-    Uint32 next_chunk_offset;
+    Sint64 next_chunk_offset;
     
     Uint32 sample_frame_size;
-    Uint32 data_starting_offset;
+    Sint64 data_starting_offset;
     Uint32 total_bytes;
 
     void (*free)(struct S_WAV_FMT_T *fmt);
@@ -242,9 +243,9 @@ static int seek_sample_fmt_normal(Sound_Sample *sample, Uint32 ms)
     Sound_SampleInternal *internal = (Sound_SampleInternal *) sample->opaque;
     wav_t *w = (wav_t *) internal->decoder_private;
     fmt_t *fmt = w->fmt;
-    int offset = __Sound_convertMsToBytePos(&sample->actual, ms);
-    int pos = (int) (fmt->data_starting_offset + offset);
-    int rc = SDL_RWseek(internal->rw, pos, RW_SEEK_SET);
+    const Sint64 offset = __Sound_convertMsToBytePos(&sample->actual, ms);
+    const Sint64 pos = (fmt->data_starting_offset + offset);
+    const Sint64 rc = SDL_RWseek(internal->rw, pos, RW_SEEK_SET);
     BAIL_IF_MACRO(rc != pos, ERR_IO_ERROR, 0);
     w->bytesLeft = fmt->total_bytes - offset;
     return 1;  /* success. */
@@ -489,13 +490,13 @@ static int seek_sample_fmt_adpcm(Sound_Sample *sample, Uint32 ms)
     Sound_SampleInternal *internal = (Sound_SampleInternal *) sample->opaque;
     wav_t *w = (wav_t *) internal->decoder_private;
     fmt_t *fmt = w->fmt;
-    Uint32 origsampsleft = fmt->fmt.adpcm.samples_left_in_block;
-    int origpos = SDL_RWtell(internal->rw);
-    int offset = __Sound_convertMsToBytePos(&sample->actual, ms);
-    int bpb = (fmt->fmt.adpcm.wSamplesPerBlock * fmt->sample_frame_size);
-    int skipsize = (offset / bpb) * fmt->wBlockAlign;
-    int pos = skipsize + fmt->data_starting_offset;
-    int rc = SDL_RWseek(internal->rw, pos, RW_SEEK_SET);
+    const Uint32 origsampsleft = fmt->fmt.adpcm.samples_left_in_block;
+    const Sint64 origpos = SDL_RWtell(internal->rw);
+    const Sint64 offset = __Sound_convertMsToBytePos(&sample->actual, ms);
+    const Sint64 bpb = (fmt->fmt.adpcm.wSamplesPerBlock * fmt->sample_frame_size);
+    Sint64 skipsize = (offset / bpb) * fmt->wBlockAlign;
+    const Sint64 pos = skipsize + fmt->data_starting_offset;
+    Sint64 rc = SDL_RWseek(internal->rw, pos, RW_SEEK_SET);
     BAIL_IF_MACRO(rc != pos, ERR_IO_ERROR, 0);
 
     /* The offset we need is in this block, so we need to decode to there. */
@@ -572,9 +573,9 @@ static int read_fmt_adpcm(SDL_RWops *rw, fmt_t *fmt)
  * Everything else...                                                        *
  *****************************************************************************/
 
-static int WAV_init(void)
+static SDL_bool WAV_init(void)
 {
-    return 1;  /* always succeeds. */
+    return SDL_TRUE;  /* always succeeds. */
 } /* WAV_init */
 
 
@@ -597,6 +598,10 @@ static int read_fmt(SDL_RWops *rw, fmt_t *fmt)
             SNDDBG(("WAV: Appears to be ADPCM compressed audio.\n"));
             return read_fmt_adpcm(rw, fmt);
 
+        case FMT_IEEE_FLOAT:
+            SNDDBG(("WAV: Appears to be IEEE float uncompressed audio.\n"));
+            return read_fmt_normal(rw, fmt);  /* just normal PCM, otherwise. */
+
         /* add other types here. */
 
     } /* switch */
@@ -614,7 +619,7 @@ static int find_chunk(SDL_RWops *rw, Uint32 id)
 {
     Sint32 siz = 0;
     Uint32 _id = 0;
-    Uint32 pos = SDL_RWtell(rw);
+    Sint64 pos = SDL_RWtell(rw);
 
     while (1)
     {
@@ -622,7 +627,7 @@ static int find_chunk(SDL_RWops *rw, Uint32 id)
         if (_id == id)
             return 1;
 
-            /* skip ahead and see what next chunk is... */
+        /* skip ahead and see what next chunk is... */
         BAIL_IF_MACRO(!read_le32s(rw, &siz), NULL, 0);
         SDL_assert(siz >= 0);
         pos += (sizeof (Uint32) * 2) + siz;
@@ -647,22 +652,29 @@ static int WAV_open_internal(Sound_Sample *sample, const char *ext, fmt_t *fmt)
     BAIL_IF_MACRO(!find_chunk(rw, fmtID), "WAV: No format chunk.", 0);
     BAIL_IF_MACRO(!read_fmt_chunk(rw, fmt), "WAV: Can't read format chunk.", 0);
 
-    /* !!! FIXME: need float32 format stuff, since it's not just wBitsPerSample. */
-
     sample->actual.channels = (Uint8) fmt->wChannels;
     sample->actual.rate = fmt->dwSamplesPerSec;
-    if (fmt->wBitsPerSample == 4)
-        sample->actual.format = AUDIO_S16SYS;
-    else if (fmt->wBitsPerSample == 8)
-        sample->actual.format = AUDIO_U8;
-    else if (fmt->wBitsPerSample == 16)
-        sample->actual.format = AUDIO_S16LSB;
-    else if (fmt->wBitsPerSample == 32)
-        sample->actual.format = AUDIO_S32LSB;
+
+    if (fmt->wFormatTag == FMT_IEEE_FLOAT)
+    {
+        BAIL_IF_MACRO(fmt->wBitsPerSample != 32, "WAV: Unsupported sample size.", 0);
+        sample->actual.format = AUDIO_F32LSB;
+    } /* if */
     else
     {
-        SNDDBG(("WAV: %d bits per sample!?\n", (int) fmt->wBitsPerSample));
-        BAIL_MACRO("WAV: Unsupported sample size.", 0);
+        if (fmt->wBitsPerSample == 4)
+            sample->actual.format = AUDIO_S16SYS;
+        else if (fmt->wBitsPerSample == 8)
+            sample->actual.format = AUDIO_U8;
+        else if (fmt->wBitsPerSample == 16)
+            sample->actual.format = AUDIO_S16LSB;
+        else if (fmt->wBitsPerSample == 32)
+            sample->actual.format = AUDIO_S32LSB;
+        else
+        {
+            SNDDBG(("WAV: %d bits per sample!?\n", (int) fmt->wBitsPerSample));
+            BAIL_MACRO("WAV: Unsupported sample size.", 0);
+        } /* else */
     } /* else */
 
     BAIL_IF_MACRO(!read_fmt(rw, fmt), NULL, 0);
@@ -737,7 +749,7 @@ static int WAV_rewind(Sound_Sample *sample)
     Sound_SampleInternal *internal = (Sound_SampleInternal *) sample->opaque;
     wav_t *w = (wav_t *) internal->decoder_private;
     fmt_t *fmt = w->fmt;
-    int rc = SDL_RWseek(internal->rw, fmt->data_starting_offset, RW_SEEK_SET);
+    const Sint64 rc = SDL_RWseek(internal->rw, fmt->data_starting_offset, RW_SEEK_SET);
     BAIL_IF_MACRO(rc != fmt->data_starting_offset, ERR_IO_ERROR, 0);
     w->bytesLeft = fmt->total_bytes;
     return fmt->rewind_sample(sample);

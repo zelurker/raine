@@ -28,6 +28,7 @@
 #define STB_VORBIS_NO_PUSHDATA_API 1
 #define STB_VORBIS_MAX_CHANNELS 6
 #define STBV_CDECL
+#define STB_VORBIS_NO_COMMENTS 1
 #define STB_FORCEINLINE SDL_FORCE_INLINE
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #define STB_VORBIS_BIG_ENDIAN 1
@@ -51,23 +52,20 @@
 #define malloc SDL_malloc
 #define realloc SDL_realloc
 #define free SDL_free
-/* there is no 'dealloca' in stb_vorbis: we need alloca()
-#ifdef alloca
-#undef alloca
-#endif
-#define alloca(x) ((void *) SDL_stack_alloc(Uint8, (x)))
-*/
-#if !(defined(HAVE_LIBC) && defined(__WATCOMC__)) /* Watcom has issues... */
+#ifndef __WATCOMC__ /* #@!.!.. */
 #define pow SDL_pow
 #define floor SDL_floor
-#define exp SDL_exp
 #define ldexp(v, e) SDL_scalbn((v), (e))
 #define abs(x) SDL_abs(x)
 #define cos(x) SDL_cos(x)
 #define sin(x) SDL_sin(x)
 #define log(x) SDL_log(x)
+#if SDL_VERSION_ATLEAST(2, 0, 9)
+#define exp SDL_exp
 #endif
 #endif
+#endif
+
 #include "stb_vorbis.h"
 
 static const char *vorbis_error_string(const int err)
@@ -99,9 +97,9 @@ static const char *vorbis_error_string(const int err)
     return "VORBIS: unknown error";
 } /* vorbis_error_string */
 
-static int VORBIS_init(void)
+static SDL_bool VORBIS_init(void)
 {
-    return 1;  /* always succeeds. */
+    return SDL_TRUE;  /* always succeeds. */
 } /* VORBIS_init */
 
 static void VORBIS_quit(void)
