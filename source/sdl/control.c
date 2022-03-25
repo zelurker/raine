@@ -415,13 +415,10 @@ void toggle_fullscreen() {
 #ifndef RAINE_WIN32
       SDL_SetWindowPosition(win,0,0);
       SDL_SetWindowSize(win,desktop_w,desktop_h);
-#else
+#endif
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
-#endif
   } else {
-#ifdef RAINE_WIN32
       SDL_SetWindowFullscreen(win,0);
-#endif
       SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );
       SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
   }

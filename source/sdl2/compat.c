@@ -198,6 +198,9 @@ void sdl_init() {
 	// fg_layer creation problem (782,785) : CreateTexture(D3DPOOL_DEFAULT): INVALIDCALL
 	// Must be set before creating the renderer
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+#else
+	if (display_cfg.fullscreen)
+	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
