@@ -1112,7 +1112,7 @@ P7Z = $(D7Z)/7zAlloc.o \
 	  $(D7Z)/7zCrcOpt.o \
 	  $(D7Z)/7zDec.o \
 	  $(D7Z)/7zFile.o \
-	  $(D7Z)/7zIn.o \
+	  $(D7Z)/7zArcIn.o \
 	  $(D7Z)/7zStream.o \
 	  $(D7Z)/Bcj2.o \
 	  $(D7Z)/Bra86.o \
@@ -1122,6 +1122,8 @@ P7Z = $(D7Z)/7zAlloc.o \
 	  $(D7Z)/Ppmd7.o \
 	  $(D7Z)/Ppmd7Dec.o \
 	  $(D7Z)/Lzma2Dec.o \
+	  $(D7Z)/Delta.o \
+	  $(D7Z)/BraIA64.o \
 	  $(D7Z)/7zMain.o
 
 ifndef SDL
