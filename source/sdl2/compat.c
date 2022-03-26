@@ -18,6 +18,7 @@
 #include "opengl.h"
 #include "loadpng.h"
 #include "version.h"
+#include "display.h"
 #include <SDL_image.h>
 
 void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
@@ -199,7 +200,7 @@ void sdl_init() {
 	// Must be set before creating the renderer
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 #else
-	if (display_cfg.fullscreen)
+	if (display_cfg.fullscreen && !hack_fs)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

@@ -412,11 +412,11 @@ void toggle_fullscreen() {
   // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
   // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
   if (display_cfg.fullscreen) {
-#ifndef RAINE_WIN32
-      SDL_SetWindowPosition(win,0,0);
-      SDL_SetWindowSize(win,desktop_w,desktop_h);
-#endif
-      SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
+      if (hack_fs) {
+	  SDL_SetWindowPosition(win,0,0);
+	  SDL_SetWindowSize(win,desktop_w,desktop_h);
+      } else
+	  SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
   } else {
       SDL_SetWindowFullscreen(win,0);
       SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );

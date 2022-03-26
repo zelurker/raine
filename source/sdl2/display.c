@@ -32,8 +32,10 @@ float max_fps;
 int disp_screen_x;
 int disp_screen_y;
 int desktop_w,desktop_h;
+int hack_fs;
 
 void display_read_config() {
+   hack_fs = raine_get_config_int( "Display", "hack_fs", 0); // hack_fs : don't call SDL_SetWindowFullscreen
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0); // default = opengl, the most tested
    if (display_cfg.video_mode != 0 && display_cfg.video_mode != 3)
        display_cfg.video_mode = 3;
@@ -81,6 +83,7 @@ void set_opengl_filter(int filter) {
 
 void display_write_config() {
 
+   raine_set_config_int("Display", "hack_fs", hack_fs);
    raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);

@@ -7,6 +7,11 @@
 extern "C" {
 #endif
 
+#if SDL == 2
+// hack_fs : do fullscreen without SDL_SetWindowFullscreen
+extern int hack_fs;
+#endif
+
 void display_read_config();
 void display_write_config();
 void load_screen_settings(char *section);
