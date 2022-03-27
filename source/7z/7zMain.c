@@ -19,7 +19,7 @@
 #include "7zBuf.h"
 #include "7zCrc.h"
 #include "7zFile.h"
-#include "7zVersion.h"
+// #include "7zVersion.h"
 
 #ifndef USE_WINDOWS_FILE
 /* for mkdir */
