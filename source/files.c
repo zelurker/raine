@@ -461,6 +461,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
    }
 
    unzClose(uf);
+   print_debug("load_zipped %s from %s ok\n",name,zipfile);
    return -1;
 }
 
