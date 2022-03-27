@@ -28,6 +28,7 @@
 #include <unistd.h>
 
 #include <curl/curl.h>
+#include <curl/curlver.h>
 #include <string.h>
 #include "gui.h" // load_progress
 #include "files.h"
@@ -59,7 +60,7 @@ int get_url(char *file, char *url)
   FILE *pagefile;
   int ret;
   char agent[80];
-  snprintf(agent,80,"Raine " VERSION);
+  snprintf(agent,80,"Raine " VERSION " using libcurl-%s",LIBCURL_VERSION);
   // The spaces are now forbidden in the url...
   char *s = strchr(url,' ');
   while (s) {

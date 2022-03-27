@@ -17,6 +17,9 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
 #include "7z/7zVersion.h"
+#ifdef USE_CURL
+#include <curl/curlver.h>
+#endif
 
 #if SDL == 2
 #define filledPolygonColor(sf,tabx,taby,nb,col) filledPolygonColor(rend,tabx,taby,nb,col)
@@ -924,17 +927,24 @@ int do_about(int sel) {
 #endif
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
-    sprintf(about_sdl,"Linked with SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
+    sprintf(about_sdl,"Using SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
 	    img->major,img->minor,img->patch,
 	    ttf->major,ttf->minor,ttf->patch);
     about_items[4].label = about_sdl;
+    *about_sound = 0;
 #if HAS_NEO
     Sound_Version sound;
     Sound_GetLinkedVersion(&sound);
-    sprintf(about_sound,"SDL_sound-%d.%d.%d, 7z-%s",
-	    sound.major,sound.minor,sound.patch,MY_VERSION_NUMBERS);
+    sprintf(about_sound,"SDL_sound-%d.%d.%d, ",
+	    sound.major,sound.minor,sound.patch);
 
     about_items[5].label = about_sound;
+#endif
+    sprintf(&about_sound[strlen(about_sound)],"7z-%s",MY_VERSION_NUMBERS);
+#ifdef USE_CURL
+    if (*about_sound)
+	strcat(about_sound,", ");
+    sprintf(&about_sound[strlen(about_sound)],"libcurl-%s",LIBCURL_VERSION);
 #endif
 #ifdef RDTSC_PROFILE
   if (cycles_per_second) {
