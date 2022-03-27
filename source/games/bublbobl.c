@@ -1348,7 +1348,6 @@ static struct DIR_INFO dir_boblbobl[] =
 };
 static struct DIR_INFO dir_bublbobl[] =
 {
-   { "bubble_bobble", },
    { "bublbobl", },
    { "bublbob1", },
    { NULL, },
