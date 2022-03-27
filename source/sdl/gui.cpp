@@ -125,7 +125,7 @@ void TRaineDesktop::draw() {
 	if(current_game->exec) current_game->exec();
 	saUpdateSound(1);
 	if(current_game->exec) current_game->exec();
-	vid_info->draw_game();
+	if (vid_info->draw_game) vid_info->draw_game();
     }
 
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
