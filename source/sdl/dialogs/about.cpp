@@ -16,6 +16,7 @@
 #endif
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "games.h"
+#include "7z/7zVersion.h"
 
 #if SDL == 2
 #define filledPolygonColor(sf,tabx,taby,nb,col) filledPolygonColor(rend,tabx,taby,nb,col)
@@ -930,8 +931,8 @@ int do_about(int sel) {
 #if HAS_NEO
     Sound_Version sound;
     Sound_GetLinkedVersion(&sound);
-    sprintf(about_sound,"SDL_sound-%d.%d.%d",
-	    sound.major,sound.minor,sound.patch);
+    sprintf(about_sound,"SDL_sound-%d.%d.%d, 7z-%s",
+	    sound.major,sound.minor,sound.patch,MY_VERSION_NUMBERS);
 
     about_items[5].label = about_sound;
 #endif
