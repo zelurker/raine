@@ -719,9 +719,6 @@
   DRV(kaiserkn)
   DRV(dankuga)
 
-// konamigx.c
-  DRV(salmndr2)
-
 // koshien.c
   DRV(koshien)
 

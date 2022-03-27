@@ -63,7 +63,6 @@ OBJS += \
 	$(OBJDIR)/games/hyperpcb.o \
 	$(OBJDIR)/games/intcup94.o \
 	$(OBJDIR)/games/kaiserkn.o \
-	$(OBJDIR)/games/konamigx.o \
 	$(OBJDIR)/games/koshien.o \
 	$(OBJDIR)/games/ksystem.o \
 	$(OBJDIR)/games/ktiger2.o \
