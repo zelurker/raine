@@ -1198,7 +1198,7 @@ beg:
 	       }
 	   }
 	   if (exists(path)) {
-	       printf("curl: file already exists!\n");
+	       printf("curl: file already exists: %s\n",path);
 	       break;
 	   }
 	   if (!strcmp(dir,"neogeo"))

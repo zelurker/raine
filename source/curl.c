@@ -31,6 +31,7 @@
 #include <string.h>
 #include "gui.h" // load_progress
 #include "files.h"
+#include "version.h"
 
 static unsigned long total_size;
 
@@ -57,6 +58,8 @@ int get_url(char *file, char *url)
 {
   FILE *pagefile;
   int ret;
+  char agent[80];
+  snprintf(agent,80,"Raine " VERSION);
   // The spaces are now forbidden in the url...
   char *s = strchr(url,' ');
   while (s) {
@@ -83,6 +86,7 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
   curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, agent);
 
   /* open the file */
   // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
