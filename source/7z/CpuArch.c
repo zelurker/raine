@@ -72,7 +72,7 @@ static UInt32 CheckFlag(UInt32 flag)
  where ECX value is first parameter for FAST_CALL / NO_INLINE function,
  So the caller of MY__cpuidex_HACK() sets ECX as subFunction, and
  old MSVC for __cpuid() doesn't change ECX and cpuid instruction gets (subFunction) value.
- 
+
  DON'T remove MY_NO_INLINE and MY_FAST_CALL for MY__cpuidex_HACK() !!!
 */
 
@@ -143,7 +143,7 @@ void MyCPUID(UInt32 function, UInt32 *a, UInt32 *b, UInt32 *c, UInt32 *d)
     : "0" (function), "c"(0) ) ;
 
   #endif
-  
+
   #else
 
   int CPUInfo[4];
@@ -197,7 +197,7 @@ BoolInt CPU_Is_InOrder()
 
   family = x86cpuid_GetFamily(p.ver);
   model = x86cpuid_GetModel(p.ver);
-  
+
   firm = x86cpuid_GetFirm(&p);
 
   switch (firm)
@@ -275,7 +275,7 @@ BoolInt CPU_IsSupported_SHA()
 // #include <stdio.h>
 
 #ifdef _WIN32
-#include <Windows.h>
+#include <windows.h>
 #endif
 
 BoolInt CPU_IsSupported_AVX2()

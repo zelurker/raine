@@ -1,12 +1,6 @@
 /* 7zMain.c - Test application for 7z Decoder
 2021-04-29 : Igor Pavlov : Public domain */
 
-#include "loadroms.h"
-#include "files.h"
-#include "newmem.h"
-#include "compat.h"
-#include "debug.h"
-
 #include "Precomp.h"
 
 #include <stdio.h>
@@ -49,6 +43,12 @@
 #endif
 
 #define kInputBufSize ((size_t)1 << 18)
+
+#include "loadroms.h"
+#include "files.h"
+#include "newmem.h"
+#include "compat.h"
+#include "debug.h"
 
 static const ISzAlloc g_Alloc = { SzAlloc, SzFree };
 
@@ -367,7 +367,11 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 	  SzArEx_GetFileNameUtf16(&db, i, temp);
 	  CBuf buf;
 	  Buf_Init(&buf);
+#ifndef _USE_UTF8
+	  Utf16_To_Char(&buf,temp, 850); // ???
+#else
 	  Utf16_To_Char(&buf,temp);
+#endif
 
 	  if (db.CRCs.Vals[i] == crc32 || !stricmp(name,(char*)buf.data))
 	  {
