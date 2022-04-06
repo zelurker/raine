@@ -386,18 +386,6 @@ extern void key_stop_emulation_esc(void);
 extern void key_stop_emulation_tab(void);
 
 void toggle_fullscreen() {
-  if (display_cfg.fullscreen) {
-    display_cfg.fullscreen = 0;
-    display_cfg.screen_x = display_cfg.winx;
-    display_cfg.screen_y = display_cfg.winy;
-  } else {
-    display_cfg.fullscreen = 1;
-    display_cfg.winx = display_cfg.screen_x;
-    display_cfg.winy = display_cfg.screen_y;
-#if SDL==2
-    SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
-#endif
-  }
 #if SDL == 1
   resize(1);
   SetupScreenBitmap();
@@ -411,12 +399,15 @@ void toggle_fullscreen() {
   // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
   // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
   // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
-  if (display_cfg.fullscreen) {
+  if (display_cfg.fullscreen == 1) {
       if (hack_fs) {
 	  SDL_SetWindowPosition(win,0,0);
 	  SDL_SetWindowSize(win,desktop_w,desktop_h);
       } else
 	  SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
+  } else if (display_cfg.fullscreen == 2) {
+      SDL_SetWindowSize(win,desktop_w,desktop_h);
+      SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
       SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );
@@ -434,6 +425,22 @@ void toggle_fullscreen() {
   }
   ScreenChange();
 #endif
+}
+
+static void toggle_fullscreen_keyboard() {
+  if (display_cfg.fullscreen) {
+    display_cfg.fullscreen = 0;
+    display_cfg.screen_x = display_cfg.winx;
+    display_cfg.screen_y = display_cfg.winy;
+  } else {
+    display_cfg.fullscreen = 1;
+    display_cfg.winx = display_cfg.screen_x;
+    display_cfg.winy = display_cfg.screen_y;
+#if SDL==2
+    SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+#endif
+  }
+  toggle_fullscreen();
 }
 
 #ifdef HAS_CONSOLE
@@ -640,7 +647,7 @@ static void cold_boot() {
 struct DEF_INPUT_EMU def_input_emu[] =
 {
  { SDL_SCANCODE_S ,       0x00,           _("Save Screenshot"), KMOD_CTRL, key_save_screen     },
- { SDL_SCANCODE_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen     },
+ { SDL_SCANCODE_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen_keyboard     },
  { SDL_SCANCODE_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
  { SDL_SCANCODE_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
  { SDL_SCANCODE_HOME,    0x00,           _("Increase cpu skip"),    0, cpu_speed_up},

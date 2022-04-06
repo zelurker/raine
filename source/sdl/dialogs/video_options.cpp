@@ -50,7 +50,16 @@ static int my_toggle_fullscreen(int sel) {
 }
 #else
 static int my_toggle_fullscreen(int sel) {
-    display_cfg.fullscreen ^= 1;
+    if (display_cfg.fullscreen == 0) {
+	display_cfg.screen_x = display_cfg.winx;
+	display_cfg.screen_y = display_cfg.winy;
+    } else if (display_cfg.fullscreen == 1) {
+	display_cfg.winx = display_cfg.screen_x;
+	display_cfg.winy = display_cfg.screen_y;
+#if SDL==2
+	SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+#endif
+    }
     toggle_fullscreen();
     return 0;
 }
@@ -255,7 +264,7 @@ static menu_item_t video_items[] =
 #endif
 #endif
     // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
-{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes")}},
+{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 3, {0, 1, 2}, {_("No"), _("Yes (desktop)"), _("Yes (real)")}},
 #ifdef RAINE_UNIX
 { _("Fullscreen hack for intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
 #endif

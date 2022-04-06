@@ -204,6 +204,8 @@ void sdl_init() {
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (display_cfg.fullscreen == 2)
+	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
 	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
 	if (!sf) {
 	    printf("can't load icon\n");
