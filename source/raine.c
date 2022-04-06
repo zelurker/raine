@@ -288,8 +288,7 @@ int main(int argc,char *argv[])
     // Anyway we should disable the console in windows, it's uggly and broken.
      printf(" RAINE");
 #endif
-     current_year = strchr(current_year,' ');
-     if (current_year) current_year = strchr(current_year+1,' ');
+     current_year = strrchr(current_year,' ');
      if (current_year) current_year++;
      else current_year = "?";
     printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-%s(!) " HANDLE,current_year);
