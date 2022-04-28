@@ -108,7 +108,8 @@ struct SOUND_CHIP sound_chip_list[] = // Not static for dlg_about.c
 
 char *get_sound_chip_name(UINT32 id)
 {
-   return sound_chip_list[id].name;
+    // SOUND_NONE is now 0, but the sound_chip_list still starts at 0
+   return sound_chip_list[id-1].name;
 }
 
 static int emulators_active = 0;

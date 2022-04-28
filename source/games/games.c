@@ -106,6 +106,7 @@ char *company_name[] =
    "SNK / Playmore",
    "Kyle Hodgetts",
    "F2 System",
+   "Atari",
 };
 
 const int nb_companies = sizeof(company_name)/4;
