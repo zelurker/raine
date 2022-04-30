@@ -16,7 +16,7 @@ menu_item_t *menu_commands;
 
 int nb_commands;
 char **commands_buff;
-char *history = NULL;
+char *history = NULL,*driver_info = NULL;
 static int size;
 static int used;
 static char *commands;
@@ -134,10 +134,13 @@ void hist_open(char *name,const char *game) {
   if (f) fclose(f);
   if (!strcmp(name,"history.dat")) {
       if (current_game) {
-	  if (!commands) {
-	      commands = malloc(size);
-	      *commands = 0;
-	  }
+	  if (history)
+	      free(history);
+	  history = commands;
+	  size = 1024;
+	  used = 0;
+	  commands = malloc(size);
+	  *commands = 0;
 
 	  hist_add("\nGame: %s",current_game->long_name);
 	  hist_add("Company: %s", game_company_name(current_game->company_id));
@@ -164,12 +167,6 @@ void hist_open(char *name,const char *game) {
 	      hist_add("   M68020 x 1");
 #endif
 
-	  /*
-
-	     audio %s
-
-*/
-
 	  if (current_game->sound) {
 	      hist_add("\nAudio:");
 	      int j;
@@ -184,7 +181,6 @@ void hist_open(char *name,const char *game) {
 */
 
 	  if(current_game->board)
-
 	      hist_add("\nBoard: %s", current_game->board);
 
 	  /*
@@ -223,7 +219,6 @@ void hist_open(char *name,const char *game) {
 */
 
 	  if(current_colour_mapper)
-
 	      hist_add("\nPalette: %s", current_colour_mapper->name);
 
 	  /*
@@ -233,16 +228,11 @@ void hist_open(char *name,const char *game) {
 */
 
 	  if(tile_list_count){
-
 	      hist_add("\nTiles:");
-
 	      int i;
 	      for( i = 0; i < tile_list_count; i ++){
-
 		  hist_add("   %-14s %6d tiles", tile_type[tile_list[i].type], tile_list[i].count);
-
 	      }
-
 	  }
 
 	  /*
@@ -252,17 +242,11 @@ void hist_open(char *name,const char *game) {
 */
 
 	  hist_add("\nArchive:");
-
 	  const DIR_INFO *dir_list = current_game->dir_list;
-
 	  while(dir_list->maindir){
-
 	      if((!IS_ROMOF(dir_list->maindir)) && (!IS_CLONEOF(dir_list->maindir)))
-
 		  hist_add("   %s", dir_list->maindir);
-
 	      dir_list++;
-
 	  }
 
 	  /*
@@ -289,29 +273,19 @@ void hist_open(char *name,const char *game) {
 	  int cloneof = 0;
 
 	  dir_list = current_game->dir_list;
-
 	  while(dir_list->maindir){
-
 	      if(IS_CLONEOF(dir_list->maindir)){
-
 		  if(!cloneof)
-
 		      hist_add("Cloneof:");
-
 		  hist_add("   %s", (dir_list->maindir) + 1 );
-
 		  cloneof ++;
-
 	      }
-
 	      dir_list ++;
-
 	  }
 
 	  hist_add("\nRoms:");
 
 	  const ROM_INFO *rom_list = current_game->rom_list;
-
 	  while(rom_list->name){
 	      if (strcmp(rom_list->name,REGION_EMPTY) && *rom_list->name) {
 		  hist_add("   %-12s %7d bytes", rom_list->name, rom_list->size);
@@ -353,9 +327,9 @@ void hist_open(char *name,const char *game) {
 	  hist_add("");
 	  hist_add("Driver: %s",current_game->source_file);
 
-	  if (history)
-	      free(history);
-	  history = commands;
+	  if (driver_info)
+	      free(driver_info);
+	  driver_info = commands;
       }
 
 

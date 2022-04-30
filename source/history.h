@@ -2,7 +2,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern char *history;
+extern char *history,*driver_info;
 #ifdef SDL
 #include "gui/menuitem.h"
 /* Can now read also command.dat which has almost the same format as history.dat

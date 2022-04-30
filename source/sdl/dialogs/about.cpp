@@ -41,6 +41,7 @@ class TAbout_menu : public TBitmap_menu
   TAbout_menu(char *mytitle, menu_item_t *myitem, char *path);
   ~TAbout_menu();
   virtual void update_fg_layer(int nb_to_update);
+  int can_be_displayed(int index);
 };
 
 class TAbout : public TMenu
@@ -684,8 +685,10 @@ static int about_game(int sel) {
   char *buff;
   if (do_command)
       buff = commands_buff[sel];
-  else
+  else if (sel == 16) // History... if nothing changes...
       buff = history;
+  else
+      buff = driver_info;
 
   if (buff) {
     char *s = buff;
@@ -875,6 +878,7 @@ static menu_item_t about_items[] =
   { _("64 bits x86 binary, no asm at all, a raine anomaly !") },
 #endif
   { _("History..."), &about_game },
+  { _("Driver info"), &about_game },
   { NULL, NULL, NULL },
 };
 
@@ -957,3 +961,12 @@ int do_about(int sel) {
   about_menu = NULL;
   return 0;
 }
+
+int TAbout_menu::can_be_displayed(int index) {
+    int max = sizeof(about_items)/sizeof(menu_item_t);
+    if (index == max-2 || index == max-3)
+	return current_game != NULL;
+    return 1;
+}
+
+
