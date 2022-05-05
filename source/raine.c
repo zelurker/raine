@@ -333,7 +333,11 @@ int main(int argc,char *argv[])
    */
 
 #ifdef RAINE_UNIX
-   sprintf(dir_cfg.share_path, "/usr/share/games/raine/");
+ if (getenv("APPDIR")) {
+	 strcpy(dir_cfg.share_path,getenv("APPDIR"));
+	 strcat(dir_cfg.share_path,"/usr/share/games/raine/");
+ } else
+	 sprintf(dir_cfg.share_path, "/usr/share/games/raine/");
    sprintf(dir_cfg.exe_path, "%s/.raine/", getenv("HOME"));
 #else
 #if !defined(RAINE_WIN32) || defined(__MINGW32__)
