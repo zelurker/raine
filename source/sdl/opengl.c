@@ -130,7 +130,7 @@ void opengl_reshape(int w, int h) {
     glLoadIdentity();
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     glPixelStorei(GL_UNPACK_LSB_FIRST,0);
-    glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
     if (ogl.render == 1) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
@@ -236,9 +236,9 @@ void get_ogl_infos() {
 #endif
 	glDisable(GL_STENCIL_TEST);
 	if (ogl.render == 1)
-		glEnable(GL_TEXTURE_2D);
+	    glEnable(GL_TEXTURE_2D);
 	else
-		glDisable(GL_TEXTURE_2D);
+	    glDisable(GL_TEXTURE_2D);
 
 
 
@@ -364,7 +364,8 @@ void opengl_text(char *msg, int x, int y) {
     glPixelStorei(GL_UNPACK_ROW_LENGTH,2);
     glPixelStorei(GL_UNPACK_ALIGNMENT,2);
     glPixelStorei(GL_UNPACK_LSB_FIRST,0);
-    glDisable(GL_TEXTURE_2D);
+    if (ogl.render == 1)
+	glDisable(GL_TEXTURE_2D);
     if (opaque_hud) {
 	// glColor3f(0.0f,1.0f,0.0f);
 	// glBindBuffer(GL_PIXEL_UNPACK_BUFFER,opaque_buff);
@@ -381,7 +382,8 @@ void opengl_text(char *msg, int x, int y) {
     // glBindBuffer(GL_PIXEL_UNPACK_BUFFER,0);
     glPixelStorei(GL_UNPACK_ROW_LENGTH,GameScreen.xfull);
     glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-    glEnable(GL_TEXTURE_2D);
+    if (ogl.render == 1)
+	glEnable(GL_TEXTURE_2D);
 }
 
 // Called at the end of a frame
