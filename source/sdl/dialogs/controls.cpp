@@ -690,7 +690,7 @@ class TControl : public TMenu {
       }
       if (n == 3) // layers
 	return layer_info_count;
-      if (n >= 10 && n <= 12) // all load/save inputs
+      if (n >= 9 && n <= 11) // all load/save inputs
 	  return use_custom_keys;
       return 1;
     }
@@ -904,84 +904,6 @@ static int selected;
 static int select_joy(int sel) {
   selected = sel;
   return 1;
-}
-
-static int setup_analog(int sel) {
-  int nb = SDL_NumJoysticks(),n;
-  menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+2));
-  memset(menu,0,sizeof(menu_item_t)*(nb+1));
-  selected = nb;
-  for (n=0; n<nb; n++) {
-    menu[n].label = strdup(get_joy_name(n));
-    menu[n].menu_func = &select_joy;
-  }
-  menu[n].label = _("No analog device");
-  menu[n].menu_func = &select_joy;
-  menu[n+1].label = NULL;
-  TMenu *dlg = new TMenu(_("Select analog device"),menu);
-  dlg->execute();
-  delete dlg;
-  if (analog_num != selected) {
-    // reset calibration info if the device changes
-    analog_minx = analog_maxx = analog_miny = analog_maxy = 0;
-  }
-  analog_num = selected;
-  if (analog_num < nb)
-    strcpy(analog_name,menu[analog_num].label);
-  for (n=0; n<nb; n++)
-    free((void*)menu[n].label);
-  free(menu);
-
-  if (analog_num >= nb) {
-    analog_num = -1;
-    analog_name[0] = 0;
-    return 0;
-  }
-  nb = get_joy_naxes(analog_num)/2;
-  if (nb == 1) {
-    analog_stick = 0;
-  } else {
-    menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
-    memset(menu,0,sizeof(menu_item_t)*(nb+1));
-    for (n=0; n<nb; n++) {
-      char buff[20];
-      sprintf(buff,"Stick %d",n);
-      menu[n].label = strdup(buff);
-      menu[n].menu_func = &select_joy;
-    }
-    selected = 999;
-    TMenu *dlg = new TMenu(_("Select the stick to use..."),menu);
-    dlg->execute();
-    delete dlg;
-    for (n=0; n<nb; n++)
-      free((void*)menu[n].label);
-    free(menu);
-    if (selected == 999) {
-      // canceled !
-      analog_num = -1;
-      analog_name[0] = 0;
-      return 0;
-    }
-    analog_stick = selected*2;
-  }
-  nb = 4;
-  menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
-  memset(menu,0,sizeof(menu_item_t)*(nb+1));
-  menu[0].label = _("Move the stick to all the extreme positions");
-  menu[1].label = "If it's a steering wheel, then move it to the max";
-  menu[2].label = _("left and right positions, and press then release");
-  menu[3].label = _("each pedal separately");
-  TCalibrate *cal = new TCalibrate(_("Calibration"),menu);
-  cal->execute();
-  delete cal;
-  free(menu);
-  if (analog_minx >= 0 || analog_miny >= 0 || analog_maxx <= 0 ||
-      analog_maxy <= 0) {
-    // calibration not finished -> give up
-    analog_num = -1;
-    analog_name[0] = 0;
-  }
-  return 0;
 }
 
 static int do_load(int sel) {
@@ -1259,7 +1181,6 @@ static menu_item_t controls_menu[] =
   { _("Video layers"), &do_layers_controls },
   { _("Autofire..."), &setup_autofire },
   { _("Autofire controls"), &autofire_controls },
-  { _("Analog controls..."), &setup_analog },
   { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
   { _("Joysticks indexes"), &do_joy_index },
   { _("D-pads for movement"), NULL, &hat_for_moves, 2, { 0, 1 }, { _("No"), _("d-pad + main stick") } },
