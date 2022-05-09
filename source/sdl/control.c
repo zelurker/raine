@@ -115,6 +115,21 @@ int is_game_controller(int n) {
 #endif
 }
 
+int get_axis(int n,int axis) {
+#if SDL == 2
+  if (is_game_controller(n))
+      return SDL_GameControllerGetAxis(joy[n].controller,axis);
+#endif
+  return SDL_JoystickGetAxis(joy[n].joy,axis);
+}
+
+int get_def_input(int inp) { // return index from InputList inputs having this default input or -1
+    for (int n=0; n<InputCount; n++)
+	if (InputList[n].default_key == inp)
+	    return(n);
+    return -1;
+}
+
 int get_joy_input(int num, int axe, int button, int hat) {
     // It's just some converssion from the JOY macro using the new player index
     // but since JOY must return constants because it's used for the default inputs

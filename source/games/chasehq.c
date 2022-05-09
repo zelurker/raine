@@ -123,17 +123,15 @@ static struct DSW_DATA dsw_input_fake[] =
    { _("Gear Mode"),             0x01, 0x02 },
    { _("Low while pressed"),     0x01},
    { _("Toggle"),                0x00},
-#ifndef SDL
    { _("Wheel"),                 0x02, 0x02 },
    { _("Keyboard/Digital"),      0x02},
-   { _("PC Steering Wheel"),     0x00},
+   { _("Analog input"),     0x00},
    { _("Accelerator"),           0x04, 0x02 },
    { _("Keyboard/Digital"),      0x04},
-   { _("PC Pedal (analog)"),     0x00},
+   { _("Analog input"),     0x00},
    { _("Brake"),                 0x08, 0x02 },
    { _("Keyboard/Digital"),      0x08},
-   { _("PC Pedal (analog)"),     0x00},
-#endif
+   { _("Analog input"),     0x00},
    { NULL,                    0,   },
 };
 
@@ -1473,9 +1471,9 @@ static void execute_nightstr(void)
    //print_ingame(60,gettext("%04x"),ReadWord(&RAM[0x39FFE]));
 }
 
+
 static void execute_chasehq(void)
 {
-
 /*
 Analog Controls Description by Warlock
 
@@ -1560,32 +1558,32 @@ Pedals Behaviour (Non-Linear)
 /*----[Start of Gear Options]----*/
 
 // User requests arcade version gear control
-if (RAM[0x022801] &0x01){
- if(RAM_INPUT[0x20]!=0){RAM_INPUT[0x06] |= 0x10;}
-  else {RAM_INPUT[0x06] &= ~0x10;}
-}
-
-// User requests home version gear control
-else
-{
-   // Gear Control Hack
-
-   if(RAM_INPUT[0x20]!=0){
-      if(gearflip==0){
-         gearflip=1;
-         gear^=1;
-         if(gear==1) print_ingame(60,gettext("Changed to High Gear"));
-         else        print_ingame(60,gettext("Changed to Low Gear"));
-      }
-   }
-   else{
-      gearflip=0;
+   if (RAM[0x022801] &0x01){
+       if(RAM_INPUT[0x20]!=0){RAM_INPUT[0x06] |= 0x10;}
+       else {RAM_INPUT[0x06] &= ~0x10;}
    }
 
-   if(gear==1) RAM_INPUT[0x06] &= ~0x10;
-   else        RAM_INPUT[0x06] |=  0x10;
+   // User requests home version gear control
+   else
+   {
+       // Gear Control Hack
 
-  }
+       if(RAM_INPUT[0x20]!=0){
+	   if(gearflip==0){
+	       gearflip=1;
+	       gear^=1;
+	       if(gear==1) print_ingame(60,gettext("Changed to High Gear"));
+	       else        print_ingame(60,gettext("Changed to Low Gear"));
+	   }
+       }
+       else{
+	   gearflip=0;
+       }
+
+       if(gear==1) RAM_INPUT[0x06] &= ~0x10;
+       else        RAM_INPUT[0x06] |=  0x10;
+
+   }
 
 /*----[End of Gear Options]----*/
 
@@ -1593,76 +1591,109 @@ else
 /*----[Start of Steering Wheel Emulation]----*/
 
 // User requests Keyboard Control
-#ifdef SDL
-if (analog_num < 0) {
-#else
-if (RAM[0x022801] &0x02){
-#endif
-   RAM_INPUT[0x18] |=  0x80;
-   RAM_INPUT[0x1A] |=  0x80;
-}
+   if (RAM[0x022801] &0x02){
+       RAM_INPUT[0x18] |=  0x80;
+       RAM_INPUT[0x1A] |=  0x80;
+   }
 
-// User requests Standard PC Joystick/Wheel Control
-else{
+   // User requests Standard PC Joystick/Wheel Control
+   else{
 #ifdef SDL
-  RAM_INPUT[0x18] = (analog_normx>>7) & 0xff;
-  RAM_INPUT[0x1A] = (analog_normx>>15);
+       static int left_input;
+       if (!left_input) {
+	   left_input = get_def_input(KB_DEF_P1_LEFT);
+       }
+       if (InputList[left_input].Joy) {
+	   int code = InputList[left_input].Joy;
+	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
+	   int axis = (InputList[left_input].Joy >> 8) & 0xff;
+	   if (axis) {
+	       axis -= 2;
+	       axis /= 2;
+	       int val = get_axis(which, axis);
+	       if (val >= 0) {
+		   RAM_INPUT[0x1a] = 0xff - (val >> 7);
+		   RAM_INPUT[0x18] = 0xff;
+	       } else {
+		   RAM_INPUT[0x18] = (val >> 7);
+		   RAM_INPUT[0x1a] = 0xff;
+	       }
+	   }
+       }
 #else
-   RAM_INPUT[0x18] =  joy[0].stick[0].axis[0].pos;
-   RAM_INPUT[0x1A] =  joy[0].stick[0].axis[0].pos>>8;
+       RAM_INPUT[0x18] =  joy[0].stick[0].axis[0].pos;
+       RAM_INPUT[0x1A] =  joy[0].stick[0].axis[0].pos>>8;
 #endif
-}
+   }
 /*----[End of Steering Wheel Emulation]----*/
 
 
 /*----[Start of Pedals Emulation]----*/
 
 // User requests Keyboard Accelerator Control
-#ifdef SDL
-if (analog_num < 0) {
-#else
-if (RAM[0x022801] &0x04){
-#endif
+   if (RAM[0x022801] &0x04){
 
-//Player presses accelerator on keyboard
- if (RAM[0x022807]) { RAM[0x022806]=(RAM[0x022806] & 0x1f) | 0x80;}
- else {RAM[0x022806]=(RAM[0x022806] & 0x1f) | 0x00;}
-}
+       //Player presses accelerator on keyboard
+       if (RAM[0x022807]) { RAM[0x022806]=(RAM[0x022806] & 0x1f) | 0x80;}
+       else {RAM[0x022806]=(RAM[0x022806] & 0x1f);}
+   }
 
 // User requests analog accelerator control
-else{
+   else{
 
 #ifdef SDL
-accel = -analog_normy/2048;
+       static int accel_input;
+       if (!accel_input) {
+	   accel_input = get_def_input(KB_DEF_P1_B1);
+       }
+       if (InputList[accel_input].Joy) {
+	   int code = InputList[accel_input].Joy;
+	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
+	   int axis = (InputList[accel_input].Joy >> 8) & 0xff;
+	   if (axis) {
+	       axis -= 2;
+	       axis /= 2;
+	       accel = get_axis(which, axis) >> 12;
+	   }
+       }
 #else
-accel=-joy[0].stick[0].axis[1].pos/16;
+       accel=-joy[0].stick[0].axis[1].pos/16;
 #endif
-if (accel >= 0) {RAM[0x022806] = ((RAM[0x022806] & 0x1f) | analog_mask[accel]);}
+       if (accel >= 0) {RAM[0x022806] = ((RAM[0x022806] & 0x1f) | analog_mask[accel]);}
 
-}
+   }
 
-// User requests keyboard brake Control
+   // User requests keyboard brake Control
+   if (RAM[0x022801] &0x08){
+       //Player presses brake on keyboard
+       if (RAM[0x022809]) { RAM[0x022804]=(RAM[0x022804] & 0x1f) | 0x80;}
+       else {RAM[0x022804]=(RAM[0x022804] & 0x1f) | 0x00;}
+   }
+
+   // User requests analog brake control
+   else{
+
 #ifdef SDL
-if (analog_num < 0) {
+       static int brake_input;
+       if (!brake_input) {
+	   brake_input = get_def_input(KB_DEF_P1_B2);
+       }
+       if (InputList[brake_input].Joy) {
+	   int code = InputList[brake_input].Joy;
+	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
+	   int axis = (InputList[brake_input].Joy >> 8) & 0xff;
+	   if (axis) {
+	       axis -= 2;
+	       axis /= 2;
+	       brake = get_axis(which, axis) >> 12;
+	   }
+       }
 #else
-if (RAM[0x022801] &0x08){
+       brake=joy[0].stick[0].axis[1].pos/16;
 #endif
-//Player presses brake on keyboard
- if (RAM[0x022809]) { RAM[0x022804]=(RAM[0x022804] & 0x1f) | 0x80;}
- else {RAM[0x022804]=(RAM[0x022804] & 0x1f) | 0x00;}
-}
+       if (brake >= 0) {RAM[0x022804] = ((RAM[0x022804] & 0x1f) | analog_mask[brake]);}
 
-// User requests analog brake control
-else{
-
-#ifdef SDL
-brake = analog_normy/2048;
-#else
-brake=joy[0].stick[0].axis[1].pos/16;
-#endif
-if (brake >= 0) {RAM[0x022804] = ((RAM[0x022804] & 0x1f) | analog_mask[brake]);}
-
-}
+   }
 
 /*----[End of Pedals Emulation]----*/
 
