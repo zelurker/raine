@@ -289,8 +289,8 @@ void saStopSoundEmulators(void)
        streams_sh_stop();
        for( i = 0; i < SndMachine->control_max; i++ ){
 
-	 if( sound_chip_list[SndMachine->init[i]].shutdown )
-	   sound_chip_list[SndMachine->init[i]].shutdown();
+	 if( SndMachine->init[i] && sound_chip_list[SndMachine->init[i]-1].shutdown )
+	   sound_chip_list[SndMachine->init[i]-1].shutdown();
        }
        SndMachine->first	   = 0;
      }
