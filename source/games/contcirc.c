@@ -56,9 +56,10 @@ static struct INPUT_INFO input_contcirc[] =
 
 static struct DSW_DATA dsw_data_contcirc_0[] =
 {
+    // This cabinet dsw is forced to 1 for the game, but used to handle inputs for the user
   { MSG_CABINET, 0x01, 2 },
   { _("Cockpit (Analog inputs)"), 0x01},
-  { MSG_UPRIGHT, 0x00},
+  { _("Upright (keyboard)"), 0x00},
   { MSG_UNKNOWN, 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
@@ -225,6 +226,14 @@ static UINT8 PAL_MAP[0x100] =
    0xC, 0x9, 0xA, 0xB, 0x0, 0x1, 0x2, 0x3, 0x4, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0,
    0xC, 0x9, 0xA, 0xB, 0x0, 0x1, 0x2, 0x3, 0x4, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0,
 };
+
+static UINT32 my_tc0220ioc_rb_port(UINT32 offset) {
+    offset &= 0xf;
+    if (offset > 1) return 0; // watchdog related
+    int port = tc0220ioc_rb_port(2);
+    if (port == 0) return RAM_INPUT[0] | 1; // force cockpit mode !
+    return tc0220ioc_rb_port(offset);
+}
 
 static void load_actual(int romset)
 {
@@ -399,7 +408,7 @@ static void load_actual(int romset)
    AddReadByteMC68000B(0x000000, 0x03FFFF, NULL, ROM+0x040000);			// 68000 ROM
    AddReadByteMC68000B(0x080000, 0x083FFF, NULL, RAM+0x008000);			// MAIN RAM
    AddReadByteMC68000B(0x084000, 0x087FFF, NULL, RAM+0x004000);			// COMMON RAM
-   AddReadByteMC68000B(0x100000, 0x100003, tc0220ioc_rb_port, NULL);		// INPUT
+   AddReadByteMC68000B(0x100000, 0x100003, my_tc0220ioc_rb_port, NULL);		// INPUT
    AddReadByteMC68000B(0x000000, 0xFFFFFF, DefBadReadByte, NULL);		// <Bad Reads>
    AddReadByteMC68000B(-1, -1, NULL, NULL);
 
@@ -407,7 +416,7 @@ static void load_actual(int romset)
    AddReadWordMC68000B(0x080000, 0x083FFF, NULL, RAM+0x008000);			// MAIN RAM
    AddReadWordMC68000B(0x084000, 0x087FFF, NULL, RAM+0x004000);			// COMMON RAM
    AddReadWordMC68000B(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-   AddReadWordMC68000B(0x100000, 0x100003, tc0220ioc_rb_port, NULL);		// INPUT
+   AddReadWordMC68000B(0x100000, 0x100003, my_tc0220ioc_rb_port, NULL);		// INPUT
    AddReadWordMC68000B(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
    AddReadWordMC68000B(-1, -1, NULL, NULL);
 
@@ -496,11 +505,8 @@ static void execute_contcirc(void)
      } else
        RAM_INPUT[4] &= 0x1f;
 #endif
-   } else if(RAM_INPUT[0x20]) {
-       // In digital any value which is not 7 -> accel = 7, and 0 otherwise
+   } else if(RAM_INPUT[0x20])
      RAM_INPUT[0x04] |= 0x80;
-   } else
-       RAM_INPUT[4] |= 0xe0; // inverted ?!?
 
    if (using_wheel) { // same thing for the brake
 #ifdef SDL
@@ -518,7 +524,7 @@ static void execute_contcirc(void)
        RAM_INPUT[6] &= 0x1f;
 #endif
    } else if(RAM_INPUT[0x22])
-     RAM_INPUT[0x06] &= 0x1f;
+     RAM_INPUT[0x06] |= 0x80;
 
    // Wheel Hack
 
