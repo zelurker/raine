@@ -35,6 +35,7 @@ int get_joy_input(int num, int axe, int button, int hat);
 int is_game_controller(int n);
 int get_axis(int n,int axis);
 int get_def_input(int inp); // return index from InputList for this default input or -1
+int get_axis_from_InputList(int inp);
 int get_joy_index_from_instance(int inst);
 int get_joy_index_from_playerindex(int index);
 int get_joy_playerindex(int n);

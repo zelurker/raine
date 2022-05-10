@@ -1600,25 +1600,15 @@ Pedals Behaviour (Non-Linear)
    else{
 #ifdef SDL
        static int left_input;
-       if (!left_input) {
+       if (!left_input)
 	   left_input = get_def_input(KB_DEF_P1_LEFT);
-       }
-       if (InputList[left_input].Joy) {
-	   int code = InputList[left_input].Joy;
-	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
-	   int axis = (InputList[left_input].Joy >> 8) & 0xff;
-	   if (axis) {
-	       axis -= 2;
-	       axis /= 2;
-	       int val = get_axis(which, axis);
-	       if (val >= 0) {
-		   RAM_INPUT[0x1a] = 0xff - (val >> 7);
-		   RAM_INPUT[0x18] = 0xff;
-	       } else {
-		   RAM_INPUT[0x18] = (val >> 7);
-		   RAM_INPUT[0x1a] = 0xff;
-	       }
-	   }
+       int val = get_axis_from_InputList(left_input);
+       if (val >= 0) {
+	   RAM_INPUT[0x1a] = 0xff - (val >> 7);
+	   RAM_INPUT[0x18] = 0xff;
+       } else {
+	   RAM_INPUT[0x18] = (val >> 7);
+	   RAM_INPUT[0x1a] = 0xff;
        }
 #else
        RAM_INPUT[0x18] =  joy[0].stick[0].axis[0].pos;
@@ -1643,19 +1633,9 @@ Pedals Behaviour (Non-Linear)
 
 #ifdef SDL
        static int accel_input;
-       if (!accel_input) {
+       if (!accel_input)
 	   accel_input = get_def_input(KB_DEF_P1_B1);
-       }
-       if (InputList[accel_input].Joy) {
-	   int code = InputList[accel_input].Joy;
-	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
-	   int axis = (InputList[accel_input].Joy >> 8) & 0xff;
-	   if (axis) {
-	       axis -= 2;
-	       axis /= 2;
-	       accel = get_axis(which, axis) >> 12;
-	   }
-       }
+       accel = get_axis_from_InputList(accel_input) >> 12;
 #else
        accel=-joy[0].stick[0].axis[1].pos/16;
 #endif
@@ -1678,16 +1658,7 @@ Pedals Behaviour (Non-Linear)
        if (!brake_input) {
 	   brake_input = get_def_input(KB_DEF_P1_B2);
        }
-       if (InputList[brake_input].Joy) {
-	   int code = InputList[brake_input].Joy;
-	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
-	   int axis = (InputList[brake_input].Joy >> 8) & 0xff;
-	   if (axis) {
-	       axis -= 2;
-	       axis /= 2;
-	       brake = get_axis(which, axis) >> 12;
-	   }
-       }
+       brake = get_axis_from_InputList(brake_input) >> 12;
 #else
        brake=joy[0].stick[0].axis[1].pos/16;
 #endif

@@ -57,8 +57,8 @@ static struct INPUT_INFO input_contcirc[] =
 static struct DSW_DATA dsw_data_contcirc_0[] =
 {
   { MSG_CABINET, 0x01, 2 },
-  { MSG_UPRIGHT, 0x01},
-  { _("Cockpit"), 0x00},	// analogue accelerator pedal
+  { _("Cockpit (Analog inputs)"), 0x01},
+  { MSG_UPRIGHT, 0x00},
   { MSG_UNKNOWN, 0x02, 2 },
   { MSG_OFF, 0x02},
   { MSG_ON, 0x00},
@@ -407,7 +407,7 @@ static void load_actual(int romset)
    AddReadWordMC68000B(0x080000, 0x083FFF, NULL, RAM+0x008000);			// MAIN RAM
    AddReadWordMC68000B(0x084000, 0x087FFF, NULL, RAM+0x004000);			// COMMON RAM
    AddReadWordMC68000B(0x200000, 0x200003, tc0140syt_read_main_68k, NULL);	// SOUND COMM
-   AddReadWordMC68000B(0x100000, 0x100003, tc0220ioc_rw_port, NULL);		// INPUT
+   AddReadWordMC68000B(0x100000, 0x100003, tc0220ioc_rb_port, NULL);		// INPUT
    AddReadWordMC68000B(0x000000, 0xFFFFFF, DefBadReadWord, NULL);		// <Bad Reads>
    AddReadWordMC68000B(-1, -1, NULL, NULL);
 
@@ -421,7 +421,7 @@ static void load_actual(int romset)
    AddWriteWordMC68000B(0x080000, 0x083FFF, NULL, RAM+0x008000);		// MAIN RAM
    AddWriteWordMC68000B(0x084000, 0x087FFF, NULL, RAM+0x004000);		// COMMON RAM
    AddWriteWordMC68000B(0x200000, 0x200003, tc0140syt_write_main_68k, NULL);	// SOUND COMM
-   AddWriteWordMC68000B(0x100000, 0x100003, tc0220ioc_ww_port, NULL);		// INPUT
+   AddWriteWordMC68000B(0x100000, 0x100003, tc0220ioc_wb_port, NULL);		// INPUT
    AddWriteWordMC68000B(0x000000, 0xFFFFFF, DefBadWriteWord, NULL);		// <Bad Writes>
    AddWriteWordMC68000B(-1, -1, NULL, NULL);
 
@@ -445,10 +445,9 @@ static void execute_contcirc(void)
 {
    static int gear=0;
    static int gearflip=1;
-   int using_wheel = !(RAM_INPUT[0] & 1);
-#ifdef SDL
-   if (analog_num < 0) using_wheel = 0;
-#endif
+   // there is something weird with using wheel : the game tests the 3 bits of the analog pedals only if this 1st bit is 1
+   // but in mame it should be 0 !!! What is sure is that here if it is 0 the analog inputs are just ignored, any bit -> max input
+   int using_wheel = (RAM_INPUT[0] & 1);
 
    // Gear Control Hack
 
@@ -483,11 +482,11 @@ static void execute_contcirc(void)
 
    if (using_wheel) {
 #ifdef SDL
-     if (analog_normy < 0)  {
-       int pos = -analog_normy/2048;
-       RAM_INPUT[0x04] = (RAM_INPUT[4] & 0x1f) | (accelerate_mapping[((pos))]<<5);
-     } else
-       RAM_INPUT[4] &= 0x1f;
+       static int accel_input;
+       if (!accel_input)
+	   accel_input = get_def_input(KB_DEF_P1_B1);
+       int accel = get_axis_from_InputList(accel_input);
+       RAM_INPUT[0x4] |= accelerate_mapping[((accel >> 12))]<<5;
 #else
      int pos = joy[0].stick[0].axis[1].pos;
      if (pos < 0)  {
@@ -498,19 +497,18 @@ static void execute_contcirc(void)
        RAM_INPUT[4] &= 0x1f;
 #endif
    } else if(RAM_INPUT[0x20]) {
+       // In digital any value which is not 7 -> accel = 7, and 0 otherwise
      RAM_INPUT[0x04] |= 0x80;
-   }
-    // On the joystick/steering wheel, acceleration is on the axis 1, ranging
-    // from 0 to -80 approx...
-
+   } else
+       RAM_INPUT[4] |= 0xe0; // inverted ?!?
 
    if (using_wheel) { // same thing for the brake
 #ifdef SDL
-     if (analog_normy > 0) {
-       int pos = analog_normy/2048;
-       RAM_INPUT[0x06] = (RAM_INPUT[6] & 0x1f) | (accelerate_mapping[((pos))]<<5);
-     } else
-       RAM_INPUT[6] &= 0x1f;
+       static int brake_input;
+       if (!brake_input)
+	   brake_input = get_def_input(KB_DEF_P1_B2);
+       int brake = get_axis_from_InputList(brake_input);
+       RAM_INPUT[6] |= accelerate_mapping[((brake >> 12))]<<5;
 #else
      int pos = joy[0].stick[0].axis[1].pos;
      if (pos > 0) {
@@ -520,7 +518,7 @@ static void execute_contcirc(void)
        RAM_INPUT[6] &= 0x1f;
 #endif
    } else if(RAM_INPUT[0x22])
-     RAM_INPUT[0x06] |= 0x80;
+     RAM_INPUT[0x06] &= 0x1f;
 
    // Wheel Hack
 
@@ -530,8 +528,18 @@ static void execute_contcirc(void)
   if (using_wheel) {
      // steering wheel from -127 to +128 mapped to -32,+32
 #ifdef SDL
-     RAM_INPUT[0x10] = (-analog_normx)>>9;
-     RAM_INPUT[0x12] = (-analog_normx)>>15;
+      static int left_input;
+      if (!left_input)
+	  left_input = get_def_input(KB_DEF_P1_LEFT);
+      int val = get_axis_from_InputList(left_input);
+      // Not 100% sure for the wheel, the high byte seems to be in 0x10 from the test mode,
+      // but since the byte 0x12 doesn't appear in the test mode, it's random...
+      // val >> 8 produces a car which aims to right when turning left... so it might just be a direction, 0 or ff
+      // what I am using now
+      // the controls are not ideal, but it seems to be part of the game, when you think you control the thing
+      // the road turns faster to send you to hell !
+      RAM_INPUT[0x10] = val >> 8;
+      RAM_INPUT[0x12] = (val <= 0 ? 0 : 0xff);
 #else
      int pos = joy[0].stick[0].axis[0].pos;
      RAM_INPUT[0x10] = -pos;

@@ -130,6 +130,23 @@ int get_def_input(int inp) { // return index from InputList inputs having this d
     return -1;
 }
 
+int get_axis_from_InputList(int inp) {
+    int accel = 0;
+    if (inp >= 0) {
+       if (InputList[inp].Joy) {
+	   int code = InputList[inp].Joy;
+	   int which = get_joy_index_from_playerindex((code & 0xff)-1);
+	   int axis = (InputList[inp].Joy >> 8) & 0xff;
+	   if (axis) {
+	       axis -= 2;
+	       axis /= 2;
+	       accel = get_axis(which, axis);
+	   }
+       }
+    }
+    return accel;
+}
+
 int get_joy_input(int num, int axe, int button, int hat) {
     // It's just some converssion from the JOY macro using the new player index
     // but since JOY must return constants because it's used for the default inputs
