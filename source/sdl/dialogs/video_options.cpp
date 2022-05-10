@@ -49,17 +49,20 @@ static int my_toggle_fullscreen(int sel) {
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
 #else
+static int prev_fullscreen;
+
 static int my_toggle_fullscreen(int sel) {
     if (display_cfg.fullscreen == 0) {
 	display_cfg.screen_x = display_cfg.winx;
 	display_cfg.screen_y = display_cfg.winy;
-    } else if (display_cfg.fullscreen == 1) {
+    } else if (!prev_fullscreen) {
 	display_cfg.winx = display_cfg.screen_x;
 	display_cfg.winy = display_cfg.screen_y;
 #if SDL==2
 	SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
 #endif
     }
+    prev_fullscreen = display_cfg.fullscreen;
     toggle_fullscreen();
     return 0;
 }
@@ -294,6 +297,8 @@ int do_video_options(int sel) {
 #if defined(RAINE_WIN32) && SDL<2
     UINT32 old_driver = display_cfg.video_driver;
 #endif
+#else
+    prev_fullscreen = display_cfg.fullscreen;
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("", video_items);
