@@ -54,17 +54,6 @@ struct EEPROM_interface eeprom_interface_93C46 =
 /*	"*10010xxxx"	// erase all	1 00 10xxxx */
 };
 
-void logerror(const char *text, ...)
-{
-#ifdef VERBOSE
-  va_list arg;
-
-  va_start(arg, text);
-  print_debug( text, arg);
-  va_end(arg);
-#endif
-}
-
 static int EEPROM_command_match(const char *buf, const char *cmd, int len)
 {
   if ( cmd == 0 )	return 0;

@@ -3,6 +3,7 @@
 extern "C" {
 #endif
 #ifndef READ_HANDLER
+#include "debug.h"
 
 #ifdef __GNU__
 #define UNUSEDARG __attribute__((__unused__))
@@ -109,7 +110,7 @@ enum
 #define WRITE32_HANDLER(name)	void     name(UNUSEDARG offs_t offset, UNUSEDARG data32_t data, UNUSEDARG data32_t mem_mask)
 #define OPBASE_HANDLER(name)	offs_t   name(UNUSEDARG offs_t address)
 
-void logerror(const char *text, ...); // convinient debuging
+#define logerror print_debug
 
 #define memory_region(x) load_region[x]
 #define memory_region_length(x) get_region_size(x)
