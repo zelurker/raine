@@ -34,6 +34,7 @@ typedef struct {
   UINT32 adr,pc;
   int size,read,value;
   char *cond;
+  int cpu;
 } twatch;
 static twatch watch[MAX_WATCH];
 static int nb_watch;
@@ -80,11 +81,14 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data);
 static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
     int n;
     for (n=0; n<nb_watch; n++) {
-	if (offset == watch[n].adr && watch[n].size == 1) {
+	if (offset == watch[n].adr ) {
+	    cpu_id = watch[n].cpu;
+	    switch_cpu(cpu_id);
+	    cpu_get_ram(cpu_id,ram,&nb_ram);
 	    if (watch[n].cond) get_regs();
 	    UINT8 *ptr = get_ptr(offset,NULL);
-	    thandler *func;
-	    if (!ptr) {
+	    thandler *func = NULL;
+	    if (!ptr && ((cpu_id >> 4) == CPU_68000 || (cpu_id >> 4) == CPU_68020)) {
 		int off_start = 0;
 		void *temp;
 		do {
@@ -98,9 +102,15 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ptr[getadr(offset)])) {
 		if (!watch[n].cond || parse(watch[n].cond)) {
-		    watch[n].pc = s68000_pc;
-		    Stop68000(0,0);
-		    goto_debuger = n+100;
+		    if (((cpu_id >> 4) == CPU_68000 || (cpu_id >> 4) == CPU_68020)) {
+			watch[n].pc = s68000_pc;
+			Stop68000(0,0);
+			goto_debuger = n+100;
+		    } else if ((cpu_id >> 4) == CPU_Z80) {
+			watch[n].pc = z80pc;
+			StopZ80(0,0);
+			goto_debuger = n+100;
+		    }
 		}
 	    }
 	    if (ptr) {
@@ -192,28 +202,40 @@ static int add_watch(UINT32 adr, int size, int read, int value=-1) {
   }
   if (nb_watch < MAX_WATCH) {
       int cpu = cpu_id & 0xf;
-      if (read) {
-	  if (size == 1) {
-	      insert_rb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
-	  } else if (size == 2)
-	      insert_rw(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
-	  else
-	      insert_rw(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
-      } else {
-	  if (size == 1) {
-	      insert_wb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
-	  } else if (size == 2)
-	      insert_ww(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
-	  else {
-	      insert_ww(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
-	      cons->print("added watch, size %d bytes\n",size);
+      if ((cpu_id >> 4) == CPU_68000) {
+	  if (read) {
+	      if (size == 1) {
+		  insert_rb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
+	      } else if (size == 2)
+		  insert_rw(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
+	      else
+		  insert_rw(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
+	  } else {
+	      if (size == 1) {
+		  insert_wb(cpu,0,adr,adr,(void*)exec_watchb,NULL);
+	      } else if (size == 2)
+		  insert_ww(cpu,0,adr,adr+1,(void*)exec_watchw,NULL);
+	      else {
+		  insert_ww(cpu,0,adr,adr+size-1,(void*)exec_watchw,NULL);
+		  cons->print("added watch, size %d bytes\n",size);
+	      }
 	  }
-    }
+      } else if ((cpu_id >> 4) == CPU_Z80) {
+	  if (read) {
+	      insert_z80_rb(cpu,adr,adr+size-1,(void*)exec_watchb);
+	  } else {
+	      insert_z80_wb(cpu,adr,adr+size-1,(void*)exec_watchb);
+	  }
+      } else {
+	  cons->print("no watch support for this cpu yet...");
+	  return 0;
+      }
     watch[nb_watch].adr = adr;
     watch[nb_watch].size = size;
     watch[nb_watch].read = read;
     watch[nb_watch].value = value;
     watch[nb_watch].cond = NULL; // clear cond
+    watch[nb_watch].cpu = cpu_id;
     nb_watch++;
     return 1;
   } else
@@ -298,7 +320,8 @@ void TRaineConsole::execute() {
 	    ram_size[n/2] = size;
     }
     UINT8 *ptr = get_userdata(cpu_id,ram[n]);
-    memcpy(ram_buf[n/2],ptr+ram[n],size);
+    if (ptr)
+	memcpy(ram_buf[n/2],ptr+ram[n],size);
   }
   pointer_on = 0;
 }

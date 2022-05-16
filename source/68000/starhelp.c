@@ -75,7 +75,16 @@ UINT8 *s68k_get_userdata(UINT32 cpu, UINT32 adr) {
 }
 
 void *get_userfunc(UINT32 cpu, int read, int size, int off_start, UINT32 offset) {
-  int max = data_count_rb[cpu];
+  int max = 0;
+  if (size == 1) {
+      if (read) max = data_count_rb[cpu];
+      else
+	  max = data_count_wb[cpu];
+  } else if (size == 2) {
+      if (read) max = data_count_rw[cpu];
+      else
+	  max = data_count_ww[cpu];
+  }
   int n;
   for (n=off_start; n<max; n++) {
     if (read) {

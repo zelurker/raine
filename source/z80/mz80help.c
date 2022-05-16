@@ -267,6 +267,8 @@ static void add_mz80_memory_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2
 }
 
 void z80_get_ram(UINT32 cpu, UINT32 *range, UINT32 *count) {
+    // It's better to use _rb here and not _wb because this "ram" is also used for read watchpoints
+    // to check where a romcheck is for example, so the name of the function is not very accurate... !
   *count = 0;
   int max = memory_count_rb[cpu];
   int n;
@@ -321,6 +323,36 @@ static void add_mz80_port_region_rb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2, 
    Z80_port_rb[cpu][port_count_rb[cpu]].IOCall     = d2;
    Z80_port_rb[cpu][port_count_rb[cpu]].pUserArea  = d3;
    port_count_rb[cpu]++;
+}
+
+void insert_z80_rb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2) {
+    for (int n=0; n<memory_count_rb[cpu]; n++)
+	if (Z80_memory_rb[cpu][n].lowAddr == d0 &&
+		Z80_memory_rb[cpu][n].highAddr == d1 &&
+		Z80_memory_rb[cpu][n].memoryCall == d2)
+	    return;
+    if (memory_count_rb[cpu])
+	memmove(&Z80_memory_rb[cpu][1],&Z80_memory_rb[cpu][0],sizeof(struct MemoryReadByte)*memory_count_rb[cpu]);
+    memory_count_rb[cpu]++;
+    Z80_memory_rb[cpu][0].lowAddr = d0;
+    Z80_memory_rb[cpu][0].highAddr = d1;
+    Z80_memory_rb[cpu][0].memoryCall = d2;
+    Z80_memory_rb[cpu][0].pUserArea = NULL;
+}
+
+void insert_z80_wb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2) {
+    for (int n=0; n<memory_count_wb[cpu]; n++)
+	if (Z80_memory_wb[cpu][n].lowAddr == d0 &&
+		Z80_memory_wb[cpu][n].highAddr == d1 &&
+		Z80_memory_wb[cpu][n].memoryCall == d2)
+	    return;
+    if (memory_count_wb[cpu])
+	memmove(&Z80_memory_wb[cpu][1],&Z80_memory_wb[cpu][0],sizeof(struct MemoryWriteByte)*memory_count_wb[cpu]);
+    memory_count_wb[cpu]++;
+    Z80_memory_wb[cpu][0].lowAddr = d0;
+    Z80_memory_wb[cpu][0].highAddr = d1;
+    Z80_memory_wb[cpu][0].memoryCall = d2;
+    Z80_memory_wb[cpu][0].pUserArea = NULL;
 }
 
 void insert_z80_port_wb(UINT32 cpu, UINT16 d0, UINT16 d1, void *d2) {
