@@ -1,6 +1,6 @@
 use common::sense;
 
-while (<roms2b.c>) {
+while (<roms2.c>) {
 	my $f = $_;
 	open(F,"<$f") || die "can't read $f";
 	@_ = <F>;
