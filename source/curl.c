@@ -93,7 +93,7 @@ int get_url(char *file, char *url)
   // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
   s = strrchr(url,'/');
   s++;
-  char fname[20],fname2[30];
+  char fname[30],fname2[30];
   strcpy(fname,"roms/");
   strncat(fname,s,20);
   snprintf(fname2,30,"Roms.zip/%s",s);

@@ -168,7 +168,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	int myw,myh;
 	font->dimensions("mp",&myw,&myh);
 	int col = 0;
-	char str[4];
+	char str[6];
 	TFont *f0 = NULL;
 	str[0] = *s;
 	str[1] = 0;

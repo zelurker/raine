@@ -1776,7 +1776,7 @@ static INLINE void CSMKeyControll(UINT8 type,FM_CH *CH)
 static void FMsave_state_channel(const char *name,int num,FM_CH *CH,int num_ch)
 {
 	int slot , ch;
-	char state_name[20];
+	char state_name[40];
 	const char slot_array[4] = { 1 , 3 , 2 , 4 };
 
 	for(ch=0;ch<num_ch;ch++,CH++)

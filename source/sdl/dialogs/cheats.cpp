@@ -90,7 +90,7 @@ class TCheatDlg : public TMenu
 	  maxnb = n;
 	}
       }
-      char cheat_info[256];
+      char cheat_info[266];
 #ifdef HAS_CONSOLE
       if (CheatCount < 0 && nb_scripts)
 	sprintf(cheat_info,"Script");

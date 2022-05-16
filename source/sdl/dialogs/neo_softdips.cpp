@@ -61,7 +61,7 @@ static void set_bcd(int &bcd1,int &nb, int &strings) {
     int high = bcd1 >> 8;
     low = (low >> 4)*10+(low & 0xf); // convert from bcd
     high = (high >> 4)*10+(high & 0xf);
-    char buff[6];
+    char buff[16];
     sprintf(buff,"%02d:%02d",high,low);
     menu[nb++].values_list_label[0] = strdup(buff);
 }

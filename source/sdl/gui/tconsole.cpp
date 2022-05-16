@@ -392,7 +392,7 @@ void TConsole::do_help(int argc, char **argv) {
   *field = 0;
 }
 
-static char temp[MAX_FIELD];
+static char temp[MAX_FIELD+1];
 
 int TConsole::run_cmd(char *string) {
   int len = strlen(string);
