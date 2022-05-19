@@ -103,6 +103,7 @@
 #include "sasound.h"
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
+#include "control_internal.h"
 
 int return_mandatory = 0, use_transparency = 1;
 int keep_vga = 1,gui_level;
@@ -1521,7 +1522,7 @@ void TMenu::produce_joystick_event() {
 }
 
 void TMenu::handle_joystick(SDL_Event *event) {
-    int axis,val;
+    int axis,val,which;
   switch (event->type) {
   case SDL_CONTROLLERBUTTONDOWN:
       axis_x = axis_y = jmoved = 0;
@@ -1560,65 +1561,75 @@ void TMenu::handle_joystick(SDL_Event *event) {
 	  axis_x = 0;
 	  jmoved = 0;
 	  break;
+      case SDL_CONTROLLER_BUTTON_A: exec_menu_item(); break;
+      case SDL_CONTROLLER_BUTTON_B: exit_menu = can_exit(); break;
       }
       break;
       // We have to remove the joyhatmotion handling here for the gamepads which don't advertise their dpad as a hat
       // We'll handle the d-pad only from the code above
   case SDL_JOYAXISMOTION:
+    which = get_joy_index_from_instance(event->jaxis.which);
+    if (is_game_controller(which)) {
+	return;
+    }
   case SDL_CONTROLLERAXISMOTION:
       // Notice for the axis, joyaxismotion for the ps3 has axis 0,1 for leftx,lefty but then 4,3 for rightx,righty
       // so we take events from the right stick only if the event comes from a controller, otherwise we take only the 1st stick
       // which is usually in the right order
       axis = (event->type == SDL_JOYAXISMOTION ? event->jaxis.axis : event->caxis.axis & 1);
       val = (event->type == SDL_JOYAXISMOTION ? event->jaxis.value : event->caxis.value);
-    switch(axis) {
+      switch(axis) {
       case 0: // x axis normally
-        if (val < -16000) {
-	  if (axis_x > -1) {
-	    axis_x = -1;
-	    jmoved = 1;
-	    timer = update_count;
-	    produce_joystick_event();
+	  if (val < -16000) {
+	      if (axis_x > -1) {
+		  axis_x = -1;
+		  jmoved = 1;
+		  timer = update_count;
+		  produce_joystick_event();
+	      }
+	  } else if (val > 16000) {
+	      if (axis_x < 1) {
+		  axis_x = 1;
+		  jmoved = 1;
+		  timer = update_count;
+		  produce_joystick_event();
+	      }
+	  } else if ((axis_x == -1 && val > -16000) ||
+		  (axis_x == 1 && val < 16000)) {
+	      axis_x = 0;
+	      jmoved = 0;
+	      phase_repeat = 0;
 	  }
-	} else if (val > 16000) {
-	  if (axis_x < 1) {
-	    axis_x = 1;
-	    jmoved = 1;
-	    timer = update_count;
-	    produce_joystick_event();
-	  }
-	} else if ((axis_x == -1 && val > -16000) ||
-	           (axis_x == 1 && val < 16000)) {
-	  axis_x = 0;
-	  jmoved = 0;
-	  phase_repeat = 0;
-	}
-	break;
+	  break;
       case 1: // y axis
-        if (val < -16000) {
-	  if (axis_y > -1) {
-	    axis_y = -1;
-	    jmoved = 1;
-	    timer = update_count;
-	    produce_joystick_event();
+	  if (val < -16000) {
+	      if (axis_y > -1) {
+		  axis_y = -1;
+		  jmoved = 1;
+		  timer = update_count;
+		  produce_joystick_event();
+	      }
+	  } else if (val > 16000) {
+	      if (axis_y < 1) {
+		  axis_y = 1;
+		  jmoved = 1;
+		  timer = update_count;
+		  produce_joystick_event();
+	      }
+	  } else if ((axis_y == -1 && val > -16000) ||
+		  (axis_y == 1 && val < 16000)) {
+	      axis_y = 0;
+	      jmoved = 0;
+	      phase_repeat = 0;
 	  }
-	} else if (val > 16000) {
-	  if (axis_y < 1) {
-	    axis_y = 1;
-	    jmoved = 1;
-	    timer = update_count;
-	    produce_joystick_event();
-	  }
-	} else if ((axis_y == -1 && val > -16000) ||
-	           (axis_y == 1 && val < 16000)) {
-	  axis_y = 0;
-	  jmoved = 0;
-	  phase_repeat = 0;
-	}
-	break;
-    } // end processing axis
-    break;
+	  break;
+      } // end processing axis
+      break;
   case SDL_JOYBUTTONUP:
+    which = get_joy_index_from_instance(event->jaxis.which);
+    if (is_game_controller(which)) {
+	return;
+    }
     switch (event->jbutton.button) {
       case 0: exec_menu_item(); break;
       case 1: exit_menu = can_exit(); break;

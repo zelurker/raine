@@ -1857,6 +1857,10 @@ void control_handle_event(SDL_Event *event) {
       break;
     case SDL_JOYAXISMOTION:
       which = get_joy_index_from_instance(event->jaxis.which);
+      if (is_game_controller(which)) {
+	  event->type = SDL_FIRSTEVENT;
+	  return;
+      }
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (joy[which].cancel_sticks) {
@@ -1865,10 +1869,6 @@ void control_handle_event(SDL_Event *event) {
 	      return;
 	  }
 	  joy[which].cancel_sticks = 0; // back to work
-      }
-      if (is_game_controller(which)) {
-	  event->type = SDL_FIRSTEVENT;
-	  return;
       }
       if (which >= MAX_JOY || axis >= MAX_AXIS) {
 	return;
