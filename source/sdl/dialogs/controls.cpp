@@ -1119,7 +1119,8 @@ static int do_mapping(int sel) {
 	if (selected < 0) return 0;
     } else
 	selected = 0;
-    MessageBox("Info","Press the buttons on your controller when indicated\n"
+    MessageBox("Info","When you'll click OK, a new window will appear\nIf you don't see it, use Alt-Tab !\n"
+	    "Press the buttons on your controller when indicated\n"
     "(Your controller may look different than the picture)\n"
     "If you want to correct a mistake, press backspace or the back button on your device\n"
     "To skip a button, press SPACE or click/touch the screen\n"
