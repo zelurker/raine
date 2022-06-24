@@ -217,7 +217,7 @@ BoolInt CPU_Is_InOrder()
 }
 
 #if !defined(MY_CPU_AMD64) && defined(_WIN32)
-#include <Windows.h>
+#include <windows.h>
 static BoolInt CPU_Sys_Is_SSE_Supported()
 {
   OSVERSIONINFO vi;
