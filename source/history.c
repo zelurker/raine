@@ -243,50 +243,52 @@ void hist_open(char *name,const char *game) {
 
 	  hist_add("\nArchive:");
 	  const DIR_INFO *dir_list = current_game->dir_list;
-	  while(dir_list->maindir){
-	      if((!IS_ROMOF(dir_list->maindir)) && (!IS_CLONEOF(dir_list->maindir)))
-		  hist_add("   %s", dir_list->maindir);
-	      dir_list++;
-	  }
-
-	  /*
-
-	     romof %s [optional]
-
-*/
-
 	  int romof = 0;
+	  if (dir_list) {
+	      while(dir_list->maindir){
+		  if((!IS_ROMOF(dir_list->maindir)) && (!IS_CLONEOF(dir_list->maindir)))
+		      hist_add("   %s", dir_list->maindir);
+		  dir_list++;
+	      }
 
-	  find_romof(current_game->dir_list, &romof);
+	      /*
 
-	  if (romof) { // Shows only the 1st romof...
-	      hist_add("Romof:");
-	      hist_add("   %s", romof_list[0] );
-	  }
-
-	  /*
-
-	     cloneof %s [optional]
+		 romof %s [optional]
 
 */
 
-	  int cloneof = 0;
 
-	  dir_list = current_game->dir_list;
-	  while(dir_list->maindir){
-	      if(IS_CLONEOF(dir_list->maindir)){
-		  if(!cloneof)
-		      hist_add("Cloneof:");
-		  hist_add("   %s", (dir_list->maindir) + 1 );
-		  cloneof ++;
+	      find_romof(current_game->dir_list, &romof);
+
+	      if (romof) { // Shows only the 1st romof...
+		  hist_add("Romof:");
+		  hist_add("   %s", romof_list[0] );
 	      }
-	      dir_list ++;
+
+	      /*
+
+		 cloneof %s [optional]
+
+*/
+
+	      int cloneof = 0;
+
+	      dir_list = current_game->dir_list;
+	      while(dir_list->maindir){
+		  if(IS_CLONEOF(dir_list->maindir)){
+		      if(!cloneof)
+			  hist_add("Cloneof:");
+		      hist_add("   %s", (dir_list->maindir) + 1 );
+		      cloneof ++;
+		  }
+		  dir_list ++;
+	      }
 	  }
 
 	  hist_add("\nRoms:");
 
 	  const ROM_INFO *rom_list = current_game->rom_list;
-	  while(rom_list->name){
+	  while(rom_list && rom_list->name){
 	      if (strcmp(rom_list->name,REGION_EMPTY) && *rom_list->name) {
 		  hist_add("   %-12s %7d bytes", rom_list->name, rom_list->size);
 	      }
