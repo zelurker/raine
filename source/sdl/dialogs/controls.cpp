@@ -1221,10 +1221,10 @@ static int switch_to_custom(int sel) {
 
 int do_controls(int sel) {
     mouse_sens = mouse_scale * 100;
-    controls_menu[7].values_list[3] = cslider_border;
-    controls_menu[7].values_list[5] = cslider_lift;
-    controls_menu[7].values_list[4] = mymakecol(160,160,160);
-    controls_menu[7].label = label_mouse;
+    controls_menu[6].values_list[3] = cslider_border;
+    controls_menu[6].values_list[5] = cslider_lift;
+    controls_menu[6].values_list[4] = mymakecol(160,160,160);
+    controls_menu[6].label = label_mouse;
     sprintf(label_mouse,_("Mouse Sensitivity: %d%%"),mouse_sens);
   if (use_custom_keys) {
     switch_to_custom(0);
