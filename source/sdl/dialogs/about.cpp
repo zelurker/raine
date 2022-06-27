@@ -677,6 +677,51 @@ static int menu_goto_url(int sel) {
 }
 
 static int do_command = 0;
+static int about_game(int sel);
+
+static menu_item_t about_items[] =
+{
+  { "", NULL, NULL },
+  { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
+  { "gcc", NULL, NULL },
+  { "cpu", NULL, NULL },
+  { "SDL", },
+  { "No SDL_sound" },
+  { " ", NULL, NULL },
+  { "http://raine.1emulation.com/", NULL, NULL },
+  { " ", NULL, NULL, },
+  { _("CPU emulators:"), NULL, NULL },
+#if USE_MUSASHI == 2
+  {    _("68000,68020 : Musashi v3.3x by Karl Stenerud") },
+#else
+#ifdef MUSASHI
+  { _("68020: Musashi v3.3x by Karl Stenerud") },
+#else
+  {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
+#endif
+  {    _("Starscream 0.26r4 by Neill Corlett"), },
+#endif
+#ifdef MAME_Z80
+  {    _("Z80: old mame 'portable' z80") },
+#else
+  {    _("MZ80 3.4raine3 by Neill Bradley") },
+#endif
+#ifdef MAME_6502
+  { _("6502/65c02: mame 125 version") },
+#else
+  {    _("M6502 1.6raine2 by Neill Bradley") },
+#endif
+  {    _("MCU 68705: statically recompiled code by Richard Mitton") },
+#ifdef __i386__
+  { _("32 bits i386 binary with plenty of asm inside") },
+#endif
+#ifdef __x86_64__
+  { _("64 bits x86 binary, no asm at all, a raine anomaly !") },
+#endif
+  { _("History..."), &about_game },
+  { _("Driver info"), &about_game },
+  { NULL, NULL, NULL },
+};
 
 static int about_game(int sel) {
   int nb_lines = 10;
@@ -685,7 +730,7 @@ static int about_game(int sel) {
   char *buff;
   if (do_command)
       buff = commands_buff[sel];
-  else if (sel == 16) // History... if nothing changes...
+  else if (!strncmp(about_items[sel].label,"History",7)) // History... if nothing changes...
       buff = history;
   else
       buff = driver_info;
@@ -837,50 +882,6 @@ int show_moves(int sel) {
     do_command = 0;
     return 0;
 }
-
-static menu_item_t about_items[] =
-{
-  { "", NULL, NULL },
-  { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
-  { "gcc", NULL, NULL },
-  { "cpu", NULL, NULL },
-  { "SDL", },
-  { "No SDL_sound" },
-  { " ", NULL, NULL },
-  { "http://raine.1emulation.com/", NULL, NULL },
-  { " ", NULL, NULL, },
-  { _("CPU emulators:"), NULL, NULL },
-#if USE_MUSASHI == 2
-  {    _("68000,68020 : Musashi v3.3x by Karl Stenerud") },
-#else
-#ifdef MUSASHI
-  { _("68020: Musashi v3.3x by Karl Stenerud") },
-#else
-  {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
-#endif
-  {    _("Starscream 0.26r4 by Neill Corlett"), },
-#endif
-#ifdef MAME_Z80
-  {    _("Z80: old mame 'portable' z80") },
-#else
-  {    _("MZ80 3.4raine3 by Neill Bradley") },
-#endif
-#ifdef MAME_6502
-  { _("6502/65c02: mame 125 version") },
-#else
-  {    _("M6502 1.6raine2 by Neill Bradley") },
-#endif
-  {    _("MCU 68705: statically recompiled code by Richard Mitton") },
-#ifdef __i386__
-  { _("32 bits i386 binary with plenty of asm inside") },
-#endif
-#ifdef __x86_64__
-  { _("64 bits x86 binary, no asm at all, a raine anomaly !") },
-#endif
-  { _("History..."), &about_game },
-  { _("Driver info"), &about_game },
-  { NULL, NULL, NULL },
-};
 
 static TAbout_menu *about_menu;
 static char gcc_version[30];
