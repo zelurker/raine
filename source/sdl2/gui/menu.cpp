@@ -1469,15 +1469,14 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	    }
 	} else
 	    skip_fglayer_header(ystart);
-	for (index = 0; index < rows; index++) {
-          h += child[index+top]->get_height(font);
+	for (index = top; index < nb_items; index++) {
+	    if (!can_be_displayed(index))
+		continue;
+          h += child[index]->get_height(font);
 	  if (ystart + h > my)
 	    break;
 	}
-	if (index >= 0 && top+index < nb_disp_items)
-	  index = menu_disp[top + index];
-	else
-	  index = -1;
+	if (index >= nb_items) index = -1;
 	if (index >= 0 && index != sel && can_be_selected(index))
 	  sel = index;
 	if (sel >= 0 && child[sel]->handle_mouse(event)) {
