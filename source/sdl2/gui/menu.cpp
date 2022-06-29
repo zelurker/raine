@@ -1469,7 +1469,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	    }
 	} else
 	    skip_fglayer_header(ystart);
-	for (index = top; index < nb_items; index++) {
+	for (index = menu_disp[top]; index < nb_items; index++) {
 	    if (!can_be_displayed(index))
 		continue;
           h += child[index]->get_height(font);
