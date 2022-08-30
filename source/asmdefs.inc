@@ -41,3 +41,10 @@ _##name:				;	\
 
 #endif
 
+#ifndef NOTE_GNU_STACK
+#define NOTE_GNU_STACK
+#ifdef __ELF__
+.section .note.GNU-stack,""
+#endif
+#endif
+

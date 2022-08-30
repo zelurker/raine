@@ -1353,6 +1353,8 @@ void StandardHeader(void)
 	fprintf(fp, "IFF2               equ     02h\n");
 
 	fprintf(fp, "\n\n");
+	// stupid gcc warning in 2022
+	fprintf(fp,"\tsection .note.GNU-stack\n");
 }
 
 void Alignment(void)

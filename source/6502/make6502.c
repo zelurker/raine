@@ -500,6 +500,9 @@ static void StandardHeader()
 		fprintf(fp, "; Single step version (debug)\n");
 
 	fprintf(fp, "\n\n");
+	// Stupid warning from gcc in 2022
+	fprintf(fp,"\tsection .note.GNU-stack\n");
+
 }
 
 static void Alignment()

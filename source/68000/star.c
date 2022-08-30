@@ -5462,6 +5462,7 @@ int main(int argc, char **argv) {
 	** Build the main jump table (all CPUs) / loop info table (68010)
 	*/
 	fprintf(stderr, "Building table: ");
+	emit("section .note.GNU-stack\n"); // stupid gcc warning 2022
 	emit("section .bss\n");
 #ifdef X86_64
 	emit("bits 64\n");
