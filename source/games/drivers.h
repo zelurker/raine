@@ -746,7 +746,6 @@
   DRV(fhawk)
   DRV(kurikina)
   DRV(kurikint)
-  DRV(kurikinj)
   DRV(palamed)
   DRV(plgirls)
   DRV(plgirls2)

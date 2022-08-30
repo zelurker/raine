@@ -18,6 +18,7 @@
 #include "savegame.h"
 #include "sasound.h"		// sample support routines
 #include "emumain.h" // set_reset_function
+#include "files.h"
 
 static struct ROMSW_DATA romsw_data_fighting_hawk_0[] =
 {
@@ -730,8 +731,6 @@ static struct DSW_INFO dsw_kurikina[] =
    { 0,        0,    NULL,      },
 };
 
-/* Kuri kinton has quite a special romsw, it's in the data bank, bank 0xf
- * See read_kurikint_region and write_kurikint_region */
 static struct ROMSW_DATA romsw_data_kuri_kinton_0[] =
 {
    { "Taito Japan (Notice)",       0x00 },
@@ -743,23 +742,13 @@ static struct ROMSW_DATA romsw_data_kuri_kinton_0[] =
 
 static struct ROMSW_INFO romsw_kurikint[] =
 {
-   { 0x007FFF, 0x02, romsw_data_kuri_kinton_0 },
+   { 0x01fFFF, 0x02, romsw_data_kuri_kinton_0 },
    { 0,        0,    NULL },
 };
 
 static struct ROM_INFO rom_kurikint[] =
 {
    {     "b42-09.2", 0x00020000, 0xe97c4394, 0, 0, 0, },
-   {  "b42-07.22", 0x00010000, 0x0f2719c0, 0, 0, 0, },
-   {     "b42-06.6", 0x00020000, 0xfa15fd65, 0, 0, 0, },
-   {     "b42-01.1", 0x00080000, 0x7d1a1fec, 0, 0, 0, },
-   {     "b42-02.5", 0x00080000, 0x1a52e65c, 0, 0, 0, },
-   {           NULL,          0,          0, 0, 0, 0, },
-};
-
-static struct ROM_INFO rom_kurikinj[] =
-{
-   {     "b42_05.2", 0x00020000, 0x077222b8, 0, 0, 0, },
    {  "b42-07.22", 0x00010000, 0x0f2719c0, 0, 0, 0, },
    {     "b42-06.6", 0x00020000, 0xfa15fd65, 0, 0, 0, },
    {     "b42-01.1", 0x00080000, 0x7d1a1fec, 0, 0, 0, },
@@ -2848,27 +2837,17 @@ static void load_fhawk(void)
    reset_tc0220ioc();
 }
 
-// read/write region from/to bank 0xf !
-static int read_kurikint_region() {
-    return read_z80_bank(1,0xf,0x7fff);
-}
-static void write_kurikint_region(int data) {
-    write_z80_bank(1,0xf,0x7fff,data);
-}
-
 static void load_kurikint()
 {
    int ta, tb,romset_2;
    UINT8 *TMP;
-   read_region_byte = &read_kurikint_region;
-   write_region_byte = &write_kurikint_region;
 
    if (is_current_game("kurikina"))
        romset_2 = 0;
    else if (is_current_game("kurikint"))
        romset_2 = 1;
-   else if (is_current_game("kurikinj"))
-       romset_2 = 2;
+//   else if (is_current_game("kurikinj"))
+//       romset_2 = 2;
 
    romset=5;
    Z80BankCount=0x40000/0x2000;
@@ -2876,8 +2855,6 @@ static void load_kurikint()
 
    RAMSize=0x10000+0x8000+0x10000+0x4000+0x200+0x20+0x10000+0x10000;
 
-   if(!(ROM  =AllocateMem(0x8000*Z80BankCount))) return;
-   if(!(ROM2 =AllocateMem(0xC000*Z802BankCount))) return;
    if(!(RAM=AllocateMem(RAMSize))) return;
    memset(RAM, 0x00, RAMSize);
 
@@ -2892,7 +2869,9 @@ static void load_kurikint()
    if(!(TMP =AllocateMem(0x40000))) return;
 
    if(!load_rom_index(0, TMP+0x00000, 0x20000)) return;	// Z80 MAIN ROM
+   save_debug("ROM.bin",TMP,0x20000,0);
    if(!load_rom_index(2, TMP+0x20000, 0x20000)) return;	// DATA ROM
+   save_debug("ROM2.bin",TMP+0x20000,0x20000,0);
 
    // Skip Idle Z80
    // -------------
@@ -4229,7 +4208,7 @@ static struct DIR_INFO dir_kurikina[] =
    { CLONEOF("kurikint"), },
    { NULL, },
 };
-CLNE( kurikina,kurikint, "Kuri Kinton (Alternate)", TAITO, 1988, GAME_BEAT,
+CLNE( kurikina,kurikint, "Kuri Kinton (Alternate, prototype?)", TAITO, 1988, GAME_BEAT,
 	.dsw = dsw_kurikina,
 	.romsw = romsw_kurikint,
 	.long_name_jpn = "Œö—›‹à’c (Alternate)",
@@ -4244,20 +4223,6 @@ static struct DIR_INFO dir_kurikint[] =
 GME( kurikint, "Kuri Kinton", TAITO, 1988, GAME_BEAT,
 	.romsw = romsw_kurikint,
 	.long_name_jpn = "Œö—›‹à’c",
-	.board = "B42",
-);
-static struct DIR_INFO dir_kurikinj[] =
-{
-   { "kuri_kinton_jap", },
-   { "kurikinj", },
-   { "kurikina", },
-   { ROMOF("kurikint"), },
-   { CLONEOF("kurikint"), },
-   { NULL, },
-};
-CLNE( kurikinj,kurikint, "Kuri Kinton (JPN Ver.)", TAITO, 1988, GAME_BEAT,
-	.long_name_jpn = "Œö—›‹à’c (alternate)",
-	.romsw = romsw_kurikint,
 	.board = "B42",
 );
 static struct DIR_INFO dir_palamed[] =
