@@ -551,7 +551,8 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
 
    if (bmp == NULL || bmp->format->palette == NULL) {
      CYC = NULL;
-     MessageBox(_("Error"),_("No raine logo, or it's a true color bitmap"));
+     if (bmp == NULL)
+	 MessageBox(_("Error"),_("No raine logo"));
    } else {
      palette_size = bmp->format->palette->ncolors;
      SDL_Color *colors = bmp->format->palette->colors;
@@ -609,7 +610,7 @@ TAbout_menu::~TAbout_menu() {
 void TAbout_menu::update_fg_layer(int nb_to_update) {
   static unsigned int tt = 0;
   TBitmap_menu::update_fg_layer(nb_to_update);
-  if (nb_to_update >= 0 && bmp && CYC) {
+  if (nb_to_update >= 0 && bmp) {
      int indice = (tt*palette_size*4);
      // printf("indice %d\n",indice);
      if (indice >= (4*palette_size*NB_STEPS*(palette_size-1))) {
@@ -617,34 +618,36 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
        tt = 0;
      }
      SDL_Rect dest;
+     if (CYC) {
 #if SDL == 2
-     SDL_Color *colors = bmp->format->palette->colors;
-     memcpy(colors,&CYC[indice],palette_size*4);
+	 SDL_Color *colors = bmp->format->palette->colors;
+	 memcpy(colors,&CYC[indice],palette_size*4);
 #else
-     // In theory SDL_SetColors should be the same as the memcpy above
-     // except apparently it does tricks to say the surface changed for blits
-     SDL_SetColors(bmp,(SDL_Color*)&CYC[indice],0,palette_size);
+	 // In theory SDL_SetColors should be the same as the memcpy above
+	 // except apparently it does tricks to say the surface changed for blits
+	 SDL_SetColors(bmp,(SDL_Color*)&CYC[indice],0,palette_size);
 #endif
-     tt++;
+	 tt++;
+     }
 
-    dest.w = bmp->w;
-    dest.h = bmp->h;
+     dest.w = bmp->w;
+     dest.h = bmp->h;
 #if SDL == 2
-    dest.x = (fgdst.w-bmp->w)/2;
-    dest.y = HMARGIN;
-    int ret = SDL_SetRenderTarget(rend,fg_layer);
-    if (ret < 0) {
-	fatal_error("SDL_SetRenderTarget %d : %s",ret,SDL_GetError());
-    }
-    SDL_Texture *tex = SDL_CreateTextureFromSurface(rend, bmp);
-    SDL_RenderCopy(rend,tex,NULL,&dest);
-    SDL_DestroyTexture(tex);
-    SDL_SetRenderTarget(rend,NULL);
+     dest.x = (fgdst.w-bmp->w)/2;
+     dest.y = HMARGIN;
+     int ret = SDL_SetRenderTarget(rend,fg_layer);
+     if (ret < 0) {
+	 fatal_error("SDL_SetRenderTarget %d : %s",ret,SDL_GetError());
+     }
+     SDL_Texture *tex = SDL_CreateTextureFromSurface(rend, bmp);
+     SDL_RenderCopy(rend,tex,NULL,&dest);
+     SDL_DestroyTexture(tex);
+     SDL_SetRenderTarget(rend,NULL);
 #else
-    dest.x = fgdst.x+(fgdst.w-bmp->w)/2;
-    dest.y = fgdst.y+HMARGIN;
-    SDL_BlitSurface(bmp,NULL,sdl_screen,&dest);
-    do_update(&dest);
+     dest.x = fgdst.x+(fgdst.w-bmp->w)/2;
+     dest.y = fgdst.y+HMARGIN;
+     SDL_BlitSurface(bmp,NULL,sdl_screen,&dest);
+     do_update(&dest);
 #endif
   }
 }
