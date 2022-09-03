@@ -4204,6 +4204,7 @@ static struct DIR_INFO dir_kurikina[] =
 {
    { "kuri_kinton_alt", },
    { "kurikina", },
+   { "kurikinta", },
    { ROMOF("kurikint"), },
    { CLONEOF("kurikint"), },
    { NULL, },
