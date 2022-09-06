@@ -315,7 +315,7 @@ UINT32 run_game_emulation(void)
 	}
 
 #ifdef RDTSC_PROFILE
-	if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_BLIT);
+	if(raine_cfg.show_fps_mode>2 && !raine_cfg.req_pause_game) ProfileStart(PRO_BLIT);
 #endif
 
         // printf("blit at %d\n",SDL_GetTicks());
@@ -323,7 +323,7 @@ UINT32 run_game_emulation(void)
 	// printf("end of blit %d\n",SDL_GetTicks());
 
 #ifdef RDTSC_PROFILE
-	if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_BLIT);
+	if(raine_cfg.show_fps_mode>2 && !raine_cfg.req_pause_game) ProfileStop(PRO_BLIT);
 #endif
 
 	skip_frame_count = 0;

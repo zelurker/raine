@@ -40,6 +40,7 @@ struct PROFILE_RESULTS profile_results[PRO_COUNT] =
 
 #ifdef RDTSC_PROFILE
 
+// This is one of the very rare code which remains used when NO_ASM is used...
 #if defined(RAINE_DOS) || defined(RAINE_UNIX) || defined(__MINGW32__)
 #define RDTSC_32(dest) ({				    \
    __asm__ __volatile__ (				    \

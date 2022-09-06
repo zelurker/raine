@@ -727,10 +727,12 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 {
     int i,channel;
     short *wstream = (short*) stream;
+    if(raine_cfg.show_fps_mode>2) ProfileStart(PRO_SOUND);
     if (pause_sound) {
 #if SDL == 2
 	memset(stream,0,len);
 #endif
+	if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
 	return;
     }
     if (callback_busy)
@@ -880,6 +882,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 
     if (mute_sfx) {
 	callback_busy = 0;
+	if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
 	return;
     }
 #else
@@ -1009,6 +1012,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	updated_recording++;
     }
     callback_busy = 0;
+    if(raine_cfg.show_fps_mode>2) ProfileStop(PRO_SOUND);
 }
 
 void saPlayBufferedStreamedSampleBase( int channel, signed char *data, int len, int freq, int volume, int bits , int pan ){
