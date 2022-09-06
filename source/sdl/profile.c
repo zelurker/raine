@@ -176,7 +176,7 @@ void UpdateProfile(void)
 
 	   for(ta=1;ta<PRO_COUNT;ta++){
 	       if(Profile[ta].state==2){
-		   profile_results[ta].percent = (Profile[ta].cycles * (UINT64)100)/total;
+		   profile_results[ta].percent = ((Profile[ta].cycles * (UINT64)1000)/total+5)/10;
 		   total2 -= (Profile[ta].cycles);
 	       }
 	       else{
