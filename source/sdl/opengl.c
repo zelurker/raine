@@ -142,11 +142,18 @@ void opengl_reshape(int w, int h) {
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
     } else {
 #if SDL == 2
-	if (SDL_GL_SetSwapInterval(-1) < 0) {
+	if (ogl.dbuf == 2) { // forced
+	    if (SDL_GL_SetSwapInterval(1) < 0) {
+		printf("can't call GL_SetSwapInterval(1) ???\n");
+	    }
 	    ogl.infos.vbl = 1;
-	    SDL_GL_SetSwapInterval(1);
-	} else
-	    ogl.infos.vbl = -1;
+	} else {
+	    if (SDL_GL_SetSwapInterval(-1) < 0) {
+		ogl.infos.vbl = 1;
+		SDL_GL_SetSwapInterval(1);
+	    } else
+		ogl.infos.vbl = -1;
+	}
 #else
 	ogl.infos.vbl = 1;
 #endif
