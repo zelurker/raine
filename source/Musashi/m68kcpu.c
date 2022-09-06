@@ -824,13 +824,15 @@ int m68k_execute(int num_cycles)
 		SET_CYCLES(0);
 
 	/* return how many clocks we used */
-	return m68ki_initial_cycles - GET_CYCLES();
+	int ret = m68ki_initial_cycles - GET_CYCLES();
+	m68ki_initial_cycles = m68ki_remaining_cycles = 0;
+	return ret;
 }
 
 
 int m68k_cycles_run(void)
 {
-	return m68ki_initial_cycles - GET_CYCLES();
+    return m68ki_initial_cycles - GET_CYCLES();
 }
 
 int m68k_cycles_remaining(void)
