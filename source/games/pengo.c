@@ -1704,7 +1704,6 @@ static void load_puckman()
    AddZ80AReadPort(0x00, 0xFF, DefBadReadPort,		NULL);
    AddZ80AReadPort(  -1,   -1, NULL,			NULL);
   AddZ80AWritePort(0x00, 0x00, irq_vector_w,			NULL);
-#if 0
   if (is_current_game("xenrev")) {
       // There seems to be a strange problem here, I won't investigate further
       // but this speed hack just makes the game to reboot endlessly...
@@ -1714,8 +1713,9 @@ static void load_puckman()
       ROM[0x2393]=0xAA;  //
       WriteWord(&ROM[0x301a],0); // rom check
       SetStopZ80Mode2(0x2395);
+
+      WriteWord(&ROM[0x301a],0); // disable rom check
   }
-#endif
    AddZ80AWritePort(0x01, 0xFF, DefBadWritePort, 	NULL);
    AddZ80AWritePort(  -1,   -1, NULL,			NULL);
 
