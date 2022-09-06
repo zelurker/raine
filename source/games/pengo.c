@@ -1704,10 +1704,10 @@ static void load_puckman()
    AddZ80AReadPort(0x00, 0xFF, DefBadReadPort,		NULL);
    AddZ80AReadPort(  -1,   -1, NULL,			NULL);
   AddZ80AWritePort(0x00, 0x00, irq_vector_w,			NULL);
+#ifdef MAME_Z80
+  // Bug specific to mz80, not mame z80 !
+  // I didn't try to understand what's wrong here yet in mz80
   if (is_current_game("xenrev")) {
-      // There seems to be a strange problem here, I won't investigate further
-      // but this speed hack just makes the game to reboot endlessly...
-      // apparently the irq happens at a bad moment ?
       AddZ80AWritePort(0xaa, 0xaa, StopZ80Mode2, NULL);
       ROM[0x2392]=0xD3;  // OUTA (AAh)
       ROM[0x2393]=0xAA;  //
@@ -1716,6 +1716,7 @@ static void load_puckman()
 
       WriteWord(&ROM[0x301a],0); // disable rom check
   }
+#endif
    AddZ80AWritePort(0x01, 0xFF, DefBadWritePort, 	NULL);
    AddZ80AWritePort(  -1,   -1, NULL,			NULL);
 
