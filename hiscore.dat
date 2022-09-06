@@ -269,6 +269,12 @@ mspacmanbi:
 @:maincpu,program,43ed,06,40,40
 @:maincpu,program,43d1,01,48,48
 
+xenrev:
+; adapted from puckman
+@:maincpu,program,4e88,04,00,00
+@:maincpu,program,43ed,06,40,40
+@:maincpu,program,43d1,01,54,54
+
 bbredux:
 sboblbobla:
 sboblboblb:
