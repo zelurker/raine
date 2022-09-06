@@ -525,6 +525,7 @@ endif
 endif
 
 ifndef NO_ASM
+OBJDIR := $(OBJDIR)-asm
 ifndef RAINE_DOS
 include cpuinfo
 else
