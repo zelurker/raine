@@ -666,7 +666,9 @@ int TMenu::compute_fglayer_height() {
       for (nbh=0; header[nbh].label; nbh++);
   }
   if (nb_disp_items+nbh == 0) return 0;
-  rows = work_area.h / font->get_font_height()-1;
+  int skip = 0;
+  skip_fglayer_header(skip);
+  rows = (work_area.h - skip) / font->get_font_height()-1;
   if (rows > nb_disp_items)
     rows = nb_disp_items;
   reset_top();
@@ -831,6 +833,7 @@ void TMenu::skip_fglayer_header(int &y) {
 	  int h = h_child[n]->get_height(font);
 	  y += h;
       }
+      y += SPACE_HEADER;
   }
 }
 
@@ -881,7 +884,6 @@ void TMenu::update_fg_layer(int nb_to_update) {
     display_fglayer_header(y);
   } else {
     skip_fglayer_header(y);
-    if (header) y += SPACE_HEADER;
   }
 
   max = top+rows;
