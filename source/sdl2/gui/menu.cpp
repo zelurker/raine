@@ -685,6 +685,7 @@ int TMenu::compute_fglayer_height() {
     } while (h > work_area.h);
   } else
     h = 2*HMARGIN+font->get_font_height()*rows; // rough approximation
+  if (nbh) h += SPACE_HEADER;
   return h;
 }
 
