@@ -223,7 +223,8 @@ static void save_game_stats() {
 	return;
     }
     for (int n=0; n<game_count; n++) {
-	fprintf(f,"%s=%d,%d\n",game_list[n]->main_name,game_list[n]->nb_loaded,game_list[n]->time_played);
+	if (game_list[n]->time_played)
+	    fprintf(f,"%s=%d,%d\n",game_list[n]->main_name,game_list[n]->nb_loaded,game_list[n]->time_played);
     }
     fclose(f);
 }
