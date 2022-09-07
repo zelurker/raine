@@ -134,6 +134,10 @@ void LoadDefault(void)
 
 void ClearDefault(void)
 {
+    if (driver_info) {
+	free(driver_info);
+	driver_info = NULL;
+    }
     free_alpha_tree();
 #ifdef SDL
     unregister_driver_emu_keys();
