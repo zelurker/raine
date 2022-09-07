@@ -196,6 +196,7 @@ eltonpac:  ; missing
 fasthang:  ; missing
 fasthear:  ; missing
 fastmspa:  ; missing
+fastplus:
 faststrm:  ; missing
 fstmsatk:  ; missing
 hangly:
@@ -254,9 +255,11 @@ pacmini:  ; missing
 pacmini2:  ; missing
 pacmod:
 pacplus:
+pengman:
 piranha:
 piranhah:
 piranhao:
+pmad:
 popeyeman:
 puckman:
 puckmanb:
@@ -265,6 +268,10 @@ puckmanh:
 puckmod:
 titanpac:
 mspacmanbi:
+pacman25:
+pacman3d:
+namcosil:
+fastpac:
 @:maincpu,program,4e88,04,00,00
 @:maincpu,program,43ed,06,40,40
 @:maincpu,program,43d1,01,48,48
@@ -274,6 +281,12 @@ xenrev:
 @:maincpu,program,4e88,04,00,00
 @:maincpu,program,43ed,06,40,40
 @:maincpu,program,43d1,01,54,54
+
+mspacrip:
+; adapted from puckman
+@:maincpu,program,4e88,04,00,00
+@:maincpu,program,43ed,06,40,40
+@:maincpu,program,43d1,01,59,59
 
 bbredux:
 sboblbobla:
