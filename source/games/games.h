@@ -240,6 +240,7 @@ typedef struct GAME_MAIN
 
   const SOUND_INFO  *sound;     // sound list
   const UINT32 flags;
+  unsigned int nb_loaded, time_played;
 } GAME_MAIN;
 
 #include "game_def.h"

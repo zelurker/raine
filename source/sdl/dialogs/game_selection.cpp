@@ -75,6 +75,11 @@ static int do_options(int sel) {
 static menu_item_t header[] =
 {
     {  _("-- Options --"), &do_options },
+    { NULL }, // 5 lines at most of favorite games
+    { NULL },
+    { NULL },
+    { NULL },
+    { NULL },
     { NULL },
 };
 
@@ -128,12 +133,24 @@ class TGame_sel : public TMenu
 	image_counter = 0;
 	w_year = h_year = w_categ = h_categ = 0;
     }
-#if SDL == 2
     ~TGame_sel() {
+	if (short_names) {
+	    for (int n=0; n<game_count; n++)
+		free((void*)menu[n].label);
+	}
+	for (int n=1; n<=5; n++) {
+	    if (header[n].label) {
+		free(header[n].label);
+		header[n].label = NULL;
+		header[n].values_list[0] =
+		    header[n].values_list[1] = 0;
+	    }
+	}
 	free(menu);
+#if SDL == 2
 	desktop->set_picture(NULL);
-    }
 #endif
+    }
     virtual void compute_nb_items();
     void regen();
 
@@ -175,14 +192,23 @@ class TGame_sel : public TMenu
       raine_cfg.req_game_index = sel;
       exit_menu = 1;
     } else { // options
-      TMenu::call_handler();
+      if (hsel) {
+	  // a favorite game
+	  raine_cfg.req_load_game = 1;
+	  raine_cfg.req_game_index = header[hsel].values_list[1];
+	  exit_menu = 1;
+      } else
+	  TMenu::call_handler();
     }
   }
 
-  int load_picture(int nb_to_update, char *buffer) {
+  int load_picture(int nb_to_update, char *buffer, int is_header = 0) {
       if (!strcmp(buffer,current_picture)) {
 	// already has loaded this picture
-	TMenu::update_fg_layer(nb_to_update);
+	  if (is_header) {
+	      TMenu::update_header_entry(nb_to_update);
+	  } else
+	      TMenu::update_fg_layer(nb_to_update);
 	return 1;
       }
 
@@ -407,9 +433,10 @@ void TGame_sel::draw_frame(SDL_Rect *r) {
 
 void TGame_sel::regen_menu(int free_labels) {
     int n,freed = 0;
-    if (free_labels)
+    if (free_labels) {
 	for (n=0; n<game_count; n++)
 	    free((void*)menu[n].label);
+    }
     if (menu) {
 	free(menu);
 	freed = 1;
@@ -451,16 +478,66 @@ int recompute_list() {
     return 0;
 }
 
+static void add_header_info(int n, int index) {
+    char s[512];
+    sprintf(s,"%s, played %d time%s for ",game_list[index]->long_name,game_list[index]->nb_loaded,(game_list[index]->nb_loaded > 1 ? "s" : ""));
+    int t = game_list[index]->time_played;
+    int d = t/(24*3600);
+    if (d) {
+	snprintf(&s[strlen(s)],512-strlen(s),"%d days ",d);
+	t %= 24*3600;
+    }
+    int h = t/3600;
+    if (h) {
+	snprintf(&s[strlen(s)],512-strlen(s),"%02d:",h);
+	t %= 3600;
+    }
+    int m = t/60;
+    if (m) {
+	snprintf(&s[strlen(s)],512-strlen(s),"%02d:",m);
+	t %= 60;
+    }
+    snprintf(&s[strlen(s)],512-strlen(s),"%02d",t);
+    if (!m && !h)
+	snprintf(&s[strlen(s)],512-strlen(s)," seconds");
+    header[n].label = strdup(s);
+    header[n].values_list[0] = game_list[index]->time_played;
+    header[n].values_list[1] = index;
+    header[n].menu_func = &do_options; // so that call_handler is called for this one, menu_func is actually ignored
+}
+
+static void add_header(int index) {
+    int n;
+    for (n=1; n<=5; n++) {
+	if (((UINT32)header[n].values_list[0]) < game_list[index]->time_played) {
+	    if (n < 5) {
+		if (header[5].label) {
+		    free(header[5].label);
+		}
+		memmove(&header[n+1],&header[n],sizeof(menu_item_t)*(5-n));
+	    }
+	    add_header_info(n,index);
+	    return;
+	}
+    }
+}
+
 int do_game_sel(int sel) {
+    int n;
     if (!avail) {
 	avail = (char*)malloc(game_count);
 	compute_avail();
     }
-  game_sel = new TGame_sel(_("Game selection"),NULL);
-  game_sel->set_header(header);
-  game_sel->execute();
-  delete game_sel;
-  return raine_cfg.req_load_game;
+    game_sel = new TGame_sel(_("Game selection"),NULL);
+    game_sel->set_header(header);
+    for (n=0; n<game_count; n++) {
+	if (game_list[n]->time_played)
+	    add_header(n);
+    }
+
+    game_sel->execute();
+    delete game_sel;
+    return raine_cfg.req_load_game;
 }
 
 void done_game_selection() {

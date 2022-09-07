@@ -1,5 +1,6 @@
 #include "raine.h"
 #include <SDL_image.h>
+#include <time.h>
 #include <dirent.h>
 #include "display.h"
 #include "dejap.h"
@@ -59,6 +60,7 @@
 #include "starhelp.h"
 #include "m6502hlp.h"
 
+static time_t played_time;
 #if USE_MUSASHI == 2
 extern "C" m68ki_cpu_core m68020_context;
 #endif
@@ -385,6 +387,7 @@ static void load_game_proc()
 	init_romsw();
 	init_sound();
 	read_bld();
+	current_game->nb_loaded++;
     }
 }
 
@@ -789,6 +792,7 @@ void StartGUI(void)
 
        if(WantPlay){		// Are we able to and wanting to play?
 	   WantPlay = 0;
+	   played_time = time(NULL); // sdl2 2.0.18
 	   SDL_ShowCursor(0);
 #ifndef RAINE_DEBUG
 	   if (GameMouse)
@@ -798,6 +802,7 @@ void StartGUI(void)
 	       raine_cfg.no_gui = 0;
 	       WantQuit = 0;
 	   }
+	   current_game->time_played += time(NULL) - played_time;
 #if SDL == 2
 	   if (!rend)
 	       rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

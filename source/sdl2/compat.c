@@ -20,6 +20,7 @@
 #include "version.h"
 #include "display.h"
 #include <SDL_image.h>
+#include "files.h"
 
 void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
     char msg[512];
@@ -226,12 +227,25 @@ void sdl_init() {
     }
 }
 
+static void save_game_stats() {
+    FILE *f = fopen(get_shared("savedata/stats"),"w");
+    if (!f) {
+	printf("save_game_stats: can't create savedata/stats ?!!\n");
+	return;
+    }
+    for (int n=0; n<game_count; n++) {
+	fprintf(f,"%s=%d,%d\n",game_list[n]->main_name,game_list[n]->nb_loaded,game_list[n]->time_played);
+    }
+    fclose(f);
+}
+
 void sdl_done() {
     // called at the very end, after main has finished and the debug file is already closed... !
   inputs_done();
   TTF_Quit();
   opengl_done();
   SDL_FreeFormat(color_format);
+  save_game_stats();
   SDL_Quit();
 }
 

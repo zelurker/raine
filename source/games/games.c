@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include "files.h"
 
 struct GAME_MAIN *current_game;
 int game_count;
@@ -113,6 +114,35 @@ const int nb_companies = sizeof(company_name)/4;
 
 #include "driver.c"
 
+static void read_game_stats() {
+    FILE *f = fopen(get_shared("savedata/stats"),"r");
+    if (f) {
+	while (!feof(f)) {
+	    char buf[80];
+	    buf[0] = 0;
+	    myfgets(buf,80,f);
+	    char *s = strchr(buf,'=');
+	    if (s) {
+		*s = 0;
+		GAME_MAIN *game = find_game(buf);
+		if (!game) {
+		    printf("read_game_stats: game %s not found\n",buf);
+		} else {
+		    char *s2 = strchr(s+1,',');
+		    if (!s2) {
+			printf("read_game_stats: game %s, bad format\n",buf);
+		    } else {
+			*s2 = 0;
+			game->nb_loaded = atoi(s+1);
+			game->time_played = atoi(s2+1);
+		    }
+		}
+	    }
+	}
+	fclose(f);
+    }
+}
+
 void init_game_list(void)
 {
    GAME_MAIN *swap;
@@ -156,6 +186,7 @@ void init_game_list(void)
 
    current_game = NULL;
 
+   read_game_stats();
 }
 
 char *game_company_name(UINT8 company_id)

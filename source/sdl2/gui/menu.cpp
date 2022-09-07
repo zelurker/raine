@@ -105,6 +105,8 @@
 #include "newmem.h" // GetMemoryPoolSize
 #include "control_internal.h"
 
+#define SPACE_HEADER 10 // space between the header and the normal menu entries
+
 int return_mandatory = 0, use_transparency = 1;
 int keep_vga = 1,gui_level;
 
@@ -637,7 +639,7 @@ void TMenu::setup_font(unsigned int len_frame) {
     w = sdl_screen->w/(len_frame); // ideal font width & height, with some
   }
   if (nb_disp_items + nb == 0) return;
-  int hheader = 0;
+  int hheader = SPACE_HEADER;
   if (!header) skip_fglayer_header(hheader);
   h = (sdl_screen->h - 40 - hheader)/(nb_disp_items+nb); // margin
   h = h*4/9; // This 5/11 is just the result of tests, so that the main
@@ -793,6 +795,7 @@ void TMenu::display_fglayer_header(int &y) {
 	  disp_header(n,y,w,h);
 	  y += h;
       }
+      y += SPACE_HEADER;
   }
 }
 
@@ -808,9 +811,10 @@ void TMenu::update_header_entry(int nb) {
 	  int h = h_child[n]->get_height(font);
 	  if (n == nb) {
 	      // if there is only 1 indice to update, clear the bg for it
-	      boxColor(rend,HMARGIN, y, w, h, bgsdl);
+	      SDL_SetRenderDrawColor(rend, bg & 0xff, (bg >> 8) & 0xff, (bg >> 16) & 0xff, (bg >> 24) & 0xff);
+	      SDL_Rect r = { HMARGIN, y, w-20 /* -20 ??? */ , h };
+	      SDL_RenderFillRect(rend,&r);
 	      disp_header(n,y,w,h);
-	      // blit_area(HMARGIN,y,w,h);
 	      break;
 	  }
 	  y += h;
@@ -876,6 +880,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
     display_fglayer_header(y);
   } else {
     skip_fglayer_header(y);
+    if (header) y += SPACE_HEADER;
   }
 
   max = top+rows;
