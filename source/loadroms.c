@@ -1182,7 +1182,7 @@ beg:
        do {
 	   dir = dlist[0].maindir;
 	   if (!dir) break;
-	   if (IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_')) {
+	   if (IS_ROMOF(dir) || IS_CLONEOF(dir)) {
 	       dir++;
 	   }
 
@@ -1226,7 +1226,7 @@ beg:
 	   do { // Search for a parent
 	       dlist++;
 	       dir = dlist[0].maindir;
-	   } while (dir && !(IS_ROMOF(dir) || IS_CLONEOF(dir) || strchr(dir,'_')));
+	   } while (dir && !(IS_ROMOF(dir) || IS_CLONEOF(dir));
        } while (dir);
        goto beg;
    }
