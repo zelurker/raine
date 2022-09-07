@@ -50,6 +50,7 @@
 #include "alpha.h"
 #include "version.h"
 #include "compat_sdl.h"
+#include "iso.h"
 
 // #define NEOGEO_MCARD_16BITS 1
 
@@ -350,6 +351,8 @@ void setup_neocd_bios() {
   }
   if (neocd_bios)
     return;
+  // produces a memwatch warning, but since neocd bios can actually be a load_region for the neogeo bios or this, it can't be freed in clear_neocd, it's freed at the beg of this function
+  // so the warning will stay !
   neocd_bios = calloc(0x80000,1); // Be sure to have at least 512k
   // unsigned char rom_fix_usage[4096];
   int ret = 0;
@@ -5541,6 +5544,9 @@ void clear_neocd() {
       if (debug_mode)
 	  ByteSwap(neocd_bios,0x80000); // restore the bios for the next game
 #endif
+      free_tracks();
+      clear_file_cache();
+      free_iso_dir();
   } else {
       // Clear neogeo bios
       neocd_bios = NULL;

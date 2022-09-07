@@ -56,6 +56,7 @@ unsigned neogeo_cdrom_test_files(unsigned char *Ptr, loading_params *param);
 void cdrom_load_neocd();
 void fix_extension(char *FileName, char *extension);
 int get_size(char *filename);
+void free_tracks();
 
 #ifdef __cplusplus
 }

@@ -64,14 +64,18 @@ typedef struct {
 static tcache *dir;
 static int nb_alloc, nb;
 
+void free_iso_dir() {
+    if (last_file) isof.close(last_file);
+    if (dir) free(dir);
+    dir = NULL;
+}
+
 static FILE *myopen(char *iso,char *mode) {
     FILE *f;
     if (!strcmp(last_name,iso) && last_file)
 	f = last_file;
     else {
-	if (last_file) isof.close(last_file);
-	if (dir) free(dir);
-	dir = NULL;
+	free_iso_dir();
 	nb_alloc = nb = 0;
 	f = isof.open(iso,"rb");
 	strcpy(last_name,iso);

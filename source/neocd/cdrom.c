@@ -29,6 +29,7 @@
 #include "ingame.h"
 #include "7z.h"
 #include "gameinc.h" // clear_game_screen
+#include "iso.h"
 
 // cdrom_speed : used only for the speed of the loading animations
 int cdrom_speed;
@@ -246,7 +247,7 @@ static void handle_iso(char *start,char *cue) {
     init_iso();
 }
 
-void init_load_type() {
+void free_tracks() {
   if (alloc_tracks) {
     int n;
     for (n=0; n<nb_tracks; n++) {
@@ -254,9 +255,18 @@ void init_load_type() {
     }
     free(mp3_track);
     mp3_track = NULL;
+    nb_tracks = alloc_tracks = 0;
   }
-  nb_tracks = alloc_tracks = 0;
-  nb_indexes = 0;
+  if (indexes) {
+      free(indexes);
+      nb_indexes = 0;
+      alloc_indexes = 0;
+      indexes = NULL;
+  }
+}
+
+void init_load_type() {
+    free_tracks();
   if (!stricmp(&neocd_path[strlen(neocd_path)-3],"zip"))
     load_type = ZIP_TYPE;
   if (!stricmp(&neocd_path[strlen(neocd_path)-2],"7z"))
