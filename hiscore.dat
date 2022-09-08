@@ -22,6 +22,9 @@
 ; This hiscore.dat is only usable with lua enabled versions of mame since 0.172
 ; For examples of @delay & Protected ram see: Gorf (protected ram) & blastoff (@delay)
 
+bbakraid:
+@:maincpu,program,20f452,a7,00,30
+@:maincpu,program,20f505,1,0,0
 
 ;******** start of mame0.211 additions ***********
 
