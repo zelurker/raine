@@ -400,7 +400,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		if (cx >= 0 && cx < dump_cols) {
 		    // Give up the idea to draw an inverted square here with sdl2
 		    // instead we'll just use the ansi inverse video !
-		    char *s2 = (char*)malloc(strlen(s)+4*4);
+		    char *s2 = (char*)malloc(strlen(s)+4*5);
 		    strcpy(s2,s);
 		    int posx = x+cx*3+1; // 1st, inversion of the xx hex digits...
 		    sprintf(&s2[ansi_pos(s2,posx)],"\x1b[7m%s",&s[ansi_pos(s,posx)]);
@@ -439,7 +439,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		  pointer_top = top;
 		  pointer_rows = rows;
 		  pointer_end = end;
-		  s2 = (char*)malloc(strlen(s)+4*2);
+		  s2 = (char*)malloc(strlen(s)+4*3);
 		  start = ansi_pos(s,start);
 		  end = ansi_pos(s,end);
 		  strcpy(s2,s);
@@ -1479,6 +1479,9 @@ void done_console() {
   if (search) {
     nb_search = nb_alloc_search = 0;
     free(search);
+    free(search_size);
+    search = NULL;
+    search_size = NULL;
   }
   for (UINT32 n=0; n<nb_ram/2; n++) {
     if (ram_buf[n]) {
