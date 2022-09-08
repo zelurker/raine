@@ -23,8 +23,9 @@
 ; For examples of @delay & Protected ram see: Gorf (protected ram) & blastoff (@delay)
 
 bbakraid:
-@:maincpu,program,20f452,a7,00,30
-@:maincpu,program,20f505,1,0,0
+@:maincpu,program,20f452,a7,00,30 ; normal
+@:maincpu,program,20f356,a7,00,30 ; training
+@:maincpu,program,20f54e,a7,00,30 ; advanced
 
 ;******** start of mame0.211 additions ***********
 
