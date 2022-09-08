@@ -27,6 +27,11 @@ bbakraid:
 @:maincpu,program,20f356,a7,00,30 ; training
 @:maincpu,program,20f54e,a7,00,30 ; advanced
 
+bbakraidja:
+@:maincpu,program,20f444,9e,00,30 ; normal
+@:maincpu,program,20f356,9e,00,30 ; training
+@:maincpu,program,20f532,9e,00,30 ; advanced
+
 ;******** start of mame0.211 additions ***********
 
 
