@@ -1475,6 +1475,7 @@ void TMenu::handle_mouse(SDL_Event *event) {
 	    } else if (!header[n].label && focus) {
 		toggle_header();
 	    }
+	    ystart += SPACE_HEADER;
 	} else
 	    skip_fglayer_header(ystart);
 	for (index = (menu_disp ? menu_disp[top] : 0); index < nb_items; index++) {
