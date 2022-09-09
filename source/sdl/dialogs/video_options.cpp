@@ -165,7 +165,7 @@ static TMenu *menu;
 static menu_item_t ogl_options[] =
 {
     { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { _("DrawPixels (no shaders)"), _("Texture (possible shaders)") }, },
-    { _("Double buffer"), NULL, &ogl.dbuf, 3, { 0, 1, 2 }, {_("No"),_("Yes"), _("Forced")} },
+    { _("Double buffer"), NULL, &ogl.dbuf, 3, { 0, 1, 2 }, {_("No"),_("Yes (adaptive)"), _("Forced")} },
 #if SDL == 1
     { _("Opengl Blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
 #endif

@@ -130,7 +130,7 @@ static void CLI_Help(void)
 	"				  2 = normal blits\n"
 	"OpenGL options :\n"
 	"-render [0|1]                  : Renderer : 0 = DrawPixels, 1 = Texture\n"
-	"-dbuf [0|1]                    : Double buffer : 0 = off, 1 = on\n"
+	"-dbuf [0|1|2]                  : Double buffer : 0 = off, 1 = on, 2 = forced\n"
 	"-shader file                   : use file as shader\n"
 	"-filter [0|1]                   : opengl filtering, 0 = GL_NEAREST, 1 = GL_LINEAR\n"
 #endif
@@ -1739,7 +1739,7 @@ static void CLI_render() {
 }
 
 static void CLI_dbuf() {
-    ogl.dbuf = intArg(0,1,"Missing dbuf argument","dbuf must be 0 = off, or 1 = on");
+    ogl.dbuf = intArg(0,2,"Missing dbuf argument","dbuf must be 0 = off, or 1 = on");
 }
 
 static void CLI_shader() {

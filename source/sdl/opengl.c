@@ -157,7 +157,7 @@ void opengl_reshape(int w, int h) {
 #else
 	ogl.infos.vbl = 1;
 #endif
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
+	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ? 1 : 0);
     }
     check_error("end opengl_reshape");
 #endif

@@ -165,7 +165,7 @@ void display_read_config() {
 #ifdef DARWIN
    overlays_workarounds = raine_get_config_int("display","overlays_workarounds",1);
 #endif
-   ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
+   ogl.dbuf = raine_get_config_int("display","ogl_dbuf",2);
    integer_scaling = raine_get_config_int("display","integer_scaling",0);
    ogl.render = raine_get_config_int("display","ogl_render",1);
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1);
@@ -425,8 +425,8 @@ static SDL_Surface *new_set_gfx_mode() {
       }
       SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, (bpp < 32 ? bpp : 24) );
 #endif
-      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
-      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf );
+      SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ? 1 : 0);
+      SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, ogl.dbuf ? 1 : 0 );
       gl_init = 1;
       // SDL_GL_SetAttribute( SDL_GL_ACCELERATED_VISUAL, 1 );
       // filter out the unused flags

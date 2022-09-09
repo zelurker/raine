@@ -61,7 +61,7 @@ void display_read_config() {
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
    use_bld = raine_get_config_int("display","use_bld",1);
-   ogl.dbuf = raine_get_config_int("display","ogl_dbuf",1);
+   ogl.dbuf = raine_get_config_int("display","ogl_dbuf",2);
    integer_scaling = raine_get_config_int("display","integer_scaling",0);
    ogl.render = raine_get_config_int("display","ogl_render",1); // 0 = drawpixels, 1 = texture
    ogl.overlay = raine_get_config_int("display","ogl_overlay",1); // overlay interface
