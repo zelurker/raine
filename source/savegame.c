@@ -621,8 +621,17 @@ void NewLoad(gzFile fin)
    }while(!load_done);
    ProcessCallbackList(CALLBACK_LOAD|CALLBACK_CORE);
    ProcessCallbackList(CALLBACK_LOAD);
-   if (dbuf[0])
+   if (dbuf[0]) {
+       if (strstr(dbuf,"Unexpected")) {
+	   int l = strlen(dbuf);
+#ifdef __x86_64__
+	   snprintf(&dbuf[l],LEN_DUMP-l,"Maybe this save was created with a 32 bits version ?\n");
+#else
+	   snprintf(&dbuf[l],LEN_DUMP-l,"Maybe this save was created with a 64 bits version ?\n");
+#endif
+       }
        MessageBox("Alert",dbuf,"Ok");
+   }
 }
 
 void do_load_state(char *name) {
