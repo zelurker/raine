@@ -65,7 +65,10 @@ static tcache *dir;
 static int nb_alloc, nb;
 
 void free_iso_dir() {
-    if (last_file) isof.close(last_file);
+    if (last_file) {
+	isof.close(last_file);
+	last_file = NULL;
+    }
     if (dir) free(dir);
     dir = NULL;
 }
