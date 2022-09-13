@@ -462,11 +462,12 @@ int handle_sound_cmd(int cmd) {
 	// normal speed -> impossible to emulate !
 	} else if (cmd == 0x14) {
 	    mode = EAT_TWO;
-	} else if (cmd == 0x1a || cmd == 0x1c || cmd == 0x1e) {
+	} else if (cmd == 0x1e || cmd == 0x15 || (cmd >= 0x18 && cmd <= 0x1c)) {
 	    print_debug("assoc: cmd %x eat one ?\n",cmd);
 	    // Note : 1a and 1c and 1e are those which really output sound the
 	    // others just eat the following byte (for wakuwak7)
 	    // I assume the 1 means they eat 1 byte here, but I am not certain
+	    // 0x15 is a new one detected for kof95
 	    mode = ONE_SOUND;
 	} else { // all the others are ignored
 	    no_return = 1;
