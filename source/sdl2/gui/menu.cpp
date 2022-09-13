@@ -1584,7 +1584,7 @@ void TMenu::handle_joystick(SDL_Event *event) {
       // Notice for the axis, joyaxismotion for the ps3 has axis 0,1 for leftx,lefty but then 4,3 for rightx,righty
       // so we take events from the right stick only if the event comes from a controller, otherwise we take only the 1st stick
       // which is usually in the right order
-      axis = (event->type == SDL_JOYAXISMOTION ? event->jaxis.axis : event->caxis.axis & 1);
+      axis = (event->type == SDL_JOYAXISMOTION ? event->jaxis.axis : event->caxis.axis);
       val = (event->type == SDL_JOYAXISMOTION ? event->jaxis.value : event->caxis.value);
       switch(axis) {
       case 0: // x axis normally
