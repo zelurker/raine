@@ -1533,6 +1533,9 @@ void TMenu::handle_joystick(SDL_Event *event) {
     int axis,val,which;
   switch (event->type) {
   case SDL_CONTROLLERBUTTONDOWN:
+      if (event->cbutton.button < SDL_CONTROLLER_BUTTON_DPAD_UP ||
+	      event->cbutton.button > SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+	  break;
       axis_x = axis_y = jmoved = 0;
       switch (event->cbutton.button) {
       case SDL_CONTROLLER_BUTTON_DPAD_UP:
