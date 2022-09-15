@@ -132,7 +132,8 @@ void init_assoc(int kind) {
 	    adr = 0x14f;
 	    type = 1;
 	    print_debug("assoc: kof96 type 1 adr 14f\n");
-	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.1 ",21)) {
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.1 ",21) ||
+		!strncmp((char*)&Z80ROM[0x3e],"Sound Driver Ver 1.0 ",21)) {
 	    adr = 0x17d;
 	    type = 1;
 	    print_debug("assoc: kof97 type 1 adr 17d\n");
@@ -142,7 +143,8 @@ void init_assoc(int kind) {
 	    end_sound_codes = 0x1f;
 	    print_debug("assoc: kof2k type 1 adr 184\n");
 	} else if (!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.7",24) ||
-		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24)) {
+		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.8",24) ||
+		!strncmp((char*)&Z80ROM[0x3E],"Sound Driver(ROM)Ver 1.6",24)) {
 	    adr = 0x184;
 	    type = 1;
 	    print_debug("assoc: kof98/garou type 1 adr 184\n");
