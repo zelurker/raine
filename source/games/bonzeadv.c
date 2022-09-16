@@ -443,7 +443,7 @@ static void CChipWriteB(UINT32 address, int data)
 	 switch_led(0,(data>>4)&1);		// Coin A [Coin Inserted]
 	 switch_led(1,(data>>5)&1);		// Coin B [Coin Inserted]
 	 switch_led(2,((data>>6)&1)^1); 	// Coin A [Ready for coins]
-	 //switch_led(3,((data>>7)&1)^1);	// Coin B [Ready for coins]
+	 switch_led(3,((data>>7)&1)^1);	// Coin B [Ready for coins]
       break;
       case 0x1D:				// cchip[0][0x01D]: GENERATE LEVEL RESTART POS
 	 WriteRestartPos();

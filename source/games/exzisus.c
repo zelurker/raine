@@ -210,7 +210,7 @@ static void exzisus_sub_bank_w(UINT16 offset, UINT8 data)
       switch_led(0,(data>>2)&1);		// Coin A [Coin Inserted]
       switch_led(1,(data>>3)&1);		// Coin B [Coin Inserted]
       switch_led(2,(data>>0)&1);		// Coin A [Ready for coins]
-    //switch_led(3,(data>>1)&1);		// Coin B [Ready for coins]
+      switch_led(3,(data>>1)&1);		// Coin B [Ready for coins]
 
    break;
    }

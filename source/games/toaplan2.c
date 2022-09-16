@@ -2453,7 +2453,7 @@ static void set_toaplan2_leds(UINT8 data)
    switch_led(0,(data>>0)&1);		// Coin A [Coin Inserted]
    switch_led(1,(data>>1)&1);		// Coin B [Coin Inserted]
    switch_led(2,(data>>2)&1);		// Coin A [Ready for coins]
-   //switch_led(3,(data>>3)&1);		// Coin B [Ready for coins]
+   switch_led(3,(data>>3)&1);		// Coin B [Ready for coins]
 }
 
 static void fix_eight_ioc_wb(UINT32 offset, UINT8 data)
@@ -4733,11 +4733,7 @@ static void batrider_ioc_68k_wb(UINT32 offset, UINT8 data)
    offset &= 0xFF;
 
    switch(offset){
-   case 9: // bakraid irq ?
-     // sound_irq = 1;
-     // cpu_interrupt(CPU_Z80_0,0x38);
-     break;
-   case 0x11:
+   case 9:
      set_toaplan2_leds(data);
      break;
 

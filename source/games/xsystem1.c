@@ -394,14 +394,14 @@ static void balloonb_cchip_wb(UINT32 address, UINT8 data)
          switch_led(0,((data>>0)&1)^1);		// Coin A [Coin Inserted]
          switch_led(1,((data>>1)&1)^1);		// Coin B [Coin Inserted]
          switch_led(2,((data>>2)&1)^1);		// Coin A [Ready for coins]
-       //switch_led(3,((data>>3)&1)^1);		// Coin B [Ready for coins]
+	 switch_led(3,((data>>3)&1)^1);		// Coin B [Ready for coins]
       break;
       case 0x009:				// cchip[0][0x009]: COIN LEDS - BALLOON BROS
          RAM[0x20000+(address&0x7FF)] = data;
          switch_led(0,(data>>0)&1);		// Coin A [Coin Inserted]
          switch_led(1,(data>>1)&1);		// Coin B [Coin Inserted]
          switch_led(2,(data>>2)&1);		// Coin A [Ready for coins]
-       //switch_led(3,(data>>3)&1);		// Coin B [Ready for coins]
+	 switch_led(3,(data>>3)&1);		// Coin B [Ready for coins]
       break;
       case 0x803:
       break;

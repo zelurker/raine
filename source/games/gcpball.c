@@ -204,7 +204,7 @@ static void grand_cross_pinball_ioc_wb(UINT32 offset, UINT8 data)
          RAM[0x16000+(offset^1)] = data;
 
          switch_led(2, (data>>0)&1 );		// Coin A [Ready for coins]
-         //switch_led(3, (data>>1)&1 );		// Coin B [Ready for coins]
+         switch_led(3, (data>>1)&1 );		// Coin B [Ready for coins]
 
          M6585buffer_bank_write(0, (data>>4)&1 );
       break;

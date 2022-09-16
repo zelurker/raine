@@ -815,7 +815,7 @@ void IntF3System(void)
       switch_led(0,(lastled>>2)&1);		// Coin A [Coin Inserted]
       switch_led(1,(lastled>>3)&1);		// Coin B [Coin Inserted]
       switch_led(2,(lastled>>0)&1);		// Coin A [Ready for coins]
-      //switch_led(3,(lastled>>1)&1);		// Coin B [Ready for coins]
+      switch_led(3,(lastled>>1)&1);		// Coin B [Ready for coins]
    }
 
    // update trackballs
