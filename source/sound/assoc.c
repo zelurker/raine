@@ -381,6 +381,7 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
 int handle_sound_cmd(int cmd) {
     // return 1 to say command was handled
     if (disable_assoc || !type) return 0;
+    // printf("cmd %x mode %d\n",cmd,mode);
     switch (type) {
     case 4:
 	// all the mslug games support sound modes. The default is MUSIC after
@@ -538,6 +539,8 @@ int handle_sound_cmd(int cmd) {
 	    // Matrim seems to use commands 1, 3, 7 and 0 as reset, 0 was not used before, hope it's ok for the others...
 	    // 0 checked for kof98 & matrim, it's just ignored
 	    mode = SOUND;
+	    if (cmd == 4) mute_song(); // usually part of reset sequence, 4 3 7 followed by song number
+	    // except rbff2 uses this to stop the music of the intro sequence in console mode when pressing start and only in console mode !
 	    print_debug("assoc: cmd %x (sound)\n",cmd);
 	}
 	if (mode == SOUND) return 0;
