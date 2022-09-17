@@ -171,9 +171,9 @@ void switch_led(int a, int b) {
      * and the coin ready led is lit as soon as the boot finishes (usually after hardware check). That's all, nothing more to see.
      * Plus it requires the user to give write perrmission to these /sys/class/leds/<path>/brightness so it would require some kind of script
      * to change permissions on boot or something similar, not really convenient.
-     * It's good for testing, but won't be useful in the end. I'll keep it anyway, just in case it will fail silently in most cases because of file permissions...
+     * It's good for testing, but won't be useful in the end. I'll keep it anyway, just in case...
      * The good point is that the sysfs interface makes all this very easy to use once it correctly setup with the right permissions... ! */
-#ifdef RAINE_UNIX
+#if 0
     char *led[] = { "input3::capslock",
 	    "input3::numlock",
 	    "input3::scrolllock"};
@@ -183,9 +183,9 @@ void switch_led(int a, int b) {
 	FILE *f = fopen(myled,"w");
 	if (f) {
 	    if (b)
-		fprintf(f,"1\n");
+		fprintf(f,"1");
 	    else
-		fprintf(f,"0\n");
+		fprintf(f,"0");
 	    fclose(f);
 	}
     }
