@@ -5,6 +5,12 @@
 #include "str_opaque.h"
 #include "control.h"
 #include "control_internal.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include "sdl/dialogs/messagebox.h"
+#include "sdl/dialogs/fsel.h"
+#include "leds.h"
 
 extern int do_dirs(int sel); // dirs.cpp
 static int lang_int;
@@ -43,6 +49,95 @@ static menu_item_t color_menu[] =
 { _("Pause when focus lost"), NULL, &pause_on_focus, 2, { 0, 1 }, { _("No"), _("Yes") }}
 };
 
+#ifdef RAINE_UNIX
+static menu_item_t *menu;
+static int my_led,end; // end is a trick to force a redraw of the "leds assignments" dialog when 1 changes
+
+static int my_init_led(int sel) {
+    init_led(my_led,menu[sel].label);
+    end = 0;
+    return 1;
+}
+
+static int do_led_paths(int sel) {
+    my_led = sel;
+    DIR *dir = opendir("/sys/class/leds");
+    if (!dir)
+	return 0;
+    int nb_menu = 10;
+    menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
+    memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
+    int nb_files = 0;
+    struct dirent *dent;
+    while ((dent = readdir(dir))) {
+	if (!strcmp(dent->d_name,".") || !strcmp(dent->d_name,".."))
+	    continue;
+	char tmp[FILENAME_MAX];
+	snprintf(tmp,FILENAME_MAX,"/sys/class/leds/%s/brightness",dent->d_name);
+	if (access(tmp,W_OK))
+	    continue;
+
+	menu[nb_files].label = strdup(dent->d_name);
+	menu[nb_files++].menu_func = &my_init_led;
+
+	if (nb_files == nb_menu) {
+	    nb_menu += 10;
+	    menu = (menu_item_t *)realloc(menu,sizeof(menu_item_t)*(nb_menu+1));
+	    memset(&menu[nb_files],0,sizeof(menu_item_t)*11);
+	    if (!menu) {
+		fatal_error("failed to realloc files buffer (%d entries)",nb_menu);
+	    }
+	}
+    }
+    if (nb_files == 0) {
+	MessageBox("Error","No write permission to any brightness file\nin /sys/class/leds","ok");
+	return 0;
+    }
+    qsort(&menu[0],nb_files,sizeof(menu_item_t),&qsort_menu);
+
+    TMenu *dlg = new TMenu("leds",menu);
+    dlg->execute();
+    delete dlg;
+
+    for (int n=0; n<nb_files; n++)
+	free(menu[n].label);
+    free(menu);
+
+    end = 0;
+    return 1;
+}
+
+int do_leds(int sel) {
+    int nb_menu = MAX_LEDS + 1;
+    do {
+	end = 1;
+	menu_item_t *menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
+	memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
+	for (int n=0; n<MAX_LEDS; n++) {
+	    char tmp[80];
+	    char *s = get_led_name(n);
+	    if (!s)
+		snprintf(tmp,80,"led%d none",n);
+	    else {
+		snprintf(tmp,80,"led%d %s",n,s);
+		free(s);
+	    }
+	    menu[n].label = strdup(tmp);
+	    menu[n].menu_func = &do_led_paths;
+	}
+
+	TMenu *dlg = new TMenu("Leds assignments",menu);
+	dlg->execute();
+	delete dlg;
+
+	for (int n=0; n<MAX_LEDS; n++)
+	    free(menu[n].label);
+	free(menu);
+    } while (!end);
+    return 0;
+}
+#endif
+
 int do_gui_options(int sel) {
   int nb = 1;
   if (strstr(language,"fr")) lang_int = 1;
@@ -65,6 +160,10 @@ int do_gui_options(int sel) {
   gui_menu[nb++] = color_menu[3];
   gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
+#ifdef RAINE_UNIX
+  gui_menu[++nb].label = _("Leds...");
+  gui_menu[nb].menu_func = &do_leds;
+#endif
   if (nb >= MAX_GUI-1) { // -1 because we need a NULL at the end
       fatal_error("too many gui options !");
   }

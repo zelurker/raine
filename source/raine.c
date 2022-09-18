@@ -70,6 +70,7 @@
 #include <memoryapi.h>
 #endif
 #endif
+#include "leds.h"
 
 struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
@@ -446,6 +447,9 @@ int main(int argc,char *argv[])
    language[2] = 0;
    init_lang();
 
+#ifdef RAINE_UNIX
+   read_leds_config();
+#endif
    read_gui_config();
 
 #ifndef SDL
@@ -853,6 +857,9 @@ int main(int argc,char *argv[])
    // RAINE GUI
 
     write_gui_config();
+#ifdef RAINE_UNIX
+    write_leds_config();
+#endif
 
 #ifndef SDL
    raine_set_config_int(	"Display",      "png_compression",         _png_compression_level);

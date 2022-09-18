@@ -180,7 +180,7 @@ static int do_paths(int sel) {
   return 0;
 }
 
-static int sort_menu(const void *a, const void *b) {
+int qsort_menu(const void *a, const void *b) {
   return stricmp(((menu_item_t *)a)->label, ((menu_item_t *)b)->label);
 }
 
@@ -393,7 +393,7 @@ void TFileSel::compute_nb_items() {
 #else
     closedir(dir);
 #endif
-    qsort(&menu[1],nb_files-1,sizeof(menu_item_t),&sort_menu);
+    qsort(&menu[1],nb_files-1,sizeof(menu_item_t),&qsort_menu);
     if (oldsel)
 	for (int n=1; n<nb_files; n++)
 	    if (!strcmp(menu[n].label,oldsel))

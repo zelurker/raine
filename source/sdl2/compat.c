@@ -21,6 +21,7 @@
 #include "display.h"
 #include <SDL_image.h>
 #include "files.h"
+#include "leds.h"
 
 void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
     char msg[512];
@@ -248,6 +249,7 @@ void sdl_done() {
   SDL_FreeFormat(color_format);
   save_game_stats();
   SDL_Quit();
+  done_leds();
 }
 
 al_bitmap *surface_to_bmp(SDL_Surface *s) {

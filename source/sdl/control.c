@@ -163,34 +163,10 @@ int get_joy_naxes(int n) {
  * and it's obvious that having direct access to the keyboard to be able
  * to manipulate the leds will be a problem in a multitasking OS */
 
+#ifndef RAINE_UNIX
 void switch_led(int a, int b) {
-    /* This code emulates the leds with the keyboard leds on linux
-     * it should take at least 3 paths for the 3 1st leds in the led array, it's very specific to each system, which are in /sys/class/leds.
-     * Here it's just on mine for testing.
-     * It works, but it's very disappointing, nothing fancy to see, the insert coin led briefly blinks when a coin is inserted
-     * and the coin ready led is lit as soon as the boot finishes (usually after hardware check). That's all, nothing more to see.
-     * Plus it requires the user to give write perrmission to these /sys/class/leds/<path>/brightness so it would require some kind of script
-     * to change permissions on boot or something similar, not really convenient.
-     * It's good for testing, but won't be useful in the end. I'll keep it anyway, just in case...
-     * The good point is that the sysfs interface makes all this very easy to use once it correctly setup with the right permissions... ! */
-#if 0
-    char *led[] = { "input3::capslock",
-	    "input3::numlock",
-	    "input3::scrolllock"};
-    if (a < 3) {
-	char myled[80];
-	snprintf(myled,80,"/sys/class/leds/%s/brightness",led[a]);
-	FILE *f = fopen(myled,"w");
-	if (f) {
-	    if (b)
-		fprintf(f,"1");
-	    else
-		fprintf(f,"0");
-	    fclose(f);
-	}
-    }
-#endif
 }
+#endif
 
 volatile int *MouseB;
 UINT32 p1_trackball_x;

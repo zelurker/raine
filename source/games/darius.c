@@ -366,7 +366,7 @@ static void darius_ioc_wb(UINT32 address, UINT8 data)
        //switch_led(1,((data>>6)&1));			// Coin B [Coin Inserted]
          switch_led(2,((data>>1)&1));			// Coin A [Ready for coins]
 	 switch_led(3,((data>>2)&1));			// Coin B [Ready for coins]
-	 switch_led(4,((data>>4)&1));			// Player Start Game
+	 // switch_led(4,((data>>4)&1));			// Player Start Game
       break;
       default:
          RAM[0x42000+(address^1)] = data;
