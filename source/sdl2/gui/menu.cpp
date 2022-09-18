@@ -1714,12 +1714,15 @@ void TMenu::draw_top_frame() {
     if (!*get_top_string()) return;
     int w_title,h_title;
     char *s = get_top_string();
-    do {
+    if (strcmp(title,get_top_string())) { // only do this if there is something to display on the right
+	do {
+	    font->dimensions(s,&w_title,&h_title);
+	    if (w_title > work_area.w / 2 && strlen(s) > 2)
+		s++;
+	} while (w_title > work_area.w / 2 && strlen(s) > 2);
+    } else
 	font->dimensions(s,&w_title,&h_title);
-	if (w_title > work_area.w / 2 && strlen(s) > 2)
-	    s++;
-    } while (w_title > work_area.w / 2 && strlen(s) > 2);
-    boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
+    boxColor(rend,0,0,sdl_screen->w,h_title-1,bg_frame);
     font->put_string(HMARGIN,0,s,fg_frame,bg_frame);
     if (strcmp(get_top_string(),title)) {
 	s = (char*)title;
