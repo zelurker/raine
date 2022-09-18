@@ -515,7 +515,8 @@ static void add_header(int index) {
 		    free(header[5].label);
 		}
 		memmove(&header[n+1],&header[n],sizeof(menu_item_t)*(5-n));
-	    }
+	    } else if (header[5].label)
+		free(header[5].label);
 	    add_header_info(n,index);
 	    return;
 	}
@@ -537,6 +538,7 @@ int do_game_sel(int sel) {
 
     game_sel->execute();
     delete game_sel;
+
     return raine_cfg.req_load_game;
 }
 
