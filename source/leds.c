@@ -37,8 +37,10 @@ void write_leds_config() {
 void done_led(int n) {
     if (led[n]) {
 	FILE *f = fopen(led[n],"w");
-	fprintf(f,"%d",orig_status[n]);
-	fclose(f);
+	if (f) { // Just in case we lost write access during runtime !
+	    fprintf(f,"%d",orig_status[n]);
+	    fclose(f);
+	}
 	free(led[n]);
 	led[n] = NULL;
     }
