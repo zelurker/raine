@@ -249,7 +249,9 @@ void sdl_done() {
   SDL_FreeFormat(color_format);
   save_game_stats();
   SDL_Quit();
+#ifdef RAINE_UNIX
   done_leds();
+#endif
 }
 
 al_bitmap *surface_to_bmp(SDL_Surface *s) {

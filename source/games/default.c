@@ -237,7 +237,9 @@ void ClearDefault(void)
 	free(history);
 	history = NULL;
     }
+#ifdef RAINE_UNIX
     for (int n=0; n<MAX_LEDS; n++)
 	switch_led(n,0);
+#endif
 }
 
