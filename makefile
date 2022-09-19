@@ -1177,6 +1177,10 @@ OBJS +=	 \
 	$(SYSDRV) \
 	$(DEBUG)
 
+ifdef RAINE_UNIX
+OBJS += $(OBJDIR)/leds.o
+endif
+
 ifdef SDL
 OBJS +=	 \
 	$(OBJDIR)/sdl/control.o \
