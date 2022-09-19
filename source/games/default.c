@@ -41,6 +41,7 @@
 #endif
 #include "bld.h"
 #include "history.h"
+#include "leds.h"
 
 void LoadDefault(void)
 {
@@ -236,5 +237,7 @@ void ClearDefault(void)
 	free(history);
 	history = NULL;
     }
+    for (int n=0; n<MAX_LEDS; n++)
+	switch_led(n,0);
 }
 
