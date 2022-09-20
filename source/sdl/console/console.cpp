@@ -375,14 +375,14 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 	if (pointer_on==1 && (pointer_x != cx || pointer_n != n)) {
 	  if (pointer_n >= top && pointer_n < top+rows &&
 	      pointer_top == top && pointer_rows == rows) {
-	      draw(); // restore normal text
+	      update_fg_layer(); // restore normal text
 	  }
 	} else if (pointer_on == 2) {
 	  if (pointer_top == top) {
 	    int dx = mx/cw;
 	    if (n == pointer_n && dx >= pointer_x && dx <= pointer_end)
 	      break; // still on the number
-	    draw();
+	    update_fg_layer();
 	  }
 	  pointer_top = top;
 	  pointer_on = 0;
@@ -408,7 +408,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		    posx = x+dump_cols*3+cx+1; // then the ascii character in the end... !
 		    sprintf(&s2[ansi_pos(s2,posx)],"\x1b[7m%c\x1b[0m%s",s[ansi_pos(s,posx)],&s[ansi_pos(s,posx+1)]);
 		    menu[n].label = s2;
-		    draw();
+		    update_fg_layer();
 		    menu[n].label = s;
 		    free(s2);
 		  pointer_on = 1;
@@ -446,7 +446,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 		  sprintf(&s2[start],"\x1b[7m%s",&s[start]);
 		  sprintf(&s2[end+4],"\x1b[0m%s",&s[end]);
 		  menu[n].label = s2;
-		  draw();
+		  update_fg_layer();
 		  menu[n].label = s;
 		  free(s2);
 		  break;
