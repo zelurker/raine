@@ -253,11 +253,17 @@ void TConsole::print(const char *format, ...)
     child[nb_items] = new TStatic(&menu[nb_items]);
   nb_items++;
 
+  if (lift) {
+      // make a super fast update !
+      lift->next_page();
+  } else {
+      // If there is no lift, then the window will probably grow which means fg_layer will have to be re-created
 #if SDL == 2
-  SDL_DestroyTexture(fg_layer);
-  fg_layer = NULL;
+      SDL_DestroyTexture(fg_layer);
+      fg_layer = NULL;
 #endif
-  draw();
+      draw();
+  }
   post_print();
 }
 
