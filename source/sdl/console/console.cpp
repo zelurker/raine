@@ -1301,11 +1301,53 @@ static void do_cpu(int argc, char **argv) {
 
 commands_t commands[] =
 {
-    { "cpu", &do_cpu, "cpu [cpu] : show/set active cpu(s)."},
-  { "map", &do_map, "map  : show locations of ram in memory map"},
+  { "break", &do_break, "\E[32mbreak\E[0m [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
+  "illegal instruction for the 68000/68020 if using musashi (64 bits usually)\n"
+  "reset instruction for starscream (68000)\n"
+  "out 0xab,a for the z80\nSo you must be careful to place these where there is no risk to branch in the middle of the breakpoint, and for the z80 the ab port should not be used."},
+  { "cond", &do_cond, "\E[32mcond\E[0m test","Execute up to 16M cycles until the condition passed in parameter becomes true. The condition can use registers like :\n"
+  "cond a2==$101f00\n"
+  "Don't forget that the condition must be in 1 parameter, no spaces allowed."},
+    { "cpu", &do_cpu, "\E[32mcpu\E[0m [cpu] : show/set active cpu(s)."},
+  { "dump", &do_dump,"\E[32mdump\E[0m adr : dump the contents of ram, starting at adr",
+  "a click on a value of a dump gives you the corresponding adress in the command line. If some search results are in the dump, they appear in green. You can also use 'dump search' to dump the search results (in this mode, all the lines start with a search result). In a dump the numbers which have changed since the last time you called the console and which are not search results are displayed in cyan."},
+  { "if", &do_if, "\E[32mif\E[0m cond ... [\E[32melse|elsif\E[0m]...\E[32mendif\E[0m",
+    "it's a simple if, it takes only 1 argument which is the test, then the "
+      "instructions to execute on the following lines if the test is true, "
+      "until it finds either elsif followed by another test, else, or endif\n\n"
+      "Example :\n"
+      "if dpeek($100000)==$ffff\n"
+      "  poke $100123,1\n"
+      "elsif dpeek($100000)==$fffe\n"
+      "  poke $100123,2\n"
+      "endif"},
+  { "irq", &do_irq, "\E[32mirq\E[0m [nb] : execute instructions until we are out of the irq. Can be executed anywhere, even if some values have been put onto the stack. When passing an irq number trigers this irq (but don't execute any cycles)" },
+  { "list", &do_list, "\E[32mlist\E[0m [address] : disassemble at address or around current pc if asm listing is available (ram.bin.s for neocd, ROM.bin.s for normal roms)." },
+  { "l", &do_list, },
+  { "loaded", &do_loaded, "\E[32mloaded\E[0m [type] offset : neocd only, returns what is loaded at this offset", "type is 0 (PRG) if ommited\n"
+      "Oterwise it can be :\n"
+"PRG 0\n"
+"FIX 1\n"
+"SPR 2\n"
+"Z80 3\n"
+"PCM 4\n"
+"PAT 5\n"},
+  { "map", &do_map, "\E[32mmap\E[0m  : show locations of ram in memory map"},
+  { "next", &do_next, "\E[32m(n)ext\E[0m : like step, but don't step into subprograms or traps - can be interrupted by ESC or Ctrl-C" },
+  { "n", &do_next },
+  { "poke", &do_poke, "\E[32mpoke/dpoke/lpoke\E[0m adr value : put the byte/word/long in ram"},
+  { "dpoke", &do_poke },
+  { "lpoke", &do_poke },
+  { "print_ingame", &do_print_ingame, "\E[32mprint_ingame\E[0m nb_frames msg [arguments...]\nthis is a script command only, it useless from the console.\nDisplays a message at the bottom of the screen while the game is running\n(max 3 arguments)" },
+  { "regs", &do_regs, "\E[32mregs\E[0m : show registers", "Notice that the registers are directly assigned to some variables. d0-d7 a0-a7 sp, pc for the 68000/68020, a,b,c,de,f,hl, pc and iff for the z80. You can use these variables in expressions, change them, etc..."},
+  { "restore", &do_restore, "\E[32mrestore\E[0m name adr1 [adr2] : load file at adr1, until adr2 or end of file" },
+  { "save", &do_save, "\E[32msave\E[0m name adr1 adr2 : saves the memory range between adr1 & adr2 to disk" },
+  { "script", &do_script, "\E[32mscript\E[0m ['description' [always]]",
+  "Record a script, a list of instructions, to be called later, generally as a cheat. You can run this command without parameters, in this case it will just ask for the missing information. Usually you should first test your instructions, and once you are sure they are correct, run this command, and use the history feature of the command to record the right instructions.\n"
+  "Notice that you can edit scripts with a text editor, they are saved in scripts/neocd/gamename.txt or scripts/raine/gamename.txt where gamename is the short game name (given on the status line)" },
   { "searchw", &do_search, NULL },
   { "searchl", &do_search, NULL },
-  { "search", &do_search, "search/searchw/searchl what [where]  : search the byte/word/long in ram", "if where is not specified, take 1st ram range\n"
+  { "search", &do_search, "\E[32msearch/searchw/searchl\E[0m what [where]  : search the byte/word/long in ram", "if where is not specified, take 1st ram range\n"
   "otherwise range can be $adr or $adr1-$adr2\n"
   "\n"
   "what can be a number, the command adapts to its size\n"
@@ -1326,58 +1368,16 @@ commands_t commands[] =
   "for respectively a word and a long (usefull for the relative searches like "
   "< or >)\n"
   "Use search clear to clear the last results and start a new search.\nSee also : dump search"},
-  { "poke", &do_poke, "poke/dpoke/lpoke adr value : put the byte/word/long in ram"},
-  { "dpoke", &do_poke },
-  { "lpoke", &do_poke },
-  { "dump", &do_dump,"dump adr : dump the contents of ram, starting at adr",
-  "a click on a value of a dump gives you the corresponding adress in the command line. If some search results are in the dump, they appear in green. You can also use 'dump search' to dump the search results (in this mode, all the lines start with a search result). In a dump the numbers which have changed since the last time you called the console and which are not search results are displayed in cyan."},
-  { "script", &do_script, "script ['description' [always]]",
-  "Record a script, a list of instructions, to be called later, generally as a cheat. You can run this command without parameters, in this case it will just ask for the missing information. Usually you should first test your instructions, and once you are sure they are correct, run this command, and use the history feature of the command to record the right instructions.\n"
-  "Notice that you can edit scripts with a text editor, they are saved in scripts/neocd/gamename.txt or scripts/raine/gamename.txt where gamename is the short game name (given on the status line)" },
-  { "start_script", &do_start_script, "start_script \"name\" : enable a script when next frame is drawn",
+  { "start_script", &do_start_script, "\E[32mstart_script\E[0m \"name\" : enable a script when next frame is drawn",
       "Equivalent to turn a script on using the cheats dialog (when it's not hidden)" },
-  { "regs", &do_regs, "regs : show registers", "Notice that the registers are directly assigned to some variables. d0-d7 a0-a7 sp, pc for the 68000/68020, a,b,c,de,f,hl, pc and iff for the z80. You can use these variables in expressions, change them, etc..."},
-  { "watch", &do_watch, "watch [read] [adr] [size] [value] : adds/lists watchpoints", "when passing adr, adds a watch point on adr (2 actually, 1 for the byte, and 1 for the word), which are trigered everytime something is writen to this adress.\n"
+  { "step", &do_step, "(s)\E[32mtep\E[0m : execute next instruction" },
+  { "s", &do_step },
+  { "until", &do_until, "\E[32m(u)ntil\E[0m pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
+  { "u", &do_until },
+  { "watch", &do_watch, "\E[32mwatch\E[0m [read] [adr] [size] [value] : adds/lists watchpoints", "when passing adr, adds a watch point on adr (2 actually, 1 for the byte, and 1 for the word), which are trigered everytime something is writen to this adress.\n"
   "Without argument, list the watch points defined.\n"
  "If read is passed, then watch for the reads (the default is to watch for the writes). If size is passed in the last argument, then watch for a zone of size bytes instead of just 1 adress. if size > 2, then only the word accesses are watched for now.\n"
  "And finally if value is passed, the watch point is executed only if this value is read or written.\nPass watch del nb to delete a watch point" },
-  { "cond", &do_cond, "cond test","Execute up to 16M cycles until the condition passed in parameter becomes true. The condition can use registers like :\n"
-  "cond a2==$101f00\n"
-  "Don't forget that the condition must be in 1 parameter, no spaces allowed."},
-  { "if", &do_if, "if cond ... [else|elsif]...endif",
-    "it's a simple if, it takes only 1 argument which is the test, then the "
-      "instructions to execute on the following lines if the test is true, "
-      "until it finds either elsif followed by another test, else, or endif\n\n"
-      "Example :\n"
-      "if dpeek($100000)==$ffff\n"
-      "  poke $100123,1\n"
-      "elsif dpeek($100000)==$fffe\n"
-      "  poke $100123,2\n"
-      "endif"},
-  { "save", &do_save, "save name adr1 adr2 : saves the memory range between adr1 & adr2 to disk" },
-  { "restore", &do_restore, "restore name adr1 [adr2] : load file at adr1, until adr2 or end of file" },
-  { "step", &do_step, "(s)tep : execute next instruction" },
-  { "s", &do_step },
-  { "next", &do_next, "(n)ext : like step, but don't step into subprograms or traps - can be interrupted by ESC or Ctrl-C" },
-  { "n", &do_next },
-  { "irq", &do_irq, "irq [nb] : execute instructions until we are out of the irq. Can be executed anywhere, even if some values have been put onto the stack. When passing an irq number trigers this irq (but don't execute any cycles)" },
-  { "list", &do_list, "list [address] : disassemble at address or around current pc if asm listing is available (ram.bin.s for neocd, ROM.bin.s for normal roms)." },
-  { "l", &do_list, },
-  { "break", &do_break, "break [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
-  "illegal instruction for the 68000/68020 if using musashi (64 bits usually)\n"
-  "reset instruction for starscream (68000)\n"
-  "out 0xab,a for the z80\nSo you must be careful to place these where there is no risk to branch in the middle of the breakpoint, and for the z80 the ab port should not be used."},
-  { "until", &do_until, "(u)ntil pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
-  { "u", &do_until },
-  { "print_ingame", &do_print_ingame, "print_ingame nb_frames msg [arguments...]\nthis is a script command only, it useless from the console.\nDisplays a message at the bottom of the screen while the game is running\n(max 3 arguments)" },
-  { "loaded", &do_loaded, "loaded [type] offset : neocd only, returns what is loaded at this offset", "type is 0 (PRG) if ommited\n"
-      "Oterwise it can be :\n"
-"PRG 0\n"
-"FIX 1\n"
-"SPR 2\n"
-"Z80 3\n"
-"PCM 4\n"
-"PAT 5\n"},
   { NULL, NULL, },
 };
 
