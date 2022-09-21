@@ -37,6 +37,7 @@
 #include "display_sdl.h"
 #endif
 #include <dirent.h>
+#include "sdl/glsl.h"
 
 static int ArgCount;		// Number of arguments in the command line
 static int ArgPosition;		// Current position in the argument list
@@ -261,6 +262,9 @@ int actual_load_neo_game(void)
 #endif
 #ifndef RAINE_DOS
 	sdl_init();
+#ifdef RAINE_WIN32
+	       init_glsl();
+#endif
 #endif
       init_display();
       setup_font(); // Usefull even without gui for the messages on screen
@@ -1937,6 +1941,9 @@ void parse_command_line(int argc, char *argv[])
 	       // iso or directory, assuming neocd image
 #ifdef RAINE_SDL
 	       sdl_init();
+#ifdef RAINE_WIN32
+	       init_glsl();
+#endif
 #endif
 	       backslash(ArgList[ArgPosition]);
 	       load_neo_from_name(ArgList[ArgPosition]);
