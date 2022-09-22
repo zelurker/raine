@@ -418,8 +418,9 @@ int handle_sound_cmd(int cmd) {
 	} else if (mode == ONE_SOUND) {
 	    print_debug("assoc: eat one %x\n",cmd);
 	    mode = MUSIC;
-	    if (cmd >= 0x20)
-		// particularty here, the eat one seems to work only on cmds >= 0x20...
+	    // There was a comment to say only commands >= 0x20 are taken here, but clearly
+	    // it's >= 0x11 for at least samsho & rbff1. Too bad there was no comment to tell which game...
+	    if (cmd >= 0x11)
 		return 0;
 	}
 
@@ -465,12 +466,13 @@ int handle_sound_cmd(int cmd) {
 	// normal speed -> impossible to emulate !
 	} else if (cmd == 0x14) {
 	    mode = EAT_TWO;
-	} else if (cmd == 0x1e || cmd == 0x15 || (cmd >= 0x18 && cmd <= 0x1c)) {
+	} else if (cmd == 0x1e || cmd == 0x15 || (cmd >= 0x18 && cmd <= 0x1d)) {
 	    print_debug("assoc: cmd %x eat one ?\n",cmd);
 	    // Note : 1a and 1c and 1e are those which really output sound the
 	    // others just eat the following byte (for wakuwak7)
 	    // I assume the 1 means they eat 1 byte here, but I am not certain
 	    // 0x15 is a new one detected for kof95
+	    // 1d is a new one in rbff1, I could swear some others don't have it
 	    mode = ONE_SOUND;
 	} else { // all the others are ignored
 	    no_return = 1;
