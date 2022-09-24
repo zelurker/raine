@@ -684,13 +684,15 @@ static void do_main_menu() {
 void StartGUI(void)
 {
 #if SDL == 2
-    desktop = new TRaineDesktop();
+    if (!raine_cfg.no_gui) {
+	desktop = new TRaineDesktop();
+	gui_end_hook = &gui_end;
+	gui_start_hook = &gui_start;
+	event_hook = &my_event;
+    }
 #ifdef RAINE_WIN32
     init_glsl();
 #endif
-    event_hook = &my_event;
-    gui_end_hook = &gui_end;
-    gui_start_hook = &gui_start;
 #else
     setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
 #endif
@@ -732,7 +734,7 @@ void StartGUI(void)
 
 	   do_load_game();
 #if SDL == 2
-	   if (current_game) rdesktop->preinit();
+	   if (current_game && !raine_cfg.no_gui) rdesktop->preinit();
 #endif
        }
 
@@ -763,7 +765,7 @@ void StartGUI(void)
 	       WantPlay = 0;
        }
 #if SDL==2
-       rdesktop->end_preinit();
+       if (!raine_cfg.no_gui) rdesktop->end_preinit();
 #endif
 
        if(current_game && (display_cfg.auto_mode_change && display_cfg.video_mode == 2)) {
