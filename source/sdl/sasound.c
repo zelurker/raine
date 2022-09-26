@@ -342,7 +342,7 @@ static int read_more_data(Sound_Sample *sample)
 		    if (n >= global_state.decoded_bytes/2) {
 			global_state.decoded_bytes = 0; // need more then !
 		    } else {
-			global_state.decoded_ptr = (UINT8*)ptr;
+			global_state.decoded_ptr = (UINT8*)&ptr[n];
 			global_state.decoded_bytes -= n*2;
 			skip_silence = 0;
 		    }
