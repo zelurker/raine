@@ -95,8 +95,10 @@ void TRaineDesktop::end_preinit() {
     // if there's only 1 cpu active in a category, it means its context will be cleared
     // so to be safe we save the context if there is only 1 cpu in a category
     // Trouble between 68020 & 68000 if using musashi for both... !
-    if (MZ80Engine >= 1)
+    if (MZ80Engine >= 1) {
+	switch_cpu(CPU_Z80_0);
 	mz80GetContext(&Z80_context[0]);
+    }
     if (StarScreamEngine >= 1) {
 	switch_cpu(CPU_68K_0);
 	s68000GetContext(&M68000_context[0]);
@@ -107,8 +109,10 @@ void TRaineDesktop::end_preinit() {
 	m68k_get_context(&m68020_context);
     }
 #endif
-    if (M6502Engine>=1)
+    if (M6502Engine>=1) {
+	switch_cpu(CPU_M6502_0);
 	m6502GetContext(&M6502_context[0]);
+    }
 
 }
 
