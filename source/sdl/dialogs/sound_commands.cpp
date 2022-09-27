@@ -302,12 +302,22 @@ int do_sound_cmd(int sel) {
 		add_value(n+0x20);
 	}
 	break;
-    case 2: // galaxyfg
+    case 2: // tons of type 2, the majority, see assoc.c for details
+        // Normally there is an array of sound types, 2 being usually a song
+	// but apparently type 0 is a sound and many can play at the same time
+	// but any type > 0 is played on a different channel and so sounds of the same type interrupt each other
+	// the only game I found so far which doesn't take 2 for songs in pulstar, for it, it's type 4 which are the songs... !
 	adr = get_assoc_adr();
-	for (int n=0; n<0x100; n++) {
-	    if (Z80ROM[adr+n] == 2)
-		add_value(n);
-	}
+	if (is_current_game("pulstar"))
+	    for (int n=0; n<0x100; n++) {
+		if (Z80ROM[adr+n] == 4)
+		    add_value(n);
+	    }
+	else
+	    for (int n=0; n<0x100; n++) {
+		if (Z80ROM[adr+n] == 2)
+		    add_value(n);
+	    }
 	break;
     case 3:  // sonicwi2/3
 	for (int n=0x20; n<Z80ROM[0x30d]; n++)

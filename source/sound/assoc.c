@@ -22,7 +22,7 @@ static void start_music_fadeout(double time) {
 // active : same role as cdda.playing, except that neocd and neogeo share the
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
-static int type,adr,adr2,active,end_sound_codes;
+static int type,adr,adr2,active,end_sound_codes,variant;
 static char *track[256],loop[256];
 int disable_assoc,last_song;
 enum {
@@ -54,6 +54,7 @@ static int qsound_base,qsound_playing;
 
 void init_assoc(int kind) {
     adr2 = 0;
+    variant = 0;
     if (kind == 1) { // neogeo
 	/* Some roms have a version + an author in them, but apparently
 	 * there are some variants, so they must be recognized on something
@@ -67,7 +68,6 @@ void init_assoc(int kind) {
 	    // and adr2 is the target
 	    // This new patern matches wakuwaku7 and probably some others
 	    // since it's not dependant anymore on any address... !
-	    // This includes galaxyfg, 3countb fatfury2, fatfury3...
 	    UINT8 needle[3] = { 0x7e,0x32 };
 	    int n;
 	    n = 0x65;
@@ -75,6 +75,7 @@ void init_assoc(int kind) {
 	       n = search(2,needle,n+1);
 	    } while (n < 0x1000 && Z80ROM[n+2] != 0x21);
 	    if (n < 0x1000) n += 3;
+	    if (is_current_game("ssideki")) n = 0x1ef;
 
 	    if (n >= 0x1000) {
 		print_debug("assoc: 1st needle : %x\n",n);
@@ -100,6 +101,25 @@ void init_assoc(int kind) {
 		type = 2;
 		adr = ReadWord(&Z80ROM[n]);
 		print_debug("assoc found type 2 at adr = %x read from n=%x\n",adr,n);
+		/* Games taking 1 byte as command 14h argument :
+		    3countb, alpham2, androdun, aof, aof2, b2b
+		    bangbead, bstars, // includes bstars2 & bstarsh
+		    flipshot, blazstar, breakers, breakrev, burningf, ctomaday,
+		    cyberlip, eightman, fatfury1, fatfury2, fatufury3, fatfurysp,
+		    fightfev, fbfrenzy, galaxyfg, ganryu, gpilots, goalx3,
+		    kabuki, kotm, kotm2, lresort, lbowling, legendos,
+		    miexchng, mutnat, nam1975, neobombe, neodrift, neomrdo,
+		    panicbom, pgoal, pulstar, pbobblen, puzzledp, puzzledpr,
+		    joyjoy, ragnagrd, ridhero, roboarmy, samsho, samsho2,
+		    savagere, sengoku, sengoku2, shocktro, sockbrwl, spinmast,
+		    stakwin, stakwin2, ssideki, ssideki2, ssideki3, irrmaze,
+		    kof94, kof95, superspy, tophuntr, topgolf, viewpoin,
+		    gowcaizr, zedblade, zupapa !
+	    */
+		// and found those who take an argument on 2 bytes
+		if (is_current_game("aof3") || is_current_game("magdrop3") || is_current_game("nitd") || is_current_game("wakuwak7") ||
+			is_current_game("rbff1") || is_current_game("samsho3") || is_current_game("wakuwak7"))
+		    variant = 1;
 	    } else {
 		type = 0;
 		print_debug("assoc not found type 2\n");
@@ -119,11 +139,15 @@ void init_assoc(int kind) {
 	    int n = 0x65;
 	    type = 0;
 	    while ((n = search(2,needle,n+1)) < 0x1000) {
-		printf("found fe%x at %x\n",needle[0],n);
 		if (Z80ROM[n-8] == 0x21) {
 		    type = 2;
+		    if (is_current_game("pulstar"))
+			variant = 2; // a very special variant, songs have type 4 and not 2 in the array, but command 14h is on 1 byte only
+		    else if (is_current_game("neocup98") || is_current_game("preisle2") || is_current_game("shocktr2"))
+			// argument of command 14h on 2 bytes
+			variant = 1;
 		    adr = ReadWord(&Z80ROM[n-7]);
-		    print_debug("assoc: found type 2 at adr = %x -> %x\n",n-7,adr);
+		    print_debug("assoc: found type 2 alt at adr = %x -> %x variant %d\n",n-7,adr,variant);
 		    break;
 		}
 	    }
@@ -464,7 +488,7 @@ int handle_sound_cmd(int cmd) {
 	    print_debug("assoc: cmd %x fadeout\n",cmd);
 	// e slows down music until the next part where it takes back its
 	// normal speed -> impossible to emulate !
-	} else if (cmd == 0x14 && !is_current_game("kof95") && !is_current_game("kof95h")) {
+	} else if (cmd == 0x14 && variant == 1) {
 	    // kof95 at least uses ONE_SOUND below !!!
 	    mode = EAT_TWO;
 	} else if (cmd == 0x15 || cmd == 0x14 || (cmd >= 0x18 && cmd <= 0x1e)) {
@@ -480,10 +504,11 @@ int handle_sound_cmd(int cmd) {
 	}
 	if (!no_return)
 	    return 0;
-	if (active && Z80ROM[adr + cmd] == 2) {
+	if (active && ((variant < 2 && Z80ROM[adr + cmd] == 2) ||
+		    (variant == 2 && Z80ROM[adr + cmd] == 4))) {
 	    print_debug("assoc: song on cmd %x\n",cmd);
 	    mute_song();
-	} else if (Z80ROM[adr + cmd] != 2)
+	} else if ((variant < 2 && Z80ROM[adr + cmd] != 2) || (variant == 2 && Z80ROM[adr + cmd] != 4))
 	    return 0; // return if it's not a song
 	break;
     case 1: // garou
