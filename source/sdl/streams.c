@@ -192,7 +192,7 @@ void streams_sh_update(void)
   for (channel = 0;channel < MAX_STREAM_CHANNELS;channel += stream_joined_channels[channel]){
     buflen = gotspec.samples;
 
-    if (stream_buffer[channel]) {
+    if (stream_buffer[channel] && SampleVol[channel]) {
 	/* The goal here is to have the streams as closely in sync as possible
 	 * with the sdl update callback, so we just create less samples if the
 	 * callback is late, hoping that it won't be heared.
