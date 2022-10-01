@@ -50,6 +50,7 @@ OBJS += \
 	$(OBJDIR)/games/fchamp.o \
 	$(OBJDIR)/games/flstory.o \
 	$(OBJDIR)/games/frogger.o \
+	$(OBJDIR)/games/galaga.o \
 	$(OBJDIR)/games/galpanic.o \
 	$(OBJDIR)/games/gauntlet.o \
 	$(OBJDIR)/games/gcpball.o \

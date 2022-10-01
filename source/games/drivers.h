@@ -653,6 +653,9 @@
   DRV(superg)
   DRV(galapx)
 
+    // galaga
+    DRV(galaga)
+
 // galpanic.c
   DRV(galpanic)
   DRV(newfant)

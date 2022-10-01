@@ -1131,8 +1131,6 @@ static void draw_emudx() {
   }
 }
 
-// static int trace = 0;
-
 static void execute_pengo() {
   /* The correct speed is 3.072 MHz, but 3.020 gives a more */
   /* accurate emulation speed (time for two attract mode */
