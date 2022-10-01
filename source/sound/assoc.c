@@ -100,7 +100,6 @@ void init_assoc(int kind) {
 	    if (n < 0x1000) {
 		type = 2;
 		adr = ReadWord(&Z80ROM[n]);
-		print_debug("assoc found type 2 at adr = %x read from n=%x\n",adr,n);
 		/* Games taking 1 byte as command 14h argument :
 		    3countb, alpham2, androdun, aof, aof2, b2b
 		    bangbead, bstars, // includes bstars2 & bstarsh
@@ -117,9 +116,10 @@ void init_assoc(int kind) {
 		    gowcaizr, zedblade, zupapa !
 	    */
 		// and found those who take an argument on 2 bytes
-		if (is_current_game("aof3") || is_current_game("magdrop3") || is_current_game("nitd") || is_current_game("wakuwak7") ||
+		if (is_current_game("aof3") || is_current_game("magdrop3") || is_current_game("nitd") ||
 			is_current_game("rbff1") || is_current_game("samsho3") || is_current_game("wakuwak7"))
 		    variant = 1;
+		print_debug("assoc found type 2 at adr = %x read from n=%x variant=%x\n",adr,n,variant);
 	    } else {
 		type = 0;
 		print_debug("assoc not found type 2\n");
