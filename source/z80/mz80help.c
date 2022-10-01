@@ -246,7 +246,7 @@ void remove_z80_port_wb(UINT32 cpu, int index) {
 
 #endif
 
-static void add_mz80_memory_region_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void add_z80_r(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
    if(!d2){
       if(!d3){					// Add to bankswitching queue
@@ -296,7 +296,7 @@ UINT8 *z80_get_userdata(UINT32 cpu, UINT32 adr) {
   return NULL;
 }
 
-static void add_mz80_memory_region_wb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
+void add_z80_w(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
    if(!d2){
       if(!d3){					// Add to bankswitching queue
@@ -430,12 +430,12 @@ void AddZ80AROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 
 void AddZ80AReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_rb(0, d0, d1, d2, d3);
+   add_z80_r(0, d0, d1, d2, d3);
 }
 
 void AddZ80AWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_wb(0, d0, d1, d2, d3);
+   add_z80_w(0, d0, d1, d2, d3);
 }
 
 void AddZ80AReadPort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
@@ -492,12 +492,12 @@ void AddZ80BROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 
 void AddZ80BReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_rb(1, d0, d1, d2, d3);
+   add_z80_r(1, d0, d1, d2, d3);
 }
 
 void AddZ80BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_wb(1, d0, d1, d2, d3);
+   add_z80_w(1, d0, d1, d2, d3);
 }
 
 void AddZ80BReadPort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
@@ -548,12 +548,12 @@ void AddZ80CROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 
 void AddZ80CReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_rb(2, d0, d1, d2, d3);
+   add_z80_r(2, d0, d1, d2, d3);
 }
 
 void AddZ80CWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_wb(2, d0, d1, d2, d3);
+   add_z80_w(2, d0, d1, d2, d3);
 }
 
 void AddZ80CReadPort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
@@ -604,12 +604,12 @@ void AddZ80DROMBase(UINT8 *d0, UINT16 d1, UINT16 d2)
 
 void AddZ80DReadByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_rb(3, d0, d1, d2, d3);
+   add_z80_r(3, d0, d1, d2, d3);
 }
 
 void AddZ80DWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 {
-   add_mz80_memory_region_wb(3, d0, d1, d2, d3);
+   add_z80_w(3, d0, d1, d2, d3);
 }
 
 void AddZ80DReadPort(UINT16 d0, UINT16 d1, void *d2, UINT8 *d3)
@@ -1351,8 +1351,8 @@ int mz80GetCyclesRemaining() {
 }
 
 void finish_conf_z80(int cpu) {
-   add_mz80_memory_region_rb(cpu,0x0000, 0xFFFF, DefBadReadZ80, NULL);
-   add_mz80_memory_region_wb(cpu,0x0000, 0xFFFF, DefBadWriteZ80, NULL);
+   add_z80_r(cpu,0x0000, 0xFFFF, DefBadReadZ80, NULL);
+   add_z80_w(cpu,0x0000, 0xFFFF, DefBadWriteZ80, NULL);
 
    switch(cpu) {
    case 0: AddZ80AInit(); break;
@@ -1366,5 +1366,11 @@ void finish_conf_z80_ports(int cpu) {
    add_mz80_port_region_rb(cpu, 0x00, 0xFF, DefBadReadPortZ80, NULL);
    add_mz80_port_region_wb(cpu, 0x00, 0xFF, DefBadWritePortZ80, NULL);
    finish_conf_z80(cpu);
+}
+
+void add_z80_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2)
+{
+    add_z80_r(cpu,d0,d1,NULL,d2);
+    add_z80_w(cpu,d0,d1,NULL,d2);
 }
 
