@@ -166,36 +166,21 @@ void ClearDefault(void)
     current_game->clear();
 
 #ifdef RAINE_DEBUG
-  if (load_region[REGION_CPU1]) {
-    int code_size = get_region_size(REGION_CPU1);
-#ifndef NO020
-    if (MC68020) {
-      save_debug("ROM.bin",load_region[REGION_ROM1],code_size,0);
-#if HAVE_68000
-      if(StarScreamEngine>=1)
-	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),1);
-    } else if(StarScreamEngine>=1) {
-      save_debug("ROM.bin",load_region[REGION_ROM1],code_size,1);
-#endif
-    } else // 8 bit cpu
-#endif // NO020
-      save_debug("ROM.bin",ROM,code_size,0);
-#if !defined(NO020) && defined(HAVE_68000)
-    if (!MC68020 && load_region[REGION_CPU2]) {
-      if(StarScreamEngine>1)
-	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),1);
-      else {
-	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),0);
+  for (int region = REGION_CPU1; region <= REGION_CPU4; region++) {
+      if (load_region[region]) {
+	  int size = get_region_size(region);
+	  int swap = 0;;
+	  char name[10];
+	  sprintf(name,"ROM%d.bin",region);
+	  // Only starscream needs its region to be swapped, so...
+	  if (!MC68020 && StarScreamEngine && region <= StarScreamEngine)
+	      swap = 1;
+	  else if (MC68020 && StarScreamEngine && region > REGION_CPU1 && region <= StarScreamEngine+1)
+	      swap = 1;
+	  save_debug(name,load_region[region],size,swap);
       }
-    } else if (MC68020 && load_region[REGION_CPU2]) {
-      if(StarScreamEngine)
-	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),1);
-      else {
-	save_debug("ROM2.bin",load_region[REGION_CPU2],get_region_size(REGION_CPU2),0);
-      }
-    }
-#endif
   }
+
   save_debug("RAM.bin",RAM,RAMSize,0);
 #endif
 
