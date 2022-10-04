@@ -17,6 +17,12 @@
 
 extern UINT32 cpu_frame_count;
 
+// SHARE_HANDLERS : if defined use handlers which to access shared memory which try to be clever and to pass control to the next z80 if they know it's currently stuck waiting for something
+// The handlers approach is probably better, and it's certainly more handy to debug, but on modern hardware it probably doesn't make a big difference and it makes things harder for the console
+// (cheat scripts) and the hiscores. I changed the hiscore code to work around that for now, I keep this define here, will need more testing...
+// comment it out to revert to a more direct and more basic approach (they are just trying to optimize things, it doesn't change anything to the logic of the driver)
+#define SHARE_HANDLERS
+
 // DEBUG: print any rw access to the 3 shared ram areas
 // #define DEBUG
 
@@ -722,7 +728,7 @@ static void galaga_flip_screen_w(UINT32 offset, UINT8 data) {
     LOG("flipswreen %d\n",data & 1);
 }
 
-#if 1
+#ifdef SHARE_HANDLERS
 static UINT8 share1_ra(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share1[offset];
@@ -906,14 +912,16 @@ static void load_galaga() {
 	add_z80_rw(n,0x8000, 0x87ff, RAM); // video ram
 	// These shared ram are trouble, 100 slices / frame to make them work in original mame...
 	// I'll use the same principle for now, maybe improve later...
-	// add_z80_rw(n,0x8800, 0x8bff, share1);
-	// add_z80_rw(n,0x9000, 0x93ff, share2);
-	// add_z80_rw(n,0x9800, 0x9bff, share3);
 	add_z80_w(n,0xa000, 0xa005, galaga_starcontrol_w, NULL);
 	add_z80_w(n,0xa007, 0xa007, galaga_flip_screen_w, NULL);
-	// finish_conf_z80(n);
+#ifndef SHARE_HANDLERS
+	add_z80_rw(n,0x8800, 0x8bff, share1);
+	add_z80_rw(n,0x9000, 0x93ff, share2);
+	add_z80_rw(n,0x9800, 0x9bff, share3);
+	finish_conf_z80(n);
+#endif
     }
-#if 1
+#ifdef SHARE_HANDLERS
     AddZ80ARead(0x8800, 0x8bff, share1_ra,NULL);
     AddZ80ARead(0x9000, 0x93ff, share2_ra,NULL);
     AddZ80ARead(0x9800, 0x9bff, share3_ra, NULL);
