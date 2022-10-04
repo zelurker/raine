@@ -17,6 +17,15 @@
 
 extern UINT32 cpu_frame_count;
 
+// DEBUG: print any rw access to the 3 shared ram areas
+// #define DEBUG
+
+#ifdef DEBUG
+#define LOG printf
+#else
+#define LOG(...)
+#endif
+
 static int nmi_enable;
 
 static struct ROM_INFO rom_galaga[] =
@@ -119,7 +128,7 @@ static UINT8 bosco_dsw_r(UINT32 offset)
 {
         int bit0,bit1;
 	offset &= 7;
-	printf("bosco_dsw_r %x\n",offset);
+	LOG("bosco_dsw_r %x\n",offset);
 
         bit0 = (input_buffer[2*3] >> offset) & 1;
         bit1 = (input_buffer[2*2] >> offset) & 1;
@@ -138,18 +147,18 @@ static void bosco_latch_w(UINT32 offset, UINT8 data)
 	{
 		case 0x00:	/* IRQ1 */
 		case 0x01:
-		    printf("irq_enabled %d = %d from %x\n",offset,bit,z80pc);
+		    LOG("irq_enabled %d = %d from %x\n",offset,bit,z80pc);
 			irq_enabled[offset] = bit;
 			break;
 
 		case 0x02:	/* NMION */ // to be confirmed
-		    printf("irq_enabled %d = %d from %x\n",offset,!bit,z80pc);
+		    LOG("irq_enabled %d = %d from %x\n",offset,!bit,z80pc);
 			irq_enabled[offset] = !bit; // it's actually an nmi here anyway...
 			break;
 
 		case 0x03:	/* RESET */
 			if (bit) {
-			    printf("reset !!! from %x\n",z80pc);
+			    LOG("reset !!! from %x\n",z80pc);
 			    cpu_reset(CPU_Z80_1);
 			    cpu_reset(CPU_Z80_2);
 			}
@@ -566,7 +575,7 @@ static void namco_06xx_ctrl_w(int chip,int data)
 {
 	customio_command[chip] = data;
 
-	printf("customio_command %x,%x\n",chip,data);
+	LOG("customio_command %x,%x\n",chip,data);
 	if ((customio_command[chip] & 0x0f) == 0)
 	{
 		nmi_enable = 0;
@@ -578,7 +587,7 @@ static void namco_06xx_ctrl_w(int chip,int data)
 		// On the other hand, the time cannot be too short otherwise the 54XX will
 		// not have enough time to process the incoming commands.
 		nmi_enable = 1;
-		printf("nmi enable cmd %x\n",data);
+		LOG("nmi enable cmd %x\n",data);
 
 		if (customio_command[chip] & 0x10)
 		{
@@ -705,19 +714,19 @@ static UINT8 galaga_starcontrol[6];
 static void galaga_starcontrol_w(UINT32 offset, UINT8 data)
 {
     offset &= 7;
-    printf("starcontrol_w %x,%x from %x\n",offset,data,z80pc);
+    LOG("starcontrol_w %x,%x from %x\n",offset,data,z80pc);
     galaga_starcontrol[offset] = data & 1;
 }
 
 static void galaga_flip_screen_w(UINT32 offset, UINT8 data) {
-    printf("flipswreen %d\n",data & 1);
+    LOG("flipswreen %d\n",data & 1);
 }
 
 #if 1
 static UINT8 share1_ra(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share1[offset];
-    printf("z80a: share1 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80a: share1 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
@@ -743,46 +752,46 @@ static UINT8 share2_ra(UINT32 offset) {
 	mz80ReleaseTimeslice();
     else if (offset == 0x2d7 && z80pc == 0x853 && ret == 1)
 	mz80ReleaseTimeslice();
-    printf("z80a: share2 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80a: share2 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static UINT8 share3_ra(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share3[offset];
-    printf("z80a: share3 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80a: share3 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static void share1_wa(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80a: share1 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80a: share1 write %x,%x from %x\n",offset,data,z80pc);
     share1[offset] = data;
 }
 
 static void share2_wa(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80a: share2 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80a: share2 write %x,%x from %x\n",offset,data,z80pc);
     share2[offset] = data;
 }
 
 static void share3_wa(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80a: share3 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80a: share3 write %x,%x from %x\n",offset,data,z80pc);
     share3[offset] = data;
 }
 
 static UINT8 share1_rb(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share1[offset];
-    printf("z80b: share1 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80b: share1 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static UINT8 share2_rb(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share2[offset];
-    printf("z80b: share2 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80b: share2 read %x -> %x from %x\n",offset,ret,z80pc);
     if (offset == 0x100 && z80pc == 0x597 && ret) {
 	// it waits for a value = 0 here, can stop here
 	mz80ReleaseTimeslice();
@@ -794,32 +803,32 @@ static UINT8 share2_rb(UINT32 offset) {
 static UINT8 share3_rb(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share3[offset];
-    printf("z80b: share3 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80b: share3 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static void share1_wb(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80b: share1 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80b: share1 write %x,%x from %x\n",offset,data,z80pc);
     share1[offset] = data;
 }
 
 static void share2_wb(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80b: share2 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80b: share2 write %x,%x from %x\n",offset,data,z80pc);
     share2[offset] = data;
 }
 
 static void share3_wb(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80b: share3 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80b: share3 write %x,%x from %x\n",offset,data,z80pc);
     share3[offset] = data;
 }
 
 static UINT8 share1_rc(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share1[offset];
-    printf("z80c: share1 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80c: share1 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
@@ -830,32 +839,32 @@ static UINT8 share2_rc(UINT32 offset) {
 	// it waits for a value = 0 here, can stop here
 	mz80ReleaseTimeslice();
     }
-    printf("z80c: share2 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80c: share2 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static UINT8 share3_rc(UINT32 offset) {
     offset &= 0x3ff;
     UINT8 ret = share3[offset];
-    printf("z80c: share3 read %x -> %x from %x\n",offset,ret,z80pc);
+    LOG("z80c: share3 read %x -> %x from %x\n",offset,ret,z80pc);
     return ret;
 }
 
 static void share1_wc(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80c: share1 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80c: share1 write %x,%x from %x\n",offset,data,z80pc);
     share1[offset] = data;
 }
 
 static void share2_wc(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80c: share2 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80c: share2 write %x,%x from %x\n",offset,data,z80pc);
     share2[offset] = data;
 }
 
 static void share3_wc(UINT32 offset, UINT8 data) {
     offset &= 0x3ff;
-    printf("z80c: share3 write %x,%x from %x\n",offset,data,z80pc);
+    LOG("z80c: share3 write %x,%x from %x\n",offset,data,z80pc);
     share3[offset] = data;
 }
 #endif
@@ -1371,7 +1380,7 @@ static void draw_stars(  )
     s0 = galaga_starcontrol[0];
     s1 = galaga_starcontrol[1];
     s2 = galaga_starcontrol[2];
-    printf("starcontrol: s0 %d s1 %d s2 %d\n",s0,s1,s2);
+    LOG("starcontrol: s0 %d s1 %d s2 %d\n",s0,s1,s2);
 
     stars_scrollx -= speeds[s0 + s1*2 + s2*4];
 }
@@ -1491,33 +1500,39 @@ static void execute_galaga() {
     for (int slice = 0; slice < NB_SLICES; slice++) {
 	cpu_execute_cycles(CPU_Z80_0, freq / 60 / NB_SLICES);
 	cpu_execute_cycles(CPU_Z80_1, freq / 60 / NB_SLICES);
-	if (irq_enabled[2] && cpu_get_pc(CPU_Z80_2)==0xb9 && (slice == NB_SLICES/2 || slice == 0)) {
+	if (irq_enabled[2] && (slice == NB_SLICES/2 || slice == 0)) {
 	    // 2 nmis / frame, and make sure the cpu has passed the ldir in b7 (inifinite loop in b9)
-	    printf("nmi cpu2\n");
-	    cpu_int_nmi(CPU_Z80_2);
+	    if (cpu_get_pc(CPU_Z80_2)==0xb9) {
+		LOG("nmi cpu2\n");
+		cpu_int_nmi(CPU_Z80_2);
+	    } else {
+		LOG("cpu2: pc = %x (no nmi)\n",cpu_get_pc(CPU_Z80_2));
+	    }
 	}
 	cpu_execute_cycles(CPU_Z80_2, freq / 60 / NB_SLICES);
 	if (slice == NB_SLICES-2) {
 	    if (irq_enabled[0]) {
-		printf("irq0\n");
+		LOG("irq0\n");
 		cpu_interrupt(CPU_Z80_0,0x38);
 	    }
 	    if (irq_enabled[1]) {
-		printf("irq1\n");
+		LOG("irq1\n");
 		cpu_interrupt(CPU_Z80_1,0x38);
 	    }
 	}
-	else if (nmi_enable) //  && slice % 2 == 0)
+	if (nmi_enable) { //  && slice % 2 == 0)
 	    // if slice % 10 or higher -> starts a game without inserting a credit with 35 slices, but controls are broken
 	    // slice % 8 or no test at all (nmi on all the slices) -> no change at all !
 	    // controls seem ok, but communication between cpus is bad since the game can't start
+	    LOG("nmi from nmi_enable (cpu0)\n");
 	    cpu_int_nmi(CPU_Z80_0);
+	}
     }
     // if (irq_enabled[2]) cpu_int_nmi(CPU_Z80_2);
 #if 0
     watchdog--;
     if (watchdog == 0) {
-	printf("reset z80\n");
+	LOG("reset z80\n");
 	cpu_reset(CPU_Z80_0);
 	cpu_reset(CPU_Z80_1);
 	cpu_reset(CPU_Z80_2);
