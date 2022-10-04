@@ -153,7 +153,7 @@ cadashj:
 @:maincpu,program,103646,18a,00,65
 
 galaga:
-@:maincpu,program,8a20,2d,00,00
+@:maincpu,program,8a20,2d,00,18
 @:maincpu,program,83ed,6,00,24
 
 galmedes:
