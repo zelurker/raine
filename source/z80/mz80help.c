@@ -975,14 +975,27 @@ void WriteMZ80Byte(UINT32 address, UINT8 data)
             if(Z80_memory_rb[cpu][ta].memoryCall==NULL){
 	      if (!check_z80_bank_write(cpu,ta,address,data)) {
 		WriteByte( ((UINT8 *) Z80_memory_rb[cpu][ta].pUserArea) + address,data);
+		return;
 	      }
 	      ta=99;
             }
-            //else{
-            //   *MC68000A_memoryall[ta].memorycall(address,data);
-            //}
+            else{
+		break;
+            }
          }
       }
+   }
+   for(ta=0;ta<99;ta++){
+         if((address>=Z80_memory_wb[cpu][ta].lowAddr)&&(Z80_memory_wb[cpu][ta].highAddr>=address)){
+            if(Z80_memory_wb[cpu][ta].memoryCall==NULL){
+		WriteByte( ((UINT8 *) Z80_memory_wb[cpu][ta].pUserArea) + address,data);
+		return;
+            }
+            else{
+		(*Z80_memory_wb[cpu][ta].memoryCall)(address,data,NULL);
+		return;
+            }
+         }
    }
 }
 
