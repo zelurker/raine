@@ -10,6 +10,7 @@
 #include "raine.h" // ReadWord !
 #include "cpumain.h"
 #include <vector>
+#include "arpro.h"
 
 /* muParser is specialised in double numbers, so it lacks some basic integer
  * operations, but can be easily extended, so let's go... */
@@ -45,7 +46,15 @@ void init_script_param(int n) {
 value_type peek(value_type fadr) {
   UINT32 adr = fadr;
   UINT8 *ptr = get_ptr(adr);
-  if (!ptr) throw "this adr isn't in ram !";
+  if (!ptr) {
+      // workaround for cases where we don't have a memory pointer
+      // it can work only for peek, there is no such thing as gen_cpu_read_word
+      // and it uses a hack which wouldn't work on a real 32 bit cpu to select the cpu... !
+      // Anyway that should do it for now...
+      int cpu = get_cpu_id();
+      int nb = cpu & 0xf;
+      return gen_cpu_read_byte(adr + nb * 0x1000000);
+  }
 
   if ((get_cpu_id()>>4) == 1)
       return ptr[adr ^ 1];
