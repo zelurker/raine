@@ -1,0 +1,41 @@
+script "Infinite Lives"
+run:
+    poke $9820 $06
+script "Invincibility"
+on:
+	cpu z80b
+    temp0=peek($6E4)
+run:
+	cpu z80b
+    poke $6E4 $18
+off:
+	cpu z80b
+    poke $6E4 temp0
+script "Fast Shoot"
+on:
+	cpu z80b
+    temp0=peek($70D)
+run:
+    cpu z80b
+	poke $70D $0D
+off:
+	cpu z80b
+    poke $70D temp0
+script "Perfect Challenge Stages"
+run:
+    poke $9288 $28
+script "All Challenge Stages"
+run:
+    poke $9825 $00
+script "No Challenge Stages"
+run:
+    poke $9825 $01
+script "Aliens don't fire"
+run:
+    lpoke $9368 $00000000
+    lpoke $936C $00000000
+script "Auto Fire" \
+ "comm:Turn it OFF on the Name Entry screen"
+run:
+    dpoke $99B6 $0000|(dpeek($99B6)&~$1515)
+script " "
