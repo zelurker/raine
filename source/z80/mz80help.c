@@ -1013,6 +1013,9 @@ UINT8 ReadMZ80Byte(UINT32 address)
 	if(Z80_memory_rb[cpu][ta].memoryCall==NULL){
 	    UINT8 data = ReadByte( ((UINT8 *) Z80_memory_rb[cpu][ta].pUserArea) + address);
 	  return data;
+	} else {
+	    UINT8 data = (*Z80_memory_rb[cpu][ta].memoryCall)(address,NULL);
+	    return data;
 	}
       }
     }
