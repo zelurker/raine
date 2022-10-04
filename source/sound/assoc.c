@@ -161,7 +161,8 @@ void init_assoc(int kind) {
 	    adr = 0x17d;
 	    type = 1;
 	    print_debug("assoc: kof97 type 1 adr 17d\n");
-	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver(ROM)Ver 1.9 00/03/22",33)) {
+	} else if (!strncmp((char*)&Z80ROM[0x3e],"Sound Driver(ROM)Ver 1.9 00/03/22",33) ||
+		!strncmp((char*)&Z80ROM[0x3e],"Sound Driver(ROM)Ver 1.3",24)) {
 	    adr = 0x184;
 	    type = 1;
 	    end_sound_codes = 0x1f;
