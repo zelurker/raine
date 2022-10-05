@@ -780,7 +780,9 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		    16384);
 	if (!sample) {
 	    print_ingame(183, gettext("Audio track unreadable"));
-	    print_debug("Audio track unreadable : %s\n",track_to_read);
+	    char cwd[512];
+	    getcwd(cwd,512);
+	    print_debug("Audio track unreadable : %s cwd %s\n",track_to_read,cwd);
 	} else {
 	    print_debug("load_sample %s ok\n",track_to_read);
 	}
