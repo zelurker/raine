@@ -102,6 +102,11 @@ UINT8 bNoTiming = FALSE;
 UINT8 bUseStack = FALSE;
 UINT8 bSingleStep = FALSE;
 UINT8 bCurrentMode = TIMING_REGULAR;	// Current timing mode
+// bthroughCallHandler: apparently if it's false then consider that the stack is mapped directly to the base address and push directly to the base address when executing a call
+// we always had FALSE here, and it's a miracle it didn't create more bugs then... !
+// It's a disaxter if the stack is supposed to write through some user functions which are then never called.
+// Anyway I'll leave it to false since it has always been like that... (noticed that because of galaga !).
+// Tested for galaga, and it doesn't seem to work correctly, it probably has bugs, it's better to leave it on false for now.
 UINT8 bThroughCallHandler = FALSE;
 
 void ProcBegin(UINT32 dwOpcode);
