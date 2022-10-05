@@ -56,12 +56,10 @@ void check_error(char *msg) {
 }
 
 void ogl_save_png(char *name) {
-    // unsigned long lImageSize;   // Size in bytes of image
-    GLint iViewport[4];         // Viewport in pixels
     SDL_Surface *s;
-
-    // Get the viewport dimensions
-    glGetIntegerv(GL_VIEWPORT, iViewport);
+    // An oddity, at least in sdl2, it will accept to create a surface with an odd width, but then pitch will be width*2+2 for 16bpp !
+    // We really don't want that, so the best is to just cut the last pixel on the right in this case
+    int w = desk_w & ~1;
 
 #if SDL < 2
     int bpp = sdl_screen->format->BitsPerPixel;
@@ -70,13 +68,13 @@ void ogl_save_png(char *name) {
     // How big is the image going to be (targas are tightly packed)
     // lImageSize = iViewport[2] * 3 * iViewport[3];
 
-    s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
+    s = SDL_CreateRGBSurface(SDL_SWSURFACE,w,desk_h,
 	    f->BitsPerPixel,f->Rmask,f->Gmask,f->Bmask,f->Amask);
 #else
     UINT32 r,g,b,a;
     int bpp;
     SDL_PixelFormatEnumToMasks(sdl2_color_format,&bpp,&r,&g,&b,&a);
-    s = SDL_CreateRGBSurface(SDL_SWSURFACE,desk_w,desk_h,
+    s = SDL_CreateRGBSurface(SDL_SWSURFACE,w,desk_h,
 	    bpp,r,g,b,a);
 #endif
 
@@ -89,7 +87,7 @@ void ogl_save_png(char *name) {
     // Get the current read buffer setting and save it. Switch to
     // the front buffer and do the read operation. Finally, restore
     // the read buffer state
-    glReadPixels(0, 0, iViewport[2], iViewport[3],
+    glReadPixels(0, 0, w, desk_h,
 	    (bpp == 32 ? GL_RGBA : GL_RGB),
 	    (bpp == 32 ? GL_UNSIGNED_INT_8_8_8_8 : GL_UNSIGNED_SHORT_5_6_5), s->pixels);
     save_png_surf_rev(name,s);
