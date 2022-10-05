@@ -21,7 +21,14 @@ extern UINT32 cpu_frame_count;
 // The handlers approach is probably better, and it's certainly more handy to debug, but on modern hardware it probably doesn't make a big difference and it makes things harder for the console
 // (cheat scripts) and the hiscores. I changed the hiscore code to work around that for now, I keep this define here, will need more testing...
 // comment it out to revert to a more direct and more basic approach (they are just trying to optimize things, it doesn't change anything to the logic of the driver)
+#ifdef MAME_Z80
+// This thing can't work with mz80, at least for now, because of the rombase :
+// the stack is installed in the middle of the shared ram, and mz80 uses shortcuts to execute its code, it expects to be able to push on the stack directly using the rombase as reference.
+// So if the stack can be accessed only through handlers, then it crashes miserably, just after the hardware test (frozen screen with some weird graphics).
+// There is a boolean in mz80 which is supposed to allow it to work in such a configuration, bThroughCallHandler. I tested it, and it failed exactly the same way, so there must be bugs in
+// the implementation. It would take too much time to fix that, the easiest solution is to allow these handlers only with the mame z80 cpu core !
 #define SHARE_HANDLERS
+#endif
 
 // DEBUG: print any rw access to the 3 shared ram areas
 // #define DEBUG
@@ -562,7 +569,12 @@ static void namco_06xx_0_data_w(UINT32 offset, UINT8 data) {
 
 static UINT8 namco_06xx_ctrl_r(int chip)
 {
-	return customio_command[chip];
+    if (z80pc == 0x37f9 && customio_command[chip] != 0x10) {
+	// At this point, it just enabled the nmis and is waiting for an nmi to occur
+	mz80ReleaseTimeslice();
+    }
+
+    return customio_command[chip];
 }
 
 static void namco_06xx_read_request(int chipnum)
@@ -713,6 +725,9 @@ static void reset_galaga() {
 		NAMCOIO_54XX, NULL);
 
 	// timer_adjust_oneshot(cpu3_interrupt_timer, video_screen_get_time_until_pos(machine->primary_screen, 64, 0), 64);
+	memcpy(RAM, ROM, 0x4000);
+	memcpy(RAM + 0x4000, Z80ROM, 0x1000);
+	memcpy(RAM + 0x5000, load_region[REGION_CPU3], 0x1000);
 }
 
 static UINT8 galaga_starcontrol[6];
@@ -875,26 +890,30 @@ static void share3_wc(UINT32 offset, UINT8 data) {
 }
 #endif
 
-static UINT8 *mypal,*spriteram, *spriteram_2,*spriteram_3;
+static UINT8 *mypal,*spriteram, *spriteram_2,*spriteram_3,*videoram;
 static int layer_id_data[2];
 static void load_galaga() {
     set_reset_function(&reset_galaga);
-    RAMSize = 0x800 + // videoram
-		0x400*3 + // shared ram
-		0x20; // namco_soundregs (pengo_soundregs)
+    // Taking 64kb (0x10000) is safer here for mz80
+    // it tends to use its stack directly from the rombase, and the stack is installed in the shared ram by these z80
+    // so if only using the roms as a rombase, it's going to write outside the bounds when executing a call !
+    // It will make the saves slightly bigger.
+    // Here I arranged to copy the 3 roms to the same 64 Kb of ram for more simplicity. It fits...
+    RAMSize = 0x10000;
     if(!(RAM=AllocateMem(RAMSize))) return;
     memset(RAM,0,RAMSize);
-    share1 = &RAM[0x800];
-    share2 = &RAM[0x800 + 0x400];
-    share3 = &RAM[0x800 + 0x800];
-    pengo_soundregs = RAM + 0x800 + 0x400*3;
+    videoram = RAM + 0x8000;
+    share1 = RAM + 0x8800;
+    share2 = RAM + 0x9000;
+    share3 = RAM + 0x9800;
+    pengo_soundregs = RAM + 0x6000;
     spriteram   = share1 + 0x380;
     spriteram_2 = share2 + 0x380;
     spriteram_3 = share3 + 0x380;
 
-    AddZ80AROMBase(ROM, 0x38, 0x66);
-    AddZ80BROMBase(Z80ROM, 0x38, 0x66);
-    AddZ80CROMBase(load_region[REGION_CPU3], 0x38, 0x66);
+    AddZ80AROMBase(RAM, 0x38, 0x66);
+    AddZ80BROMBase(RAM + 0x4000, 0x38, 0x66);
+    AddZ80CROMBase(RAM + 0x5000, 0x38, 0x66);
     AddZ80ARead(0x0000, 0x3fff, NULL, ROM);  /* the only area different for each CPU */
     AddZ80BRead(0x0000, 0x0fff, NULL, Z80ROM);  /* the only area different for each CPU */
     AddZ80CRead(0x0000, 0x0fff, NULL, load_region[REGION_CPU3]);  /* the only area different for each CPU */
@@ -902,14 +921,14 @@ static void load_galaga() {
     for (int n=0; n<=2; n++) {
 	add_z80_r(n,0x6800, 0x6807, bosco_dsw_r, NULL);
 	add_z80_w(n,0x6800, 0x681f, pengo_sound_w, NULL);
-	add_z80_r(n,0x6000, 0x601f, NULL, pengo_soundregs);
+	// add_z80_r(n,0x6000, 0x601f, NULL, pengo_soundregs);
 	add_z80_w(n,0x6820, 0x6827, bosco_latch_w, NULL);						/* misc latches */
 	add_z80_w(n,0x6830, 0x6830, watchdog_reset_w, NULL); // Nope, just resets the machine if it hangs, but otherwise useless
 	add_z80_r(n,0x7000, 0x70ff, namco_06xx_0_data_r, NULL);
 	add_z80_w(n,0x7000, 0x70ff, namco_06xx_0_data_w, NULL);
 	add_z80_r(n,0x7100, 0x7100, namco_06xx_0_ctrl_r, NULL);
 	add_z80_w(n,0x7100, 0x7100, namco_06xx_0_ctrl_w, NULL);
-	add_z80_rw(n,0x8000, 0x87ff, RAM); // video ram
+	add_z80_rw(n,0x8000, 0x87ff, videoram); // video ram
 	// These shared ram are trouble, 100 slices / frame to make them work in original mame...
 	// I'll use the same principle for now, maybe improve later...
 	add_z80_w(n,0xa000, 0xa005, galaga_starcontrol_w, NULL);
@@ -1423,8 +1442,8 @@ static void draw_galaga() {
 		// Forget any macro to convert these x,y to offset since it doesn't use a power of 2 for resolution... !
 		// thanks to mame for the conversion... !
 		int offset = get_offset(y,x);
-		int code = RAM[offset] & 0x7f;
-		int color = RAM[offset + 0x400] & 0x3f;
+		int code = videoram[offset] & 0x7f;
+		int color = videoram[offset + 0x400] & 0x3f;
 		MAP_PALETTE_MAPPED_NEW(color,4,map);
 		if (galaga_starcontrol[5]) {
 		    // if stars are drawn, then draw the text layer as transparant sprites on top of it
