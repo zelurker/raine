@@ -298,7 +298,7 @@ static struct dxsmpinterface frogger_emudx_interface =
     YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)
   };
 
-static struct dxsmpinterface galax_emudx_interface =
+struct dxsmpinterface galax_emudx_interface =
   {
     "galdxm.dx2",
     YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)

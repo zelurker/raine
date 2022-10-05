@@ -14,6 +14,8 @@
 #include "emumain.h"
 #include "blit.h"
 #include "sasound.h"
+#include "dxsmp.h"
+#include "emudx.h"
 
 extern UINT32 cpu_frame_count;
 
@@ -27,7 +29,8 @@ extern UINT32 cpu_frame_count;
 // So if the stack can be accessed only through handlers, then it crashes miserably, just after the hardware test (frozen screen with some weird graphics).
 // There is a boolean in mz80 which is supposed to allow it to work in such a configuration, bThroughCallHandler. I tested it, and it failed exactly the same way, so there must be bugs in
 // the implementation. It would take too much time to fix that, the easiest solution is to allow these handlers only with the mame z80 cpu core !
-#define SHARE_HANDLERS
+// #define SHARE_HANDLERS
+// Actually an optimized build seems slightly faster without the handlers so I'll leave it commented from now on, I'll just keep the code for reference... !
 #endif
 
 // DEBUG: print any rw access to the 3 shared ram areas
@@ -38,6 +41,39 @@ extern UINT32 cpu_frame_count;
 #else
 #define LOG(...)
 #endif
+
+extern struct dxsmpinterface galax_emudx_interface;
+
+static struct namco_interface namco_interface =
+{
+	3072000/32, // ?!!
+	3,			/* number of voices */
+	255,		/* playback volume */
+	REGION_SOUND1	/* memory region */
+};
+
+static struct SOUND_INFO sound_galaga_dx[] =
+  {
+  { SOUND_DXSMP, &galax_emudx_interface, },
+   { SOUND_NAMCO, &namco_interface },
+   { 0,             NULL,                 },
+  };
+
+static struct SOUND_INFO sound_galaga[] =
+  {
+   { SOUND_NAMCO, &namco_interface },
+   { 0,             NULL,                 },
+  };
+
+enum sample_method {
+    none,
+    emudx,
+    wav,
+    mp3,
+    ogg
+};
+
+static int sample = none;
 
 static int nmi_enable;
 
@@ -526,13 +562,26 @@ static void namcoio_51XX_write(int chip,int data)
 
 static void namco_06xx_data_write(int chipnum,UINT8 data)
 {
+    static UINT32 last_frame;
 	switch (io[chipnum].type)
 	{
 		//case NAMCOIO_50XX:   namco_50xx_write(machine, data); break;
 		//case NAMCOIO_50XX_2: namco_50xx_2_write(machine, data); break;
 		case NAMCOIO_51XX:   namcoio_51XX_write(chipnum,data); break;
 		//case NAMCOIO_52XX:   namcoio_52xx_write(devtag_get_device(machine, "namco52"), data); break;
-		// case NAMCOIO_54XX:   namco_54xx_write( data); break;
+		case NAMCOIO_54XX:
+				     if (cpu_frame_count - last_frame > 1 && sample) {
+					 last_frame = cpu_frame_count;
+					 if (sample == ogg)
+					     load_sample("galaga_explode.ogg");
+					 else if (sample == mp3)
+					     load_sample("galaga_explode.mp3");
+					 else if (sample == wav)
+					     load_sample("galaga_explode.wav");
+					 else if (sample == emudx)
+					     raine_play_sample(1,100);
+				     }
+				     break; // namco_54xx_write( data); break;
 		default:
 			print_debug("custom IO type %d unsupported write\n",io[chipnum].type);
 			break;
@@ -1024,6 +1073,18 @@ static void load_galaga() {
     set_colour_mapper(&col_map_xxxxRrrgggbbb);
     layer_id_data[0] = add_layer_info(gettext("text"));
     layer_id_data[1] = add_layer_info(gettext("sprites"));
+    current_game->sound = sound_galaga;
+    if (exists("galaga_explode.wav")) {
+	sample = wav;
+    } else if (exists("galaga_explode.mp3"))
+	sample = mp3;
+    else if (exists("galaga_explode.ogg"))
+	sample = ogg;
+    else if (exists_emudx_file("galdxm.dx2")) {
+	sample = emudx;
+	current_game->sound = sound_galaga_dx;
+    } else
+	sample = none;
 }
 
 static gfx_layout spritelayout_galaga =
@@ -1580,14 +1641,6 @@ static struct VIDEO_INFO video_galaga =
    60.606060
 };
 
-static struct namco_interface namco_interface =
-{
-	3072000/32, // ?!!
-	3,			/* number of voices */
-	255,		/* playback volume */
-	REGION_SOUND1	/* memory region */
-};
-
 #if 0
 static struct namco_54xx_interface namco_54xx_interface =
 {
@@ -1599,15 +1652,6 @@ static struct namco_54xx_interface namco_54xx_interface =
 	{ CAP_U(.01),	CAP_U(.01),		CAP_U(.001) },	/* C26, C28, C30 */
 };
 #endif
-
-#if 1
-static struct SOUND_INFO sound_galaga[] =
-  {
-   { SOUND_NAMCO, &namco_interface },
-   { 0,             NULL,                 },
-  };
-#endif
-// #define sound_galaga NULL
 
 GMEI( galaga,
      "Galaga",
