@@ -13,7 +13,11 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {
-  char *s = field;
+  char *s = strchr(field,';'); // strip comments starting by ; or #. # might be used some day for something else...
+  if (s) *s = 0;
+  s = strchr(field,'#');
+  if (s) *s = 0;
+  s = field;
   char *copie = strdup(field);
   *argc = 0;
   for (int n=0; n<max; n++)
