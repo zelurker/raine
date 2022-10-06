@@ -56,7 +56,7 @@ value_type peek(value_type fadr) {
       return gen_cpu_read_byte(adr + nb * 0x1000000);
   }
 
-  if ((get_cpu_id()>>4) == 1)
+  if ((get_cpu_id()>>4) == CPU_68000)
       return ptr[adr ^ 1];
   else
       return ptr[adr];
@@ -66,6 +66,8 @@ value_type dpeek(value_type fadr) {
   UINT32 adr = fadr;
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
+  if (get_cpu_id() >> 4 == CPU_68020)
+      return ReadWord68k(&ptr[adr]);
 
   return ReadWord(&ptr[adr]);
 }
@@ -75,7 +77,13 @@ value_type lpeek(value_type fadr) {
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
 
-  return ReadLongSc(&ptr[adr]);
+  int cpu = get_cpu_id() >> 4;
+  if (cpu == CPU_68000)
+      return ReadLongSc(&ptr[adr]);
+  else if (cpu == CPU_68020)
+      return ReadLong68k(&ptr[adr]);
+  else
+      return ReadLong(&ptr[adr]);
 }
 
 void get_regs(int cpu) {
