@@ -2,10 +2,11 @@
  * The most incredible one would certainly be the sound chip which is a kind of 4 bit dsp and which runs its own code, and whose only purpose is to make the explosion sound !
  * Just after that we have the namcoio chip, responsible for input/output, and accessing the namco54 sound chip too, a crazy chip which is supposed to generate a nmi to the main
  * cpu every 200 us !
- * And then we have the 3 z80 with exactly the same memory map which all share some ram and which are supposed to run 100 slices / frame to remain in sync, not tested yet... !
+ * And then we have the 3 z80 with exactly the same memory map which all share some ram and which are supposed to run 100 slices / frame to remain in sync, they finally work here with only
+ * 35 slices / frame, which is already quite a lot, see comments in execute_galaga.
  * Plus of course some weird setup for the video hardware (36*8 x 28*8 resolution, not a power of 2 and so it creates havoc for the usual layer handling functions), a weird palette too
- * only 32 base colors, but then 256 color entries for text and 256 color entries for sprites ! Why would it need so many entries for such a small palette ?
- * And then the stars, not tested yet neither... ! */
+ * only 32 base colors, but then 256 color entries for text and 256 color entries for sprites ! Why would it need so many entries for such a small palette ? (and half these color entries are unused).
+ * And then the stars, whose emulation comes from mame, but are drawn 1st here instead of last ! */
 
 #include "gameinc.h"
 #include "sound/namco.h"
