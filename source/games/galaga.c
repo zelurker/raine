@@ -1612,7 +1612,10 @@ static void execute_galaga() {
 	if (nmi_enable) { //  && slice % 2 == 0)
 	    // if slice % 10 or higher -> starts a game without inserting a credit with 35 slices, but controls are broken
 	    // slice % 8 or no test at all (nmi on all the slices) -> no change at all !
-	    // controls seem ok, but communication between cpus is bad since the game can't start
+	    // After checking the z80 code : this weird nmi transfers 3 bytes / frame, 1 byte / nmi. After the 3 bytes have been transfered the nmis are stopped
+	    // then the next irq restores the original values so that the 3 bytes can be transfered again. It was probably some way to check the namcoio chip stayed in sync
+	    // because if the irq doesn't find the expected values, it just triggers a reset !
+	    // So well leaving this for every slice is ok, it will execute only 3 times / frame anyway
 	    LOG("nmi from nmi_enable (cpu0)\n");
 	    cpu_int_nmi(CPU_Z80_0);
 	}
