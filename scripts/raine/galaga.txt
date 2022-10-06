@@ -11,6 +11,33 @@ run:
 off:
 	cpu z80b
     poke $6E4 temp0
+script "Select Starting Stage" \
+ "comm:Note the game crashes after Stage 255" \
+ inter=1,256,1
+on:
+    temp0=peek($3C2D)
+    temp1=lpeek($0185)
+    temp2=lpeek($3C21)
+    temp3=lpeek($3C25)
+    temp4=lpeek($3C29)
+    temp5=lpeek($3C2E)
+    temp6=peek($3C32)
+run:
+    poke $3C2D (param-$1)
+    lpoke $0185 $003C21CD|(lpeek($0185)&~$00FFFFFF)
+    lpoke $3C21 $FE98213A
+    lpoke $3C25 $21042800
+    lpoke $3C29 $3EC99821
+    lpoke $3C2E $18982132
+    poke $3C32 $F5
+off:
+    poke $3C2D temp0
+    lpoke $0185 temp1
+    lpoke $3C21 temp2
+    lpoke $3C25 temp3
+    lpoke $3C29 temp4
+    lpoke $3C2E temp5
+    poke $3C32 temp6
 script "Fast Shoot"
 on:
 	cpu z80b
