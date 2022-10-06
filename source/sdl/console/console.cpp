@@ -489,7 +489,12 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 void TRaineConsole::unknown_command(int argc, char **argv) {
   // instead of just writing "unknown command", pass this to the parser...
   if (argc > 1) {
-    throw(ConsExcept("token unknown %s",argv[0]));
+      char err[1024];
+      *err = 0;
+      for (int n=0; n<argc; n++)
+	  snprintf(&err[strlen(err)],1024-strlen(err),"%s ",argv[n]);
+
+      throw(ConsExcept("token unknown %s",err));
   }
   // pass the command to parse so that it's handled by muparser, allows to evaluate math expressions and play with variables
   int val = parse(argv[0]);
@@ -663,20 +668,39 @@ static void do_poke(int argc, char **argv) {
   UINT32 adr = parse(argv[1]);
   UINT32 val  = parse(argv[2]);
   UINT8 *ptr = get_ptr(adr);
+  UINT8 *ptr2 = ptr;
+
   if (!ptr) {
       gen_cpu_write_byte(adr,val);
       return;
   }
 
+  int cpu = cpu_id >> 4;
+  if (cpu == CPU_Z80)
+      ptr2 = Z80_context[cpu_id & 0xf].z80Base;
   if (!strcasecmp(argv[0],"poke")) {
-      if (cpu_id >> 4== CPU_68000) // 68k
+      if (cpu== CPU_68000) // 68k
 	  ptr[adr^1] = val;
-      else
+      else {
 	  ptr[adr] = val;
+	  ptr2[adr] = val;
+      }
   } else if (!strcasecmp(argv[0],"dpoke")) {
-    WriteWord(&ptr[adr],val);
+      if (cpu == CPU_68020)
+	  WriteWord68k(&ptr[adr],val);
+      else {
+	  WriteWord(&ptr[adr],val);
+	  WriteWord(&ptr2[adr],val);
+      }
   } else if (!strcasecmp(argv[0],"lpoke")) {
-    WriteLongSc(&ptr[adr],val);
+      if (cpu == CPU_68000) {
+	  WriteLongSc(&ptr[adr],val);
+      } else if (cpu == CPU_68020)
+	  WriteLong68k(&ptr[adr],val);
+      else {
+	  WriteLong(&ptr[adr],val);
+	  WriteLong(&ptr2[adr],val);
+      }
   }
   cons->print("ok");
 }
