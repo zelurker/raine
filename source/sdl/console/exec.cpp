@@ -144,7 +144,13 @@ void do_break(int argc, char **argv) {
 	return;
       }
     }
-    UINT8 *ptr = get_userdata(cpu_id,adr);
+// #ifdef MAME_Z80
+//     UINT8 *ptr = get_userdata(cpu_id,adr);
+// #else
+    // The hard rule of mz80 : rombase takes priority on the memory map for code execution, so that's rombase that we want here
+    // actually it's done for mame_Z80 too for now, which might get incompatible if passing a memory map in conflict with this...
+    UINT8 *ptr = Z80_context[cpu_id & 0xf].z80Base;
+// #endif
     if (!ptr) {
       if (cons) cons->print("no data known for this adr");
       return;
@@ -218,26 +224,36 @@ int check_breakpoint() {
 	set_cpu_id(cpu_id);
 	switch_cpu(cpu_id);
 	get_regs();
-	if (pc == breakp[n].adr || pc == breakp[n].adr+2) {
-	    UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
-	    WriteWord(&ptr[breakp[n].adr],breakp[n].old);
-	    if (pc == breakp[n].adr+2) {
-		pc = breakp[n].adr;
-		set_regs(cpu_id);
-	    }
-	    irq = check_irq(breakp[n].adr);
-	    if (breakp[n].cond) {
-		get_regs();
-		if (!parse(breakp[n].cond)) {
-		    goto_debuger = -1; // breakpoint failed, avoid console
-		    return irq;
-		}
-	    }
-	    cons->set_visible();
-	    goto_debuger = 0;
-	    cons->print("breakpoint #%d at %x",n,breakp[n].adr);
-	    disp_instruction();
+	UINT8 *ptr;
+	if ((cpu_id >> 4) != CPU_Z80)
+	    ptr = get_userdata(cpu_id,breakp[n].adr);
+	else
+	    ptr = Z80_context[cpu_id & 0xf].z80Base;
+	// restore original code here, without checking the pc
+	WriteWord(&ptr[breakp[n].adr],breakp[n].old);
+#ifdef MAME_Z80
+	if ((cpu_id >> 4) == CPU_Z80) {
+	    // Since the memory map can be different, modify this too
+	    UINT8 *ptr2 = get_userdata(cpu_id,breakp[n].adr);
+	    WriteWord(&ptr2[breakp[n].adr],breakp[n].old);
 	}
+#endif
+	if (pc != breakp[n].adr) {
+	    pc = breakp[n].adr;
+	    set_regs(cpu_id);
+	}
+	irq = check_irq(breakp[n].adr);
+	if (breakp[n].cond) {
+	    get_regs();
+	    if (!parse(breakp[n].cond)) {
+		goto_debuger = -1; // breakpoint failed, avoid console
+		return irq;
+	    }
+	}
+	cons->set_visible();
+	goto_debuger = 0;
+	cons->print("breakpoint #%d at %x",n,breakp[n].adr);
+	disp_instruction();
     }
     return irq;
 }
@@ -282,23 +298,23 @@ void restore_breakpoints() {
   for (n=0; n<used_break; n++) {
       int cpu_id = breakp[n].cpu;
       UINT8 *ptr = get_userdata(cpu_id,breakp[n].adr);
-      if (ReadWord(&ptr[breakp[n].adr]) == breakp[n].old) {
-	  // 1 : get the pc out of the breakpoint
-	  while (pc >= breakp[n].adr && pc < breakp[n].adr+2) {
-	      do_cycles(get_cpu_id(),0);
-	  }
-	  // 2 : restore it
-	  UINT32 adr = breakp[n].adr;
+      // 1 : get the pc out of the breakpoint
+      while (pc >= breakp[n].adr && pc < breakp[n].adr+2) {
+	  do_cycles(get_cpu_id(),0);
+      }
+      // 2 : restore it
+      UINT32 adr = breakp[n].adr;
 #ifdef USE_MUSASHI
-	  if (cpu_id >> 4 == 1 || cpu_id >> 4 == 3)
-	      WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
+      if (cpu_id >> 4 == 1 || cpu_id >> 4 == 3)
+	  WriteWord(&ptr[adr],0x7f03); // illegal instruction : raine #3
 #else
-	  if (cpu_id >> 4 == 1)
-	      WriteWord(&ptr[adr],0x4e70); // reset
+      if (cpu_id >> 4 == 1)
+	  WriteWord(&ptr[adr],0x4e70); // reset
 #endif
-	  if (cpu_id >> 4 == 2) { // z80
-	      WriteWord68k(&ptr[adr],0xd3ab);
-	  }
+      if (cpu_id >> 4 == 2) { // z80
+	  WriteWord68k(&ptr[adr],0xd3ab);
+	  ptr = Z80_context[cpu_id & 0xf].z80Base;
+	  WriteWord68k(&ptr[adr],0xd3ab);
       }
   }
 
