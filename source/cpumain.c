@@ -241,6 +241,9 @@ request an nmi on a cpu
 
 void cpu_int_nmi(UINT32 cpu_id)
 {
+#ifdef SDL
+    if (goto_debuger) return;
+#endif
    switch_cpu(cpu_id);
 
    switch(cpu_id){
