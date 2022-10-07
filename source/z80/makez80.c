@@ -4804,12 +4804,18 @@ void PushWordHandler(void)
 	fprintf(fp, "; DX=Top of SP, [_wordval]=word value to push\n");
 	fprintf(fp, ";\n\n");
 	fprintf(fp, "PushWord:\n");
+#ifdef WORD_ACCESS
+	fprintf(fp, "           sub     [_z80sp], word 2\n");
+	fprintf(fp, "           mov     dx, [_z80sp]\n");
+	WriteWordToMemory("dx","[_wordval]");
+#else
 	fprintf(fp, "           mov     dx, [_z80sp]\n");
 	fprintf(fp, "           dec     dx\n");
 	WriteValueToMemory("dx", "byte [_wordval+1]");
-	fprintf(fp, "           dec     dx\n");
-	WriteValueToMemory("dx", "byte [_wordval]");
 	fprintf(fp, "           sub     [_z80sp], word 2\n");
+	fprintf(fp, "           mov     dx, [_z80sp]\n"); // retrieve dx in case it was lost in WriteValueToMemory !
+	WriteValueToMemory("dx", "byte [_wordval]");
+#endif
 	fprintf(fp, "           xor     edx, edx\n");
 	fprintf(fp, "           ret\n\n");
 }
