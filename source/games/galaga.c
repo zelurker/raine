@@ -775,9 +775,6 @@ static void reset_galaga() {
 		NAMCOIO_54XX, NULL);
 
 	// timer_adjust_oneshot(cpu3_interrupt_timer, video_screen_get_time_until_pos(machine->primary_screen, 64, 0), 64);
-	memcpy(RAM, ROM, 0x4000);
-	memcpy(RAM + 0x4000, Z80ROM, 0x1000);
-	memcpy(RAM + 0x5000, load_region[REGION_CPU3], 0x1000);
 }
 
 static UINT8 galaga_starcontrol[6];
@@ -952,6 +949,8 @@ static void load_galaga() {
     AddSaveData(ASCII_ID('S','T','A','R'),galaga_starcontrol,sizeof(galaga_starcontrol));
     AddSaveData(ASCII_ID('I','R','Q','E'),(UINT8*)irq_enabled,sizeof(irq_enabled));
     AddSaveData(ASCII_ID('N','M','I','E'),(UINT8*)&nmi_enable,sizeof(nmi_enable));
+    // The ramsize was set at 64 kb to work around an mz80 bug related to stack writes, now it's fixed, but I'll keep 64 kb because it's not so big and this way there will be no
+    // incompatible save !
     RAMSize = 0x10000;
     if(!(RAM=AllocateMem(RAMSize))) return;
     memset(RAM,0,RAMSize);
@@ -964,9 +963,9 @@ static void load_galaga() {
     spriteram_2 = share2 + 0x380;
     spriteram_3 = share3 + 0x380;
 
-    AddZ80AROMBase(RAM, 0x38, 0x66);
-    AddZ80BROMBase(RAM + 0x4000, 0x38, 0x66);
-    AddZ80CROMBase(RAM + 0x5000, 0x38, 0x66);
+    AddZ80AROMBase(ROM, 0x38, 0x66);
+    AddZ80BROMBase(Z80ROM, 0x38, 0x66);
+    AddZ80CROMBase(load_region[REGION_CPU3], 0x38, 0x66);
     AddZ80ARead(0x0000, 0x3fff, NULL, ROM);  /* the only area different for each CPU */
     AddZ80BRead(0x0000, 0x0fff, NULL, Z80ROM);  /* the only area different for each CPU */
     AddZ80CRead(0x0000, 0x0fff, NULL, load_region[REGION_CPU3]);  /* the only area different for each CPU */
