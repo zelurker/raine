@@ -331,6 +331,7 @@ static int activate_cheat(int n) {
 	    TDialog *dlg = new TDialog("script parameter",menu);
 	    dlg->execute();
 	    delete dlg;
+	    free(menu);
 	    set_script_param(n,param);
 	    script[n].changing = param;
 	} else {
