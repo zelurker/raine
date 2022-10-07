@@ -106,8 +106,8 @@ UINT8 bCurrentMode = TIMING_REGULAR;	// Current timing mode
 // we always had FALSE here, and it's a miracle it didn't create more bugs then... !
 // It's a disaxter if the stack is supposed to write through some user functions which are then never called.
 // Anyway I'll leave it to false since it has always been like that... (noticed that because of galaga !).
-// Tested for galaga, and it doesn't seem to work correctly, it probably has bugs, it's better to leave it on false for now.
-UINT8 bThroughCallHandler = FALSE;
+// Now fixed and becomes the default, because FALSE is too dangerous, there might be too many drivers to change to work around this stack problem, it's much safer to have this on TRUE !
+UINT8 bThroughCallHandler = TRUE;
 
 void ProcBegin(UINT32 dwOpcode);
 
@@ -4825,7 +4825,7 @@ void PopWordHandler(void)
 	fprintf(fp, "           mov     dx, [_z80sp]\n");
 
 #ifdef WORD_ACCESS
-	ReadWordFromMemory("dx", "dx");
+	ReadWordFromMemory("dx", "[_wordval]");
 #else
 	ReadValueFromMemory("dx", "byte [_wordval]");
 	fprintf(fp, "           inc     dx\n");
