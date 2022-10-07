@@ -24,15 +24,8 @@ extern UINT32 cpu_frame_count;
 // The handlers approach is probably better, and it's certainly more handy to debug, but on modern hardware it probably doesn't make a big difference and it makes things harder for the console
 // (cheat scripts) and the hiscores. I changed the hiscore code to work around that for now, I keep this define here, will need more testing...
 // comment it out to revert to a more direct and more basic approach (they are just trying to optimize things, it doesn't change anything to the logic of the driver)
-#ifdef MAME_Z80
-// This thing can't work with mz80, at least for now, because of the rombase :
-// the stack is installed in the middle of the shared ram, and mz80 uses shortcuts to execute its code, it expects to be able to push on the stack directly using the rombase as reference.
-// So if the stack can be accessed only through handlers, then it crashes miserably, just after the hardware test (frozen screen with some weird graphics).
-// There is a boolean in mz80 which is supposed to allow it to work in such a configuration, bThroughCallHandler. I tested it, and it failed exactly the same way, so there must be bugs in
-// the implementation. It would take too much time to fix that, the easiest solution is to allow these handlers only with the mame z80 cpu core !
 // #define SHARE_HANDLERS
 // Actually an optimized build seems slightly faster without the handlers so I'll leave it commented from now on, I'll just keep the code for reference... !
-#endif
 
 // DEBUG: print any rw access to the 3 shared ram areas
 // #define DEBUG
