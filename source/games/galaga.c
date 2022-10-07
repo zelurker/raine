@@ -949,6 +949,9 @@ static void load_galaga() {
     // so if only using the roms as a rombase, it's going to write outside the bounds when executing a call !
     // It will make the saves slightly bigger.
     // Here I arranged to copy the 3 roms to the same 64 Kb of ram for more simplicity. It fits...
+    AddSaveData(ASCII_ID('S','T','A','R'),galaga_starcontrol,sizeof(galaga_starcontrol));
+    AddSaveData(ASCII_ID('I','R','Q','E'),(UINT8*)irq_enabled,sizeof(irq_enabled));
+    AddSaveData(ASCII_ID('N','M','I','E'),(UINT8*)&nmi_enable,sizeof(nmi_enable));
     RAMSize = 0x10000;
     if(!(RAM=AllocateMem(RAMSize))) return;
     memset(RAM,0,RAMSize);
