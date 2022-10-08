@@ -83,7 +83,6 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
     for (n=0; n<nb_watch; n++) {
 	if (offset == watch[n].adr ) {
 	    cpu_id = watch[n].cpu;
-	    switch_cpu(cpu_id);
 	    cpu_get_ram(cpu_id,ram,&nb_ram);
 	    if (watch[n].cond) get_regs();
 	    UINT8 *ptr = get_ptr(offset,NULL);
@@ -117,8 +116,10 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 		printf("watchb: changing offset %x,%x\n",getadr(offset),data);
 		if (!watch[n].read)
 		    ptr[getadr(offset)] = data;
-		else
+		else {
+		    printf("exec_watchb offset %x returning %x\n",offset,ptr[getadr(offset)]);
 		    return ptr[getadr(offset)];
+		}
 	    } else if (func) {
 		return (*func)(offset,data);
 	    } else {
@@ -549,17 +550,18 @@ static void do_watch(int argc, char **argv) {
       cons->print("ok");
       return;
   }
+  int cpu = cpu_id >> 4;
   if (size > 2) {
     add_watch(adr,size,read);
   } else if (size) { // precise size
     add_watch(adr,size,read,value);
   } else if (adr & 1) {
     add_watch(adr,1,read);
-    if (add_watch(adr-1,2,read))
+    if (add_watch(adr-1,2,read) && (cpu == CPU_68000 || cpu == CPU_68020))
       cons->print("watch #%d & %d added",nb_watch,nb_watch-1);
   } else {
     add_watch(adr,1,read);
-    if (add_watch(adr,2,read))
+    if (add_watch(adr,2,read) && (cpu == CPU_68000 || cpu == CPU_68020))
       cons->print("watch #%d & %d added",nb_watch,nb_watch-1);
   }
 }
@@ -1442,6 +1444,10 @@ int do_console(int sel) {
     if (goto_debuger >= 100) {
 	cons->set_visible();
 	int n = goto_debuger - 100;
+	cpu_id = watch[n].cpu;
+	switch_cpu(cpu_id);
+	get_regs();
+	cpu_get_ram(cpu_id,ram,&nb_ram);
 	irq = check_irq(watch[n].pc);
 	UINT8 *ptr = get_ptr(watch[n].adr,NULL);
 	if (ptr) {
