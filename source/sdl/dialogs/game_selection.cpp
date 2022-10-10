@@ -1,6 +1,7 @@
 #include "../gui/menu.h"
 #include "about.h"
 #include <SDL_image.h>
+#include <sys/stat.h>
 #include "confile.h"
 #include "raine.h"
 #include "games.h"
@@ -9,6 +10,7 @@
 #include "dialogs/romdirs.h"
 #include "gui.h"
 #include "game_selection.h"
+#include "dialogs/messagebox.h"
 
 /* This is so far the most complex dialog in the sdl version :
  *  - it changes the bg picture while browsing the list of games
@@ -34,6 +36,30 @@ char *drivers[] =
 { "cave.c", "cps1drv.c", "cps2drv.c","neogeo.c", "nmk.c", "gunbird.c", "seta.c",
   "taito_f2.c", "lsystem.c", "xsystem2.c", "toaplan1.c", "toaplan2.c" };
 
+static int do_init_recent(int sel) {
+    int n,nb = 0;
+    for (n=0; n<game_count; n++) {
+	if (!game_list[n]->last_played) {
+	    struct stat buf;
+	    char s[30];
+	    sprintf(s,"savedata/%s.hi",game_list[n]->main_name);
+	    int ret = stat(s,&buf);
+	    if (ret < 0) {
+		sprintf(s,"savedata/%s.epr",game_list[n]->main_name);
+		ret = stat(s,&buf);
+	    }
+	    if (!ret) {
+		game_list[n]->last_played = buf.st_atim.tv_sec;
+		nb++;
+	    }
+	}
+    }
+    char s[80];
+    sprintf(s,"%d games initialized",nb);
+    MessageBox("info",s,"ok");
+    return 0;
+}
+
 static menu_item_t options[] =
 {
 {  _("Display"), NULL, &game_list_mode, 3, {0, 1, 2},{_("All games"), _("Available games"), _("Missing games")} },
@@ -45,6 +71,7 @@ static menu_item_t options[] =
 { _("Clones"), NULL, &clones, 2, {0, 1 }, { _("Without"), _("With") } },
 { _("Display short names too"), &change_names, &short_names, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("Rom directories..."), &do_romdir },
+{ _("Init Most recent games from data files..."), &do_init_recent },
 { NULL },
 };
 
@@ -72,14 +99,118 @@ static int do_options(int sel) {
     return 0;
 }
 
+static int sort_most(const void *a, const void *b) {
+    return ((menu_item_t *)b)->values_list[1]-
+	((menu_item_t *)a)->values_list[1];
+}
+
+static int sort_recent(const void *a, const void *b) {
+    // The exact opposite of sort_most...
+    return ((menu_item_t *)a)->values_list[1]-
+	((menu_item_t *)b)->values_list[1];
+}
+
+class TRecent : public TMenu
+{
+  public:
+    TRecent(char *title, menu_item_t *items) : TMenu(title,items) {}
+  void call_handler() {
+      raine_cfg.req_load_game = 1;
+      raine_cfg.req_game_index = menu[sel].values_list[2];
+      exit_menu = 1;
+  }
+};
+
+static int do_recent(int sel) {
+    int nb_most,n;
+    int most_played = (sel == 2);
+    menu_item_t *menu;
+
+    nb_most = 0;
+    if (most_played) {
+	for (n=0; n<game_count; n++)
+	    if (game_list[n]->nb_loaded) nb_most++;
+	if (nb_most == 0) {
+	    MessageBox("Error","No most played game yet","ok");
+	    return 0;
+	}
+    } else {
+	for (n=0; n<game_count; n++)
+	    if (game_list[n]->last_played) nb_most++;
+	if (nb_most == 0) {
+	    MessageBox("Error","No recent game yet\nIf you use the init command in Options if you\nhave some old data files in savedata","ok");
+	    return 0;
+	}
+    }
+
+    menu = (menu_item_t*)calloc(nb_most+1,sizeof(menu_item_t));
+    int n2 = 0;
+    int bidon = 0;
+    for (n=0; n<game_count; n++) {
+	if ((most_played ? game_list[n]->nb_loaded : game_list[n]->last_played)) {
+	    menu[n2].label = game_list[n]->long_name;
+	    menu[n2].value_int = &bidon;
+	    menu[n2].values_list_size = 1;
+	    char s[512];
+	    if (most_played)
+		sprintf(s,"%d time%s for ",game_list[n]->nb_loaded,(game_list[n]->nb_loaded > 1 ? "s" : ""));
+	    else
+		*s = 0;
+	    int t = (most_played ? game_list[n]->time_played : time(NULL)-game_list[n]->last_played);
+	    int y = t/(24*3600*365);
+	    if (y) {
+		snprintf(&s[strlen(s)],512-strlen(s),"%d year%s",y,(y > 1 ? "s" : ""));
+	    } else {
+		int d = t/(24*3600);
+		if (d) {
+		    snprintf(&s[strlen(s)],512-strlen(s),"%d days ",d);
+		    t %= 24*3600;
+		}
+		int h = t/3600;
+		if (h) {
+		    snprintf(&s[strlen(s)],512-strlen(s),"%02d:",h);
+		    t %= 3600;
+		}
+		int m = t/60;
+		if (m) {
+		    snprintf(&s[strlen(s)],512-strlen(s),"%02d:",m);
+		    t %= 60;
+		}
+		snprintf(&s[strlen(s)],512-strlen(s),"%02d",t);
+		if (!m && !h)
+		    snprintf(&s[strlen(s)],512-strlen(s)," seconds");
+		if (!most_played)
+		    snprintf(&s[strlen(s)],512-strlen(s)," ago");
+	    }
+	    menu[n2].values_list[0] = 0;
+	    menu[n2].values_list_label[0] = strdup(s);
+	    if (!strcmp(menu[n2].label,"bbakraid"))
+		printf("bakraid : %d\n",t);
+	    menu[n2].values_list[1] = (most_played ? game_list[n]->time_played : time(NULL)-game_list[n]->last_played);
+	    menu[n2].values_list[2] = n;
+	    n2++;
+	}
+    }
+    qsort(menu,n2,sizeof(menu_item_t),most_played ? &sort_most : &sort_recent);
+    TRecent *dlg;
+    if (most_played)
+	dlg = new TRecent("Most played games",menu);
+    else
+	dlg = new TRecent("Most recent games",menu);
+    dlg->execute();
+    delete dlg;
+    for (n=0; n<n2; n++)
+	free(menu[n].values_list_label[0]);
+    free(menu);
+
+    return raine_cfg.req_load_game;
+}
+
 static menu_item_t header[] =
 {
     {  _("-- Options --"), &do_options },
-    { NULL }, // 5 lines at most of favorite games
-    { NULL },
-    { NULL },
-    { NULL },
-    { NULL },
+    { _("Recent games..."), &do_recent },
+    { _("Most played games..."), do_recent },
     { NULL },
 };
 
@@ -138,14 +269,6 @@ class TGame_sel : public TMenu
 	    for (int n=0; n<game_count; n++)
 		free((void*)menu[n].label);
 	}
-	for (int n=1; n<=5; n++) {
-	    if (header[n].label) {
-		free(header[n].label);
-		header[n].label = NULL;
-		header[n].values_list[0] =
-		    header[n].values_list[1] = 0;
-	    }
-	}
 	free(menu);
 #if SDL == 2
 	desktop->set_picture(NULL);
@@ -192,13 +315,7 @@ class TGame_sel : public TMenu
       raine_cfg.req_game_index = sel;
       exit_menu = 1;
     } else { // options
-      if (hsel) {
-	  // a favorite game
-	  raine_cfg.req_load_game = 1;
-	  raine_cfg.req_game_index = header[hsel].values_list[1];
-	  exit_menu = 1;
-      } else
-	  TMenu::call_handler();
+	TMenu::call_handler();
     }
   }
 
@@ -478,63 +595,13 @@ int recompute_list() {
     return 0;
 }
 
-static void add_header_info(int n, int index) {
-    char s[512];
-    sprintf(s,"%s, played %d time%s for ",game_list[index]->long_name,game_list[index]->nb_loaded,(game_list[index]->nb_loaded > 1 ? "s" : ""));
-    int t = game_list[index]->time_played;
-    int d = t/(24*3600);
-    if (d) {
-	snprintf(&s[strlen(s)],512-strlen(s),"%d days ",d);
-	t %= 24*3600;
-    }
-    int h = t/3600;
-    if (h) {
-	snprintf(&s[strlen(s)],512-strlen(s),"%02d:",h);
-	t %= 3600;
-    }
-    int m = t/60;
-    if (m) {
-	snprintf(&s[strlen(s)],512-strlen(s),"%02d:",m);
-	t %= 60;
-    }
-    snprintf(&s[strlen(s)],512-strlen(s),"%02d",t);
-    if (!m && !h)
-	snprintf(&s[strlen(s)],512-strlen(s)," seconds");
-    header[n].label = strdup(s);
-    header[n].values_list[0] = game_list[index]->time_played;
-    header[n].values_list[1] = index;
-    header[n].menu_func = &do_options; // so that call_handler is called for this one, menu_func is actually ignored
-}
-
-static void add_header(int index) {
-    int n;
-    for (n=1; n<=5; n++) {
-	if (((UINT32)header[n].values_list[0]) < game_list[index]->time_played) {
-	    if (n < 5) {
-		if (header[5].label) {
-		    free(header[5].label);
-		}
-		memmove(&header[n+1],&header[n],sizeof(menu_item_t)*(5-n));
-	    } else if (header[5].label)
-		free(header[5].label);
-	    add_header_info(n,index);
-	    return;
-	}
-    }
-}
-
 int do_game_sel(int sel) {
-    int n;
     if (!avail) {
 	avail = (char*)malloc(game_count);
 	compute_avail();
     }
     game_sel = new TGame_sel(_("Game selection"),NULL);
     game_sel->set_header(header);
-    for (n=0; n<game_count; n++) {
-	if (game_list[n]->time_played)
-	    add_header(n);
-    }
 
     game_sel->execute();
     delete game_sel;

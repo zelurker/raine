@@ -798,7 +798,9 @@ void StartGUI(void)
 
        if(WantPlay){		// Are we able to and wanting to play?
 	   WantPlay = 0;
-	   played_time = time(NULL); // sdl2 2.0.18
+	   played_time = time(NULL);
+	   current_game->last_played = played_time;
+
 	   SDL_ShowCursor(0);
 #ifndef RAINE_DEBUG
 	   if (GameMouse)

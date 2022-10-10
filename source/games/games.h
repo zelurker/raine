@@ -14,6 +14,7 @@
 #include "deftypes.h"
 #include "loadroms.h"
 #include "dsw.h"
+#include <time.h>
 
 enum company_num
 {
@@ -241,6 +242,7 @@ typedef struct GAME_MAIN
   const SOUND_INFO  *sound;     // sound list
   const UINT32 flags;
   unsigned int nb_loaded, time_played;
+  time_t last_played;
 } GAME_MAIN;
 
 #include "game_def.h"

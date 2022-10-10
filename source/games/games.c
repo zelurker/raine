@@ -133,6 +133,15 @@ static void read_game_stats() {
 			printf("read_game_stats: game %s, bad format\n",buf);
 		    } else {
 			*s2 = 0;
+			char *s3 = strchr(s2+1,',');
+			if (s3) {
+			    *s3 = 0;
+#ifdef __x86_64__
+			    game->last_played = atoi(s3+1);
+#else
+			    game->last_played = atol(s3+1);
+#endif
+			}
 			game->nb_loaded = atoi(s+1);
 			game->time_played = atoi(s2+1);
 		    }
