@@ -1808,6 +1808,8 @@ void TMenu::execute() {
 	    fg_layer = NULL;
 	    sdl_screen->w = event.window.data1;
 	    sdl_screen->h = event.window.data2;
+	    SDL_Rect r = { 0, 0, sdl_screen->w, sdl_screen->h };
+	    desktop->set_work_area(&r);
 	    draw();
 	}
 	break;
