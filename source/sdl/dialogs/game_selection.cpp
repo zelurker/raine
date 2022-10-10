@@ -148,7 +148,14 @@ static int do_recent(int sel) {
     int bidon = 0;
     for (n=0; n<game_count; n++) {
 	if ((most_played ? game_list[n]->nb_loaded : game_list[n]->last_played)) {
-	    menu[n2].label = game_list[n]->long_name;
+	    if (strlen(game_list[n]->long_name) > 40) {
+		char l[44];
+		strncpy(l,game_list[n]->long_name,40);
+		l[40] = 0;
+		strncat(l,"...",43);
+		menu[n2].label = strdup(l);
+	    } else
+		menu[n2].label = game_list[n]->long_name;
 	    menu[n2].value_int = &bidon;
 	    menu[n2].values_list_size = 1;
 	    char s[512];
@@ -199,8 +206,11 @@ static int do_recent(int sel) {
 	dlg = new TRecent("Most recent games",menu);
     dlg->execute();
     delete dlg;
-    for (n=0; n<n2; n++)
+    for (n=0; n<n2; n++) {
+	if (strlen(menu[n].label) > 40)
+	    free(menu[n].label);
 	free(menu[n].values_list_label[0]);
+    }
     free(menu);
 
     return raine_cfg.req_load_game;
