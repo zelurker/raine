@@ -162,7 +162,8 @@ static void read_game_stats() {
 #else
 			    game->last_played = atol(s3+1);
 #endif
-			    found_last_played = game->last_played;
+			    if (!found_last_played)
+				found_last_played = game->last_played;
 			}
 			game->nb_loaded = atoi(s+1);
 			game->time_played = atoi(s2+1);
