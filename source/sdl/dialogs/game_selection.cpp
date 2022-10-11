@@ -36,30 +36,6 @@ char *drivers[] =
 { "cave.c", "cps1drv.c", "cps2drv.c","neogeo.c", "nmk.c", "gunbird.c", "seta.c",
   "taito_f2.c", "lsystem.c", "xsystem2.c", "toaplan1.c", "toaplan2.c" };
 
-static int do_init_recent(int sel) {
-    int n,nb = 0;
-    for (n=0; n<game_count; n++) {
-	if (!game_list[n]->last_played) {
-	    struct stat buf;
-	    char s[30];
-	    sprintf(s,"savedata/%s.hi",game_list[n]->main_name);
-	    int ret = stat(s,&buf);
-	    if (ret < 0) {
-		sprintf(s,"savedata/%s.epr",game_list[n]->main_name);
-		ret = stat(s,&buf);
-	    }
-	    if (!ret) {
-		game_list[n]->last_played = buf.st_atim.tv_sec;
-		nb++;
-	    }
-	}
-    }
-    char s[80];
-    sprintf(s,"%d games initialized",nb);
-    MessageBox("info",s,"ok");
-    return 0;
-}
-
 static menu_item_t options[] =
 {
 {  _("Display"), NULL, &game_list_mode, 3, {0, 1, 2},{_("All games"), _("Available games"), _("Missing games")} },
@@ -71,7 +47,6 @@ static menu_item_t options[] =
 { _("Clones"), NULL, &clones, 2, {0, 1 }, { _("Without"), _("With") } },
 { _("Display short names too"), &change_names, &short_names, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("Rom directories..."), &do_romdir },
-{ _("Init Most recent games from data files..."), &do_init_recent },
 { NULL },
 };
 

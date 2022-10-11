@@ -114,8 +114,29 @@ const int nb_companies = sizeof(company_name)/4;
 
 #include "driver.c"
 
+static void init_recent() {
+    int n,nb = 0;
+    for (n=0; n<game_count; n++) {
+	if (!game_list[n]->last_played) {
+	    struct stat buf;
+	    char s[30];
+	    sprintf(s,"savedata/%s.hi",game_list[n]->main_name);
+	    int ret = stat(s,&buf);
+	    if (ret < 0) {
+		sprintf(s,"savedata/%s.epr",game_list[n]->main_name);
+		ret = stat(s,&buf);
+	    }
+	    if (!ret) {
+		game_list[n]->last_played = buf.st_atim.tv_sec;
+		nb++;
+	    }
+	}
+    }
+}
+
 static void read_game_stats() {
     FILE *f = fopen(get_shared("savedata/stats"),"r");
+    unsigned long found_last_played = 0;
     if (f) {
 	while (!feof(f)) {
 	    char buf[80];
@@ -141,6 +162,7 @@ static void read_game_stats() {
 #else
 			    game->last_played = atol(s3+1);
 #endif
+			    found_last_played = game->last_played;
 			}
 			game->nb_loaded = atoi(s+1);
 			game->time_played = atoi(s2+1);
@@ -150,6 +172,9 @@ static void read_game_stats() {
 	}
 	fclose(f);
     }
+    if (!found_last_played)
+	// call this if no "most recent" was saved yet
+	init_recent();
 }
 
 void init_game_list(void)
