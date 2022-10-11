@@ -239,7 +239,7 @@ class TGame_sel : public TMenu
   protected:
     int last_sel,image_counter;
     char current_picture[256];
-    int h_title,h_bot,w_year,h_year,w_categ,h_categ;
+    int h_title,h_bot,w_year,h_year;
 
   public:
     TGame_sel(char *title, menu_item_t *items) : TMenu(title,items) {
@@ -247,7 +247,7 @@ class TGame_sel : public TMenu
 	last_sel = -1;
 	current_picture[0] = 0;
 	image_counter = 0;
-	w_year = h_year = w_categ = h_categ = 0;
+	w_year = h_year = 0;
     }
     ~TGame_sel() {
 	if (short_names) {
@@ -455,18 +455,7 @@ void TGame_sel::draw_bot_frame() {
   if (!w_year) {
     char *year_string = _("Year : 2006");
     font->dimensions(year_string,&w_year,&h_year);
-    unsigned int max_game_type = 0, nb_max = 0;
-    int n;
-    for (n=0; n<NB_GAME_TYPE; n++) {
-      if (strlen(game_type[n]) > max_game_type) {
-	max_game_type = strlen(game_type[n]);
-	nb_max = n;
-      }
-    }
-    char scateg[80];
-    snprintf(scateg,80,_("Category : %s"),game_type[nb_max]);
-    font->dimensions(scateg,&w_categ,&h_categ);
-    h_bot = h_categ + h_year;
+    h_bot = h_year*2;
   }
   int base = sdl_screen->h-h_bot;
 #if SDL==1
@@ -485,7 +474,6 @@ void TGame_sel::draw_bot_frame() {
     for (n=1; n<=NB_GAME_TYPE; n++) {
       if (game_list[sel]->flags & (1<<(n-1))) {
 	strcat(category_string,game_type[n]);
-	strcat(category_string," ");
       }
     }
   } else {
@@ -496,6 +484,8 @@ void TGame_sel::draw_bot_frame() {
   font->put_string(fw,base,game_string,fg_frame,bg_frame);
   font->put_string(sdl_screen->w-w_year,base,year_string,fg_frame,bg_frame);
   font->put_string(fw,base+h_year,company_string,fg_frame,bg_frame);
+  int w_categ,h_categ;
+  font->dimensions(category_string,&w_categ,&h_categ);
   font->put_string(sdl_screen->w-w_categ,base+h_year,category_string,fg_frame,bg_frame);
 #if SDL == 1
   SDL_Rect area;
