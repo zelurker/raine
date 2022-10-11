@@ -46,7 +46,7 @@ static menu_item_t options[] =
 { _("All drivers"), _("Cave"), _("Capcom CPS1"), _("Capcom CPS2"), _("Neo-Geo"), _("NMK"), _("Psikyo (gunbird)"), _("Seta"), _("Taito F2"), _("Taito L-System"), _("Taito X-System 2"), _("Toaplan 1"), _("Toaplan 2") } },
 { _("Clones"), NULL, &clones, 2, {0, 1 }, { _("Without"), _("With") } },
 { _("Display short names too"), &change_names, &short_names, 2, {0, 1}, {_("No"), _("Yes")} },
-{ _("Rom directories..."), &do_romdir },
+{ _("ROM directories..."), &do_romdir },
 { NULL },
 };
 
