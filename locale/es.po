@@ -1869,7 +1869,7 @@ msgstr "Daño"
 msgid "Debug dips"
 msgstr "Dips de depuración"
 
-msgid "Decrease cpu skip"
+msgid "Decrease CPU skip"
 msgstr "Disminuir saltos de cpu"
 
 msgid "Decrease frameskip"
@@ -2346,7 +2346,7 @@ msgstr "Pantalla completa"
 msgid "Fully-auto"
 msgstr "Completamente-auto"
 
-msgid "Fwd 1 frame in pause"
+msgid "Forward 1 frame in pause"
 msgstr "Adelantar 1 cuadro en pausa"
 
 msgid "GUI transparency"
@@ -2488,7 +2488,7 @@ msgstr "IC52=512kb, IC53=ninguno"
 msgid "Immediate FPS"
 msgstr "CPS inmediatos"
 
-msgid "Increase cpu skip"
+msgid "Increase CPU skip"
 msgstr "Aumentar saltos de cpu"
 
 msgid "Increase frameskip"
@@ -3419,7 +3419,7 @@ msgstr "Rapido"
 msgid "Quit"
 msgstr "Salir"
 
-msgid "Quit w/o saving"
+msgid "Quit without saving"
 msgstr "Quitar sin salvar"
 
 msgid "RDTSC Timing Enabled (cycles)"
@@ -3498,7 +3498,7 @@ msgstr "Reintentos"
 msgid "Return mandatory"
 msgstr "Retorno obligatorio"
 
-msgid "Return to gui"
+msgid "Return to GUI"
 msgstr "Volver a interfaz"
 
 msgid "Revert to default game controls"
@@ -3863,7 +3863,7 @@ msgstr ""
 msgid "Super Techniques"
 msgstr ""
 
-msgid "Switch fps display"
+msgid "Switch FPS display"
 msgstr "Cambiar visor de cps"
 
 msgid "Switch save slot"

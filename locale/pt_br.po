@@ -1872,7 +1872,7 @@ msgstr "Dano"
 msgid "Debug dips"
 msgstr "Dips de debug"
 
-msgid "Decrease cpu skip"
+msgid "Decrease CPU skip"
 msgstr "Diminuir o pulo da cpu"
 
 msgid "Decrease frameskip"
@@ -2349,7 +2349,7 @@ msgstr "Tela cheia"
 msgid "Fully-auto"
 msgstr "Completamente-auto"
 
-msgid "Fwd 1 frame in pause"
+msgid "Forward 1 frame in pause"
 msgstr "Avançar 1 frame em pausa"
 
 msgid "GUI transparency"
@@ -2491,7 +2491,7 @@ msgstr "IC52=512kb, IC53=nenhum"
 msgid "Immediate FPS"
 msgstr "FPS imediato"
 
-msgid "Increase cpu skip"
+msgid "Increase CPU skip"
 msgstr "Aumentar pulo da cpu"
 
 msgid "Increase frameskip"
@@ -3420,7 +3420,7 @@ msgstr "Rapidamente"
 msgid "Quit"
 msgstr "Sair"
 
-msgid "Quit w/o saving"
+msgid "Quit without saving"
 msgstr "Sair sem salvar"
 
 msgid "RDTSC Timing Enabled (cycles)"
@@ -3499,7 +3499,7 @@ msgstr "Tentar de Novo"
 msgid "Return mandatory"
 msgstr "Retorno obrigatório"
 
-msgid "Return to gui"
+msgid "Return to GUI"
 msgstr "Retornar pra GUI"
 
 msgid "Revert to default game controls"
@@ -3864,7 +3864,7 @@ msgstr "Super Dream Land"
 msgid "Super Techniques"
 msgstr "Super Técnicas"
 
-msgid "Switch fps display"
+msgid "Switch FPS display"
 msgstr "Trocar a exibição do fps"
 
 msgid "Switch save slot"

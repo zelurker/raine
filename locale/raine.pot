@@ -1875,7 +1875,7 @@ msgstr ""
 msgid "Decoding GFX layer"
 msgstr ""
 
-msgid "Decrease cpu skip"
+msgid "Decrease CPU skip"
 msgstr ""
 
 msgid "Decrease frameskip"
@@ -2371,7 +2371,7 @@ msgstr ""
 msgid "Fully-auto"
 msgstr ""
 
-msgid "Fwd 1 frame in pause"
+msgid "Forward 1 frame in pause"
 msgstr ""
 
 msgid "GUI transparency"
@@ -2513,7 +2513,7 @@ msgstr ""
 msgid "Immediate FPS"
 msgstr ""
 
-msgid "Increase cpu skip"
+msgid "Increase CPU skip"
 msgstr ""
 
 msgid "Increase frameskip"
@@ -3455,7 +3455,7 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-msgid "Quit w/o saving"
+msgid "Quit without saving"
 msgstr ""
 
 msgid "RDTSC Timing Enabled (cycles)"
@@ -3544,7 +3544,7 @@ msgstr ""
 msgid "Return mandatory"
 msgstr ""
 
-msgid "Return to gui"
+msgid "Return to GUI"
 msgstr ""
 
 msgid "Revert to default game controls"
@@ -3914,7 +3914,7 @@ msgstr ""
 msgid "Super Techniques"
 msgstr ""
 
-msgid "Switch fps display"
+msgid "Switch FPS display"
 msgstr ""
 
 msgid "Switch save slot"

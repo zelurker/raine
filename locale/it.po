@@ -1535,16 +1535,16 @@ msgstr "[ Controlli di Raine ] "
 msgid "Cheats"
 msgstr "Attiva trucco (Cheat)"
 
-msgid "Decrease cpu skip"
+msgid "Decrease CPU skip"
 msgstr "Diminuisci salti CPU"
 
 msgid "Decrease frameskip"
 msgstr "Diminuisci salti fotogramma"
 
-msgid "Fwd 1 frame in pause"
+msgid "Forward 1 frame in pause"
 msgstr "Prosegui di 1 fotogramma in pausa"
 
-msgid "Increase cpu skip"
+msgid "Increase CPU skip"
 msgstr "Aumenta salti CPU"
 
 msgid "Increase frameskip"
@@ -1559,13 +1559,13 @@ msgstr "Carica gioco con nome"
 msgid "Pause game"
 msgstr "Metti in pausa il gioco"
 
-msgid "Quit w/o saving"
+msgid "Quit without saving"
 msgstr "Esci senza salvare"
 
 msgid "Reset game"
 msgstr "Riavvia gioco"
 
-msgid "Return to gui"
+msgid "Return to GUI"
 msgstr "Ritorna all'interfaccia"
 
 msgid "Save Screenshot"
@@ -1580,7 +1580,7 @@ msgstr "Salva gioco con nome"
 msgid "Stop emulation"
 msgstr "Ferma emulazione"
 
-msgid "Switch fps display"
+msgid "Switch FPS display"
 msgstr "Cambia visualizzaore FPS"
 
 msgid "Switch save slot"

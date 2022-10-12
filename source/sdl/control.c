@@ -674,33 +674,33 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDL_SCANCODE_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen_keyboard     },
  { SDL_SCANCODE_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
  { SDL_SCANCODE_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
- { SDL_SCANCODE_HOME,    0x00,           _("Increase cpu skip"),    0, cpu_speed_up},
- { SDL_SCANCODE_END,     0x00,           _("Decrease cpu skip"),    0, cpu_slow_down},
+ { SDL_SCANCODE_HOME,    0x00,           _("Increase CPU skip"),    0, cpu_speed_up},
+ { SDL_SCANCODE_END,     0x00,           _("Decrease CPU skip"),    0, cpu_slow_down},
  // You must keep this one the 6th input, see special handling (KEYUP event)
  { SDL_SCANCODE_DELETE,  0x00,           _("Toggle limit speed"),   0, toggle_limit_speed},
- { SDL_SCANCODE_F2,      0x00,           _("Save game"),            0, GameSave},
+ { SDL_SCANCODE_F2,      0x00,           _("Save state"),            0, GameSave},
  { SDL_SCANCODE_F3,      0x00,           _("Switch save slot"),     0, next_save_slot},
- { SDL_SCANCODE_F4,      0x00,           _("Load game"),            0, GameLoad},
+ { SDL_SCANCODE_F4,      0x00,           _("Load state"),            0, GameLoad},
 #ifdef DARWIN
- { SDL_SCANCODE_F12,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
+ { SDL_SCANCODE_F12,     0x00,           _("Switch FPS display"),   0, switch_fps_mode},
 #else
- { SDL_SCANCODE_F11,     0x00,           _("Switch fps display"),   0, switch_fps_mode},
+ { SDL_SCANCODE_F11,     0x00,           _("Switch FPS display"),   0, switch_fps_mode},
 #endif
  { SDL_SCANCODE_F1,      0x00,           _("Reset game"),           0, cold_boot},
  { SDL_SCANCODE_P,       0x00,           _("Pause game"),           0, key_pause_game},
  { SDL_SCANCODE_ESCAPE,     0x00,           _("Stop emulation"),    0, key_stop_emulation_esc},
- { SDL_SCANCODE_TAB,     0x00,           _("Return to gui"),        0, key_stop_emulation_tab},
+ { SDL_SCANCODE_TAB,     0x00,           _("Return to GUI"),        0, key_stop_emulation_tab},
  // { SDL_SCANCODE_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
- { SDL_SCANCODE_F2 , 0x00, _("Save game with name"), KMOD_CTRL, GameSaveName },
- { SDL_SCANCODE_F4 , 0x00, _("Load game with name"), KMOD_CTRL, GameLoadName },
+ { SDL_SCANCODE_F2 , 0x00, _("Save state with name"), KMOD_CTRL, GameSaveName },
+ { SDL_SCANCODE_F4 , 0x00, _("Load state with name"), KMOD_CTRL, GameLoadName },
  { SDL_SCANCODE_F2 , 0x00, _("Save demo"), KMOD_SHIFT, GameSaveDemo },
  { SDL_SCANCODE_F4 , 0x00, _("Load demo"), KMOD_SHIFT, GameLoadDemo },
- { SDL_SCANCODE_SPACE, 0x00, _("Fwd 1 frame in pause"), 0, key_pause_fwd},
+ { SDL_SCANCODE_SPACE, 0x00, _("Forward 1 frame in pause"), 0, key_pause_fwd},
 #ifdef HAS_CONSOLE
  { SDL_SCANCODE_GRAVE, 0x00, _("Console"), 0, call_console},
 #endif
  { SDL_SCANCODE_C , 0x00, _("Cheats"), KMOD_ALT, call_cheats},
- { SDL_SCANCODE_F4,       0x00,           _("Quit w/o saving"), KMOD_ALT, key_quit     },
+ { SDL_SCANCODE_F4,       0x00,           _("Quit without saving"), KMOD_ALT, key_quit     },
 };
 
 struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
