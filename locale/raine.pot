@@ -23,7 +23,7 @@ msgid " 3  Minutes"
 msgstr ""
 
 #, c-format
-msgid "%d - Free savegame slot"
+msgid "%d - Free save state slot"
 msgstr ""
 
 #, c-format
@@ -1171,7 +1171,7 @@ msgstr ""
 msgid "Action replay cheats"
 msgstr ""
 
-msgid "Add rom dir..."
+msgid "Add ROM directory..."
 msgstr ""
 
 msgid "All"
@@ -1546,13 +1546,13 @@ msgstr ""
 msgid "Change Setup"
 msgstr ""
 
-msgid "Change dir|Remove dir"
+msgid "Change directory|Remove directory"
 msgstr ""
 
 msgid "Change video mode"
 msgstr ""
 
-msgid "Change/Load ROM"
+msgid "Change/Load game"
 msgstr ""
 
 msgid "Changed to High Gear"
@@ -2298,7 +2298,7 @@ msgid "Final Stage Cont"
 msgstr ""
 
 msgid ""
-"Find the NeoCD bios (neocd.bin).\n"
+"Find the Neo-Geo CD BIOS (neocd.bin).\n"
 "Ask Google if you can't find it !"
 msgstr ""
 
@@ -2732,7 +2732,7 @@ msgstr ""
 msgid "Lives (Midnight Wanderers)"
 msgstr ""
 
-msgid "Load NeoCD game"
+msgid "Load Neo-Geo CD game"
 msgstr ""
 
 msgid "Load demo"
@@ -2741,10 +2741,10 @@ msgstr ""
 msgid "Load from which ?"
 msgstr ""
 
-msgid "Load game"
+msgid "Load state"
 msgstr ""
 
-msgid "Load game with name"
+msgid "Load state with name"
 msgstr ""
 
 msgid "Load inputs from..."
@@ -2924,24 +2924,24 @@ msgstr ""
 msgid "Neo-Geo"
 msgstr ""
 
-msgid "Neo-Geo bios"
+msgid "Neo-Geo BIOS"
 msgstr ""
 
 #, c-format
-msgid "Neo-Geo bios : %s"
+msgid "Neo-Geo BIOS : %s"
 msgstr ""
 
-msgid "NeoCD bios"
+msgid "Neo-Geo CD BIOS"
 msgstr ""
 
 #, c-format
-msgid "NeoCD bios : %s"
+msgid "Neo-Geo CD BIOS : %s"
 msgstr ""
 
-msgid "NeoCD/Neo-Geo options"
+msgid "Neo-Geo/Neo-Geo CD options"
 msgstr ""
 
-msgid "NeoGeo Logo"
+msgid "Neo-Geo Logo"
 msgstr ""
 
 msgid "Nevada"
@@ -2969,7 +2969,7 @@ msgid "No Bonus Lives"
 msgstr ""
 
 #, c-format
-msgid "No NeoCD bios"
+msgid "No Neo-Geo CD BIOS"
 msgstr ""
 
 msgid "No Save"
@@ -3011,7 +3011,7 @@ msgstr ""
 msgid "No raine logo, or it's a true color bitmap"
 msgstr ""
 
-msgid "No savegames loadable for this game"
+msgid "No save states loadable for this game"
 msgstr ""
 
 msgid "No shader support on your hardware"
@@ -3523,7 +3523,7 @@ msgstr ""
 msgid "Rendering"
 msgstr ""
 
-msgid "Reset fps to driver's default value"
+msgid "Reset FPS to driver's default value"
 msgstr ""
 
 msgid "Reset game"
@@ -3559,7 +3559,7 @@ msgstr ""
 msgid "Rom Option"
 msgstr ""
 
-msgid "Rom directories..."
+msgid "ROM directories..."
 msgstr ""
 
 msgid "Romstar"
@@ -3628,10 +3628,10 @@ msgstr ""
 msgid "Save demo"
 msgstr ""
 
-msgid "Save game"
+msgid "Save state"
 msgstr ""
 
-msgid "Save game with name"
+msgid "Save state with name"
 msgstr ""
 
 msgid "Save inputs as..."
@@ -4274,7 +4274,7 @@ msgstr ""
 msgid "Up to Level 3"
 msgstr ""
 
-msgid "Update neocd sprite block"
+msgid "Update Neo-Geo CD sprite block"
 msgstr ""
 
 msgid "Upright"
