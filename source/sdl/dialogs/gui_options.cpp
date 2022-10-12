@@ -34,7 +34,7 @@ static int set_lang(int sel) {
 
 static menu_item_t gui_menu[MAX_GUI] =
 {
-{  _("Language"), &set_lang, &lang_int, 5, {0, 1, 2, 3, 4 }, { "Default (english)", "French","Spanish","Italian", "Brasilian portuguese"} },
+{  _("Language"), &set_lang, &lang_int, 5, {0, 1, 2, 3, 4 }, { "Default (English)", "French","Spanish","Italian", "Brazilian Portuguese"} },
 };
 
 extern int add_gui_options(menu_item_t *menu);

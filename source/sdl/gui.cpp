@@ -501,7 +501,7 @@ static int load_neo_game(int sel) {
       // is found, then a special list of extensions is used
   // ".iso",
   ".cue", "ipl.txt", "7z", NULL };
-  fsel(neocd_dir,exts,res,_("Load NeoCD game"));
+  fsel(neocd_dir,exts,res,_("Load Neo-Geo CD game"));
   return load_neo_from_name(res);
 }
 #endif
@@ -516,10 +516,10 @@ static menu_item_t main_items[] =
 { _("Region"), &set_region, },
 { _("Action replay cheats"), &do_cheats, },
 { _("Dipswitches"), &do_dlg_dsw, },
-{ _("Change/Load ROM"), &do_game_sel },
+{ _("Change/Load game"), &do_game_sel },
 #if HAS_NEO
-{ _("Load NeoCD game"), &load_neo_game },
-{ _("NeoCD/Neo-Geo options"), &do_neocd_options },
+{ _("Load Neo-Geo CD game"), &load_neo_game },
+{ _("Neo-Geo/Neo-Geo CD options"), &do_neocd_options },
 #endif
 { _("Video options"), &do_video_options },
 { _("Sound options"), &do_sound_options },

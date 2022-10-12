@@ -64,12 +64,12 @@ static int choose_bios(int sel) {
 	}
     }
     if (nb_bios) {
-	TMenu *load = new TMenu(_("Neo-Geo bios"),menu);
+	TMenu *load = new TMenu(_("Neo-Geo BIOS"),menu);
 	load->set_sel(neogeo_bios);
 	load->execute();
 	delete load;
     } else
-	MessageBox("Error","Can't find any neogeo bios in your roms.\nSetup your rom directories so that neogeo.zip is loadable","OK");
+	MessageBox("Error","Can't find any Neo-Geo BIOS in your ROMs.\nSetup your ROM directories so that neogeo.zip is loadable","OK");
     free(menu);
     return 0;
 }
@@ -177,16 +177,16 @@ static int dev_mode;
 
 static menu_item_t neocd_menu[] =
 {
-    { _("Neo-Geo bios"), &choose_bios,},
-    { _("NeoCD bios"), &select_neocd_bios, },
+    { _("Neo-Geo BIOS"), &choose_bios,},
+    { _("Neo-Geo CD BIOS"), &select_neocd_bios, },
     { _("Soft dips"), &do_soft_dips, },
     { _("Debug dips"), &do_debug_dsw, },
     { _("Developper mode"), NULL, &dev_mode, 2, {0, 1}, {_("No"),_("Yes")} },
 { _("Exit to"), &exit_to, &exit_to_code, 4, {0, 2, 5, 6},
-  {_("NeoGeo Logo"), _("CD Interface"), _("Test mode"), _("Config mode") } },
+  {_("Neo-Geo Logo"), _("CD Interface"), _("Test mode"), _("Config mode") } },
   { _("Loading animations speed"), NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
     { _("Off"), _("CD 1x (150 Kb/s)"), _("2x"), _("4x"), _("8x (default)"), _("16x"), _("32x"), _("48x") } },
-  { _("Update neocd sprite block"), &do_update_block },
+  { _("Update Neo-Geo CD sprite block"), &do_update_block },
   { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},
   { _("Capture mode"), NULL, &capture_new_pictures, 2, { 0, 1 }, { _("Overwrite"), _("New pictures") }},
@@ -195,10 +195,10 @@ static menu_item_t neocd_menu[] =
 
 static int select_bios(int sel) {
     neogeo_bios = sel;
-    sprintf(label,_("Neo-Geo bios : %s"),neo_names[neogeo_bios]);
+    sprintf(label,_("Neo-Geo BIOS: %s"),neo_names[neogeo_bios]);
     static char label2[180];
     if (!*neocd_bios_file) {
-	sprintf(label2,_("No NeoCD bios"));
+	sprintf(label2,_("No Neo-Geo CD BIOS"));
     } else {
 	char *s = neocd_bios_file;
 	char *old;
@@ -209,7 +209,7 @@ static int select_bios(int sel) {
 	if (old == neocd_bios_file) s = old;
 	else
 	    s = old+1;
-	sprintf(label2,_("NeoCD bios : %s"),s);
+	sprintf(label2,_("Neo-Geo CD BIOS: %s"),s);
     }
 
     neocd_menu[0].label = label;
@@ -237,7 +237,7 @@ int do_neocd_options(int sel) {
     select_bios(neogeo_bios);
     if (current_game && current_game->load_game == &load_neocd)
 	dev_mode = (is_neocd() ? RAM[0x10fe80 ^ 1] : RAM[0xfe80 ^1]);
-    TMenu *menu = new TNeo_options(_("NeoCD/Neo-Geo options"), neocd_menu);
+    TMenu *menu = new TNeo_options(_("Neo-Geo/Neo-Geo CD options"), neocd_menu);
     menu->execute();
     delete menu;
     if (current_game && current_game->load_game == &load_neocd) {

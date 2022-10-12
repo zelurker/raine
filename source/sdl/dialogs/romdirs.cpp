@@ -10,10 +10,10 @@ static int end;
 
 static int do_dir(int sel) {
   sel--;
-  int ret = MessageBox(dir_cfg.rom_dir[sel],_("Directory options"),_("Change dir|Remove dir"));
+  int ret = MessageBox(dir_cfg.rom_dir[sel],_("Directory options"),_("Change directory|Remove directory"));
   if (ret == 1) {
     char res[256];
-    dsel(dir_cfg.rom_dir[sel],NULL,res,"Rom dir");
+    dsel(dir_cfg.rom_dir[sel],NULL,res,"ROM directories");
     free(dir_cfg.rom_dir[sel]);
     dir_cfg.rom_dir[sel] = strdup(res);
     update_cache(sel);
@@ -29,7 +29,7 @@ static int add_dir(int sel) {
     strcpy(res,dir_cfg.rom_dir[0]);
   else
     res[0] = 0;
-  dsel(res,NULL,res,"Rom dir");
+  dsel(res,NULL,res,"ROM directories");
   add_rom_dir(res);
   end = 0;
   return 1;
@@ -47,7 +47,7 @@ int do_romdir(int sel) {
       menu[n+1].label = dir_cfg.rom_dir[n];
       menu[n+1].menu_func = &do_dir;
     }
-    menu[0].label = _("Add rom dir...");
+    menu[0].label = _("Add ROM directory...");
     menu[0].menu_func = &add_dir;
 
     TMenu *mbox = new TMenu(_("rom dirs"),menu);
