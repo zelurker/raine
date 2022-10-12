@@ -1117,11 +1117,11 @@ msgid "ES5506 voice filters"
 msgstr "Applica filtri alle voci del ES5506 (Taito F3)"
 
 #: source/sdl/dialogs/sound_options.cpp:35
-msgid "Always stop CD music while loading"
+msgid "Always stop Neo-Geo CD music while loading"
 msgstr "Ferma sempre la musica CD mentre carica"
 
 #: source/sdl/dialogs/sound_options.cpp:36
-msgid "Sfx volume"
+msgid "Sound effects volume"
 msgstr "Volume degli effetti sonori"
 
 #: source/sdl/dialogs/sound_options.cpp:37
@@ -1133,11 +1133,11 @@ msgid "Audio tracks format"
 msgstr "Ordine dei bit nel formato delle tracce audio"
 
 #: source/sdl/dialogs/sound_options.cpp:39
-msgid "Mute SFX"
+msgid "Mute sound effects"
 msgstr "Silenzia gli effetti sonori (SFX)"
 
 #: source/sdl/dialogs/sound_options.cpp:40
-msgid "Mute CD"
+msgid "Mute music"
 msgstr "Silenzia la musica su CD"
 
 #: source/sdl/dialogs/sound_options.cpp:41

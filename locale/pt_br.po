@@ -1227,7 +1227,7 @@ msgstr "DualAlternativo"
 msgid "AlternateSingle"
 msgstr "AlternativoÚnico"
 
-msgid "Always stop CD music while loading"
+msgid "Always stop Neo-Geo CD music while loading"
 msgstr "Sempre parar a música do CD enquanto carrega"
 
 msgid "America"
@@ -2875,10 +2875,10 @@ msgstr "Erro da música: %s"
 msgid "Music volume"
 msgstr "Volume da música"
 
-msgid "Mute CD"
+msgid "Mute music"
 msgstr "CD Mudo"
 
-msgid "Mute SFX"
+msgid "Mute sound effects"
 msgstr "SFX Mudo"
 
 msgid "N"
@@ -3677,7 +3677,7 @@ msgstr "Seta EUA / Romstar"
 msgid "Seta USA / Taito America"
 msgstr "Seta EUA / Taito América"
 
-msgid "Sfx volume"
+msgid "Sound effects volume"
 msgstr "Volume do Sfx"
 
 msgid "Shader"

@@ -1226,7 +1226,7 @@ msgstr "DualAlternativo"
 msgid "AlternateSingle"
 msgstr "AlternativoSimple"
 
-msgid "Always stop CD music while loading"
+msgid "Always stop Neo-Geo CD music while loading"
 msgstr "Siempre detener música de CD mientras se carga"
 
 msgid "America"
@@ -2872,10 +2872,10 @@ msgstr "Error de Música: %s"
 msgid "Music volume"
 msgstr "Volúmen de música"
 
-msgid "Mute CD"
+msgid "Mute music"
 msgstr "Silenciar CD"
 
-msgid "Mute SFX"
+msgid "Mute sound effects"
 msgstr "Silenciar FX"
 
 msgid "N"
@@ -3676,7 +3676,7 @@ msgstr ""
 msgid "Seta USA / Taito America"
 msgstr ""
 
-msgid "Sfx volume"
+msgid "Sound effects volume"
 msgstr "Volúmen de Sfx"
 
 msgid "Shader"
