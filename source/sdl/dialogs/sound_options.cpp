@@ -72,12 +72,12 @@ menu_item_t sound_menu[] =
   { _("ES5506 voice filters"), NULL, &es5506_voice_filters, 2, { 0, 1 }, { _("No"), _("Yes") } },
 #endif
 #if HAS_NEO
-{ _("Always stop CD music while loading"), NULL, &auto_stop_cdda, 2, { 0, 1 }, { _("No"), _("Yes") } },
-  { _("Sfx volume"), NULL, &sfx_volume, 3, { 0, 200, 10 }, },
+{ _("Always stop Neo-Geo CD music while loading"), NULL, &auto_stop_cdda, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Sound effects volume"), NULL, &sfx_volume, 3, { 0, 200, 10 }, },
   { _("Music volume"), NULL, &music_volume, 3, { 0, 200, 10 }, },
   { _("Raw audio tracks format"), NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { _("lsb"),_("msb") }},
-  { _("Mute SFX"), NULL, &mute_sfx, 2, { 0, 1 }, { _("No"), _("Yes") } },
-  { _("Mute CD"), NULL, &mute_music, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Mute sound effects"), NULL, &mute_sfx, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Mute music"), NULL, &mute_music, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Default volumes"), &set_default_volumes },
 #endif
   { _("Record to raine_sound.wav"), NULL, &recording, 3, { 0, 1, 2 }, { _("No"), _("Without monitoring"), _("With monitoring") } },
