@@ -127,7 +127,11 @@ static void init_recent() {
 		ret = stat(s,&buf);
 	    }
 	    if (!ret) {
+#ifdef RAINE_WIN32
+		game_list[n]->last_played = buf.st_atime;
+#else
 		game_list[n]->last_played = buf.st_atim.tv_sec;
+#endif
 		nb++;
 	    }
 	}
