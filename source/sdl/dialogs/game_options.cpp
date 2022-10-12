@@ -150,7 +150,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	  break;
       }
       saves[used].num = free;
-      sprintf(buff,_("%d - Free savegame slot"),free);
+      sprintf(buff,_("%d - Free save state slot"),free);
       menu[used].label = strdup(buff);
       menu[used].menu_func = &saveit;
     }
@@ -177,10 +177,10 @@ static int my_load(int sel) {
   exit_options = 0;
   menu_item_t *menu = get_savegames(0);
   if (!used) {
-    MessageBox(_("Error"),_("No savegames loadable for this game"));
+    MessageBox(_("Error"),_("No save states loadable for this game"));
     return 0;
   }
-  TMenu *load = new TMenu(_("Load game"),menu);
+  TMenu *load = new TMenu(_("Load state"),menu);
   load->execute();
   delete load;
   free_saves(menu);
@@ -190,7 +190,7 @@ static int my_load(int sel) {
 static int my_save(int sel) {
   exit_options = 0;
   menu_item_t *menu = get_savegames(1);
-  TMenu *load = new TMenu(_("Save game"),menu);
+  TMenu *load = new TMenu(_("Save state"),menu);
   load->execute();
   delete load;
   free_saves(menu);
@@ -231,8 +231,8 @@ static int reset_fps(int sel) {
 static menu_item_t game_options[] =
 {
   { _("Reset game hardware"), &my_reset },
-  { _("Load game"), &my_load },
-  { _("Save game"), &my_save },
+  { _("Load state"), &my_load },
+  { _("Save state"), &my_save },
   { _("Graphical layers..."), &graphical_layers },
 #if SDL==1
   { _("Sprite viewer"), &sprite_viewer },
@@ -243,7 +243,7 @@ static menu_item_t game_options[] =
 #endif
   { _("CPU frame skip (1=no skip) "), NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,180 }, { "", (char*)&fps, "1", "200" } },
-  { _("Reset fps to driver's default value"), &reset_fps },
+  { _("Reset FPS to driver's default value"), &reset_fps },
   { _("FPS counter"), NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
     { _("Off"), _("Immediate FPS"), _("Average FPS"), _("Profiler"), _("Rdtsc Cycles") } },
   { NULL }
