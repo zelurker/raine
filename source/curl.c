@@ -135,7 +135,10 @@ int get_url(char *file, char *url)
     /* close the header file */
     fclose(pagefile);
     int size = size_file(file);
-    if (size == 0) unlink(file);
+    if (size == 0) {
+	unlink(file);
+	ret = 1;
+    }
   }
 
   return ret;
