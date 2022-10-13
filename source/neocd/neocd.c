@@ -4721,6 +4721,10 @@ void load_neocd() {
 	    fixed_layer_bank_type = 2;
 	    kof2000_neogeo_gfx_decrypt(0x00);
 	    neogeo_cmc50_m1_decrypt();
+	} else if (is_current_game("kof2000ps2")) {
+	    fixed_layer_bank_type = 2;
+	    neogeo_sfix_decrypt();
+	    neogeo_cmc50_m1_decrypt();
 	} else if (is_current_game("kof2002")) {
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0xec);

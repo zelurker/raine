@@ -3405,3 +3405,104 @@ static struct ROM_INFO rom_totcarib[] = /* testing treasure of the caribeans... 
 };
 
 CLNEI( totcarib, neogeo, "Treasure of the Caribeans", FACE, 2011, GAME_MISC); // 2011, really ???
+
+// and some kof clones...
+
+static struct ROM_INFO rom_kof99dc[] = /* decrypted version with DC hack */
+{
+  LOAD_SW16( CPU1, "152dc-p1.p1", 0x000000, 0x100000, 0x80a36a1b),
+  LOAD_SW16( CPU1, "152dc-p2.sp2", 0x100000, 0x400000, 0x62b11826),
+  LOAD( FIXED, "kf99dc_s1.rom", 0x000000, 0x20000, 0x697c1f85),
+  LOAD_16_8( SPRITES, "kf99dc_c1.rom", 0x0000000, 0x800000, 0x598cc558),
+  LOAD_16_8( SPRITES, "kf99dc_c2.rom", 0x0000001, 0x800000, 0x5b4c297b),
+  LOAD_16_8( SPRITES, "kf99n_c3.rom", 0x1000000, 0x800000, 0xb047c9d5),
+  LOAD_16_8( SPRITES, "kf99n_c4.rom", 0x1000001, 0x800000, 0x6bc8e4b1),
+  LOAD_16_8( SPRITES, "kf99n_c5.rom", 0x2000000, 0x800000, 0x9746268c),
+  LOAD_16_8( SPRITES, "kf99n_c6.rom", 0x2000001, 0x800000, 0x238b3e71),
+  LOAD_16_8( SPRITES, "kf99dc_c7.rom", 0x3000000, 0x800000, 0x3ac342ad),
+  LOAD_16_8( SPRITES, "kf99dc_c8.rom", 0x3000001, 0x800000, 0x500aea52),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof99dc, kof99, "The King of Fighters '99 Dreamcast (NGH-2510)", SNK, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_kof99pbs[] = /* decrypted version with Boss hack */
+{
+  LOAD_SW16( CPU1, "251pbs-p1.p1", 0x000000, 0x100000, 0xa4deff9a),
+  LOAD_SW16( CPU1, "251pbs-p2.sp2", 0x100000, 0x400000, 0x23339a53),
+  LOAD( FIXED, "251ps-s1.s1", 0x000000, 0x20000, 0x0b3d79d3),
+  LOAD_16_8( SPRITES, "proto_251-c1.c1", 0x0000000, 0x800000, 0xe5d8ffa4),
+  LOAD_16_8( SPRITES, "proto_251-c2.c2", 0x0000001, 0x800000, 0xd822778f),
+  LOAD_16_8( SPRITES, "proto_251-c3.c3", 0x1000000, 0x800000, 0xf20959e8),
+  LOAD_16_8( SPRITES, "proto_251-c4.c4", 0x1000001, 0x800000, 0x54ffbe9f),
+  LOAD_16_8( SPRITES, "proto_251-c5.c5", 0x2000000, 0x800000, 0xd87a3bbc),
+  LOAD_16_8( SPRITES, "proto_251-c6.c6", 0x2000001, 0x800000, 0x4d40a691),
+  LOAD_16_8( SPRITES, "251pbs-c7.c7", 0x3000000, 0x800000, 0xa0fb0a24),
+  LOAD_16_8( SPRITES, "251pbs-c8.c8", 0x3000001, 0x800000, 0xfbc1112c),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof99pbs, kof99, "The King of Fighters '99 Perfect Boss (NGH-2510)", SNK, 1999, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2000ps2[] = /* decrypted version with PS2 hack */
+{
+  LOAD_SW16( CPU1, "257ps2-p1.bin", 0x000000, 0x100000, 0x56941018),
+  LOAD_SW16( CPU1, "257ps2-p2.bin", 0x100000, 0x400000, 0x1669a5ad),
+	/* The Decrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
+  FILL( FIXED , 0x000000, 0x80000, 0),
+  LOAD_16_8( SPRITES, "257-c1_decrypted.bin", 0x0000000, 0x800000, 0xabcdd424),
+  LOAD_16_8( SPRITES, "257-c2_decrypted.bin", 0x0000001, 0x800000, 0xcda33778),
+  LOAD_16_8( SPRITES, "257-c3_decrypted.bin", 0x1000000, 0x800000, 0x087fb15b),
+  LOAD_16_8( SPRITES, "257-c4_decrypted.bin", 0x1000001, 0x800000, 0xfe9dfde4),
+  LOAD_16_8( SPRITES, "257-c5_decrypted.bin", 0x2000000, 0x800000, 0x03ee4bf4),
+  LOAD_16_8( SPRITES, "257-c6_decrypted.bin", 0x2000001, 0x800000, 0x8599cc5b),
+  LOAD_16_8( SPRITES, "257-c7_decrypted.bin", 0x3000000, 0x800000, 0x93c343ec),
+  LOAD_16_8( SPRITES, "257-c8_decrypted.bin", 0x3000001, 0x800000, 0xba92f698),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2000ps2, kof2000, "The King of Fighters 2000 Playstation 2 (NGH-2570)", SNK, 2000, GAME_BEAT);
+
+static struct ROM_INFO rom_kof2k1bs[] = /* decrypted version with PS2 hack */
+{
+  LOAD_SW16( CPU1, "kof2k1bs_p1.rom", 0x000000, 0x100000, 0xb5becb3c),
+  LOAD_SW16( CPU1, "kof2k1bs_p2.rom", 0x100000, 0x400000, 0x295d0c5c),
+  LOAD( FIXED, "kof2k1bs_s1.rom", 0x000000, 0x20000, 0x19b6587b),
+  LOAD( ROM2, "kof2k1bs_m1.rom", 0x00000, 0x20000, 0x2fb0a8a5),
+  LOAD( SMP1, "kof2k1bs_v1.rom", 0x000000, 0x400000, 0x83d49ecf),
+  LOAD( SMP1, "kof2k1bs_v2.rom", 0x400000, 0x400000, 0x003f1843),
+  LOAD( SMP1, "kof2k1bs_v3.rom", 0x800000, 0x400000, 0x2ae38dbe),
+  LOAD( SMP1, "kof2k1bs_v4.rom", 0xc00000, 0x400000, 0x26ec4dd9),
+  LOAD_16_8( SPRITES, "kof2k1bs_c1.rom", 0x0000000, 0x800000, 0x103225b1),
+  LOAD_16_8( SPRITES, "kof2k1bs_c2.rom", 0x0000001, 0x800000, 0xf9d05d99),
+  LOAD_16_8( SPRITES, "kof2k1bs_c3.rom", 0x1000000, 0x800000, 0x4c7ec427),
+  LOAD_16_8( SPRITES, "kof2k1bs_c4.rom", 0x1000001, 0x800000, 0x1d237aa6),
+  LOAD_16_8( SPRITES, "kof2k1bs_c5.rom", 0x2000000, 0x800000, 0xc2256db5),
+  LOAD_16_8( SPRITES, "kof2k1bs_c6.rom", 0x2000001, 0x800000, 0x8d6565a9),
+  LOAD_16_8( SPRITES, "kof2k1bs_c7.rom", 0x3000000, 0x800000, 0x8d11aed2),
+  LOAD_16_8( SPRITES, "kof2k1bs_c8.rom", 0x3000001, 0x800000, 0x9e7168f5),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kof2k1bs, neogeo, "The King of Fighters 2001 Playstation 2 (NGH-2621)", SNK, 2001, GAME_BEAT);
+
+
+static struct ROM_INFO rom_kf2k3ps2[] = /* decrypted version with PS2 hack */
+ /* AES VERSION */{
+  LOAD_SW16( CPU1, "kf2k3ps2-p1.bin", 0x000000, 0x800000, 0x8e66056d),
+  LOAD( FIXED, "kf2k3ps2-s1.bin", 0x000000, 0x20000, 0xc2e48e98),
+  LOAD( ROM2, "kf2k3ps2-m1.bin", 0x00000, 0x80000, 0x4374cb5c),
+  LOAD( SMP1, "kf2k3ps2-v1.bin", 0x000000, 0x800000, 0xdd6c6a85),
+  LOAD( SMP1, "kf2k3ps2-v2.bin", 0x800000, 0x800000, 0x0e84f8c1),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c1.bin", 0x0000000, 0x800000, 0xe42fc226),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c2.bin", 0x0000001, 0x800000, 0x1b5e3b58),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c3.bin", 0x1000000, 0x800000, 0xd334fdd9),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c4.bin", 0x1000001, 0x800000, 0x0d457699),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c5.bin", 0x2000000, 0x800000, 0x8a91aae4),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c6.bin", 0x2000001, 0x800000, 0x9f8674b8),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c7.bin", 0x3000000, 0x800000, 0x0ff993d7),
+  LOAD_16_8( SPRITES, "kf2k3ps2-c8.bin", 0x3000001, 0x800000, 0x22e36002),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kf2k3ps2, neogeo, "The King of Fighters 2003 Playstation 2 (NGH-2710)", SNK, 2003, GAME_BEAT);

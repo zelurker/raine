@@ -1002,6 +1002,12 @@
   DRV(zintrckb)
   DRV(b2b)
   DRV(totcarib)
+  // some more kof hacks...
+  DRV(kof99dc)
+  DRV(kof99pbs)
+  DRV(kof2000ps2)
+  DRV(kof2k1bs)
+  DRV(kf2k3ps2)
 
 // ninjak.c
   DRV(ninjak)
