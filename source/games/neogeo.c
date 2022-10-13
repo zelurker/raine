@@ -3424,7 +3424,7 @@ static struct ROM_INFO rom_kof99dc[] = /* decrypted version with DC hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof99dc, kof99, "The King of Fighters '99 Dreamcast (NGH-2510)", SNK, 1999, GAME_BEAT);
+CLNEI( kof99dc, kof99, "The King of Fighters '99 Dreamcast", SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_kof99pbs[] = /* decrypted version with Boss hack */
 {
@@ -3442,7 +3442,7 @@ static struct ROM_INFO rom_kof99pbs[] = /* decrypted version with Boss hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof99pbs, kof99, "The King of Fighters '99 Perfect Boss (NGH-2510)", SNK, 1999, GAME_BEAT);
+CLNEI( kof99pbs, kof99, "The King of Fighters '99 Perfect Boss", SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2000ps2[] = /* decrypted version with PS2 hack */
 {
@@ -3461,7 +3461,7 @@ static struct ROM_INFO rom_kof2000ps2[] = /* decrypted version with PS2 hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2000ps2, kof2000, "The King of Fighters 2000 Playstation 2 (NGH-2570)", SNK, 2000, GAME_BEAT);
+CLNEI( kof2000ps2, kof2000, "The King of Fighters 2000 Playstation 2 (EGHT HACK)", SNK, 2000, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2k1bs[] = /* decrypted version with PS2 hack */
 {
@@ -3484,8 +3484,7 @@ static struct ROM_INFO rom_kof2k1bs[] = /* decrypted version with PS2 hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2k1bs, neogeo, "The King of Fighters 2001 Playstation 2 (NGH-2621)", SNK, 2001, GAME_BEAT);
-
+CLNEI( kof2k1bs, neogeo, "The King of Fighters 2001 Playstation 2 (EGCG HACK)", SNK, 2001, GAME_BEAT);
 
 static struct ROM_INFO rom_kf2k3ps2[] = /* decrypted version with PS2 hack */
  /* AES VERSION */{
@@ -3505,4 +3504,4 @@ static struct ROM_INFO rom_kf2k3ps2[] = /* decrypted version with PS2 hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kf2k3ps2, neogeo, "The King of Fighters 2003 Playstation 2 (NGH-2710)", SNK, 2003, GAME_BEAT);
+CLNEI( kf2k3ps2, neogeo, "The King of Fighters 2003 Playstation 2 (EGCG HACK)", SNK, 2003, GAME_BEAT);
