@@ -114,6 +114,8 @@ const int nb_companies = sizeof(company_name)/4;
 
 #include "driver.c"
 
+#ifndef RAINE_WIN32
+// st_atime is to say the least unreliable in windows, it's really a bad idea to initialize this based on that
 static void init_recent() {
     int n,nb = 0;
     for (n=0; n<game_count; n++) {
@@ -127,16 +129,13 @@ static void init_recent() {
 		ret = stat(s,&buf);
 	    }
 	    if (!ret) {
-#ifdef RAINE_WIN32
-		game_list[n]->last_played = buf.st_atime;
-#else
 		game_list[n]->last_played = buf.st_atim.tv_sec;
-#endif
 		nb++;
 	    }
 	}
     }
 }
+#endif
 
 static void read_game_stats() {
     FILE *f = fopen(get_shared("savedata/stats"),"r");
@@ -177,9 +176,13 @@ static void read_game_stats() {
 	}
 	fclose(f);
     }
+#ifndef RAINE_WIN32
+    // Don't try to initialize anything in windows, st_atime is unreliable !
     if (!found_last_played)
 	// call this if no "most recent" was saved yet
 	init_recent();
+#endif
+
 }
 
 void init_game_list(void)
