@@ -1,1 +1,272 @@
-kof2003h.txt
+script "Infinite Time"
+run:
+    poke $107D62 $99
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"
+on:
+    poke $107D62 $00
+script "Mai's boobs always bounce"
+on:
+    temp0=peek($10785A)
+run:
+    poke $10785A $00
+off:
+    poke $10785A temp0
+script "Hit Anywhere (Both Players)"
+on:
+    temp0=dpeek($01621E)
+run:
+    dpoke $01621E $6002
+off:
+    dpoke $01621E temp0
+script " "
+script "P1 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai"
+run:
+    poke $107D0C param
+script "P1 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai"
+run:
+    poke $107D0D param
+script "P1 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai"
+run:
+    poke $107D0E param
+script " "
+script "P2 Select Character (A)" \
+ "comm:This refers to the first character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizur"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Mukai"
+run:
+    poke $107D0F param
+script "P2 Select Character (B)" \
+ "comm:This refers to the second character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizur"\
+ "0x24/Maki"\
+ "0x22/Adel"\
+ "0x23/Muka"
+run:
+    poke $107D10 param
+script "P2 Select Character (C)" \
+ "comm:This refers to the third character selected" \
+ "0x00/Ash"\
+ "0x01/Duolon"\
+ "0x02/Shen"\
+ "0x03/Terry"\
+ "0x04/Joe"\
+ "0x05/Tizoc"\
+ "0x06/Ryo"\
+ "0x07/Robert"\
+ "0x08/Yuri"\
+ "0x09/Kim"\
+ "0x0A/Chang"\
+ "0x0B/Jhun"\
+ "0x0C/Leona"\
+ "0x0D/Ralf"\
+ "0x0E/Clark"\
+ "0x0F/Gato"\
+ "0x10/Billy"\
+ "0x11/Yamazaki"\
+ "0x12/King"\
+ "0x13/Mai"\
+ "0x14/Mary"\
+ "0x15/Benimaru"\
+ "0x16/Shingo"\
+ "0x17/Daimon"\
+ "0x18/Athena"\
+ "0x19/Hinako"\
+ "0x1A/Malin"\
+ "0x1B/K'"\
+ "0x1C/Maxima"\
+ "0x1D/Whip"\
+ "0x1E/Kyo"\
+ "0x1F/Iori"\
+ "0x21/Kusanagi"\
+ "0x20/Chizuru"
+run:
+    poke $107D11 param
+script " "
+script "No Background Music"
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
