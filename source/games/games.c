@@ -121,11 +121,11 @@ static void init_recent() {
     for (n=0; n<game_count; n++) {
 	if (!game_list[n]->last_played) {
 	    struct stat buf;
-	    char s[30];
-	    sprintf(s,"savedata/%s.hi",game_list[n]->main_name);
+	    char s[60];
+	    snprintf(s,60,"%ssavedata/%s.hi",dir_cfg.exe_path,game_list[n]->main_name);
 	    int ret = stat(s,&buf);
 	    if (ret < 0) {
-		sprintf(s,"savedata/%s.epr",game_list[n]->main_name);
+		snprintf(s,60,"%ssavedata/%s.epr",dir_cfg.exe_path,game_list[n]->main_name);
 		ret = stat(s,&buf);
 	    }
 	    if (!ret) {
