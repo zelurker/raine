@@ -18,12 +18,12 @@ class TCheatDlg : public TMenu
   public:
     TCheatDlg(char *title, menu_item_t *menu) : TMenu(title,menu)
     {}
+#if SDL == 1
     void disp_menu(int n,int y,int w,int h) {
       TMenu::disp_menu(n,y,w,h);
-#if SDL == 1
       draw_bot_frame();
-#endif
     }
+#endif
     char *get_cheat_info() {
       static char cheat_info[512];
       if (sel < CheatCount) {
@@ -35,6 +35,7 @@ class TCheatDlg : public TMenu
       return cheat_info;
     }
     void handle_mouse(SDL_Event *event) {
+	TMenu::handle_mouse(event);
 	if (event->type == SDL_MOUSEBUTTONDOWN) {
 	    char *cheat_info = get_cheat_info();
 	    int base = work_area.y+work_area.h;
