@@ -49,6 +49,7 @@ while (<F>) {
 		}
 		/^\$info\=(.+)/;
 		my $list = $1;
+		$list =~ s/ //g;
 		my @list = split /\,/,$list;
 		$skip = 1;
 		foreach (@list) {
