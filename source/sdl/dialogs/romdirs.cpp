@@ -50,7 +50,7 @@ int do_romdir(int sel) {
     menu[0].label = _("Add ROM directory...");
     menu[0].menu_func = &add_dir;
 
-    TMenu *mbox = new TMenu(_("rom dirs"),menu);
+    TMenu *mbox = new TMenu(_("ROM directories"),menu);
     mbox->execute();
     delete mbox;
     free(menu);
