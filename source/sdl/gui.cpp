@@ -539,19 +539,19 @@ int TMain_menu::can_be_displayed(int n) {
     case 0: // Play Game
     case 1: // game options
 	return current_game != NULL;
-    case 2: // Region
+    case 2: // game commands
+	return nb_commands > 0;
+    case 3: // Region
 	return current_game != NULL && current_game->romsw != NULL;
-    case 3: // cheats
+    case 4: // cheats
 	return current_game != NULL && (CheatCount > 0
 #ifdef HAS_CONSOLE
 		|| nb_scripts > 0
 #endif
 		);
-    case 4: // dsw
+    case 5: // dsw
 	return current_game != NULL && current_game->dsw != NULL;
     default:
-	if (strstr(main_items[n].label,"command.dat"))
-	    return nb_commands > 0;
 	return 1;
     }
 }
