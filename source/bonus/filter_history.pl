@@ -34,17 +34,22 @@ while (<F>) {
 	if (/^\$info\=(.+)/) {
 		s/tharrier/tforceh/;
 		s/blkheartj/blkhearj/;
-		if (/tnzs,/) {
+		if (/tnzs,/ && !/tnzsb,/) {
+			$_ .= "," if (!/,$/);
 			$_ .= "tnzsb,tnzs2,";
-		} elsif (/=bgaregga,/) {
+		} elsif (/=bgaregga,/ && !/battleg/) {
+			$_ .= "," if (!/,$/);
 			$_ .= "battleg,";
 		} elsif (/=tharrier,/) {
 			$_ .= "tforceh";
-		} elsif (/=megablst,/) {
+		} elsif (/=megablst,/ && !/megab(,|$)/) {
+			$_ .= "," if (!/,$/);
 			$_ .= "megab";
-		} elsif (/=dangar,/) {
+		} elsif (/=dangar,/ && !/dangarb/) {
+			$_ .= "," if (!/,$/);
 			$_ .= "dangarb";
-		} elsif (/=gekiridn,/) {
+		} elsif (/=gekiridn,/ && !/gekirido/) {
+			$_ .= "," if (/,$/);
 			$_ .= "gekirido";
 		}
 		/^\$info\=(.+)/;
