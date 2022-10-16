@@ -513,8 +513,9 @@ static menu_item_t main_items[] =
 {
 { _("Play game"), &play_game, },
 { _("Game options"), &do_game_options },
+{ _("Game command list"), &show_moves },
 { _("Region"), &set_region, },
-{ _("Action replay cheats"), &do_cheats, },
+{ _("Action Replay cheats"), &do_cheats, },
 { _("Dipswitches"), &do_dlg_dsw, },
 { _("Change/Load game"), &do_game_sel },
 #if HAS_NEO
@@ -523,10 +524,9 @@ static menu_item_t main_items[] =
 #endif
 { _("Video options"), &do_video_options },
 { _("Sound options"), &do_sound_options },
-{ _("Options"), &do_gui_options },
+{ _("GUI options"), &do_gui_options },
 { _("Inputs"), &do_controls },
 { _("About..."), &do_about,},
-{ _("Show command.dat info"), &show_moves },
 #ifdef HAS_CONSOLE
 { _("Console"), &do_console, },
 #endif

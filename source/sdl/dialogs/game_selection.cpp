@@ -106,14 +106,14 @@ static int do_recent(int sel) {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->nb_loaded) nb_most++;
 	if (nb_most == 0) {
-	    MessageBox("Error","No most played game yet","ok");
+	    MessageBox("Error","No most played game yet","OK");
 	    return 0;
 	}
     } else {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->last_played) nb_most++;
 	if (nb_most == 0) {
-	    MessageBox("Error","No recent game yet\nIf you use the init command in Options if you\nhave some old data files in savedata","ok");
+	    MessageBox("Error","No recent game yet\nIf you use the init command in Options if you\nhave some old data files in savedata","OK");
 	    return 0;
 	}
     }
@@ -437,7 +437,7 @@ void TGame_sel::draw_top_frame() {
   int fw = HMARGIN;
   switch(game_list_mode) {
     case 0: s = _("All"); break;
-    case 1: s = _("Avail"); break;
+    case 1: s = _("Available"); break;
     case 2: s = _("Missing"); break;
   }
   snprintf(mytitle,80,"%s %d",s,nb_disp_items);
@@ -453,7 +453,7 @@ void TGame_sel::draw_top_frame() {
 
 void TGame_sel::draw_bot_frame() {
   if (!w_year) {
-    char *year_string = _("Year : 2006");
+    char *year_string = _("Year: 2006");
     font->dimensions(year_string,&w_year,&h_year);
     h_bot = h_year*2;
   }
@@ -464,12 +464,12 @@ void TGame_sel::draw_bot_frame() {
   boxColor(sdl_screen,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
 #endif
   char game_string[140],year_string[80],category_string[80],company_string[100];
-  snprintf(game_string,140,_("Game : %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
-  snprintf(company_string,100,_("Company : %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
+  snprintf(game_string,140,_("Game: %s"),(sel >= 0 ? game_list[sel]->long_name : "-"));
+  snprintf(company_string,100,_("Company: %s"),(sel >= 0 ? game_company_name(game_list[sel]->company_id) : "-"));
   company_string[99] = 0;
   if (sel >= 0) {
-    snprintf(year_string,80,_("Year : %d"),game_list[sel]->year);
-    sprintf(category_string,_("Category : "));
+    snprintf(year_string,80,_("Year: %d"),game_list[sel]->year);
+    sprintf(category_string,_("Category: "));
     int n;
     for (n=1; n<=NB_GAME_TYPE; n++) {
       if (game_list[sel]->flags & (1<<(n-1))) {
@@ -477,8 +477,8 @@ void TGame_sel::draw_bot_frame() {
       }
     }
   } else {
-    sprintf(year_string,_("Year : -"));
-    sprintf(category_string,_("Category : -"));
+    sprintf(year_string,_("Year: -"));
+    sprintf(category_string,_("Category: -"));
   }
   int fw = HMARGIN;
   font->put_string(fw,base,game_string,fg_frame,bg_frame);

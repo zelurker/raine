@@ -159,7 +159,7 @@ static int select_neocd_bios(int sel) {
 	strcpy(path,".");
 
     char *exts[] = { "bin", "zip", NULL };
-    fsel(path,exts,neocd_bios_file,"Find NeoCD bios");
+    fsel(path,exts,neocd_bios_file,"Find Neo-Geo CD BIOS");
     if (*neocd_bios_file && is_neocd()) {
 	if (neocd_bios) {
 	    free(neocd_bios);
