@@ -513,6 +513,7 @@ static menu_item_t main_items[] =
 {
 { _("Play game"), &play_game, },
 { _("Game options"), &do_game_options },
+{ _("Game command list"), &show_moves },
 { _("Region"), &set_region, },
 { _("Action Replay cheats"), &do_cheats, },
 { _("Dipswitches"), &do_dlg_dsw, },
@@ -526,7 +527,6 @@ static menu_item_t main_items[] =
 { _("GUI options"), &do_gui_options },
 { _("Inputs"), &do_controls },
 { _("About..."), &do_about,},
-{ _("Show game command list"), &show_moves },
 #ifdef HAS_CONSOLE
 { _("Console"), &do_console, },
 #endif
