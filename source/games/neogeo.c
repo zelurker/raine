@@ -3448,8 +3448,7 @@ static struct ROM_INFO rom_kof2000ps2[] = /* decrypted version with PS2 hack */
 {
   LOAD_SW16( CPU1, "257ps2-p1.bin", 0x000000, 0x100000, 0x56941018),
   LOAD_SW16( CPU1, "257ps2-p2.bin", 0x100000, 0x400000, 0x1669a5ad),
-	/* The Decrypted Boards do not have an s1 rom, data for it comes from the Cx ROMs */
-  FILL( FIXED , 0x000000, 0x80000, 0),
+
   LOAD_16_8( SPRITES, "257-c1_decrypted.bin", 0x0000000, 0x800000, 0xabcdd424),
   LOAD_16_8( SPRITES, "257-c2_decrypted.bin", 0x0000001, 0x800000, 0xcda33778),
   LOAD_16_8( SPRITES, "257-c3_decrypted.bin", 0x1000000, 0x800000, 0x087fb15b),
@@ -3469,10 +3468,6 @@ static struct ROM_INFO rom_kof2k1bs[] = /* decrypted version with PS2 hack */
   LOAD_SW16( CPU1, "kof2k1bs_p2.rom", 0x100000, 0x400000, 0x295d0c5c),
   LOAD( FIXED, "kof2k1bs_s1.rom", 0x000000, 0x20000, 0x19b6587b),
   LOAD( ROM2, "kof2k1bs_m1.rom", 0x00000, 0x20000, 0x2fb0a8a5),
-  LOAD( SMP1, "kof2k1bs_v1.rom", 0x000000, 0x400000, 0x83d49ecf),
-  LOAD( SMP1, "kof2k1bs_v2.rom", 0x400000, 0x400000, 0x003f1843),
-  LOAD( SMP1, "kof2k1bs_v3.rom", 0x800000, 0x400000, 0x2ae38dbe),
-  LOAD( SMP1, "kof2k1bs_v4.rom", 0xc00000, 0x400000, 0x26ec4dd9),
   LOAD_16_8( SPRITES, "kof2k1bs_c1.rom", 0x0000000, 0x800000, 0x103225b1),
   LOAD_16_8( SPRITES, "kof2k1bs_c2.rom", 0x0000001, 0x800000, 0xf9d05d99),
   LOAD_16_8( SPRITES, "kof2k1bs_c3.rom", 0x1000000, 0x800000, 0x4c7ec427),
@@ -3484,7 +3479,7 @@ static struct ROM_INFO rom_kof2k1bs[] = /* decrypted version with PS2 hack */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2k1bs, neogeo, "The King of Fighters 2001 Playstation 2 (EGCG HACK)", SNK, 2001, GAME_BEAT);
+CLNEI( kof2k1bs, kof2001, "The King of Fighters 2001 Playstation 2 (EGCG HACK)", SNK, 2001, GAME_BEAT);
 
 static struct ROM_INFO rom_kf2k3ps2[] = /* decrypted version with PS2 hack */
  /* AES VERSION */{
