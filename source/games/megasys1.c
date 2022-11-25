@@ -1652,10 +1652,10 @@ int MS1DecodeBG1(UINT32 region)
 
    if(!(GFX_BG1=AllocateMem(0x100000))) return(0);
    memset(GFX_BG1,0x00,0x100000);
-   GFX_BG1_8 = AllocateMem(0x100000);
-   memset(GFX_BG1_8,0x00,0x100000);
    UINT8 *src = load_region[region];
    UINT32 size = get_region_size(region);
+   GFX_BG1_8 = AllocateMem(size / 2);
+   memset(GFX_BG1_8,0x00,size / 2);
 
    tb=0;
    for(ta=0;ta<size;ta+=4){
@@ -1672,13 +1672,19 @@ int MS1DecodeBG1(UINT32 region)
       else{if((tb&0xFF)==8){tb-=8;}}
    }
    tb=0;
-   for(ta=0;ta<size;ta++,tb+=2){
-      GFX_BG1_8[tb+0]=(src[ta]>>4)^15;
-      GFX_BG1_8[tb+1]=(src[ta]&15)^15;
+   ta=0;
+   // The 8x8 alternative is very special, used only in soldam afaik : it takes only the 1st 8x8 sprite in a 16x16 tile
+   // which means 1/4 of the total size...
+   while (ta < size) {
+       for(int n=0;n<32;ta++,tb+=2,n++){
+	   GFX_BG1_8[tb+0]=(src[ta]>>4)^15;
+	   GFX_BG1_8[tb+1]=(src[ta]&15)^15;
+       }
+       ta += 32*3; // skip the 3 next 8x8 sprites
    }
 
    BG1_Mask = make_solid_mask_16x16(GFX_BG1, 0x1000);
-   BG1_Mask_8 = make_solid_mask_8x8(GFX_BG1_8,0x100000/0x40);
+   BG1_Mask_8 = make_solid_mask_8x8(GFX_BG1_8,size/2/0x40);
    if (region < REGION_MAX)
 	   FreeMem(src);
 
@@ -4090,13 +4096,7 @@ static void RenderJalecoLayer(int layer)
 		       zz=zzzz;
 		       for(x=(32-x16);x<(256+32);x+=8){
 			   for(y=(32-y16);y<(224+32);y+=8){
-			       if (layer == 1 && romset == 21)
-				   // It's *very* specific to soldam ! the code is actually *4 for the unexpected hiscore layer of 8x8 sprites
-				   // to reproduce : select hard level at the beginning of the game which will give you a hiscore at the start of the game
-				   // then you just need to loose to enter the score !
-				   ta=(ReadWord(&RAM_BG[zz])&0xFFF)*4;
-			       else
-				   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			       ta=ReadWord(&RAM_BG[zz])&0xFFF;
 			       if(MSK_BG8[ta]!=0){                       // No pixels; skip
 
 				   MAP_PALETTE_MAPPED_NEW(
