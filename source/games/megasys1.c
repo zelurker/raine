@@ -1463,8 +1463,8 @@ static UINT8 *SPR_Mask;
 
 #define MSK_SPR         0x0FFF
 
-static UINT8 *GFX_BG1;
-static UINT8 *BG1_Mask;
+static UINT8 *GFX_BG1,*GFX_BG1_8;
+static UINT8 *BG1_Mask,*BG1_Mask_8;
 
 static UINT8 *GFX_BG0;
 static UINT8 *BG0_Mask;
@@ -1652,6 +1652,8 @@ int MS1DecodeBG1(UINT32 region)
 
    if(!(GFX_BG1=AllocateMem(0x100000))) return(0);
    memset(GFX_BG1,0x00,0x100000);
+   GFX_BG1_8 = AllocateMem(0x100000);
+   memset(GFX_BG1_8,0x00,0x100000);
    UINT8 *src = load_region[region];
    UINT32 size = get_region_size(region);
 
@@ -1669,8 +1671,14 @@ int MS1DecodeBG1(UINT32 region)
       if((tb&0xFF)==0){tb-=0xF8;}
       else{if((tb&0xFF)==8){tb-=8;}}
    }
+   tb=0;
+   for(ta=0;ta<size;ta++,tb+=2){
+      GFX_BG1_8[tb+0]=(src[ta]>>4)^15;
+      GFX_BG1_8[tb+1]=(src[ta]&15)^15;
+   }
 
    BG1_Mask = make_solid_mask_16x16(GFX_BG1, 0x1000);
+   BG1_Mask_8 = make_solid_mask_8x8(GFX_BG1_8,0x100000/0x40);
    if (region < REGION_MAX)
 	   FreeMem(src);
 
@@ -3611,548 +3619,554 @@ static void RenderJalecoLayer(int layer)
 
    if((ReadWord(&SCR_BG[4])&0x0010)==0){      // 16x16
 
-   if(GFX_BG16){                              // HAVE GFX
+       if(GFX_BG16){                              // HAVE GFX
 
-   if(!JalecoLayerCount){                     // **** SOLID ****
+	   if(!JalecoLayerCount){                     // **** SOLID ****
 
-   switch(ReadWord(&SCR_BG[4])&0x0003){
+	       switch(ReadWord(&SCR_BG[4])&0x0003){
 
-   case 0x00:                                 // <<<<$1000x$200>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0100)>>4)<<9;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x0FF0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+	       case 0x00:                                 // <<<<$1000x$200>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0100)>>4)<<9;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x0FF0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
+		   zzzz&=0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
 
-      MAP_PALETTE_MAPPED_NEW(
-         (RAM_BG[1+zz]>>4)|PAL_BG,
-         16,
-         MAP
-      );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (RAM_BG[1+zz]>>4)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-      Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
+			   Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
 
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x1FE0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x1FE0)==0){zzzz-=0x2000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x01:                                   // <<<<$800x$400>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0300)>>4)<<8;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x07F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x1FE0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x1FE0)==0){zzzz-=0x2000;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x01:                                   // <<<<$800x$400>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0300)>>4)<<8;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x07F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
 
-      MAP_PALETTE_MAPPED_NEW(
-         (RAM_BG[1+zz]>>4)|PAL_BG,
-         16,
-         MAP
-      );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (RAM_BG[1+zz]>>4)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-      Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
+			   Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
 
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0xFE0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0xFE0)==0){zzzz-=0x1000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x02:                                   // <<<<$400x$800>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0700)>>4)<<7;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x03F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0xFE0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0xFE0)==0){zzzz-=0x1000;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x02:                                   // <<<<$400x$800>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0700)>>4)<<7;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x03F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
 
-      MAP_PALETTE_MAPPED_NEW(
-         (RAM_BG[1+zz]>>4)|PAL_BG,
-         16,
-         MAP
-      );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (RAM_BG[1+zz]>>4)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-      Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
+			   Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
 
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x7E0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x7E0)==0){zzzz-=0x800;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x03:                                   // <<<<$200x$1000>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0F00)>>4)<<6;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x01F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x7E0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x7E0)==0){zzzz-=0x800;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x03:                                   // <<<<$200x$1000>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0F00)>>4)<<6;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x01F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
 
-      MAP_PALETTE_MAPPED_NEW(
-         (RAM_BG[1+zz]>>4)|PAL_BG,
-         16,
-         MAP
-      );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (RAM_BG[1+zz]>>4)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-      Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
+			   Draw16x16_Mapped_Rot(&GFX_BG16[(ReadWord(&RAM_BG[zz])&0xFFF)<<8],x,y,MAP);
 
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x3E0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x3E0)==0){zzzz-=0x400;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   }
-   JalecoLayerCount++;
-   }                                            // END SOLID
-   else{                                        // **** TRANSPARENT ****
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x3E0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x3E0)==0){zzzz-=0x400;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       }
+	       JalecoLayerCount++;
+	   }                                            // END SOLID
+	   else{                                        // **** TRANSPARENT ****
 
-   switch(ReadWord(&SCR_BG[4])&3){
+	       switch(ReadWord(&SCR_BG[4])&3){
 
-   case 0x00:                                   // <<<<$1000x$200>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0100)>>4)<<9;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x0FF0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+	       case 0x00:                                   // <<<<$1000x$200>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0100)>>4)<<9;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x0FF0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG16[ta]!=0){                      // No pixels; skip
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			   if(MSK_BG16[ta]!=0){                      // No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG[1+zz]>>4)|PAL_BG,
-            16,
-            MAP
-         );
+			       MAP_PALETTE_MAPPED_NEW(
+				       (RAM_BG[1+zz]>>4)|PAL_BG,
+				       16,
+				       MAP
+				       );
 
-         if(MSK_BG16[ta]==1){                   // Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x1FE0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x1FE0)==0){zzzz-=0x2000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x01:                                   // <<<<$800x$400>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0300)>>4)<<8;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x07F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			       if(MSK_BG16[ta]==1){                   // Some pixels; trans
+				   Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			       else{                                  // all pixels; solid
+				   Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			   }
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x1FE0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x1FE0)==0){zzzz-=0x2000;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x01:                                   // <<<<$800x$400>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0300)>>4)<<8;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x07F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG16[ta]!=0){                      // No pixels; skip
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			   if(MSK_BG16[ta]!=0){                      // No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG[1+zz]>>4)|PAL_BG,
-            16,
-            MAP
-         );
+			       MAP_PALETTE_MAPPED_NEW(
+				       (RAM_BG[1+zz]>>4)|PAL_BG,
+				       16,
+				       MAP
+				       );
 
-         if(MSK_BG16[ta]==1){                   // Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0xFE0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0xFE0)==0){zzzz-=0x1000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x02:                                   // <<<<$400x$800>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0700)>>4)<<7;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x03F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			       if(MSK_BG16[ta]==1){                   // Some pixels; trans
+				   Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			       else{                                  // all pixels; solid
+				   Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			   }
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0xFE0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0xFE0)==0){zzzz-=0x1000;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x02:                                   // <<<<$400x$800>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0700)>>4)<<7;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x03F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG16[ta]!=0){                      // No pixels; skip
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			   if(MSK_BG16[ta]!=0){                      // No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG[1+zz]>>4)|PAL_BG,
-            16,
-            MAP
-         );
+			       MAP_PALETTE_MAPPED_NEW(
+				       (RAM_BG[1+zz]>>4)|PAL_BG,
+				       16,
+				       MAP
+				       );
 
-         if(MSK_BG16[ta]==1){                   // Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x7E0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x7E0)==0){zzzz-=0x800;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x03:                                   // <<<<$200x$1000>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0F00)>>4)<<6;                  // Y Offset (256-nn)
-   y16=zzz&15;                                  // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x01F0)>>4)<<5;                  // X Offset (16-nn)
-   x16=zzz&15;                                  // X Offset (0-15)
+			       if(MSK_BG16[ta]==1){                   // Some pixels; trans
+				   Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			       else{                                  // all pixels; solid
+				   Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			   }
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x7E0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x7E0)==0){zzzz-=0x800;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       case 0x03:                                   // <<<<$200x$1000>>>>
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F0)>>4)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0F00)>>4)<<6;                  // Y Offset (256-nn)
+		   y16=zzz&15;                                  // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x01F0)>>4)<<5;                  // X Offset (16-nn)
+		   x16=zzz&15;                                  // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=16){
-   for(y=(32-y16);y<(224+32);y+=16){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG16[ta]!=0){                      // No pixels; skip
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=16){
+		       for(y=(32-y16);y<(224+32);y+=16){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			   if(MSK_BG16[ta]!=0){                      // No pixels; skip
 
-         MAP_PALETTE_MAPPED_NEW(
-            (RAM_BG[1+zz]>>4)|PAL_BG,
-            16,
-            MAP
-         );
+			       MAP_PALETTE_MAPPED_NEW(
+				       (RAM_BG[1+zz]>>4)|PAL_BG,
+				       16,
+				       MAP
+				       );
 
-         if(MSK_BG16[ta]==1){                   // Some pixels; trans
-            Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x1F)==0){zz+=0x3E0;zz&=0x3FFF;}
-   }
-   zzzz+=0x20;
-   if((zzzz&0x3E0)==0){zzzz-=0x400;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   }
-   JalecoLayerCount++;
-   }                                            // END TRANSPARENT
-   }                                            // END HAVE GFX
+			       if(MSK_BG16[ta]==1){                   // Some pixels; trans
+				   Draw16x16_Trans_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			       else{                                  // all pixels; solid
+				   Draw16x16_Mapped_Rot(&GFX_BG16[ta<<8],x,y,MAP);
+			       }
+			   }
+			   zz+=2;
+			   if((zz&0x1F)==0){zz+=0x3E0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x20;
+		       if((zzzz&0x3E0)==0){zzzz-=0x400;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
+		   break;
+	       }
+	       JalecoLayerCount++;
+	   }                                            // END TRANSPARENT
+       }                                            // END HAVE GFX
    }                                            // END 16x16
    else{                                        // 8x8
 
-   if(GFX_BG8){                          	// HAVE GFX
+       if(GFX_BG8){                          	// HAVE GFX
 
-   if(!JalecoLayerCount){                       // **** SOLID ****
+	   if(!JalecoLayerCount){                       // **** SOLID ****
 
-   if(ReadLong(&SCR_BG[0])==0){
+	       if(ReadLong(&SCR_BG[0])==0){
 
-   zz=4;
-   for(x=32;x<256+32;x+=8,zz+=8){
-   for(y=32;y<224+32;y+=8,zz+=2){
+		   zz=4;
+		   for(x=32;x<256+32;x+=8,zz+=8){
+		       for(y=32;y<224+32;y+=8,zz+=2){
 
-      MAP_PALETTE_MAPPED_NEW(
-         (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-         16,
-         MAP
-      );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-      Draw8x8_Mapped_Rot(&GFX_BG8[(ReadWord(&RAM_BG[zz])&0xFFF)<<6],x,y,MAP);
-   }
-   }
+			   Draw8x8_Mapped_Rot(&GFX_BG8[(ReadWord(&RAM_BG[zz])&0xFFF)<<6],x,y,MAP);
+		       }
+		   }
 
-   }
-   else{
+	       }
+	       else{
 
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0000)>>3)<<9;                  // Y Offset (256-nn)
-   y16=zzz&7;                                   // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x07F8)>>3)<<6;                  // X Offset (16-nn)
-   x16=zzz&7;                                   // X Offset (0-15)
+		   zzz=(ReadWord(&SCR_BG[2])+16);
+		   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
+		   zzzz+=((zzz&0x0000)>>3)<<9;                  // Y Offset (256-nn)
+		   y16=zzz&7;                                   // Y Offset (0-15)
+		   zzz=ReadWord(&SCR_BG[0]);
+		   zzzz+=((zzz&0x07F8)>>3)<<6;                  // X Offset (16-nn)
+		   x16=zzz&7;                                   // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=8){
-   for(y=(32-y16);y<(224+32);y+=8){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
+		   zzzz=zzzz&0x3FFF;
+		   zz=zzzz;
+		   for(x=(32-x16);x<(256+32);x+=8){
+		       for(y=(32-y16);y<(224+32);y+=8){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
 
-         MAP_PALETTE_MAPPED_NEW(
-            (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-            16,
-            MAP
-         );
+			   MAP_PALETTE_MAPPED_NEW(
+				   (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+				   16,
+				   MAP
+				   );
 
-         Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+			   Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
 
-   zz+=2;
-   if((zz&0x3F)==0){zz+=0x3FC0;zz&=0x3FFF;}
-   }
-   zzzz+=0x40;
-   if((zzzz&0x3FC0)==0){zzzz-=0x4000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
+			   zz+=2;
+			   if((zz&0x3F)==0){zz+=0x3FC0;zz&=0x3FFF;}
+		       }
+		       zzzz+=0x40;
+		       if((zzzz&0x3FC0)==0){zzzz-=0x4000;}
+		       zzzz&=0x3FFF;
+		       zz=zzzz;
+		   }
 
-   }
+	       }
 
-   JalecoLayerCount++;
+	       JalecoLayerCount++;
 
-   }                                            // END SOLID
-   else{                                        // **** TRANSPARENT ****
+	   }                                            // END SOLID
+	   else{                                        // **** TRANSPARENT ****
 
-   if(ReadLong(&SCR_BG[0])==0){
+	       if(ReadLong(&SCR_BG[0])==0){
 
-   zz=4;
-   for(x=32;x<256+32;x+=8,zz+=8){
-   for(y=32;y<224+32;y+=8,zz+=2){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG8[ta]!=0){
+		   zz=4;
+		   for(x=32;x<256+32;x+=8,zz+=8){
+		       for(y=32;y<224+32;y+=8,zz+=2){
+			   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			   if(MSK_BG8[ta]!=0){
 
-         MAP_PALETTE_MAPPED_NEW(
-            (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-            16,
-            MAP
-         );
+			       MAP_PALETTE_MAPPED_NEW(
+				       (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+				       16,
+				       MAP
+				       );
 
-         Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-      }
-   }
-   }
+			       Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+			   }
+		       }
+		   }
 
-   }
-   else{
+	       }
+	       else{
 
-   switch(ReadWord(&SCR_BG[4])&3){
+		   switch(ReadWord(&SCR_BG[4])&3){
 
-   case 0x00:                                   // <<<<$1000x$80>>>> [unlikely]
-   case 0x01:                                   // <<<<$800x$100>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0000)>>3)<<9;                  // Y Offset (256-nn)
-   y16=zzz&7;                                   // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x07F8)>>3)<<6;                  // X Offset (16-nn)
-   x16=zzz&7;                                   // X Offset (0-15)
+		   case 0x00:                                   // <<<<$1000x$80>>>> [unlikely]
+		   case 0x01:                                   // <<<<$800x$100>>>>
+		       zzz=(ReadWord(&SCR_BG[2])+16);
+		       zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
+		       zzzz+=((zzz&0x0000)>>3)<<9;                  // Y Offset (256-nn)
+		       y16=zzz&7;                                   // Y Offset (0-15)
+		       zzz=ReadWord(&SCR_BG[0]);
+		       zzzz+=((zzz&0x07F8)>>3)<<6;                  // X Offset (16-nn)
+		       x16=zzz&7;                                   // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=8){
-   for(y=(32-y16);y<(224+32);y+=8){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG8[ta]!=0){                       // No pixels; skip
+		       zzzz=zzzz&0x3FFF;
+		       zz=zzzz;
+		       for(x=(32-x16);x<(256+32);x+=8){
+			   for(y=(32-y16);y<(224+32);y+=8){
+			       ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			       if(MSK_BG8[ta]!=0){                       // No pixels; skip
 
-            MAP_PALETTE_MAPPED_NEW(
-               (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-               16,
-               MAP
-            );
+				   MAP_PALETTE_MAPPED_NEW(
+					   (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+					   16,
+					   MAP
+					   );
 
-         if(MSK_BG8[ta]==1){                    // Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x3F)==0){zz+=0x3FC0;zz&=0x3FFF;}
-   }
-   zzzz+=0x40;
-   if((zzzz&0x3FC0)==0){zzzz-=0x4000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x02:                                   // <<<<$400x$200>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0100)>>3)<<8;                  // Y Offset (256-nn)
-   y16=zzz&7;                                   // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x03F8)>>3)<<6;                  // X Offset (16-nn)
-   x16=zzz&7;                                   // X Offset (0-15)
+				   if(MSK_BG8[ta]==1){                    // Some pixels; trans
+				       Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+				   else{                                  // all pixels; solid
+				       Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+			       }
+			       zz+=2;
+			       if((zz&0x3F)==0){zz+=0x3FC0;zz&=0x3FFF;}
+			   }
+			   zzzz+=0x40;
+			   if((zzzz&0x3FC0)==0){zzzz-=0x4000;}
+			   zzzz&=0x3FFF;
+			   zz=zzzz;
+		       }
+		       break;
+		   case 0x02:                                   // <<<<$400x$200>>>>
+		       zzz=(ReadWord(&SCR_BG[2])+16);
+		       zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
+		       zzzz+=((zzz&0x0100)>>3)<<8;                  // Y Offset (256-nn)
+		       y16=zzz&7;                                   // Y Offset (0-15)
+		       zzz=ReadWord(&SCR_BG[0]);
+		       zzzz+=((zzz&0x03F8)>>3)<<6;                  // X Offset (16-nn)
+		       x16=zzz&7;                                   // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=8){
-   for(y=(32-y16);y<(224+32);y+=8){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG8[ta]!=0){                       // No pixels; skip
+		       zzzz=zzzz&0x3FFF;
+		       zz=zzzz;
+		       for(x=(32-x16);x<(256+32);x+=8){
+			   for(y=(32-y16);y<(224+32);y+=8){
+			       ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			       if(MSK_BG8[ta]!=0){                       // No pixels; skip
 
-            MAP_PALETTE_MAPPED_NEW(
-               (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-               16,
-               MAP
-            );
+				   MAP_PALETTE_MAPPED_NEW(
+					   (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+					   16,
+					   MAP
+					   );
 
-         if(MSK_BG8[ta]==1){                    // Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x3F)==0){zz+=0x1FC0;zz&=0x3FFF;}
-   }
-   zzzz+=0x40;
-   if((zzzz&0x1FC0)==0){zzzz-=0x2000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-   case 0x03:                                   // <<<<$200x$400>>>>
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0300)>>3)<<7;                  // Y Offset (256-nn)
-   y16=zzz&7;                                   // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x01F8)>>3)<<6;                  // X Offset (16-nn)
-   x16=zzz&7;                                   // X Offset (0-15)
+				   if(MSK_BG8[ta]==1){                    // Some pixels; trans
+				       Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+				   else{                                  // all pixels; solid
+				       Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+			       }
+			       zz+=2;
+			       if((zz&0x3F)==0){zz+=0x1FC0;zz&=0x3FFF;}
+			   }
+			   zzzz+=0x40;
+			   if((zzzz&0x1FC0)==0){zzzz-=0x2000;}
+			   zzzz&=0x3FFF;
+			   zz=zzzz;
+		       }
+		       break;
+		   case 0x03:                                   // <<<<$200x$400>>>>
+		       zzz=(ReadWord(&SCR_BG[2])+16);
+		       zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
+		       zzzz+=((zzz&0x0300)>>3)<<7;                  // Y Offset (256-nn)
+		       y16=zzz&7;                                   // Y Offset (0-15)
+		       zzz=ReadWord(&SCR_BG[0]);
+		       zzzz+=((zzz&0x01F8)>>3)<<6;                  // X Offset (16-nn)
+		       x16=zzz&7;                                   // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=8){
-   for(y=(32-y16);y<(224+32);y+=8){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG8[ta]!=0){                       // No pixels; skip
+		       zzzz=zzzz&0x3FFF;
+		       zz=zzzz;
+		       for(x=(32-x16);x<(256+32);x+=8){
+			   for(y=(32-y16);y<(224+32);y+=8){
+			       if (layer == 1 && romset == 21)
+				   // It's *very* specific to soldam ! the code is actually *4 for the unexpected hiscore layer of 8x8 sprites
+				   // to reproduce : select hard level at the beginning of the game which will give you a hiscore at the start of the game
+				   // then you just need to loose to enter the score !
+				   ta=(ReadWord(&RAM_BG[zz])&0xFFF)*4;
+			       else
+				   ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			       if(MSK_BG8[ta]!=0){                       // No pixels; skip
 
-            MAP_PALETTE_MAPPED_NEW(
-               (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-               16,
-               MAP
-            );
+				   MAP_PALETTE_MAPPED_NEW(
+					   (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+					   16,
+					   MAP
+					   );
 
-         if(MSK_BG8[ta]==1){                    // Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x3F)==0){zz+=0xFC0;zz&=0x3FFF;}
-   }
-   zzzz+=0x40;
-   if((zzzz&0xFC0)==0){zzzz-=0x1000;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-/*
-   case 0x00:                                   // <<<<$100x$800>>>> [hmm]
-   zzz=(ReadWord(&SCR_BG[2])+16);
-   zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
-   zzzz+=((zzz&0x0700)>>3)<<6;                  // Y Offset (256-nn)
-   y16=zzz&7;                                   // Y Offset (0-15)
-   zzz=ReadWord(&SCR_BG[0]);
-   zzzz+=((zzz&0x00F8)>>3)<<6;                  // X Offset (16-nn)
-   x16=zzz&7;                                   // X Offset (0-15)
+				   if(MSK_BG8[ta]==1){                    // Some pixels; trans
+				       Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+				   else{                                  // all pixels; solid
+				       Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+				   }
+			       }
+			       zz+=2;
+			       if((zz&0x3F)==0){zz+=0xFC0;zz&=0x3FFF;}
+			   }
+			   zzzz+=0x40;
+			   if((zzzz&0xFC0)==0){zzzz-=0x1000;}
+			   zzzz&=0x3FFF;
+			   zz=zzzz;
+		       }
+		       break;
+		       /*
+			  case 0x00:                                   // <<<<$100x$800>>>> [hmm]
+			  zzz=(ReadWord(&SCR_BG[2])+16);
+			  zzzz =((zzz&0x00F8)>>3)<<1;                  // Y Offset (16-255)
+			  zzzz+=((zzz&0x0700)>>3)<<6;                  // Y Offset (256-nn)
+			  y16=zzz&7;                                   // Y Offset (0-15)
+			  zzz=ReadWord(&SCR_BG[0]);
+			  zzzz+=((zzz&0x00F8)>>3)<<6;                  // X Offset (16-nn)
+			  x16=zzz&7;                                   // X Offset (0-15)
 
-   zzzz=zzzz&0x3FFF;
-   zz=zzzz;
-   for(x=(32-x16);x<(256+32);x+=8){
-   for(y=(32-y16);y<(224+32);y+=8){
-      ta=ReadWord(&RAM_BG[zz])&0xFFF;
-      if(MSK_BG8[ta]!=0){                       // No pixels; skip
+			  zzzz=zzzz&0x3FFF;
+			  zz=zzzz;
+			  for(x=(32-x16);x<(256+32);x+=8){
+			  for(y=(32-y16);y<(224+32);y+=8){
+			  ta=ReadWord(&RAM_BG[zz])&0xFFF;
+			  if(MSK_BG8[ta]!=0){                       // No pixels; skip
 
-      MAP_PALETTE_MAPPED_NEW(
-               (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
-               16, MAP
-            );
+			  MAP_PALETTE_MAPPED_NEW(
+			  (ReadWord(&RAM_BG[zz])>>12)|PAL_BG,
+			  16, MAP
+			  );
 
-         if(MSK_BG8[ta]==1){                    // Some pixels; trans
-            Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-         else{                                  // all pixels; solid
-            Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
-         }
-      }
-   zz+=2;
-   if((zz&0x3F)==0){zz+=0x7C0;zz&=0x3FFF;}
-   }
-   zzzz+=0x40;
-   if((zzzz&0x7C0)==0){zzzz-=0x800;}
-   zzzz&=0x3FFF;
-   zz=zzzz;
-   }
-   break;
-*/
-   }
+			  if(MSK_BG8[ta]==1){                    // Some pixels; trans
+			  Draw8x8_Trans_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+			  }
+			  else{                                  // all pixels; solid
+			  Draw8x8_Mapped_Rot(&GFX_BG8[ta<<6],x,y,MAP);
+			  }
+			  }
+			  zz+=2;
+			  if((zz&0x3F)==0){zz+=0x7C0;zz&=0x3FFF;}
+			  }
+			  zzzz+=0x40;
+			  if((zzzz&0x7C0)==0){zzzz-=0x800;}
+			  zzzz&=0x3FFF;
+			  zz=zzzz;
+			  }
+			  break;
+			  */
+		   }
 
-   }
+	       }
 
-   JalecoLayerCount++;
-   }                                            // END TRANSPARENT
-   }                                            // END HAVE GFX
+	       JalecoLayerCount++;
+	   }                                            // END TRANSPARENT
+       }  // END HAVE GFX
 
    }                                            // END 8x8
 
@@ -4209,9 +4223,9 @@ static void DrawMegaSystem1(void)
 
    JalecoLayers[1].RAM          =RAM+0x24000;
    JalecoLayers[1].GFX16        =GFX_BG1;
-   JalecoLayers[1].GFX8         =NULL;
+   JalecoLayers[1].GFX8         =GFX_BG1_8;
    JalecoLayers[1].MSK16        =BG1_Mask;
-   JalecoLayers[1].MSK8         =NULL;
+   JalecoLayers[1].MSK8         =BG1_Mask_8;
    JalecoLayers[1].SCR          =RAM+0x14208;
    JalecoLayers[1].PAL          =0x10;
 
@@ -4234,12 +4248,12 @@ static void DrawMegaSystem1(void)
    int i, pri;
 
    pri = pri_data[romset][(ctrl & 0x0f00) >> 8];
-
+/*
 #ifdef RAINE_DEBUG
    clear_ingame_message_list();
    print_ingame(60, "ctrl:%04x pri:%04x", ctrl, pri);
    print_ingame(60, "%04x", ReadWord(JalecoLayers[2].SCR + 4));
-#endif
+#endif */
 
    if (pri == 0xfffff) pri = 0x04132;
 
@@ -4255,14 +4269,26 @@ static void DrawMegaSystem1(void)
 	      RenderJalecoLayer(0);
 	    else if ((romset==20) || (romset==6) || (romset==1))
 	      RenderJalecoLayer(0);	// Iga Ninjyu, Plus Alpha, Saint Dragon - render anyway!
+#ifdef RAINE_DEBUG
+	    else
+		print_ingame(1,"no layer 0");
+#endif
          break;
          case 1:
             if(ctrl & 0x0002)
-            RenderJalecoLayer(1);
+		RenderJalecoLayer(1);
+#ifdef RAINE_DEBUG
+	    else
+		print_ingame(1,"no layer 1");
+#endif
          break;
          case 2:
             if(ctrl & 0x0004)
-            RenderJalecoLayer(2);
+		RenderJalecoLayer(2);
+#ifdef RAINE_DEBUG
+	    else
+		print_ingame(1,"no layer 2");
+#endif
          break;
          case 3:
          case 4:
@@ -4289,18 +4315,18 @@ static void DrawMegaSystem1(void)
                      RenderMS1Sprites(1);
                }
                else{
-                  if(layer == 3){
-			   if (!spr_pri_needed)
-                       RenderMS1Sprites(0);
-			   else {
-			     if (romset==11)	// Shingen
-                         RenderMS1Sprites(6);
-                       RenderMS1Sprites(5);
-			     if ((romset==10) || (romset==1))	// EDF, Saint Dragon
-                         RenderMS1Sprites(6);
-			   }
-			}
-               }
+		   if(layer == 3){
+		       if (!spr_pri_needed)
+			   RenderMS1Sprites(0);
+		       else {
+			   if (romset==11)	// Shingen
+			       RenderMS1Sprites(6);
+			   RenderMS1Sprites(5);
+			   if ((romset==10) || (romset==1))	// EDF, Saint Dragon
+			       RenderMS1Sprites(6);
+		       }
+		   }
+	       }
 
             }
 
@@ -4372,11 +4398,12 @@ static void DrawMegaSystem2(void)
 
    pri = pri_data[romset][(ctrl & 0x0f00) >> 8];
 
+   /*
 #ifdef RAINE_DEBUG
    clear_ingame_message_list();
    print_ingame(60, "ctrl:%04x pri:%04x", ctrl, pri);
    print_ingame(60, "%04x", ReadWord(JalecoLayers[2].SCR + 4));
-#endif
+#endif */
 
    if (pri == 0xfffff) pri = 0x04132;
 
