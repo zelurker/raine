@@ -1287,8 +1287,8 @@ lordofk:
 ;** you must let the game display the highscore in attract mode before **
 ;** starting a game - just like in star force                          **
 soldamj:
-@:maincpu,program,1f00ba,8,00,00
-@:maincpu,program,1f3fbe,24a,00,81
+@:maincpu,program,f00ba,8,00,00
+@:maincpu,program,f3fbe,24a,00,81
 
 ;(cybattler)
 cybattlr:
