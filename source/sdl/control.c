@@ -408,10 +408,10 @@ extern void cpu_slow_down(); // emumain.c
 
 static void toggle_limit_speed() {
 	if(display_cfg.limit_speed){
-		print_ingame(60,gettext("No speed limit !"));
+		print_ingame(60,gettext("No speed limit!"));
 		display_cfg.limit_speed = 0;
 	} else {
-		print_ingame(60,gettext("Speed limit %d fps"),fps);
+		print_ingame(60,gettext("Speed limit %d FPS"),fps);
 		display_cfg.limit_speed = 1;
 	}
 }
@@ -510,7 +510,7 @@ static void update_index(int n, int index) {
 	    for (int ta=0; ta<nb_joy; ta++) {
 		used[joy[ta].index]++;
 		if (used[joy[ta].index] > 1) {
-		    printf("index %d used more than once, complete reset !\n",ta);
+		    printf("Index %d used more than once, complete reset!\n",ta);
 		    for (n=0; n<nb_joy; n++)
 			joy[n].index = n;
 		    return;
@@ -575,16 +575,16 @@ static int get_joy_index(int n) {
 	    index = SDL_JoystickGetPlayerIndex(joy[n].joy);
 	if (index == -1) {
 	    index = nb_joy;
-	    printf("can't get any index, using %d\n",index);
+	    printf("Can't get any index, using %d\n",index);
 	    // Function doesn't work for most joysticks, but anyway... !!!
 	    SDL_JoystickSetPlayerIndex(joy[n].joy,index);
 	}
-	printf("no index found, %d assigned\n",index);
+	printf("No index found, %d assigned\n",index);
     } else {
-	printf("got index %d from config\n",index);
+	printf("Got index %d from config\n",index);
 	if (index >= SDL_NumJoysticks()) {
 	    index = SDL_NumJoysticks()-1;
-	    printf("but index >= numjoysticks (%d), setting to %d\n",SDL_NumJoysticks(),index);
+	    printf("But index >= numjoysticks (%d), setting to %d\n",SDL_NumJoysticks(),index);
 	}
 	SDL_GameControllerSetPlayerIndex(joy[n].controller,index);
 	for (int ta=0; ta<n; ta++) {
@@ -623,14 +623,14 @@ static void add_game_controller(int n) {
 	joy[n].controller = SDL_GameControllerOpen(n);
 	joy[n].name = (char*)SDL_GameControllerNameForIndex(n);
 	if (!joy[n].controller) {
-	    fatal_error("open controller failed: %s",SDL_GetError());
+	    fatal_error("Open controller failed: %s",SDL_GetError());
 	}
     } else
 #endif
     {
 	joy[n].joy = SDL_JoystickOpen(n);
 	if (!joy[n].joy) {
-	    fatal_error("open joy failed: %s",SDL_GetError());
+	    fatal_error("Open joystick failed: %s",SDL_GetError());
 	}
 #if SDL==2
 	joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
@@ -646,7 +646,7 @@ static void add_game_controller(int n) {
     joy[n].instance = n;
 #endif
     nb_joy++;
-    printf("controller %d opened (%s) index %d\n",n,joy[n].name,joy[n].index);
+    printf("Controller %d opened (%s) index %d\n",n,joy[n].name,joy[n].index);
 }
 
 static void cold_boot() {
@@ -1446,7 +1446,7 @@ static void key_up(int ta) {
 
 static void add_valid_input(int ta) {
     if (nb_valid_inputs == MAX_VALID_INPUTS) {
-	fatal_error("too many valid inputs");
+	fatal_error("Too many valid inputs");
     }
     int n;
     for (n=0; n<nb_valid_inputs; n++) {
@@ -1668,7 +1668,7 @@ void control_handle_event(SDL_Event *event) {
   case SDL_CONTROLLERDEVICEREMOVED:
       {
 	  int n = event->cdevice.which;
-	  printf("bye controller %d\n",n);
+	  printf("Bye controller %d\n",n);
 	  del_controller(n);
       }
       break;
@@ -2246,13 +2246,13 @@ void inputs_preinit() {
   if (f) {
       fclose(f);
       int ret = SDL_GameControllerAddMappingsFromFile(get_shared("gamecontrollerdb.txt"));
-      printf("mappings added %d\n",ret);
+      printf("Mappings added %d\n",ret);
   }
   f = fopen(get_shared("config/userdb.txt"),"r");
   if (f) {
       fclose(f);
       int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config/userdb.txt"));
-      printf("mappings added %d from userdb.txt\n",ret);
+      printf("Mappings added %d from userdb.txt\n",ret);
   }
 
   for (n=0; n<SDL_NumJoysticks(); n++) {
