@@ -167,7 +167,7 @@ static menu_item_t ogl_options[] =
     { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { _("DrawPixels (no shaders)"), _("Texture (possible shaders)") }, },
     { _("Double buffer"), NULL, &ogl.dbuf, 3, { 0, 1, 2 }, {_("No"),_("Yes (adaptive)"), _("Forced")} },
 #if SDL == 1
-    { _("OpenGL Blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
+    { _("OpenGL blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
 #endif
     { _("Save OpenGL screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
     { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
@@ -191,10 +191,10 @@ static void preinit_ogl_options() {
 int renderer_options(int sel) {
     preinit_ogl_options();
     switch(display_cfg.video_mode) {
-    case 0: menu = new TDialog(_("OpenGL Options"), ogl_options); break;
+    case 0: menu = new TDialog(_("OpenGL options"), ogl_options); break;
 #if SDL==1
-    case 1: menu = new TDialog(_("Overlays Options"), overlays_options); break;
-    case 2: menu = new TDialog(_("Blits Options"), blits_options); break;
+    case 1: menu = new TDialog(_("Overlays options"), overlays_options); break;
+    case 2: menu = new TDialog(_("Blits options"), blits_options); break;
 #endif
     default:
 	    MessageBox(_("Error"),_("No options for this renderer."),_("OK"));
@@ -276,8 +276,7 @@ static menu_item_t video_items[] =
 { _("Use double buffer (ignored by OpenGL)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
 #endif
 { _("Blend file options..."), &do_bld },
-{ _("Video information..."), &do_video, },
-{ _("Renderer options"), &renderer_options },
+{ _("Renderer options..."), &renderer_options },
 { _("General options:") },
 { _("Limit framerate <= 60fps"), NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
 { _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -288,6 +287,7 @@ static menu_item_t video_items[] =
   { _("None"), _("Flip X"), _("Flip Y"), _("Flip XY") } },
 { _("Save per game screen settings"), NULL, (int*)&raine_cfg.save_game_screen_settings, 2, {0, 1}, _("No"),_("Yes")},
 { _("Max FPS for drivers"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,180 }, { "", (char*)&max_fps, "1", "200" } },
+{ _("Video information..."), &do_video, },
 {  NULL },
 };
 
