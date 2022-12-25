@@ -105,11 +105,11 @@ static int change_color(int sel);
 
 static menu_item_t colors_menu[] =
 {
-{  _("fg color"), &change_color, },
-{  _("bg color"), &change_color, },
-{  _("fg frame color"), &change_color, },
-{  _("bg frame color"), &change_color, },
-{  _("bg dialog bar color"), &change_color, },
+{  _("Foreground color"), &change_color, },
+{  _("Background color"), &change_color, },
+{  _("Foreground frame color"), &change_color, },
+{  _("Background frame color"), &change_color, },
+{  _("Background dialog bar color"), &change_color, },
 { _("Revert to..."), &set_theme, &theme, 2, { 0, 1 }, { _("Blue"), _("Green") } },
 { NULL, NULL, NULL }
 };
