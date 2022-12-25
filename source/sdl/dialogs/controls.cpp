@@ -344,7 +344,7 @@ static int get_def_indice(const char *name) {
     for (int n=0; n<nb; n++)
 	if (!strcmp(def_input_emu[n].name,name))
 	    return n;
-    fatal_error("not found def_input_emu name : %s",name);
+    fatal_error("Not found def_input_emu name : %s",name);
     return -1;
 }
 
@@ -356,9 +356,9 @@ static int do_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+      int ret = MessageBox(_("Question"),_("What do you want to do?"),
         _("Delete the key|"
-	"Delete the joystick ctrl|"
+	"Delete the joystick control|"
 	"Really use ESC here"));
       switch(ret) {
 	case 1: def_input_emu[indice].scancode = 0;
@@ -400,7 +400,7 @@ static int do_kb_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+      int ret = MessageBox(_("Question"),_("What do you want to do?"),
         _("Delete the key"));
       switch(ret) {
 	case 1:
@@ -428,10 +428,10 @@ static int do_input_ingame(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do ?"),
+      int ret = MessageBox(_("Question"),_("What do you want to do?"),
         _("Delete the key|"
-	"Delete the joystick ctrl|"
-	"Del the mouse button"));
+	"Delete the joystick control|"
+	"Delete the mouse button"));
       switch(ret) {
 	case 1:
 		InputList[nb].Key = 0;
@@ -459,9 +459,9 @@ static int do_input_ingame(int sel) {
       InputList[nb].Key = inp_key;
       if (!use_custom_keys && !base_input) {
 	def_input[InputList[nb].default_key & 0xff].scancode = inp_key;
-	printf("defaults updated\n");
+	printf("Defaults updated\n");
       } else {
-	printf("defaults not updated use_custom %d base_input %d\n",use_custom_keys,base_input);
+	printf("Defaults not updated use_custom %d base_input %d\n",use_custom_keys,base_input);
       }
       free(cols[sel*3+0]);
       cols[sel*3+0] = get_key_name(inp_key,0);
@@ -706,7 +706,7 @@ static int setup_autofire(int sel) {
   memset(menu,0,sizeof(menu_item_t)*(nb+1));
   mynb=0;
   for (n=0; n<nb; n++) {
-    if ((strstr(InputList[n].InputName,"utton") ||
+    if ((strstr(InputList[n].InputName,"button") ||
 	  (InputList[n].default_key >= KB_DEF_P1_B1 &&
 	   InputList[n].default_key <= KB_DEF_P1_B8) ||
 	  (InputList[n].default_key >= KB_DEF_P2_B1 &&
@@ -722,16 +722,16 @@ static int setup_autofire(int sel) {
       for (x=0; x<6; x++)
 	menu[mynb].values_list[x] = x;
       menu[mynb].values_list_label[0] = _("Off");
-      menu[mynb].values_list_label[1] = _("30 fps");
-      menu[mynb].values_list_label[2] = _("15 fps");
-      menu[mynb].values_list_label[3] = _("10 fps");
-      menu[mynb].values_list_label[4] = _("7 fps");
-      menu[mynb].values_list_label[5] = _("6 fps");
+      menu[mynb].values_list_label[1] = _("30 FPS");
+      menu[mynb].values_list_label[2] = _("15 FPS");
+      menu[mynb].values_list_label[3] = _("10 FPS");
+      menu[mynb].values_list_label[4] = _("7 FPS");
+      menu[mynb].values_list_label[5] = _("6 FPS");
       mynb++;
     }
   }
   if (mynb == 0) {
-    MessageBox(_("Error"),_("No buttons mapped by this game for autofire, sorry !"));
+    MessageBox(_("Error"),_("No buttons mapped by this game for autofire, sorry!"));
     free(menu);
     return 0;
   }
@@ -773,7 +773,7 @@ static int autofire_controls(int sel) {
   for (n=0; n<InputCount; n++) {
     if (InputList[n].auto_rate && InputList[n].link == 0) {
       if (InputCount >= MAX_INPUTS-1) {
-	MessageBox(_("Error"),_("Too many controls have been defined for this game, sorry !"));
+	MessageBox(_("Error"),_("Too many controls have been defined for this game, sorry!"));
 	return 0;
       }
       InputList[InputCount] = InputList[n];
@@ -936,7 +936,7 @@ static int do_load(int sel) {
 	return 0;
     }
     selected = -1;
-    TDialog *dlg = new TDialog(_("Load from which ?"),menu);
+    TDialog *dlg = new TDialog(_("Load from which?"),menu);
     dlg->execute();
     delete dlg;
     if (selected > -1) {
@@ -949,7 +949,7 @@ static int do_load(int sel) {
 	char *s = str;
 	while ((s = strchr(s,' ')))
 	    *s = '_';
-	printf("loading keys from %s\n",str);
+	printf("Loading keys from %s\n",str);
 	load_game_keys(str);
 	raine_pop_config_state();
     }
@@ -1020,7 +1020,7 @@ static int get_inputs(int sel) {
 	return 0;
     }
     selected = -1;
-    TMenu *dlg = new TMenu(_("Load from which ?"),menu);
+    TMenu *dlg = new TMenu(_("Load from which?"),menu);
     dlg->execute();
     delete dlg;
     if (selected > -1) {
@@ -1030,7 +1030,7 @@ static int get_inputs(int sel) {
 	raine_set_config_file(str);
 
 	snprintf(str,FILENAME_MAX,"%s" KEYCONF, menu[selected].label);
-	printf("loading keys from %s\n",str);
+	printf("Loading keys from %s\n",str);
 	load_game_keys(str);
 	raine_pop_config_state();
     }
@@ -1076,14 +1076,14 @@ static int do_joy_index(int sel) {
     }
     my_menu[n].label = NULL;
     selected = -1;
-    TJoy *menu = new TJoy("Which index to change ?",my_menu);
+    TJoy *menu = new TJoy("Which index to change?",my_menu);
     menu->execute();
     delete menu;
 
     if (selected >= 0) {
 	int n1 = get_joy_index_from_playerindex(selected);
 	int index = get_joy_playerindex(n1);
-	menu = new TJoy("With which one ?",my_menu);
+	menu = new TJoy("With which one?",my_menu);
 	menu->execute();
 	delete menu;
 
@@ -1102,7 +1102,7 @@ extern "C" char *my_map(SDL_Joystick *joy);
 static int do_mapping(int sel) {
     int nb = SDL_NumJoysticks();
     if (nb <= 0) {
-	MessageBox("Error", "This command is to map the controls of a\njoystick, and none is detected","ok");
+	MessageBox("Error", "This command is to map the controls of a\njoystick, and none is detected","Ok");
 	return 0;
     }
     if (nb > 1) {
@@ -1119,7 +1119,7 @@ static int do_mapping(int sel) {
 	if (selected < 0) return 0;
     } else
 	selected = 0;
-    MessageBox("Info","When you'll click OK, a new window will appear\nIf you don't see it, use Alt-Tab !\n"
+    MessageBox("Info","When you click OK, a new window will appear\nIf you don't see it, use Alt+Tab\n"
 	    "Press the buttons on your controller when indicated\n"
     "(Your controller may look different than the picture)\n"
     "If you want to correct a mistake, press backspace or the back button on your device\n"
@@ -1127,7 +1127,7 @@ static int do_mapping(int sel) {
     "To exit, press ESC","Ok");
     SDL_Joystick *joy = SDL_JoystickOpen(selected);
     if (!joy) {
-	printf("can't open joy %d\n",selected);
+	printf("Can't open joy %d\n",selected);
 	return 0;
     }
     char *map = my_map(joy);
@@ -1138,7 +1138,7 @@ static int do_mapping(int sel) {
 	if (f) {
 	    char *s = strchr(map,',');
 	    if (!s) {
-		printf("can't find coma in mapping !\n");
+		printf("Can't find coma in mapping !\n");
 		return 0;
 	    }
 	    *s = 0;
@@ -1169,7 +1169,7 @@ static int do_mapping(int sel) {
 	    fclose(f);
 	}
 	int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config/userdb.txt"));
-	printf("mappings added %d from userdb.txt\n",ret);
+	printf("Mappings added %d from userdb.txt\n",ret);
     }
     return 0;
 }
@@ -1225,7 +1225,7 @@ int do_controls(int sel) {
     controls_menu[6].values_list[5] = cslider_lift;
     controls_menu[6].values_list[4] = mymakecol(160,160,160);
     controls_menu[6].label = label_mouse;
-    sprintf(label_mouse,_("Mouse Sensitivity: %d%%"),mouse_sens);
+    sprintf(label_mouse,_("Mouse sensitivity: %d%%"),mouse_sens);
   if (use_custom_keys) {
     switch_to_custom(0);
   } else if (current_game) {
