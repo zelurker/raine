@@ -85,7 +85,7 @@ static int do_led_paths(int sel) {
 	    menu = (menu_item_t *)realloc(menu,sizeof(menu_item_t)*(nb_menu+1));
 	    memset(&menu[nb_files],0,sizeof(menu_item_t)*11);
 	    if (!menu) {
-		fatal_error("failed to realloc files buffer (%d entries)",nb_menu);
+		fatal_error("Failed to reallocate files buffer (%d entries)",nb_menu);
 	    }
 	}
     }
@@ -95,7 +95,7 @@ static int do_led_paths(int sel) {
     }
     qsort(&menu[0],nb_files,sizeof(menu_item_t),&qsort_menu);
 
-    TMenu *dlg = new TMenu("leds",menu);
+    TMenu *dlg = new TMenu("LEDs",menu);
     dlg->execute();
     delete dlg;
 
@@ -126,7 +126,7 @@ int do_leds(int sel) {
 	    menu[n].menu_func = &do_led_paths;
 	}
 
-	TMenu *dlg = new TMenu("Leds assignments",menu);
+	TMenu *dlg = new TMenu("LEDs assignments",menu);
 	dlg->execute();
 	delete dlg;
 
@@ -146,7 +146,7 @@ int do_gui_options(int sel) {
   else if (strstr(language,"pt")) lang_int = 4;
   else {
       lang_int = 0;
-      printf("unknown lang %s\n",language);
+      printf("Unknown lang %s\n",language);
   }
   char old_lang[3];
   strcpy(old_lang,language);
@@ -161,11 +161,11 @@ int do_gui_options(int sel) {
   gui_menu[nb].label = _("Directories...");
   gui_menu[nb].menu_func = &do_dirs;
 #ifdef RAINE_UNIX
-  gui_menu[++nb].label = _("Leds...");
+  gui_menu[++nb].label = _("LEDs...");
   gui_menu[nb].menu_func = &do_leds;
 #endif
   if (nb >= MAX_GUI-1) { // -1 because we need a NULL at the end
-      fatal_error("too many gui options !");
+      fatal_error("Too many GUI options!");
   }
   gui_options = new TMenu("", gui_menu);
   gui_options->execute();
