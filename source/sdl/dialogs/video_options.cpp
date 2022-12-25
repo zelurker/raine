@@ -94,7 +94,7 @@ static int my_toggle_border(int sel) {
 #if SDL==1
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
-    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose 1"),_("Ok"));
+    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("Ok"));
     display_cfg.stretch = 0; // no scaling if scanlines
     video_options->draw();
   }
@@ -103,7 +103,7 @@ static int update_scaler(int sel) {
 
 static menu_item_t overlays_options[] =
 {
-    { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), _("YV12 (mpeg)") } },
+    { _("Prefered YUV format"), NULL, &prefered_yuv_format, 2, { 0, 1 }, { _("YUY2"), _("YV12 (MPEG)") } },
     { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 3, {0,1,2}, {_("No"), _("Close"), _("Always") } },
 #ifdef DARWIN
     { _("Overlays workarounds"), NULL, &overlays_workarounds, 2, { 0, 1}, {_("No"),_("Yes")}},
@@ -115,11 +115,11 @@ static menu_item_t overlays_options[] =
 static menu_item_t blits_options[] =
 {
     { _("Change video mode"), NULL, (int*)&display_cfg.auto_mode_change, 3, {0, 1, 2},
-	{ _("Never"), _("To match game resolution (low res most of the time)"), _("To match 2x game resolution") } },
+	{ _("Never"), _("To match game resolution (low resolution most of the time)"), _("To match 2x game resolution") } },
     { _("Scaler"), &update_scaler, (int*)&display_cfg.stretch, 4, { 0, 1, 2, 3 },
 	{ _("None"), _("Scale2x/3x"), _("Pixel double"), _("hq2x/3x") } },
     { _("Scanlines"), &update_scaler, (int*)&display_cfg.scanlines, 4, { 0, 1, 2, 3 },
-	{ _("Off"), _("Halfheight"), _("Fullheight"), _("Fullheight + Double width") } },
+	{ _("Off"), _("Halfheight"), _("Fullheight"), _("Fullheight + double width") } },
     {  NULL },
 };
 #endif
@@ -147,7 +147,7 @@ static int choose_shader(int sel) {
     fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&
 	    strcmp(old,"None")) { // cancelled ?
-	if (MessageBox(_("Confirmation"),_("Disable shaders ?"),_("Yes|No")) == 1) {
+	if (MessageBox(_("Confirmation"),_("Disable shaders?"),_("Yes|No")) == 1) {
 	    strcpy(ogl.shader,"None");
 	    delete_shaders();
 	} else
@@ -167,9 +167,9 @@ static menu_item_t ogl_options[] =
     { _("Rendering"), NULL, &ogl.render, 2, { 0, 1 }, { _("DrawPixels (no shaders)"), _("Texture (possible shaders)") }, },
     { _("Double buffer"), NULL, &ogl.dbuf, 3, { 0, 1, 2 }, {_("No"),_("Yes (adaptive)"), _("Forced")} },
 #if SDL == 1
-    { _("Opengl Blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
+    { _("OpenGL Blits"), NULL, &opengl_blits, 2, { 0, 1 }, {_("No"),_("Yes")} },
 #endif
-    { _("Save opengl screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
+    { _("Save OpenGL screenshots"), NULL, &ogl.save, 2, {0, 1}, {_("No"), _("Yes")} },
     { _("Shader"), &choose_shader,&bidon,1,{0},{ogl.shader}},
     { _("OpenGL overlay interface"), NULL, &ogl.overlay, 2, { 0, 1 }, {_("No"),_("Yes")} },
     { _("Fix aspect ratio to 4:3"), NULL, (int*)&display_cfg.fix_aspect_ratio, 3, {0,1,2}, {_("No"), _("Close"), _("Always") } },
@@ -197,7 +197,7 @@ int renderer_options(int sel) {
     case 2: menu = new TDialog(_("Blits Options"), blits_options); break;
 #endif
     default:
-	    MessageBox(_("Error"),_("No options for this renderer ? Strange !"),_("OK"));
+	    MessageBox(_("Error"),_("No options for this renderer."),_("OK"));
 	    return 0;
     }
     menu->set_transparency(0);
@@ -236,7 +236,7 @@ static int do_bld(int sel) {
     reset_bld = 0;
     bld1 = get_bld1();
     bld2 = get_bld2();
-    TMenu *menu = new TMenu(_("bld options"), bld_options);
+    TMenu *menu = new TMenu(_("Blend options"), bld_options);
     menu->execute();
     delete menu;
     if (reset_bld) {
@@ -254,11 +254,11 @@ static menu_item_t video_items[] =
 {
 #if defined(RAINE_WIN32) && SDL<2
 {  _("SDL video driver"), NULL, (int*)&display_cfg.video_driver, 3, {0, 1, 2},
-  { _("SDL default (windib since 1.2.10)"), _("windib (good for ogl)"),_("directx (good for hw overlays/blits)")} },
+  { _("SDL default (WinDIB since 1.2.10)"), _("WinDIB (good for OpenGL)"),_("DirectX (good for hardware overlays/blits)")} },
 #endif
 {  _("Video renderer"), NULL, (int*)&display_cfg.video_mode,
 #if SDL==2
-    2, {0, 3},{ _("OpenGL"), _("sdl2 native")} },
+    2, {0, 3},{ _("OpenGL"), _("SDL2 native")} },
 #else
 #if defined(__x86_64__) || defined(NO_ASM)
     2, {0, 2},{ _("OpenGL"), _("Normal blits")} },
@@ -269,21 +269,21 @@ static menu_item_t video_items[] =
     // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
 { _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 3, {0, 1, 2}, {_("No"), _("Yes (desktop)"), _("Yes (real)")}},
 #ifdef RAINE_UNIX
-{ _("Fullscreen hack for intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
+{ _("Fullscreen hack for Intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
 #endif
 { _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
 #if SDL < 2
-{ _("Use double buffer (ignored by opengl)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
+{ _("Use double buffer (ignored by OpenGL)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
 #endif
 { _("Blend file options..."), &do_bld },
-{ _("Video info..."), &do_video, },
+{ _("Video information..."), &do_video, },
 { _("Renderer options"), &renderer_options },
 { _("General options:") },
 { _("Limit framerate <= 60fps"), NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
 { _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
   {_("Auto"), "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
 { _("Screen rotation"), NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },
-  { _("None"), "90°", "180°", "270°" } },
+  { _("None"), "90Â°", "180Â°", "270Â°" } },
 { _("Flip screen"), NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
   { _("None"), _("Flip X"), _("Flip Y"), _("Flip XY") } },
 { _("Save per game screen settings"), NULL, (int*)&raine_cfg.save_game_screen_settings, 2, {0, 1}, _("No"),_("Yes")},
