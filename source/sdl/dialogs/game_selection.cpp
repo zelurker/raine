@@ -106,14 +106,14 @@ static int do_recent(int sel) {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->nb_loaded) nb_most++;
 	if (nb_most == 0) {
-	    MessageBox("Error","No most played game yet","OK");
+	    MessageBox("Error","No most played games yet","OK");
 	    return 0;
 	}
     } else {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->last_played) nb_most++;
 	if (nb_most == 0) {
-	    MessageBox("Error","No recent game yet\nIf you use the init command in Options if you\nhave some old data files in savedata","OK");
+	    MessageBox("Error","No recent games yet\nIf you use the init command in Options if you\nhave some old data files in savedata","OK");
 	    return 0;
 	}
     }
