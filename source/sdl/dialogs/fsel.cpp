@@ -383,7 +383,7 @@ void TFileSel::compute_nb_items() {
 	menu = (menu_item_t *)realloc(menu,sizeof(menu_item_t)*(nb_menu+1));
 	memset(&menu[nb_files],0,sizeof(menu_item_t)*11);
 	if (!menu) {
-	  fatal_error("failed to realloc files buffer (%d entries)",nb_menu);
+	  fatal_error("Failed to reallocate files buffer (%d entries)",nb_menu);
 	}
       }
     }
@@ -474,7 +474,7 @@ int TFileSel::mychdir(int n) {
 	    old = strdup(s+1);
 #ifdef RAINE_WIN32
 	    if (s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
-		printf("double replace for %s\n",path);
+		printf("Double replace for %s\n",path);
 	    }
 #endif
 	}
