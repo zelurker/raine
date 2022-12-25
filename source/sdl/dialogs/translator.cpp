@@ -92,19 +92,19 @@ static int get_sprite_map(UINT32 n) {
 	n -= combo_loc[x].size;
 	x++;
     }
-    fatal_error("map overflow");
+    fatal_error("Map overflow");
     return 0; // just to avoid a warning if no return here
 }
 
 TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
 {
     cursorx = cursory = 0;
-    printf("clearing colors\n");
+    printf("Clearing colors\n");
     memset(&pal[8],0,sizeof(SDL_Color)*8); // clear parasite colors in font
     FILE *f = fopen(get_shared("fonts/8x16.fnt"),"rb");
     sprites_changed = 0;
     if (!f) {
-	ErrorMsg("no 8x16 font available !!!");
+	ErrorMsg("No 8x16 font available!");
 	font = NULL;
 	map = NULL;
 	return;
@@ -144,10 +144,10 @@ TTransBitmap::~TTransBitmap() {
 	    fwrite(map,1,size*2,f);
 	    fclose(f);
 	} else
-	    printf("could not save map\n");
+	    printf("Could not save map\n");
     }
     if (sprites_changed &&
-	    MessageBox("Confirmation","Save the changes ?","Yes|No")==1) {
+	    MessageBox("Confirmation","Save the changes?","Yes|No")==1) {
 	char path[1024];
 	printf("Saving the changes...\n");
 	snprintf(path,1024,"%soverride",dir_cfg.exe_path);
@@ -170,7 +170,7 @@ TTransBitmap::~TTransBitmap() {
 	char *name;
 	int nb;
 	get_cache_origin(PRG_TYPE,base+offset,&name,&nb);
-	printf("got name %s for origin %x base %x\n",name,base+offset,base);
+	printf("Got name %s for origin %x base %x\n",name,base+offset,base);
 	put_override(PRG_TYPE,name,size_msg);
     }
 }
@@ -201,7 +201,7 @@ void TTransMenu::create_child(int n) {
 	child[n] = new TTransBitmap(&menu[n]);
 	if (!((TTransBitmap *)child[n])->font) {
 	    exit_menu = 1;
-	    printf("asked for exit\n");
+	    printf("Asked for exit\n");
 	}
     } else
 	TMenu::create_child(n);
@@ -290,7 +290,7 @@ static void move_ref(int diff) {
 		    continue;
 		if ((UINT32)ReadLongSc(&RAM[reference[n].ref[x]]) !=
 			reference[n].adr) {
-		    fatal_error("reference mismatch base %x ref %d",base,x);
+		    fatal_error("Reference mismatch base %x ref %d",base,x);
 		}
 		WriteLongSc(&RAM[reference[n].ref[x]],
 			reference[n].adr-diff);
@@ -370,7 +370,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 		    break;
 		}
 		if (diff) {
-		    printf("reducing size by %d\n",diff);
+		    printf("Reducing size by %d\n",diff);
 		    UINT16 *entries = (UINT16*)&RAM[base+4];
 		    for (n = cur_entry+1; n<=last_entry; n++)
 			entries[n-1] -= diff;
@@ -445,7 +445,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 			    break;
 			}
 		    }
-		    printf("found prevchar %d\n",prevchar);
+		    printf("Found prevchar %d\n",prevchar);
 		    if (prevchar == 0x27 &&
 			    (unicode == 0x2e || unicode == 0x20))
 			prevchar = 0x2e;
@@ -454,7 +454,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 			for (n=0; n<used_map; n++) {
 			    if (map[n] == combi) {
 				int loc = get_sprite_map(n);
-				printf("inserting combi prevchar %x unicode %x found at pos %x loc %x\n",prevchar,unicode,n,loc);
+				printf("Inserting combi prevchar %x unicode %x found at pos %x loc %x\n",prevchar,unicode,n,loc);
 				video_spr_usage[loc]=1;
 				put_char(&GFX[loc*0x100],&font[prevchar*16+4]);
 				put_char(&GFX[loc*0x100+8],&font[unicode*16+4]);
@@ -476,10 +476,10 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 			    else
 				WriteWord(offs-2,loc-OFFS_SPRITES);
 			    used_map++;
-			    printf("creating new combination at %x used_map %x\n",loc,used_map);
+			    printf("Creating new combination at %x used_map %x\n",loc,used_map);
 			    return 1;
 			} else {
-			    fatal_error("map full %d >= %d",used_map,size_map);
+			    fatal_error("Map full %d >= %d",used_map,size_map);
 			}
 		    }
 		}
@@ -629,10 +629,10 @@ static void init_valid_chars() {
     validchars[':'] = 0x40e;
     validchars['+'] = 0x40f;
     validchars['-'] = 0x410;
-    /*validchars['é'] = validchars['è'] = validchars['ê'] = validchars['ë'] =
+    /*validchars['Ã©'] = validchars['Ã¨'] = validchars['Ãª'] = validchars['Ã«'] =
       0x3cd+'e'-'a';
-      validchars['ù'] = 0x3cd+'u'-'a';
-      validchars['â'] = validchars['à'] = 0x3cd+'a'-'a'; */
+      validchars['Ã¹'] = 0x3cd+'u'-'a';
+      validchars['Ã¢'] = validchars['Ã '] = 0x3cd+'a'-'a'; */
 }
 
 static int selected;
@@ -652,7 +652,7 @@ int set_entry(int sel) {
 
 static int insert_code(int sel) {
     int ret = MessageBox("Insertion",
-	    "Which portrait do you want to insert ?",
+	    "Which portrait do you want to insert?",
 	    "Haohmaru|"
 	    "Haohmaru's master|Angry master"
 	    "Genjuro|Angry Genjuro|"
@@ -709,13 +709,13 @@ int do_screen(int sel) {
 	lsize[n] = size;
 	n++;
 	if (n == nb) {
-	    ErrorMsg("too many msg, only the 1st 10 are displayed");
+	    ErrorMsg("Too many messages, only the 1st 10 are displayed");
 	    break;
 	}
     }
     buff[strlen(buff)-1] = 0; // remove last |
     selected = -1;
-    selected = MessageBox("Selection","File to edit ?",buff);
+    selected = MessageBox("Selection","File to edit?",buff);
 
     if (selected < 0) return 0;
     selected--;
@@ -766,7 +766,7 @@ int do_msg(int sel) {
     // init references...
     size = get_msg_size(loff[0]);
     if (size != lsize[0]) {
-	printf("size detection problem got %x, should be %x\n",
+	printf("Size detection problem got %x, should be %x\n",
 		size,lsize[0]);
 	exit(1);
     }
@@ -796,7 +796,7 @@ int do_msg(int sel) {
 	lsize[n] = size;
 	n++;
 	if (n == nb) {
-	    ErrorMsg("too many msg, only the 1st 10 are displayed");
+	    ErrorMsg("Too many messages, only the 1st 10 are displayed");
 	    break;
 	}
 
@@ -805,7 +805,7 @@ int do_msg(int sel) {
     for (x=0; x<n; x++)
 	menu[x].menu_func = &do_exit;
     selected = -1;
-    TMenu *dlg = new TMenu(_("msg to edit"),menu);
+    TMenu *dlg = new TMenu(_("Message to edit"),menu);
     dlg->execute();
     delete dlg;
 
@@ -833,7 +833,7 @@ int do_msg(int sel) {
     if (cur_entry > last_entry)
 	cur_entry = 0;
 
-    sprite_menu = new TTransMenu(_("Edit msg"),msg_menu);
+    sprite_menu = new TTransMenu(_("Edit message"),msg_menu);
     set_entry(0);
     sprite_menu->execute();
     delete sprite_menu;
@@ -977,10 +977,10 @@ int do_translate_ss2(int sel) {
     validchars['!'] = 0x7478;
     validchars['?'] = 0x74b2;
     validchars['.'] = 0x2000;
-    /*validchars['é'] = validchars['è'] = validchars['ê'] = validchars['ë'] =
+    /*validchars['Ã©'] = validchars['Ã¨'] = validchars['Ãª'] = validchars['Ã«'] =
       0x3cd+'e'-'a';
-      validchars['ù'] = 0x3cd+'u'-'a';
-      validchars['â'] = validchars['à'] = 0x3cd+'a'-'a'; */
+      validchars['Ã¹'] = 0x3cd+'u'-'a';
+      validchars['Ã¢'] = validchars['Ã '] = 0x3cd+'a'-'a'; */
     set_location(0);
     sprite_menu = new TTransSS2Menu(_("Translator"),sprites_menu);
     sprite_menu->execute();
