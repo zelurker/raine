@@ -363,7 +363,7 @@ static void load_game_proc()
 	     display_cfg.keep_ratio) { // && switch_res(current_game->video))){
       switch_res(current_game->video);
     } else {
-      print_debug("no resolution switching wanted\n");
+      print_debug("No resolution switching wanted\n");
       if (current_game->video->flags & VIDEO_NEEDS_8BPP) {
 	bestbpp = 8;
 	display_cfg.video_mode = 2; // only possibility for 8bpp
@@ -374,12 +374,12 @@ static void load_game_proc()
 
     progress_count = 0;
     curl_progress = 0;
-    load_items[0].label = _("Applying GFX Layouts and stuff..."); // init
+    load_items[0].label = _("Applying graphics layouts and stuff..."); // init
     if (!raine_cfg.no_gui) {
 #if SDL == 1
 	adjust_gui_resolution();
 #endif
-	loading_dialog = new TDialog(_("Loading Game"),load_items);
+	loading_dialog = new TDialog(_("Loading game"),load_items);
 	loading_dialog->draw();
     }
 
@@ -591,7 +591,7 @@ void setup_font()
    fread(ingame_font,1,1792,f);
    fclose(f);
   } else {
-    fatal_error("no font, byebye !");
+    fatal_error("No font, byebye!");
   }
 }
 
@@ -844,6 +844,6 @@ void StartGUI(void)
 void *old_draw = NULL;
 
 void switch_mixer() {
-  print_ingame(60,_("no mixer yet"));
+  print_ingame(60,_("No mixer yet"));
 }
 
