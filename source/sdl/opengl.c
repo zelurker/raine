@@ -142,7 +142,7 @@ void opengl_reshape(int w, int h) {
 #if SDL == 2
 	if (ogl.dbuf == 2) { // forced
 	    if (SDL_GL_SetSwapInterval(1) < 0) {
-		printf("can't call GL_SetSwapInterval(1) ???\n");
+		printf("Can't call GL_SetSwapInterval(1) ???\n");
 	    }
 	    ogl.infos.vbl = 1;
 	} else {
@@ -157,7 +157,7 @@ void opengl_reshape(int w, int h) {
 #endif
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ? 1 : 0);
     }
-    check_error("end opengl_reshape");
+    check_error("End opengl_reshape");
 #endif
 }
 
@@ -180,7 +180,7 @@ static const char* myglGetString( GLenum id) {
 }
 
 void get_ogl_infos() {
-	check_error("start ogl_infos");
+	check_error("Start ogl_infos");
 	int format_error = 0;
 #if SDL==1
 	switch (sdl_screen->format->BitsPerPixel) {
@@ -220,8 +220,8 @@ void get_ogl_infos() {
 	if (format_error && !broken_gl_format) {
 		char buff[1024];
 		broken_gl_format = 1;
-		sprintf(buff,_("bad screen format, report this to rainemu.com:\n"
-				"bpp : %d rshift %d gshift %d bshift %d"),
+		sprintf(buff,_("Bad screen format, report this to github.com/zelurker/raine:\n"
+				"Bpp: %d rshift %d gshift %d bshift %d"),
 				sdl_screen->format->BitsPerPixel,
 				sdl_screen->format->Rshift,
 				sdl_screen->format->Gshift,
@@ -267,7 +267,7 @@ void get_ogl_infos() {
 #else
 	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
 #endif
-	check_error("end ogl_infos");
+	check_error("End ogl_infos");
 }
 
 void render_texture(int linear) {
@@ -324,7 +324,7 @@ void opengl_text(char *msg, int x, int y) {
 	char *name= get_shared("fonts/10x20.fnt");
 	UINT32 size = size_file(name);
 	if (!size) {
-	    printf("couldn't find font %s\n",name);
+	    printf("Couldn't find font %s\n",name);
 	    return;
 	}
 	font = malloc(size);
