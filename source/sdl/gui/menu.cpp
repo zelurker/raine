@@ -384,7 +384,7 @@ void TMenu::create_child(int n) {
     child[n] = new TIntEdit(&menu[n]);
 
   else {
-    fatal_error("unknown extension %d",menu[n].values_list_size);
+    fatal_error("Unknown extension %d",menu[n].values_list_size);
   }
 }
 
@@ -764,7 +764,7 @@ void TMenu::setup_fg_layer() {
     lift->set_surface(fg_layer);
   bgsdl = gfx_to_sdlcolor(fg_layer,bg);
   if (!fg_layer) {
-    fatal_error("fg layer creation failed: %s",SDL_GetError());
+    fatal_error("Foreground layer creation failed: %s",SDL_GetError());
   }
   // SDL_SetAlpha(fg_layer,SDL_SRCALPHA | SDL_RLEACCEL,(fw > 10 ? 128 : 128+48));
   fgdst.w = fg_layer->w; // w & h are not used normaly, but just in case...
@@ -1134,7 +1134,7 @@ void TMenu::do_update(SDL_Rect *region) {
 void TMenu::draw() {
 
     if (!sdl_screen->pixels) {
-	print_debug("returning from draw on null pixels\n");
+	print_debug("Returning from draw on null pixels\n");
 	return;
     }
   draw_frame();
@@ -1156,7 +1156,7 @@ void TMenu::draw() {
 void TMenu::redraw_fg_layer() {
   // this layer has become tricky to update finally !!!
   if (!fg_layer) {
-      print_debug("rebuilding fg_layer\n");
+      print_debug("Rebuilding fg_layer\n");
       return draw();
   }
   if (!sdl_screen->pixels || (!opengl_blits && (sdl_screen->flags & SDL_OPENGL))) {
@@ -1171,7 +1171,7 @@ void TMenu::redraw_fg_layer() {
   if (fg_layer->format->Amask)
     update_bg_layer(&fgdst);
   else
-    printf("skip update bg\n");
+    printf("Skip update bg\n");
   SDL_BlitSurface(fg_layer,NULL,sdl_screen,&fgdst);
   do_update(&fgdst);
 }
@@ -1915,7 +1915,7 @@ static int gui_init;
 void TMenu::execute() {
     gui_level++;
     if (!sdl_screen->pixels) {
-	printf("adjust gui res from execute\n");
+	printf("Adjust GUI resolution from execute\n");
 	adjust_gui_resolution();
     }
   SDL_Event event;
@@ -1979,7 +1979,7 @@ void TMenu::execute() {
         handle_joystick(&event);
 	break;
       case SDL_VIDEORESIZE:
-	print_debug("received resize %d,%d screen %d,%d\n",event.resize.w,event.resize.h,display_cfg.screen_x,display_cfg.screen_y);
+	print_debug("Received resize %d,%d screen %d,%d\n",event.resize.w,event.resize.h,display_cfg.screen_x,display_cfg.screen_y);
 	if ((event.resize.w != display_cfg.screen_x ||
 		    event.resize.h != display_cfg.screen_y) && (!display_cfg.fullscreen || display_cfg.auto_mode_change)) {
 	    display_cfg.screen_x = event.resize.w;
@@ -2005,7 +2005,7 @@ void TMenu::execute() {
 	 * redrawn, so we are forced to update everything.
 	 * To be verified : with screen = SWSURFACE, just a do_update should
 	 * be enough */
-	 print_debug("expose event\n");
+	 print_debug("Expose event\n");
 	 // redraw(NULL);
 	do_update(NULL);
 	if (sdl_screen->flags & SDL_DOUBLEBUF) {
@@ -2087,7 +2087,7 @@ void TMenu::execute() {
     SDL_EnableKeyRepeat(0,0);
     SDL_EnableUNICODE(unicode);
     release_inputs();
-    print_debug("calling ScreenChange on gui_init==0 (gui execute)\n");
+    print_debug("Calling ScreenChange on gui_init==0 (gui execute)\n");
     ScreenChange();
     if (!raine_cfg.req_pause_game)
 	sa_unpause_sound();
@@ -2176,7 +2176,7 @@ void TDialog::display_fglayer_header(int &y) {
     else
       bg_layer = SDL_CreateRGBSurface(SDL_SWSURFACE,sdl_screen->w,sdl_screen->h,display_cfg.bpp,color_format->Rmask,color_format->Gmask,color_format->Bmask,color_format->Amask);
     if (!bg_layer) {
-      fatal_error("erreur création bg_layer");
+      fatal_error("Error creating bg_layer");
     }
     SDL_BlitSurface(sdl_screen,NULL,bg_layer,NULL);
   }
