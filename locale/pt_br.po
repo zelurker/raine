@@ -5,33 +5,33 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Raine 0.91.18\n"
+"Project-Id-Version: Raine 0.94.08\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-26 12:00+0200\n"
-"PO-Revision-Date: 2021-06-25 13:22-0300\n"
+"PO-Revision-Date: 2022-12-27 12:43-0300\n"
 "Last-Translator: Felipe <felipefplzx@gmail.com>\n"
 "Language-Team: Felipe\n"
-"Language: pt\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: source/games/fchamp.c:101 source/games/fchamp.c:127
 #: source/games/fchamp.c:171
 msgid " 2  Minutes"
-msgstr " 2 Minutos"
+msgstr " 2  Minutos"
 
 #: source/games/fchamp.c:102 source/games/fchamp.c:128
 #: source/games/fchamp.c:172
 msgid " 3  Minutes"
-msgstr " 3 Minutos"
+msgstr " 3  Minutos"
 
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"
-msgstr "%d - slot do save do jogo livre"
+msgstr "%d - Slot do save state livre"
 
 #: source/demos.c:292
 #, c-format
@@ -259,9 +259,8 @@ msgstr "1000k e 2000k"
 
 #: source/games/seta.c:1853 source/games/seta.c:2446
 #: source/games/toaplan2.c:1978
-#, fuzzy
 msgid "1000k only"
-msgstr "Só em 100k"
+msgstr "Só em 1000k"
 
 #: source/games/toaplan1.c:194 source/games/toaplan1.c:647
 msgid "100K"
@@ -932,7 +931,7 @@ msgstr "30k e a cada 50k"
 
 #: source/sdl/dialogs/about.cpp:719
 msgid "32 bits i386 binary with plenty of asm inside"
-msgstr ""
+msgstr "32 bits binário i386 com bastante asm dentro"
 
 #: source/sdl/dialogs/neocd_options.cpp:188
 msgid "32x"
@@ -1374,19 +1373,19 @@ msgstr "60k e 200k"
 
 #: source/sdl/dialogs/about.cpp:722
 msgid "64 bits x86 binary, no asm at all, a raine anomaly !"
-msgstr ""
+msgstr "64 bits x86 binário, sem asm em tudo, uma anomalia do raine!"
 
 #: source/sdl/dialogs/about.cpp:713
 msgid "6502/65c02: mame 125 version"
-msgstr ""
+msgstr "6502/65c02: versão do mame 125"
 
 #: source/sdl/dialogs/about.cpp:698
 msgid "68000,68020 : Musashi v3.3x by Karl Stenerud"
-msgstr ""
+msgstr "68000,68020 : Musashi v3.3x do Karl Stenerud"
 
 #: source/sdl/dialogs/about.cpp:701
 msgid "68020: Musashi v3.3x by Karl Stenerud"
-msgstr ""
+msgstr "68020: Musashi v3.3x do Karl Stenerud"
 
 #: source/games/opwolf.c:86
 msgid "7 Clips"
@@ -1621,13 +1620,12 @@ msgid "Accelerator"
 msgstr "Acelerador"
 
 #: source/sdl/gui.cpp:518
-#, fuzzy
 msgid "Action Replay cheats"
 msgstr "Trapaças do action replay"
 
 #: source/sdl/dialogs/video_info.cpp:25
 msgid "Adaptive"
-msgstr ""
+msgstr "Adaptativo"
 
 #: source/sdl/dialogs/romdirs.cpp:50
 msgid "Add ROM directory..."
@@ -1697,13 +1695,12 @@ msgstr "AlternativoÚnico"
 
 #: source/sdl/dialogs/video_options.cpp:107
 #: source/sdl/dialogs/video_options.cpp:175
-#, fuzzy
 msgid "Always"
-msgstr "Sempre Ativado"
+msgstr "Sempre"
 
 #: source/sdl/dialogs/sound_options.cpp:75
 msgid "Always stop Neo-Geo CD music while loading"
-msgstr "Sempre parar a música do CD enquanto carrega"
+msgstr "Sempre parar a música do Neo-Geo CD enquanto carrega"
 
 #: source/games/hyperpcb.c:540 source/games/toaplan2.c:884
 #: source/games/toaplan2.c:1142 source/games/toaplan2.c:1216
@@ -1736,9 +1733,8 @@ msgstr "Joystick Analógico"
 
 #: source/games/chasehq.c:128 source/games/chasehq.c:131
 #: source/games/chasehq.c:134
-#, fuzzy
 msgid "Analog input"
-msgstr "Controles analógicos..."
+msgstr "Controles analógicos"
 
 #: source/speed_hack.c:80
 #, c-format
@@ -1746,18 +1742,17 @@ msgid "Applied speed hack %d at %x"
 msgstr "Hack de velocidade aplicado %d em %x"
 
 #: source/neocd/neocd.c:2178
-#, fuzzy, c-format
+#, c-format
 msgid "Applied speed hack at %x:%s"
-msgstr "Hack de velocidade aplicado %ax em %s"
+msgstr "Hack de velocidade aplicado em %x:%s"
 
 #: source/sdl/gui.cpp:377
 msgid "Applying GFX Layouts and stuff..."
 msgstr "Aplicando o desenho dos GFX e tal..."
 
 #: source/loadroms.c:996
-#, fuzzy
 msgid "Applying graphics layouts..."
-msgstr "Aplicando o desenho dos GFX e tal..."
+msgstr "Aplicando os esquemas dos gráficos..."
 
 #: source/sdl/dialogs/dirs.cpp:49
 msgid "Artwork dir"
@@ -1817,9 +1812,8 @@ msgid "Auto Shot"
 msgstr "Auto Disparo"
 
 #: source/sdl/dialogs/controls.cpp:787 source/sdl/control.c:998
-#, fuzzy
 msgid "Autofire"
-msgstr "Auto-disparo..."
+msgstr "Auto-disparo"
 
 #: source/games/neogeo.c:85
 msgid "Autofire (in some games)"
@@ -1835,7 +1829,7 @@ msgstr "Auto-disparo..."
 
 #: source/sdl/dialogs/game_selection.cpp:440
 msgid "Available"
-msgstr "Disponível"
+msgstr "Disponíveis"
 
 #: source/sdl/dialogs/game_selection.cpp:41
 msgid "Available games"
@@ -1888,17 +1882,17 @@ msgstr "BG3"
 #: source/files.c:395
 #, c-format
 msgid "Bad CRC for ROM %s (%x)\n"
-msgstr ""
+msgstr "CRC ruim pra ROM %s (%x)\n"
 
 #: source/files.c:407
 #, c-format
 msgid "Bad rom size for %s: tried to read %xh bytes, got %lxh\n"
-msgstr ""
+msgstr "Tamanho ruim da rom pra %s: tentou %xh bytes, obteve %lxh\n"
 
 #: source/files.c:434
 #, c-format
 msgid "Bad rom size for %s: tried to read %xh bytes, got %xh\n"
-msgstr ""
+msgstr "Tamanho ruim da rom pra %s: tentou ler %xh bytes, obteve %xh\n"
 
 #: source/sdl/dialogs/neo_softdips.cpp:231
 msgid "Bad soft dips"
@@ -2104,7 +2098,7 @@ msgstr "Não pôde criar o %s"
 
 #: source/neocd/neocd.c:1256
 msgid "Can't save the backup ram, it's unlocked"
-msgstr ""
+msgstr "Não pôde salvar a RAM de backup, ela está desbloqueada"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Capcom CPS1"
@@ -2133,12 +2127,12 @@ msgstr "Categoria"
 #: source/sdl/dialogs/game_selection.cpp:472
 #, c-format
 msgid "Category: "
-msgstr "Categoria : "
+msgstr "Categoria: "
 
 #: source/sdl/dialogs/game_selection.cpp:481
 #, c-format
 msgid "Category: -"
-msgstr "Categoria : -"
+msgstr "Categoria: -"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Cave"
@@ -2162,7 +2156,7 @@ msgstr "Mudar o modo de vídeo"
 
 #: source/sdl/gui.cpp:520
 msgid "Change/Load game"
-msgstr "Mudar/Carregar a ROM"
+msgstr "Mudar/Carregar o Jogo"
 
 #: source/games/chasehq.c:1575 source/games/contcirc.c:468
 #: source/games/contcirc.c:480
@@ -2197,7 +2191,7 @@ msgstr "Escolha"
 
 #: source/sdl/dialogs/sound_options.cpp:38
 msgid "Choose one of the available drivers :"
-msgstr ""
+msgstr "Escolha um dos drivers disponíveis:"
 
 #: source/games/chasehq2.c:103 source/games/chasehq.c:153
 msgid "Clear Damage on Cont."
@@ -2214,7 +2208,7 @@ msgstr "Clones"
 #: source/sdl/dialogs/video_options.cpp:107
 #: source/sdl/dialogs/video_options.cpp:175
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: source/sdl/dialogs/sound_commands.cpp:149
 msgid "Close this dialog to stop playback (Return, ESC or mouse button)"
@@ -2227,7 +2221,7 @@ msgstr "Cabine"
 
 #: source/games/contcirc.c:61
 msgid "Cockpit (Analog inputs)"
-msgstr ""
+msgstr "Cockpit (Controles analógicos)"
 
 #: source/games/taito_f2.c:959 source/games/rainbow.c:69
 #: source/games/rainbow.c:184
@@ -2348,7 +2342,7 @@ msgstr "Companhia"
 #: source/sdl/dialogs/game_selection.cpp:468
 #, c-format
 msgid "Company: %s"
-msgstr "Companhia : %s"
+msgstr "Companhia: %s"
 
 #: source/games/rainbow.c:97 source/games/rainbow.c:212
 msgid "Complete Bonus"
@@ -2419,9 +2413,8 @@ msgid "Control Panel"
 msgstr "Painel de Controle"
 
 #: source/sdl/dialogs/controls.cpp:1191
-#, fuzzy
 msgid "Controller mapping"
-msgstr "Painel de Controle"
+msgstr "Mapeamento dos Controles"
 
 #: source/games/seta.c:2524 source/games/taito_f2.c:901
 #: source/games/megasys1.c:685 source/games/megasys1.c:739
@@ -2446,6 +2439,8 @@ msgid ""
 "Could not even initialize the audio subsystem with this driver\n"
 "Forget it"
 msgstr ""
+"Não pôde nem mesmo inicializar o sub-sistema de áudio com este driver\n"
+"Esqueça"
 
 #: source/neocd/cdda.c:201
 #, c-format
@@ -2524,7 +2519,7 @@ msgstr "D"
 
 #: source/sdl/dialogs/controls.cpp:1187
 msgid "D-pads for movement"
-msgstr ""
+msgstr "D-pads pra movimentação"
 
 #: source/sdl/dialogs/controls.cpp:58 source/sdl/dialogs/controls.cpp:70
 msgid "DOWN"
@@ -2640,13 +2635,12 @@ msgid "Debug dips"
 msgstr "Dips de debug"
 
 #: source/games/cps1.c:2027
-#, fuzzy
 msgid "Decoding GFX layer"
-msgstr "Carregando Jogo"
+msgstr "Decodificando a camada dos GFX"
 
 #: source/sdl/control.c:678
 msgid "Decrease CPU skip"
-msgstr "Diminuir o pulo da cpu"
+msgstr "Diminuir o pulo da CPU"
 
 #: source/sdl/control.c:676
 msgid "Decrease frameskip"
@@ -2654,28 +2648,27 @@ msgstr "Diminuir o frameskip"
 
 #: source/games/pirates.c:171
 msgid "Decrypting 68K (Code)"
-msgstr ""
+msgstr "Descriptografando 68K (Código)"
 
 #: source/games/pirates.c:205
 msgid "Decrypting GFX1 (Tilemaps)"
-msgstr ""
+msgstr "Descriptografando GFX1 (Mapa dos Ladrilhos)"
 
 #: source/games/pirates.c:233
 msgid "Decrypting GFX2 (Sprites)"
-msgstr ""
+msgstr "Descriptografando GFX2 (Imagens Móveis)"
 
 #: source/games/pirates.c:261
 msgid "Decrypting OKI (Sound)"
-msgstr ""
+msgstr "Desencriptar OKI (Som)"
 
 #: source/cps2crpt.c:687
-#, fuzzy
 msgid "Decrypting rom..."
-msgstr "Gravando em wav..."
+msgstr "Descriptografando a rom..."
 
 #: source/games/cave.c:1607
 msgid "Decrypting sprites"
-msgstr ""
+msgstr "Descriptografando imagens móveis"
 
 #: source/games/wwfsstar.c:130
 msgid "Default"
@@ -2845,7 +2838,7 @@ msgstr "Ativado o dobro do buffer"
 #: source/loadroms.c:1219
 #, c-format
 msgid "Downloading %s.zip"
-msgstr ""
+msgstr "Baixando %s.zip"
 
 #: source/games/seta.c:2351
 msgid "Dragon Unit"
@@ -2881,13 +2874,12 @@ msgid "Driver"
 msgstr "Driver"
 
 #: source/sdl/dialogs/about.cpp:725
-#, fuzzy
 msgid "Driver info"
-msgstr "Driver"
+msgstr "Informações do driver"
 
 #: source/loadroms.c:970
 msgid "Driver loading function..."
-msgstr ""
+msgstr "Função de carregamento do driver..."
 
 #: source/games/quizgame.c:194 source/games/taito_f2.c:784
 #: source/games/taito_f2.c:902 source/games/taito_f2.c:961
@@ -2943,11 +2935,11 @@ msgstr "Fácil"
 
 #: source/sdl/dialogs/controls.cpp:1211 source/sdl/dialogs/controls.cpp:1215
 msgid "Edit custom game inputs"
-msgstr "Editar entradas personalizadas do jogo"
+msgstr "Editar as entradas personalizadas do jogo"
 
 #: source/sdl/dialogs/controls.cpp:1198 source/sdl/dialogs/controls.cpp:1202
 msgid "Edit default game inputs"
-msgstr "Editar entradas padrão do jogo"
+msgstr "Editar as entradas padrão do jogo"
 
 #: source/sdl/dialogs/translator.cpp:836
 #: source/sdl/dialogs/game_options.cpp:242
@@ -2971,14 +2963,12 @@ msgid "EmuDX"
 msgstr "EmuDX"
 
 #: source/games/frogger.c:1267
-#, fuzzy
 msgid "EmuDX sound ?"
-msgstr "Suporte a EmuDX?"
+msgstr "Som EmuDX?"
 
 #: source/games/frogger.c:1470
-#, fuzzy
 msgid "EmuDX sprites ?"
-msgstr "Suporte a EmuDX?"
+msgstr "Imagens móveis do EmuDX?"
 
 #: source/games/dkong.c:835 source/games/frogger.c:1455
 #: source/games/pengo.c:1864
@@ -3283,12 +3273,10 @@ msgid "Final Stage Cont"
 msgstr "Contador do Estágio Final"
 
 #: source/sdl/dialogs/neocd_options.cpp:162
-#, fuzzy
 msgid "Find Neo-Geo CD BIOS"
-msgstr "Bios do NeoCD"
+msgstr "Achar s BIOS do Neo-Geo CD"
 
 #: source/neocd/neocd.c:382
-#, fuzzy
 msgid ""
 "Find the NeoCD bios (neocd.bin).\n"
 "Ask Google if you can't find it !"
@@ -3351,7 +3339,7 @@ msgstr "Forçar 1 Vida"
 
 #: source/sdl/dialogs/video_options.cpp:168
 msgid "Forced"
-msgstr ""
+msgstr "Forçado"
 
 #: source/games/seta.c:3080
 msgid "Foreign"
@@ -3406,16 +3394,15 @@ msgstr "Tela cheia"
 
 #: source/sdl/dialogs/video_options.cpp:272
 msgid "Fullscreen hack for intel"
-msgstr ""
+msgstr "Hack de tela cheia pro intel"
 
 #: source/games/toaplan2.c:272
 msgid "Fully-auto"
 msgstr "Completamente-auto"
 
 #: source/sdl/gui.cpp:527
-#, fuzzy
 msgid "GUI options"
-msgstr "Opções"
+msgstr "Opções da GUI"
 
 #: source/sdl/gui/menu.cpp:155 source/sdl2/gui/menu.cpp:130
 msgid "GUI transparency"
@@ -3474,7 +3461,7 @@ msgstr "Tipo de Jogo"
 
 #: source/sdl/gui.cpp:516
 msgid "Game command list"
-msgstr "Mostrar informação do command.dat"
+msgstr "Lista de comandos do jogo"
 
 #: source/demos.c:316
 msgid "Game does not support Loading."
@@ -3482,11 +3469,11 @@ msgstr "O jogo não suporta o carregamento."
 
 #: source/demos.c:66
 msgid "Game does not support Saving."
-msgstr "O jogo não suporta carregamento."
+msgstr "O jogo não suporta o salvamento."
 
 #: source/sdl/gui.cpp:515
 msgid "Game options"
-msgstr "Opções de jogo"
+msgstr "Opções do jogo"
 
 #: source/sdl/dialogs/game_selection.cpp:578
 msgid "Game selection"
@@ -3495,7 +3482,7 @@ msgstr "Seleção de jogo"
 #: source/sdl/dialogs/game_selection.cpp:467
 #, c-format
 msgid "Game: %s"
-msgstr "Jogo : %s"
+msgstr "Jogo: %s"
 
 #: source/games/megasys1.c:1238
 msgid "Games to Play (Vs)"
@@ -3676,7 +3663,7 @@ msgstr "FPS imediato"
 
 #: source/sdl/control.c:677
 msgid "Increase CPU skip"
-msgstr "Aumentar pulo da cpu"
+msgstr "Aumentar o pulo da CPU"
 
 #: source/sdl/control.c:675
 msgid "Increase frameskip"
@@ -3718,7 +3705,7 @@ msgstr "Instruções"
 
 #: source/sdl/dialogs/video_options.cpp:178
 msgid "Integer scaling"
-msgstr ""
+msgstr "Dimensionamento de inteiros"
 
 #: source/games/cps1drv.c:3206 source/games/cps1drv.c:3254
 msgid "Internal Diff. on Life Loss"
@@ -3846,9 +3833,8 @@ msgid "Joysticks"
 msgstr "Joysticks"
 
 #: source/sdl/dialogs/controls.cpp:1186
-#, fuzzy
 msgid "Joysticks indexes"
-msgstr "Joysticks"
+msgstr "Índices dos joysticks"
 
 #: source/sdl/dialogs/video_options.cpp:111
 #: source/sdl/dialogs/video_options.cpp:176
@@ -3930,15 +3916,15 @@ msgstr "Camadas"
 
 #: source/sdl/dialogs/gui_options.cpp:164
 msgid "Leds..."
-msgstr ""
+msgstr "Leds..."
 
 #: source/sdl/dialogs/controls.cpp:122
 msgid "Left shoulder"
-msgstr ""
+msgstr "Ombro esquerdo"
 
 #: source/sdl/dialogs/controls.cpp:120
 msgid "Left stick"
-msgstr ""
+msgstr "Analógico esquerdo"
 
 #: source/games/hyperpcb.c:264 source/games/hyperpcb.c:604
 msgid "Level 1"
@@ -4037,7 +4023,7 @@ msgstr "Vidas (Andarilhos da Meia Noite)"
 
 #: source/sdl/gui.cpp:504 source/sdl/gui.cpp:522
 msgid "Load Neo-Geo CD game"
-msgstr "Carregar jogo do NeoCD"
+msgstr "Carregar o jogo do Neo-Geo CD"
 
 #: source/sdl/control.c:697
 msgid "Load demo"
@@ -4054,16 +4040,15 @@ msgstr "Carregar entradas de..."
 #: source/sdl/dialogs/game_options.cpp:183
 #: source/sdl/dialogs/game_options.cpp:234 source/sdl/control.c:683
 msgid "Load state"
-msgstr "Carregar jogo"
+msgstr "Carregar state"
 
 #: source/sdl/control.c:695
 msgid "Load state with name"
-msgstr "Carregar jogo com nome"
+msgstr "Carregar o state com o nome"
 
 #: source/loadroms.c:950
-#, fuzzy
 msgid "Loading CPU code"
-msgstr "Carregando o problema"
+msgstr "Carregando o código da CPU"
 
 #: source/sdl/gui.cpp:319 source/sdl/gui.cpp:382
 msgid "Loading Game"
@@ -4071,12 +4056,11 @@ msgstr "Carregando Jogo"
 
 #: source/sdl/dialogs/neocd_options.cpp:187
 msgid "Loading animations speed"
-msgstr "Carregando a velocidade das animações"
+msgstr "Carregar a velocidade das animações"
 
 #: source/loadroms.c:955
-#, fuzzy
 msgid "Loading audio regions"
-msgstr "Carregando a velocidade das animações"
+msgstr "Carregando as regiões do áudio"
 
 #: source/sdl/gui.cpp:467
 msgid "Loading error"
@@ -4087,9 +4071,8 @@ msgid "Loading problem"
 msgstr "Carregando o problema"
 
 #: source/loadroms.c:953
-#, fuzzy
 msgid "Loading video regions"
-msgstr "Erro ao carregar"
+msgstr "Carregando as regiões de vídeo"
 
 #: source/games/contcirc.c:90
 msgid "Locked"
@@ -4119,7 +4102,7 @@ msgstr "Baixo enquanto pressionado"
 
 #: source/sdl/dialogs/about.cpp:715
 msgid "M6502 1.6raine2 by Neill Bradley"
-msgstr "M6502 1.6raine2 por Neill Bradley"
+msgstr "M6502 1.6raine2 do Neill Bradley"
 
 #: source/games/bubl_mcu.c:1613 source/games/bubl_mcu.c:1621
 #: source/games/kick_mcu.c:1198 source/games/kick_mcu.c:1206
@@ -4134,7 +4117,7 @@ msgstr "MCU 68705: código recompilado estaticamente por Richard Mitton"
 
 #: source/sdl/dialogs/about.cpp:710
 msgid "MZ80 3.4raine3 by Neill Bradley"
-msgstr "MZ80 3.4raine3 por Neill Bradley"
+msgstr "MZ80 3.4raine3 do Neill Bradley"
 
 #: source/games/taito_f2.c:2347
 msgid "Magic"
@@ -4162,7 +4145,7 @@ msgstr "Tipo de Partida"
 
 #: source/sdl/dialogs/video_options.cpp:290
 msgid "Max FPS for drivers"
-msgstr ""
+msgstr "Máximo de FPS pros drivers"
 
 #: source/games/hitice.c:75 source/games/cps1drv.c:3560
 #: source/games/cps1drv.c:3921 source/games/cps1drv.c:4005
@@ -4255,7 +4238,7 @@ msgstr "Mais Lentamente"
 
 #: source/sdl/dialogs/game_selection.cpp:198
 msgid "Most played games..."
-msgstr ""
+msgstr "Jogos mais jogados..."
 
 #: source/games/wgp.c:73
 msgid "Motor"
@@ -4267,12 +4250,12 @@ msgstr "Mouse"
 
 #: source/sdl/dialogs/controls.cpp:1185
 msgid "Mouse Sensitivity"
-msgstr ""
+msgstr "Sensibilidade do Mouse"
 
 #: source/sdl/dialogs/controls.cpp:1051 source/sdl/dialogs/controls.cpp:1228
 #, c-format
 msgid "Mouse Sensitivity: %d%%"
-msgstr ""
+msgstr "Sensibilidade do mouse: %d%%"
 
 #: source/games/spacegun.c:92
 msgid "Mouse Speed"
@@ -4297,11 +4280,11 @@ msgstr "Volume da música"
 
 #: source/sdl/dialogs/sound_options.cpp:80
 msgid "Mute music"
-msgstr "CD Mudo"
+msgstr "Silenciar música"
 
 #: source/sdl/dialogs/sound_options.cpp:79
 msgid "Mute sound effects"
-msgstr "SFX Mudo"
+msgstr "Silenciar efeitos sonoros"
 
 #: source/games/cps1drv.c:4134
 msgid "N"
@@ -4326,21 +4309,21 @@ msgstr "Neo-Geo"
 #: source/sdl/dialogs/neocd_options.cpp:67
 #: source/sdl/dialogs/neocd_options.cpp:180
 msgid "Neo-Geo BIOS"
-msgstr "Bios do Neo-Geo"
+msgstr "BIOS do Neo-Geo"
 
 #: source/sdl/dialogs/neocd_options.cpp:198
-#, fuzzy, c-format
+#, c-format
 msgid "Neo-Geo BIOS: %s"
-msgstr "Bios do Neo-Geo : %s"
+msgstr "Bios do Neo-Geo: %s"
 
 #: source/sdl/dialogs/neocd_options.cpp:181
 msgid "Neo-Geo CD BIOS"
-msgstr "Bios do NeoCD"
+msgstr "BIOS do Neo-Geo CD"
 
 #: source/sdl/dialogs/neocd_options.cpp:212
-#, fuzzy, c-format
+#, c-format
 msgid "Neo-Geo CD BIOS: %s"
-msgstr "Bios do NeoCD : %s"
+msgstr "Bios do Neo-Geo CD: %s"
 
 #: source/sdl/dialogs/neocd_options.cpp:186
 msgid "Neo-Geo Logo"
@@ -4348,7 +4331,7 @@ msgstr "Logo do NeoGeo"
 
 #: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:523
 msgid "Neo-Geo/Neo-Geo CD options"
-msgstr "Opções do NeoCD/Neo-Geo"
+msgstr "Opções do Neo-Geo/Neo-Geo CD"
 
 #: source/games/nmk.c:378
 msgid "Nevada"
@@ -4418,12 +4401,12 @@ msgstr "Sem Vidas Bônus"
 
 #: source/sdl/dialogs/gui_options.cpp:47
 msgid "No HUD messages"
-msgstr ""
+msgstr "Sem mensagens no HUD"
 
 #: source/sdl/dialogs/neocd_options.cpp:201
 #, c-format
 msgid "No Neo-Geo CD BIOS"
-msgstr "Nenhuma bios do NeoCD"
+msgstr "Não há BIOS de Neo-Geo CD"
 
 #: source/games/toaplan2.c:5477
 msgid "No Save"
@@ -4439,7 +4422,7 @@ msgstr "Ainda não há associações"
 
 #: source/sdl/dialogs/controls.cpp:734
 msgid "No buttons mapped by this game for autofire, sorry !"
-msgstr "Não há botões mapeados por este jogo pra auto-disparar, lamento !"
+msgstr "Não há botões mapeados por este jogo pra auto-disparar, lamento!"
 
 #: source/games/cps1drv.c:3043
 msgid "No change"
@@ -4456,7 +4439,7 @@ msgstr "Ainda nenhum jogo carregado"
 #: source/sdl/dialogs/controls.cpp:1019
 msgid "No game uses custom inputs in your config file yet"
 msgstr ""
-"Nenhum jogo usa entradas personalizadas não arquivo de configuração ainda"
+"Nenhum jogo usa entradas personalizadas no seu arquivo de configuração ainda"
 
 #: source/sdl/compat.c:300
 msgid "No hardware support for overlays"
@@ -4472,11 +4455,11 @@ msgstr "Não há opções pra este renderizador? Extranho!"
 
 #: source/sdl/dialogs/about.cpp:555
 msgid "No raine logo"
-msgstr ""
+msgstr "Não há logo do raine"
 
 #: source/sdl/dialogs/game_options.cpp:180
 msgid "No save states loadable for this game"
-msgstr "Não há jogos salvos carregáveis pra este jogo"
+msgstr "Não há save states carregáveis pra este jogo"
 
 #: source/sdl/glsl.c:385
 msgid "No shader support on your hardware"
@@ -4657,13 +4640,12 @@ msgid "OpenGL vendor"
 msgstr "Vendedor do OpenGL"
 
 #: source/sdl/dialogs/video_info.cpp:73
-#, fuzzy
 msgid "OpenGL vsync"
-msgstr "Vendedor do OpenGL"
+msgstr "VSync do OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:170
 msgid "Opengl Blits"
-msgstr ""
+msgstr "Blits do OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:196
 msgid "Overlays Options"
@@ -4779,7 +4761,7 @@ msgstr "Paddles"
 
 #: source/sdl/control.c:690
 msgid "Pause game"
-msgstr "Pausar jogo"
+msgstr "Pausar o jogo"
 
 #: source/sdl/dialogs/gui_options.cpp:49
 msgid "Pause when focus lost"
@@ -4825,9 +4807,9 @@ msgid "Playback"
 msgstr "Playback"
 
 #: source/sdl/dialogs/controls.cpp:561
-#, fuzzy, c-format
+#, c-format
 msgid "Player"
-msgstr "camada"
+msgstr "Jogador"
 
 #: source/games/spacegun.c:105
 msgid "Player 1 Only"
@@ -4850,24 +4832,20 @@ msgid "Player's vitality consumption"
 msgstr "Consumo da vitalidade do jogador"
 
 #: source/sdl/control.c:2022
-#, fuzzy
 msgid "Player1 A+B"
-msgstr "Jogador1 Pra Cima"
+msgstr "Jogador1 A+B"
 
 #: source/sdl/control.c:2023
-#, fuzzy
 msgid "Player1 B1+B2"
-msgstr "Jogador1 Botão1"
+msgstr "Jogador1 B1+B2"
 
 #: source/sdl/control.c:2024
-#, fuzzy
 msgid "Player1 B1+B2+B3"
-msgstr "Jogador1 Botão1"
+msgstr "Jogador1 B1+B2+B3"
 
 #: source/sdl/control.c:2025
-#, fuzzy
 msgid "Player1 B4+B5+B6"
-msgstr "Jogador1 Botão4"
+msgstr "Jogador1 B4+B5+B6"
 
 #: source/sdl/control.c:2014
 msgid "Player1 Button1"
@@ -4922,19 +4900,16 @@ msgid "Player1 Up"
 msgstr "Jogador1 Pra Cima"
 
 #: source/sdl/control.c:2047
-#, fuzzy
 msgid "Player2 A+B"
-msgstr "Jogador2 Pra Cima"
+msgstr "Jogador2 A+B"
 
 #: source/sdl/control.c:2045
-#, fuzzy
 msgid "Player2 B1+B2"
-msgstr "Jogador2 Botão1"
+msgstr "Jogador2 B1+B2"
 
 #: source/sdl/control.c:2046
-#, fuzzy
 msgid "Player2 B1+B2+B3"
-msgstr "Jogador2 Botão1"
+msgstr "Jogador2 B1+B2+B3"
 
 #: source/sdl/control.c:2036
 msgid "Player2 Button1"
@@ -4989,9 +4964,8 @@ msgid "Player2 Up"
 msgstr "Jogador2 Pra Cima"
 
 #: source/sdl/control.c:2026
-#, fuzzy
 msgid "Player3 B1+B2"
-msgstr "Jogador3 Botão1"
+msgstr "Jogador3 B1+B2"
 
 #: source/sdl/control.c:2056
 msgid "Player3 Button1"
@@ -5046,9 +5020,8 @@ msgid "Player3 Up"
 msgstr "Jogador3 Pra Cima"
 
 #: source/sdl/control.c:2027
-#, fuzzy
 msgid "Player4 B1+B2"
-msgstr "Jogador4 Botão1"
+msgstr "Jogador4 B1+B2"
 
 #: source/sdl/control.c:2072
 msgid "Player4 Button1"
@@ -5117,7 +5090,7 @@ msgstr "Formato YUV preferido"
 
 #: source/games/cave.c:1634
 msgid "Preparing ROMS (patches...)"
-msgstr ""
+msgstr "Preparando ROMS (patches...)"
 
 #: source/sdl/dialogs/controls.cpp:328
 msgid "Press a key, a button, or move a joystick..."
@@ -5174,11 +5147,11 @@ msgstr "DIREITA"
 
 #: source/sdl/dialogs/romdirs.cpp:53
 msgid "ROM directories"
-msgstr "diretórios das roms"
+msgstr "Diretórios das ROMs"
 
 #: source/sdl/dialogs/game_selection.cpp:49
 msgid "ROM directories..."
-msgstr "Diretórios das roms..."
+msgstr "Diretórios das ROMs..."
 
 #: source/games/bublbobl.c:267
 msgid "ROM type"
@@ -5201,9 +5174,8 @@ msgid "Raster effects"
 msgstr "Efeitos Raster"
 
 #: source/sdl/dialogs/sound_options.cpp:78
-#, fuzzy
 msgid "Raw audio tracks format"
-msgstr "Formato das faixas do áudio"
+msgstr "Formato das faixas de áudio originais"
 
 #: source/sdl/dialogs/game_options.cpp:248
 msgid "Rdtsc Cycles"
@@ -5211,20 +5183,19 @@ msgstr "Ciclos do Rdtsc"
 
 #: source/games/cps1.c:2035
 msgid "Rebuilding 16x16 layer"
-msgstr ""
+msgstr "Reconstruindo a camada de 16x16"
 
 #: source/games/cps1.c:2059
 msgid "Rebuilding 8x8 layer"
-msgstr ""
+msgstr "Reconstruindo a camada de 8x8"
 
 #: source/sdl/dialogs/game_selection.cpp:197
-#, fuzzy
 msgid "Recent games..."
-msgstr "Resetar jogo"
+msgstr "Jogos recentes..."
 
 #: source/sdl/dialogs/sound_options.cpp:83
 msgid "Record to raine_sound.wav"
-msgstr "Gravar não raine_sound.wav"
+msgstr "Gravar como raine_sound.wav"
 
 #: source/demos.c:62
 #, c-format
@@ -5246,7 +5217,7 @@ msgstr "Região"
 #: source/loadroms.c:1099
 #, c-format
 msgid "Remaining size not enough for continue %s\n"
-msgstr ""
+msgstr "O tamanho restante não é o bastante pra continuar %s\n"
 
 #: source/sdl/dialogs/video_info.cpp:68
 msgid "Renderer"
@@ -5262,7 +5233,7 @@ msgstr "Renderização"
 
 #: source/sdl/dialogs/game_options.cpp:246
 msgid "Reset FPS to driver's default value"
-msgstr "Resetar FPS não valor padrão do driver"
+msgstr "Resetar FPS pro valor padrão do driver"
 
 #: source/sdl/control.c:689
 msgid "Reset game"
@@ -5295,7 +5266,7 @@ msgstr "Retornar pra GUI"
 #: source/sdl/dialogs/controls.cpp:1181 source/sdl/dialogs/controls.cpp:1212
 #: source/sdl/dialogs/controls.cpp:1216
 msgid "Revert to default game controls"
-msgstr "Reverter aos controles padrão do jogo"
+msgstr "Reverter pros controles padrão do jogo"
 
 #: source/sdl/dialogs/colors.cpp:113
 msgid "Revert to..."
@@ -5303,11 +5274,11 @@ msgstr "Reverter pra..."
 
 #: source/sdl/dialogs/controls.cpp:121
 msgid "Right Stick"
-msgstr ""
+msgstr "Analógico Direito"
 
 #: source/sdl/dialogs/controls.cpp:123
 msgid "Right shoulder"
-msgstr ""
+msgstr "Ombro direito"
 
 #: source/games/wgp.c:452 source/games/chasehq.c:816
 #: source/games/chasehq.c:1334
@@ -5421,18 +5392,18 @@ msgid "Save opengl screenshots"
 msgstr "Salvar as screenshots do opengl"
 
 #: source/sdl/dialogs/video_options.cpp:289
-#, fuzzy
 msgid "Save per game screen settings"
-msgstr "Salvar as screenshots do opengl"
+msgstr "Salvar as configurações da tela por jogo"
 
 #: source/sdl/dialogs/game_options.cpp:193
 #: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:681
+#| msgid "Save game"
 msgid "Save state"
-msgstr "Salvar o jogo"
+msgstr "Save state"
 
 #: source/sdl/control.c:694
 msgid "Save state with name"
-msgstr "Salvar o jogo com nome"
+msgstr "Save state com o nome"
 
 #: source/sdl/dialogs/video_options.cpp:120
 msgid "Scale2x/3x"
@@ -5474,16 +5445,15 @@ msgstr "Rabisco"
 #: source/loadroms.c:1241
 #, c-format
 msgid "Search path:\n"
-msgstr ""
+msgstr "Caminho da busca:\n"
 
 #: source/games/terrac.c:74
 msgid "Second Life at"
 msgstr "Segunda Vida em"
 
 #: source/sdl/dialogs/controls.cpp:1116
-#, fuzzy
 msgid "Select joystick"
-msgstr "Joystick"
+msgstr "Selecionar joystick"
 
 #: source/games/esd16.c:107
 msgid "Selectable Games"
@@ -5519,9 +5489,8 @@ msgid "Service C"
 msgstr "Serviço C"
 
 #: source/sdl/console/scripts.cpp:392
-#, fuzzy
 msgid "Set"
-msgstr "Seta"
+msgstr "Definir"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Seta"
@@ -5637,18 +5606,16 @@ msgid "Sound commands..."
 msgstr "Comandos de som..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
-#, fuzzy
 msgid "Sound device"
-msgstr "Nenhum dispositivo analógico"
+msgstr "Dispositivo de som"
 
 #: source/sdl/dialogs/sound_options.cpp:67
-#, fuzzy
 msgid "Sound driver"
-msgstr "Driver de vídeo do SDL"
+msgstr "Driver de som"
 
 #: source/sdl/dialogs/sound_options.cpp:76
 msgid "Sound effects volume"
-msgstr "Volume do Sfx"
+msgstr "Volume dos efeitos sonoros"
 
 #: source/sdl/gui.cpp:526
 msgid "Sound options"
@@ -5697,9 +5664,8 @@ msgid "Sprite viewer"
 msgstr "Visualizador de imagens móveis"
 
 #: source/neocd/neocd.c:4799
-#, fuzzy
 msgid "Sprites conversion..."
-msgstr "Visualizador das imagens móveis"
+msgstr "Conversão das imagens móveis..."
 
 #: source/neocd/neocd.c:4589
 msgid "Sprites layer"
@@ -5741,7 +5707,7 @@ msgstr "Contagem do Start/Cronômetro do Estágio"
 
 #: source/sdl/dialogs/about.cpp:705
 msgid "Starscream 0.26r4 by Neill Corlett"
-msgstr "Starscream 0.26r4 por Neill Corlett"
+msgstr "Starscream 0.26r4 do Neill Corlett"
 
 #: source/games/opwolf.c:84
 msgid "Start Ammo"
@@ -5807,7 +5773,7 @@ msgstr "Super Técnicas"
 
 #: source/sdl/control.c:685 source/sdl/control.c:687
 msgid "Switch FPS display"
-msgstr "Trocar a exibição do fps"
+msgstr "Trocar a exibição dos FPS"
 
 #: source/sdl/control.c:682
 msgid "Switch save slot"
@@ -5980,7 +5946,7 @@ msgstr "O arquivo '%s' não pode ser carregado"
 #: source/loadroms.c:988
 #, c-format
 msgid "The game didn't initialise any CPU, this game can't work !\n"
-msgstr ""
+msgstr "O jogo não inicializou nenhuma CPU, este jogo não pode funcionar!\n"
 
 #: source/sdl/dialogs/neocd_options.cpp:96
 msgid "This picture isn't 8bpp"
@@ -6094,18 +6060,18 @@ msgid "Translator"
 msgstr "Tradutor"
 
 #: source/sdl/dialogs/video_options.cpp:228
-#, fuzzy, c-format
+#, c-format
 msgid "Transparency for 1 (25% default)"
 msgstr "Transparência pra 1 (25% padrão)"
 
 #: source/sdl/dialogs/video_options.cpp:230
-#, fuzzy, c-format
+#, c-format
 msgid "Transparency for 2 (50% default)"
 msgstr "Transparência pra 2 (50% padrão)"
 
 #: source/games/cps1.c:2075
 msgid "Transparent masks / rotation"
-msgstr ""
+msgstr "Máscaras transparentes / rotação"
 
 #: source/games/cps1drv.c:3293
 msgid "Turbo Mode"
@@ -6171,9 +6137,8 @@ msgid "USA (Taito)"
 msgstr "EUA (Taito)"
 
 #: source/games/toaplan1.c:747
-#, fuzzy
 msgid "USA Romstar License"
-msgstr "Licença da Romstar"
+msgstr "Licença da Romstar EUA"
 
 #: source/games/toaplan2.c:532
 msgid "USA, Europe (Atari)"
@@ -6207,7 +6172,7 @@ msgstr "Incapaz de carregar: %s"
 #: source/loadroms.c:1239
 #, c-format
 msgid "Unable to open '%s' crc32:%x\n"
-msgstr ""
+msgstr "Incapaz de abrir o '%s' crc32:%x\n"
 
 #: source/demos.c:55
 #, c-format
@@ -6327,7 +6292,7 @@ msgstr "Até o Nível 3"
 
 #: source/sdl/dialogs/neocd_options.cpp:189
 msgid "Update Neo-Geo CD sprite block"
-msgstr "Atualizar o bloqueio das imagens móveis do neocd"
+msgstr "Atualizar o bloqueio das imagens móveis do Neo-Geo CD"
 
 #: source/games/chasehq2.c:69 source/games/volfied.c:62
 #: source/games/taito_f2.c:559 source/games/taito_f2.c:958
@@ -6338,7 +6303,7 @@ msgstr "Vertical"
 
 #: source/games/contcirc.c:62
 msgid "Upright (keyboard)"
-msgstr ""
+msgstr "Vertical (teclado)"
 
 #: source/games/seta.c:2909
 msgid "Upright 1 Controller"
@@ -6518,11 +6483,11 @@ msgstr "Sem"
 
 #: source/games/dkong.c:828
 msgid "Without dkongm.dx2 you will have no sound"
-msgstr ""
+msgstr "Sem o dkongm.dx2 você não terá som"
 
 #: source/games/frogger.c:1448
 msgid "Without froggerm.dx2 you will have no sound"
-msgstr ""
+msgstr "Sem o froggerm.dx2 você não terá som"
 
 #: source/sdl/dialogs/sound_options.cpp:83
 msgid "Without monitoring"
@@ -6568,16 +6533,16 @@ msgstr "YV12 (mpeg)"
 #: source/sdl/dialogs/game_selection.cpp:471
 #, c-format
 msgid "Year: %d"
-msgstr "Ano : %d"
+msgstr "Ano: %d"
 
 #: source/sdl/dialogs/game_selection.cpp:480
 #, c-format
 msgid "Year: -"
-msgstr "Ano : -"
+msgstr "Ano: -"
 
 #: source/sdl/dialogs/game_selection.cpp:456
 msgid "Year: 2006"
-msgstr "Ano : 2006"
+msgstr "Ano: 2006"
 
 #: source/sdl/dialogs/video_info.cpp:27
 #: source/sdl/dialogs/sound_commands.cpp:273
@@ -6611,15 +6576,15 @@ msgstr "Sim"
 
 #: source/sdl/dialogs/video_options.cpp:168
 msgid "Yes (adaptive)"
-msgstr ""
+msgstr "Sim (adaptativo)"
 
 #: source/sdl/dialogs/video_options.cpp:270
 msgid "Yes (desktop)"
-msgstr ""
+msgstr "Sim (área de trabalho)"
 
 #: source/sdl/dialogs/video_options.cpp:270
 msgid "Yes (real)"
-msgstr ""
+msgstr "Sim (verdadeiro)"
 
 #: source/games/dkong.c:835 source/games/frogger.c:1267
 #: source/games/frogger.c:1455 source/games/frogger.c:1470
@@ -6641,7 +6606,7 @@ msgstr "Z80: aplicado o hack de velocidade HALT"
 
 #: source/sdl/dialogs/about.cpp:708
 msgid "Z80: old mame 'portable' z80"
-msgstr ""
+msgstr "Z80: velho mame 'portátil' z80"
 
 #: source/games/cps1.c:2776
 msgid "Z80: speed hack applied"
@@ -6650,7 +6615,7 @@ msgstr "Z80: aplicado o hack de velocidade"
 #: source/files.c:459 source/files.c:521
 #, c-format
 msgid "ZIP file damaged for ROM %s\n"
-msgstr ""
+msgstr "Arquivo ZIP danificado pra ROM %s\n"
 
 #: source/games/wgp.c:451 source/games/chasehq.c:815
 #: source/games/chasehq.c:1333
@@ -6663,11 +6628,11 @@ msgstr "preenchimentos acelerados das cores"
 
 #: source/sdl/dialogs/video_info.cpp:86
 msgid "accelerated hardware->hardware alpha blits"
-msgstr "hardware acelerado->blits alpha por hardware"
+msgstr "hardware acelerado->blits alpha do hardware"
 
 #: source/sdl/dialogs/video_info.cpp:84
 msgid "accelerated hardware->hardware blits"
-msgstr "hardware acelerado->blits por hardware"
+msgstr "hardware acelerado->blits do hardware"
 
 #: source/sdl/dialogs/video_info.cpp:85
 msgid "accelerated hardware->hardware colorkey blits"
@@ -6675,15 +6640,15 @@ msgstr "hardware acelerado->blits das teclas das cores por hardware"
 
 #: source/sdl/dialogs/video_info.cpp:89
 msgid "accelerated software->hardware alpha blits"
-msgstr "hardware acelerado->blits alpha por hardware"
+msgstr "software acelerado->blits alpha do hardware"
 
 #: source/sdl/dialogs/video_info.cpp:87
 msgid "accelerated software->hardware blits"
-msgstr "hardware acelerado->blits por hardware"
+msgstr "software acelerado->blits do hardware"
 
 #: source/sdl/dialogs/video_info.cpp:88
 msgid "accelerated software->hardware colorkey blits"
-msgstr "hardware acelerado->teclas das cores por hardware"
+msgstr "software acelerado->blits das teclas das cores por hardware"
 
 #: source/neocd/cdrom.c:327
 msgid "alloc error"
@@ -6694,9 +6659,8 @@ msgid "alpha"
 msgstr "alpha"
 
 #: source/sdl/sasound.c:535
-#, fuzzy
 msgid "audio format not supported"
-msgstr "u8 não suportado"
+msgstr "formato de áudio não suportado"
 
 #: source/sdl/opengl.c:223
 #, c-format
@@ -6755,19 +6719,19 @@ msgstr "error do formato cue na linha : %s"
 
 #: source/sdl/dialogs/controls.cpp:1187
 msgid "d-pad + main stick"
-msgstr ""
+msgstr "d-pad + analógico principal"
 
 #: source/sdl/dialogs/dirs.cpp:58
 msgid "d6502 (console)"
-msgstr ""
+msgstr "d6502 (console)"
 
 #: source/neocd/neocd.c:3702
 msgid "decrypting sprites (kof99 type)"
-msgstr ""
+msgstr "descriptografando imagen móveis (tipo kof99)"
 
 #: source/sdl/dialogs/video_options.cpp:257
 msgid "directx (good for hw overlays/blits)"
-msgstr "directx (bom pra sobreposições/blits por hardware)"
+msgstr "directx (bom pra sobreposições/blits do hardware)"
 
 #: source/games/cave.c:2742
 msgid "disabling row select (agallet)"
@@ -6775,20 +6739,19 @@ msgstr "desativar a seleção por fila (agallet)"
 
 #: source/sdl/dialogs/controls.cpp:125
 msgid "dpad down"
-msgstr ""
+msgstr "dpad pra baixo"
 
 #: source/sdl/dialogs/controls.cpp:126
 msgid "dpad left"
-msgstr ""
+msgstr "dpad esquerdo"
 
 #: source/sdl/dialogs/controls.cpp:127
-#, fuzzy
 msgid "dpad right"
-msgstr "Vertical"
+msgstr "dpad direito"
 
 #: source/sdl/dialogs/controls.cpp:124
 msgid "dpad up"
-msgstr ""
+msgstr "dpad pra cima"
 
 #: source/sdl/dsw.c:146
 msgid "dsw"
@@ -6796,7 +6759,7 @@ msgstr "dsw"
 
 #: source/sdl/dialogs/dirs.cpp:55
 msgid "dz80 (console)"
-msgstr ""
+msgstr "dz80 (console)"
 
 #: source/sdl/glsl.c:202
 msgid "error while attaching fragment shader"
@@ -6840,7 +6803,7 @@ msgstr "cor do frame do 1º plano"
 
 #: source/sdl/gui.cpp:292
 msgid "from internet archive"
-msgstr ""
+msgstr "do arquivo compactado da nternet"
 
 #: source/sdl/dialogs/colors.cpp:43
 msgid "green"
@@ -6872,15 +6835,15 @@ msgstr "erro da alocação dos índices"
 
 #: source/neocd/neocd.c:4692
 msgid "kof97oro decrypt fix..."
-msgstr ""
+msgstr "conserto da descriptografia do kof97..."
 
 #: source/neocd/neocd.c:4685
 msgid "kof97oro decrypt rom..."
-msgstr ""
+msgstr "rom da descriptografia do kof97..."
 
 #: source/neocd/neocd.c:4694
 msgid "kof97oro decrypt sprites..."
-msgstr ""
+msgstr "imagens móveis da descriptografia do kof97..."
 
 #: source/sdl/gui/tedit.cpp:304 source/sdl2/gui/tedit.cpp:301
 msgid "label"
@@ -6891,9 +6854,9 @@ msgid "layer"
 msgstr "camada"
 
 #: source/games/cave.c:2634
-#, fuzzy, c-format
+#, c-format
 msgid "layer %d disabled"
-msgstr "camada %d desativada\n"
+msgstr "camada %d desativada"
 
 #: source/games/gunbird.c:1783
 msgid "layer 1 disabled"
@@ -6916,15 +6879,15 @@ msgstr "rolagem da linha fondo1 %d %d tamanho %d"
 
 #: source/emudx.c:275
 msgid "loading EmuDX big sprites"
-msgstr ""
+msgstr "carregando grandes imagens móveis do EmuDX"
 
 #: source/emudx.c:222
 msgid "loading EmuDX sprites"
-msgstr ""
+msgstr "carregando imagens móveis do EmuDX"
 
 #: source/emudx.c:160
 msgid "loading EmuDX tiles"
-msgstr ""
+msgstr "carregando ladrilhos do EmuDX"
 
 #: source/sdl/dialogs/sound_options.cpp:78
 msgid "lsb"
@@ -6932,7 +6895,7 @@ msgstr "lsb"
 
 #: source/sdl/dialogs/dirs.cpp:52
 msgid "m68kdis (console)"
-msgstr ""
+msgstr "m68kdis (console)"
 
 #: source/sdl/dialogs/sound_options.cpp:78
 msgid "msb"
@@ -6974,9 +6937,8 @@ msgstr ""
 "(cor 0) como transparente"
 
 #: source/neocd/neocd.c:3766
-#, fuzzy
 msgid "recreating fixed layer"
-msgstr "Camada fixa"
+msgstr "recriando camada fixa"
 
 #: source/sdl/dialogs/colors.cpp:42
 msgid "red"
@@ -7002,7 +6964,7 @@ msgstr "s8 não suportado"
 
 #: source/sdl/dialogs/video_options.cpp:261
 msgid "sdl2 native"
-msgstr ""
+msgstr "sdl2 nativo"
 
 #: source/games/esd16.c:509 source/games/pirates.c:380
 #: source/games/galaga.c:1071
@@ -7087,11 +7049,21 @@ msgstr "gerenciador de janelas disponível"
 #~ msgid "About this game"
 #~ msgstr "Sobre este jogo"
 
+#~ msgid "Add rom dir..."
+#~ msgstr "Adicionar diretório das roms..."
+
 #~ msgid "Auto Turbo Fire"
 #~ msgstr "Auto Disparo Turbo"
 
+#~ msgid "Avail"
+#~ msgstr "Disponível"
+
 #~ msgid "Calibration"
 #~ msgstr "Calibração"
+
+#, c-format
+#~ msgid "Category : %s"
+#~ msgstr "Categoria : %s"
 
 #~ msgid "Colors"
 #~ msgstr "Cores"
@@ -7117,11 +7089,34 @@ msgstr "gerenciador de janelas disponível"
 #~ msgid "Move the stick to all the extreme positions"
 #~ msgstr "Move o controle pra todas as posições extremas"
 
+#~ msgid "Mute CD"
+#~ msgstr "CD Mudo"
+
+#~ msgid "Mute SFX"
+#~ msgstr "SFX Mudo"
+
+#~ msgid "Neo-Geo bios"
+#~ msgstr "Bios do Neo-Geo"
+
+#~ msgid "NeoCD bios"
+#~ msgstr "Bios do NeoCD"
+
+#, c-format
+#~ msgid "NeoCD bios : %s"
+#~ msgstr "Bios do NeoCD : %s"
+
+#, c-format
+#~ msgid "No NeoCD bios"
+#~ msgstr "Nenhuma bios do NeoCD"
+
 #~ msgid "No raine logo, or it's a true color bitmap"
 #~ msgstr "Sem logo do Raine ou é um bitmap de cor verdadeira"
 
 #~ msgid "OpenGL VBL (force sync)"
 #~ msgstr "VBL do OpenGL (forçar sincronia)"
+
+#~ msgid "Options"
+#~ msgstr "Opções"
 
 #~ msgid "PC Pedal (analog)"
 #~ msgstr "Pedal do PC (analógico)"
@@ -7143,6 +7138,9 @@ msgstr "gerenciador de janelas disponível"
 
 #~ msgid "Ships"
 #~ msgstr "Naves"
+
+#~ msgid "Show command.dat info"
+#~ msgstr "Mostrar informação do command.dat"
 
 #~ msgid "Special moves..."
 #~ msgstr "Movimentos especiais..."
@@ -7176,3 +7174,6 @@ msgstr "gerenciador de janelas disponível"
 
 #~ msgid "png"
 #~ msgstr "png"
+
+#~ msgid "rom dirs"
+#~ msgstr "diretórios das roms"
