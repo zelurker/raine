@@ -6060,12 +6060,12 @@ msgid "Translator"
 msgstr "Tradutor"
 
 #: source/sdl/dialogs/video_options.cpp:228
-#, c-format
+#
 msgid "Transparency for 1 (25% default)"
 msgstr "Transparência pra 1 (25% padrão)"
 
 #: source/sdl/dialogs/video_options.cpp:230
-#, c-format
+#
 msgid "Transparency for 2 (50% default)"
 msgstr "Transparência pra 2 (50% padrão)"
 

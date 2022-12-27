@@ -576,7 +576,7 @@ OBJDIRS=$(OBJDIR)                \
 	$(OBJDIR)/neocd				 \
 	locale/fr/LC_MESSAGES \
 	locale/es/LC_MESSAGES \
-	locale/pt/LC_MESSAGES \
+	locale/pt_BR/LC_MESSAGES \
 	locale/it/LC_MESSAGES
 
 OBJDIRS += $(OBJDIR)/z80
@@ -1313,7 +1313,7 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/raine.pot \
 	locale/fr/LC_MESSAGES/raine.mo \
 	locale/es/LC_MESSAGES/raine.mo \
-	locale/pt/LC_MESSAGES/raine.mo \
+	locale/pt_BR/LC_MESSAGES/raine.mo \
 	locale/it/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
@@ -1324,7 +1324,7 @@ locale/raine.pot:
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
 	msgfmt -c -v -o $@ $<
 
-locale/pt/LC_MESSAGES/raine.mo: locale/pt_br.po
+locale/pt_BR/LC_MESSAGES/raine.mo: locale/pt_br.po
 	msgfmt -c -v -o $@ $<
 
 locale/it/LC_MESSAGES/raine.mo: locale/it.po
@@ -1701,7 +1701,7 @@ ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
-	@cp -rfv locale/pt locale/fr locale/es locale/it $(langdir)
+	@cp -rfv locale/pt_BR locale/fr locale/es locale/it $(langdir)
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
 	@cp Info.plist $(prefix)

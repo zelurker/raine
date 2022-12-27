@@ -148,7 +148,7 @@ int do_gui_options(int sel) {
       lang_int = 0;
       printf("unknown lang %s\n",language);
   }
-  char old_lang[3];
+  char old_lang[6];
   strcpy(old_lang,language);
 
   nb += add_fonts_gui_options(&gui_menu[nb]);

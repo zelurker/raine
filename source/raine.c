@@ -106,7 +106,7 @@ int x_display = 0;
 char raine_cpu_model[80]; // declared in gui/about.c, not available with sdl...
 #endif
 
-char language[3];
+char language[6];
 
 void init_lang() {
     if (!language[0]) {
@@ -124,6 +124,8 @@ void init_lang() {
 	if (!language[0])
 	    strcpy(language,"C");
     }
+    if (!strcmp(language,"pt"))
+	strcpy(language,"pt_BR");
 
 #ifndef RAINE_DOS
     static char buf[20];

@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-extern char language[3]; // raine.c
+extern char language[6]; // raine.c
 
 #ifdef RAINE_WIN32
 
