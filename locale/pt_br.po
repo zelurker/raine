@@ -4494,33 +4494,9 @@ msgstr "Sem suporte pra shaders não seu hardware"
 msgid "No speed limit!"
 msgstr "Sem limite de velocidade!"
 
-#: source/games/bloodbro.c:100 source/games/upl.c:283 source/games/cadash.c:109
-#: source/games/cps1drv.c:3454 source/games/cps1drv.c:3948
-#: source/games/cps1drv.c:3976 source/games/spacegun.c:107
-#: source/games/earthjkr.c:151 source/games/nmk.c:871 source/games/nmk.c:973
-#: source/games/seta.c:2476 source/games/seta.c:2780
-#: source/games/silkworm.c:115 source/games/silkworm.c:441
-#: source/games/taito_f2.c:799 source/games/toaplan1.c:171
-#: source/games/toaplan1.c:357 source/games/toaplan1.c:470
-#: source/games/toaplan1.c:540 source/games/toaplan1.c:648
-#: source/games/lsystem.c:1486 source/games/pengo.c:1344
-#: source/games/rainbow.c:96 source/games/rainbow.c:99
-#: source/games/rainbow.c:211 source/games/rainbow.c:214
-#: source/games/toaplan2.c:299 source/games/toaplan2.c:515
-#: source/games/toaplan2.c:657 source/games/toaplan2.c:867
-#: source/games/toaplan2.c:967 source/games/toaplan2.c:1200
-#: source/games/toaplan2.c:1282 source/games/toaplan2.c:1442
-#: source/games/toaplan2.c:1656 source/games/toaplan2.c:1884
-#: source/games/toaplan2.c:1981 source/games/toaplan2.c:5460
-#: source/games/xsystem1.c:308 source/games/megasys1.c:925
-#: source/sdl/dialogs/video_options.cpp:120
-#: source/sdl/dialogs/video_options.cpp:186
-#: source/sdl/dialogs/video_options.cpp:286
-#: source/sdl/dialogs/video_options.cpp:288
-#: source/sdl/dialogs/sound_options.cpp:111
-#, fuzzy
+# source/sdl/video_options.cpp:290
 msgid "Video information..."
-msgstr "Nenhum"
+msgstr "Informação do vídeo..."
 
 #: source/games/seta.c:2182 source/games/seta.c:3115
 msgid "None (Japan)"
@@ -6426,9 +6402,8 @@ msgid "Video driver name"
 msgstr "Nome do driver de vídeo"
 
 #: source/sdl/dialogs/video_options.cpp:279
-#, fuzzy
 msgid "Renderer options..."
-msgstr "Informação do vídeo..."
+msgstr "Opções do renderizador..."
 
 #: source/sdl/dialogs/controls.cpp:1182
 msgid "Video layers"
