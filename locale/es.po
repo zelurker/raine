@@ -897,8 +897,8 @@ msgid "30K 60K and every 70K"
 msgstr "30K 60K y cada 70K"
 
 #: source/games/toaplan1.c:537
-msgid "30Kevery 100K"
-msgstr "30Kcada 100K"
+msgid "30K every 100K"
+msgstr "30K cada 100K"
 
 #: source/games/upl.c:395 source/games/aquajack.c:95
 #: source/games/megasys1.c:1407
@@ -1166,8 +1166,8 @@ msgid "500K Only"
 msgstr "500K Solamente"
 
 #: source/games/toaplan1.c:468
-msgid "500Kevery 1M"
-msgstr "500Kcada 1M"
+msgid "500K every 1M"
+msgstr "500K cada 1M"
 
 #: source/games/mcatadv.c:242
 msgid "500k 1000k"

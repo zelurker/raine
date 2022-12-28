@@ -471,7 +471,7 @@ msgstr "2 pièces pour commencer, 1 pour continuer"
 
 #: source/games/gunbird.c:313 source/sdl/control.c:2160
 msgid "2 Coins/1 Credit"
-msgstr "2 pièces / 1 crédit"
+msgstr "2 pièces / 1 partie"
 
 #: source/games/gcpball.c:73 source/games/gcpball.c:82
 msgid "2 Coins/1 Credit 3/2 4/3 6/5"
@@ -487,15 +487,15 @@ msgstr ""
 
 #: source/sdl/control.c:2161
 msgid "2 Coins/2 Credits"
-msgstr "2 pièces / 2 crédits"
+msgstr "2 pièces / 2 parties"
 
 #: source/sdl/control.c:2162
 msgid "2 Coins/3 Credits"
-msgstr "2 pièces / 3 crédits"
+msgstr "2 pièces / 3 parties"
 
 #: source/sdl/control.c:2163
 msgid "2 Coins/4 Credits"
-msgstr "2 pièces / 4 crédits"
+msgstr "2 pièces / 4 parties"
 
 #: source/sdl/control.c:2164
 msgid "2 Coins/5 Credits"
@@ -690,16 +690,16 @@ msgstr ""
 
 #: source/games/upl.c:281 source/games/cabal.c:152
 msgid "20k and 50k"
-msgstr ""
+msgstr "20k et 50k"
 
 #: source/games/bublbobl.c:256 source/games/bublbobl.c:389
 #: source/games/bublbobl.c:435 source/games/bublbobl.c:510
 msgid "20k and 80k"
-msgstr ""
+msgstr "20k et 80k"
 
 #: source/games/earthjkr.c:148
 msgid "20k and every 50k"
-msgstr ""
+msgstr "20k et tous les 50k"
 
 #: source/games/taito_f2.c:745
 msgid "20k, 220K, 420K, 620K"
@@ -715,15 +715,15 @@ msgstr ""
 
 #: source/games/rastan2.c:65
 msgid "250k only"
-msgstr ""
+msgstr "250k seulement"
 
 #: source/games/frogger.c:107
 msgid "256 (Cheat)"
-msgstr ""
+msgstr "256 (triche)"
 
 #: source/games/silkworm.c:341
 msgid "2P Start Anytime"
-msgstr ""
+msgstr "Joueur 2 commence n'importe quand"
 
 #: source/sdl/dialogs/neocd_options.cpp:188
 msgid "2x"
@@ -731,59 +731,59 @@ msgstr ""
 
 #: source/games/pengo.c:1336
 msgid "2x Speed Cheat"
-msgstr ""
+msgstr "Triche vitesse x2"
 
 #: source/games/cps1drv.c:3655
 msgid "3 (2 when continue)"
-msgstr ""
+msgstr "3 (2 quand continue)"
 
 #: source/games/cps1drv.c:3505
 msgid "3 Bars"
-msgstr ""
+msgstr "3 barres"
 
 #: source/games/crospang.c:132
 msgid "3 Chain Reactions"
-msgstr ""
+msgstr "3 réactions en chaine"
 
 #: source/sdl/control.c:2169
 msgid "3 Coins/1 Credit"
-msgstr ""
+msgstr "3 pièces / partie"
 
 #: source/sdl/control.c:2170
 msgid "3 Coins/2 Credits"
-msgstr ""
+msgstr "3 pièces / 2 parties"
 
 #: source/sdl/control.c:2171
 msgid "3 Coins/3 Credits"
-msgstr ""
+msgstr "3 pièces / 3 parties"
 
 #: source/sdl/control.c:2172
 msgid "3 Coins/4 Credits"
-msgstr ""
+msgstr "3 pièces / 4 parties"
 
 #: source/sdl/control.c:2173
 msgid "3 Coins/5 Credits"
-msgstr ""
+msgstr "3 pièces / 5 parties"
 
 #: source/sdl/control.c:2174
 msgid "3 Coins/6 Credits"
-msgstr ""
+msgstr "3 pièces / 6 parties"
 
 #: source/games/seta.c:2639
 msgid "3 Coins/7 Credit"
-msgstr ""
+msgstr "3 pièces / 7 parties"
 
 #: source/sdl/control.c:2175
 msgid "3 Coins/7 Credits"
-msgstr ""
+msgstr "3 pièces / 7 parties"
 
 #: source/sdl/control.c:2176
 msgid "3 Coins/8 Credits"
-msgstr ""
+msgstr "3 pièces / 8 parties"
 
 #: source/games/cps1drv.c:4257
 msgid "3 Games Match"
-msgstr ""
+msgstr "Match en 3 jeux"
 
 #: source/games/lsystem.c:379
 msgid "3 Minutes"
@@ -792,29 +792,28 @@ msgstr ""
 #: source/games/ctribebl.c:109 source/games/doubled3.c:121
 #: source/games/silentd.c:135
 msgid "3 Players"
-msgstr ""
+msgstr "3 joueurs"
 
 #: source/games/armedf.c:206 source/games/armedf.c:246
 #: source/games/terraf.c:103
 msgid "3 Times"
-msgstr ""
+msgstr "3 fois"
 
 #: source/games/crimec.c:38 source/games/crimec.c:123 source/games/crimec.c:178
 msgid "3 characters"
-msgstr ""
+msgstr "3 caractères"
 
 #: source/games/crimec.c:136 source/games/ashura.c:126
 #: source/games/rastan2.c:177 source/games/lsystem.c:428
 #: source/games/lsystem.c:856
 msgid "3 extra coins"
-msgstr ""
+msgstr "3 pièces de +"
 
 #: source/games/lsystem.c:104
 msgid "3 per Credit"
-msgstr ""
+msgstr "3 par partie"
 
 #: source/sdl/dialogs/controls.cpp:725
-#, fuzzy
 msgid "30 FPS"
 msgstr ""
 
@@ -824,7 +823,7 @@ msgstr ""
 
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
 msgid "30 seconds"
-msgstr ""
+msgstr "30 secondes"
 
 #: source/games/pengo.c:1343
 msgid "30% (MMX)"
@@ -836,11 +835,11 @@ msgstr ""
 
 #: source/games/armedf.c:231
 msgid "30000 only"
-msgstr ""
+msgstr "30000 seulement"
 
 #: source/games/terraf.c:143
 msgid "30000, every 100000"
-msgstr ""
+msgstr "30000, tous les 10000"
 
 #: source/games/gcpball.c:103
 msgid "300K"
@@ -848,40 +847,40 @@ msgstr ""
 
 #: source/games/seta.c:2371
 msgid "300K Every 500K"
-msgstr ""
+msgstr "300k tous les 500k"
 
 #: source/games/toaplan1.c:356
 msgid "300K only"
-msgstr ""
+msgstr "300k seulement"
 
 #: source/games/seta.c:2323
 msgid "300k & 600k"
-msgstr ""
+msgstr "300k & 600k"
 
 #: source/games/seta.c:2321
 msgid "300k Only"
-msgstr ""
+msgstr "300k seulement"
 
 #: source/games/toaplan2.c:1279
 msgid "300k and 800k"
-msgstr ""
+msgstr "300k et 800k"
 
 #: source/games/nmk.c:972
 msgid "300k and every 300k"
-msgstr ""
+msgstr "300k et tous les 300k"
 
 #: source/games/seta.c:1850
 msgid "300k and every 800k"
-msgstr ""
+msgstr "300k et tous les 800k"
 
 #: source/games/silentd.c:217 source/games/silkworm.c:440
 #: source/games/toaplan2.c:298
 msgid "300k only"
-msgstr ""
+msgstr "300k seulement"
 
 #: source/games/toaplan2.c:1280
 msgid "300k then every 800k"
-msgstr ""
+msgstr "300k puis tous les 800k"
 
 #: source/games/seta.c:2573
 msgid "300k, 600k"
@@ -889,19 +888,19 @@ msgstr ""
 
 #: source/games/cps1drv.c:3205 source/games/cps1drv.c:3253
 msgid "30K & 60K only"
-msgstr ""
+msgstr "30k & 60k seulement"
 
 #: source/games/cps1drv.c:3203 source/games/cps1drv.c:3251
 msgid "30K 50K then every 70K"
-msgstr ""
+msgstr "30k 50k puis tous les 70k"
 
 #: source/games/cps1drv.c:3110 source/games/cps1drv.c:3152
 msgid "30K 60K and every 70K"
-msgstr ""
+msgstr "30k 60k et tous les 70k"
 
 #: source/games/toaplan1.c:537
-msgid "30Kevery 100K"
-msgstr ""
+msgid "30K every 100K"
+msgstr "30K tous les 100K"
 
 #: source/games/upl.c:395 source/games/aquajack.c:95
 #: source/games/megasys1.c:1407
@@ -920,19 +919,19 @@ msgstr "30k et 100k"
 
 #: source/games/taito_f2.c:771
 msgid "30k and 150k"
-msgstr ""
+msgstr "30k et 150k"
 
 #: source/games/upl.c:280
 msgid "30k and 50k"
-msgstr ""
+msgstr "30k et 50k"
 
 #: source/games/upl.c:69
 msgid "30k and every 50k"
-msgstr ""
+msgstr "30k et tous les 50k"
 
 #: source/sdl/dialogs/about.cpp:719
 msgid "32 bits i386 binary with plenty of asm inside"
-msgstr ""
+msgstr "binaire i386 32 bits avec plein d'assembleur à l'intérieur"
 
 #: source/sdl/dialogs/neocd_options.cpp:188
 msgid "32x"
@@ -944,7 +943,7 @@ msgstr ""
 
 #: source/games/cps1drv.c:3656
 msgid "4 (3 when continue)"
-msgstr ""
+msgstr "4 (3 quand continue)"
 
 #: source/games/cps1drv.c:3629 source/games/cps1drv.c:3638
 #: source/games/cps1drv.c:3688 source/games/cps1drv.c:3994
@@ -954,11 +953,11 @@ msgstr ""
 
 #: source/games/cps1drv.c:3506
 msgid "4 Bars"
-msgstr ""
+msgstr "4 barres"
 
 #: source/games/crospang.c:133
 msgid "4 Chain Reactions"
-msgstr ""
+msgstr "4 réactions en chaine"
 
 #: source/games/opwolf.c:88
 msgid "4 Clips"
@@ -966,39 +965,39 @@ msgstr ""
 
 #: source/sdl/control.c:2178
 msgid "4 Coins/1 Credit"
-msgstr ""
+msgstr "4 pièces / 1 partie"
 
 #: source/sdl/control.c:2179
 msgid "4 Coins/2 Credits"
-msgstr ""
+msgstr "4 pièces / 2 parties"
 
 #: source/sdl/control.c:2180
 msgid "4 Coins/3 Credits"
-msgstr ""
+msgstr "4 pièces / 3 parties"
 
 #: source/sdl/control.c:2181
 msgid "4 Coins/4 Credits"
-msgstr ""
+msgstr "4 pièces / 4 parties"
 
 #: source/sdl/control.c:2182
 msgid "4 Coins/5 Credits"
-msgstr ""
+msgstr "4 pièces / 5 parties"
 
 #: source/sdl/control.c:2183
 msgid "4 Coins/6 Credits"
-msgstr ""
+msgstr "4 pièces / 6 parties"
 
 #: source/sdl/control.c:2184
 msgid "4 Coins/7 Credits"
-msgstr ""
+msgstr "4 pièces / 7 parties"
 
 #: source/sdl/control.c:2185
 msgid "4 Coins/8 Credits"
-msgstr ""
+msgstr "4 pièces / 8 parties"
 
 #: source/games/taito_f2.c:923
 msgid "4 Credits/4P"
-msgstr ""
+msgstr "4 parties / 4 joueurs"
 
 #: source/games/lsystem.c:381
 msgid "4 Minutes"
@@ -1007,29 +1006,29 @@ msgstr ""
 #: source/games/fchamp.c:108 source/games/fchamp.c:134
 #: source/games/fchamp.c:178
 msgid "4 Player/2 Cabinets"
-msgstr ""
+msgstr "4 joueurs / 2 bornes"
 
 #: source/games/fchamp.c:109 source/games/fchamp.c:135
 #: source/games/fchamp.c:179
 msgid "4 Player/2 Coin Slot"
-msgstr ""
+msgstr "4 joueur/2 fentes à pièces"
 
 #: source/games/fchamp.c:107 source/games/fchamp.c:133
 #: source/games/fchamp.c:177
 msgid "4 Player/4 Coin Slot"
-msgstr ""
+msgstr "4 joueur / 4 fentes à pièces"
 
 #: source/games/wrestlef.c:108
 msgid "4 Players"
-msgstr ""
+msgstr "4 joueurs"
 
 #: source/games/silentd.c:136
 msgid "4 Players / 1 Cab"
-msgstr ""
+msgstr "4 joueurs / 1 borne"
 
 #: source/games/silentd.c:137
 msgid "4 Players / 2 Cabs"
-msgstr ""
+msgstr "4 joueurs / 2 bornes"
 
 #: source/games/hyperpcb.c:209
 msgid "40 Seconds"
@@ -1045,11 +1044,11 @@ msgstr ""
 
 #: source/games/armedf.c:189
 msgid "40000, every 60000"
-msgstr ""
+msgstr "40000, tous les 60000"
 
 #: source/games/armedf.c:190
 msgid "40000, every 80000"
-msgstr ""
+msgstr "40000, tous les 80000"
 
 #: source/games/seta.c:2779
 msgid "400K"
@@ -1057,7 +1056,7 @@ msgstr ""
 
 #: source/games/seta.c:2372
 msgid "400K Only"
-msgstr ""
+msgstr "400k seulement"
 
 #: source/games/gunbird.c:281 source/games/seta.c:2574
 msgid "400k"
@@ -1065,11 +1064,11 @@ msgstr ""
 
 #: source/games/silentd.c:218 source/games/toaplan2.c:866
 msgid "400k only"
-msgstr ""
+msgstr "400k seulement"
 
 #: source/games/cps1drv.c:3111 source/games/cps1drv.c:3153
 msgid "40K 70K and every 80K"
-msgstr ""
+msgstr "40k 70k et tous les 80k"
 
 #: source/games/megasys1.c:1408
 msgid "40k"
@@ -1077,7 +1076,7 @@ msgstr ""
 
 #: source/games/bonzeadv.c:116
 msgid "40k and 100k"
-msgstr ""
+msgstr "40k et 100k"
 
 #: source/games/bublbobl.c:257 source/games/bublbobl.c:390
 #: source/games/bublbobl.c:436 source/games/bublbobl.c:511
@@ -1098,23 +1097,23 @@ msgstr ""
 
 #: source/sdl/control.c:2187
 msgid "5 Coins/1 Credit"
-msgstr ""
+msgstr "5 pièces / 1 partie"
 
 #: source/sdl/control.c:2188
 msgid "5 Coins/2 Credits"
-msgstr ""
+msgstr "5 pièces / 2 parties"
 
 #: source/sdl/control.c:2189
 msgid "5 Coins/3 Credits"
-msgstr ""
+msgstr "5 pièces / 3 parties"
 
 #: source/sdl/control.c:2190
 msgid "5 Coins/4 Credits"
-msgstr ""
+msgstr "5 pièces / 4 parties"
 
 #: source/games/cps1drv.c:4258
 msgid "5 Games Match"
-msgstr ""
+msgstr "Match en 5 jeux"
 
 #: source/games/cadash.c:107
 msgid "5 Mins"
@@ -1126,15 +1125,15 @@ msgstr ""
 
 #: source/games/crimec.c:70 source/games/armedf.c:207 source/games/terraf.c:104
 msgid "5 Times"
-msgstr ""
+msgstr "5 fois"
 
 #: source/games/quizgame.c:183
 msgid "5 seconds"
-msgstr ""
+msgstr "5 secondes"
 
 #: source/games/hyperpcb.c:210
 msgid "50 Seconds"
-msgstr ""
+msgstr "50 secondes"
 
 #: source/games/taito_f2.c:584
 msgid "50 sec"
@@ -1142,19 +1141,19 @@ msgstr ""
 
 #: source/games/lsystem.c:384
 msgid "50 seconds"
-msgstr ""
+msgstr "50 secondes"
 
 #: source/games/terraf.c:144
 msgid "50000 only"
-msgstr ""
+msgstr "50000 seulement"
 
 #: source/games/terraf.c:84 source/games/terraf.c:211
 msgid "50000, every 60000"
-msgstr ""
+msgstr "50000, tous les 60000"
 
 #: source/games/terraf.c:85 source/games/terraf.c:212
 msgid "50000, every 90000"
-msgstr ""
+msgstr "50000, tous les 99000"
 
 #: source/games/toaplan1.c:469 source/games/gcpball.c:104
 msgid "500K"
@@ -1162,15 +1161,15 @@ msgstr ""
 
 #: source/games/seta.c:2447
 msgid "500K Every 1500K"
-msgstr ""
+msgstr "500k tous les 1500k"
 
 #: source/games/seta.c:2445
 msgid "500K Only"
-msgstr ""
+msgstr "500k seulement"
 
 #: source/games/toaplan1.c:468
-msgid "500Kevery 1M"
-msgstr ""
+msgid "500K every 1M"
+msgstr "500k tous les 1M"
 
 #: source/games/mcatadv.c:242
 msgid "500k 1000k"
