@@ -191,7 +191,7 @@ msgid "1 Medal 1 Credit"
 msgstr "1 Medalha 1 Crédito"
 
 #: source/games/lsystem.c:383
-msgid "1 Minute Lenght"
+msgid "1 Minute Length"
 msgstr "1 Minuto de Duração"
 
 #: source/games/deadconx.c:123
@@ -604,7 +604,7 @@ msgid "200K and 500K"
 msgstr "200K e 500K"
 
 #: source/games/toaplan1.c:467
-msgid "200Kevery 500K"
+msgid "200K every 500K"
 msgstr "200K, a cada 500K"
 
 #: source/games/cps1drv.c:3452 source/games/rastan.c:100
@@ -667,6 +667,7 @@ msgid "20K 50K and every 70K"
 msgstr "20K 50K e a cada 70K"
 
 #: source/games/arkanoid.c:91
+#: source/games/arkanoid.c:121
 msgid "20K 60K and every 60K"
 msgstr "20K 60K e a cada 60K"
 
@@ -677,10 +678,6 @@ msgstr "20K e a Cada 100K"
 #: source/games/arkanoid.c:92 source/games/arkanoid.c:122
 msgid "20K only"
 msgstr "Só em 20K"
-
-#: source/games/arkanoid.c:121
-msgid "20K60K and every 60K"
-msgstr "20K60K e a cada 60K"
 
 #: source/games/upl.c:398 source/games/megasys1.c:1406
 msgid "20k"

@@ -201,7 +201,7 @@ msgstr "1 medaglia 1 credito"
 
 # Camel Try, Champion Wrestler
 #: source/games/lsystem.c:383
-msgid "1 Minute Lenght"
+msgid "1 Minute Length"
 msgstr "Durata di 1 minuto"
 
 # ....................................
@@ -630,9 +630,8 @@ msgstr "200K ogni 400K"
 msgid "200K and 500K"
 msgstr "200K e 500K"
 
-# ????
 #: source/games/toaplan1.c:467
-msgid "200Kevery 500K"
+msgid "200K every 500K"
 msgstr "200K ogni 500K"
 
 #: source/games/cps1drv.c:3452 source/games/rastan.c:100
@@ -695,6 +694,7 @@ msgid "20K 50K and every 70K"
 msgstr "20K 50K e ogni 70K"
 
 #: source/games/arkanoid.c:91
+#: source/games/arkanoid.c:121
 msgid "20K 60K and every 60K"
 msgstr "20K 60K e ogni 60K"
 
@@ -705,11 +705,6 @@ msgstr "20K ogni 100K"
 #: source/games/arkanoid.c:92 source/games/arkanoid.c:122
 msgid "20K only"
 msgstr "Solo a 20k"
-
-# ????
-#: source/games/arkanoid.c:121
-msgid "20K60K and every 60K"
-msgstr "20K 60K e ogni 60K"
 
 #: source/games/upl.c:398 source/games/megasys1.c:1406
 msgid "20k"

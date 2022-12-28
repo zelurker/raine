@@ -118,7 +118,7 @@ static struct DSW_DATA dsw_data_arknoidj_4[] =
   { _("Easy") , 0x08},
   { _("Hard") , 0x00},
   { MSG_EXTRA_LIFE, 0x10, 2 },
-  { _("20K60K and every 60K") , 0x10},
+  { _("20K 60K and every 60K") , 0x10},
   { _("20K only") , 0x00},
   { MSG_LIVES, 0x20, 2 },
   { "3" , 0x20},

@@ -464,7 +464,7 @@ static struct DSW_DATA dsw_data_zerowing_1[] =
   { _("Hard") , 0x02},
   { _("Hardest") , 0x03},
   { MSG_EXTRA_LIFE, 0x0c, 4 },
-  { _("200Kevery 500K") , 0x00},
+  { _("200K every 500K") , 0x00},
   { _("500Kevery 1M") , 0x04},
   { _("500K") , 0x08},
   { _("None") , 0x0c},

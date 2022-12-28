@@ -191,8 +191,8 @@ msgid "1 Medal 1 Credit"
 msgstr ""
 
 #: source/games/lsystem.c:383
-msgid "1 Minute Lenght"
-msgstr ""
+msgid "1 Minute Length"
+msgstr "Durée d'1 minute"
 
 #: source/games/deadconx.c:123
 msgid "1 Player"
@@ -206,11 +206,11 @@ msgstr "1 pièce de +"
 
 #: source/games/seta.c:2394
 msgid "1 of 4 Scenes"
-msgstr ""
+msgstr "1 scène / 4"
 
 #: source/games/seta.c:2395
 msgid "1 of 8 Scenes"
-msgstr ""
+msgstr "1 scène / 8"
 
 #: source/games/cps1drv.c:4064
 msgid "1.200k 3.500k"
@@ -240,7 +240,7 @@ msgstr "10 secondes"
 
 #: source/games/bublbobl.c:442
 msgid "100 (Cheat)"
-msgstr ""
+msgstr "100 (triche)"
 
 #: source/games/cps1drv.c:3032
 msgid "100 Yen"
@@ -471,7 +471,7 @@ msgstr "2 pièces pour commencer, 1 pour continuer"
 
 #: source/games/gunbird.c:313 source/sdl/control.c:2160
 msgid "2 Coins/1 Credit"
-msgstr ""
+msgstr "2 pièces / 1 crédit"
 
 #: source/games/gcpball.c:73 source/games/gcpball.c:82
 msgid "2 Coins/1 Credit 3/2 4/3 6/5"
@@ -487,15 +487,15 @@ msgstr ""
 
 #: source/sdl/control.c:2161
 msgid "2 Coins/2 Credits"
-msgstr ""
+msgstr "2 pièces / 2 crédits"
 
 #: source/sdl/control.c:2162
 msgid "2 Coins/3 Credits"
-msgstr ""
+msgstr "2 pièces / 3 crédits"
 
 #: source/sdl/control.c:2163
 msgid "2 Coins/4 Credits"
-msgstr ""
+msgstr "2 pièces / 4 crédits"
 
 #: source/sdl/control.c:2164
 msgid "2 Coins/5 Credits"
@@ -532,37 +532,37 @@ msgstr ""
 
 #: source/games/seta.c:2659
 msgid "2 Player Game"
-msgstr ""
+msgstr "Jeu à 2 joueurs"
 
 #: source/games/taito_f2.c:594 source/games/taito_f2.c:957
 msgid "2 Player Mode"
-msgstr ""
+msgstr "Mode 2 joueur"
 
 #: source/games/ctribebl.c:110 source/games/fchamp.c:106
 #: source/games/fchamp.c:132 source/games/fchamp.c:176
 #: source/games/doubled3.c:122 source/games/silentd.c:134
 #: source/games/wrestlef.c:109
 msgid "2 Players"
-msgstr ""
+msgstr "2 joueurs"
 
 #: source/games/cps1drv.c:3796
 msgid "2 Players Game"
-msgstr ""
+msgstr "Jeu 2 joueurs"
 
 #: source/games/taito_f2.c:806
 msgid "2 Players Mode"
-msgstr ""
+msgstr "Mode 2 joueurs"
 
 #: source/games/crimec.c:135 source/games/ashura.c:125
 #: source/games/rastan2.c:176 source/games/lsystem.c:427
 #: source/games/lsystem.c:855
 msgid "2 extra coins"
-msgstr ""
+msgstr "2 pièces de +"
 
 #: source/games/fchamp.c:103 source/games/fchamp.c:129
 #: source/games/fchamp.c:173
 msgid "2.5 Minutes"
-msgstr ""
+msgstr "2 minutes 30"
 
 #: source/games/taito_f2.c:592
 msgid "20 sec"
@@ -574,19 +574,19 @@ msgstr ""
 
 #: source/games/armedf.c:187 source/games/terraf.c:82
 msgid "20000, every 60000"
-msgstr ""
+msgstr "20000, tous les 60000"
 
 #: source/games/armedf.c:188
 msgid "20000, every 80000"
-msgstr ""
+msgstr "20000, tous les 80000"
 
 #: source/games/terraf.c:83
 msgid "20000, every 90000"
-msgstr ""
+msgstr "20000, tous les 90000"
 
 #: source/games/cps1drv.c:4065
 msgid "2000k only"
-msgstr ""
+msgstr "2000k seulement"
 
 #: source/games/seta.c:2777 source/games/toaplan1.c:195
 msgid "200K"
@@ -594,19 +594,19 @@ msgstr ""
 
 #: source/games/seta.c:2778
 msgid "200K Every 200K"
-msgstr ""
+msgstr "200k tous les 200k"
 
 #: source/games/seta.c:2370
 msgid "200K Every 400K"
-msgstr ""
+msgstr "200k tous les 400k"
 
 #: source/games/toaplan1.c:355
 msgid "200K and 500K"
-msgstr ""
+msgstr "200k et 500k"
 
 #: source/games/toaplan1.c:467
-msgid "200Kevery 500K"
-msgstr ""
+msgid "200K every 500K"
+msgstr "200k tous les 500k"
 
 #: source/games/cps1drv.c:3452 source/games/rastan.c:100
 #: source/games/hyperpcb.c:567 source/games/exzisus.c:113
@@ -616,15 +616,15 @@ msgstr ""
 
 #: source/games/silkworm.c:328 source/games/toaplan2.c:1440
 msgid "200k and 500k"
-msgstr ""
+msgstr "200k et 500k"
 
 #: source/games/nmk.c:971
 msgid "200k and every 200k"
-msgstr ""
+msgstr "200k et tous les 200k"
 
 #: source/games/cps1drv.c:3974
 msgid "200k and every 450k"
-msgstr ""
+msgstr "200k et tous les 450k"
 
 #: source/games/rastan2.c:64 source/games/silentd.c:216
 #: source/games/silkworm.c:114 source/games/silkworm.c:439
@@ -633,11 +633,11 @@ msgstr ""
 #: source/games/toaplan2.c:864 source/games/toaplan2.c:966
 #: source/games/toaplan2.c:1281
 msgid "200k only"
-msgstr ""
+msgstr "200k seulement"
 
 #: source/games/toaplan2.c:964
 msgid "200k then every 300k"
-msgstr ""
+msgstr "200k puis tous les 300k"
 
 #: source/games/xsystem2.c:405 source/games/xsystem2.c:898
 msgid "200k, 300k"
@@ -645,7 +645,7 @@ msgstr ""
 
 #: source/games/toaplan2.c:865
 msgid "200k, 400k and 600k"
-msgstr ""
+msgstr "200k, 400k et 600k"
 
 #: source/games/seta.c:2572
 msgid "200k, 500k"
@@ -653,35 +653,32 @@ msgstr ""
 
 #: source/games/bloodbro.c:98
 msgid "200k, every 300k"
-msgstr ""
+msgstr "200k, tous les 300k"
 
 #: source/games/cps1drv.c:3204 source/games/cps1drv.c:3252
 msgid "20K & 60K only"
-msgstr ""
+msgstr "20k & 60k seulement"
 
 #: source/games/cps1drv.c:3202 source/games/cps1drv.c:3250
 msgid "20K 40K then every 60K"
-msgstr ""
+msgstr "20k 40k puis tous les 60k"
 
 #: source/games/cps1drv.c:3109 source/games/cps1drv.c:3151
 msgid "20K 50K and every 70K"
-msgstr ""
+msgstr "20k 50k puis tous les 70k"
 
 #: source/games/arkanoid.c:91
+#: source/games/arkanoid.c:121
 msgid "20K 60K and every 60K"
-msgstr ""
+msgstr "20k 60k et tous les 60k"
 
 #: source/games/seta.c:2889
 msgid "20K Every 100K"
-msgstr ""
+msgstr "20k tous les 100k"
 
 #: source/games/arkanoid.c:92 source/games/arkanoid.c:122
 msgid "20K only"
-msgstr ""
-
-#: source/games/arkanoid.c:121
-msgid "20K60K and every 60K"
-msgstr ""
+msgstr "20k seulement"
 
 #: source/games/upl.c:398 source/games/megasys1.c:1406
 msgid "20k"

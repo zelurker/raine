@@ -380,7 +380,7 @@ static struct DSW_DATA dsw_data_champion_wrestler_1[] =
    { _("2 Minutes"),             0x08},
    { _("4 Minutes"),             0x04},
    { _("5 Minutes"),             0x00},
-   { _("1 Minute Lenght"),       0x30, 0x04 },
+   { _("1 Minute Length"),       0x30, 0x04 },
    { _("50 seconds"),            0x30},
    { _("60 seconds"),            0x20},
    { _("40 seconds"),            0x10},
