@@ -5631,11 +5631,6 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
-#: source/sdl/dialogs/neocd_options.cpp:182
-#, fuzzy
-msgid "Soft dipswitches"
-msgstr "Interrupteurs logiciels"
-
 #: source/sdl/dialogs/neo_softdips.cpp:185
 msgid "Soft dipswitches"
 msgstr "Interrupteurs logiciels"

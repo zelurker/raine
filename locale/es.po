@@ -5640,11 +5640,6 @@ msgstr "Más Lento"
 msgid "Small"
 msgstr "Pequeño"
 
-#: source/sdl/dialogs/neocd_options.cpp:182
-#, fuzzy
-msgid "Soft dipswitches"
-msgstr ""
-
 #: source/sdl/dialogs/neo_softdips.cpp:185
 msgid "Soft dipswitches"
 msgstr ""
