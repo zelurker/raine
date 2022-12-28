@@ -243,7 +243,8 @@ msgid "10 Yen Setup"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:727
-msgid "10 fps"
+#, fuzzy
+msgid "10 FPS"
 msgstr ""
 
 #: source/games/quizgame.c:184
@@ -409,7 +410,8 @@ msgid "120 Seconds"
 msgstr "120 Secondi"
 
 #: source/sdl/dialogs/controls.cpp:726
-msgid "15 fps"
+#, fuzzy
+msgid "15 FPS"
 msgstr ""
 
 #: source/games/quizgame.c:185
@@ -849,7 +851,8 @@ msgid "3 per Credit"
 msgstr "3 per credito"
 
 #: source/sdl/dialogs/controls.cpp:725
-msgid "30 fps"
+#, fuzzy
+msgid "30 FPS"
 msgstr ""
 
 #: source/games/taito_f2.c:589
@@ -1370,7 +1373,8 @@ msgstr "6 minuti"
 
 # ....................................
 #: source/sdl/dialogs/controls.cpp:729
-msgid "6 fps"
+#, fuzzy
+msgid "6 FPS"
 msgstr ""
 
 #: source/games/cookbib.c:342 source/games/hyperpcb.c:78
@@ -1469,7 +1473,8 @@ msgid "7 Mins"
 msgstr "7 minuti"
 
 #: source/sdl/dialogs/controls.cpp:728
-msgid "7 fps"
+#, fuzzy
+msgid "7 FPS"
 msgstr ""
 
 #: source/games/hyperpcb.c:212
@@ -1818,7 +1823,8 @@ msgid "Applied speed hack at %x:%s"
 msgstr "Applicata modifica su velocita' (hack) a %x:%s"
 
 #: source/sdl/gui.cpp:377
-msgid "Applying GFX Layouts and stuff..."
+#, fuzzy
+msgid "Applying graphics layouts and stuff..."
 msgstr "Applicazione impaginaz.grafica e altro..."
 
 #: source/loadroms.c:996
@@ -1826,7 +1832,8 @@ msgid "Applying graphics layouts..."
 msgstr "Azionamento livelli grafici..."
 
 #: source/sdl/dialogs/dirs.cpp:49
-msgid "Artwork dir"
+#, fuzzy
+msgid "Artwork directory"
 msgstr "Cartella delle copertine"
 
 #: source/games/wrestlef.c:82 source/games/wrestlef.c:85
@@ -1976,7 +1983,8 @@ msgstr ""
 "%xh\n"
 
 #: source/sdl/dialogs/neo_softdips.cpp:231
-msgid "Bad soft dips"
+#, fuzzy
+msgid "Bad soft dipswitches"
 msgstr "Soft Dips errato"
 
 # Dino Rex
@@ -2000,7 +2008,8 @@ msgstr "Opzioni su file di trasparenza (Blend)..."
 
 # .................................... BLITS RENDER OPTIONS
 #: source/sdl/dialogs/video_options.cpp:197
-msgid "Blits Options"
+#, fuzzy
+msgid "Blits options"
 msgstr ":: Opzioni della resa video con Blit ::"
 
 #: source/sdl/dialogs/colors.cpp:113
@@ -2112,7 +2121,8 @@ msgid "CD 1x (150 Kb/s)"
 msgstr "1x (150 Kb/s)"
 
 #: source/sdl/dialogs/neocd_options.cpp:186
-msgid "CD Interface"
+#, fuzzy
+msgid "CD interface"
 msgstr "Interfaccia CD"
 
 #: source/games/neogeo.c:89
@@ -2284,7 +2294,8 @@ msgid "Choice"
 msgstr ":: Possibili scelte ::"
 
 #: source/sdl/dialogs/sound_options.cpp:38
-msgid "Choose one of the available drivers :"
+#, fuzzy
+msgid "Choose one of the available drivers:"
 msgstr ""
 
 # Chase HQ
@@ -2760,7 +2771,8 @@ msgid "Damage"
 msgstr "Danno"
 
 #: source/sdl/dialogs/neocd_options.cpp:183
-msgid "Debug dips"
+#, fuzzy
+msgid "Debug dipswitches"
 msgstr "Debug dips"
 
 #: source/games/cps1.c:2027
@@ -2933,7 +2945,8 @@ msgid "Disable associations"
 msgstr "Disattiva associazioni"
 
 #: source/sdl/dialogs/video_options.cpp:150
-msgid "Disable shaders ?"
+#, fuzzy
+msgid "Disable shaders?"
 msgstr "Disabilita le ombreggiature (Shader) ?"
 
 #: source/games/pengo.c:1337 source/sdl/dialogs/neocd_options.cpp:191
@@ -3099,7 +3112,8 @@ msgstr "Modifica i controlli in ingresso predefiniti"
 
 #: source/sdl/dialogs/translator.cpp:836
 #: source/sdl/dialogs/game_options.cpp:242
-msgid "Edit msg"
+#, fuzzy
+msgid "Edit message"
 msgstr "Modifica messaggio"
 
 # ------------------------ GAME OPTIONS - TRANSLATOR ------------------------
@@ -3135,7 +3149,8 @@ msgid "EmuDX support ?"
 msgstr "Supporto EmuDX ?"
 
 #: source/sdl/dialogs/dirs.cpp:46
-msgid "Emudx dir"
+#, fuzzy
+msgid "EmuDX directory"
 msgstr "Cartella dei file EmuDX"
 
 # Continental Circus
@@ -3569,7 +3584,8 @@ msgid "Fullheight"
 msgstr "Massima altezza"
 
 #: source/sdl/dialogs/video_options.cpp:122
-msgid "Fullheight + Double width"
+#, fuzzy
+msgid "Fullheight + double width"
 msgstr "Massima altezza + Doppia larghezza"
 
 #: source/sdl/dialogs/video_options.cpp:270 source/sdl/control.c:674
@@ -3577,7 +3593,8 @@ msgid "Fullscreen"
 msgstr "Schermo intero"
 
 #: source/sdl/dialogs/video_options.cpp:272
-msgid "Fullscreen hack for intel"
+#, fuzzy
+msgid "Fullscreen hack for Intel"
 msgstr ""
 
 # Fix Eight
@@ -4133,7 +4150,8 @@ msgid "Layers"
 msgstr "Livelli grafici"
 
 #: source/sdl/dialogs/gui_options.cpp:164
-msgid "Leds..."
+#, fuzzy
+msgid "LEDs..."
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:122
@@ -4255,7 +4273,8 @@ msgid "Load demo"
 msgstr "Carica demo"
 
 #: source/sdl/dialogs/controls.cpp:939 source/sdl/dialogs/controls.cpp:1023
-msgid "Load from which ?"
+#, fuzzy
+msgid "Load from which?"
 msgstr ":: Da dove importare i dati ? ::"
 
 #: source/sdl/dialogs/controls.cpp:1188
@@ -4277,7 +4296,8 @@ msgstr "Caricamento codice della CPU..."
 
 # ------------------------------ GAME LOADING ------------------------------
 #: source/sdl/gui.cpp:319 source/sdl/gui.cpp:382
-msgid "Loading Game"
+#, fuzzy
+msgid "Loading game"
 msgstr ":: Gioco in fase di caricamento ::"
 
 #: source/sdl/dialogs/neocd_options.cpp:187
@@ -4390,7 +4410,8 @@ msgid "Max Players"
 msgstr "Num.massimo gioc."
 
 #: source/sdl/gui/tfont.cpp:30
-msgid "Max font size"
+#, fuzzy
+msgid "Maximum font size"
 msgstr "Dimensione massima del carattere"
 
 #: source/games/cps1drv.c:3027
@@ -4413,7 +4434,8 @@ msgid "Memory Check"
 msgstr "Verifica memoria"
 
 #: source/sdl/gui/tfont.cpp:29
-msgid "Min font size"
+#, fuzzy
+msgid "Minimum font size"
 msgstr "Dimensione minima del carattere"
 
 #: source/games/crospang.c:134
@@ -4495,7 +4517,8 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1051 source/sdl/dialogs/controls.cpp:1228
 #, c-format
-msgid "Mouse Sensitivity: %d%%"
+#, fuzzy
+msgid "Mouse sensitivity: %d%%"
 msgstr ""
 
 #: source/games/spacegun.c:92
@@ -4569,7 +4592,8 @@ msgid "Neo-Geo CD BIOS: %s"
 msgstr "BIOS del NeoCD : %s"
 
 #: source/sdl/dialogs/neocd_options.cpp:186
-msgid "Neo-Geo Logo"
+#, fuzzy
+msgid "Neo-Geo logo"
 msgstr "Logo del NeoGeo"
 
 #: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:523
@@ -4665,7 +4689,8 @@ msgid "No associations yet"
 msgstr "Ancora non associato"
 
 #: source/sdl/dialogs/controls.cpp:734
-msgid "No buttons mapped by this game for autofire, sorry !"
+#, fuzzy
+msgid "No buttons mapped by this game for autofire, sorry!"
 msgstr ""
 "Nessun pulsante di fuoco-automatico è stato associato per questo gioco!"
 
@@ -4693,12 +4718,14 @@ msgid "No hardware support for overlays"
 msgstr "L'hardware non supporta la sovrapposizione (Overlays)"
 
 #: source/sdl/dialogs/video_info.cpp:63
-msgid "No opengl info yet, run something first"
+#, fuzzy
+msgid "No OpenGL information yet, run something first."
 msgstr "Ancora nessuna info su OpenGL, esegui prima qualcosa"
 
 # .................................... VIDEO
 #: source/sdl/dialogs/video_options.cpp:200
-msgid "No options for this renderer ? Strange !"
+#, fuzzy
+msgid "No options for this renderer."
 msgstr "Nessuna opzione per questo tipo di resa grafica? Strano !"
 
 #: source/sdl/dialogs/about.cpp:555
@@ -4714,7 +4741,8 @@ msgid "No shader support on your hardware"
 msgstr "Il tuo hardware non supporta l'ombreggiatura (Shader)"
 
 #: source/sdl/control.c:411
-msgid "No speed limit !"
+#, fuzzy
+msgid "No speed limit!"
 msgstr "Nessun limite di velocità !"
 
 #: source/games/bloodbro.c:100 source/games/upl.c:283 source/games/cadash.c:109
@@ -4741,7 +4769,8 @@ msgstr "Nessun limite di velocità !"
 #: source/sdl/dialogs/video_options.cpp:286
 #: source/sdl/dialogs/video_options.cpp:288
 #: source/sdl/dialogs/sound_options.cpp:111
-msgid "None"
+#, fuzzy
+msgid "Video information..."
 msgstr "Nessuno"
 
 # Caliber 50
@@ -4869,7 +4898,8 @@ msgstr "OpenGL"
 
 # .................................... OPENGL OPTIONS
 #: source/sdl/dialogs/video_options.cpp:194
-msgid "OpenGL Options"
+#, fuzzy
+msgid "OpenGL options"
 msgstr ":: Opzioni OpenGL ::"
 
 #: source/sdl/dialogs/video_info.cpp:70
@@ -4894,17 +4924,20 @@ msgstr "Fornitore di OpenGL"
 
 #: source/sdl/dialogs/video_info.cpp:73
 #, fuzzy
-msgid "OpenGL vsync"
+#, fuzzy
+msgid "OpenGL VSync"
 msgstr "Fornitore di OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:170
-msgid "Opengl Blits"
+#, fuzzy
+msgid "OpenGL blits"
 msgstr ""
 
 # ------------ VIDEO OPTIONS: RENDER OPTIONS FOR YUV/BLIT/OPENGL ------------
 # .................................... YUV RENDER OPTIONS
 #: source/sdl/dialogs/video_options.cpp:196
-msgid "Overlays Options"
+#, fuzzy
+msgid "Overlays options"
 msgstr ":: Opzioni YUV con sovrapposizioni ::"
 
 #: source/sdl/dialogs/video_options.cpp:109
@@ -5455,7 +5488,8 @@ msgid "Raw audio tracks format"
 msgstr "Ordine dei bit nel formato delle tracce audio"
 
 #: source/sdl/dialogs/game_options.cpp:248
-msgid "Rdtsc Cycles"
+#, fuzzy
+msgid "RDTSC cycles"
 msgstr "Cicli RDTSC"
 
 #: source/games/cps1.c:2035
@@ -5502,7 +5536,8 @@ msgid "Renderer"
 msgstr "Dispostivo di resa grafica"
 
 #: source/sdl/dialogs/video_options.cpp:280
-msgid "Renderer options"
+#, fuzzy
+msgid "None"
 msgstr "Opzioni sulla resa grafica..."
 
 #: source/sdl/dialogs/video_options.cpp:167
@@ -5602,7 +5637,8 @@ msgid "Running CPU Every %01d Frames"
 msgstr "Esecuzione della CPU ogni %01d fotogrammi"
 
 #: source/sdl/dialogs/video_options.cpp:257
-msgid "SDL default (windib since 1.2.10)"
+#, fuzzy
+msgid "SDL default (WinDIB since 1.2.10)"
 msgstr "SDL predefinito (windib dalla v.1.2.10)"
 
 # ------------------------------ VIDEO OPTIONS ------------------------------
@@ -5677,7 +5713,8 @@ msgid "Save inputs as..."
 msgstr "Salva controlli personalizzati come..."
 
 #: source/sdl/dialogs/video_options.cpp:172
-msgid "Save opengl screenshots"
+#, fuzzy
+msgid "Save OpenGL screenshots"
 msgstr "Salva le schermate catturate con OGL"
 
 #: source/sdl/dialogs/video_options.cpp:289
@@ -5725,7 +5762,8 @@ msgid "Screen rotation"
 msgstr "Rotazione dello schermo"
 
 #: source/sdl/dialogs/dirs.cpp:43
-msgid "Screenshot dir"
+#, fuzzy
+msgid "Screenshot directory"
 msgstr "Cartella degli schermi catturati"
 
 # Crime City
@@ -5881,7 +5919,8 @@ msgid "Small"
 msgstr "Piccolo"
 
 #: source/sdl/dialogs/neocd_options.cpp:182
-msgid "Soft dips"
+#, fuzzy
+msgid "Soft dipswitches"
 msgstr "Soft dips"
 
 #: source/sdl/dialogs/neo_softdips.cpp:185
@@ -5967,7 +6006,8 @@ msgstr "Modifica su velocita' (hack) non trovata, esecuzione lenta..."
 
 #: source/sdl/control.c:414
 #, c-format
-msgid "Speed limit %d fps"
+#, fuzzy
+msgid "Speed limit %d FPS"
 msgstr "Velocità limitata a %d fps"
 
 #: source/sdl/dialogs/game_options.cpp:238
@@ -6341,7 +6381,8 @@ msgid "To match 2x game resolution"
 msgstr "Adatta al doppio della risoluzione del gioco"
 
 #: source/sdl/dialogs/video_options.cpp:118
-msgid "To match game resolution (low res most of the time)"
+#, fuzzy
+msgid "To match game resolution (low resolution most of the time)"
 msgstr "Adatta alla risoluz. del gioco (di solito molto bassa)"
 
 #: source/games/toaplan1.c:556
@@ -6375,7 +6416,8 @@ msgid "Toggle limit speed"
 msgstr "Interruttore del limitatore velocità"
 
 #: source/sdl/dialogs/controls.cpp:776
-msgid "Too many controls have been defined for this game, sorry !"
+#, fuzzy
+msgid "Too many controls have been defined for this game, sorry!"
 msgstr "Troppi controlli sono stati definiti per questo gioco, mi spiace!"
 
 #: source/sdl/dialogs/sound_commands.cpp:209
@@ -6711,7 +6753,8 @@ msgid "Use custom mouse cursor"
 msgstr "Usa puntatore mouse personalizzato"
 
 #: source/sdl/dialogs/video_options.cpp:276
-msgid "Use double buffer (ignored by opengl)"
+#, fuzzy
+msgid "Use double buffer (ignored by OpenGL)"
 msgstr "Usa doppio buffer (ignorato da OGL)"
 
 #: source/sdl/dialogs/video_info.cpp:102
@@ -6768,7 +6811,8 @@ msgid "Video driver name"
 msgstr "Nome del driver video"
 
 #: source/sdl/dialogs/video_options.cpp:279
-msgid "Video info..."
+#, fuzzy
+msgid "Renderer options..."
 msgstr "Info sulle caratteristiche video..."
 
 #: source/sdl/dialogs/controls.cpp:1182
@@ -6832,7 +6876,8 @@ msgstr ":: Avvertimento ::"
 
 #: source/sdl/dialogs/controls.cpp:359 source/sdl/dialogs/controls.cpp:403
 #: source/sdl/dialogs/controls.cpp:431
-msgid "What do you want to do ?"
+#, fuzzy
+msgid "What do you want to do?"
 msgstr " - Quale operazione vuoi applicare ? - "
 
 #: source/games/chasehq.c:126
@@ -6915,7 +6960,8 @@ msgid "YUY2"
 msgstr "YUY2"
 
 #: source/sdl/dialogs/video_options.cpp:106
-msgid "YV12 (mpeg)"
+#, fuzzy
+msgid "YV12 (MPEG)"
 msgstr "YV12 (mpeg)"
 
 #: source/sdl/dialogs/game_selection.cpp:471
@@ -7065,20 +7111,24 @@ msgid "bg"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:109
-msgid "bg color"
+#, fuzzy
+msgid "Background color"
 msgstr "Colore di sfondo"
 
 #: source/sdl/dialogs/colors.cpp:112
-msgid "bg dialog bar color"
+#, fuzzy
+msgid "Background dialog bar color"
 msgstr "Colore di sfondo della barra di dialogo"
 
 #: source/sdl/dialogs/colors.cpp:111
-msgid "bg frame color"
+#, fuzzy
+msgid "Background frame color"
 msgstr "Colore di sfondo della cornice"
 
 # ---------------------- VIDEO OPTIONS: BLEND OPTIONS ----------------------
 #: source/sdl/dialogs/video_options.cpp:239
-msgid "bld options"
+#, fuzzy
+msgid "Blend options"
 msgstr "[ Opzioni sulla trasparenza (Blend) ]"
 
 #: source/sdl/dialogs/colors.cpp:44
@@ -7121,7 +7171,8 @@ msgid "decrypting sprites (kof99 type)"
 msgstr "Decriptazione elem.grafici di KOF99..."
 
 #: source/sdl/dialogs/video_options.cpp:257
-msgid "directx (good for hw overlays/blits)"
+#, fuzzy
+msgid "DirectX (good for hardware overlays/blits)"
 msgstr "DirectX (buono per overlay/blit in hw)"
 
 # Air Gallet
@@ -7194,11 +7245,13 @@ msgid "fb"
 msgstr "fb"
 
 #: source/sdl/dialogs/colors.cpp:108
-msgid "fg color"
+#, fuzzy
+msgid "Foreground color"
 msgstr "Colore in primo piano"
 
 #: source/sdl/dialogs/colors.cpp:110
-msgid "fg frame color"
+#, fuzzy
+msgid "Foreground frame color"
 msgstr "Colore in primo piano della cornice"
 
 #: source/sdl/gui.cpp:292
@@ -7300,7 +7353,8 @@ msgstr "MSB"
 
 # .................................... EDIT MSG
 #: source/sdl/dialogs/translator.cpp:808
-msgid "msg to edit"
+#, fuzzy
+msgid "Message to edit"
 msgstr "[ Messaggio da modificare ]"
 
 #: source/games/cave.c:3050
@@ -7310,7 +7364,8 @@ msgstr "Nessuna linea di scorrimento %d"
 
 # ---------------------------------------------------------------------------
 #: source/sdl/gui.cpp:847
-msgid "no mixer yet"
+#, fuzzy
+msgid "No mixer yet"
 msgstr "ancora nessun mixer"
 
 #: source/games/toaplan1.c:121 source/games/gcpball.c:106
@@ -7361,7 +7416,8 @@ msgid "s8 not supported"
 msgstr "s8 non supportato"
 
 #: source/sdl/dialogs/video_options.cpp:261
-msgid "sdl2 native"
+#, fuzzy
+msgid "SDL2 native"
 msgstr ""
 
 #: source/games/esd16.c:509 source/games/pirates.c:380
@@ -7408,7 +7464,8 @@ msgstr "In uso l'override per %s"
 
 # .................................... OPTIONS
 #: source/sdl/dialogs/video_options.cpp:257
-msgid "windib (good for ogl)"
+#, fuzzy
+msgid "WinDIB (good for OpenGL)"
 msgstr "Windib (buono per OpenGL)"
 
 #: source/sdl/dialogs/video_info.cpp:83
