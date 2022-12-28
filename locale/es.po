@@ -6736,7 +6736,7 @@ msgstr "u8 no soportado"
 #: source/sdl/opengl.c:223
 #, c-format
 msgid ""
-"bad screen format, report this to rainemu.com:\n"
+"Bad screen format, report this to github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 msgstr ""
 "mal formato de pantalla, reporta esto a raine.1emulation.com\n"

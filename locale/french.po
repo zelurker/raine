@@ -6724,10 +6724,10 @@ msgstr ""
 #: source/sdl/opengl.c:223
 #, c-format
 msgid ""
-"bad screen format, report this to rainemu.com:\n"
+"Bad screen format, report this to github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 msgstr ""
-"mauvais format d'écran, rapportez ça à rainemu.com:\n"
+"Mauvais format d'écran, rapportez ça à github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 
 #: source/games/pirates.c:379

@@ -7097,9 +7097,11 @@ msgstr "u8 non supportato"
 #: source/sdl/opengl.c:223
 #, fuzzy, c-format
 msgid ""
-"bad screen format, report this to rainemu.com:\n"
+"Bad screen format, report this to github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
-msgstr "Formato dello schermo errato, segnalare l'errore sul sito di Raine:\n"
+msgstr ""
+"Formato dello schermo errato, segnalare l'errore sul sito di Raine:\n"
+"bpp : %d rshift %d gshift %d bshift %d"
 
 #: source/games/pirates.c:379
 msgid "bg"

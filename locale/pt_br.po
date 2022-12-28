@@ -6706,7 +6706,7 @@ msgstr "formato de áudio não suportado"
 #: source/sdl/opengl.c:223
 #, c-format
 msgid ""
-"bad screen format, report this to rainemu.com:\n"
+"Bad screen format, report this to github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 msgstr ""
 "formato ruim da tela, reporte isto em raine.1emulation.com\n"
