@@ -7,6 +7,7 @@ use common::sense;
 # with git log -p -1 > patch
 # and finally call this script perl source/bonus/update_po.pl patch
 # it will update the po files with all the strings which changed, adding the fuzzy attribute for an eventual later check...
+# partial support for multiline msgid, only the 1st line is handled
 
 my ($file,$line,@old,@new);
 
@@ -21,58 +22,7 @@ while (<>) {
 	} elsif (/^@@ \-(\d+)/ || /^diff/) {
 		$line = $1;
 		say "line $line";
-		for (my $n=0; $n<=$#old; $n++) {
-			if ($old[$n] eq $new[$n]) {
-				last if ($n > $#old);
-				say "removing $old[$n]";
-				splice @old,$n,1;
-				splice @new,$n,1;
-				redo if (@old);
-				last if ($n > $#old);
-			}
-		}
-		if (@old) {
-			say "still have ",$#old+1," strings to update";
-			my $rep;
-			while (my $po = glob("locale/*.po")) {
-				say "$po...";
-				my ($f,$g);
-				open($f,"<$po") || die "can't open $po";
-				open($g,">temp") || die "can't create temp file";
-				$rep = 0;
-				while (my $l = <$f>) {
-					chomp $l;
-					my $done = 0;
-					for (my $n=0; $n<=$#old; $n++) {
-						if (index($l,"msgid \"$old[$n]\"") == 0) {
-							say "found $old[$n], replacing by $new[$n]";
-							say $g "#, fuzzy";
-							say $g "msgid \"$new[$n]\"";
-							$rep++;
-							$done = 1;
-						}
-					}
-					if (!$done) {
-						# unmodified line in this case
-						say $g $l;
-					}
-				}
-				close($f);
-				close($g);
-				# say "update done, temp file ready, press enter to continue";
-				# <STDIN>;
-				rename("temp", "$po") if ($rep);
-				say "not found ? assuming already applied..." if (!$rep);
-			}
-			if (!$rep) {
-				@old = @new = ();
-			} elsif ($rep >= $#old+1) {
-				@old = @new = ();
-			} else {
-				say "got rep = $rep old = $#old";
-				die;
-			}
-		}
+		apply_patch();
 	} elsif (/^\-/) {
 		say "watching -";
 		while (s/(gettext|_)\("(.+?)\"//) {
@@ -89,8 +39,65 @@ while (<>) {
 		$line++;
 	}
 }
+apply_patch() if (@old);
 
-
-
-
+sub apply_patch {
+	for (my $n=0; $n<=$#old; $n++) {
+		if ($old[$n] eq $new[$n]) {
+			last if ($n > $#old);
+			say "removing $old[$n]";
+			splice @old,$n,1;
+			splice @new,$n,1;
+			redo if (@old);
+			last if ($n > $#old);
+		}
+	}
+	if (@old) {
+		say "still have ",$#old+1," strings to update";
+		my $rep;
+		while (my $po = glob("locale/*.po")) {
+			say "$po...";
+			my ($f,$g);
+			open($f,"<$po") || die "can't open $po";
+			open($g,">temp") || die "can't create temp file";
+			$rep = 0;
+			while (my $l = <$f>) {
+				chomp $l;
+				my $done = 0;
+				for (my $n=0; $n<=$#old; $n++) {
+					if (index($l,"\"$old[$n]\"") > -1) {
+						my $msgid = index($l,"msgid")+1;
+						say "found $old[$n], replacing by $new[$n]";
+						if ($msgid) {
+							# This will allow to handle at least the 1st line of a multiline msgid, ignoring the part msgid "" just before it
+							say $g "#, fuzzy";
+							print $g "msgid ";
+						}
+						say $g "\"$new[$n]\"";
+						$rep++;
+						$done = 1;
+					}
+				}
+				if (!$done) {
+					# unmodified line in this case
+					say $g $l;
+				}
+			}
+			close($f);
+			close($g);
+			# say "update done, temp file ready, press enter to continue";
+			# <STDIN>;
+			rename("temp", "$po") if ($rep);
+			say "not found ? assuming already applied..." if (!$rep);
+		}
+		if (!$rep) {
+			@old = @new = ();
+		} elsif ($rep >= $#old+1) {
+			@old = @new = ();
+		} else {
+			say "got rep = $rep old = $#old";
+			die;
+		}
+	}
+}
 
