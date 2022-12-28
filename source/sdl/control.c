@@ -408,10 +408,10 @@ extern void cpu_slow_down(); // emumain.c
 
 static void toggle_limit_speed() {
 	if(display_cfg.limit_speed){
-		print_ingame(60,gettext("No speed limit !"));
+		print_ingame(60,gettext("No speed limit!"));
 		display_cfg.limit_speed = 0;
 	} else {
-		print_ingame(60,gettext("Speed limit %d fps"),fps);
+		print_ingame(60,gettext("Speed limit %d FPS"),fps);
 		display_cfg.limit_speed = 1;
 	}
 }
@@ -623,14 +623,14 @@ static void add_game_controller(int n) {
 	joy[n].controller = SDL_GameControllerOpen(n);
 	joy[n].name = (char*)SDL_GameControllerNameForIndex(n);
 	if (!joy[n].controller) {
-	    fatal_error("open controller failed: %s",SDL_GetError());
+	    fatal_error("Open controller failed: %s",SDL_GetError());
 	}
     } else
 #endif
     {
 	joy[n].joy = SDL_JoystickOpen(n);
 	if (!joy[n].joy) {
-	    fatal_error("open joy failed: %s",SDL_GetError());
+	    fatal_error("Open joystick failed: %s",SDL_GetError());
 	}
 #if SDL==2
 	joy[n].name = (char*)SDL_JoystickName(joy[n].joy);
@@ -1446,7 +1446,7 @@ static void key_up(int ta) {
 
 static void add_valid_input(int ta) {
     if (nb_valid_inputs == MAX_VALID_INPUTS) {
-	fatal_error("too many valid inputs");
+	fatal_error("Too many valid inputs");
     }
     int n;
     for (n=0; n<nb_valid_inputs; n++) {

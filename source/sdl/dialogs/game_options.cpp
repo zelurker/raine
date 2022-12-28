@@ -98,7 +98,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	  stat(fpath,&buf);
 	  int ret = strftime(saves[used].date,sizeof(saves[used].date),"%x %X",localtime((const time_t*)&buf.st_mtime));
 	  if (!ret) {
-	    fatal_error("couldn't store date");
+	    fatal_error("Couldn't store date");
 	  }
 #if 0
 	  int taille = get_saved_picture(fin,&s);
@@ -239,13 +239,13 @@ static menu_item_t game_options[] =
 #endif
 #if defined(HAS_NEO) && SDL==1
   { _("Edit screen"), &do_screen },
-  { _("Edit msg"), &do_msg },
+  { _("Edit message"), &do_msg },
 #endif
   { _("CPU frame skip (1=no skip) "), NULL, &cpu_fps, 3, { 1, 16, 1 } },
   { _("FPS"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,180 }, { "", (char*)&fps, "1", "200" } },
   { _("Reset FPS to driver's default value"), &reset_fps },
   { _("FPS counter"), NULL, (int*)&raine_cfg.show_fps_mode, 5, { 0, 1, 2, 3, 4 },
-    { _("Off"), _("Immediate FPS"), _("Average FPS"), _("Profiler"), _("Rdtsc Cycles") } },
+    { _("Off"), _("Immediate FPS"), _("Average FPS"), _("Profiler"), _("RDTSC cycles") } },
   { NULL }
 };
 

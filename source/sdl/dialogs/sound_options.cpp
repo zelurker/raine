@@ -35,7 +35,7 @@ static int choose_driver(int sel) {
         snprintf(&buf[strlen(buf)],512-strlen(buf),"%s|", SDL_GetAudioDriver(i));
     }
     buf[strlen(buf)-1] = 0; // remove last |
-    int ret = MessageBox("Sound driver",_("Choose one of the available drivers :"),buf);
+    int ret = MessageBox("Sound driver",_("Choose one of the available drivers:"),buf);
     if (ret > 0 && strcmp(SDL_GetAudioDriver(ret-1),current)) {
 	const char *driver = SDL_GetAudioDriver(ret-1);
 	snprintf(buf,512,"SDL_AUDIODRIVER=%s",driver);
@@ -50,7 +50,7 @@ static int choose_driver(int sel) {
 	    putenv(buf);
 	    ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
 	    if (ret < 0) {
-		fatal_error("We lost the audio subsystem, bye !");
+		fatal_error("We lost the audio subsystem, bye!");
 	    }
 	}
     }

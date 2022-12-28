@@ -16,7 +16,7 @@ static void print_tf_state(int n, char *label, int test) {
   video_menu[n].value_int = &status[n];
   status[n] = test;
   if (test != 0 && test != 1 && test != -1) {
-    fatal_error("received test %d for %s",test,label);
+    fatal_error("Received test %d for %s",test,label);
   }
   video_menu[n].values_list_size = 3;
   video_menu[n].values_list[0] = -1;
@@ -60,7 +60,7 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
   menu = video_menu;
   if (display_cfg.video_mode == 0) {
       if (!ogl.info) {
-	  print_menu_string(1,_("No opengl info yet, run something first"),"");
+	  print_menu_string(1,_("No OpenGL information yet, run something first."),"");
 	  video_menu[2].label = NULL;
 	  return;
       }
@@ -70,7 +70,7 @@ TVideo_menu::TVideo_menu(char *my_title) : TMenu(my_title,NULL) {
       print_tf_state(4,_("OpenGL double buffer"), ogl.infos.dbuf);
       print_tf_state(5,_("FSAA (multisampling)"), ogl.infos.fsaa_buffers);
       print_tf_state(6,_("Acceleration"), ogl.infos.accel);
-      print_tf_state(7,_("OpenGL vsync"), ogl.infos.vbl);
+      print_tf_state(7,_("OpenGL VSync"), ogl.infos.vbl);
       video_menu[8].label = NULL;
       return;
   }

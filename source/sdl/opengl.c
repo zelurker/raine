@@ -220,8 +220,8 @@ void get_ogl_infos() {
 	if (format_error && !broken_gl_format) {
 		char buff[1024];
 		broken_gl_format = 1;
-		sprintf(buff,_("bad screen format, report this to rainemu.com:\n"
-				"bpp : %d rshift %d gshift %d bshift %d"),
+		sprintf(buff,_("Bad screen format, report this to github.com/zelurker/raine:\n"
+				"Bpp: %d rshift %d gshift %d bshift %d"),
 				sdl_screen->format->BitsPerPixel,
 				sdl_screen->format->Rshift,
 				sdl_screen->format->Gshift,
@@ -267,7 +267,7 @@ void get_ogl_infos() {
 #else
 	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
 #endif
-	check_error("end ogl_infos");
+	check_error("End ogl_infos");
 }
 
 void render_texture(int linear) {
