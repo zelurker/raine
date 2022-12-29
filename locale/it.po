@@ -7581,14 +7581,14 @@ msgstr "Gestore delle finestre disponibile"
 #~ msgstr "Elimina associazione"
 
 # .................................... LANGUAGES
-#~ msgid "Default (english)"
-#~ msgstr "Predef.(ing.)"
+msgid "Default (english)"
+msgstr "Predef.(ing.)"
 
-#~ msgid "French"
-#~ msgstr "Francese"
+msgid "French"
+msgstr "Francese"
 
-#~ msgid "Spanish"
-#~ msgstr "Spagnolo"
+msgid "Spanish"
+msgstr "Spagnolo"
 
 #~ msgid "Portuguese"
 #~ msgstr "Portoghese"
@@ -7596,8 +7596,8 @@ msgstr "Gestore delle finestre disponibile"
 #~ msgid "German"
 #~ msgstr "Tedesco"
 
-#~ msgid "Italian"
-#~ msgstr "Italiano"
+msgid "Italian"
+msgstr "Italiano"
 
 #~ msgid "Russian"
 #~ msgstr "Russo"
@@ -7919,22 +7919,6 @@ msgstr "Gestore delle finestre disponibile"
 
 #~ msgid "10k only"
 #~ msgstr "Solo a 10k"
-
-# source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
-msgid "Default (English)"
-msgstr ""
-
-# source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
-msgid "French"
-msgstr ""
-
-# source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
-msgid "Spanish"
-msgstr ""
-
-# source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
-msgid "Italian"
-msgstr ""
 
 # source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
 msgid "Brazilian Portuguese"
