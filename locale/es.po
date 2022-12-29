@@ -565,11 +565,6 @@ msgstr "2 monedas extras"
 msgid "2.5 Minutes"
 msgstr "2.5 Minutos"
 
-#: source/games/taito_f2.c:592
-#, fuzzy
-msgid "20 seconds"
-msgstr "20 seg"
-
 #: source/games/quizgame.c:186 source/games/lsystem.c:99
 msgid "20 seconds"
 msgstr "20 segundos"
@@ -820,11 +815,6 @@ msgstr "3 por Credito"
 msgid "30 FPS"
 msgstr "30 cps"
 
-#: source/games/taito_f2.c:589
-#, fuzzy
-msgid "30 seconds"
-msgstr "30 seg"
-
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
 msgid "30 seconds"
 msgstr "30 segundos"
@@ -1040,11 +1030,6 @@ msgstr "4 Jugadores / 2 Gabs"
 msgid "40 Seconds"
 msgstr "40 Segundos"
 
-#: source/games/taito_f2.c:586 source/games/taito_f2.c:590
-#, fuzzy
-msgid "40 seconds"
-msgstr "40 seg"
-
 #: source/games/lsystem.c:386
 msgid "40 seconds"
 msgstr "40 segundos"
@@ -1122,11 +1107,6 @@ msgstr "5 Monedas/4 Creditos"
 msgid "5 Games Match"
 msgstr "Juego de 5 Partidos"
 
-#: source/games/cadash.c:107
-#, fuzzy
-msgid "5 Minutes"
-msgstr ""
-
 #: source/games/lsystem.c:382
 msgid "5 Minutes"
 msgstr "5 Minutos"
@@ -1142,11 +1122,6 @@ msgstr "5 segundos"
 #: source/games/hyperpcb.c:210
 msgid "50 Seconds"
 msgstr "50 Segundos"
-
-#: source/games/taito_f2.c:584
-#, fuzzy
-msgid "50 seconds"
-msgstr "50 seg"
 
 #: source/games/lsystem.c:384
 msgid "50 seconds"
@@ -1337,11 +1312,6 @@ msgstr "6 cps"
 #: source/games/hyperpcb.c:211
 msgid "60 Seconds"
 msgstr "60 Segundos"
-
-#: source/games/taito_f2.c:585
-#, fuzzy
-msgid "60 seconds"
-msgstr "60 seg"
 
 #: source/games/lsystem.c:385
 msgid "60 seconds"
@@ -4616,12 +4586,6 @@ msgstr ""
 #: source/sdl/dialogs/neocd_options.cpp:188 source/sdl/control.c:2209
 msgid "Off"
 msgstr "Apagado"
-
-#: source/games/dkong.c:828 source/games/frogger.c:1448 source/neocd/iso.c:95
-#: source/sdl/dialogs/video_options.cpp:97 source/sdl/dsw.c:417
-#, fuzzy
-msgid "OK"
-msgstr ""
 
 #: source/sdl/console/scripts.cpp:376 source/sdl/dialogs/game_options.cpp:213
 #: source/sdl/dialogs/cheats.cpp:156 source/sdl/control.c:2210

@@ -566,11 +566,6 @@ msgstr "2 fichas extras"
 msgid "2.5 Minutes"
 msgstr "2.5 Minutos"
 
-#: source/games/taito_f2.c:592
-#, fuzzy
-msgid "20 seconds"
-msgstr "20 segs"
-
 #: source/games/quizgame.c:186 source/games/lsystem.c:99
 msgid "20 seconds"
 msgstr "20 segundos"
@@ -822,11 +817,6 @@ msgstr "3 por Crédito"
 msgid "30 FPS"
 msgstr "30 fps"
 
-#: source/games/taito_f2.c:589
-#, fuzzy
-msgid "30 seconds"
-msgstr "30 segs"
-
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
 msgid "30 seconds"
 msgstr "30 segundos"
@@ -1042,11 +1032,6 @@ msgstr "4 Jogadores / 2 Gabs"
 msgid "40 Seconds"
 msgstr "40 Segundos"
 
-#: source/games/taito_f2.c:586 source/games/taito_f2.c:590
-#, fuzzy
-msgid "40 seconds"
-msgstr "40 segs"
-
 #: source/games/lsystem.c:386
 msgid "40 seconds"
 msgstr "40 segundos"
@@ -1124,11 +1109,6 @@ msgstr "5 Fichas/4 Créditos"
 msgid "5 Games Match"
 msgstr "Jogo de 5 Partidas"
 
-#: source/games/cadash.c:107
-#, fuzzy
-msgid "5 Minutes"
-"5 Minutes"
-
 #: source/games/lsystem.c:382
 msgid "5 Minutes"
 msgstr "5 Minutos"
@@ -1144,11 +1124,6 @@ msgstr "5 segundos"
 #: source/games/hyperpcb.c:210
 msgid "50 Seconds"
 msgstr "50 Segundos"
-
-#: source/games/taito_f2.c:584
-#, fuzzy
-msgid "50 seconds"
-msgstr "50 segs"
 
 #: source/games/lsystem.c:384
 msgid "50 seconds"
@@ -1326,9 +1301,8 @@ msgid "6 Coins/4 Credits"
 msgstr "6 Fichas/4 Créditos"
 
 #: source/games/cadash.c:106
-#, fuzzy
 msgid "6 Minutes"
-"6 Minutes"
+msgstr "6 Minutos"
 
 #: source/sdl/dialogs/controls.cpp:729
 #, fuzzy
@@ -1339,11 +1313,6 @@ msgstr "6 fps"
 #: source/games/hyperpcb.c:211
 msgid "60 Seconds"
 msgstr "60 Segundos"
-
-#: source/games/taito_f2.c:585
-#, fuzzy
-msgid "60 seconds"
-msgstr "60 segs"
 
 #: source/games/lsystem.c:385
 msgid "60 seconds"
@@ -1523,9 +1492,8 @@ msgid "8 Coins/4 Credits"
 msgstr "8 Fichas/4 Créditos"
 
 #: source/games/cadash.c:105
-#, fuzzy
 msgid "8 Minutes"
-"8 Minutes"
+msgstr "8 Minutos"
 
 #: source/games/crimec.c:69
 msgid "8 Times"
@@ -4602,7 +4570,7 @@ msgstr "OBJ 2"
 #: source/sdl/dialogs/video_options.cpp:200 source/sdl/glsl.c:562
 #: source/sdl/streams.c:446
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: source/sdl/console/scripts.cpp:375 source/sdl/dialogs/controls.cpp:724
 #: source/sdl/dialogs/video_options.cpp:122
@@ -4611,12 +4579,6 @@ msgstr "OK"
 #: source/sdl/dialogs/neocd_options.cpp:188 source/sdl/control.c:2209
 msgid "Off"
 msgstr "Desligado"
-
-#: source/games/dkong.c:828 source/games/frogger.c:1448 source/neocd/iso.c:95
-#: source/sdl/dialogs/video_options.cpp:97 source/sdl/dsw.c:417
-#, fuzzy
-msgid "OK"
-"OK"
 
 #: source/sdl/console/scripts.cpp:376 source/sdl/dialogs/game_options.cpp:213
 #: source/sdl/dialogs/cheats.cpp:156 source/sdl/control.c:2210
@@ -6826,7 +6788,7 @@ msgstr "dpad pra cima"
 #: source/sdl/dsw.c:146
 #, fuzzy
 msgid "Dipswitch"
-"Dipswitch"
+msgstr "Dipswitch"
 
 #: source/sdl/dialogs/dirs.cpp:55
 msgid "dz80 (console)"
@@ -6966,7 +6928,7 @@ msgstr "carregando ladrilhos do EmuDX"
 #: source/sdl/dialogs/sound_options.cpp:78
 #, fuzzy
 msgid "Less significant byte"
-"Less significant byte"
+msgstr "Less significant byte"
 
 #: source/sdl/dialogs/dirs.cpp:52
 msgid "m68kdis (console)"
@@ -6975,7 +6937,7 @@ msgstr "m68kdis (console)"
 #: source/sdl/dialogs/sound_options.cpp:78
 #, fuzzy
 msgid "Most significant byte"
-"Most significant byte"
+msgstr "Most significant byte"
 
 #: source/sdl/dialogs/translator.cpp:808
 #, fuzzy

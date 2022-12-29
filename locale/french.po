@@ -569,10 +569,6 @@ msgstr "2 minutes 30"
 msgid "20 seconds"
 msgstr ""
 
-#: source/games/quizgame.c:186 source/games/lsystem.c:99
-msgid "20 seconds"
-msgstr ""
-
 #: source/games/armedf.c:187 source/games/terraf.c:82
 msgid "20000, every 60000"
 msgstr "20000, tous les 60000"
@@ -819,11 +815,6 @@ msgstr "3 par partie"
 msgid "30 FPS"
 msgstr ""
 
-#: source/games/taito_f2.c:589
-#, fuzzy
-msgid "30 seconds"
-msgstr ""
-
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
 msgid "30 seconds"
 msgstr "30 secondes"
@@ -1039,14 +1030,9 @@ msgstr "4 joueurs / 2 bornes"
 msgid "40 Seconds"
 msgstr ""
 
-#: source/games/taito_f2.c:586 source/games/taito_f2.c:590
-#, fuzzy
-msgid "40 seconds"
-msgstr ""
-
 #: source/games/lsystem.c:386
 msgid "40 seconds"
-msgstr ""
+msgstr "40 secondes"
 
 #: source/games/armedf.c:189
 msgid "40000, every 60000"
@@ -1121,11 +1107,6 @@ msgstr "5 pièces / 4 parties"
 msgid "5 Games Match"
 msgstr "Match en 5 jeux"
 
-#: source/games/cadash.c:107
-#, fuzzy
-msgid "5 Minutes"
-msgstr ""
-
 #: source/games/lsystem.c:382
 msgid "5 Minutes"
 msgstr ""
@@ -1141,11 +1122,6 @@ msgstr "5 secondes"
 #: source/games/hyperpcb.c:210
 msgid "50 Seconds"
 msgstr "50 secondes"
-
-#: source/games/taito_f2.c:584
-#, fuzzy
-msgid "50 seconds"
-msgstr ""
 
 #: source/games/lsystem.c:384
 msgid "50 seconds"
@@ -1336,14 +1312,9 @@ msgstr ""
 msgid "60 Seconds"
 msgstr ""
 
-#: source/games/taito_f2.c:585
-#, fuzzy
-msgid "60 seconds"
-msgstr ""
-
 #: source/games/lsystem.c:385
 msgid "60 seconds"
-msgstr ""
+msgstr "60 secondes"
 
 #: source/games/armedf.c:230
 msgid "60000 and 130000"
@@ -4578,12 +4549,6 @@ msgstr ""
 #: source/sdl/dialogs/neocd_options.cpp:188 source/sdl/control.c:2209
 msgid "Off"
 msgstr "Arrêt"
-
-#: source/games/dkong.c:828 source/games/frogger.c:1448 source/neocd/iso.c:95
-#: source/sdl/dialogs/video_options.cpp:97 source/sdl/dsw.c:417
-#, fuzzy
-msgid "OK"
-msgstr ""
 
 #: source/sdl/console/scripts.cpp:376 source/sdl/dialogs/game_options.cpp:213
 #: source/sdl/dialogs/cheats.cpp:156 source/sdl/control.c:2210

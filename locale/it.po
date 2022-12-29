@@ -591,12 +591,6 @@ msgstr "2 gettoni extra"
 msgid "2.5 Minutes"
 msgstr "2.5 minuti"
 
-# ....................................
-#: source/games/taito_f2.c:592
-#, fuzzy
-msgid "20 seconds"
-msgstr ""
-
 #: source/games/quizgame.c:186 source/games/lsystem.c:99
 msgid "20 seconds"
 msgstr "20 secondi"
@@ -855,11 +849,6 @@ msgstr "3 per credito"
 msgid "30 FPS"
 msgstr ""
 
-#: source/games/taito_f2.c:589
-#, fuzzy
-msgid "30 seconds"
-msgstr ""
-
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
 msgid "30 seconds"
 msgstr "30 secondi"
@@ -1082,11 +1071,6 @@ msgstr "4 gioc./2 cabinati"
 msgid "40 Seconds"
 msgstr "40 Secondi"
 
-#: source/games/taito_f2.c:586 source/games/taito_f2.c:590
-#, fuzzy
-msgid "40 seconds"
-msgstr ""
-
 #: source/games/lsystem.c:386
 msgid "40 seconds"
 msgstr "40 secondi"
@@ -1165,12 +1149,6 @@ msgstr "5 Gettoni/4 Crediti"
 msgid "5 Games Match"
 msgstr "5 sfide"
 
-# Cadash
-#: source/games/cadash.c:107
-#, fuzzy
-msgid "5 Minutes"
-msgstr "5 minuti"
-
 #: source/games/lsystem.c:382
 msgid "5 Minutes"
 msgstr "5 minuti"
@@ -1186,11 +1164,6 @@ msgstr "5 secondi"
 #: source/games/hyperpcb.c:210
 msgid "50 Seconds"
 msgstr "40 Secondi"
-
-#: source/games/taito_f2.c:584
-#, fuzzy
-msgid "50 seconds"
-msgstr ""
 
 #: source/games/lsystem.c:384
 msgid "50 seconds"
@@ -1386,11 +1359,6 @@ msgstr ""
 #: source/games/hyperpcb.c:211
 msgid "60 Seconds"
 msgstr "60 Secondi"
-
-#: source/games/taito_f2.c:585
-#, fuzzy
-msgid "60 seconds"
-msgstr ""
 
 #: source/games/lsystem.c:385
 msgid "60 seconds"
@@ -4854,12 +4822,6 @@ msgstr "Va bene"
 msgid "Off"
 msgstr "Non attivo"
 
-#: source/games/dkong.c:828 source/games/frogger.c:1448 source/neocd/iso.c:95
-#: source/sdl/dialogs/video_options.cpp:97 source/sdl/dsw.c:417
-#, fuzzy
-msgid "OK"
-msgstr "Okay!"
-
 #: source/sdl/console/scripts.cpp:376 source/sdl/dialogs/game_options.cpp:213
 #: source/sdl/dialogs/cheats.cpp:156 source/sdl/control.c:2210
 msgid "On"
@@ -7201,7 +7163,7 @@ msgstr ""
 #: source/sdl/dsw.c:146
 #, fuzzy
 msgid "Dipswitch"
-"Dipswitch"
+msgstr "Dipswitch"
 
 #: source/sdl/dialogs/dirs.cpp:55
 msgid "dz80 (console)"
