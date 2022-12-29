@@ -6552,10 +6552,6 @@ msgstr "Rounds no Modo Vs"
 msgid "Vs Play Mode"
 msgstr "Modo de Jogo Vs"
 
-#: source/games/seta.c:1776
-msgid "WALTZ0"
-msgstr "WALTZ0"
-
 #: source/neocd/neocd.c:1256 source/sdl/dialogs/neo_softdips.cpp:231
 #: source/sdl/dialogs/about.cpp:846 source/sdl/dialogs/video_options.cpp:97
 #: source/sdl/glsl.c:385 source/sdl/compat.c:300 source/sdl/dsw.c:417
@@ -6631,10 +6627,6 @@ msgstr "Mundo/PipiBibi"
 #: source/games/toaplan1.c:78
 msgid "World/Taito Corp Japan"
 msgstr "Mundo/Corporação Taito - Japão"
-
-#: source/sdl/dialogs/game_options.cpp:133
-msgid "X"
-msgstr "X"
 
 #: source/sdl/dialogs/video_options.cpp:266
 msgid "YUV overlays"
