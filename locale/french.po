@@ -3899,7 +3899,7 @@ msgstr "GAUCHE"
 #: source/games/xsystem1.c:93 source/games/xsystem1.c:165
 #: source/sdl/dialogs/gui_options.cpp:37
 msgid "Language"
-msgstr ""
+msgstr "Langage"
 
 #: source/games/cabal.c:140
 msgid "Large"
@@ -4768,7 +4768,7 @@ msgstr "Jouer au jeu"
 
 #: source/sdl/dialogs/sound_commands.cpp:159
 msgid "Play track|Test command|Silence track|Change track|Remove association"
-msgstr ""
+msgstr "Lire la piste|Tester commande|Piste silencieuse|Changer de piste|Retirer l'association"
 
 #: source/sdl/dialogs/sound_commands.cpp:179
 #: source/sdl/dialogs/sound_commands.cpp:189
@@ -5178,11 +5178,11 @@ msgstr "Enregistrement en wav..."
 
 #: source/games/wrestlef.c:83
 msgid "Regain Power Price"
-msgstr ""
+msgstr "Prix de la récupération de puissance"
 
 #: source/sdl/gui.cpp:517
 msgid "Region"
-msgstr ""
+msgstr "Région"
 
 #: source/loadroms.c:1099
 #, c-format
@@ -5191,12 +5191,11 @@ msgstr "La taille restante pas assez pour continue %s\n"
 
 #: source/sdl/dialogs/video_info.cpp:68
 msgid "Renderer"
-msgstr ""
+msgstr "Rendu"
 
 #: source/sdl/dialogs/video_options.cpp:280
-#, fuzzy
 msgid "None"
-msgstr "Configuration du rendu"
+msgstr "Aucun(e)"
 
 #: source/sdl/dialogs/video_options.cpp:167
 msgid "Rendering"
@@ -5204,7 +5203,7 @@ msgstr "Rendu"
 
 #: source/sdl/dialogs/game_options.cpp:246
 msgid "Reset FPS to driver's default value"
-msgstr "Remettre les fps à la valeur par défaut"
+msgstr "Remettre les FPS à la valeur par défaut"
 
 #: source/sdl/control.c:689
 msgid "Reset game"
@@ -5220,11 +5219,11 @@ msgstr "Remettre les valeurs de transparence par défaut"
 
 #: source/games/chasehq2.c:100
 msgid "Responds to Controls"
-msgstr ""
+msgstr "Répond aux contrôles"
 
 #: source/games/lsystem.c:955
 msgid "Retries"
-msgstr ""
+msgstr "Récupérations"
 
 #: source/sdl/gui/menu.cpp:154 source/sdl2/gui/menu.cpp:129
 msgid "Return mandatory"
@@ -5245,21 +5244,20 @@ msgstr "Retourner à..."
 
 #: source/sdl/dialogs/controls.cpp:121
 msgid "Right Stick"
-msgstr ""
+msgstr "Manche droit"
 
 #: source/sdl/dialogs/controls.cpp:123
 msgid "Right shoulder"
-msgstr ""
+msgstr "Gachette droite"
 
 #: source/games/wgp.c:452 source/games/chasehq.c:816
 #: source/games/chasehq.c:1334
 msgid "Roadscroll"
-msgstr ""
+msgstr "Dfilement route"
 
 #: source/games/bloodbro.c:81
-#, fuzzy
 msgid "ROM Option"
-msgstr ""
+msgstr "Option de la rom ?"
 
 #: source/games/seta.c:2163 source/games/seta.c:2181 source/games/seta.c:2293
 #: source/games/seta.c:2472 source/games/seta.c:2556 source/games/seta.c:3114
@@ -5272,15 +5270,15 @@ msgstr ""
 
 #: source/games/silkworm.c:461
 msgid "Round 6"
-msgstr ""
+msgstr "Niveau 6"
 
 #: source/games/silkworm.c:462
 msgid "Round 7"
-msgstr ""
+msgstr "Niveau 7"
 
 #: source/emumain.c:514
 msgid "Running CPU All Frames"
-msgstr ""
+msgstr "le CPU emule toutes les images"
 
 #: source/emumain.c:516
 #, c-format
@@ -5316,21 +5314,21 @@ msgstr ""
 
 #: source/games/seta.c:3211 source/games/seta.c:3215 source/games/seta.c:3220
 msgid "SPRITES BG"
-msgstr ""
+msgstr "sprites de fond"
 
 #: source/games/seta.c:3212 source/games/seta.c:3216 source/games/seta.c:3221
 msgid "SPRITES FG"
-msgstr ""
+msgstr "sprites de 1er plan"
 
 #: source/games/seta.c:2114
 msgid "Sales"
-msgstr ""
+msgstr "Ventes"
 
 #: source/games/crimec.c:133 source/games/ashura.c:123
 #: source/games/rastan2.c:174 source/games/lsystem.c:425
 #: source/games/lsystem.c:853
 msgid "Same as play"
-msgstr ""
+msgstr "Même qu'1 partie"
 
 #: source/sdl/dialogs/sound_options.cpp:70
 msgid "Sample rate"
@@ -5361,14 +5359,12 @@ msgid "Save inputs as..."
 msgstr "Sauver les contrôles sous..."
 
 #: source/sdl/dialogs/video_options.cpp:172
-#, fuzzy
 msgid "Save OpenGL screenshots"
-msgstr "Capturer l'écran opengl"
+msgstr "Capturer l'écran OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:289
-#, fuzzy
 msgid "Save per game screen settings"
-msgstr "Capturer l'écran opengl"
+msgstr "Chaque jeu a ses paramètres vidéo"
 
 #: source/sdl/dialogs/game_options.cpp:193
 #: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:681
@@ -5393,11 +5389,11 @@ msgstr ""
 
 #: source/games/seta.c:2206
 msgid "Score Digits"
-msgstr ""
+msgstr "Chiffres de score"
 
 #: source/games/toaplan2.c:5475
 msgid "Score Ranking"
-msgstr ""
+msgstr "Tableau des scores"
 
 #: source/sdl/blit.c:95 source/sdl2/blit.c:90
 #, c-format
@@ -5409,13 +5405,12 @@ msgid "Screen rotation"
 msgstr "Rotation d'écran"
 
 #: source/sdl/dialogs/dirs.cpp:43
-#, fuzzy
 msgid "Screenshot directory"
 msgstr "Répertoire de captures d'écran"
 
 #: source/games/crimec.c:37 source/games/crimec.c:122 source/games/crimec.c:177
 msgid "Scribble"
-msgstr ""
+msgstr "Griffonage"
 
 #: source/loadroms.c:1241
 #, c-format
@@ -5424,16 +5419,15 @@ msgstr "Répertoires de recherche:\n"
 
 #: source/games/terrac.c:74
 msgid "Second Life at"
-msgstr ""
+msgstr "2ème vie à"
 
 #: source/sdl/dialogs/controls.cpp:1116
-#, fuzzy
 msgid "Select joystick"
-msgstr "Joystick analogique"
+msgstr "Sélectionne le joystick"
 
 #: source/games/esd16.c:107
 msgid "Selectable Games"
-msgstr ""
+msgstr "Jeux qu'on peut choisir"
 
 #: source/games/toaplan2.c:273
 msgid "Semi-auto"
@@ -5441,7 +5435,7 @@ msgstr ""
 
 #: source/games/silentd.c:132
 msgid "Seperate"
-msgstr ""
+msgstr "Séparé(s)"
 
 #: source/neocd/cdrom.c:303
 #, c-format
@@ -5466,7 +5460,7 @@ msgstr ""
 
 #: source/sdl/console/scripts.cpp:392
 msgid "Set"
-msgstr ""
+msgstr "Actif"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Seta"
@@ -5498,23 +5492,23 @@ msgstr ""
 
 #: source/games/seta.c:2697
 msgid "Shared Credits"
-msgstr ""
+msgstr "Crédits partagés"
 
 #: source/games/taito_f2.c:798
 msgid "Shields"
-msgstr ""
+msgstr "Boucliers"
 
 #: source/games/toaplan2.c:271
 msgid "Shooting Style"
-msgstr ""
+msgstr "Type de tir"
 
 #: source/games/quizgame.c:88
 msgid "Show Correct Answer"
-msgstr ""
+msgstr "Montre la réponse correcte"
 
 #: source/games/spacegun.c:103
 msgid "Show Crosshair"
-msgstr ""
+msgstr "Montre le viseur"
 
 #: source/games/opwolf.c:63
 msgid "Silence"
@@ -5522,36 +5516,36 @@ msgstr ""
 
 #: source/games/taito_f2.c:807
 msgid "Simultaneous"
-msgstr ""
+msgstr "Siumltanné"
 
 #: source/games/metalb.c:102 source/games/taito_f2.c:704
 msgid "Simultaneous Play"
-msgstr ""
+msgstr "Jeu simultanné"
 
 #: source/games/quizgame.c:195 source/games/taito_f2.c:595
 #: source/games/taito_f2.c:755 source/games/taito_f2.c:783
 #: source/games/taito_f2.c:903 source/games/taito_f2.c:956
 #: source/games/taito_f2.c:962 source/games/taito_f2.c:2361
 msgid "Single"
-msgstr ""
+msgstr "Simple"
 
 #: source/games/cadash.c:118
 msgid "Slave"
-msgstr ""
+msgstr "Esclave"
 
 #: source/games/cps1drv.c:3330 source/games/cps1drv.c:3501
 #: source/games/spacegun.c:93 source/games/spacegun.c:96
 msgid "Slow"
-msgstr ""
+msgstr "Lent(e)"
 
 #: source/games/cps1drv.c:3496
 msgid "Slowly"
-msgstr ""
+msgstr "Lentement"
 
 #: source/games/deadconx.c:113 source/games/cabal.c:139
 #: source/games/cps1drv.c:3385 source/games/taito_f2.c:948
 msgid "Small"
-msgstr ""
+msgstr "Odeur"
 
 #: source/sdl/dialogs/neo_softdips.cpp:185
 msgid "Soft dipswitches"
@@ -5578,18 +5572,16 @@ msgid "Sound commands..."
 msgstr "Commandes sonores..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
-#, fuzzy
 msgid "Sound device"
-msgstr "Pas de périphérique analogique"
+msgstr "Carte son"
 
 #: source/sdl/dialogs/sound_options.cpp:67
-#, fuzzy
 msgid "Sound driver"
-msgstr "Pilote vidéo SDL"
+msgstr "Pilote audio"
 
 #: source/sdl/dialogs/sound_options.cpp:76
 msgid "Sound effects volume"
-msgstr "Volume SFX"
+msgstr "Volume des effets sonores"
 
 #: source/sdl/gui.cpp:526
 msgid "Sound options"
@@ -5597,42 +5589,41 @@ msgstr "Options sonores"
 
 #: source/games/biomtoy.c:191
 msgid "Sound type"
-msgstr ""
+msgstr "Type de son"
 
 #: source/games/toaplan2.c:536 source/games/toaplan2.c:551
 #: source/games/toaplan2.c:1461 source/games/toaplan2.c:2004
 msgid "South East Asia"
-msgstr ""
+msgstr "Asie du sud est"
 
 #: source/games/toaplan2.c:550
 msgid "South East Asia (Charterfield License)"
-msgstr ""
+msgstr "Asie du sud est (license Chaterfield)"
 
 #: source/games/toaplan2.c:2003
 msgid "South East Asia(Taito)"
-msgstr ""
+msgstr "Asie du sud est (Taito)"
 
 #: source/games/toaplan2.c:1221
 msgid "Spain & Portugal (APM)"
-msgstr ""
+msgstr "Espagne & Portugal (APM)"
 
 #: source/games/toaplan2.c:1084
 msgid "Spain&Portugal/PipiBibi"
-msgstr ""
+msgstr "Espagne & Portuagal / Pipibibi"
 
 #: source/games/toaplan2.c:1677
 msgid "Special Course"
-msgstr ""
+msgstr "Course spéciale"
 
 #: source/games/cps1.c:2909
 msgid "Speed hack not found, slowing down..."
-msgstr "Hack de vitesse pas trouvé, on ralentit..."
+msgstr "Hack de vitesse pas trouve, on ralentit..."
 
 #: source/sdl/control.c:414
 #, c-format
-#, fuzzy
 msgid "Speed limit %d FPS"
-msgstr "Limite de vitesse %d fps"
+msgstr "Limite de vitesse %d FPS"
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"
@@ -5644,41 +5635,41 @@ msgstr "Conversion des sprites..."
 
 #: source/neocd/neocd.c:4589
 msgid "Sprites layer"
-msgstr ""
+msgstr "Couche de sprites"
 
 #: source/games/lsystem.c:968
 msgid "Stage & Timer Start"
-msgstr ""
+msgstr "Le niveau & le timer redémarrent"
 
 #: source/games/seta.c:2966
 msgid "Stage & Weapon Select"
-msgstr ""
+msgstr "Sélection du niveau & de l'arme"
 
 #: source/games/ctribebl.c:103 source/games/doubled3.c:114
 msgid "Stage Clear Life"
-msgstr ""
+msgstr "Vie pour niveau terminé"
 
 #: source/games/toaplan2.c:1664 source/games/toaplan2.c:1858
 #: source/games/toaplan2.c:1896 source/games/toaplan2.c:5468
 msgid "Stage Edit"
-msgstr ""
+msgstr "Edition du niveau"
 
 #: source/games/cps1drv.c:3336
 msgid "Stage Magic Continue"
-msgstr ""
+msgstr "Magie du niveau continue"
 
 #: source/games/cps1drv.c:3643 source/games/seta.c:1872
 #: source/games/seta.c:2001
 msgid "Stage Select"
-msgstr ""
+msgstr "Sélection du niveau"
 
 #: source/games/cookbib.c:201 source/games/cookbib.c:312
 msgid "Stage Skip"
-msgstr ""
+msgstr "Passer le niveau"
 
 #: source/games/lsystem.c:967
 msgid "Stage Start/Timer Cont"
-msgstr ""
+msgstr "Le niveau redémarre / le chrono continue"
 
 #: source/sdl/dialogs/about.cpp:705
 msgid "Starscream 0.26r4 by Neill Corlett"
@@ -5700,15 +5691,15 @@ msgstr "Temps de départ"
 
 #: source/games/chasehq2.c:97 source/games/chasehq.c:150
 msgid "Start Turbos"
-msgstr ""
+msgstr "Turbos au départ"
 
 #: source/games/cookbib.c:344
 msgid "Starting Balls"
-msgstr ""
+msgstr "Balles de départ"
 
 #: source/games/doubled3.c:117
 msgid "Starting Life"
-msgstr ""
+msgstr "Vie de départ"
 
 #: source/sdl/dialogs/game_selection.cpp:42
 msgid "Status"
@@ -5716,7 +5707,7 @@ msgstr ""
 
 #: source/games/cadash.c:116
 msgid "Status for Comm"
-msgstr ""
+msgstr "Status de comm"
 
 #: source/games/contcirc.c:88
 msgid "Steering wheel"
@@ -5724,7 +5715,7 @@ msgstr "Volant"
 
 #: source/games/biomtoy.c:193
 msgid "Stereo"
-msgstr ""
+msgstr "Stéréo"
 
 #: source/sdl/dialogs/sound_commands.cpp:270
 msgid "Stop"
@@ -5748,11 +5739,11 @@ msgstr ""
 
 #: source/sdl/control.c:685 source/sdl/control.c:687
 msgid "Switch FPS display"
-msgstr ""
+msgstr "Commuter l'affichage FPS"
 
 #: source/sdl/control.c:682
 msgid "Switch save slot"
-msgstr ""
+msgstr "Changer de slot de sauvegarde"
 
 #: source/sdl/dialogs/controls.cpp:1199 source/sdl/dialogs/controls.cpp:1203
 msgid "Switch to custom game controls"
@@ -5760,11 +5751,11 @@ msgstr "Passer aux contrôles personnalisés"
 
 #: source/games/cps1drv.c:4192
 msgid "TEST MODE"
-msgstr ""
+msgstr "Mode de test"
 
 #: source/games/matmania.c:319
 msgid "TEXT"
-msgstr ""
+msgstr "Texte"
 
 #: source/games/taito_f2.c:558 source/sdl/control.c:2235
 msgid "Table"
@@ -5833,7 +5824,7 @@ msgstr ""
 
 #: source/games/lsystem.c:966
 msgid "Terms of Replay"
-msgstr ""
+msgstr "Options de rejouabilité"
 
 #: source/games/toaplan1.c:212 source/games/toaplan1.c:372
 #: source/games/toaplan1.c:487 source/games/toaplan1.c:711
@@ -5842,16 +5833,15 @@ msgstr ""
 #: source/games/toaplan2.c:1852 source/games/toaplan2.c:1890
 #: source/games/toaplan2.c:1996
 msgid "Territory"
-msgstr ""
+msgstr "Territoire"
 
 #: source/games/toaplan1.c:77 source/games/toaplan1.c:555
 msgid "Territory/Copyright"
-msgstr ""
+msgstr "Territoire / Copyright"
 
 #: source/games/cps1drv.c:3080
-#, fuzzy
 msgid "Test Mode Display"
-msgstr ""
+msgstr "Affichage du mode de test"
 
 #: source/games/cps1drv.c:3133 source/games/cps1drv.c:3177
 #: source/games/cps1drv.c:3231 source/games/cps1drv.c:3305
@@ -5872,13 +5862,12 @@ msgid "Test (grid and input)"
 msgstr "Test (grille et contrôles)"
 
 #: source/games/bublbobl.c:231
-#, fuzzy
 msgid "Test (RAM and sound)/pause"
 msgstr "Test (son & ram)/pause"
 
 #: source/sdl/control.c:2216
 msgid "Test Mode"
-msgstr ""
+msgstr "Mode de test"
 
 #: source/sdl/dialogs/neocd_options.cpp:186
 msgid "Test mode"
@@ -5890,7 +5879,7 @@ msgstr "Tester ça"
 
 #: source/games/megasys1.c:661
 msgid "Text"
-msgstr ""
+msgstr "Texte"
 
 #: source/sdl/dialogs/video_options.cpp:167
 msgid "Texture (possible shaders)"
@@ -5922,7 +5911,6 @@ msgstr "Le fichier '%s' ne peut pas être chargé"
 
 #: source/loadroms.c:988
 #, c-format
-#, fuzzy
 msgid "The game didn't initialise any CPU, this game can't work!\n"
 msgstr "Le jeu n'a initialisé aucun CPU, il ne peut pas marcher !\n"
 
@@ -5932,7 +5920,7 @@ msgstr "Cette image n'est pas en 8bpp"
 
 #: source/games/cps1drv.c:3512
 msgid "Throttle Game Speed"
-msgstr ""
+msgstr "Changer vitesse du jeu"
 
 #: source/games/seta.c:3157
 msgid "Thundercade"
@@ -5944,11 +5932,11 @@ msgstr ""
 
 #: source/sdl/control.c:2085
 msgid "Tilt Left"
-msgstr ""
+msgstr "Tilt de gauche"
 
 #: source/sdl/control.c:2086
 msgid "Tilt Right"
-msgstr ""
+msgstr "Tilt de droite"
 
 #: source/games/cookbib.c:341 source/games/cps1drv.c:4518
 #: source/games/cps1drv.c:4578 source/games/hyperpcb.c:77
@@ -5956,31 +5944,30 @@ msgstr ""
 #: source/games/lsystem.c:97 source/games/lsystem.c:378
 #: source/games/megasys1.c:669
 msgid "Time"
-msgstr ""
+msgstr "Temps"
 
 #: source/games/taito_f2.c:892
 msgid "Time Limit"
-msgstr ""
+msgstr "Limite de temps"
 
 #: source/games/taito_f2.c:951 source/games/toaplan2.c:1642
 #: source/games/toaplan2.c:5446
 msgid "Timer"
-msgstr ""
+msgstr "Chrono"
 
 #: source/games/ctribebl.c:96
 msgid "Timer Speed"
-msgstr ""
+msgstr "Vitesse du chrono"
 
 #: source/games/seta.c:2350 source/games/seta.c:3156
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: source/sdl/dialogs/video_options.cpp:118
 msgid "To match 2x game resolution"
 msgstr "2x la résolution du jeu"
 
 #: source/sdl/dialogs/video_options.cpp:118
-#, fuzzy
 msgid "To match game resolution (low resolution most of the time)"
 msgstr "Résolution du jeu (basse normalement)"
 
@@ -5998,23 +5985,21 @@ msgstr ""
 
 #: source/games/taito_f2.c:596
 msgid "Together"
-msgstr ""
+msgstr "Ensemble"
 
 #: source/games/chasehq.c:125
 msgid "Toggle"
-msgstr ""
+msgstr "Bascule"
 
 #: source/neocd/neocd.c:274
 msgid "Toggle capture mode"
-msgstr ""
+msgstr "Bascule le mode de capture"
 
 #: source/sdl/control.c:680
 msgid "Toggle limit speed"
-msgstr ""
+msgstr "Bascule la limite de vitesse"
 
 #: source/sdl/dialogs/controls.cpp:776
-#, fuzzy
-#, fuzzy
 msgid "Too many controls have been defined for this game already."
 msgstr "Trop de contrôles ont été définis pour ce jeu, désolé !"
 
@@ -6045,7 +6030,6 @@ msgid "Transparency for 1 (25% default)"
 msgstr "Transparence pour 1 (25% normalement)"
 
 #: source/sdl/dialogs/video_options.cpp:230
-#, fuzzy, c-format
 msgid "Transparency for 2 (50% default)"
 msgstr "Transparence pour 2 (50% normalement)"
 
@@ -6055,7 +6039,7 @@ msgstr "Masques de transparence / rotation"
 
 #: source/games/cps1drv.c:3293
 msgid "Turbo Mode"
-msgstr ""
+msgstr "Mode turbo"
 
 #: source/games/seta.c:3158
 msgid "Twin Formation"
@@ -7079,20 +7063,20 @@ msgstr "Gestionnaire de fenêtres disponible"
 
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "Default (English)"
-msgstr ""
+msgstr "Anglais (par défaut)"
 
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "French"
-msgstr ""
+msgstr "Français"
 
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "Spanish"
-msgstr ""
+msgstr "Espagnol"
 
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "Italian"
-msgstr ""
+msgstr "Italien"
 
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "Brazilian Portuguese"
-msgstr ""
+msgstr "Portugais brésilien"
