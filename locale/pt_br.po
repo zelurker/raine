@@ -7220,3 +7220,23 @@ msgstr "gerenciador de janelas disponível"
 
 #~ msgid "rom dirs"
 #~ msgstr "diretórios das roms"
+
+# source/sdl/dialogs/gui_options.cpp:28 (added by update_po.pl)
+msgid "Default (English)"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:28 (added by update_po.pl)
+msgid "French"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:28 (added by update_po.pl)
+msgid "Spanish"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:28 (added by update_po.pl)
+msgid "Italian"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:28 (added by update_po.pl)
+msgid "Brazilian Portuguese"
+msgstr ""

@@ -7076,3 +7076,23 @@ msgstr "Gestionnaire de fenêtres disponible"
 
 #~ msgid "path format error"
 #~ msgstr "erreur de format de répertoire"
+
+# source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
+msgid "Default (English)"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
+msgid "French"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
+msgid "Spanish"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
+msgid "Italian"
+msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
+msgid "Brazilian Portuguese"
+msgstr ""
