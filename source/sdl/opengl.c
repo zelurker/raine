@@ -220,7 +220,7 @@ void get_ogl_infos() {
 	if (format_error && !broken_gl_format) {
 		char buff[1024];
 		broken_gl_format = 1;
-		sprintf(buff,_("Bad screen format, report this to github.com/zelurker/raine:\n"
+		sprintf(buff,_("Bad screen format, report this to raine.1emulation.com\n"
 				"Bpp: %d rshift %d gshift %d bshift %d"),
 				sdl_screen->format->BitsPerPixel,
 				sdl_screen->format->Rshift,

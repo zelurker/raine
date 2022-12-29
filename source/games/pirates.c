@@ -376,7 +376,7 @@ static int layer_bg, layer_sprites,layer_text;
 static void load_genix(void)
 {
   RAMSize = 0x10000 + 0x800 + 0x4000 + 0x8000;
-  layer_bg = add_layer_info(gettext("bg"));
+  layer_bg = add_layer_info(gettext("background"));
   layer_sprites = add_layer_info(gettext("sprites"));
   layer_text = add_layer_info(gettext("text"));
   if(!(RAM=AllocateMem(RAMSize))) return;

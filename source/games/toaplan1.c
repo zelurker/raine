@@ -124,7 +124,7 @@ static struct DSW_DATA dsw_data_truxton_1[] =
    { "3",                     0x00},
    { "4",                     0x20},
    { "5",                     0x10},
-   { _("Dipsw display"),         0x00, 0x02 },
+   { _("Dipswitches display"),         0x00, 0x02 },
    { MSG_OFF,                 0x00},
    { MSG_ON,                  0x40},
    { _("Continue"),              0x80, 0x02 },

@@ -78,7 +78,7 @@ static struct DSW_DATA dsw_data_blood_bros_0[] =
    { _("Coin Start"),            0x20, 0x02 },
    { MSG_NORMAL,              0x20},
    { _("Double"),                0x00},
-   { _("Rom Option"),            0xC0, 0x04 },
+   { _("ROM Option"),            0xC0, 0x04 },
    { _("A"),                     0xC0},
    { _("B"),                     0x80},
    { _("C"),                     0x40},

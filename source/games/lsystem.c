@@ -966,7 +966,7 @@ static struct DSW_DATA dsw_data_puzznic_1[] =
    { _("Terms of Replay"),       0xC0, 0x04 },
    { _("Stage Start/Timer Cont"),0xC0},
    { _("Stage & Timer Start"),   0x80},
-   { _("One step back/Time Cnt"),0x40},
+   { _("One step back/Time Count"),0x40},
    { _("No Use"),                0x00},
    { NULL,                    0,   },
 };

@@ -94,7 +94,7 @@ static int my_toggle_border(int sel) {
 #if SDL==1
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
-    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("Ok"));
+    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("OK"));
     display_cfg.stretch = 0; // no scaling if scanlines
     video_options->draw();
   }
@@ -278,7 +278,7 @@ static menu_item_t video_items[] =
 { _("Blend file options..."), &do_bld },
 { _("Renderer options..."), &renderer_options },
 { _("General options:") },
-{ _("Limit framerate <= 60fps"), NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
+{ _("Limit framerate <= 60 FPS"), NULL, (int*)&display_cfg.limit_speed, 2, {0, 1}, {_("No"),_("Yes")} },
 { _("Frame skip"), NULL, (int*)&display_cfg.frame_skip, 10, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
   {_("Auto"), "1", "2", "3", "4", "5", "6", "7", "8", "9" } },
 { _("Screen rotation"), NULL, (int*)&display_cfg.user_rotate, 4, {0, 1, 2, 3 },

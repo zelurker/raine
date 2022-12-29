@@ -349,7 +349,7 @@ static struct DSW_DATA dsw_data_mugsmash_0[] =
    { _("Sound Test"),            0x20, 0x02 },
    { MSG_OFF,                 0x20},
    { MSG_ON,                  0x00},
-   { _("Colour Test"),           0x40, 0x02 },
+   { _("Color Test"),           0x40, 0x02 },
    { MSG_OFF,                 0x40},
    { MSG_ON,                  0x00},
    { _("Draw SF."),              0x80, 0x02 },

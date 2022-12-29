@@ -273,7 +273,7 @@ static struct DEF_INPUT_EMU list_emu[] =
 {
  { SDLK_BACKSPACE,  0x00, _("Toggle capture mode"), 0, toggle_capture_mode },
  { SDLK_RIGHT,      0x00, _("Next sprite block"), 0, next_sprite_block     },
- { SDLK_LEFT,       0x00, _("Prev sprite block"), 0, prev_sprite_block     },
+ { SDLK_LEFT,       0x00, _("Previous sprite block"), 0, prev_sprite_block     },
  { SDLK_c,          0x00, _("Capture block"), 0, do_capture },
 };
 #endif
@@ -379,7 +379,7 @@ void setup_neocd_bios() {
   } while (1);
 
   if (!ret) {
-      MessageBox(gettext("Fatal error"), gettext("Find the NeoCD bios (neocd.bin).\nAsk Google if you can't find it !"),gettext("OK"));
+      MessageBox(gettext("Fatal error"), gettext("Find the Neo-Geo CD BIOS (neocd.bin).\nAsk Google if you can't find it!"),gettext("OK"));
       exit(1);
   }
 
@@ -1253,7 +1253,7 @@ static void save_memcard() {
     }
     if (!is_neocd() && saveram.ram) {
 	if (saveram.unlock) {
-	    MessageBox(gettext("Warning"), gettext("Can't save the backup ram, it's unlocked"),gettext("OK"));
+	    MessageBox(gettext("Warning"), gettext("Can't save the backup RAM, it's unlocked"),gettext("OK"));
 	    return;
 	}
 

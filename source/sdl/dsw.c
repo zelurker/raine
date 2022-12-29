@@ -143,7 +143,7 @@ static void my_make_dipswitch_statlist(int reset) {
 	      } else {
 		  char buff[80];
 		  snprintf(buff,80,"Unknown dsw command : %s",&dsw_data[tb].name[1]);
-		  MessageBox(gettext("dsw"),buff,gettext("ok"));
+		  MessageBox(gettext("Dipswitch"),buff,gettext("ok"));
 	      }
 	      tb++;
 	      continue;

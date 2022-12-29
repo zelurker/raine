@@ -985,7 +985,7 @@ void load_game_rom_info(void)
 
    if (test) {
      sprintf(load_debug+strlen(load_debug),
-       _("The game didn't initialise any CPU, this game can't work !\n"));
+       _("The game didn't initialise any CPU, this game can't work!\n"));
      load_error |= LOAD_FATAL_ERROR;
      return;
    }

@@ -552,7 +552,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
    if (bmp == NULL || bmp->format->palette == NULL) {
      CYC = NULL;
      if (bmp == NULL)
-	 MessageBox(_("Error"),_("No raine logo"));
+	 MessageBox(_("Error"),_("No Raine logo"));
    } else {
      palette_size = bmp->format->palette->ncolors;
      SDL_Color *colors = bmp->format->palette->colors;
@@ -700,7 +700,7 @@ static menu_item_t about_items[] =
 #ifdef MUSASHI
   { _("68020: Musashi v3.3x by Karl Stenerud") },
 #else
-  {    _("UAE 68020 Emulator : old hacked asm version from UAE") },
+  {    _("UAE 68020 Emulator: old hacked ASM version from UAE") },
 #endif
   {    _("Starscream 0.26r4 by Neill Corlett"), },
 #endif
@@ -710,19 +710,19 @@ static menu_item_t about_items[] =
   {    _("MZ80 3.4raine3 by Neill Bradley") },
 #endif
 #ifdef MAME_6502
-  { _("6502/65c02: mame 125 version") },
+  { _("6502/65c02: MAME 125 version") },
 #else
   {    _("M6502 1.6raine2 by Neill Bradley") },
 #endif
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
 #ifdef __i386__
-  { _("32 bits i386 binary with plenty of asm inside") },
+  { _("32 bits i386 binary with plenty of ASM inside") },
 #endif
 #ifdef __x86_64__
-  { _("64 bits x86 binary, no asm at all, a raine anomaly !") },
+  { _("64 bits x86 binary, no ASM at all, a Raine anomaly!") },
 #endif
   { _("History..."), &about_game },
-  { _("Driver info"), &about_game },
+  { _("Driver information"), &about_game },
   { NULL, NULL, NULL },
 };
 
@@ -843,9 +843,9 @@ end_loop:
   } else {
       char *hist = get_shared("history.dat");
       if (!strcmp(hist,"history.dat")) { // No path info added -> no file !
-	  int ret = MessageBox(_("Warning"),_("history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your raine directory\n"
+	  int ret = MessageBox(_("Warning"),_("history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your Raine directory\n"
 		  "in linux ~/.raine or /usr/share/games/raine\n")
-		  ,_("Open this page now !|Later maybe..."));
+		  ,_("Open this page now!|Later maybe..."));
 	  if (ret == 1)
 	      goto_url("http://www.arcade-history.com/index.php?page=download");
       }

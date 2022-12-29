@@ -101,7 +101,7 @@ static struct DSW_DATA dsw_data_chase_hq_0[] =
    { _("Cabinet Type"),          0x03, 0x01 },	// Motor Enable (?)
 //   { _("Upright/Steering Lock"), 0x03},
 //   { _("Upright No Steer Lock"),  0x02},
-   { _("Full Throttle Convrt"),  0x01},
+   { _("Full Throttle Convert"),  0x01},
 //   { _("Full Thrtle Dlx Cnvrt"), 0x00},
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),

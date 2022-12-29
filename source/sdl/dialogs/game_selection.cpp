@@ -469,7 +469,7 @@ void TGame_sel::draw_bot_frame() {
   company_string[99] = 0;
   if (sel >= 0) {
     snprintf(year_string,80,_("Year: %d"),game_list[sel]->year);
-    sprintf(category_string,_("Category: "));
+    sprintf(category_string,_("Category:"));
     int n;
     for (n=1; n<=NB_GAME_TYPE; n++) {
       if (game_list[sel]->flags & (1<<(n-1))) {

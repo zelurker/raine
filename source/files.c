@@ -404,7 +404,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
        if (load_debug)
 	 sprintf(load_debug+strlen(load_debug),
-	     _("Bad rom size for %s: tried to read %xh bytes, got %lxh\n"),name,size,info.uncompressed_size);
+	     _("Bad ROM size for %s: tried to read %xh bytes, got %lxh\n"),name,size,info.uncompressed_size);
      }
      unzClose(uf);
      return -1;
@@ -431,7 +431,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
      if (load_debug)
        sprintf(load_debug+strlen(load_debug),
-	       _("Bad rom size for %s: tried to read %xh bytes, got %xh\n"),name,size,err);
+	       _("Bad ROM size for %s: tried to read %xh bytes, got %xh\n"),name,size,err);
    }
 
    if (size < info.uncompressed_size && err == size) {
