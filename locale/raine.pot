@@ -1813,11 +1813,11 @@ msgstr ""
 msgid "Autofire (in some games)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1184
+#: source/sdl/dialogs/controls.cpp:1188
 msgid "Autofire controls"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1183
+#: source/sdl/dialogs/controls.cpp:1187
 msgid "Autofire..."
 msgstr ""
 
@@ -2441,7 +2441,7 @@ msgstr ""
 msgid "Control Panel"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1191
+#: source/sdl/dialogs/controls.cpp:1195
 msgid "Controller mapping"
 msgstr ""
 
@@ -2542,7 +2542,7 @@ msgstr ""
 msgid "D"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1187
+#: source/sdl/dialogs/controls.cpp:1191
 msgid "D-pads for movement"
 msgstr ""
 
@@ -2975,11 +2975,11 @@ msgstr ""
 msgid "Easy"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1211 source/sdl/dialogs/controls.cpp:1215
+#: source/sdl/dialogs/controls.cpp:1215 source/sdl/dialogs/controls.cpp:1219
 msgid "Edit custom game inputs"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1198 source/sdl/dialogs/controls.cpp:1202
+#: source/sdl/dialogs/controls.cpp:1202 source/sdl/dialogs/controls.cpp:1206
 msgid "Edit default game inputs"
 msgstr ""
 
@@ -3079,13 +3079,13 @@ msgstr ""
 #: source/sdl/dialogs/neocd_options.cpp:96
 #: source/sdl/dialogs/neocd_options.cpp:108
 #: source/sdl/dialogs/neocd_options.cpp:126 source/sdl/dialogs/about.cpp:555
-#: source/sdl/dialogs/about.cpp:572 source/sdl/dialogs/controls.cpp:734
-#: source/sdl/dialogs/controls.cpp:776 source/sdl/dialogs/controls.cpp:935
-#: source/sdl/dialogs/controls.cpp:1019
-#: source/sdl/dialogs/video_options.cpp:200 source/sdl/gui/tedit.cpp:349
-#: source/sdl/gui/tedit.cpp:409 source/sdl/gui/tedit.cpp:453
-#: source/sdl/streams.c:446 source/sdl2/gui/tedit.cpp:345
-#: source/sdl2/gui/tedit.cpp:404 source/sdl2/gui/tedit.cpp:447
+#: source/sdl/dialogs/about.cpp:572 source/sdl/dialogs/video_options.cpp:200
+#: source/sdl/dialogs/controls.cpp:734 source/sdl/dialogs/controls.cpp:776
+#: source/sdl/dialogs/controls.cpp:935 source/sdl/dialogs/controls.cpp:1019
+#: source/sdl/gui/tedit.cpp:349 source/sdl/gui/tedit.cpp:409
+#: source/sdl/gui/tedit.cpp:453 source/sdl/streams.c:446
+#: source/sdl2/gui/tedit.cpp:345 source/sdl2/gui/tedit.cpp:404
+#: source/sdl2/gui/tedit.cpp:447
 msgid "Error"
 msgstr ""
 
@@ -3559,7 +3559,7 @@ msgstr ""
 msgid "Germany"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1190
+#: source/sdl/dialogs/controls.cpp:1194
 msgid "Get inputs from another game"
 msgstr ""
 
@@ -3895,7 +3895,7 @@ msgstr ""
 msgid "Joysticks"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1186
+#: source/sdl/dialogs/controls.cpp:1190
 msgid "Joysticks indexes"
 msgstr ""
 
@@ -4109,7 +4109,7 @@ msgstr ""
 msgid "Load from which?"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1188
+#: source/sdl/dialogs/controls.cpp:1192
 msgid "Load inputs from..."
 msgstr ""
 
@@ -4337,7 +4337,7 @@ msgstr ""
 msgid "Mouse"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1185
+#: source/sdl/dialogs/controls.cpp:1189
 msgid "Mouse Sensitivity"
 msgstr ""
 
@@ -4350,7 +4350,7 @@ msgstr ""
 msgid "Mouse Speed"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1228
+#: source/sdl/dialogs/controls.cpp:1232
 #, c-format
 msgid "Mouse sensitivity: %d%%"
 msgstr ""
@@ -4459,7 +4459,7 @@ msgstr ""
 #: source/sdl/dialogs/gui_options.cpp.orig:49
 #: source/sdl/dialogs/neocd_options.cpp:184
 #: source/sdl/dialogs/neocd_options.cpp:190
-#: source/sdl/dialogs/video_info.cpp:26 source/sdl/dialogs/controls.cpp:1187
+#: source/sdl/dialogs/video_info.cpp:26
 #: source/sdl/dialogs/game_selection.cpp:48
 #: source/sdl/dialogs/sound_options.cpp:68
 #: source/sdl/dialogs/sound_options.cpp:72
@@ -4484,11 +4484,11 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:281
 #: source/sdl/dialogs/video_options.cpp:288
 #: source/sdl/dialogs/gui_options.cpp:47 source/sdl/dialogs/gui_options.cpp:48
-#: source/sdl/dialogs/gui_options.cpp:49 source/sdl/gui/menu.cpp:154
-#: source/sdl/gui/menu.cpp:155 source/sdl/gui/menu.cpp:157
-#: source/sdl/gui/menu.cpp:158 source/sdl/control.c:2002
-#: source/sdl2/gui/menu.cpp:129 source/sdl2/gui/menu.cpp:130
-#: source/sdl2/gui/menu.cpp:131
+#: source/sdl/dialogs/gui_options.cpp:49 source/sdl/dialogs/controls.cpp:1191
+#: source/sdl/gui/menu.cpp:154 source/sdl/gui/menu.cpp:155
+#: source/sdl/gui/menu.cpp:157 source/sdl/gui/menu.cpp:158
+#: source/sdl/control.c:2002 source/sdl2/gui/menu.cpp:129
+#: source/sdl2/gui/menu.cpp:130 source/sdl2/gui/menu.cpp:131
 msgid "No"
 msgstr ""
 
@@ -4672,8 +4672,9 @@ msgstr ""
 #: source/sdl/console/scripts.cpp:375 source/sdl/dialogs/cheats.cpp:155
 #: source/sdl/dialogs/game_options.cpp:212
 #: source/sdl/dialogs/game_options.cpp:248
-#: source/sdl/dialogs/neocd_options.cpp:188 source/sdl/dialogs/controls.cpp:724
-#: source/sdl/dialogs/video_options.cpp:122 source/sdl/control.c:2209
+#: source/sdl/dialogs/neocd_options.cpp:188
+#: source/sdl/dialogs/video_options.cpp:122 source/sdl/dialogs/controls.cpp:724
+#: source/sdl/control.c:2209
 msgid "Off"
 msgstr ""
 
@@ -5275,7 +5276,7 @@ msgstr ""
 msgid "Rack Test (Cheat)"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1179
+#: source/sdl/dialogs/controls.cpp:1183
 msgid "Raine controls"
 msgstr ""
 
@@ -5369,8 +5370,8 @@ msgstr ""
 msgid "Return to GUI"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1181 source/sdl/dialogs/controls.cpp:1212
-#: source/sdl/dialogs/controls.cpp:1216
+#: source/sdl/dialogs/controls.cpp:1185 source/sdl/dialogs/controls.cpp:1216
+#: source/sdl/dialogs/controls.cpp:1220
 msgid "Revert to default game controls"
 msgstr ""
 
@@ -5491,7 +5492,7 @@ msgstr ""
 msgid "Save demo"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1189
+#: source/sdl/dialogs/controls.cpp:1193
 msgid "Save inputs as..."
 msgstr ""
 
@@ -5883,7 +5884,7 @@ msgstr ""
 msgid "Switch save slot"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1199 source/sdl/dialogs/controls.cpp:1203
+#: source/sdl/dialogs/controls.cpp:1203 source/sdl/dialogs/controls.cpp:1207
 msgid "Switch to custom game controls"
 msgstr ""
 
@@ -6497,7 +6498,7 @@ msgstr ""
 msgid "Video information..."
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1182
+#: source/sdl/dialogs/controls.cpp:1186
 msgid "Video layers"
 msgstr ""
 
@@ -6558,6 +6559,18 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:276
 msgid "When possible"
+msgstr ""
+
+#: source/sdl/dialogs/controls.cpp:1126
+msgid ""
+"When you click OK, a new window will appear\n"
+"If you don't see it, use Alt+Tab\n"
+"Press the buttons on your controller when indicated\n"
+"(Your controller may look different than the picture)\n"
+"If you want to correct a mistake, press backspace or the back button on your "
+"device\n"
+"To skip a button, press SPACE or click/touch the screen\n"
+"To exit, press ESC"
 msgstr ""
 
 #: source/games/lsystem.c:867
@@ -6791,7 +6804,7 @@ msgstr ""
 msgid "cpusldn:Running CPU Every %01d Frames"
 msgstr ""
 
-#: source/sdl/dialogs/controls.cpp:1187
+#: source/sdl/dialogs/controls.cpp:1191
 msgid "d-pad + main stick"
 msgstr ""
 

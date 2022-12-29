@@ -739,6 +739,7 @@ my_map(SDL_Joystick *joy)
         return NULL;
     }
 
+    done = SDL_FALSE;
     char *s = WatchJoystick(joy);
 
     SDL_DestroyWindow(window);

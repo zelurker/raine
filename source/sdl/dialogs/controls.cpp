@@ -1116,15 +1116,19 @@ static int do_mapping(int sel) {
 	TMenu *dlg = new TMenu(_("Select joystick"),menu);
 	dlg->execute();
 	delete dlg;
+	for (int n=0; n<nb; n++)
+	    free(menu[n].label);
+	free(menu);
 	if (selected < 0) return 0;
+	selected = get_joy_playerindex(selected);
     } else
 	selected = 0;
-    MessageBox("Info","When you click OK, a new window will appear\nIf you don't see it, use Alt+Tab\n"
+    MessageBox("Info",_("When you click OK, a new window will appear\nIf you don't see it, use Alt+Tab\n"
 	    "Press the buttons on your controller when indicated\n"
     "(Your controller may look different than the picture)\n"
     "If you want to correct a mistake, press backspace or the back button on your device\n"
     "To skip a button, press SPACE or click/touch the screen\n"
-    "To exit, press ESC","Ok");
+    "To exit, press ESC"),"Ok");
     SDL_Joystick *joy = SDL_JoystickOpen(selected);
     if (!joy) {
 	printf("can't open joy %d\n",selected);

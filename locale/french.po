@@ -2402,7 +2402,7 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1191
 msgid "Controller mapping"
-msgstr ""
+msgstr "Gestion du controleur"
 
 #: source/games/seta.c:2524 source/games/taito_f2.c:901
 #: source/games/megasys1.c:685 source/games/megasys1.c:739
@@ -2504,7 +2504,7 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1187
 msgid "D-pads for movement"
-msgstr ""
+msgstr "pads utilisés pour le déplacement"
 
 #: source/sdl/dialogs/controls.cpp:58 source/sdl/dialogs/controls.cpp:70
 msgid "DOWN"
@@ -3829,7 +3829,7 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1186
 msgid "Joysticks indexes"
-msgstr ""
+msgstr "Index des joysticks"
 
 #: source/sdl/dialogs/video_options.cpp:111
 #: source/sdl/dialogs/video_options.cpp:176
@@ -7051,3 +7051,23 @@ msgstr "Portugais brésilien"
 # source/sdl/dialogs/gui_options.cpp:126 (added by update_po.pl)
 msgid "LEDs assignments"
 msgstr "Affectation des LEDs"
+
+#: source/sdl/dialogs/controls.cpp:1126
+msgid ""
+"When you click OK, a new window will appear\n"
+"If you don't see it, use Alt+Tab\n"
+"Press the buttons on your controller when indicated\n"
+"(Your controller may look different than the picture)\n"
+"If you want to correct a mistake, press backspace or the back button on your "
+"device\n"
+"To skip a button, press SPACE or click/touch the screen\n"
+"To exit, press ESC"
+msgstr ""
+"quand vous cliquez sur OK, une fenêtre va apparaitre\n"
+"si vous ne la voyez pas, utilisez Alt+Tab\n"
+"Pressez les boutons de votre contrôleur comme indiqué\n"
+"(Votre contrôleur peut sembler différent de celui de l'image)\n"
+"Si vous voulez corriger une erreur, pressez backspace ou le bouton back de votre appareil\n"
+"Pour passer un bouton appuyez sur la barre d'espace ou cliquez / touchez l'écran\n"
+"Pour sortir avant la fin pressez ESC"
+
