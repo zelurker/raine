@@ -2830,7 +2830,7 @@ static struct DSW_DATA dsw_data_zombraid_4[] =
   { MSG_1COIN_4PLAY, 0x10},
   { MSG_1COIN_5PLAY, 0x8},
   { MSG_1COIN_6PLAY, 0x0},
-  { _("2 Coins to Start,1 to Continue") , 0x40, 2 },
+  { _("2 Coins to Start, 1 to Continue") , 0x40, 2 },
   { MSG_NO, 0x40},
   { MSG_YES, 0x0},
   DSW_UNUSED( 0x0, 0x80),
