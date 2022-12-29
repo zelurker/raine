@@ -20,12 +20,14 @@ msgstr ""
 
 #: source/games/fchamp.c:101 source/games/fchamp.c:127
 #: source/games/fchamp.c:171
-msgid " 2  Minutes"
+#, fuzzy
+msgid "2  Minutes"
 msgstr ""
 
 #: source/games/fchamp.c:102 source/games/fchamp.c:128
 #: source/games/fchamp.c:172
-msgid " 3  Minutes"
+#, fuzzy
+msgid "3  Minutes"
 msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:153
@@ -463,7 +465,8 @@ msgstr ""
 #: source/games/cps1drv.c:3925 source/games/cps1drv.c:4116
 #: source/games/cps1drv.c:4308 source/games/cps1drv.c:4402
 #: source/games/cps1drv.c:4493 source/games/seta.c:2833
-msgid "2 Coins to Start,1 to Continue"
+#, fuzzy
+msgid "2 Coins to Start, 1 to Continue"
 msgstr "2 pièces pour commencer, 1 pour continuer"
 
 #: source/games/gunbird.c:313 source/sdl/control.c:2160
@@ -562,7 +565,8 @@ msgid "2.5 Minutes"
 msgstr "2 minutes 30"
 
 #: source/games/taito_f2.c:592
-msgid "20 sec"
+#, fuzzy
+msgid "20 seconds"
 msgstr ""
 
 #: source/games/quizgame.c:186 source/games/lsystem.c:99
@@ -703,7 +707,8 @@ msgid "20k, 220K, 420K, 620K"
 msgstr ""
 
 #: source/games/taito_f2.c:591
-msgid "25 sec"
+#, fuzzy
+msgid "25 seconds"
 msgstr ""
 
 #: source/games/rastan.c:101
@@ -815,7 +820,8 @@ msgid "30 FPS"
 msgstr ""
 
 #: source/games/taito_f2.c:589
-msgid "30 sec"
+#, fuzzy
+msgid "30 seconds"
 msgstr ""
 
 #: source/games/lsystem.c:98 source/games/lsystem.c:387
@@ -927,7 +933,8 @@ msgid "30k and every 50k"
 msgstr "30k et tous les 50k"
 
 #: source/sdl/dialogs/about.cpp:719
-msgid "32 bits i386 binary with plenty of asm inside"
+#, fuzzy
+msgid "32 bits i386 binary with plenty of ASM inside"
 msgstr "binaire i386 32 bits avec plein d'assembleur à l'intérieur"
 
 #: source/sdl/dialogs/neocd_options.cpp:188
@@ -935,7 +942,8 @@ msgid "32x"
 msgstr ""
 
 #: source/games/taito_f2.c:587
-msgid "35 sec"
+#, fuzzy
+msgid "35 seconds"
 msgstr ""
 
 #: source/games/cps1drv.c:3656
@@ -1032,7 +1040,8 @@ msgid "40 Seconds"
 msgstr ""
 
 #: source/games/taito_f2.c:586 source/games/taito_f2.c:590
-msgid "40 sec"
+#, fuzzy
+msgid "40 seconds"
 msgstr ""
 
 #: source/games/lsystem.c:386
@@ -1113,7 +1122,8 @@ msgid "5 Games Match"
 msgstr "Match en 5 jeux"
 
 #: source/games/cadash.c:107
-msgid "5 Mins"
+#, fuzzy
+msgid "5 Minutes"
 msgstr ""
 
 #: source/games/lsystem.c:382
@@ -1133,7 +1143,8 @@ msgid "50 Seconds"
 msgstr "50 secondes"
 
 #: source/games/taito_f2.c:584
-msgid "50 sec"
+#, fuzzy
+msgid "50 seconds"
 msgstr ""
 
 #: source/games/lsystem.c:384
@@ -1312,7 +1323,8 @@ msgid "6 Coins/4 Credits"
 msgstr ""
 
 #: source/games/cadash.c:106
-msgid "6 Mins"
+#, fuzzy
+msgid "6 Minutes"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:729
@@ -1325,7 +1337,8 @@ msgid "60 Seconds"
 msgstr ""
 
 #: source/games/taito_f2.c:585
-msgid "60 sec"
+#, fuzzy
+msgid "60 seconds"
 msgstr ""
 
 #: source/games/lsystem.c:385
@@ -1369,11 +1382,13 @@ msgid "60k and 200k"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:722
-msgid "64 bits x86 binary, no asm at all, a raine anomaly !"
+#, fuzzy
+msgid "64 bits x86 binary, no ASM at all, a Raine anomaly!"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:713
-msgid "6502/65c02: mame 125 version"
+#, fuzzy
+msgid "6502/65c02: MAME 125 version"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:698
@@ -1503,7 +1518,8 @@ msgid "8 Coins/4 Credits"
 msgstr ""
 
 #: source/games/cadash.c:105
-msgid "8 Mins"
+#, fuzzy
+msgid "8 Minutes"
 msgstr ""
 
 #: source/games/crimec.c:69
@@ -1883,12 +1899,14 @@ msgstr ""
 
 #: source/files.c:407
 #, c-format
-msgid "Bad rom size for %s: tried to read %xh bytes, got %lxh\n"
+#, fuzzy
+msgid "Bad ROM size for %s: tried to read %xh bytes, got %lxh\n"
 msgstr ""
 
 #: source/files.c:434
 #, c-format
-msgid "Bad rom size for %s: tried to read %xh bytes, got %xh\n"
+#, fuzzy
+msgid "Bad ROM size for %s: tried to read %xh bytes, got %xh\n"
 msgstr ""
 
 #: source/sdl/dialogs/neo_softdips.cpp:231
@@ -2094,7 +2112,8 @@ msgid "Can't create %s"
 msgstr "Ne peut créer %s"
 
 #: source/neocd/neocd.c:1256
-msgid "Can't save the backup ram, it's unlocked"
+#, fuzzy
+msgid "Can't save the backup RAM, it's unlocked"
 msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:46
@@ -2123,7 +2142,8 @@ msgstr "Catégorie"
 
 #: source/sdl/dialogs/game_selection.cpp:472
 #, c-format
-msgid "Category: "
+#, fuzzy
+msgid "Category:"
 msgstr "Catégorie : "
 
 #: source/sdl/dialogs/game_selection.cpp:481
@@ -2312,7 +2332,8 @@ msgid "Colors..."
 msgstr "Couleurs..."
 
 #: source/games/mugsmash.c:352
-msgid "Colour Test"
+#, fuzzy
+msgid "Color Test"
 msgstr ""
 
 #: source/games/silentd.c:131
@@ -2441,7 +2462,8 @@ msgstr ""
 
 #: source/neocd/iso.c:94
 #, c-format
-msgid "Couldn't open iso file:|%s"
+#, fuzzy
+msgid "Couldn't open ISO file:|%s"
 msgstr ""
 
 #: source/games/hyperpcb.c:539 source/games/seta.c:1802
@@ -2627,7 +2649,8 @@ msgid "Debug dipswitches"
 msgstr "Dips de débugage"
 
 #: source/games/cps1.c:2027
-msgid "Decoding GFX layer"
+#, fuzzy
+msgid "Decoding graphics layer"
 msgstr "Décodage des graphismes"
 
 #: source/sdl/control.c:678
@@ -2655,7 +2678,8 @@ msgid "Decrypting OKI (Sound)"
 msgstr "Décodage OKI (son)"
 
 #: source/cps2crpt.c:687
-msgid "Decrypting rom..."
+#, fuzzy
+msgid "Decrypting ROM..."
 msgstr "Décodage de la rom..."
 
 #: source/games/cave.c:1607
@@ -2759,7 +2783,8 @@ msgid "Digital Input Speed"
 msgstr ""
 
 #: source/games/toaplan1.c:82 source/games/toaplan1.c:127
-msgid "Dipsw display"
+#, fuzzy
+msgid "Dipswitches display"
 msgstr "Affichage dips"
 
 #: source/sdl/gui.cpp:519
@@ -2866,7 +2891,8 @@ msgid "Driver"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:725
-msgid "Driver info"
+#, fuzzy
+msgid "Driver information"
 msgstr "Info driver"
 
 #: source/loadroms.c:970
@@ -2955,16 +2981,19 @@ msgid "EmuDX"
 msgstr ""
 
 #: source/games/frogger.c:1267
-msgid "EmuDX sound ?"
+#, fuzzy
+msgid "EmuDX sound?"
 msgstr "Son EmuDX ?"
 
 #: source/games/frogger.c:1470
-msgid "EmuDX sprites ?"
+#, fuzzy
+msgid "EmuDX sprites?"
 msgstr "Sprites EmuDX ?"
 
 #: source/games/dkong.c:835 source/games/frogger.c:1455
 #: source/games/pengo.c:1864
-msgid "EmuDX support ?"
+#, fuzzy
+msgid "EmuDX support?"
 msgstr "Mode EmuDX ?"
 
 #: source/sdl/dialogs/dirs.cpp:46
@@ -2972,7 +3001,8 @@ msgid "EmuDX directory"
 msgstr "Répertoire EmuDX"
 
 #: source/games/contcirc.c:91
-msgid "Enable 3d alternate frames"
+#, fuzzy
+msgid "Enable 3D alternate frames"
 msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:191
@@ -3019,7 +3049,8 @@ msgid "English"
 msgstr "Anglais"
 
 #: source/games/seta.c:2215
-msgid "Erase Backup Ram"
+#, fuzzy
+msgid "Erase Backup RAM"
 msgstr "Efface la RAM de backup"
 
 #: source/neocd/iso.c:95 source/sdl/dialogs/controls.cpp:734
@@ -3369,7 +3400,8 @@ msgid "Freeze"
 msgstr ""
 
 #: source/games/chasehq.c:104
-msgid "Full Throttle Convrt"
+#, fuzzy
+msgid "Full Throttle Convert"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:122
@@ -3976,7 +4008,8 @@ msgid "Life Bar"
 msgstr "Barre de vie"
 
 #: source/sdl/dialogs/video_options.cpp:282
-msgid "Limit framerate <= 60fps"
+#, fuzzy
+msgid "Limit framerate <= 60 FPS"
 msgstr "Limiter à 60fps max"
 
 #: source/sdl/dialogs/video_options.cpp:177
@@ -4413,7 +4446,8 @@ msgid "No associations yet"
 msgstr "Pas encore d'associations"
 
 #: source/sdl/dialogs/controls.cpp:734
-msgid "No buttons mapped by this game for autofire, sorry!"
+#, fuzzy
+msgid "No buttons mapped by this game for autofire yet"
 msgstr ""
 "Le tir automatique ne peut être attribué à aucun contrôle de ce jeu, désolé !"
 
@@ -4447,7 +4481,8 @@ msgid "No options for this renderer."
 msgstr "Pas d'options pour ce rendu ?"
 
 #: source/sdl/dialogs/about.cpp:555
-msgid "No raine logo"
+#, fuzzy
+msgid "No Raine logo"
 msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:180
@@ -4546,7 +4581,8 @@ msgstr "Arrêt"
 
 #: source/games/dkong.c:828 source/games/frogger.c:1448 source/neocd/iso.c:95
 #: source/sdl/dialogs/video_options.cpp:97 source/sdl/dsw.c:417
-msgid "Ok"
+#, fuzzy
+msgid "OK"
 msgstr ""
 
 #: source/sdl/console/scripts.cpp:376 source/sdl/dialogs/game_options.cpp:213
@@ -4555,7 +4591,8 @@ msgid "On"
 msgstr "Marche"
 
 #: source/games/lsystem.c:969
-msgid "One step back/Time Cnt"
+#, fuzzy
+msgid "One step back/Time Count"
 msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:42
@@ -4575,7 +4612,7 @@ msgid "Opaque HUD"
 msgstr "HUD opaque"
 
 #: source/sdl/dialogs/about.cpp:848
-msgid "Open this page now !|Later maybe..."
+msgid "Open this page now!|Later maybe..."
 msgstr "Ouvre cette page maintenant !|+ tard peut-être..."
 
 #: source/sdl/dialogs/video_options.cpp:261
@@ -5068,7 +5105,8 @@ msgid "Press a key..."
 msgstr "Presse une touche..."
 
 #: source/neocd/neocd.c:276
-msgid "Prev sprite block"
+#, fuzzy
+msgid "Previous sprite block"
 msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:248
@@ -5254,7 +5292,8 @@ msgid "Roadscroll"
 msgstr ""
 
 #: source/games/bloodbro.c:81
-msgid "Rom Option"
+#, fuzzy
+msgid "ROM Option"
 msgstr ""
 
 #: source/games/seta.c:2163 source/games/seta.c:2181 source/games/seta.c:2293
@@ -5845,7 +5884,8 @@ msgid "Territory/Copyright"
 msgstr ""
 
 #: source/games/cps1drv.c:3080
-msgid "Tes Mode Display"
+#, fuzzy
+msgid "Test Mode Display"
 msgstr ""
 
 #: source/games/cps1drv.c:3133 source/games/cps1drv.c:3177
@@ -5867,7 +5907,8 @@ msgid "Test (grid and input)"
 msgstr "Test (grille et contrôles)"
 
 #: source/games/bublbobl.c:231
-msgid "Test (ram and sound)/pause"
+#, fuzzy
+msgid "Test (RAM and sound)/pause"
 msgstr "Test (son & ram)/pause"
 
 #: source/sdl/control.c:2216
@@ -5916,7 +5957,8 @@ msgstr "Le fichier '%s' ne peut pas être chargé"
 
 #: source/loadroms.c:988
 #, c-format
-msgid "The game didn't initialise any CPU, this game can't work !\n"
+#, fuzzy
+msgid "The game didn't initialise any CPU, this game can't work!\n"
 msgstr "Le jeu n'a initialisé aucun CPU, il ne peut pas marcher !\n"
 
 #: source/sdl/dialogs/neocd_options.cpp:96
@@ -6007,7 +6049,8 @@ msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:776
 #, fuzzy
-msgid "Too many controls have been defined for this game, sorry!"
+#, fuzzy
+msgid "Too many controls have been defined for this game already."
 msgstr "Trop de contrôles ont été définis pour ce jeu, désolé !"
 
 #: source/sdl/dialogs/sound_commands.cpp:209
@@ -6064,7 +6107,8 @@ msgid "Type 2"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:703
-msgid "UAE 68020 Emulator : old hacked asm version from UAE"
+#, fuzzy
+msgid "UAE 68020 Emulator: old hacked ASM version from UAE"
 msgstr "Emulateur UAE 68020 : vieille version assembleur modifiée d'UAE"
 
 #: source/games/toaplan2.c:1223
@@ -6627,7 +6671,8 @@ msgid "accelerated software->hardware colorkey blits"
 msgstr "Copies logiciel -> matériel avec couleur transparente accélérées"
 
 #: source/neocd/cdrom.c:327
-msgid "alloc error"
+#, fuzzy
+msgid "allocation error"
 msgstr "Erreur d'allocation"
 
 #: source/sdl/dialogs/colors.cpp:45
@@ -6641,14 +6686,15 @@ msgstr ""
 #: source/sdl/opengl.c:223
 #, c-format
 msgid ""
-"Bad screen format, report this to github.com/zelurker/raine:\n"
+"Bad screen format, report this to raine.1emulation.com\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 msgstr ""
 "Mauvais format d'écran, rapportez ça à github.com/zelurker/raine:\n"
 "bpp : %d rshift %d gshift %d bshift %d"
 
 #: source/games/pirates.c:379
-msgid "bg"
+#, fuzzy
+msgid "background"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:109
@@ -6676,7 +6722,8 @@ msgid "blue"
 msgstr "bleu"
 
 #: source/neocd/cdrom.c:243
-msgid "can't find iso file"
+#, fuzzy
+msgid "can't find ISO file"
 msgstr "Ne peut pas trouver le fichier iso"
 
 #: source/sdl/dialogs/colors.cpp:41
@@ -6694,7 +6741,8 @@ msgstr "Emulation du CPU toutes les %01d images"
 
 #: source/neocd/cdrom.c:317
 #, c-format
-msgid "cue format error on line : %s"
+#, fuzzy
+msgid "CUE format error on line: %s"
 msgstr "Erreur de format cue à la ligne : %s"
 
 #: source/sdl/dialogs/controls.cpp:1187
@@ -6719,24 +6767,29 @@ msgid "disabling row select (agallet)"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:125
-msgid "dpad down"
+#, fuzzy
+msgid "d-pad down"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:126
-msgid "dpad left"
+#, fuzzy
+msgid "d-pad left"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:127
 #, fuzzy
-msgid "dpad right"
+#, fuzzy
+msgid "d-pad right"
 msgstr "Droit"
 
 #: source/sdl/dialogs/controls.cpp:124
-msgid "dpad up"
+#, fuzzy
+msgid "d-pad up"
 msgstr ""
 
 #: source/sdl/dsw.c:146
-msgid "dsw"
+#, fuzzy
+msgid "Dipswitch"
 msgstr ""
 
 #: source/sdl/dialogs/dirs.cpp:55
@@ -6801,12 +6854,12 @@ msgstr "Surface matérielle disponible"
 msgid ""
 "history.dat not found\n"
 "Download it from http://www.arcade-history.com/index.php?page=download\n"
-"and install it in your raine directory\n"
+"and install it in your Raine directory\n"
 "in linux ~/.raine or /usr/share/games/raine\n"
 msgstr ""
 "history.dat pas trouvé\n"
 "Téléchargez le de http://www.arcade-history.com/index.php?page=download\n"
-"et installez le dans votre répertoire raine\n"
+"et installez le dans votre répertoire Raine\n"
 "avec linux ~/.raine ou /usr/share/games/raine\n"
 
 #: source/sdl/dialogs/video_options.cpp:120
@@ -6814,7 +6867,8 @@ msgid "hq2x/3x"
 msgstr ""
 
 #: source/neocd/cdrom.c:381 source/neocd/cdrom.c:414
-msgid "indexes alloc error"
+#, fuzzy
+msgid "indexes allocation error"
 msgstr "Erreur d'allocation des indexes"
 
 #: source/neocd/neocd.c:4692
@@ -6874,7 +6928,8 @@ msgid "loading EmuDX tiles"
 msgstr "Chargement des fonds EmuDX"
 
 #: source/sdl/dialogs/sound_options.cpp:78
-msgid "lsb"
+#, fuzzy
+msgid "Less significant byte"
 msgstr ""
 
 #: source/sdl/dialogs/dirs.cpp:52
@@ -6882,7 +6937,8 @@ msgid "m68kdis (console)"
 msgstr ""
 
 #: source/sdl/dialogs/sound_options.cpp:78
-msgid "msb"
+#, fuzzy
+msgid "Most significant byte"
 msgstr ""
 
 #: source/sdl/dialogs/translator.cpp:808
@@ -6911,7 +6967,8 @@ msgid "ok"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:329
-msgid "or escape to delete this control"
+#, fuzzy
+msgid "or Escape key to delete this control"
 msgstr "Ou touche échap pour effacer ce contrôle"
 
 #: source/sdl/dialogs/about.cpp:572
