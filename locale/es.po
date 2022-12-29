@@ -7181,3 +7181,7 @@ msgstr ""
 # source/sdl/dialogs/gui_options.cpp:37 (added by update_po.pl)
 msgid "Brazilian Portuguese"
 msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:129 (added by update_po.pl)
+msgid "LEDs assignments"
+msgstr ""

@@ -7314,3 +7314,7 @@ msgstr "Gerenciador de janelas disponível"
 
 #~ msgid "rom dirs"
 #~ msgstr "diretórios das roms"
+
+# source/sdl/dialogs/gui_options.cpp:120 (added by update_po.pl)
+msgid "LEDs assignments"
+msgstr ""

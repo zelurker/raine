@@ -126,7 +126,7 @@ int do_leds(int sel) {
 	    menu[n].menu_func = &do_led_paths;
 	}
 
-	TMenu *dlg = new TMenu("LEDs assignments",menu);
+	TMenu *dlg = new TMenu(_("LEDs assignments"),menu);
 	dlg->execute();
 	delete dlg;
 

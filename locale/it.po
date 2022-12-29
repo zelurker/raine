@@ -7923,3 +7923,7 @@ msgstr "Italiano"
 # source/sdl/dialogs/gui_options.cpp:31 (added by update_po.pl)
 msgid "Brazilian Portuguese"
 msgstr ""
+
+# source/sdl/dialogs/gui_options.cpp:123 (added by update_po.pl)
+msgid "LEDs assignments"
+msgstr ""

@@ -7080,3 +7080,7 @@ msgstr "Italien"
 # source/sdl/dialogs/gui_options.cpp:34 (added by update_po.pl)
 msgid "Brazilian Portuguese"
 msgstr "Portugais brésilien"
+
+# source/sdl/dialogs/gui_options.cpp:126 (added by update_po.pl)
+msgid "LEDs assignments"
+msgstr "Affectation des LEDs"
