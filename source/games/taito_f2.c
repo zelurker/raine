@@ -588,7 +588,7 @@ static struct DSW_DATA dsw_data_camel_try_1[] =
    { _("Continue Time Add"),     0x30, 0x04 },
    { _("30 sec"),                0x30},
    { _("40 sec"),                0x20},
-   { _("25 sec"),                0x10},
+   { _("25 seconds"),                0x10},
    { _("20 seconds"),                0x00},
    DSW_CONTINUE_PLAY( 0x40, 0x00),
    { _("2 Player Mode"),         0x80, 0x02 },
