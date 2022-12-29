@@ -101,7 +101,7 @@ static struct DSW_DATA dsw_data_chase_hq_0[] =
    { _("Cabinet Type"),          0x03, 0x01 },	// Motor Enable (?)
 //   { _("Upright/Steering Lock"), 0x03},
 //   { _("Upright No Steer Lock"),  0x02},
-   { _("Full Throttle Convrt"),  0x01},
+   { _("Full Throttle Convert"),  0x01},
 //   { _("Full Thrtle Dlx Cnvrt"), 0x00},
    DSW_TEST_MODE( 0x00, 0x04),
    DSW_DEMO_SOUND( 0x08, 0x00),
@@ -2452,7 +2452,7 @@ GAME( chasehq, "Chase HQ", TAITO, 1988, GAME_RACE,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
-	.long_name_jpn = "ƒ`ƒFƒCƒX‚g‚p American",
+	.long_name_jpn = "ï¿½`ï¿½Fï¿½Cï¿½Xï¿½gï¿½p American",
 	.board = "B52",
 );
 static struct DIR_INFO dir_chasehqj[] =
@@ -2470,7 +2470,7 @@ GAME(chasehqj, "Chase HQ (Japan)", TAITO, 1988, GAME_RACE,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
-	.long_name_jpn = "ƒ`ƒFƒCƒX‚g‚p",
+	.long_name_jpn = "ï¿½`ï¿½Fï¿½Cï¿½Xï¿½gï¿½p",
 	.board = "B52",
 );
 static struct DIR_INFO dir_nightstr[] =

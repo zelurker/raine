@@ -2212,7 +2212,7 @@ static struct DSW_DATA dsw_data_calibr50_4[] =
   { _("Display Score") , 0x10, 2 },
   { MSG_OFF, 0x0},
   { MSG_ON, 0x10},
-  { _("Erase Backup Ram") , 0x20, 2 },
+  { _("Erase Backup RAM") , 0x20, 2 },
   { MSG_OFF, 0x0},
   { MSG_ON, 0x20},
   { _("Alt License") , 0x40, 2 },

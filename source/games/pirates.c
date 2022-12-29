@@ -376,7 +376,7 @@ static int layer_bg, layer_sprites,layer_text;
 static void load_genix(void)
 {
   RAMSize = 0x10000 + 0x800 + 0x4000 + 0x8000;
-  layer_bg = add_layer_info(gettext("bg"));
+  layer_bg = add_layer_info(gettext("background"));
   layer_sprites = add_layer_info(gettext("sprites"));
   layer_text = add_layer_info(gettext("text"));
   if(!(RAM=AllocateMem(RAMSize))) return;
@@ -582,7 +582,7 @@ static struct DIR_INFO dir_genix[] =
    { NULL, },
 };
 GME( genix, "Genix Family", NIX, 1994, GAME_SHOOT,
-	.long_name_jpn = "ƒ[ƒƒ][ƒ“",
+	.long_name_jpn = "ï¿½[ï¿½ï¿½ï¿½]ï¿½[ï¿½ï¿½",
 );
 static struct DIR_INFO dir_pirates[] =
 {
@@ -591,6 +591,6 @@ static struct DIR_INFO dir_pirates[] =
    { NULL, },
 };
 CLNE( pirates, genix, "Pirates", NIX, 1994, GAME_SHOOT,
-	.long_name_jpn = "ƒ[ƒƒ][ƒ“",
+	.long_name_jpn = "ï¿½[ï¿½ï¿½ï¿½]ï¿½[ï¿½ï¿½",
 );
 

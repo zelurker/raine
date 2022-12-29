@@ -88,7 +88,7 @@ static struct DSW_DATA dsw_data_contcirc_1[] =
   { _("Steering wheel"), 0x10, 2 },
   { _("Free"), 0x10},
   { _("Locked"), 0x00},
-  { _("Enable 3d alternate frames"), 0x20, 2 },
+  { _("Enable 3D alternate frames"), 0x20, 2 },
   { MSG_OFF, 0x00},
   { MSG_ON, 0x20},
   { MSG_UNKNOWN, 0x40, 2 },

@@ -78,7 +78,7 @@ static struct DSW_DATA dsw_data_blood_bros_0[] =
    { _("Coin Start"),            0x20, 0x02 },
    { MSG_NORMAL,              0x20},
    { _("Double"),                0x00},
-   { _("Rom Option"),            0xC0, 0x04 },
+   { _("ROM Option"),            0xC0, 0x04 },
    { _("A"),                     0xC0},
    { _("B"),                     0x80},
    { _("C"),                     0x40},
@@ -1263,7 +1263,7 @@ GAME( bloodbro, "Blood Bros", TAD, 1990, GAME_SHOOT,
 	.dsw = dsw_bloodbro,
 	.video = &video_weststry,
 	.exec = execute_bloodbro,
-	.long_name_jpn = "ƒuƒ‰ƒbƒhƒuƒ‰ƒU[ƒY Bootleg",
+	.long_name_jpn = "ï¿½uï¿½ï¿½ï¿½bï¿½hï¿½uï¿½ï¿½ï¿½Uï¿½[ï¿½Y Bootleg",
 );
 static struct DIR_INFO dir_weststry[] =
 {
@@ -1279,7 +1279,7 @@ GAME( weststry, "West Story", BOOTLEG, 1991, GAME_SHOOT,
 	.clear = ClearWestStry,
 	.video = &video_weststry,
 	.exec = execute_weststry,
-	.long_name_jpn = "ƒuƒ‰ƒbƒhƒuƒ‰ƒU[ƒY",
+	.long_name_jpn = "ï¿½uï¿½ï¿½ï¿½bï¿½hï¿½uï¿½ï¿½ï¿½Uï¿½[ï¿½Y",
 	.sound = sound_weststry,
 );
 

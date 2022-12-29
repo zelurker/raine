@@ -610,7 +610,7 @@ static void DecodeSilkwormGfx_16x16(char *file, float gfx_offs, UINT32 gfx_size)
 	int i,j;
 
 	if(!(load_rom(file, TMP, gfx_size))){
-		print_ingame(120, gettext("ERROR: Unable to load gfx rom: %s"), file);
+		print_ingame(120, gettext("ERROR: Unable to load graphics rom: %s"), file);
 	}else{
 		tb = gfx_offs * 0x20000;
 		ta = 0;

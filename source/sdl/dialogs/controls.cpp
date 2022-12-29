@@ -121,10 +121,10 @@ static char *my_get_joy_name(int code) {
       case SDL_CONTROLLER_BUTTON_RIGHTSTICK: strcat(name,_("Right Stick")); break;
       case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: strcat(name,_("Left shoulder")); break;
       case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: strcat(name,_("Right shoulder")); break;
-      case SDL_CONTROLLER_BUTTON_DPAD_UP: strcat(name,_("dpad up")); break;
-      case SDL_CONTROLLER_BUTTON_DPAD_DOWN: strcat(name,_("dpad down")); break;
-      case SDL_CONTROLLER_BUTTON_DPAD_LEFT: strcat(name,_("dpad left")); break;
-      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: strcat(name,_("dpad right")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_UP: strcat(name,_("d-pad up")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_DOWN: strcat(name,_("d-pad down")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_LEFT: strcat(name,_("d-pad left")); break;
+      case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: strcat(name,_("d-pad right")); break;
       default: sprintf(&name[strlen(name)],"Btn %d",btn);
       }
   } else
@@ -326,7 +326,7 @@ void TInput::handle_mouse(SDL_Event *event) {
 static menu_item_t menu_input[] =
 {
   { _("Press a key, a button, or move a joystick...") },
-  { _("or escape to delete this control") },
+  { _("or Escape key to delete this control") },
   { NULL },
 };
 
@@ -731,7 +731,7 @@ static int setup_autofire(int sel) {
     }
   }
   if (mynb == 0) {
-    MessageBox(_("Error"),_("No buttons mapped by this game for autofire, sorry!"));
+    MessageBox(_("Error"),_("No buttons mapped by this game for autofire yet"));
     free(menu);
     return 0;
   }
@@ -773,7 +773,7 @@ static int autofire_controls(int sel) {
   for (n=0; n<InputCount; n++) {
     if (InputList[n].auto_rate && InputList[n].link == 0) {
       if (InputCount >= MAX_INPUTS-1) {
-	MessageBox(_("Error"),_("Too many controls have been defined for this game, sorry!"));
+	MessageBox(_("Error"),_("Too many controls have been defined for this game already."));
 	return 0;
       }
       InputList[InputCount] = InputList[n];

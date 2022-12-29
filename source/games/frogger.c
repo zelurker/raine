@@ -1264,7 +1264,7 @@ static void load_frogger() {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX sound ?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-      if(MessageBox(gettext("EmuDX"),gettext("EmuDX sound ?"),gettext("Yes|No")) == 1)
+      if(MessageBox(gettext("EmuDX"),gettext("EmuDX sound?"),gettext("Yes|No")) == 1)
 #endif
 	  current_game->sound = sound_galaxian;
       else {
@@ -1452,7 +1452,7 @@ static void load_frogger() {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
+	if(MessageBox(gettext("EmuDX"),gettext("EmuDX support?"),gettext("Yes|No")) == 1)
 #endif
 	{
 	  load_emudx("froggerg.dx2",1,280,282,351,
@@ -1467,7 +1467,7 @@ static void load_frogger() {
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX sprites ?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-	if(MessageBox(gettext("EmuDX"),gettext("EmuDX sprites ?"),gettext("Yes|No")) == 1)
+	if(MessageBox(gettext("EmuDX"),gettext("EmuDX sprites?"),gettext("Yes|No")) == 1)
 #endif
 	{
 	  load_emudx("galdxg.dx2",1,393,395,488,

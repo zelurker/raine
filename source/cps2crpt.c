@@ -684,7 +684,7 @@ static void cps2_decrypt(/* running_machine *machine, */const UINT32 *master_key
 		// loaded roms, maybe it should be extended one day...
 		if ((i & 0xff) == 0)
 		{
-		  load_progress(_("Decrypting rom..."),i*100/0x10000);
+		  load_progress(_("Decrypting ROM..."),i*100/0x10000);
 /*			char loadingMessage[256]; // for displaying with UI
 			sprintf(loadingMessage, "Decrypting %d%%", i*100/0x10000);
 			ui_set_startup_text(machine, loadingMessage,FALSE);

@@ -240,7 +240,7 @@ static void handle_iso(char *start,char *cue) {
 	strcpy(&neocd_path[strlen(neocd_path)-3],ext);
     }
     if (!exists(neocd_path)) {
-	ErrorMsg(gettext("can't find iso file"));
+	ErrorMsg(gettext("can't find ISO file"));
 	load_type = -1;
 	return;
     }
@@ -314,7 +314,7 @@ void init_load_type() {
 	      start = strchr(buff,'"');
 	      if (!start) {
 		  char msg[1024];
-		  sprintf(msg,_("cue format error on line : %s"),orig);
+		  sprintf(msg,_("CUE format error on line: %s"),orig);
 		  ErrorMsg(msg);
 		  break;
 	      }
@@ -324,7 +324,7 @@ void init_load_type() {
 	      alloc_tracks += 10;
 	      mp3_track = realloc(mp3_track,alloc_tracks*sizeof(char**));
 	      if (!mp3_track) {
-		ErrorMsg(gettext("alloc error"));
+		ErrorMsg(gettext("allocation error"));
 		break;
 	      }
 	    }
@@ -411,7 +411,7 @@ void init_load_type() {
 	  if (alloc_indexes < alloc_tracks) {
 	    indexes = realloc(indexes,alloc_tracks*sizeof(int));
 	    if (!indexes) {
-	      ErrorMsg(gettext("indexes alloc error"));
+	      ErrorMsg(gettext("indexes allocation error"));
 	      break;
 	    }
 	    for (n=alloc_indexes; n<alloc_tracks; n++)
@@ -431,7 +431,7 @@ void init_load_type() {
       } // feof
       fclose(f);
       if (!iso_sector_size) {
-	ErrorMsg(gettext("Could not determine sector size from\nthe cue file"));
+	ErrorMsg(gettext("Could not determine sector size from\nthe CUE file"));
       } else {
 	if (nb_tracks) { // we MUST chdir to the cue directory in this case !
 	  char *path = strrchr(neocd_path,SLASH[0]);

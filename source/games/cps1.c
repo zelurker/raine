@@ -2024,7 +2024,7 @@ void load_common(int cps2)
    GFX_SPR = load_region[REGION_GFX1];
    size = get_region_size(REGION_GFX1); // size of packed region
 
-   load_message(_("Decoding GFX layer"));
+   load_message(_("Decoding graphics layer"));
    if (cps2)
      cps2_gfx_decode();
    else

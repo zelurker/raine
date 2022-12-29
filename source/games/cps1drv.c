@@ -3077,7 +3077,7 @@ static struct DSW_DATA dsw_data_ganbare_4[] =
   { _("Clear RAM"), 0x40, 2 },
   { MSG_NO, 0x40, 0x00 },
   { MSG_YES, 0x00, 0x00 },
-  { _("Tes Mode Display"), 0x80, 2 },
+  { _("Test Mode Display"), 0x80, 2 },
   { MSG_OFF, 0x80, 0x00 },
   { MSG_ON, 0x00, 0x00 },
   { NULL, 0, 0}

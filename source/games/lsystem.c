@@ -966,7 +966,7 @@ static struct DSW_DATA dsw_data_puzznic_1[] =
    { _("Terms of Replay"),       0xC0, 0x04 },
    { _("Stage Start/Timer Cont"),0xC0},
    { _("Stage & Timer Start"),   0x80},
-   { _("One step back/Time Cnt"),0x40},
+   { _("One step back/Time Count"),0x40},
    { _("No Use"),                0x00},
    { NULL,                    0,   },
 };
@@ -4123,7 +4123,7 @@ GAME( horshoes, "American Horseshoes", TAITO, 1990, GAME_SPORTS | GAME_NOT_WORKI
 	.input = input_horshoes,
 	.dsw = dsw_horshoes,
 	.video = &video_fhawk,
-	.long_name_jpn = "ƒAƒƒŠƒJƒ“ƒz[ƒXƒVƒ…[",
+	.long_name_jpn = "ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½ï¿½zï¿½[ï¿½Xï¿½Vï¿½ï¿½ï¿½[",
 	.board = "C47",
 );
 static struct DIR_INFO dir_cachat[] =
@@ -4144,7 +4144,7 @@ static struct DIR_INFO dir_champwr[] =
 GME( champwr, "Champion Wrestler", TAITO, 1989, GAME_SPORTS,
 	.romsw = romsw_champwr,
 	.video = &video_champwr,
-	.long_name_jpn = "ƒ`ƒƒƒ“ƒsƒIƒ“ƒŒƒXƒ‰[",
+	.long_name_jpn = "ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½[",
 	.board = "C01",
 );
 static struct DIR_INFO dir_champwrj[] =
@@ -4158,7 +4158,7 @@ static struct DIR_INFO dir_champwrj[] =
 CLNE( champwrj, champwr, "Champion Wrestler (Japan)", TAITO, 1989, GAME_SPORTS,
 	.dsw = dsw_champwrj,
 	.video = &video_champwr,
-	.long_name_jpn = "â`âââôâsâIâôâîâXâëü[ (Japan)",
+	.long_name_jpn = "ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½[ (Japan)",
 	.board = "C01",
 );
 static struct DIR_INFO dir_champwru[] =
@@ -4172,7 +4172,7 @@ static struct DIR_INFO dir_champwru[] =
 CLNE( champwru, champwr, "Champion Wrestler (US)", TAITO, 1989, GAME_SPORTS,
 	.dsw = dsw_champwru,
 	.video = &video_champwr,
-	.long_name_jpn = "â`âââôâsâIâôâîâXâëü[ (US)",
+	.long_name_jpn = "ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½[ (US)",
 	.board = "C01",
 );
 static struct DIR_INFO dir_cubybop[] =
@@ -4197,7 +4197,7 @@ GAME( fhawk, "Fighting Hawk", TAITO, 1988, GAME_SHOOT,
 	.dsw = dsw_fhawk,
 	.romsw = romsw_fhawk,
 	.video = &video_fhawk,
-	.long_name_jpn = "ƒtƒ@ƒCƒeƒBƒ“ƒOƒz[ƒN",
+	.long_name_jpn = "ï¿½tï¿½@ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½zï¿½[ï¿½N",
 	.board = "B70",
 );
 static struct DIR_INFO dir_kurikina[] =
@@ -4212,7 +4212,7 @@ static struct DIR_INFO dir_kurikina[] =
 CLNE( kurikina,kurikint, "Kuri Kinton (Alternate, prototype?)", TAITO, 1988, GAME_BEAT,
 	.dsw = dsw_kurikina,
 	.romsw = romsw_kurikint,
-	.long_name_jpn = "Œö—›‹à’c (Alternate)",
+	.long_name_jpn = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½c (Alternate)",
 	.board = "B42",
 );
 static struct DIR_INFO dir_kurikint[] =
@@ -4223,7 +4223,7 @@ static struct DIR_INFO dir_kurikint[] =
 };
 GME( kurikint, "Kuri Kinton", TAITO, 1988, GAME_BEAT,
 	.romsw = romsw_kurikint,
-	.long_name_jpn = "Œö—›‹à’c",
+	.long_name_jpn = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½c",
 	.board = "B42",
 );
 static struct DIR_INFO dir_palamed[] =
@@ -4236,7 +4236,7 @@ GAME( palamed, "Palamedes", TAITO, 1990, GAME_PUZZLE,
 	.input = input_palamed,
 	.dsw = dsw_palamed,
 	.romsw = romsw_palamed,
-	.long_name_jpn = "ƒpƒ‰ƒƒfƒX",
+	.long_name_jpn = "ï¿½pï¿½ï¿½ï¿½ï¿½ï¿½fï¿½X",
 	.board = "C63",
 );
 static struct DIR_INFO dir_plgirls[] =
@@ -4271,7 +4271,7 @@ GAME( puzznic, "Puzznic", TAITO, 1989, GAME_PUZZLE | GAME_ADULT,
 	.input = input_puzznic,
 	.dsw = dsw_puzznic,
 	.romsw = romsw_puzznic,
-	.long_name_jpn = "ƒpƒYƒjƒbƒN",
+	.long_name_jpn = "ï¿½pï¿½Yï¿½jï¿½bï¿½N",
 	.board = "C20",
 );
 static struct DIR_INFO dir_raimais[] =
@@ -4283,7 +4283,7 @@ static struct DIR_INFO dir_raimais[] =
 GAME( raimais, "Raimais", TAITO, 1988, GAME_MISC,
 	.input = input_raimais,
 	.dsw = dsw_raimais,
-	.long_name_jpn = "ƒŒƒCƒƒCƒY",
+	.long_name_jpn = "ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Cï¿½Y",
 	.board = "B36",
 	.sound = taito_ym2610_sound,
 );

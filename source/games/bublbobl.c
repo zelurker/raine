@@ -228,7 +228,7 @@ static struct DSW_DATA dsw_data_bubble_bobble_0[] =
    { _("Japanese"),              0x05},
    { _("English"),               0x04},
    { _("Test (grid and input)"), 1 },
-   { _("Test (ram and sound)/pause"), 0 },
+   { _("Test (RAM and sound)/pause"), 0 },
    DSW_SCREEN( 0x02, 0x00),
    DSW_DEMO_SOUND( 0x08, 0x00),
    { MSG_COIN1,               0x30, 0x04 },
