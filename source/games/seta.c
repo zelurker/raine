@@ -1773,7 +1773,7 @@ static void sub_ctrl_w(UINT32 offset, UINT16 data)
 /* Protection? NVRAM is handled writing commands here */
 static UINT8 downtown_protection[0x200];
 
-static unsigned char downtown_word[] = _("WALTZ0");
+static unsigned char downtown_word[] = "WALTZ0";
 
 static UINT16 downtown_protection_rb(UINT32 offset)
 {
