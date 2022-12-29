@@ -589,7 +589,7 @@ static struct DSW_DATA dsw_data_camel_try_1[] =
    { _("30 sec"),                0x30},
    { _("40 sec"),                0x20},
    { _("25 sec"),                0x10},
-   { _("20 sec"),                0x00},
+   { _("20 seconds"),                0x00},
    DSW_CONTINUE_PLAY( 0x40, 0x00),
    { _("2 Player Mode"),         0x80, 0x02 },
    { _("Single"),                0x80},
@@ -3773,12 +3773,12 @@ static struct VIDEO_INFO video_thundfox =
 #define input_cameltry input_f2b1
 GMEI( cameltry, "Camel Try", TAITO, 1989, GAME_PUZZLE,
 	.romsw = romsw_cameltry,
-	.long_name_jpn = "ƒLƒƒƒƒ‹ƒgƒ‰ƒC",
+	.long_name_jpn = "ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½C",
 	.board = "C38",
 );
 CLNEI(camltrua,cameltry, "Camel Try (Alternate)", TAITO, 1989, GAME_PUZZLE,
 	.load_game = load_camltrua,
-	.long_name_jpn = "ƒLƒƒƒƒ‹ƒgƒ‰ƒC",
+	.long_name_jpn = "ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½C",
 	.board = "C38",
 	.sound = sound_camltrua,
 );
@@ -3794,7 +3794,7 @@ GAME( dinorex, "Dino Rex", TAITO, 1992, GAME_BEAT,
 	.romsw = romsw_dondokodj,
 	.video = &video_solfigtr,
 	.exec = execute_mjnquest,
-	.long_name_jpn = "ƒ_ƒCƒmƒŒƒbƒNƒX",
+	.long_name_jpn = "ï¿½_ï¿½Cï¿½mï¿½ï¿½ï¿½bï¿½Nï¿½X",
 	.board = "D39",
 );
 static struct DIR_INFO dir_dondokodj[] =
@@ -3811,7 +3811,7 @@ GAME( dondokodj, "Don Doko Don", TAITO, 1989, GAME_PLATFORM,
 	.romsw = romsw_dondokodj,
 	.video = &video_dondokodj,
 	.exec = execute_dondokodj,
-	.long_name_jpn = "ƒhƒ“ƒhƒRƒhƒ“",
+	.long_name_jpn = "ï¿½hï¿½ï¿½ï¿½hï¿½Rï¿½hï¿½ï¿½",
 	.board = "B95",
 );
 static struct DIR_INFO dir_driftout[] =
@@ -3825,7 +3825,7 @@ GAME( driftout, "Drift Out", VISCO, 1991, GAME_RACE,
 	.dsw = dsw_driftout,
 	.video = &video_driftout,
 	.exec = execute_driftout,
-	.long_name_jpn = "ƒhƒŠƒtƒgƒAƒEƒg",
+	.long_name_jpn = "ï¿½hï¿½ï¿½ï¿½tï¿½gï¿½Aï¿½Eï¿½g",
 );
 static struct DIR_INFO dir_driveout[] =
 {
@@ -3867,7 +3867,7 @@ GAME( finalb, "Final Blow", TAITO, 1988, GAME_BEAT,
 	.romsw = romsw_thundfox,
 	.video = &video_finalb,
 	.exec = execute_mjnquest,
-	.long_name_jpn = "ƒtƒ@ƒCƒiƒ‹ƒuƒ[",
+	.long_name_jpn = "ï¿½tï¿½@ï¿½Cï¿½iï¿½ï¿½ï¿½uï¿½ï¿½ï¿½[",
 	.board = "B82",
 );
 static struct DIR_INFO dir_growl[] =
@@ -3881,7 +3881,7 @@ GAME( growl, "Growl", TAITO, 1990, GAME_BEAT,
 	.romsw = romsw_growl,
 	.video = &video_solfigtr,
 	.exec = execute_growl,
-	.long_name_jpn = "ƒ‹ƒi[ƒN",
+	.long_name_jpn = "ï¿½ï¿½ï¿½iï¿½[ï¿½N",
 	.board = "C74",
 );
 static struct DIR_INFO dir_gunfront[] =
@@ -3896,7 +3896,7 @@ GAME( gunfront, "Gun Frontier", TAITO, 1990, GAME_SHOOT,
 	.romsw = romsw_liquidk,
 	.video = &video_gunfront,
 	.exec = execute_gunfront,
-	.long_name_jpn = "ƒKƒ“ƒtƒƒ“ƒeƒBƒA",
+	.long_name_jpn = "ï¿½Kï¿½ï¿½ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½eï¿½Bï¿½A",
 	.board = "C71",
 );
 static struct DIR_INFO dir_liquidk[] =
@@ -3911,7 +3911,7 @@ GAME( liquidk, "Liquid Kids", TAITO, 1990, GAME_PLATFORM,
 	.romsw = romsw_liquidk,
 	.video = &video_liquidk,
 	.exec = execute_liquidk,
-	.long_name_jpn = "ƒ~ƒYƒoƒNµå–`Œ¯",
+	.long_name_jpn = "ï¿½~ï¿½Yï¿½oï¿½Nï¿½ï¿½`ï¿½ï¿½",
 	.board = "C49",
 );
 static struct DIR_INFO dir_mjnquest[] =
@@ -3939,7 +3939,7 @@ static struct DIR_INFO dir_majest12j[] =
 };
 #define input_ssi input_f2b2
 CLNE(majest12j, ssi, "Majestic Twelve", TAITO, 1990, GAME_SHOOT,
-	.long_name_jpn = "ƒ}ƒWƒFƒXƒeƒBƒbƒNƒgƒEƒFƒ‹ƒu",
+	.long_name_jpn = "ï¿½}ï¿½Wï¿½Fï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½gï¿½Eï¿½Fï¿½ï¿½ï¿½u",
 	.board = "C64",
 );
 static struct DIR_INFO dir_megablst[] =
@@ -3956,7 +3956,7 @@ GAME( megablst, "Mega Blast", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_f2demo,
 	.video = &video_solfigtr,
 	.exec = execute_megablst,
-	.long_name_jpn = "ƒƒKƒuƒ‰ƒXƒg",
+	.long_name_jpn = "ï¿½ï¿½ï¿½Kï¿½uï¿½ï¿½ï¿½Xï¿½g",
 	.board = "C11",
 );
 static struct DIR_INFO dir_pulirula[] =
@@ -3970,7 +3970,7 @@ GAME( pulirula, "Pulirula", TAITO, 1991, GAME_BEAT,
 	.romsw = romsw_liquidk,
 	.video = &video_pulirula,
 	.exec = execute_driftout,
-	.long_name_jpn = "ƒvƒŠƒ‹ƒ‰",
+	.long_name_jpn = "ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½",
 	.board = "C98",
 );
 static struct DIR_INFO dir_solfigtr[] =
@@ -3982,7 +3982,7 @@ static struct DIR_INFO dir_solfigtr[] =
 #define input_solfigtr input_f2b3
 GME( solfigtr, "Solitary Fighter", TAITO, 1990, GAME_BEAT,
 	.romsw = romsw_solfigtr,
-	.long_name_jpn = "ƒ_ƒCƒmƒŒƒbƒNƒX",
+	.long_name_jpn = "ï¿½_ï¿½Cï¿½mï¿½ï¿½ï¿½bï¿½Nï¿½X",
 	.board = "C91",
 );
 static struct DIR_INFO dir_ssi[] =
@@ -3994,7 +3994,7 @@ static struct DIR_INFO dir_ssi[] =
 };
 GME( ssi, "Super Space Invaders 91", TAITO, 1990, GAME_SHOOT,
 	.romsw = romsw_ssi,
-	.long_name_jpn = "ƒX[ƒp[ƒXƒy[ƒXƒCƒ“ƒx[ƒ_[f‚X‚P",
+	.long_name_jpn = "ï¿½Xï¿½[ï¿½pï¿½[ï¿½Xï¿½yï¿½[ï¿½Xï¿½Cï¿½ï¿½ï¿½xï¿½[ï¿½_ï¿½[ï¿½fï¿½Xï¿½P",
 	.board = "C64",
 );
 static struct DIR_INFO dir_thundfox[] =
@@ -4010,7 +4010,7 @@ GAME( thundfox, "Thunder Fox", TAITO, 1990, GAME_SHOOT,
 	.romsw = romsw_thundfox,
 	.video = &video_thundfox,
 	.exec = execute_liquidk,
-	.long_name_jpn = "ƒTƒ“ƒ_[ƒtƒHƒbƒNƒX",
+	.long_name_jpn = "ï¿½Tï¿½ï¿½ï¿½_ï¿½[ï¿½tï¿½Hï¿½bï¿½Nï¿½X",
 	.board = "C28",
 );
 
