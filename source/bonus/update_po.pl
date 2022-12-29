@@ -39,9 +39,10 @@ while (<>) {
 		$line++;
 	}
 }
-apply_patch() if (@old);
+apply_patch() if (@old || @new);
 
 sub apply_patch {
+	say "in apply_patch";
 	for (my $n=0; $n<=$#old; $n++) {
 		if ($old[$n] eq $new[$n]) {
 			last if ($n > $#old);
@@ -52,6 +53,26 @@ sub apply_patch {
 			last if ($n > $#old);
 		}
 	}
+	if (!@old && @new) {
+		# apparently trying to add new entries !
+		say "creating new entries for the po files...";
+		while (my $po = glob("locale/*.po")) {
+			$line -= 3;
+			# just guessing the line here, but normaly a patch has 3 lines at the end untouched
+			# so we get to the heart of it with line-3 here.
+			open my $f, ">>",$po || die "can't append to $po";
+			say "$po...";
+			foreach (@new) {
+				say $f "";
+				say $f "# $file:$line (added by update_po.pl)";
+				say $f "msgid \"$_\"";
+				say $f "msgstr \"\"";
+			}
+			close($f);
+		}
+		return;
+	}
+
 	if (@old) {
 		say "still have ",$#old+1," strings to update";
 		my $rep;
