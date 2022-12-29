@@ -1757,9 +1757,8 @@ msgstr "Singolo alternato"
 
 #: source/sdl/dialogs/video_options.cpp:107
 #: source/sdl/dialogs/video_options.cpp:175
-#, fuzzy
 msgid "Always"
-msgstr "Sempre attivato"
+msgstr "Sempre"
 
 #: source/sdl/dialogs/sound_options.cpp:75
 msgid "Always stop Neo-Geo CD music while loading"
@@ -3034,7 +3033,6 @@ msgid "Driver"
 msgstr "Driver"
 
 #: source/sdl/dialogs/about.cpp:725
-#, fuzzy
 msgid "Driver info"
 msgstr "Driver"
 
@@ -3127,14 +3125,12 @@ msgid "EmuDX"
 msgstr ":: EmuDX ::"
 
 #: source/games/frogger.c:1267
-#, fuzzy
 msgid "EmuDX sound ?"
-msgstr "Supporto EmuDX ?"
+msgstr "Suono EmuDX ?"
 
 #: source/games/frogger.c:1470
-#, fuzzy
 msgid "EmuDX sprites ?"
-msgstr "Supporto EmuDX ?"
+msgstr ""
 
 #: source/games/dkong.c:835 source/games/frogger.c:1455
 #: source/games/pengo.c:1864
@@ -3596,9 +3592,8 @@ msgid "Fully-auto"
 msgstr "Completam.auto"
 
 #: source/sdl/gui.cpp:527
-#, fuzzy
 msgid "GUI options"
-msgstr "Impostazioni Emulatore"
+msgstr "Opzioni GUI"
 
 #: source/sdl/gui/menu.cpp:155 source/sdl2/gui/menu.cpp:130
 msgid "GUI transparency"
@@ -4891,10 +4886,8 @@ msgid "OpenGL vendor"
 msgstr "Fornitore di OpenGL"
 
 #: source/sdl/dialogs/video_info.cpp:73
-#, fuzzy
-#, fuzzy
 msgid "OpenGL VSync"
-msgstr "Fornitore di OpenGL"
+msgstr "VSync OpenGL"
 
 #: source/sdl/dialogs/video_options.cpp:170
 #, fuzzy
@@ -5095,24 +5088,20 @@ msgid "Player's vitality consumption"
 msgstr "Consumo vita gioc."
 
 #: source/sdl/control.c:2022
-#, fuzzy
 msgid "Player1 A+B"
-msgstr "Giocatore 1"
+msgstr "Giocatore 1 A+B"
 
 #: source/sdl/control.c:2023
-#, fuzzy
 msgid "Player1 B1+B2"
-msgstr "Giocatore 1 Pulsante 1"
+msgstr "Giocatore 1 B1+B2"
 
 #: source/sdl/control.c:2024
-#, fuzzy
 msgid "Player1 B1+B2+B3"
-msgstr "Giocatore 1 Pulsante 1"
+msgstr "Giocatore 1 B1+B2+B3"
 
 #: source/sdl/control.c:2025
-#, fuzzy
 msgid "Player1 B4+B5+B6"
-msgstr "Giocatore 1 Pulsante 4"
+msgstr "Giocatore 1 B4+B5+B6"
 
 #: source/sdl/control.c:2014
 msgid "Player1 Button1"
@@ -5168,19 +5157,16 @@ msgid "Player1 Up"
 msgstr "Giocatore 1 Sopra"
 
 #: source/sdl/control.c:2047
-#, fuzzy
 msgid "Player2 A+B"
-msgstr "Giocatore 2"
+msgstr "Giocatore 2 A+B"
 
 #: source/sdl/control.c:2045
-#, fuzzy
 msgid "Player2 B1+B2"
-msgstr "Giocatore 2 Pulsante 1"
+msgstr "Giocatore 2 B1+B2"
 
 #: source/sdl/control.c:2046
-#, fuzzy
 msgid "Player2 B1+B2+B3"
-msgstr "Giocatore 2 Pulsante 1"
+msgstr "Giocatore 2 B1+B2+B3"
 
 #: source/sdl/control.c:2036
 msgid "Player2 Button1"
@@ -5235,9 +5221,8 @@ msgid "Player2 Up"
 msgstr "Giocatore 2 Sopra"
 
 #: source/sdl/control.c:2026
-#, fuzzy
 msgid "Player3 B1+B2"
-msgstr "Giocatore 3 Pulsante 1"
+msgstr "Giocatore 3 B1+B2"
 
 #: source/sdl/control.c:2056
 msgid "Player3 Button1"
@@ -5292,9 +5277,8 @@ msgid "Player3 Up"
 msgstr "Giocatore 3 Sopra"
 
 #: source/sdl/control.c:2027
-#, fuzzy
 msgid "Player4 B1+B2"
-msgstr "Giocatore 4 Pulsante 1"
+msgstr "Giocatore 4 B1+B2"
 
 #: source/sdl/control.c:2072
 msgid "Player4 Button1"
@@ -5469,9 +5453,8 @@ msgid "Rebuilding 8x8 layer"
 msgstr "Ricostruzione del livello 8x8px..."
 
 #: source/sdl/dialogs/game_selection.cpp:197
-#, fuzzy
 msgid "Recent games..."
-msgstr "Riavvia gioco"
+msgstr "Partite recenti..."
 
 #: source/sdl/dialogs/sound_options.cpp:83
 msgid "Record to raine_sound.wav"
