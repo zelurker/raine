@@ -124,8 +124,8 @@ static struct DSW_DATA dsw_data_euro_champ_92_1[] =
    { MSG_HARD,                0x01},
    { MSG_HARDEST,             0x00},
    { _("Game Time"),             0x0C, 0x04 },
-   { _(" 2  Minutes"),           0x0C},
-   { _(" 3  Minutes"),           0x08},
+   { _("2  Minutes"),           0x0C},
+   { _("3  Minutes"),           0x08},
    { _("2.5 Minutes"),           0x04},
    { _("1.5 Minutes"),           0x00},
    { _("Game Type"),             0x30, 0x04 },
@@ -610,7 +610,7 @@ static struct DIR_INFO dir_euroch92[] =
 };
 CLNE( euroch92, footchmp, "Euro Champ 92", TAITO, 1992, GAME_SPORTS,
 	.dsw = dsw_euroch92,
-	.long_name_jpn = "ƒnƒbƒgƒgƒŠƒbƒNƒq[ƒ[‚X‚R",
+	.long_name_jpn = "ï¿½nï¿½bï¿½gï¿½gï¿½ï¿½ï¿½bï¿½Nï¿½qï¿½[ï¿½ï¿½ï¿½[ï¿½Xï¿½R",
 	.board = "C80",
 );
 static struct DIR_INFO dir_hthero[] =
@@ -634,7 +634,7 @@ static struct DIR_INFO dir_footchmp[] =
    { NULL, },
 };
 GME( footchmp, "Football Champ", TAITO, 1990, GAME_SPORTS,
-	.long_name_jpn = "ƒnƒbƒgƒgƒŠƒbƒNƒq[ƒ[",
+	.long_name_jpn = "ï¿½nï¿½bï¿½gï¿½gï¿½ï¿½ï¿½bï¿½Nï¿½qï¿½[ï¿½ï¿½ï¿½[",
 	.board = "C80",
 );
 
