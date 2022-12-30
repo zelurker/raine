@@ -18,19 +18,6 @@ msgstr ""
 "X-Generator: Notepad++ 7.3.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-# Euro Champ 92
-#: source/games/fchamp.c:101 source/games/fchamp.c:127
-#: source/games/fchamp.c:171
-#, fuzzy
-msgid "2  Minutes"
-msgstr " 2  minuti"
-
-#: source/games/fchamp.c:102 source/games/fchamp.c:128
-#: source/games/fchamp.c:172
-#, fuzzy
-msgid "3  Minutes"
-msgstr " 3  minuti"
-
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"

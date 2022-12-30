@@ -16,16 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: source/games/fchamp.c:101 source/games/fchamp.c:171
-#: source/games/fchamp.c.orig:101 source/games/fchamp.c.orig:171
-msgid " 2  Minutes"
-msgstr ""
-
-#: source/games/fchamp.c:102 source/games/fchamp.c:172
-#: source/games/fchamp.c.orig:102 source/games/fchamp.c.orig:172
-msgid " 3  Minutes"
-msgstr ""
-
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"
@@ -457,10 +447,6 @@ msgstr ""
 msgid "1Up"
 msgstr ""
 
-#: source/games/fchamp.c:127 source/games/fchamp.c.orig:127
-msgid "2  Minutes"
-msgstr ""
-
 #: source/games/cps1drv.c:4116 source/games/cps1drv.c:4402
 #: source/games/seta.c:2833
 msgid "2 Coins to Start, 1 to Continue"
@@ -733,10 +719,6 @@ msgstr ""
 
 #: source/games/pengo.c:1336
 msgid "2x Speed Cheat"
-msgstr ""
-
-#: source/games/fchamp.c:128 source/games/fchamp.c.orig:128
-msgid "3  Minutes"
 msgstr ""
 
 #: source/games/cps1drv.c:3655

@@ -18,16 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: source/games/fchamp.c:101 source/games/fchamp.c:171
-#: source/games/fchamp.c.orig:101 source/games/fchamp.c.orig:171
-msgid " 2  Minutes"
-msgstr " 2  Minutos"
-
-#: source/games/fchamp.c:102 source/games/fchamp.c:172
-#: source/games/fchamp.c.orig:102 source/games/fchamp.c.orig:172
-msgid " 3  Minutes"
-msgstr " 3  Minutos"
-
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"
@@ -459,10 +449,6 @@ msgstr "1P/2P Controle do Giro"
 msgid "1Up"
 msgstr "1 Vida"
 
-#: source/games/fchamp.c:127 source/games/fchamp.c.orig:127
-msgid "2  Minutes"
-msgstr "2  Minutos"
-
 #: source/games/cps1drv.c:4116 source/games/cps1drv.c:4402
 #: source/games/seta.c:2833
 msgid "2 Coins to Start, 1 to Continue"
@@ -736,10 +722,6 @@ msgstr "2x"
 #: source/games/pengo.c:1336
 msgid "2x Speed Cheat"
 msgstr "2x Trapaça da Velocidade"
-
-#: source/games/fchamp.c:128 source/games/fchamp.c.orig:128
-msgid "3  Minutes"
-msgstr "3  Minutos"
 
 #: source/games/cps1drv.c:3655
 msgid "3 (2 when continue)"

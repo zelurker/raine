@@ -16,18 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: source/games/fchamp.c:101 source/games/fchamp.c:127
-#: source/games/fchamp.c:171
-#, fuzzy
-msgid "2  Minutes"
-msgstr "2 Minutos"
-
-#: source/games/fchamp.c:102 source/games/fchamp.c:128
-#: source/games/fchamp.c:172
-#, fuzzy
-msgid "3  Minutes"
-msgstr "3 Minutos"
-
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"

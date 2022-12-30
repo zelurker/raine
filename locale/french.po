@@ -18,18 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.5.5\n"
 
-#: source/games/fchamp.c:101 source/games/fchamp.c:127
-#: source/games/fchamp.c:171
-#, fuzzy
-msgid "2  Minutes"
-msgstr ""
-
-#: source/games/fchamp.c:102 source/games/fchamp.c:128
-#: source/games/fchamp.c:172
-#, fuzzy
-msgid "3  Minutes"
-msgstr ""
-
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"
