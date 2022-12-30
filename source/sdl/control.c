@@ -1799,7 +1799,8 @@ void control_handle_event(SDL_Event *event) {
 		  add_valid_input(ta);
 	  }
       } while (ta >= 0);
-      mouse_b |= event->button.button;
+      // apparently there is no need to update mouse_b since the loop just below sends the events as if the equivalent key was pressed...
+      // mouse_b |= event->button.button;
       break;
     case SDL_MOUSEBUTTONUP:
       if (reading_demo) break;
