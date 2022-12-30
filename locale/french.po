@@ -5430,7 +5430,7 @@ msgstr ""
 
 #: source/sdl/console/scripts.cpp:392
 msgid "Set"
-msgstr "Actif"
+msgstr "Active"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Seta"
