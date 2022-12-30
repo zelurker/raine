@@ -2317,6 +2317,11 @@ msgstr "Compañía"
 msgid "Company: %s"
 msgstr "Compañía : %s"
 
+#: source/sdl/dialogs/about.cpp:921
+#, c-format
+msgid "Compiled on %s %s"
+msgstr ""
+
 #: source/games/rainbow.c:97 source/games/rainbow.c:212
 msgid "Complete Bonus"
 msgstr "Completar Bonus"
@@ -6339,6 +6344,10 @@ msgstr "Usar puntero de mouse personalizado"
 msgid "Use double buffer (ignored by OpenGL)"
 msgstr "Usar doble buffer (ignorado por opengl)"
 
+#: source/sdl/dialogs/about.cpp:940
+msgid "Using "
+msgstr ""
+
 #: source/sdl/dialogs/video_info.cpp:102
 msgid "Using unscaled blits"
 msgstr "Usar blits sin escalar"
@@ -7035,6 +7044,16 @@ msgstr "windib (bueno para OpenGL)"
 #: source/sdl/dialogs/video_info.cpp:83
 msgid "window manager available"
 msgstr "administrador de ventanas disponible"
+
+#: source/sdl/dialogs/about.cpp:916
+#, c-format
+msgid "with an unknown gcc ???"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:912
+#, c-format
+msgid "with gcc %d.%d.%d"
+msgstr ""
 
 #~ msgid "1000K Only"
 #~ msgstr "1000K Solamente"

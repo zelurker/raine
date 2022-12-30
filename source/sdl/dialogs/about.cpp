@@ -685,7 +685,7 @@ static int about_game(int sel);
 static menu_item_t about_items[] =
 {
   { "", NULL, NULL },
-  { "Compiled on " __DATE__ " " __TIME__ , NULL, NULL },
+  { "" , NULL, NULL },
   { "gcc", NULL, NULL },
   { "cpu", NULL, NULL },
   { "SDL", },
@@ -907,17 +907,19 @@ int do_about(int sel) {
 	major = __clang_major__;
 	minor = __clang_minor__;
 	patchlevel = __clang_patchlevel__;
-	sprintf(gcc_version,"with llvm/clang %d.%d.%d",major,minor,patchlevel);
+	sprintf(gcc_version,_("with llvm/clang %d.%d.%d"),major,minor,patchlevel);
 #else
-	sprintf(gcc_version,"with gcc %d.%d.%d",major,minor,patchlevel);
+	sprintf(gcc_version,_("with gcc %d.%d.%d"),major,minor,patchlevel);
 #endif
     }
 #else
-    sprintf(gcc_version,"with an unknown gcc ???");
+    sprintf(gcc_version,_("with an unknown gcc ???"));
 #endif
-    char title[80];
+    char title[80],date[80];
     snprintf(title,80, EMUNAME " " VERSION " (c)1998-%s " HANDLE,current_year);
     about_items[0].label = title;
+    snprintf(date,80,_("Compiled on %s %s"), __DATE__, __TIME__);
+    about_items[1].label = date;
     about_items[2].label = gcc_version;
     path = get_shared("bitmaps/raine_logo.png");
     snprintf(about_cpu, 64, "CPU: %s", raine_cpu_model);
@@ -935,7 +937,8 @@ int do_about(int sel) {
 #endif
     const SDL_version *img = IMG_Linked_Version();
     const SDL_version *ttf = TTF_Linked_Version();
-    sprintf(about_sdl,"Using SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
+    sprintf(about_sdl,_("Using "));
+    sprintf(&about_sdl[strlen(about_sdl)],"SDL-%d.%d.%d, SDL_image-%d.%d.%d, SDL_ttf-%d.%d.%d",version->major,version->minor,version->patch,
 	    img->major,img->minor,img->patch,
 	    ttf->major,ttf->minor,ttf->patch);
     about_items[4].label = about_sdl;

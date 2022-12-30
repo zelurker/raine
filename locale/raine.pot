@@ -205,8 +205,7 @@ msgid "1.200k 3.500k"
 msgstr ""
 
 #: source/games/fchamp.c:104 source/games/fchamp.c:130
-#: source/games/fchamp.c:174 source/games/fchamp.c.orig:104
-#: source/games/fchamp.c.orig:130 source/games/fchamp.c.orig:174
+#: source/games/fchamp.c:174
 msgid "1.5 Minutes"
 msgstr ""
 
@@ -516,7 +515,8 @@ msgstr ""
 msgid "2 Credits/Winner Continue"
 msgstr ""
 
-#: source/games/lsystem.c:380
+#: source/games/lsystem.c:380 source/games/fchamp.c:101
+#: source/games/fchamp.c:127 source/games/fchamp.c:171
 msgid "2 Minutes"
 msgstr ""
 
@@ -531,8 +531,7 @@ msgstr ""
 #: source/games/ctribebl.c:110 source/games/doubled3.c:122
 #: source/games/silentd.c:134 source/games/wrestlef.c:109
 #: source/games/fchamp.c:106 source/games/fchamp.c:132
-#: source/games/fchamp.c:176 source/games/fchamp.c.orig:106
-#: source/games/fchamp.c.orig:132 source/games/fchamp.c.orig:176
+#: source/games/fchamp.c:176
 msgid "2 Players"
 msgstr ""
 
@@ -551,8 +550,7 @@ msgid "2 extra coins"
 msgstr ""
 
 #: source/games/fchamp.c:103 source/games/fchamp.c:129
-#: source/games/fchamp.c:173 source/games/fchamp.c.orig:103
-#: source/games/fchamp.c.orig:129 source/games/fchamp.c.orig:173
+#: source/games/fchamp.c:173
 msgid "2.5 Minutes"
 msgstr ""
 
@@ -773,7 +771,8 @@ msgstr ""
 msgid "3 Games Match"
 msgstr ""
 
-#: source/games/lsystem.c:379
+#: source/games/lsystem.c:379 source/games/fchamp.c:102
+#: source/games/fchamp.c:128 source/games/fchamp.c:172
 msgid "3 Minutes"
 msgstr ""
 
@@ -989,20 +988,17 @@ msgid "4 Minutes"
 msgstr ""
 
 #: source/games/fchamp.c:108 source/games/fchamp.c:134
-#: source/games/fchamp.c:178 source/games/fchamp.c.orig:108
-#: source/games/fchamp.c.orig:134 source/games/fchamp.c.orig:178
+#: source/games/fchamp.c:178
 msgid "4 Player/2 Cabinets"
 msgstr ""
 
 #: source/games/fchamp.c:109 source/games/fchamp.c:135
-#: source/games/fchamp.c:179 source/games/fchamp.c.orig:109
-#: source/games/fchamp.c.orig:135 source/games/fchamp.c.orig:179
+#: source/games/fchamp.c:179
 msgid "4 Player/2 Coin Slot"
 msgstr ""
 
 #: source/games/fchamp.c:107 source/games/fchamp.c:133
-#: source/games/fchamp.c:177 source/games/fchamp.c.orig:107
-#: source/games/fchamp.c.orig:133 source/games/fchamp.c.orig:177
+#: source/games/fchamp.c:177
 msgid "4 Player/4 Coin Slot"
 msgstr ""
 
@@ -1208,6 +1204,10 @@ msgstr ""
 msgid "50k 150k"
 msgstr ""
 
+#: source/games/seta.c:3136
+msgid "50k Only"
+msgstr ""
+
 #: source/games/upl.c:282 source/games/nmk.c:868
 msgid "50k and 100k"
 msgstr ""
@@ -1246,7 +1246,12 @@ msgstr ""
 msgid "50k and every 80k"
 msgstr ""
 
+#: source/games/toaplan1.c:645
+msgid "50k every 150k"
+msgstr ""
+
 #: source/games/silkworm.c:112 source/games/silkworm.c:437
+#: source/games/seta.c:2154
 msgid "50k only"
 msgstr ""
 
@@ -1433,6 +1438,10 @@ msgstr ""
 
 #: source/games/xsystem1.c:306
 msgid "70k and every 200k"
+msgstr ""
+
+#: source/games/toaplan1.c:646
+msgid "70k every 200k"
 msgstr ""
 
 #: source/games/toaplan2.c:759
@@ -1945,7 +1954,6 @@ msgid "Borderless"
 msgstr ""
 
 #: source/games/fchamp.c:75 source/games/fchamp.c:145
-#: source/games/fchamp.c.orig:75 source/games/fchamp.c.orig:145
 msgid "Both Teams"
 msgstr ""
 
@@ -2307,7 +2315,6 @@ msgstr ""
 msgid "Color Test"
 msgstr ""
 
-#: source/sdl/dialogs/gui_options.cpp.orig:46
 #: source/sdl/dialogs/gui_options.cpp:46
 msgid "Colors..."
 msgstr ""
@@ -2335,6 +2342,11 @@ msgstr ""
 #: source/sdl/dialogs/game_selection.cpp:468
 #, c-format
 msgid "Company: %s"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:921
+#, c-format
+msgid "Compiled on %s %s"
 msgstr ""
 
 #: source/games/rainbow.c:97 source/games/rainbow.c:212
@@ -2365,10 +2377,8 @@ msgstr ""
 #: source/games/rastan.c:107 source/games/xsystem2.c:105
 #: source/games/hyperpcb.c:578 source/games/toaplan2.c:1951
 #: source/games/fchamp.c:110 source/games/fchamp.c:136
-#: source/games/fchamp.c:180 source/games/fchamp.c.orig:110
-#: source/games/fchamp.c.orig:136 source/games/fchamp.c.orig:180
-#: source/games/toaplan1.c:85 source/games/toaplan1.c:130
-#: source/games/seta.c:2662
+#: source/games/fchamp.c:180 source/games/toaplan1.c:85
+#: source/games/toaplan1.c:130 source/games/seta.c:2662
 msgid "Continue"
 msgstr ""
 
@@ -2781,7 +2791,6 @@ msgstr ""
 msgid "DirectX (good for hardware overlays/blits)"
 msgstr ""
 
-#: source/sdl/dialogs/gui_options.cpp.orig:161
 #: source/sdl/dialogs/gui_options.cpp:161
 msgid "Directories..."
 msgstr ""
@@ -3044,14 +3053,14 @@ msgstr ""
 #: source/sdl/dialogs/game_options.cpp:180
 #: source/sdl/dialogs/neocd_options.cpp:96
 #: source/sdl/dialogs/neocd_options.cpp:108
-#: source/sdl/dialogs/neocd_options.cpp:126 source/sdl/dialogs/about.cpp:555
-#: source/sdl/dialogs/about.cpp:572 source/sdl/dialogs/video_options.cpp:200
-#: source/sdl/dialogs/controls.cpp:734 source/sdl/dialogs/controls.cpp:776
-#: source/sdl/dialogs/controls.cpp:935 source/sdl/dialogs/controls.cpp:1019
-#: source/sdl/gui/tedit.cpp:349 source/sdl/gui/tedit.cpp:409
-#: source/sdl/gui/tedit.cpp:453 source/sdl/streams.c:446
-#: source/sdl2/gui/tedit.cpp:345 source/sdl2/gui/tedit.cpp:404
-#: source/sdl2/gui/tedit.cpp:447
+#: source/sdl/dialogs/neocd_options.cpp:126
+#: source/sdl/dialogs/video_options.cpp:200 source/sdl/dialogs/controls.cpp:734
+#: source/sdl/dialogs/controls.cpp:776 source/sdl/dialogs/controls.cpp:935
+#: source/sdl/dialogs/controls.cpp:1019 source/sdl/dialogs/about.cpp:555
+#: source/sdl/dialogs/about.cpp:572 source/sdl/gui/tedit.cpp:349
+#: source/sdl/gui/tedit.cpp:409 source/sdl/gui/tedit.cpp:453
+#: source/sdl/streams.c:446 source/sdl2/gui/tedit.cpp:345
+#: source/sdl2/gui/tedit.cpp:404 source/sdl2/gui/tedit.cpp:447
 msgid "Error"
 msgstr ""
 
@@ -3063,7 +3072,7 @@ msgstr ""
 msgid "Errors compiling fragment shader"
 msgstr ""
 
-#: source/games/fchamp.c:113 source/games/fchamp.c.orig:113
+#: source/games/fchamp.c:113
 msgid "Euro Version"
 msgstr ""
 
@@ -3456,7 +3465,6 @@ msgid "Game Mode"
 msgstr ""
 
 #: source/games/fchamp.c:74 source/games/fchamp.c:144
-#: source/games/fchamp.c.orig:74 source/games/fchamp.c.orig:144
 msgid "Game Over For"
 msgstr ""
 
@@ -3467,8 +3475,6 @@ msgstr ""
 
 #: source/games/wwfsstar.c:128 source/games/fchamp.c:100
 #: source/games/fchamp.c:126 source/games/fchamp.c:170
-#: source/games/fchamp.c.orig:100 source/games/fchamp.c.orig:126
-#: source/games/fchamp.c.orig:170
 msgid "Game Time"
 msgstr ""
 
@@ -3476,11 +3482,9 @@ msgstr ""
 msgid "Game Title Language"
 msgstr ""
 
-#: source/games/deadconx.c:122 source/games/fchamp.c:105
-#: source/games/fchamp.c:131 source/games/fchamp.c:175
-#: source/games/fchamp.c.orig:105 source/games/fchamp.c.orig:131
-#: source/games/fchamp.c.orig:175 source/games/taito_f2.c:921
-#: source/games/seta.c:3078
+#: source/games/deadconx.c:122 source/games/taito_f2.c:921
+#: source/games/fchamp.c:105 source/games/fchamp.c:131
+#: source/games/fchamp.c:175 source/games/seta.c:3078
 msgid "Game Type"
 msgstr ""
 
@@ -3939,8 +3943,7 @@ msgstr ""
 #: source/games/xsystem1.c:93 source/games/xsystem1.c:165
 #: source/games/toaplan1.c:413 source/games/toaplan1.c:609
 #: source/games/toaplan1.c:665 source/games/seta.c:1929
-#: source/games/seta.c:2721 source/sdl/dialogs/gui_options.cpp.orig:37
-#: source/sdl/dialogs/gui_options.cpp:37
+#: source/games/seta.c:2721 source/sdl/dialogs/gui_options.cpp:37
 msgid "Language"
 msgstr ""
 
@@ -3950,10 +3953,6 @@ msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:215
 msgid "Layers"
-msgstr ""
-
-#: source/sdl/dialogs/gui_options.cpp.orig:164
-msgid "Leds..."
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:122
@@ -4134,7 +4133,6 @@ msgid "Loop"
 msgstr ""
 
 #: source/games/fchamp.c:76 source/games/fchamp.c:146
-#: source/games/fchamp.c.orig:76 source/games/fchamp.c.orig:146
 msgid "Loser Team Only"
 msgstr ""
 
@@ -4420,9 +4418,6 @@ msgid "Nitros per Stage"
 msgstr ""
 
 #: source/sdl/dialogs/sound_commands.cpp:273
-#: source/sdl/dialogs/gui_options.cpp.orig:47
-#: source/sdl/dialogs/gui_options.cpp.orig:48
-#: source/sdl/dialogs/gui_options.cpp.orig:49
 #: source/sdl/dialogs/neocd_options.cpp:184
 #: source/sdl/dialogs/neocd_options.cpp:190
 #: source/sdl/dialogs/video_info.cpp:26
@@ -4462,7 +4457,6 @@ msgstr ""
 msgid "No Bonus Lives"
 msgstr ""
 
-#: source/sdl/dialogs/gui_options.cpp.orig:47
 #: source/sdl/dialogs/gui_options.cpp:47
 msgid "No HUD messages"
 msgstr ""
@@ -4670,7 +4664,6 @@ msgstr ""
 msgid "Only working games"
 msgstr ""
 
-#: source/sdl/dialogs/gui_options.cpp.orig:48
 #: source/sdl/dialogs/gui_options.cpp:48
 msgid "Opaque HUD"
 msgstr ""
@@ -4833,7 +4826,6 @@ msgstr ""
 msgid "Pause game"
 msgstr ""
 
-#: source/sdl/dialogs/gui_options.cpp.orig:49
 #: source/sdl/dialogs/gui_options.cpp:49
 msgid "Pause when focus lost"
 msgstr ""
@@ -6410,6 +6402,10 @@ msgstr ""
 msgid "Use double buffer (ignored by OpenGL)"
 msgstr ""
 
+#: source/sdl/dialogs/about.cpp:940
+msgid "Using "
+msgstr ""
+
 #: source/sdl/dialogs/video_info.cpp:102
 msgid "Using unscaled blits"
 msgstr ""
@@ -6509,7 +6505,7 @@ msgid "Vs Play Mode"
 msgstr ""
 
 #: source/neocd/neocd.c:1256 source/sdl/dialogs/neo_softdips.cpp:231
-#: source/sdl/dialogs/about.cpp:846 source/sdl/dialogs/video_options.cpp:97
+#: source/sdl/dialogs/video_options.cpp:97 source/sdl/dialogs/about.cpp:846
 #: source/sdl/glsl.c:385 source/sdl/compat.c:300 source/sdl/dsw.c:417
 msgid "Warning"
 msgstr ""
@@ -6627,9 +6623,6 @@ msgid "Year: 2006"
 msgstr ""
 
 #: source/sdl/dialogs/sound_commands.cpp:273
-#: source/sdl/dialogs/gui_options.cpp.orig:47
-#: source/sdl/dialogs/gui_options.cpp.orig:48
-#: source/sdl/dialogs/gui_options.cpp.orig:49
 #: source/sdl/dialogs/neocd_options.cpp:184
 #: source/sdl/dialogs/neocd_options.cpp:190
 #: source/sdl/dialogs/video_info.cpp:27
@@ -7025,4 +7018,19 @@ msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:83
 msgid "window manager available"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:916
+#, c-format
+msgid "with an unknown gcc ???"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:912
+#, c-format
+msgid "with gcc %d.%d.%d"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:910
+#, c-format
+msgid "with llvm/clang %d.%d.%d"
 msgstr ""

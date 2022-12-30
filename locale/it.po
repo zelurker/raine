@@ -2413,6 +2413,11 @@ msgstr "Azienda"
 msgid "Company: %s"
 msgstr "Azienda: %s"
 
+#: source/sdl/dialogs/about.cpp:921
+#, c-format
+msgid "Compiled on %s %s"
+msgstr ""
+
 # Rainbow Islands
 #: source/games/rainbow.c:97 source/games/rainbow.c:212
 msgid "Complete Bonus"
@@ -6676,6 +6681,10 @@ msgstr "Usa puntatore mouse personalizzato"
 msgid "Use double buffer (ignored by OpenGL)"
 msgstr "Usa doppio buffer (ignorato da OGL)"
 
+#: source/sdl/dialogs/about.cpp:940
+msgid "Using "
+msgstr ""
+
 #: source/sdl/dialogs/video_info.cpp:102
 msgid "Using unscaled blits"
 msgstr "Utilizzo di Blit non graduate"
@@ -7396,6 +7405,16 @@ msgstr "Windib (buono per OpenGL)"
 #: source/sdl/dialogs/video_info.cpp:83
 msgid "window manager available"
 msgstr "Gestore delle finestre disponibile"
+
+#: source/sdl/dialogs/about.cpp:916
+#, c-format
+msgid "with an unknown gcc ???"
+msgstr ""
+
+#: source/sdl/dialogs/about.cpp:912
+#, c-format
+msgid "with gcc %d.%d.%d"
+msgstr ""
 
 # ????
 #, c-format
