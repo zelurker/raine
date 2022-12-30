@@ -1600,7 +1600,12 @@ msgstr ""
 msgid "Add ROM directory..."
 msgstr ""
 
-#: source/games/spacegun.c:104 source/sdl/dialogs/game_selection.cpp:439
+#: source/games/games.c:27
+msgid "Adult"
+msgstr ""
+
+#: source/games/spacegun.c:104 source/games/games.c:19
+#: source/sdl/dialogs/game_selection.cpp:439
 msgid "All"
 msgstr ""
 
@@ -1886,6 +1891,10 @@ msgstr ""
 msgid "Bad soft dipswitches"
 msgstr ""
 
+#: source/games/games.c:22
+msgid "Beat'em up"
+msgstr ""
+
 #: source/games/taito_f2.c:955
 msgid "Best of 3"
 msgstr ""
@@ -1963,6 +1972,10 @@ msgstr ""
 
 #: source/sdl/dialogs/gui_options.cpp:37
 msgid "Brazilian Portuguese"
+msgstr ""
+
+#: source/games/games.c:20
+msgid "Breakout"
 msgstr ""
 
 #: source/games/othunder.c:94
@@ -3283,6 +3296,10 @@ msgstr ""
 msgid "Female (Full)"
 msgstr ""
 
+#: source/games/games.c:31
+msgid "Fight"
+msgstr ""
+
 #: source/sdl/dialogs/sound_commands.cpp:212
 msgid "File"
 msgstr ""
@@ -3555,6 +3572,10 @@ msgstr ""
 
 #: source/games/toaplan2.c:1671
 msgid "Guest Player"
+msgstr ""
+
+#: source/games/games.c:32
+msgid "Hack and slash"
 msgstr ""
 
 #: source/games/othunder.c:104
@@ -4204,6 +4225,10 @@ msgstr ""
 msgid "Maximum font size"
 msgstr ""
 
+#: source/games/games.c:30
+msgid "Maze"
+msgstr ""
+
 #: source/games/cps1drv.c:3027
 msgid "Medal Setup"
 msgstr ""
@@ -4246,6 +4271,10 @@ msgstr ""
 msgid "Mirror"
 msgstr ""
 
+#: source/games/games.c:25
+msgid "Misc"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:441
 msgid "Missing"
 msgstr ""
@@ -4285,8 +4314,16 @@ msgstr ""
 msgid "More Slowly"
 msgstr ""
 
+#: source/sdl/dialogs/game_selection.cpp:179
+msgid "Most played games"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:198
 msgid "Most played games..."
+msgstr ""
+
+#: source/sdl/dialogs/game_selection.cpp:181
+msgid "Most recent games"
 msgstr ""
 
 #: source/sdl/dialogs/sound_options.cpp:78
@@ -4420,9 +4457,7 @@ msgstr ""
 #: source/sdl/dialogs/sound_commands.cpp:273
 #: source/sdl/dialogs/neocd_options.cpp:184
 #: source/sdl/dialogs/neocd_options.cpp:190
-#: source/sdl/dialogs/video_info.cpp:26
-#: source/sdl/dialogs/game_selection.cpp:48
-#: source/sdl/dialogs/sound_options.cpp:68
+#: source/sdl/dialogs/video_info.cpp:26 source/sdl/dialogs/sound_options.cpp:68
 #: source/sdl/dialogs/sound_options.cpp:72
 #: source/sdl/dialogs/sound_options.cpp:75
 #: source/sdl/dialogs/sound_options.cpp:79
@@ -4446,10 +4481,11 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:288
 #: source/sdl/dialogs/gui_options.cpp:47 source/sdl/dialogs/gui_options.cpp:48
 #: source/sdl/dialogs/gui_options.cpp:49 source/sdl/dialogs/controls.cpp:1191
-#: source/sdl/gui/menu.cpp:154 source/sdl/gui/menu.cpp:155
-#: source/sdl/gui/menu.cpp:157 source/sdl/gui/menu.cpp:158
-#: source/sdl/control.c:2002 source/sdl2/gui/menu.cpp:129
-#: source/sdl2/gui/menu.cpp:130 source/sdl2/gui/menu.cpp:131
+#: source/sdl/dialogs/game_selection.cpp:48 source/sdl/gui/menu.cpp:154
+#: source/sdl/gui/menu.cpp:155 source/sdl/gui/menu.cpp:157
+#: source/sdl/gui/menu.cpp:158 source/sdl/control.c:2002
+#: source/sdl2/gui/menu.cpp:129 source/sdl2/gui/menu.cpp:130
+#: source/sdl2/gui/menu.cpp:131
 msgid "No"
 msgstr ""
 
@@ -4854,6 +4890,10 @@ msgstr ""
 msgid "Pixel double"
 msgstr ""
 
+#: source/games/games.c:24
+msgid "Platform"
+msgstr ""
+
 #: source/sdl/gui.cpp:514
 msgid "Play game"
 msgstr ""
@@ -5177,6 +5217,10 @@ msgstr ""
 msgid "Psikyo (gunbird)"
 msgstr ""
 
+#: source/games/games.c:23
+msgid "Puzzle"
+msgstr ""
+
 #: source/sdl/dialogs/controls.cpp:359 source/sdl/dialogs/controls.cpp:403
 #: source/sdl/dialogs/controls.cpp:431
 msgid "Question"
@@ -5192,6 +5236,10 @@ msgstr ""
 
 #: source/sdl/control.c:703
 msgid "Quit without saving"
+msgstr ""
+
+#: source/games/games.c:29
+msgid "Quizz"
 msgstr ""
 
 #: source/sdl/profile.c:253
@@ -5224,6 +5272,10 @@ msgstr ""
 
 #: source/games/bublbobl.c:267
 msgid "ROM type"
+msgstr ""
+
+#: source/games/games.c:28
+msgid "Race"
 msgstr ""
 
 #: source/games/pengo.c:132
@@ -5590,6 +5642,10 @@ msgstr ""
 msgid "Shields"
 msgstr ""
 
+#: source/games/games.c:21
+msgid "Shoot'em up"
+msgstr ""
+
 #: source/games/toaplan2.c:271
 msgid "Shooting Style"
 msgstr ""
@@ -5720,6 +5776,10 @@ msgstr ""
 #: source/sdl/control.c:414
 #, c-format
 msgid "Speed limit %d FPS"
+msgstr ""
+
+#: source/games/games.c:26
+msgid "Sport"
 msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp:238
@@ -6403,6 +6463,7 @@ msgid "Use double buffer (ignored by OpenGL)"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:940
+#, c-format
 msgid "Using "
 msgstr ""
 
@@ -6625,9 +6686,7 @@ msgstr ""
 #: source/sdl/dialogs/sound_commands.cpp:273
 #: source/sdl/dialogs/neocd_options.cpp:184
 #: source/sdl/dialogs/neocd_options.cpp:190
-#: source/sdl/dialogs/video_info.cpp:27
-#: source/sdl/dialogs/game_selection.cpp:48
-#: source/sdl/dialogs/sound_options.cpp:72
+#: source/sdl/dialogs/video_info.cpp:27 source/sdl/dialogs/sound_options.cpp:72
 #: source/sdl/dialogs/sound_options.cpp:75
 #: source/sdl/dialogs/sound_options.cpp:79
 #: source/sdl/dialogs/sound_options.cpp:80
@@ -6644,7 +6703,8 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:281
 #: source/sdl/dialogs/video_options.cpp:288
 #: source/sdl/dialogs/gui_options.cpp:47 source/sdl/dialogs/gui_options.cpp:48
-#: source/sdl/dialogs/gui_options.cpp:49 source/sdl/gui/menu.cpp:154
+#: source/sdl/dialogs/gui_options.cpp:49
+#: source/sdl/dialogs/game_selection.cpp:48 source/sdl/gui/menu.cpp:154
 #: source/sdl/gui/menu.cpp:155 source/sdl/gui/menu.cpp:157
 #: source/sdl/gui/menu.cpp:158 source/sdl/control.c:2001
 #: source/sdl2/gui/menu.cpp:129 source/sdl2/gui/menu.cpp:130

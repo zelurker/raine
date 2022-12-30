@@ -7751,41 +7751,41 @@ msgstr "Italiano"
 #~ msgstr "Errori compilando la colorazione dei vertici (Vertex Shader)"
 
 # ----------------------------- GAMES CATEGORY -----------------------------
-#~ msgid "Beat'em up"
-#~ msgstr "Picchiaduro"
+msgid "Beat'em up"
+msgstr "Picchiaduro"
 
-#~ msgid "Breakout"
-#~ msgstr "Rompimattoni"
+msgid "Breakout"
+msgstr "Rompimattoni"
 
-#~ msgid "Fight"
-#~ msgstr "Lotta"
+msgid "Fight"
+msgstr "Lotta"
 
-#~ msgid "Maze"
-#~ msgstr "Labirinto"
+msgid "Maze"
+msgstr "Labirinto"
 
-#~ msgid "Misc"
-#~ msgstr "Misto"
+msgid "Misc"
+msgstr "Misto"
 
-#~ msgid "Platform"
-#~ msgstr "Piattaforme"
+msgid "Platform"
+msgstr "Piattaforme"
 
-#~ msgid "Puzzle"
-#~ msgstr "Rompicapo"
+msgid "Puzzle"
+msgstr "Rompicapo"
 
-#~ msgid "Quizz"
-#~ msgstr "Indovinello"
+msgid "Quizz"
+msgstr "Indovinello"
 
-#~ msgid "Race"
-#~ msgstr "Corse"
+msgid "Race"
+msgstr "Corse"
 
-#~ msgid "Shoot'em up"
-#~ msgstr "Sparatutto"
+msgid "Shoot'em up"
+msgstr "Sparatutto"
 
-#~ msgid "Sport"
-#~ msgstr "Sportivo"
+msgid "Sport"
+msgstr "Sportivo"
 
-#~ msgid "Adult"
-#~ msgstr "Erotico"
+msgid "Adult"
+msgstr "Erotico"
 
 # ------------------------------- INPUT ITEMS -------------------------------
 #~ msgid "Stick 0"
@@ -7904,4 +7904,16 @@ msgstr ""
 
 # source/sdl/dialogs/gui_options.cpp:123 (added by update_po.pl)
 msgid "LEDs assignments"
+msgstr ""
+
+# source/games/games.c:-9 (added by update_po.pl)
+msgid "Hack and slash"
+msgstr ""
+
+# source/sdl/dialogs/game_selection.cpp:174 (added by update_po.pl)
+msgid "Most played games"
+msgstr ""
+
+# source/sdl/dialogs/game_selection.cpp:174 (added by update_po.pl)
+msgid "Most recent games"
 msgstr ""

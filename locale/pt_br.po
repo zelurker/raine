@@ -7295,3 +7295,63 @@ msgstr ""
 # source/sdl/dialogs/gui_options.cpp:120 (added by update_po.pl)
 msgid "LEDs assignments"
 msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Breakout"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Shoot'em up"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Beat'em up"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Puzzle"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Platform"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Misc"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Sport"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Adult"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Race"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Quizz"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Maze"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Fight"
+msgstr ""
+
+# source/games/games.c:-12 (added by update_po.pl)
+msgid "Hack and slash"
+msgstr ""
+
+# source/sdl/dialogs/game_selection.cpp:171 (added by update_po.pl)
+msgid "Most played games"
+msgstr ""
+
+# source/sdl/dialogs/game_selection.cpp:171 (added by update_po.pl)
+msgid "Most recent games"
+msgstr ""

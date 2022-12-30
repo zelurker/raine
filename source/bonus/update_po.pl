@@ -70,6 +70,7 @@ sub apply_patch {
 			}
 			close($f);
 		}
+		@old = @new = ();
 		return;
 	}
 

@@ -134,6 +134,9 @@ void init_lang() {
     /* 1st argument of setlocale is *not* a bit mask, and since I don't want numeric conversions here I need to call it twice */
     setlocale(LC_ALL,"");
     setlocale(LC_NUMERIC,"C");
+    for (int n=0; n<NB_GAME_TYPE; n++) {
+	game_type[n] = gettext(game_type[n]);
+    }
 #endif
 }
 

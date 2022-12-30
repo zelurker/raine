@@ -7056,3 +7056,63 @@ msgstr ""
 "Pour passer un bouton appuyez sur la barre d'espace ou cliquez / touchez l'écran\n"
 "Pour sortir avant la fin pressez ESC"
 
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Breakout"
+msgstr "Casse briques"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Shoot'em up"
+msgstr "Tir"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Beat'em up"
+msgstr "Baston"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Puzzle"
+msgstr ""
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Platform"
+msgstr "Plateforme"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Misc"
+msgstr "Divers"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Sport"
+msgstr ""
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Adult"
+msgstr "Adulte"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Race"
+msgstr "Course"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Quizz"
+msgstr ""
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Maze"
+msgstr "Labyrinthe"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Fight"
+msgstr "Combat"
+
+# source/games/games.c:-6 (added by update_po.pl)
+msgid "Hack and slash"
+msgstr ""
+
+# source/sdl/dialogs/game_selection.cpp:177 (added by update_po.pl)
+msgid "Most played games"
+msgstr "Jeux les + joués"
+
+# source/sdl/dialogs/game_selection.cpp:177 (added by update_po.pl)
+msgid "Most recent games"
+msgstr "Jeux les + récents"
