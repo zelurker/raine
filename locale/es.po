@@ -1159,10 +1159,6 @@ msgstr "500k y cada 600k"
 msgid "500k only"
 msgstr "500k solamente"
 
-#: source/games/seta.c:3136
-msgid "50K  Only"
-msgstr "500k Solamente"
-
 #: source/games/seta.c:2156 source/games/seta.c:3137
 msgid "50K Every 150K"
 msgstr "50K Cada 150K"
@@ -1170,10 +1166,6 @@ msgstr "50K Cada 150K"
 #: source/games/seta.c:2890
 msgid "50K Every 200K"
 msgstr "50K Cada 200K"
-
-#: source/games/seta.c:2154
-msgid "50K Only"
-msgstr "50K Solamente"
 
 #: source/games/toaplan1.c:538
 msgid "50K and 100K"
@@ -1190,10 +1182,6 @@ msgstr "50K, cada 200K"
 #: source/games/toaplan1.c:145
 msgid "50K, every 250K"
 msgstr "50K, cada 250K"
-
-#: source/games/toaplan1.c:645
-msgid "50Kevery 150K"
-msgstr "50Kcada 150K"
 
 #: source/games/upl.c:397 source/games/aquajack.c:92 source/games/xsystem2.c:98
 #: source/games/megasys1.c:1339 source/games/megasys1.c:1409
@@ -1415,10 +1403,6 @@ msgstr "70K, cada 150K"
 #: source/games/toaplan1.c:119 source/games/toaplan1.c:144
 msgid "70K, every 200K"
 msgstr "70K, cada 200K"
-
-#: source/games/toaplan1.c:646
-msgid "70Kevery 200K"
-msgstr "70Kcada 200K"
 
 #: source/games/cabal.c:155 source/games/toki.c:122
 msgid "70k"

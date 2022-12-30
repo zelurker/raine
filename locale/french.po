@@ -1159,20 +1159,12 @@ msgstr ""
 msgid "500k only"
 msgstr ""
 
-#: source/games/seta.c:3136
-msgid "50K  Only"
-msgstr ""
-
 #: source/games/seta.c:2156 source/games/seta.c:3137
 msgid "50K Every 150K"
-msgstr ""
+msgstr "50k tous les 150k"
 
 #: source/games/seta.c:2890
 msgid "50K Every 200K"
-msgstr ""
-
-#: source/games/seta.c:2154
-msgid "50K Only"
 msgstr ""
 
 #: source/games/toaplan1.c:538
@@ -1189,10 +1181,6 @@ msgstr ""
 
 #: source/games/toaplan1.c:145
 msgid "50K, every 250K"
-msgstr ""
-
-#: source/games/toaplan1.c:645
-msgid "50Kevery 150K"
 msgstr ""
 
 #: source/games/upl.c:397 source/games/aquajack.c:92 source/games/xsystem2.c:98
@@ -1414,10 +1402,6 @@ msgstr ""
 msgid "70K, every 200K"
 msgstr ""
 
-#: source/games/toaplan1.c:646
-msgid "70Kevery 200K"
-msgstr ""
-
 #: source/games/cabal.c:155 source/games/toki.c:122
 msgid "70k"
 msgstr ""
@@ -1440,15 +1424,15 @@ msgstr ""
 
 #: source/games/megasys1.c:1020
 msgid "70k and every 130k"
-msgstr ""
+msgstr "70k et tous les 130k"
 
 #: source/games/xsystem1.c:306
 msgid "70k and every 200k"
-msgstr ""
+msgstr "70k et tous les 200k"
 
 #: source/games/toaplan2.c:759
 msgid "70k then every 200k"
-msgstr ""
+msgstr "70k puis tous les 200k"
 
 #: source/games/xsystem2.c:402 source/games/xsystem2.c:895
 msgid "70k, 200k"
@@ -1458,60 +1442,59 @@ msgstr ""
 #: source/games/cps1drv.c:3692 source/games/cps1drv.c:3998
 #: source/games/cps1drv.c:4031 source/games/cps1drv.c:4040
 msgid "8 (Hardest)"
-msgstr ""
+msgstr "8 (la + dure)"
 
 #: source/sdl/control.c:2202
 msgid "8 Coins/1 Credit"
-msgstr ""
+msgstr "8 pièces / 1 partie"
 
 #: source/sdl/control.c:2203
 msgid "8 Coins/2 Credits"
-msgstr ""
+msgstr "8 pièces / 2 parties"
 
 #: source/sdl/control.c:2204
 msgid "8 Coins/3 Credits"
-msgstr ""
+msgstr "8 pièces / 3 parties"
 
 #: source/sdl/control.c:2205
 msgid "8 Coins/4 Credits"
-msgstr ""
+msgstr "8 pièces / 4 parties"
 
 #: source/games/cadash.c:105
-#, fuzzy
 msgid "8 Minutes"
 msgstr ""
 
 #: source/games/crimec.c:69
 msgid "8 Times"
-msgstr ""
+msgstr "8 fois"
 
 #: source/games/mcatadv.c:243
 msgid "800k 1500k"
-msgstr ""
+msgstr "800k 1500k"
 
 #: source/games/seta.c:1852
 msgid "800k and 2000k only"
-msgstr ""
+msgstr "800k et 200k seulement"
 
 #: source/games/aquajack.c:93
 msgid "80k"
-msgstr ""
+msgstr "80k"
 
 #: source/games/lsystem.c:1484
 msgid "80k and 160k"
-msgstr ""
+msgstr "80k et 160k"
 
 #: source/games/bonzeadv.c:118
 msgid "80k and 250k"
-msgstr ""
+msgstr "80k et 250k"
 
 #: source/games/cps1drv.c:3945 source/games/cps1drv.c:3973
 msgid "80k and every 400k"
-msgstr ""
+msgstr "80k et tous les 400k"
 
 #: source/games/lsystem.c:1483
 msgid "80k only"
-msgstr ""
+msgstr "80k seulement"
 
 #: source/games/crospang.c:109
 msgid "8k 23k 15k+"
@@ -1519,19 +1502,19 @@ msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:188
 msgid "8x (default)"
-msgstr ""
+msgstr "8x (par défaut)"
 
 #: source/sdl/control.c:2207
 msgid "9 Coins/1 Credit"
-msgstr ""
+msgstr "9 pièces / 1 partie"
 
 #: source/games/lsystem.c:105
 msgid "9 per Credit"
-msgstr ""
+msgstr "9 par partie"
 
 #: source/games/cookbib.c:343 source/games/hyperpcb.c:79
 msgid "90 Seconds"
-msgstr ""
+msgstr "90 secondes"
 
 #: source/games/bloodbro.c:82 source/games/toaplan1.c:424
 #: source/games/toaplan1.c:620 source/games/toaplan1.c:676
@@ -1655,7 +1638,7 @@ msgstr "License Alt"
 
 #: source/sdl/control.c:2236
 msgid "Alternate"
-msgstr ""
+msgstr "Alterné"
 
 #: source/games/taito_f2.c:809
 msgid "AlternateDual"
@@ -1663,7 +1646,7 @@ msgstr ""
 
 #: source/games/taito_f2.c:808
 msgid "AlternateSingle"
-msgstr ""
+msgstr "Simple alterné"
 
 #: source/sdl/dialogs/video_options.cpp:107
 #: source/sdl/dialogs/video_options.cpp:175
@@ -1733,7 +1716,7 @@ msgstr "Répertoire d'artwork"
 #: source/games/wrestlef.c:82 source/games/wrestlef.c:85
 #: source/games/wrestlef.c:88
 msgid "As Start Price"
-msgstr ""
+msgstr "Comme prix de départ"
 
 #: source/games/toaplan2.c:323 source/games/toaplan2.c:1856
 msgid "Asia"
@@ -1769,11 +1752,11 @@ msgstr ""
 
 #: source/games/opwolf.c:61
 msgid "Attract Mode"
-msgstr ""
+msgstr "Mode attraction"
 
 #: source/sdl/sasound.c:782
 msgid "Audio track unreadable"
-msgstr ""
+msgstr "Piste audio illisible"
 
 #: source/sdl/dialogs/video_options.cpp:284
 msgid "Auto"
@@ -1781,7 +1764,7 @@ msgstr ""
 
 #: source/games/seta.c:1829
 msgid "Auto Shot"
-msgstr ""
+msgstr "Tir auto"
 
 #: source/sdl/dialogs/controls.cpp:787 source/sdl/control.c:998
 msgid "Autofire"
@@ -1854,19 +1837,17 @@ msgstr ""
 #: source/files.c:395
 #, c-format
 msgid "Bad CRC for ROM %s (%x)\n"
-msgstr ""
+msgstr "Mauvaise CRC pour la ROM %s (%x)\n"
 
 #: source/files.c:407
 #, c-format
-#, fuzzy
 msgid "Bad ROM size for %s: tried to read %xh bytes, got %lxh\n"
-msgstr ""
+msgstr "Mauvaise taille de ROM pour %s: Essayé de lire %xh octets, je n'en ai eu que %lxh\n"
 
 #: source/files.c:434
 #, c-format
-#, fuzzy
 msgid "Bad ROM size for %s: tried to read %xh bytes, got %xh\n"
-msgstr ""
+msgstr "Mauvaise taille de ROM pour %s: j'ai essayé de lire %xh octets, je n'en ai eu que %xh\n"
 
 #: source/sdl/dialogs/neo_softdips.cpp:231
 msgid "Bad soft dipswitches"
@@ -1904,7 +1885,7 @@ msgstr ""
 
 #: source/games/lsystem.c:960 source/games/megasys1.c:1016
 msgid "Bombs"
-msgstr ""
+msgstr "Bombes"
 
 #: source/games/bloodbro.c:96 source/games/rainbow.c:94
 #: source/games/rainbow.c:209
@@ -1917,19 +1898,19 @@ msgstr ""
 
 #: source/games/aquajack.c:91
 msgid "Bonus Life"
-msgstr ""
+msgstr "Vie bonus"
 
 #: source/games/crospang.c:131
 msgid "Bonus Power (Bomb)"
-msgstr ""
+msgstr "Puissance bonus (bombe)"
 
 #: source/games/crospang.c:107
 msgid "Bonus Power (Points)"
-msgstr ""
+msgstr "Puissance bonus (points)"
 
 #: source/games/gunbird.c:280
 msgid "Bonus life"
-msgstr ""
+msgstr "Vie bonus"
 
 #: source/sdl/dialogs/video_options.cpp:274
 msgid "Borderless"
@@ -1937,11 +1918,11 @@ msgstr "Sans bord"
 
 #: source/games/fchamp.c:75 source/games/fchamp.c:145
 msgid "Both Teams"
-msgstr ""
+msgstr "Les 2 équipes"
 
 #: source/games/chasehq.c:132
 msgid "Brake"
-msgstr ""
+msgstr "Frein"
 
 #: source/games/othunder.c:94
 msgid "Bullet Mags / Rockets"
@@ -3420,7 +3401,7 @@ msgstr "Mode de jeu"
 
 #: source/games/fchamp.c:74 source/games/fchamp.c:144
 msgid "Game Over For"
-msgstr ""
+msgstr "Fin du jeu pour"
 
 #: source/games/volfied.c:60 source/games/taito_f2.c:557
 #: source/games/rainbow.c:68 source/games/rainbow.c:183
