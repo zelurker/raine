@@ -176,9 +176,9 @@ static int do_recent(int sel) {
     qsort(menu,n2,sizeof(menu_item_t),most_played ? &sort_most : &sort_recent);
     TRecent *dlg;
     if (most_played)
-	dlg = new TRecent("Most played games",menu);
+	dlg = new TRecent(_("Most played games"),menu);
     else
-	dlg = new TRecent("Most recent games",menu);
+	dlg = new TRecent(_("Most recent games"),menu);
     dlg->execute();
     delete dlg;
     for (n=0; n<n2; n++) {

@@ -16,20 +16,20 @@ struct GAME_MAIN *current_game;
 int game_count;
 
 char *game_type[NB_GAME_TYPE] =
-{ "All",
-  "Breakout",
-  "Shoot'em up",
-  "Beat'em up",
-  "Puzzle",
-  "Platform",
-  "Misc",
-  "Sport",
-  "Adult",
-  "Race",
-  "Quizz",
-  "Maze",
-  "Fight",
-  "Hack and slash",
+{ _("All"),
+  _("Breakout"),
+  _("Shoot'em up"),
+  _("Beat'em up"),
+  _("Puzzle"),
+  _("Platform"),
+  _("Misc"),
+  _("Sport"),
+  _("Adult"),
+  _("Race"),
+  _("Quizz"),
+  _("Maze"),
+  _("Fight"),
+  _("Hack and slash"),
 };
 
 char *company_name[] =

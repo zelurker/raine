@@ -1586,7 +1586,7 @@ msgstr "Ajouter un répertoire de rom..."
 
 #: source/games/spacegun.c:104 source/sdl/dialogs/game_selection.cpp:439
 msgid "All"
-msgstr "Tous"
+msgstr "Tou(te)s"
 
 #: source/games/toaplan2.c:682
 msgid "All Rights Reserved"
@@ -2080,7 +2080,6 @@ msgstr "Catégorie"
 
 #: source/sdl/dialogs/game_selection.cpp:472
 #, c-format
-#, fuzzy
 msgid "Category:"
 msgstr "Catégorie : "
 
@@ -4206,7 +4205,7 @@ msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:198
 msgid "Most played games..."
-msgstr ""
+msgstr "Jeux les + joués..."
 
 #: source/games/wgp.c:73
 msgid "Motor"
