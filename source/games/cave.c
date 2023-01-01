@@ -3607,25 +3607,20 @@ GAME( agallet, "Air Gallet", BANPREST, 1995, GAME_SHOOT,
 	.romsw = romsw_agallet,
 	.clear = clear_cave_68k,
 	.video = &video_agallet,
-	.board = "BP962A",
 	.sound = sound_agallet,
 );
 GMEI( ddonpach, "Dodonpachi (International)", CAVE, 1997, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C03D2",
 );
 CLNEI( ddonpchj, ddonpach,"Dodonpachi (Japan)", CAVE, 1997, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C03D2",
 );
 GMEI( donpachi, "DonPachi (USA) v1.12", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C01DP-2",
 	.sound = sound_donpachi
 );
 CLNEI( donpachj, donpachi, "DonPachi (Japan) v1.01", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C01DP-2",
 	.sound = sound_donpachi
 );
 static struct DIR_INFO dir_donpachk[] =
@@ -3638,7 +3633,6 @@ static struct DIR_INFO dir_donpachk[] =
 };
 CLNE( donpachk, donpachi, "DonPachi (Korean) v1.12", CAVE, 1995, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C01DP-2",
 	.sound = sound_donpachi
 );
 static struct DIR_INFO dir_esprade[] =
@@ -3649,7 +3643,6 @@ static struct DIR_INFO dir_esprade[] =
 };
 GME( esprade, "ESP Ra.De. (International - 4/22 98)", CAVE, 1998, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C04",
 );
 static struct DIR_INFO dir_espradej[] =
 {
@@ -3660,7 +3653,6 @@ static struct DIR_INFO dir_espradej[] =
 };
 CLNE( espradej,esprade, "ESP Ra.De. (Japan - 4/21 1998)", CAVE, 1998, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C04",
 );
 static struct DIR_INFO dir_espradeo[] =
 {
@@ -3671,7 +3663,6 @@ static struct DIR_INFO dir_espradeo[] =
 };
 CLNE( espradeo,esprade, "ESP Ra.De. (Japan - 4/14 1998)", CAVE, 1998, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "AT-C04",
 );
 static struct DIR_INFO dir_dfeveron[] =
 {
@@ -3683,17 +3674,14 @@ static struct DIR_INFO dir_dfeveron[] =
 GAME( dfeveron, "Dangun Feveron", CAVE, 1998, GAME_SHOOT,
 	.clear = clear_cave_68k,
 	.video = &video_dfeveron,
-	.board = "CV-01",
 );
 CLNEI( feversos, dfeveron, "Fever SOS", CAVE, 1998, GAME_SHOOT,
 	.clear = clear_cave_68k,
-	.board = "CV-01",
 );
 #define video_guwange video_esprade
 GMEI( guwange, "Guwange", CAVE, 1999, GAME_SHOOT,
 	.input = input_guwange,
 	.clear = clear_cave_68k,
-	.board = "AT-C05",
 );
 static struct DIR_INFO dir_hotdogst[] =
 {
@@ -3729,14 +3717,12 @@ GAME( sailormn, "Pretty Soldier Sailor Moon Ver B", BANPREST, 1995, GAME_SHOOT,
 	.romsw = romsw_agallet,
 	.clear = clear_cave_68k,
 	.video = &video_sailormn,
-	.board = "BP945A",
 	.sound = sound_agallet,
 );
 CLNEI( sailormo, sailormn, "Pretty Soldier Sailor Moon", BANPREST, 1995, GAME_SHOOT,
 	.romsw = romsw_agallet,
 	.clear = clear_cave_68k,
 	.video = &video_sailormn,
-	.board = "BP945A",
 	.sound = sound_agallet,
 );
 static struct DIR_INFO dir_uopoko[] =
@@ -3749,7 +3735,6 @@ static struct DIR_INFO dir_uopoko[] =
 GAME( uopoko, "Uo Poko", CAVE, 1998, GAME_PUZZLE,
 	.clear = clear_cave_68k,
 	.video = &video_uopoko,
-	.board = "CV-02",
 );
 
 CLNEI( guwanges, guwange, "Guwange (Japan, Special Ver. 00/01/01)", CAVE,

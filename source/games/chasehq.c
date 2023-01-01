@@ -2453,7 +2453,6 @@ GAME( chasehq, "Chase HQ", TAITO, 1988, GAME_RACE,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
 	.long_name_jpn = "チェイスＨＱ American",
-	.board = "B52",
 );
 static struct DIR_INFO dir_chasehqj[] =
 {
@@ -2471,7 +2470,6 @@ GAME(chasehqj, "Chase HQ (Japan)", TAITO, 1988, GAME_RACE,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
 	.long_name_jpn = "チェイスＨＱ",
-	.board = "B52",
 );
 static struct DIR_INFO dir_nightstr[] =
 {
@@ -2482,6 +2480,5 @@ static struct DIR_INFO dir_nightstr[] =
 GME( nightstr, "Night Striker", TAITO, 1989, GAME_RACE | GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.clear = ClearNightStr,
 	.romsw = romsw_nightstr,
-	.board = "b91",
 );
 

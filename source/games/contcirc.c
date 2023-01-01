@@ -777,7 +777,6 @@ static struct DIR_INFO dir_contcirc[] =
 };
 GME( contcirc, "Continental Circus", TAITO, 1989, GAME_RACE,
 	.romsw = romsw_contcirc,
-	.board = "B33",
 );
 static struct DIR_INFO dir_contcrcu[] =
 {
@@ -795,6 +794,5 @@ GAME( contcrcu, "Continental Circus (US Set 1)", TAITO, 1987, GAME_RACE,
 	.romsw = romsw_contcrcu,
 	.video = &video_contcirc,
 	.exec = execute_contcirc,
-	.board = "B33",
 );
 

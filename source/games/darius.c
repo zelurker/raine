@@ -1094,7 +1094,6 @@ CLNEI( dariusj,darius, "Darius Japanese", TAITO, 1986, GAME_SHOOT,
 	.video = &video_darius,
 	.exec = execute_darius,
 	.long_name_jpn = "ダライアス",
-	.board = "A96",
 	.sound = sound_darius,
 );
 static struct DIR_INFO dir_darius[] =
@@ -1107,7 +1106,6 @@ static struct DIR_INFO dir_darius[] =
 GME( darius, "Darius", TAITO, 1986, GAME_SHOOT,
 	.long_name_jpn = "ダライアス",
 	.clear = clear_darius,
-	.board = "A96",
 );
 static struct DIR_INFO dir_dariuse[] =
 {
@@ -1120,10 +1118,8 @@ static struct DIR_INFO dir_dariuse[] =
 };
 CLNE( dariuse,darius, "Darius (extra)", TAITO, 1986, GAME_SHOOT,
 	.long_name_jpn = "ダライアス　エキストラバージョン",
-	.board = "A96",
 );
 CLNEI( dariuso,darius, "Darius (Old, JPN Ver.)", TAITO, 1986, GAME_SHOOT,
 	.long_name_jpn = "ダライアス",
-	.board = "A96",
 );
 

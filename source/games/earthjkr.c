@@ -773,6 +773,5 @@ static struct DIR_INFO dir_mofflott[] =
 GME( mofflott, "Maze of Flott", TAITO, 1989, GAME_RACE,
 	.romsw = romsw_mofflott,
 	.long_name_jpn = "メイズオブフロット",
-	.board = "C17",
 );
 

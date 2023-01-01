@@ -611,7 +611,6 @@ static struct DIR_INFO dir_euroch92[] =
 CLNE( euroch92, footchmp, "Euro Champ 92", TAITO, 1992, GAME_SPORTS,
 	.dsw = dsw_euroch92,
 	.long_name_jpn = "ハットトリックヒーロー９３",
-	.board = "C80",
 );
 static struct DIR_INFO dir_hthero[] =
 {
@@ -624,7 +623,6 @@ static struct DIR_INFO dir_hthero[] =
 };
 CLNE( hthero, footchmp, "Hat Trick Hero", TAITO, 1990, GAME_SPORTS,
 	.dsw = dsw_hthero,
-	.board = "C80",
 );
 static struct DIR_INFO dir_footchmp[] =
 {
@@ -635,6 +633,5 @@ static struct DIR_INFO dir_footchmp[] =
 };
 GME( footchmp, "Football Champ", TAITO, 1990, GAME_SPORTS,
 	.long_name_jpn = "ハットトリックヒーロー",
-	.board = "C80",
 );
 

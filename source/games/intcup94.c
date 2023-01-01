@@ -428,7 +428,6 @@ GAME( intcup94, "International Cup 94", TAITO, 1994, GAME_SPORTS | GAME_PARTIALL
 	.input = f3_system_inputs,
 	.video = &video_intcup94,
 	.exec = ExecuteF3SystemFrameB,
-	.board = "D49",
 	.sound = f3_sound,
 );
 

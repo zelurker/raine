@@ -388,7 +388,6 @@ GAME( arabianm, "Arabian Magic", TAITO, 1992, GAME_BEAT,
 	.video = &video_arabianm,
 	.exec = ExecuteF3SystemFrame_NoInt5B,
 	.long_name_jpn = "ﾂアﾂδ可ビﾂアﾂδ督マﾂジﾂッﾂク",
-	.board = "D29",
 	.sound = f3_sound,
 );
 

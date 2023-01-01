@@ -517,7 +517,6 @@ static struct DIR_INFO dir_metalb[] =
 };
 GME( metalb, "Metal Black", TAITO, 1991, GAME_SHOOT,
 	.romsw = romsw_metalb,
-	.board = "D16",
 );
 static struct DIR_INFO dir_metalbj[] =
 {
@@ -529,6 +528,5 @@ static struct DIR_INFO dir_metalbj[] =
 };
 CLNE( metalbj,metalb, "Metal Black Japanese", TAITO, 1991, GAME_SHOOT,
 	.romsw = romsw_metalbj,
-	.board = "D12",
 );
 

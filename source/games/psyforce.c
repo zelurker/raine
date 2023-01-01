@@ -155,7 +155,6 @@ GAME( psyforce, "Psychic Force (audio board)", TAITO, 1990, GAME_MISC,
 	.clear = clear_psychic_force,
 	.video = &video_psyforce,
 	.exec = execute_psyforce,
-	.board = "E22",
 	.sound = taito_ym2610_sound,
 );
 

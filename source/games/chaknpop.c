@@ -397,7 +397,5 @@ static struct DIR_INFO dir_chaknpop[] =
    { "chaknpop", },
    { NULL, },
 };
-GME( chaknpop, "Chack'n Pop", TAITO, 1983, GAME_PLATFORM | GAME_NOT_WORKING,
-	.board = "A04",
-);
+GME( chaknpop, "Chack'n Pop", TAITO, 1983, GAME_PLATFORM | GAME_NOT_WORKING);
 

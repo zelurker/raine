@@ -1163,7 +1163,6 @@ GAME( spacedx, "Space Invaders DX", TAITO, 1994, GAME_SHOOT,
 	.video = &video_spacedx,
 	.exec = execute_spacedx,
 	.long_name_jpn = "スペースインベーダーＤＸ",
-	.board = "D89",
 );
 static struct DIR_INFO dir_qzshowby[] =
 {
@@ -1176,7 +1175,6 @@ GAME( qzshowby, "Quiz sekai wa show by shobai", TAITO, 1993, GAME_PUZZLE,
 	.video = &b_system_video,
 	.exec = execute_qzshowby,
 	.long_name_jpn = "クイズ世界はＳｈｏｗ　ｂｙ　ショーバイ",
-	.board = "D72",
 );
 static struct DIR_INFO dir_pbobble[] =
 {

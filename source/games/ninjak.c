@@ -454,7 +454,6 @@ static struct DIR_INFO dir_ninjak[] =
 };
 GME( ninjak, "Ninja Kids", TAITO, 1990, GAME_BEAT,
 	.romsw = romsw_ninjak,
-	.long_name_jpn = "ニンジャキッズ",
-	.board = "C85",
+	.long_name_jpn = "繝九Φ繧ｸ繝｣繧ｭ繝�繧ｺ",
 );
 

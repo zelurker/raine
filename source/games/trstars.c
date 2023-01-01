@@ -559,7 +559,6 @@ GAME(prmtmfgo, "Prime Time Fighter (Old Version)", TAITO, 1994, GAME_BEAT | GAME
 	.romsw = romsw_prmtmfgo,
 	.video = &video_trstar,
 	.exec = execute_trstar,
-	.board = "D53",
 );
 static struct DIR_INFO dir_trstar[] =
 {
@@ -573,6 +572,5 @@ GAME( trstar, "Top Ranking Stars", TAITO, 1994, GAME_BEAT | GAME_PARTIALLY_WORKI
 	.romsw = romsw_trstar,
 	.video = &video_trstar,
 	.exec = execute_trstar,
-	.board = "D53",
 );
 

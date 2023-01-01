@@ -887,7 +887,6 @@ static struct DIR_INFO dir_sci[] =
 };
 GME( sci, "Special Criminal Investigation", TAITO, 1989, GAME_RACE | GAME_PARTIALLY_WORKING,
 	.romsw = romsw_sci,
-	.board = "C09",
 );
 static struct DIR_INFO dir_sciu[] =
 {
@@ -902,6 +901,5 @@ static struct DIR_INFO dir_sciu[] =
 };
 CLNE( sciu, sci, "Special Criminal Investigation (alternate)", TAITO, 1989, GAME_RACE | GAME_PARTIALLY_WORKING,
 	.romsw = romsw_sciu,
-	.board = "C09",
 );
 

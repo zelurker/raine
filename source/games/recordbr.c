@@ -405,7 +405,6 @@ static struct DIR_INFO dir_recordb2[] =
 };
 CLNE( recordb2,recordbr, "Record Breaker (Alternate)", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
 	.romsw = romsw_recordbr,
-	.board = "B56",
 );
 static struct DIR_INFO dir_recordbr[] =
 {
@@ -417,6 +416,5 @@ static struct DIR_INFO dir_recordbr[] =
 };
 GME( recordbr, "Record Breaker", TAITO, 1988, GAME_SPORTS | GAME_NOT_WORKING,
 	.romsw = romsw_recordbr,
-	.board = "B56",
 );
 

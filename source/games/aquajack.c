@@ -1020,6 +1020,5 @@ static struct DIR_INFO dir_aquajackj[] =
 };
 GME( aquajackj, "Aqua Jack", TAITO, 1990, GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.romsw = romsw_aquajackj,
-	.board = "B77",
 );
 

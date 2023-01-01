@@ -178,15 +178,6 @@ void hist_open(char *name,const char *game) {
 
 	  /*
 
-	     board number [optional]
-
-*/
-
-	  if(current_game->board)
-	      hist_add("\nBoard: %s", current_game->board);
-
-	  /*
-
 	     video %d x %d
 
 */

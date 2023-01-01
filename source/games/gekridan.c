@@ -462,8 +462,7 @@ GAME( gekiridn, "Gekirindan", TAITO, 1995, GAME_SHOOT,
 	.clear = ClearGekirindan,
 	.video = &video_gekiridn,
 	.exec = ExecuteF3SystemFrameB,
-	.long_name_jpn = "�t�ؒe",
-	.board = "E11",
+	.long_name_jpn = "ﾂ逆ﾂ療伉弾",
 	.sound = f3_sound,
 );
 

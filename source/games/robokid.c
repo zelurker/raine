@@ -1013,8 +1013,7 @@ static struct DIR_INFO dir_robokid[] =
    { NULL, },
 };
 GME( robokid, "Atomic Robo Kid", UPL, 1988, GAME_SHOOT,
-	.long_name_jpn = "ƒAƒgƒ~ƒbƒNƒƒ{ƒLƒbƒh",
-	.board = "UPL-88013",
+	.long_name_jpn = "ã‚¢ãƒˆãƒŸãƒƒã‚¯ãƒ­ãƒœã‚­ãƒƒãƒ‰",
 );
 static struct DIR_INFO dir_robokidj[] =
 {
@@ -1025,7 +1024,6 @@ static struct DIR_INFO dir_robokidj[] =
    { NULL, },
 };
 CLNE( robokidj,robokid, "Atomic Robo Kid Japanese", UPL, 1988, GAME_SHOOT,
-	.long_name_jpn = "ƒAƒgƒ~ƒbƒNƒƒ{ƒLƒbƒh",
-	.board = "UPL-88013",
+	.long_name_jpn = "ã‚¢ãƒˆãƒŸãƒƒã‚¯ãƒ­ãƒœã‚­ãƒƒãƒ‰",
 );
 

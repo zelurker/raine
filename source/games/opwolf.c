@@ -638,8 +638,7 @@ static struct DIR_INFO dir_opwolf[] =
 };
 GME( opwolf, "Operation Wolf", TAITO, 1987, GAME_SHOOT,
 	.romsw = romsw_opwolf,
-	.long_name_jpn = "ƒIƒyƒŒ[ƒVƒ‡ƒ“ƒEƒ‹ƒt",
-	.board = "B20",
+	.long_name_jpn = "ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚¦ãƒ«ãƒ•",
 );
 static struct DIR_INFO dir_opwolfb[] =
 {
@@ -651,7 +650,7 @@ static struct DIR_INFO dir_opwolfb[] =
    { NULL, },
 };
 CLNE( opwolfb, opwolf, "Operation Bear", BOOTLEG, 1987, GAME_SHOOT,
-	.long_name_jpn = "ƒIƒyƒŒ[ƒVƒ‡ƒ“ƒEƒ‹ƒt (bootleg)",
+	.long_name_jpn = "ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚¦ãƒ«ãƒ• (bootleg)",
 	.video = &video_opwolfb
 );
 

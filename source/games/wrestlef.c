@@ -917,7 +917,6 @@ static struct DIR_INFO dir_wwfwfest[] =
    { NULL, },
 };
 GME( wwfwfest, "WWF Wrestlefest", TECHNOS, 1991, GAME_BEAT,
-	.long_name_jpn = "‚v‚v‚eƒŒƒbƒXƒ‹ƒtƒFƒ‹ƒg",
-	.board = "TA-0031",
+	.long_name_jpn = "ï¼·ï¼·ï¼¦ãƒ¬ãƒƒã‚¹ãƒ«ãƒ•ã‚§ãƒ«ãƒˆ",
 );
 

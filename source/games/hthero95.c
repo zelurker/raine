@@ -472,6 +472,5 @@ GAME( pwrgoal, "Power Goal", TAITO, 1995, GAME_SPORTS | GAME_PARTIALLY_WORKING,
 	.clear = clear_hat_trick_hero_95,
 	.video = &video_pwrgoal,
 	.exec = ExecuteF3SystemFrame,
-	.board = "D94",
 );
 

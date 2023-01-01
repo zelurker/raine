@@ -737,8 +737,7 @@ GAME( rambo3p, "Rambo 3", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_rambo3p,
 	.video = &b_system_r180_video,
 	.exec = execute_rambo3p,
-	.long_name_jpn = "ÉâÉìÉ{Å[ÇR",
-	.board = "B93",
+	.long_name_jpn = "„É©„É≥„Éú„ÉºÔºì",
 );
 static struct DIR_INFO dir_rambo3[] =
 {
@@ -753,7 +752,6 @@ GAME( rambo3, "Rambo 3 (release 2)", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_rambo3,
 	.video = &b_system_r180_video,
 	.exec = execute_rambo3p,
-	.long_name_jpn = "ÉâÉìÉ{Å[ÇR (release 2)",
-	.board = "B93",
+	.long_name_jpn = "„É©„É≥„Éú„ÉºÔºì (release 2)",
 );
 

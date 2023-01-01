@@ -367,7 +367,6 @@ GAME( viofight, "Violence Fight", TAITO, 1989, GAME_BEAT,
 	.clear = ClearViolenceFight,
 	.video = &b_system_r180_video,
 	.exec = execute_viofight,
-	.long_name_jpn = "ƒoƒCƒIƒŒƒ“ƒXƒtƒ@ƒCƒg",
-	.board = "C16",
+	.long_name_jpn = "ãƒã‚¤ã‚ªãƒ¬ãƒ³ã‚¹ãƒ•ã‚¡ã‚¤ãƒˆ",
 );
 

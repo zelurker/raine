@@ -2604,9 +2604,7 @@ static struct DIR_INFO dir_demonwld[] =
 };
 #define video_demonwld video_hellfire
 #define execute_demonwld execute_outzone
-GME( demonwld, "Demon's World / Horror story (set 1)", TOAPLAN, 1989, GAME_SHOOT,
-	.board = "TP016",
-);
+GME( demonwld, "Demon's World / Horror story (set 1)", TOAPLAN, 1989, GAME_SHOOT);
 CLNEI( demonwld2,demonwld,"Demon's World / Horror Story (set 3/old raine version)",TOAPLAN,1989, GAME_PLATFORM );
 static struct DIR_INFO dir_fireshrk[] =
 {
@@ -2615,7 +2613,6 @@ static struct DIR_INFO dir_fireshrk[] =
    { NULL, },
 };
 GME( fireshrk, "Fire Shark", TOAPLAN, 1990, GAME_SHOOT,
-	.board = "TP017",
 	.sound = NULL
 );
 static struct DIR_INFO dir_hellfire[] =
@@ -2628,10 +2625,8 @@ GAME( hellfire, "Hell Fire", TOAPLAN, 1989, GAME_SHOOT,
 	.dsw = dsw_hellfire,
 	.video = &video_hellfire,
 	.exec = execute_outzone,
-	.board = "B90",
 );
-GMEI( outzone,"Out Zone",TOAPLAN,1990, GAME_SHOOT,
-	.board = "TP018",);
+GMEI( outzone,"Out Zone",TOAPLAN,1990, GAME_SHOOT);
 CLNEI( outzoneh,outzone,"Out Zone (harder)",TOAPLAN,1990, GAME_SHOOT );
 CLNEI( outzonec,outzone,"Out Zone (oldest set)",TOAPLAN,1990, GAME_SHOOT );
 // CLNEI( outzonecv,outzone,"Out Zone (Zero Wing TP-015 PCB conversion)",TOAPLAN,1990, GAME_SHOOT );
@@ -2646,7 +2641,6 @@ GAME( rallybik, "Rally Bike", TOAPLAN, 1988, GAME_RACE | GAME_NOT_WORKING,
 	.dsw = dsw_rallybik,
 	.video = &video_rallybik,
 	.exec = execute_outzone,
-	.board = "TP012",
 );
 static struct DIR_INFO dir_samesame[] =
 {
@@ -2659,7 +2653,6 @@ static struct DIR_INFO dir_samesame[] =
 };
 CLNE(samesame, fireshrk, "Same Same Same", TOAPLAN, 1989, GAME_SHOOT,
 	.dsw = dsw_samesame,
-	.board = "TP017",
 	.sound = NULL
 );
 static struct DIR_INFO dir_truxton[] =
@@ -2671,7 +2664,6 @@ GAME( truxton, "Truxton / Tatsujin", TOAPLAN, 1988, GAME_SHOOT,
 	.dsw = dsw_truxton,
 	.video = &video_fireshrk,
 	.exec = execute_outzone,
-	.board = "B65",
 );
 #define execute_vimana execute_outzone
 #define video_vimana video_fireshrk
@@ -2685,11 +2677,8 @@ GAME( vimana, "Vimana (world set 1)", TOAPLAN, 1991, GAME_SHOOT,
 	.dsw = dsw_vimana,
 	.video = &video_fireshrk,
 	.exec = execute_outzone,
-	.board = "TP019",
 );
-CLNEI(vimanaj, vimana, "Vimana (Japan)", TOAPLAN, 1991, GAME_SHOOT,
-	.board = "TP019",
-);
+CLNEI(vimanaj, vimana, "Vimana (Japan)", TOAPLAN, 1991, GAME_SHOOT);
 static struct DIR_INFO dir_zerowing[] =
 {
    { "zero_wing", },
@@ -2700,6 +2689,5 @@ GAME( zerowing, "Zero Wing (2p set)", TOAPLAN, 1989, GAME_SHOOT,
 	.dsw = dsw_zerowing,
 	.video = &video_hellfire,
 	.exec = execute_outzone,
-	.board = "TP015",
 );
 

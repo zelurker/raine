@@ -1222,7 +1222,6 @@ static struct DIR_INFO dir_wgp[] =
 };
 GME( wgp, "World Grand Prix", TAITO, 1989, GAME_RACE | GAME_NOT_WORKING,
 	.clear = ClearWorldGrandPrix,
-	.board = "C32",
 );
 static struct DIR_INFO dir_wgpj[] =
 {
@@ -1238,6 +1237,5 @@ GAME(wgpj, "World Grand Prix (Japan)", TAITO, 1989, GAME_RACE | GAME_NOT_WORKING
 	.clear = ClearWorldGrandPrix,
 	.video = &video_wgp,
 	.exec = execute_wgp,
-	.board = "C32",
 );
 

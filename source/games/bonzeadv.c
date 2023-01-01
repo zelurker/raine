@@ -667,5 +667,4 @@ static struct DIR_INFO dir_bonzeadv[] =
 GME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
 	.long_name_jpn = "地獄めぐり American",
 	.romsw = romsw_bonzeadv,
-	.board = "B41",
 );

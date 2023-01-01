@@ -556,7 +556,6 @@ GAME( scfinals, "Super Cup Final", TAITO, 1993, GAME_SPORTS | GAME_PARTIALLY_WOR
 	.clear = clear_taito_cup_final,
 	.video = &video_scfinals,
 	.exec = ExecuteF3SystemFrame,
-	.board = "D68",
 	.sound = f3_sound,
 );
 static struct DIR_INFO dir_cupfinal[] =
@@ -574,7 +573,6 @@ GAME( cupfinal, "Taito Cup Final", TAITO, 1992, GAME_SPORTS | GAME_PARTIALLY_WOR
 	.clear = clear_taito_cup_final,
 	.video = &video_scfinals,
 	.exec = ExecuteF3SystemFrameB,
-	.board = "D49",
 	.sound = f3_sound,
 );
 

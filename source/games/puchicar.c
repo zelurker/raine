@@ -416,8 +416,7 @@ GAME( puchicar, "Puchi Carat", TAITO, 1997, GAME_PUZZLE | GAME_BREAKOUT,
 	.romsw = romsw_puchicar,
 	.video = &video_puchicar,
 	.exec = ExecuteF3SystemFrameB,
-	.long_name_jpn = "プチカラット",
-	.board = "E46",
+	.long_name_jpn = "繝励メ繧ｫ繝ｩ繝�繝�",
 	.sound = f3_sound,
 );
 

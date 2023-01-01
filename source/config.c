@@ -1194,16 +1194,6 @@ static void GameInfo(GAME_MAIN *game_info)
 
    /*
 
-   board number [optional]
-
-   */
-
-   if(game_info->board)
-
-      printf(INDENT "board " QUOTE "%s" QUOTE "\n", game_info->board);
-
-   /*
-
    romof %s [optional]
 
    */

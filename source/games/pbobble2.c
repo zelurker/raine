@@ -422,8 +422,7 @@ static struct DIR_INFO dir_pbobble2[] =
 
 GME( pbobble2, "Puzzle Bobble 2 (Ver 2.3O 1995/07/31)", TAITO, 1995, GAME_PUZZLE,
 	.romsw = romsw_pbobble2,
-	.long_name_jpn = "ƒpƒYƒ‹ƒ{ƒuƒ‹‚Q",
-	.board = "E10",
+	.long_name_jpn = "ãƒ‘ã‚ºãƒ«ãƒœãƒ–ãƒ«ï¼’",
 );
 CLNEI(pbobble2o, pbobble2,"Puzzle Bobble 2 (Ver 2.2O 1995/07/20)",TAITO,1995,GAME_PUZZLE);
 CLNEI(pbobble2x, pbobble2,"Puzzle Bobble 2X (Ver 2.20 1995/11/11)",TAITO,1995,GAME_PUZZLE,

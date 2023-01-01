@@ -541,7 +541,6 @@ GAME( pbobble4, "Puzzle Bobble 4", TAITO, 1997, GAME_PUZZLE,
 	.clear = ClearPuzzleBobble4,
 	.video = &video_pbobble4,
 	.exec = ExecuteF3SystemFrameB,
-	.board = "E49",
 	.sound = f3_sound,
 );
 

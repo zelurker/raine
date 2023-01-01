@@ -461,7 +461,6 @@ GAME( landmakr, "Land Maker", TAITO, 1998, GAME_PUZZLE,
 	.romsw = romsw_landmakr,
 	.video = &video_landmakr,
 	.exec = execute_landmakr,
-	.board = "E61",
 	.sound = f3_sound,
 );
 

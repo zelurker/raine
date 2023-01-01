@@ -787,7 +787,6 @@ static struct DIR_INFO dir_othunder[] =
 };
 GME( othunder, "Operation Thunderbolt", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_othunder,
-	.long_name_jpn = "ƒIƒyƒŒ[ƒVƒ‡ƒ“ƒTƒ“ƒ_[ƒ{ƒ‹ƒg",
-	.board = "B67",
+	.long_name_jpn = "ã‚ªãƒšãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚µãƒ³ãƒ€ãƒ¼ãƒœãƒ«ãƒˆ",
 );
 

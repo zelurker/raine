@@ -553,8 +553,7 @@ static struct DIR_INFO dir_gunlock[] =
 GAME( gunlock, "Gun Lock", TAITO, 1993, GAME_SHOOT,
 	.video = &video_gunlock,
 	.exec = execute_gunlock,
-	.long_name_jpn = "ƒŒƒCƒtƒH[ƒX",
-	.board = "D66",
+	.long_name_jpn = "ï¾‚Î´å€‹ã‚¤ï¾‚ãƒ•ï¾‚ã‚©ï¾‚ãƒ¼ï¾‚ã‚¹",
 );
 static struct DIR_INFO dir_rayforcj[] =
 {
@@ -565,8 +564,7 @@ static struct DIR_INFO dir_rayforcj[] =
    { NULL, },
 };
 CLNE( rayforcj, gunlock,"Ray Force (Japan)", TAITO, 1993, GAME_SHOOT,
-	.long_name_jpn = "ƒŒƒCƒtƒH[ƒX (Japan)",
-	.board = "D66",
+	.long_name_jpn = "ï¾‚Î´å€‹ã‚¤ï¾‚ãƒ•ï¾‚ã‚©ï¾‚ãƒ¼ï¾‚ã‚¹ (Japan)",
 );
 static struct DIR_INFO dir_rayforce[] =
 {
@@ -577,7 +575,6 @@ static struct DIR_INFO dir_rayforce[] =
    { NULL, },
 };
 CLNE( rayforce, gunlock,"Ray Force (US)", TAITO, 1993, GAME_SHOOT,
-	.long_name_jpn = "ƒŒƒCƒtƒH[ƒX (US)",
-	.board = "D66",
+	.long_name_jpn = "ï¾‚Î´å€‹ã‚¤ï¾‚ãƒ•ï¾‚ã‚©ï¾‚ãƒ¼ï¾‚ã‚¹ (US)",
 );
 

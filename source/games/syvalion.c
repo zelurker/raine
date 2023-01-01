@@ -344,8 +344,7 @@ static struct VIDEO_INFO video_tetristh =
 };
 GMEI( syvalion, "Syvalion", TAITO, 1988, GAME_SHOOT,
 	.romsw = romsw_syvalion,
-	.long_name_jpn = "サイバリオン",
-	.board = "B51",
+	.long_name_jpn = "繧ｵ繧､繝舌Μ繧ｪ繝ｳ",
 );
 extern void execute_recordbr(void);
 static struct INPUT_INFO input_tetristh[] =

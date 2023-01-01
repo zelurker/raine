@@ -254,7 +254,6 @@ GAME( bubblem, "Bubble Memories", TAITO, 1995, GAME_PLATFORM,
 	.video = &video_bubblem,
 	.exec = ExecuteF3SystemFrame_NoInt5,
 	.long_name_jpn = "バブルメモリーズ",
-	.board = "E21",
 	.sound = f3_sound,
 );
 

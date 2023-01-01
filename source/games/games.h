@@ -230,7 +230,6 @@ typedef struct GAME_MAIN
   char       *long_name;      // full game name
   const char       *long_name_jpn;  // full game name
   const UINT8        company_id;     // company who produced the game
-  const char       *board;          // board number (company specific)
   const UINT32        year;           // year of release
 
   /*

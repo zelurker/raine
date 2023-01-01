@@ -415,7 +415,6 @@ GAME( cleopatr, "Cleopatra's Fortune", TAITO, 1996, GAME_PUZZLE,
 	.video = &video_cleopatr,
 	.exec = execute_cleopatr,
 	.long_name_jpn = "クレオパトラ・フォーチュン",
-	.board = "E28",
 	.sound = f3_sound,
 );
 

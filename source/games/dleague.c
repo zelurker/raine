@@ -341,7 +341,6 @@ GAME( dleague, "Dynamite League (Mame)", TAITO, 1990, GAME_SPORTS | GAME_PARTIAL
 	.clear = ClearDLeague,
 	.video = &video_dleague,
 	.exec = execute_dleague,
-	.board = "C02",
 	.sound = taito_ym2610_sound,
 );
 

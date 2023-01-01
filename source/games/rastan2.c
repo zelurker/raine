@@ -472,8 +472,7 @@ static void execute_nastar(void)
    execute_z80_audio_frame();
 }
 GMEI( nastar, "Nastar", TAITO, 1989, GAME_BEAT | GAME_PLATFORM,
-	.long_name_jpn = "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
-	.board = "B81",
+	.long_name_jpn = "„É©„Çπ„Çø„É≥„Çµ„Éº„Ç¨Ôºí",
 );
 static struct DIR_INFO dir_nastarw[] =
 {
@@ -485,8 +484,7 @@ static struct DIR_INFO dir_nastarw[] =
 };
 CLNE( nastarw,nastar, "Nastar Warrior", TAITO, 1989, GAME_BEAT | GAME_PLATFORM,
 	.dsw = dsw_nastarw,
-	.long_name_jpn = "ÉâÉXÉ^ÉìÉTÅ[ÉKÇQ",
-	.board = "B81",
+	.long_name_jpn = "„É©„Çπ„Çø„É≥„Çµ„Éº„Ç¨Ôºí",
 );
 static struct DIR_INFO dir_rastsag2[] =
 {
@@ -499,7 +497,6 @@ static struct DIR_INFO dir_rastsag2[] =
 };
 CLNE( rastsag2,nastar, "Rastan Saga 2", TAITO, 1988, GAME_PLATFORM | GAME_BEAT,
 	.dsw = dsw_rastsag2,
-	.long_name_jpn = "‚Î‚X‚^‚Ù‚T¸[‚KÈQ",
-	.board = "B81",
+	.long_name_jpn = "„É©„Çπ„Çø„É≥„Çµ„Éº„Ç¨Ôºí",
 );
 

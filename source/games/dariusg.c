@@ -232,7 +232,6 @@ static struct DIR_INFO dir_dariusg[] =
 GME( dariusg, "Darius Gaiden", TAITO, 1994, GAME_SHOOT,
 	.romsw = romsw_dariusg,
 	.long_name_jpn = "ダライアス外伝",
-	.board = "D87",
 );
 static struct DIR_INFO dir_dariusgx[] =
 {
@@ -246,6 +245,5 @@ CLNE( dariusgx, dariusg, "Darius Gaiden Extra", TAITO, 1994, GAME_SHOOT,
 	.romsw = romsw_dariusg,
 	.video = &video_dariusg,
 	.long_name_jpn = "ダライアス外伝 Extra",
-	.board = "D87",
 );
 

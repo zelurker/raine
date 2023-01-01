@@ -4655,7 +4655,6 @@ GAME( acrobatm, "Acrobat Mission", UPL, 1992, GAME_SHOOT,
 	.dsw = dsw_acrobatm,
 	.video = &video_ssmissin,
 	.exec = execute_bioship,
-	.long_name_jpn = "‚V‚‡‚g‚Î¸[‚Ô",
 	.sound = sound_hachamf,
 );
 static struct DIR_INFO dir_bioship[] =
@@ -4670,8 +4669,7 @@ GAME( bioship, "Bio Ship Paladin", UPL, 1990, GAME_SHOOT,
 	.dsw = dsw_bioship,
 	.video = &video_bioship,
 	.exec = execute_bioship,
-	.long_name_jpn = "ÎF∆Í…ÌËÕ‚S‚È‚Î",
-	.board = "UPL-90062",
+	.long_name_jpn = "ÂÆáÂÆôÊà¶Ëâ¶„Ç¥„É¢„É©",
 	.sound = sound_hachamf, //sound_bjtwin,
 );
 #define load_blkhearj load_blkheart
@@ -4714,7 +4712,7 @@ GAME( bjtwin, "Bomb Jack Twin", NMK, 1993, GAME_PLATFORM,
 	.dsw = dsw_bjtwin,
 	.video = &video_bjtwin,
 	.exec = execute_tdragon2,
-	.long_name_jpn = "‚{‚Ù‚W‚‚‚b‚N‚c‚C‚Ù",
+	.long_name_jpn = "Á™ñÁ≥úÁ¶™Á≤êÁ®àÁ•öÁ®çÁ£¥Á≥ú",
 	.sound = sound_bjtwin,
 );
 static struct DIR_INFO dir_hachamf[] =
@@ -4766,7 +4764,6 @@ GAME( mustang, "USAAF Mustang", UPL, 1990, GAME_SHOOT,
 	.dsw = dsw_mustang,
 	.video = &video_mustang,
 	.exec = execute_bioship,
-	.board = "UPL-90058",
 	.sound = sound_hachamf,
 );
 static struct DIR_INFO dir_sabotenb[] =
@@ -4804,7 +4801,7 @@ GAME( strahl, "Strahl", UPL, 1992, GAME_SHOOT,
 	.dsw = dsw_strahl,
 	.video = &video_strahl,
 	.exec = execute_bioship,
-	.long_name_jpn = "‚V‚‡‚g‚Î¸[‚Ô",
+	.long_name_jpn = "„Ç∑„É•„Éà„É©„Éº„É´",
 	.sound = sound_hachamf,
 );
 static struct DIR_INFO dir_tforceh[] =
@@ -4821,7 +4818,6 @@ GAME( tforceh, "Task Force Harrier", UPL, 1989, GAME_SHOOT,
 	.dsw = dsw_tforceh,
 	.video = &video_tforceh,
 	.exec = execute_tforceh,
-	.board = "UPL-89050",
 	.sound = sound_tdragon2,
 );
 static struct DIR_INFO dir_tdragon2[] =
@@ -4843,24 +4839,24 @@ GAME( tdragon, "Thunder Dragon", NMK, 1991, GAME_SHOOT,
 	.dsw = dsw_tdragon,
 	.video = &video_tdragon,
 	.exec = execute_bioship,
-	.long_name_jpn = "˘Ô˘¥",
+	.long_name_jpn = "Èõ∑Èæç",
 	.sound = sound_hachamf,
-);
+    );
 static struct DIR_INFO dir_tdragonb[] =
 {
-   { "thunder_dragon_bl", },
-   { "thndrdbl", },
-   { "tdragonb", },
-   { "thunderd", },
-   { ROMOF("tdragon"), },
-   { CLONEOF("tdragon"), },
-   { NULL, },
+    { "thunder_dragon_bl", },
+    { "thndrdbl", },
+    { "tdragonb", },
+    { "thunderd", },
+    { ROMOF("tdragon"), },
+    { CLONEOF("tdragon"), },
+    { NULL, },
 };
 GAME( tdragonb, "Thunder Dragon (bootleg)", BOOTLEG, 1991, GAME_SHOOT,
 	.input = input_tdragon2,
 	.dsw = dsw_tdragonb,
 	.video = &video_tdragon,
 	.exec = execute_tdragon2,
-	.long_name_jpn = "˘Ô˘¥ (bootleg)",
-);
+	.long_name_jpn = "Èõ∑Èæç (bootleg)",
+    );
 

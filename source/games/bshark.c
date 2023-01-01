@@ -721,6 +721,5 @@ static struct DIR_INFO dir_bshark[] =
 };
 GME( bshark, "Battle Shark", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_bshark,
-	.board = "C34",
 );
 

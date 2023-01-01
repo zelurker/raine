@@ -420,6 +420,5 @@ static struct DIR_INFO dir_ainferno[] =
 };
 GME( ainferno, "Air Inferno", TAITO, 1990, GAME_MISC | GAME_NOT_WORKING,
 	.romsw = romsw_ainferno,
-	.board = "C45",
 );
 

@@ -570,7 +570,5 @@ static struct DIR_INFO dir_volfiedj[] =
    { NULL, },
 };
 GME( volfiedj, "Volfied", TAITO, 1989, GAME_SHOOT | GAME_NOT_WORKING,
-	.romsw = romsw_volfiedj,
-	.board = "C04",
-);
+	.romsw = romsw_volfiedj);
 

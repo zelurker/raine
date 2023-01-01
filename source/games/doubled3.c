@@ -823,7 +823,6 @@ static struct DIR_INFO dir_ddragon3[] =
 
 GME( ddragon3, "Double Dragon 3", TECHNOS, 1990, GAME_BEAT,
 	.long_name_jpn = "ダブルドラゴン３",
-	.board = "TA-0030",
 );
 
 CLNEI( ddrago3b, ddragon3, "Double Dragon 3 (bootleg)", TECHNOS, 1990, GAME_BEAT,
@@ -831,5 +830,4 @@ CLNEI( ddrago3b, ddragon3, "Double Dragon 3 (bootleg)", TECHNOS, 1990, GAME_BEAT
 	.dsw = dsw_ddrago3b,
 	.exec = execute_ddrago3b,
 	.long_name_jpn = "ダブルドラゴン３",
-	.board = "TA-0030",
 );

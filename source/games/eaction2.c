@@ -535,7 +535,6 @@ GAME( elvact2u, "Elevator Action 2", TAITO, 1994, GAME_PLATFORM,
 	.video = &video_elvact2u,
 	.exec = ExecuteF3SystemFrameB,
 	.long_name_jpn = "エレベーターアクションリターンズ",
-	.board = NULL,		// "D??",
 	.sound = f3_sound,
 );
 
