@@ -5579,8 +5579,8 @@ struct GAME_MAIN game_neocd =
   execute_neocd,
   "neocd",
   "neocd",
+  "",
   COMPANY_ID_SNK,
-  NULL,
   1998,
   sound_neocd,
   GAME_SHOOT
