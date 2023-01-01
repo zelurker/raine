@@ -432,7 +432,7 @@ static void draw_cabal(void)
        for(x=(16+x16);x<(256+32);x+=16){
 
 	   MAP_PALETTE_MAPPED_NEW(
-		   (ReadWord(&RAM[0x4800+zz])>>12)|0x20,  // 0x20 o 0x30 Ë lo stesso perchË i colori sono uguali
+		   (ReadWord(&RAM[0x4800+zz])>>12)|0x20,
 		   16,        MAP
 		   );
 
@@ -517,6 +517,6 @@ static struct DIR_INFO dir_cabalbl[] =
    { NULL, },
 };
 GME( cabalbl, "Cabal (bootleg)", TAD, 1988, GAME_SHOOT,
-	.long_name_jpn = "ÉJÉoÅ[Éã",
+	.long_name_jpn = "„Ç´„Éê„Éº„É´",
 );
 

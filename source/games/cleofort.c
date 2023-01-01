@@ -414,7 +414,7 @@ GAME( cleopatr, "Cleopatra's Fortune", TAITO, 1996, GAME_PUZZLE,
 	.clear = ClearCleoFortune,
 	.video = &video_cleopatr,
 	.exec = execute_cleopatr,
-	.long_name_jpn = "クレオパトラ・フォーチュン",
+	.long_name_jpn = "繧ｯ繝ｬ繧ｪ繝代ヨ繝ｩ繝ｻ繝輔か繝ｼ繝√Η繝ｳ",
 	.board = "E28",
 	.sound = f3_sound,
 );

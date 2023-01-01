@@ -367,6 +367,6 @@ static struct DIR_INFO dir_asuka[] =
    { NULL, },
 };
 GME( asuka, "Asuka and Asuka", TAITO, 1988, GAME_SHOOT,
-	.long_name_jpn = "чт’№Ѓ•чт’№",
+   .long_name_jpn = "йЈ›йіҐпј†йЈ›йіҐ",
 );
 

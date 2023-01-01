@@ -253,7 +253,7 @@ GAME( bubblem, "Bubble Memories", TAITO, 1995, GAME_PLATFORM,
 	.romsw = bubblem_romsw,
 	.video = &video_bubblem,
 	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "バブルメモリーズ",
+	.long_name_jpn = "繝舌ヶ繝ｫ繝｡繝｢繝ｪ繝ｼ繧ｺ",
 	.board = "E21",
 	.sound = f3_sound,
 );

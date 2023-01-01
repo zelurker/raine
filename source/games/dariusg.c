@@ -231,7 +231,7 @@ static struct DIR_INFO dir_dariusg[] =
 #define sound_dariusg f3_sound
 GME( dariusg, "Darius Gaiden", TAITO, 1994, GAME_SHOOT,
 	.romsw = romsw_dariusg,
-	.long_name_jpn = "É_ÉâÉCÉAÉXäOì`",
+	.long_name_jpn = "„ÉÄ„É©„Ç§„Ç¢„ÇπÂ§ñ‰ºù",
 	.board = "D87",
 );
 static struct DIR_INFO dir_dariusgx[] =
@@ -245,7 +245,7 @@ static struct DIR_INFO dir_dariusgx[] =
 CLNE( dariusgx, dariusg, "Darius Gaiden Extra", TAITO, 1994, GAME_SHOOT,
 	.romsw = romsw_dariusg,
 	.video = &video_dariusg,
-	.long_name_jpn = "É_ÉâÉCÉAÉXäOì` Extra",
+	.long_name_jpn = "„ÉÄ„É©„Ç§„Ç¢„ÇπÂ§ñ‰ºù Extra",
 	.board = "D87",
 );
 

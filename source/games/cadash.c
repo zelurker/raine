@@ -322,7 +322,7 @@ static struct VIDEO_INFO video_cadash =
 };
 GMEI( cadash, "Cadash (World)", TAITO, 1989, GAME_BEAT,
 	.romsw = romsw_cadash,
-	.long_name_jpn = "ƒJƒ_ƒbƒVƒ… American",
+	.long_name_jpn = "ã‚«ãƒ€ãƒƒã‚·ãƒ¥ American",
 	.board = "C21",
 );
 static struct DIR_INFO dir_cadashf[] =
@@ -336,7 +336,7 @@ static struct DIR_INFO dir_cadashf[] =
 };
 CLNE( cadashf, cadash, "Cadash (France)", TAITO, 1989, GAME_BEAT,
 	.romsw = romsw_cadash,
-	.long_name_jpn = "ƒJƒ_ƒbƒVƒ… French",
+	.long_name_jpn = "ã‚«ãƒ€ãƒƒã‚·ãƒ¥ French",
 	.board = "C21",
 );
 static struct DIR_INFO dir_cadashi[] =
@@ -350,7 +350,7 @@ static struct DIR_INFO dir_cadashi[] =
 };
 CLNE( cadashi, cadash,"Cadash (Italy)", TAITO, 1989, GAME_BEAT,
 	.romsw = romsw_cadash,
-	.long_name_jpn = "ƒJƒ_ƒbƒVƒ… Italian",
+	.long_name_jpn = "ã‚«ãƒ€ãƒƒã‚·ãƒ¥ Italian",
 	.board = "C21",
 );
 static struct DIR_INFO dir_cadashj[] =
@@ -362,7 +362,7 @@ static struct DIR_INFO dir_cadashj[] =
    { NULL, },
 };
 CLNE( cadashj, cadash, "Cadash (Japan)", TAITO, 1989, GAME_BEAT,
-	.long_name_jpn = "ƒJƒ_ƒbƒVƒ…",
+	.long_name_jpn = "ã‚«ãƒ€ãƒƒã‚·ãƒ¥",
 	.board = "C21",
 );
 CLNEI( cadashg, cadash, "Cadash (Germany)", TAITO, 1989, GAME_MISC);

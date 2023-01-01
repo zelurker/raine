@@ -730,7 +730,7 @@ static struct DIR_INFO dir_ctribe[] =
    { NULL, },
 };
 GME( ctribe, "Combatribes", TECHNOS, 1990, GAME_BEAT,
-	.long_name_jpn = "ザ・コンバットライブス",
+	.long_name_jpn = "繧ｶ繝ｻ繧ｳ繝ｳ繝舌ャ繝医Λ繧､繝悶せ",
 	.board = "TA-0028",
 );
 static struct DIR_INFO dir_ctribeb[] =
@@ -743,7 +743,7 @@ static struct DIR_INFO dir_ctribeb[] =
    { NULL, },
 };
 CLNE( ctribeb, ctribe, "Combatribes (bootleg)", BOOTLEG, 1990, GAME_BEAT,
-	.long_name_jpn = "ザ・コンバットライブス (bootleg)",
+	.long_name_jpn = "繧ｶ繝ｻ繧ｳ繝ｳ繝舌ャ繝医Λ繧､繝悶せ (bootleg)",
 	.board = "TA-0028",
 );
 

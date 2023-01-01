@@ -2452,7 +2452,7 @@ GAME( chasehq, "Chase HQ", TAITO, 1988, GAME_RACE,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
-	.long_name_jpn = "É`ÉFÉCÉXÇgÇp American",
+	.long_name_jpn = "„ÉÅ„Çß„Ç§„ÇπÔº®Ôº± American",
 	.board = "B52",
 );
 static struct DIR_INFO dir_chasehqj[] =
@@ -2470,7 +2470,7 @@ GAME(chasehqj, "Chase HQ (Japan)", TAITO, 1988, GAME_RACE,
 	.clear = clear_chase_hq,
 	.video = &video_nightstr,
 	.exec = execute_chasehq,
-	.long_name_jpn = "É`ÉFÉCÉXÇgÇp",
+	.long_name_jpn = "„ÉÅ„Çß„Ç§„ÇπÔº®Ôº±",
 	.board = "B52",
 );
 static struct DIR_INFO dir_nightstr[] =

@@ -311,7 +311,7 @@ GAME( bublbob2, "Bubble Bobble II (Ver 2.6O 1994/12/16)", TAITO, 1994, GAME_PLAT
 	.romsw = bubsymph_romsw,
 	.video = &video_bublbob2,
 	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "バブルシンフォニー",
+	.long_name_jpn = "繝舌ヶ繝ｫ繧ｷ繝ｳ繝輔か繝九�ｼ",
 	.board = "D90",
 	.sound = f3_sound,
 );

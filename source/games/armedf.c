@@ -750,7 +750,7 @@ static struct DIR_INFO dir_armedf[] =
    { NULL, },
 };
 GME( armedf, "Armed Formation", NICHIBUTSU, 1988, GAME_SHOOT,
-	.long_name_jpn = "アームド・フォーメーション",
+	.long_name_jpn = "繧｢繝ｼ繝繝峨�ｻ繝輔か繝ｼ繝｡繝ｼ繧ｷ繝ｧ繝ｳ",
 );
 static struct DIR_INFO dir_cclimbr2[] =
 {

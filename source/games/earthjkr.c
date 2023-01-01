@@ -747,7 +747,7 @@ GAME( galmedes, "Galmedes", VISCO, 1992, GAME_SHOOT,
 	.dsw = dsw_galmedes,
 	.video = &video_mofflott,
 	.exec = execute_mofflott,
-	.long_name_jpn = "ƒKƒ‹ƒƒfƒX",
+	.long_name_jpn = "ã‚¬ãƒ«ãƒ¡ãƒ‡ã‚¹",
 	.sound = taito_ym2151_sound,
 );
 static struct DIR_INFO dir_earthjkr[] =
@@ -761,7 +761,7 @@ GAME( earthjkr, "Earth Joker", VISCO, 1993, GAME_SHOOT,
 	.dsw = dsw_earthjkr,
 	.video = &video_mofflott,
 	.exec = execute_mofflott,
-	.long_name_jpn = "ƒA[ƒXƒWƒ‡[ƒJ[",
+	.long_name_jpn = "ã‚¢ãƒ¼ã‚¹ã‚¸ãƒ§ãƒ¼ã‚«ãƒ¼",
 	.sound = taito_ym2151_sound,
 );
 static struct DIR_INFO dir_mofflott[] =
@@ -772,7 +772,7 @@ static struct DIR_INFO dir_mofflott[] =
 };
 GME( mofflott, "Maze of Flott", TAITO, 1989, GAME_RACE,
 	.romsw = romsw_mofflott,
-	.long_name_jpn = "ƒƒCƒYƒIƒuƒtƒƒbƒg",
+	.long_name_jpn = "ãƒ¡ã‚¤ã‚ºã‚ªãƒ–ãƒ•ãƒ­ãƒƒãƒˆ",
 	.board = "C17",
 );
 

@@ -724,7 +724,7 @@ GAME( exzisus, "Exzisus", TAITO, 1987, GAME_SHOOT,
 	.clear = clear_exzisus,
 	.video = &video_exzisus,
 	.exec = execute_exzisus,
-	.long_name_jpn = "イグジーザス",
+	.long_name_jpn = "繧､繧ｰ繧ｸ繝ｼ繧ｶ繧ｹ",
 	.board = "B23",
 	.sound = taito_ym2151_sound,
 );
