@@ -16,6 +16,8 @@
 #endif
 
 extern SDL_PixelFormat *fg_format;
+extern char *jap_font; // font to use if an utf8 extended glyph is detected, default is "", no font
+
 void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 
 /* If values_list_size == 3, and there are no labels for this list, then it's

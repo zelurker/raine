@@ -112,6 +112,7 @@ int keep_vga = 1,gui_level;
 
 int repeat_interval, repeat_delay; // in gui.cpp
 
+char *jap_font = "";
 SDL_PixelFormat *fg_format;
 
 TDesktop *desktop;
@@ -302,7 +303,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
       while (menu && menu->label) {
 	  if (*menu->label) {
 	      menu->label = gettext(menu->label);
-	      for (int n=0; n<menu->values_list_size && menu->values_list_label[n]; n++)
+	      for (int n=0; n<menu->values_list_size && menu->values_list_label[n] && menu->values_list_label[n][0]; n++)
 		  menu->values_list_label[n] = gettext(menu->values_list_label[n]);
 	  }
 	  menu++;
@@ -454,6 +455,8 @@ void TMenu::compute_nb_items() {
 
       if (can_be_displayed(n)) {
 	menu_disp[nb_disp_items++] = n;
+	if (child[n]->has_jap_glyph() && jap_font && jap_font[0])
+	    font_name = jap_font;
 	if (sel < 0 && can_be_selected(n))
 	  sel = n;
       }

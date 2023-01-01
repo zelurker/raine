@@ -217,11 +217,13 @@ static void read_menu_config() {
 static void save_font_config() {
   raine_set_config_int("GUI", "min_font_size", min_font_size);
   raine_set_config_int("GUI", "max_font_size", max_font_size);
+  raine_set_config_string("GUI","jap_font", jap_font);
 }
 
 static void read_font_config() {
   min_font_size = raine_get_config_int("GUI", "min_font_size", 10);
   max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
+  jap_font = raine_get_config_string("GUI","jap_font",jap_font);
 }
 
 void read_gui_config() {

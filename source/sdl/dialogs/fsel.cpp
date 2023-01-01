@@ -277,6 +277,7 @@ void TFileSel::compute_nb_items() {
   menu[0].menu_func = &exec_dir;
   if (!dir) {
     perror(path);
+    nb_files = 0;
   } else {
       chdir(path);
     getcwd(cwd,1024);
