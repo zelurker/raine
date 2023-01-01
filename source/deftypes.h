@@ -85,6 +85,13 @@ typedef int BOOL;
 
 #endif
 
+#ifndef u8
+#define u8 UINT8
+#define u16 UINT16
+#define u32 UINT32
+#define u64 UINT64
+#endif
+
 #ifndef TRUE
 #define TRUE	-1
 #define FALSE	0
