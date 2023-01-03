@@ -690,12 +690,10 @@ static void do_main_menu() {
 void StartGUI(void)
 {
 #if SDL == 2
-    if (!raine_cfg.no_gui) {
-	desktop = new TRaineDesktop();
-	gui_end_hook = &gui_end;
-	gui_start_hook = &gui_start;
-	event_hook = &my_event;
-    }
+    desktop = new TRaineDesktop();
+    gui_end_hook = &gui_end;
+    gui_start_hook = &gui_start;
+    event_hook = &my_event;
 #ifdef RAINE_WIN32
     init_glsl();
 #endif
