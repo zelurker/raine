@@ -7116,3 +7116,20 @@ msgstr "Jeux les + joués"
 # source/sdl/dialogs/game_selection.cpp:177 (added by update_po.pl)
 msgid "Most recent games"
 msgstr "Jeux les + récents"
+
+#: source/games/arkanoid.c:112
+msgid "Ball speed"
+msgstr "Vitesse de la balle"
+
+#: source/games/arkanoid.c:114
+msgid "Faster"
+msgstr "+ rapide"
+
+#: source/sdl/gui/tfont.cpp:52
+msgid "Japenese font"
+msgstr "Fonte japonnaise"
+
+#: source/sdl/gui/tfont.cpp:36
+msgid "Select true type font"
+msgstr "Choisis une fonte true type"
+
