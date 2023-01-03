@@ -84,6 +84,13 @@ ifdef target
 	CROSSCOMPILE = 1
 	# I don't think anyone would want another native here ?
 	NATIVE=linux-gnu-sdl
+ifeq (${SDL},2)
+ifeq ("${target}","x86_64-w64-mingw32")
+	NATIVE = linux-gnu-sdl2
+else
+	NATIVE = linux-gnu-sdl2-asm
+endif
+endif
 ifeq ("${target}","x86_64-w64-mingw32")
 	NO_ASM = 1
 endif
@@ -787,6 +794,8 @@ endif
 ifdef GENS_SH2
 SH2 = $(OBJDIR)/gens_sh2/sh2a.o \
 	  $(OBJDIR)/gens_sh2/sh2.o
+
+CFLAGS += -Isource/gens_sh2 -DGENS_SH2=1
 endif
 
 # STARSCREAM 68000 core
@@ -1317,7 +1326,7 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/it/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
-	xgettext --omit-header -C -k_ -kgettext -d raine -F -o locale/tmp `find source -name '*.c*'|grep -v source/Musashi`
+	xgettext --omit-header -C -k_ -kgettext -d raine -s -o locale/tmp `find source -name '*.c*'|grep -v source/Musashi`
 	cat locale/header locale/tmp > locale/raine.pot
 	rm -f locale/tmp
 
