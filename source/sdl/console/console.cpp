@@ -1348,8 +1348,9 @@ commands_t commands[] =
       "  poke $100123,2\n"
       "endif"},
   { "irq", &do_irq, "\E[32mirq\E[0m [nb] : execute instructions until we are out of the irq. Can be executed anywhere, even if some values have been put onto the stack. When passing an irq number trigers this irq (but don't execute any cycles)" },
-  { "list", &do_list, "\E[32mlist\E[0m [address] : disassemble at address or around current pc if asm listing is available (ram.bin.s for neocd, ROM.bin.s for normal roms)." },
   { "l", &do_list, },
+  { "list", &do_list, "\E[32mlist\E[0m [address] : disassemble at address or around current pc if asm listing is available (ram.bin.s for neocd, ROM.bin.s for normal roms)." },
+  { "load_state", &cons_load_state, "\E[32mload_state\E[0m : load this save state, equivalent to F4 key, see set_save_slot" },
   { "loaded", &do_loaded, "\E[32mloaded\E[0m [type] offset : neocd only, returns what is loaded at this offset", "type is 0 (PRG) if ommited\n"
       "Oterwise it can be :\n"
 "PRG 0\n"
@@ -1368,6 +1369,7 @@ commands_t commands[] =
   { "regs", &do_regs, "\E[32mregs\E[0m : show registers", "Notice that the registers are directly assigned to some variables. d0-d7 a0-a7 sp, pc for the 68000/68020, a,b,c,de,f,hl, pc and iff for the z80. You can use these variables in expressions, change them, etc..."},
   { "restore", &do_restore, "\E[32mrestore\E[0m name adr1 [adr2] : load file at adr1, until adr2 or end of file" },
   { "save", &do_save, "\E[32msave\E[0m name adr1 adr2 : saves the memory range between adr1 & adr2 to disk" },
+  { "save_state", &cons_save_state,"\E[32msave_state\E[0m : do a save state, equivalent to F2 key, see set_save_slot" },
   { "script", &do_script, "\E[32mscript\E[0m ['description' [always]]",
   "Record a script, a list of instructions, to be called later, generally as a cheat. You can run this command without parameters, in this case it will just ask for the missing information. Usually you should first test your instructions, and once you are sure they are correct, run this command, and use the history feature of the command to record the right instructions.\n"
   "Notice that you can edit scripts with a text editor, they are saved in scripts/neocd/gamename.txt or scripts/raine/gamename.txt where gamename is the short game name (given on the status line)" },
@@ -1394,6 +1396,7 @@ commands_t commands[] =
   "for respectively a word and a long (usefull for the relative searches like "
   "< or >)\n"
   "Use search clear to clear the last results and start a new search.\nSee also : dump search"},
+  { "set_save_slot", &do_set_save_slot, "\E[32mset_save_slot\E[0m number : 0 <= number <= 9, set the save slot to use for load_state, save_state, or the keys F2 or F4" },
   { "start_script", &do_start_script, "\E[32mstart_script\E[0m \"name\" : enable a script when next frame is drawn",
       "Equivalent to turn a script on using the cheats dialog (when it's not hidden)" },
   { "step", &do_step, "(s)\E[32mtep\E[0m : execute next instruction" },

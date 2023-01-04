@@ -11,6 +11,7 @@
 #include "ingame.h"
 #include "mz80help.h"
 #include "emumain.h"
+#include "savegame.h"
 
 #define MAX_BREAK 10
 typedef struct {
@@ -791,5 +792,27 @@ void do_until(int argc, char **argv) {
   while (!parse(argv[1]) && !goto_debuger)
     do_cycles();
   disp_instruction();
+}
+
+void do_set_save_slot(int argc, char **argv) {
+    if (argc != 2)
+	throw "syntax : set_save_slot number, with 0 <= number <= 9";
+    int nb = atoi(argv[1]);
+    if (nb < 0 || nb > 9)
+	throw "you must pass a number >= 0 and <= 9";
+    SaveSlot = nb;
+    cons->print("Save slot set to %d",nb);
+}
+
+void cons_save_state(int argc, char **argv) {
+    if (argc != 1)
+	throw "syntax : save_state";
+    GameSave();
+}
+
+void cons_load_state(int argc, char **argv) {
+    if (argc != 1)
+	throw "syntax load_state";
+    GameLoad();
 }
 
