@@ -7126,7 +7126,7 @@ msgid "Faster"
 msgstr "+ rapide"
 
 #: source/sdl/gui/tfont.cpp:52
-msgid "Japenese font"
+msgid "Japanese font"
 msgstr "Fonte japonnaise"
 
 #: source/sdl/gui/tfont.cpp:36

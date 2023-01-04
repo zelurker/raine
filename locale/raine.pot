@@ -3881,7 +3881,7 @@ msgid "Japanese (Toaplan)"
 msgstr ""
 
 #: source/sdl/gui/tfont.cpp:52
-msgid "Japenese font"
+msgid "Japanese font"
 msgstr ""
 
 #: source/games/seta.c:2237
