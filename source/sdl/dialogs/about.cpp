@@ -696,10 +696,10 @@ static menu_item_t about_items[] =
   { " ", NULL, NULL, },
   { _("CPU emulators:"), NULL, NULL },
 #if USE_MUSASHI == 2
-  {    _("68000,68020 : Musashi v3.3x by Karl Stenerud") },
+  {    _("68000,68020 : Musashi v3.4 by Karl Stenerud") },
 #else
 #ifdef MUSASHI
-  { _("68020: Musashi v3.3x by Karl Stenerud") },
+  { _("68020: Musashi v3.4 by Karl Stenerud") },
 #else
   {    _("UAE 68020 Emulator: old hacked ASM version from UAE") },
 #endif

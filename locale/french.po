@@ -1329,20 +1329,20 @@ msgstr ""
 #: source/sdl/dialogs/about.cpp:722
 #, fuzzy
 msgid "64 bits x86 binary, no ASM at all, a Raine anomaly!"
-msgstr ""
+msgstr "binaire x86 64 bits : pas d'assembleur du tout, une anomalie pour Raine !"
 
 #: source/sdl/dialogs/about.cpp:713
-#, fuzzy
+#,
 msgid "6502/65c02: MAME 125 version"
-msgstr ""
+msgstr "6502/65c02 : Version de MAME 125"
 
 #: source/sdl/dialogs/about.cpp:698
-msgid "68000,68020 : Musashi v3.3x by Karl Stenerud"
-msgstr ""
+msgid "68000,68020 : Musashi v3.4 by Karl Stenerud"
+msgstr "68000, 68020 : Muasashi v3.4 par Karl Stenerud"
 
 #: source/sdl/dialogs/about.cpp:701
-msgid "68020: Musashi v3.3x by Karl Stenerud"
-msgstr ""
+msgid "68020: Musashi v3.4 by Karl Stenerud"
+msgstr "68020 : Musashi v3.4 par Karl Stenerud"
 
 #: source/games/opwolf.c:86
 msgid "7 Clips"

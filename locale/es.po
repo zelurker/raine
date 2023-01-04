@@ -1340,11 +1340,11 @@ msgid "6502/65c02: MAME 125 version"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:698
-msgid "68000,68020 : Musashi v3.3x by Karl Stenerud"
+msgid "68000,68020 : Musashi v3.4 by Karl Stenerud"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:701
-msgid "68020: Musashi v3.3x by Karl Stenerud"
+msgid "68020: Musashi v3.4 by Karl Stenerud"
 msgstr ""
 
 #: source/games/opwolf.c:86
