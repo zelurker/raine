@@ -474,7 +474,6 @@ GAME( ridingf, "Riding Fight", TAITO, 1992, GAME_BEAT | GAME_PARTIALLY_WORKING,
 	.romsw = romsw_ridingf,
 	.video = &video_ridingf,
 	.exec = execute_ridingf,
-	.board = "D34",
 	.sound = f3_sound,
 );
 

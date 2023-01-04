@@ -6503,7 +6503,6 @@ static struct DIR_INFO dir_batsugun[] =
 GAME( batsugun, "Batsugun", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_batsugun,
-	.board = "TP030",
 	.video = &video_batsugun,
 	.sound = sound_batsugun,
 );
@@ -6578,8 +6577,6 @@ static struct DIR_INFO dir_bbakraidja[] =
 CLONE(bbakraidja, bbakraid, "Battle Bakraid normal version Apr 7 1999" , RAIZING, 1999, GAME_SHOOT,
 	.dsw = dsw_bbakraid,
 	.exec = execute_bbakraid,
-	.long_name_jpn = "???",
-	.board = "TP021",
 	.sound = sound_bbakraid,
 );
 static struct DIR_INFO dir_bbakraid[] =
@@ -6592,8 +6589,6 @@ static struct DIR_INFO dir_bbakraid[] =
 GAME( bbakraid, "Battle Bakraid unlimited version Jun 8 1999", RAIZING, 1999, GAME_SHOOT,
 	.dsw = dsw_bbakraid,
 	.exec = execute_bbakraid,
-	.long_name_jpn = "???",
-	.board = "TP021",
 	.romsw = romsw_batrider,
 	.sound = sound_bbakraid,
 );
@@ -6605,9 +6600,8 @@ static struct DIR_INFO dir_dogyuun[] =
 GAME( dogyuun, "Dogyuun", TOAPLAN, 1992 /* check the "notice" screen */, GAME_SHOOT,
 	.input = input_dogyuun,
 	.dsw = dsw_dogyuun,
-	.long_name_jpn = "‚h‚M‚‡¸[‚Ù",
-	.board = "TP022",
 	.video = &video_batsugun,
+	.long_name_jpn = "„Éâ„ÇÆ„É•„Éº„É≥",
 	.sound = sound_vfive,
 );
 static struct DIR_INFO dir_fixeight[] =
@@ -6619,7 +6613,6 @@ static struct DIR_INFO dir_fixeight[] =
 GAME( fixeight, "Fix Eight", TOAPLAN, 1992, GAME_SHOOT | GAME_PARTIALLY_WORKING,
 	.input = input_fixeight,
 	.dsw = dsw_fixeight,
-	.board = "TP026",
 	.sound = sound_vfive,
 );
 static struct DIR_INFO dir_fixeighb[] =
@@ -6637,7 +6630,6 @@ CLONE(fixeighb, fixeight, "Fix Eight Bootleg", BOOTLEG, 1992, GAME_SHOOT,
 	.dsw = dsw_fixeight,
 	.exec = execute_truxton2,
 	.sound = sound_vfive,
-	.board = "TP026",
 );
 static struct DIR_INFO dir_ghox[] =
 {
@@ -6647,8 +6639,7 @@ static struct DIR_INFO dir_ghox[] =
 GAME( ghox, "Ghox", TOAPLAN, 1991, GAME_BREAKOUT,
 	.input = input_vfive,
 	.dsw = dsw_ghox,
-	.long_name_jpn = "‚S¸[‚N‚X",
-	.board = "TP021",
+	.long_name_jpn = "„Ç¥„Éº„ÇØ„Çπ",
 );
 static struct DIR_INFO dir_grindstm[] =
 {
@@ -6661,12 +6652,10 @@ static struct DIR_INFO dir_grindstm[] =
 CLONE(grindstm, vfive, "Grind Stormer", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_grindstm,
-	.board = "TP027",
 	.sound = sound_vfive,
 );
 GMEI( kingdmgp,"Kingdom Grandprix",RAIZING,1994, GAME_RACE,
 	.dsw = dsw_kingdmgp,
-	.long_name_jpn = "ƒæÚ˘˚È˚@ëÜÏç…Ì",
 );
 static struct DIR_INFO dir_kbash[] =
 {
@@ -6675,10 +6664,9 @@ static struct DIR_INFO dir_kbash[] =
    { NULL, },
 };
 GME( kbash, "Knuckle Bash", TOAPLAN, 1993, GAME_BEAT,
-	.long_name_jpn = "‚i‚b‚N‚Ô‚o‚b‚V‚‡",
+	.long_name_jpn = "Á®±Á®àÁ•öÁ≥ÄÁ©âÁ®àÈΩãÁ±µ",
 	.input = input_kbash,
 	.video = &video_kbash,
-	.board = "TP023",
 );
 static struct DIR_INFO dir_kbash2[] =
 {
@@ -6690,8 +6678,7 @@ CLONE( kbash2, kbash, "Knuckle Bash 2 (bootleg)", TOAPLAN, 1993, GAME_BEAT,
 	.input = input_kbash,
 	.dsw = dsw_kbash2,
 	.video = &video_kbash,
-	.long_name_jpn = "‚i‚b‚N‚Ô‚o‚b‚V‚‡",
-	.board = "TP023",
+	.long_name_jpn = "Á®±Á®àÁ•öÁ≥ÄÁ©âÁ®àÈΩãÁ±µ",
 	.sound = sound_kbash2,
 );
 static struct DIR_INFO dir_pipibibsbl[] =
@@ -6705,12 +6692,12 @@ GAME(pipibibsbl, "Pipi and Bibi's", BOOTLEG, 1991, GAME_PLATFORM | GAME_ADULT,
 	.input = input_pipibibsbl,
 	.dsw = dsw_pipibibsbl,
 	.video = &video_kbash,
-	.long_name_jpn = "‚t¸[‚r¸[ (bootleg)",
+	.long_name_jpn = "„Éï„Éº„Éì„Éº (bootleg)",
 	.sound = sound_whoopee,
 );
 CLNEI( shippumd,kingdmgp,"Shippu Mahou Daisakusen (Japan)",RAIZING,1994, GAME_RACE,
 	.dsw = dsw_shippumd,
-	.long_name_jpn = "ƒæÚ˘˚È˚@ëÜÏç…Ì",
+	.long_name_jpn = "ÁñæÈ¢®È≠îÊ≥ïÂ§ß‰ΩúÊà¶",
 );
 static struct DIR_INFO dir_snowbro2[] =
 {
@@ -6722,7 +6709,7 @@ GAME( snowbro2, "Snow Bros 2", TOAPLAN, 1994, GAME_PLATFORM,
 	.input = input_snowbro2,
 	.dsw = dsw_snowbro2,
 	.video = &video_kbash,
-	.long_name_jpn = "‚X‚m¸[‚u‚Î‚U¸[‚YÈQ",
+	.long_name_jpn = "„Çπ„Éé„Éº„Éñ„É©„Ç∂„Éº„Ç∫Ôºí",
 	.sound = sound_truxton2,
 );
 static struct DIR_INFO dir_truxton2[] =
@@ -6736,9 +6723,8 @@ GAME( truxton2, "Tatsujin 2", TOAPLAN, 1992, GAME_SHOOT,
 	.input = input_truxton2,
 	.dsw = dsw_truxton2,
 	.exec = execute_truxton2,
-	.long_name_jpn = "∆B…lÎ§",
-	.board = "TP024",
 	.sound = sound_truxton2,
+	.long_name_jpn = "ÈÅî‰∫∫Áéã",
 );
 static struct DIR_INFO dir_tekipaki[] =
 {
@@ -6750,8 +6736,7 @@ GAME( tekipaki, "Teki Paki", TOAPLAN, 1991, GAME_PUZZLE,
 	.input = input_tekipaki,
 	.dsw = dsw_tekipaki,
 	.video = &video_kbash,
-	.long_name_jpn = "…ìî]‚Q¸[‚«¸@‚e‚L‚p‚L",
-	.board = "TP020",
+	.long_name_jpn = "Ê¥óËÑ≥„Ç≤„Éº„É†„ÄÄ„ÉÜ„Ç≠„Éë„Ç≠",
 );
 static struct DIR_INFO dir_vfive[] =
 {
@@ -6764,7 +6749,6 @@ static struct DIR_INFO dir_vfive[] =
 GAME(vfive, "V Five", TOAPLAN, 1993, GAME_SHOOT,
 	.input = input_vfive,
 	.dsw = dsw_vfive,
-	.board = "TP027",
 	.sound = sound_vfive,
 );
 static struct DIR_INFO dir_whoopee[] =
@@ -6778,7 +6762,7 @@ GAME( whoopee, "Whoopee", TOAPLAN, 1991, GAME_PLATFORM | GAME_ADULT,
 	.input = input_tekipaki,
 	.dsw = dsw_whoopee,
 	.video = &video_kbash,
-	.long_name_jpn = "‚t¸[‚r¸[",
+	.long_name_jpn = "„Éï„Éº„Éì„Éº",
 	.sound = sound_whoopee,
 );
 
@@ -6786,5 +6770,4 @@ GMEI( sstriker,"Sorcer Striker (set 1)",RAIZING,1993, GAME_SHOOT);
 CLNEI( sstrikerk,sstriker,"Sorcer Striker (Korea)",RAIZING,1993, GAME_SHOOT,
 	.dsw = dsw_sstrikerk);
 CLNEI( mahoudai,sstriker,"Mahou Daisakusen (Japan)",RAIZING,1993, GAME_SHOOT,
-	.dsw = dsw_mahoudai
-	);
+	.dsw = dsw_mahoudai);

@@ -217,11 +217,13 @@ static void read_menu_config() {
 static void save_font_config() {
   raine_set_config_int("GUI", "min_font_size", min_font_size);
   raine_set_config_int("GUI", "max_font_size", max_font_size);
+  raine_set_config_string("GUI","jap_font", jap_font);
 }
 
 static void read_font_config() {
   min_font_size = raine_get_config_int("GUI", "min_font_size", 10);
   max_font_size = raine_get_config_int("GUI", "max_font_size", 30);
+  jap_font = raine_get_config_string("GUI","jap_font",jap_font);
 }
 
 void read_gui_config() {
@@ -688,12 +690,10 @@ static void do_main_menu() {
 void StartGUI(void)
 {
 #if SDL == 2
-    if (!raine_cfg.no_gui) {
-	desktop = new TRaineDesktop();
-	gui_end_hook = &gui_end;
-	gui_start_hook = &gui_start;
-	event_hook = &my_event;
-    }
+    desktop = new TRaineDesktop();
+    gui_end_hook = &gui_end;
+    gui_start_hook = &gui_start;
+    event_hook = &my_event;
 #ifdef RAINE_WIN32
     init_glsl();
 #endif

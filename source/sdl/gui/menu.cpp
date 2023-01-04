@@ -271,7 +271,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
       while (menu && menu->label) {
 	  if (*menu->label) {
 	      menu->label = gettext(menu->label);
-	      for (int n=0; n<menu->values_list_size && menu->values_list_label[n]; n++)
+	      for (int n=0; n<menu->values_list_size && menu->values_list_label[n] && menu->values_list_label[n][0]; n++)
 		  menu->values_list_label[n] = gettext(menu->values_list_label[n]);
 	  }
 	  menu++;

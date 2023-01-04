@@ -15,6 +15,9 @@ void do_break(int argc, char **argv);
 void restore_breakpoints();
 void done_breakpoints();
 void do_until(int argc, char **argv);
+void do_set_save_slot(int argc, char **argv);
+void cons_save_state(int argc, char **argv);
+void cons_load_state(int argc, char **argv);
 void disp_instruction();
 
 #ifdef __cplusplus

@@ -1131,16 +1131,12 @@ static struct DIR_INFO dir_fullthrl[] =
    { CLONEOF("topspeed"), },
    { NULL, },
 };
-CLNE(fullthrl, topspeed, "Full Throttle", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING,
-	.board = "B14",
-);
+CLNE(fullthrl, topspeed, "Full Throttle", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING);
 static struct DIR_INFO dir_topspeed[] =
 {
    { "top_speed", },
    { "topspeed", },
    { NULL, },
 };
-GME( topspeed, "Top Speed", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING,
-	.board = "B14",
-);
+GME( topspeed, "Top Speed", TAITO, 1987, GAME_RACE | GAME_NOT_WORKING);
 

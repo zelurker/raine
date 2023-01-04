@@ -477,8 +477,7 @@ GAME( gseeker, "Grid Seeker", TAITO, 1992, GAME_SHOOT,
 	.clear = ClearGridSeeker,
 	.video = &video_gseeker,
 	.exec = ExecuteF3SystemFrame_NoInt5B,
-	.long_name_jpn = "ƒOƒŠƒbƒhƒV[ƒJ[",
-	.board = "D40",
+	.long_name_jpn = "ï¾‚ã‚°ï¾‚Î´ç’°ãƒƒï¾‚ãƒ‰ï¾‚ã‚·ï¾‚ãƒ¼ï¾‚ã‚«ï¾‚ãƒ¼",
 	.sound = f3_sound,
 );
 

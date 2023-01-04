@@ -471,16 +471,16 @@ static void DrawWarriorBlade(void)
       tb = ta*4;
 
       switch(RAM_BGA[1+zz]&0xC0){
-      case 0x00: 
+      case 0x00:
 	if (tile_cache[tb] && (cache_map[tb] == map)) {
 	  Move8x8_Rot(tile_cache[tb],x,y,NULL);
 	} else {
-	  Draw8x8_Mapped_Rot(&GFX_BG0[ta<<6],x,y,map);	     
+	  Draw8x8_Mapped_Rot(&GFX_BG0[ta<<6],x,y,map);
 	  add_tile_cache_Rot(NULL,x,y,tb);
 	  cache_map[tb] = map;
 	}
 	break;
-      case 0x40: 
+      case 0x40:
 	if (tile_cache[tb+1] && (cache_map[tb+1] == map)) {
 	  Move8x8_Rot(tile_cache[tb+1],x,y,NULL);
 	} else {
@@ -489,7 +489,7 @@ static void DrawWarriorBlade(void)
 	  cache_map[tb+1] = map;
 	}
 	break;
-      case 0x80: 
+      case 0x80:
 	if (tile_cache[tb+2] && (cache_map[tb+2] == map)) {
 	  Move8x8_Rot(tile_cache[tb+2],x,y,NULL);
 	} else {
@@ -498,7 +498,7 @@ static void DrawWarriorBlade(void)
 	  cache_map[tb+2] = map;
 	}
 	break;
-      case 0xC0: 
+      case 0xC0:
 	if (tile_cache[tb+3] && (cache_map[tb+3] == map)) {
 	  Move8x8_Rot(tile_cache[tb+3],x,y,NULL);
 	} else {
@@ -533,7 +533,7 @@ static void DrawWarriorBlade(void)
 	  cache_map[tb] = map;
 	}
 	break;
-      case 0x40: 
+      case 0x40:
 	if (tile_cache[tb+1] && (cache_map[tb+1] == map)) {
 	  Move8x8_Rot(tile_cache[tb+1],x,y,NULL);
 	} else {
@@ -542,7 +542,7 @@ static void DrawWarriorBlade(void)
 	  cache_map[tb+1] = map;
 	}
 	break;
-      case 0x80: 
+      case 0x80:
 	if (tile_cache[tb+2] && (cache_map[tb+2] == map)) {
 	  Move8x8_Rot(tile_cache[tb+2],x,y,NULL);
 	} else {
@@ -551,11 +551,11 @@ static void DrawWarriorBlade(void)
 	  cache_map[tb+2] = map;
 	}
 	break;
-      case 0xC0: 
+      case 0xC0:
 	if (tile_cache[tb+3] && (cache_map[tb+3] == map)) {
 	  Move8x8_Rot(tile_cache[tb+3],x,y,NULL);
 	} else {
-	  Draw8x8_Mapped_FlipXY_Rot(&GFX_BG1[ta<<6],x,y,map); 
+	  Draw8x8_Mapped_FlipXY_Rot(&GFX_BG1[ta<<6],x,y,map);
 	  add_tile_cache_Rot(NULL,x,y,tb+3);
 	  cache_map[tb+3] = map;
 	}
@@ -619,12 +619,12 @@ static void DrawWarriorBlade(void)
 	      if (tile_cache[tb+1] && (cache_map[tb+1] == map)) {
 		Move8x8_Rot(tile_cache[tb+1],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_FlipY_Rot(&GFX_BG0[ta<<6],x,y,map);  
+		Draw8x8_Mapped_FlipY_Rot(&GFX_BG0[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb+1);
 		cache_map[tb+1] = map;
 	      }
 	      break;
-	    case 0x80: 
+	    case 0x80:
 	      if (tile_cache[tb+2] && (cache_map[tb+2] == map)) {
 		Move8x8_Rot(tile_cache[tb+2],x,y,NULL);
 	      } else {
@@ -633,11 +633,11 @@ static void DrawWarriorBlade(void)
 		cache_map[tb+2] = map;
 	      }
 	      break;
-	    case 0xC0: 
+	    case 0xC0:
 	      if (tile_cache[tb+3] && (cache_map[tb+3] == map)) {
 		Move8x8_Rot(tile_cache[tb+3],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_FlipXY_Rot(&GFX_BG0[ta<<6],x,y,map); 
+		Draw8x8_Mapped_FlipXY_Rot(&GFX_BG0[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb+3);
 		cache_map[tb+3] = map;
 	      }
@@ -671,20 +671,20 @@ static void DrawWarriorBlade(void)
       }
       else{					// all pixels; solid
 	 switch(RAM_BGB[1+zz]&0xC0){
-	    case 0x00: 
+	    case 0x00:
 	      if (tile_cache[tb] && (cache_map[tb] == map)) {
 		Move8x8_Rot(tile_cache[tb],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_Rot(&GFX_BG1[ta<<6],x,y,map);	   
+		Draw8x8_Mapped_Rot(&GFX_BG1[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb);
 		cache_map[tb] = map;
 	      }
 	      break;
-	    case 0x40: 
+	    case 0x40:
 	      if (tile_cache[tb+1] && (cache_map[tb+1] == map)) {
 		Move8x8_Rot(tile_cache[tb+1],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_FlipY_Rot(&GFX_BG1[ta<<6],x,y,map);  
+		Draw8x8_Mapped_FlipY_Rot(&GFX_BG1[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb+1);
 		cache_map[tb+1] = map;
 	      }
@@ -693,16 +693,16 @@ static void DrawWarriorBlade(void)
 	      if (tile_cache[tb+2] && (cache_map[tb+2] == map)) {
 		Move8x8_Rot(tile_cache[tb+2],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_FlipX_Rot(&GFX_BG1[ta<<6],x,y,map);  
+		Draw8x8_Mapped_FlipX_Rot(&GFX_BG1[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb+2);
 		cache_map[tb+2] = map;
 	      }
 	      break;
-	    case 0xC0: 
+	    case 0xC0:
 	      if (tile_cache[tb+3] && (cache_map[tb+3] == map)) {
 		Move8x8_Rot(tile_cache[tb+3],x,y,NULL);
 	      } else {
-		Draw8x8_Mapped_FlipXY_Rot(&GFX_BG1[ta<<6],x,y,map); 
+		Draw8x8_Mapped_FlipXY_Rot(&GFX_BG1[ta<<6],x,y,map);
 		add_tile_cache_Rot(NULL,x,y,tb+3);
 		cache_map[tb+3] = map;
 	      }
@@ -807,7 +807,6 @@ static struct DIR_INFO dir_warriorb[] =
 GME( warriorb, "Warrior Blade", TAITO, 1991, GAME_BEAT,
 	.romsw = romsw_warriorb,
 	.clear = ClearWarriorBlade,
-	.long_name_jpn = "âEâHâèâAü[âuâîü[âh",
-	.board = "D24",
+	.long_name_jpn = "ã‚¦ã‚©ãƒªã‚¢ãƒ¼ãƒ–ãƒ¬ãƒ¼ãƒ‰",
 );
 

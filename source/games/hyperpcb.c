@@ -1319,7 +1319,7 @@ static struct DIR_INFO dir_snowbros[] =
    { NULL, },
 };
 GME( snowbros, "Snow Bros", TOAPLAN, 1990, GAME_PLATFORM,
-	.long_name_jpn = "\203x\203m\201{\203u\203\211\203U\201[\203Y American",
+   .long_name_jpn = "ﾃつスﾃつノﾃつーﾃつブﾃつεつ嘉つザﾃつーﾃつズ American",
 );
 static struct DIR_INFO dir_snowbroa[] =
 {
@@ -1330,7 +1330,7 @@ static struct DIR_INFO dir_snowbroa[] =
    { NULL, },
 };
 CLNE( snowbroa,snowbros, "Snow Bros (alternate)", TOAPLAN, 1990, GAME_PLATFORM,
-	.long_name_jpn = "\203x\203m\201[\203u\203\211\203U\201[\203Y (alternate)",
+   .long_name_jpn = "ﾃつスﾃつノﾃつーﾃつブﾃつεつ嘉つザﾃつーﾃつズ (alternate)",
 );
 static struct DIR_INFO dir_snowbrob[] =
 {
@@ -1342,8 +1342,7 @@ static struct DIR_INFO dir_snowbrob[] =
    { NULL, },
 };
 CLNE( snowbrob,snowbros, "Snow Bros (alternate 2)", TOAPLAN, 1990, GAME_PLATFORM,
-	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y (alternate 2)",
-	.board = "MIN16-02",
+   .long_name_jpn = "ﾃつスﾃつノﾃつーﾃつブﾃつεつ嘉つザﾃつーﾃつズ (alternate 2)",
 );
 static struct DIR_INFO dir_snowbroj[] =
 {
@@ -1354,7 +1353,7 @@ static struct DIR_INFO dir_snowbroj[] =
    { NULL, },
 };
 CLNE( snowbroj, snowbros, "Snow Bros (Japanese)", TOAPLAN, 1990, GAME_PLATFORM,
-	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y",
+   .long_name_jpn = "ﾃつスﾃつノﾃつーﾃつブﾃつεつ嘉つザﾃつーﾃつズ ",
 );
 static struct DIR_INFO dir_twinkle[] =
 {
@@ -1374,6 +1373,6 @@ static struct DIR_INFO dir_wintbob[] =
 };
 CLNE( wintbob,snowbros, "Winter Bobble", BOOTLEG, 1990, GAME_PLATFORM,
 	.video = &video_wintbob,
-	.long_name_jpn = "\203X\203m\201[\203u\203\211\203U\201[\203Y\201i\212C����\201J",
+	.long_name_jpn = "スノーブラザーズ（海賊版）",
 );
 

@@ -610,6 +610,5 @@ GAME( undrfire, "Under Fire", TAITO, 1993, GAME_SHOOT | GAME_NOT_WORKING,
 	.romsw = romsw_undrfire,
 	.video = &video_undrfire,
 	.exec = execute_undrfire,
-	.board = "D67",
 );
 

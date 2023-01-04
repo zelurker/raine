@@ -1263,7 +1263,7 @@ GAME( bloodbro, "Blood Bros", TAD, 1990, GAME_SHOOT,
 	.dsw = dsw_bloodbro,
 	.video = &video_weststry,
 	.exec = execute_bloodbro,
-	.long_name_jpn = "ブラッドブラザーズ Bootleg",
+	.long_name_jpn = "繝悶Λ繝�繝峨ヶ繝ｩ繧ｶ繝ｼ繧ｺ Bootleg",
 );
 static struct DIR_INFO dir_weststry[] =
 {
@@ -1279,7 +1279,7 @@ GAME( weststry, "West Story", BOOTLEG, 1991, GAME_SHOOT,
 	.clear = ClearWestStry,
 	.video = &video_weststry,
 	.exec = execute_weststry,
-	.long_name_jpn = "ブラッドブラザーズ",
+	.long_name_jpn = "繝悶Λ繝�繝峨ヶ繝ｩ繧ｶ繝ｼ繧ｺ",
 	.sound = sound_weststry,
 );
 

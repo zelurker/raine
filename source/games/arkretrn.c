@@ -254,8 +254,7 @@ GAME( arkretrn, "Arkanoid Returns", TAITO, 1997, GAME_BREAKOUT,
 	.clear = ClearArkRetrn,
 	.video = &video_arkretrn,
 	.exec = ExecuteF3SystemFrameB,
-	.long_name_jpn = "アルカノイド　リターンズ",
-	.board = "E36",
+	.long_name_jpn = "繧｢繝ｫ繧ｫ繝弱う繝峨繝ｪ繧ｿ繝ｼ繝ｳ繧ｺ",
 	.sound = f3_sound,
 );
 

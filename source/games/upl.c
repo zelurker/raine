@@ -2772,7 +2772,7 @@ GAME( mnight, "Mutant Night", UPL, 1987, GAME_SHOOT|GAME_PARTIALLY_WORKING,
 	.dsw = dsw_mnight,
 	.video = &video_arkarea,
 	.exec = execute_arkarea,
-	.long_name_jpn = "ƒ~ƒ…[ƒ^ƒ“ƒgƒiƒCƒg",
+	.long_name_jpn = "ãƒŸãƒ¥ãƒ¼ã‚¿ãƒ³ãƒˆãƒŠã‚¤ãƒˆ",
 );
 static struct DIR_INFO dir_ninjakd2[] =
 {
@@ -2801,8 +2801,7 @@ CLONE(omegafs, omegaf, "Omega Fighter Special", UPL, 1989, GAME_SHOOT,
 	.dsw = dsw_omegaf,
 	.video = &video_omegaf,
 	.exec = execute_arkarea,
-	.long_name_jpn = "ƒIƒƒKƒtƒ@ƒCƒ^[ Special",
-	.board = "UPL-89016",
+	.long_name_jpn = "ã‚ªãƒ¡ã‚¬ãƒ•ã‚¡ã‚¤ã‚¿ãƒ¼ Special",
 );
 static struct DIR_INFO dir_omegaf[] =
 {
@@ -2816,8 +2815,7 @@ GAME( omegaf, "Omega Fighter", UPL, 1989, GAME_SHOOT,
 	.dsw = dsw_omegaf,
 	.video = &video_omegaf,
 	.exec = execute_arkarea,
-	.long_name_jpn = "ƒIƒƒKƒtƒ@ƒCƒ^[",
-	.board = "UPL-89016",
+	.long_name_jpn = "ã‚ªãƒ¡ã‚¬ãƒ•ã‚¡ã‚¤ã‚¿ãƒ¼",
 );
 static struct DIR_INFO dir_rdaction[] =
 {

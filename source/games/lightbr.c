@@ -427,7 +427,6 @@ GAME( lightbr, "Light Bringer", TAITO, 1996, GAME_BEAT,
 	.romsw = romsw_lightbr,
 	.video = &video_lightbr,
 	.exec = execute_lightbr,
-	.board = "D69",
 	.sound = f3_sound,
 );
 

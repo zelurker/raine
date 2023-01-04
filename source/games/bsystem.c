@@ -1162,8 +1162,7 @@ GAME( spacedx, "Space Invaders DX", TAITO, 1994, GAME_SHOOT,
 	.romsw = romsw_spacedx,
 	.video = &video_spacedx,
 	.exec = execute_spacedx,
-	.long_name_jpn = "スペースインベーダーDX",
-	.board = "D89",
+	.long_name_jpn = "スペースインベーダーＤＸ",
 );
 static struct DIR_INFO dir_qzshowby[] =
 {
@@ -1175,8 +1174,7 @@ GAME( qzshowby, "Quiz sekai wa show by shobai", TAITO, 1993, GAME_PUZZLE,
 	.input = input_qzshowby,
 	.video = &b_system_video,
 	.exec = execute_qzshowby,
-	.long_name_jpn = "NCYEÍr@@V[oC",
-	.board = "D72",
+	.long_name_jpn = "クイズ世界はＳｈｏｗ　ｂｙ　ショーバイ",
 );
 static struct DIR_INFO dir_pbobble[] =
 {
@@ -1191,6 +1189,6 @@ GAME( pbobble, "Puzzle Bobble (b system)", TAITO, 1994, GAME_PUZZLE,
 	.romsw = romsw_pbobble,
 	.video = &b_system_video,
 	.exec = execute_pbobble,
-	.long_name_jpn = "パズルボブル",
+	.long_name_jpn = "繝代ぜ繝ｫ繝懊ヶ繝ｫ",
 );
 

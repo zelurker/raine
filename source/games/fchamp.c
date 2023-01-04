@@ -610,8 +610,7 @@ static struct DIR_INFO dir_euroch92[] =
 };
 CLNE( euroch92, footchmp, "Euro Champ 92", TAITO, 1992, GAME_SPORTS,
 	.dsw = dsw_euroch92,
-	.long_name_jpn = "ƒnƒbƒgƒgƒŠƒbƒNƒq[ƒ[‚X‚R",
-	.board = "C80",
+	.long_name_jpn = "ãƒãƒƒãƒˆãƒˆãƒªãƒƒã‚¯ãƒ’ãƒ¼ãƒ­ãƒ¼ï¼™ï¼“",
 );
 static struct DIR_INFO dir_hthero[] =
 {
@@ -624,7 +623,6 @@ static struct DIR_INFO dir_hthero[] =
 };
 CLNE( hthero, footchmp, "Hat Trick Hero", TAITO, 1990, GAME_SPORTS,
 	.dsw = dsw_hthero,
-	.board = "C80",
 );
 static struct DIR_INFO dir_footchmp[] =
 {
@@ -634,7 +632,6 @@ static struct DIR_INFO dir_footchmp[] =
    { NULL, },
 };
 GME( footchmp, "Football Champ", TAITO, 1990, GAME_SPORTS,
-	.long_name_jpn = "ƒnƒbƒgƒgƒŠƒbƒNƒq[ƒ[",
-	.board = "C80",
+	.long_name_jpn = "ãƒãƒƒãƒˆãƒˆãƒªãƒƒã‚¯ãƒ’ãƒ¼ãƒ­ãƒ¼",
 );
 

@@ -771,7 +771,5 @@ static struct DIR_INFO dir_flstory[] =
    { "flstory", },
    { NULL, },
 };
-GME( flstory, "The FairyLand Story", TAITO, 1985, GAME_PLATFORM,
-	.board = "A45",
-);
+GME( flstory, "The FairyLand Story", TAITO, 1985, GAME_PLATFORM);
 

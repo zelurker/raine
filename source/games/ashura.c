@@ -457,8 +457,7 @@ GAME( ashura, "Ashura Blaster (Japan)", TAITO, 1990, GAME_SHOOT,
 	.dsw = dsw_ashura,
 	.video = &video_ashurau,
 	.exec = execute_ashura,
-	.long_name_jpn = "ˆ›C—…ƒuƒ‰ƒXƒ^[",
-	.board = "C43",
+	.long_name_jpn = "é˜¿ä¿®ç¾…ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼",
 	.sound = taito_ym2610_sound,
 );
 static struct DIR_INFO dir_ashurau[] =
@@ -475,8 +474,7 @@ GAME( ashurau, "Ashura Blaster (US)", TAITO, 1990, GAME_SHOOT,
 	.dsw = dsw_ashurau,
 	.video = &video_ashurau,
 	.exec = execute_ashura,
-	.long_name_jpn = "ˆ›C—…ƒuƒ‰ƒXƒ^[",
-	.board = "C43",
+	.long_name_jpn = "é˜¿ä¿®ç¾…ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼",
 	.sound = taito_ym2610_sound,
 );
 

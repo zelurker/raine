@@ -413,8 +413,7 @@ GAME( popnpopj, "Pop'n Pop", TAITO, 1997, GAME_PUZZLE,
 	.clear = clear_pop_n_pop,
 	.video = &video_popnpopj,
 	.exec = execute_popnpopj,
-	.long_name_jpn = "Ç€Ç¡Ç’Ç§Ç€Ç¡Ç’",
-	.board = "E51",
+	.long_name_jpn = "„ÅΩ„Å£„Å∑„ÅÜ„ÅΩ„Å£„Å∑",
 	.sound = f3_sound,
 );
 

@@ -15,16 +15,16 @@
 
 Supported romsets:
 
- 0 - B97 - Insector X               - 1989 - 'TNZS'-System - Screen Rotate 180°
+ 0 - B97 - Insector X               - 1989 - 'TNZS'-System - Screen Rotate 180
  1 - B53 - The NZ Story Extra       - 1988 - 'TNZS'-System - Screen Normal
- 2 - B08 - Arkanoid 2 Rev of Doh    - 1987 - 'TNZS'-System - Screen Rotate 270°
+ 2 - B08 - Arkanoid 2 Rev of Doh    - 1987 - 'TNZS'-System - Screen Rotate 270
  3 - B53 - The New Zealand Story    - 1988 - 'TNZS'-System - Screen Normal
- 4 - B08 - Arkanoid 2 American      - 1987 - 'TNZS'-System - Screen Rotate 270°
- 5 - B06 - Extermination            - 1987 - 'TNZS'-System - Screen Rotate 270°
+ 4 - B08 - Arkanoid 2 American      - 1987 - 'TNZS'-System - Screen Rotate 270
+ 5 - B06 - Extermination            - 1987 - 'TNZS'-System - Screen Rotate 270
  6 - B53 - The NZ Story Bootleg     - 1988 - 'TNZS'-System - Screen Normal
- 7 - B35 - Kageki                   - 1988 - 'TNZS'-System - Screen Rotate 90°
- 8 - B44 - Chuka Taisen             - 1988 - 'TNZS'-System - Screen Rotate 180°
- 9 - B19 - Dr Toppel Tankentai      - 1987 - 'TNZS'-System - Screen Rotate 90°
+ 7 - B35 - Kageki                   - 1988 - 'TNZS'-System - Screen Rotate 90
+ 8 - B44 - Chuka Taisen             - 1988 - 'TNZS'-System - Screen Rotate 180
+ 9 - B19 - Dr Toppel Tankentai      - 1987 - 'TNZS'-System - Screen Rotate 90
 10 - A98 - Plump Pop                - 1987 - 'TNZS'-System - Screen Normal
 
 */
@@ -3051,18 +3051,15 @@ static struct DIR_INFO dir_arknoid2[] =
 };
 #define execute_arknoid2 execute_tnzs
 GME( arknoid2, "Arkanoid 2 Revenge of Doh", TAITO, 1987, GAME_BREAKOUT,
-	.long_name_jpn = "ƒAƒ‹ƒJƒmƒCƒh@ƒŠƒxƒ“ƒWƒIƒu‚c‚n‚g",
-	.board = "B08",
+	.long_name_jpn = "ã‚¢ãƒ«ã‚«ãƒã‚¤ãƒ‰ã€€ãƒªãƒ™ãƒ³ã‚¸ã‚ªãƒ–ï¼¤ï¼¯ï¼¨",
 );
 CLNEI(arknoid2u, arknoid2, "Arkanoid 2 American", TAITO, 1987, GAME_BREAKOUT,
-	.long_name_jpn = "ƒAƒ‹ƒJƒmƒCƒh@ƒŠƒxƒ“ƒWƒIƒu‚c‚n‚g American",
+	.long_name_jpn = "ã‚¢ãƒ«ã‚«ãƒã‚¤ãƒ‰ã€€ãƒªãƒ™ãƒ³ã‚¸ã‚ªãƒ–ï¼¤ï¼¯ï¼¨ American",
 	.load_game = load_arknoid2u,
-	.board = "B08",
 );
 CLNEI(arknoid2j, arknoid2, "Arkanoid 2 Japanese", TAITO, 1987, GAME_BREAKOUT,
-	.long_name_jpn = "ƒAƒ‹ƒJƒmƒCƒh@ƒŠƒxƒ“ƒWƒIƒu‚c‚n‚g",
+	.long_name_jpn = "ã‚¢ãƒ«ã‚«ãƒã‚¤ãƒ‰ã€€ãƒªãƒ™ãƒ³ã‚¸ã‚ªãƒ–ï¼¤ï¼¯ï¼¨",
 	.load_game = load_arknoid2j,
-	.board = "B08",
 );
 static struct DIR_INFO dir_chukatai[] =
 {
@@ -3077,7 +3074,6 @@ GAME( chukatai, "Chuka Taisen", TAITO, 1988, GAME_SHOOT,
 	.romsw = romsw_tnzs,
 	.video = &video_tnzs,
 	.exec = execute_tnzs,
-	.board = "B44",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_drtoppel[] =
@@ -3093,7 +3089,6 @@ GAME( drtoppel, "Dr Toppel Tankentai", TAITO, 1987, GAME_SHOOT,
 	.romsw = romsw_drtoppel,
 	.video = &video_drtoppel,
 	.exec = execute_tnzs,
-	.board = "B19",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_extrmatn[] =
@@ -3109,8 +3104,7 @@ GAME( extrmatn, "Extermination", TAITO, 1987, GAME_SHOOT,
 	.romsw = romsw_extrmatn,
 	.video = &video_arknoid2,
 	.exec = execute_tnzs,
-	.long_name_jpn = "ƒGƒNƒXƒ^[ƒ~ƒl[ƒVƒ‡ƒ“",
-	.board = "B06",
+	.long_name_jpn = "ã‚¨ã‚¯ã‚¹ã‚¿ãƒ¼ãƒŸãƒãƒ¼ã‚·ãƒ§ãƒ³",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_insectx[] =
@@ -3125,8 +3119,7 @@ GAME( insectx, "Insector X", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_insectx,
 	.video = &video_insectx,
 	.exec = execute_insectx,
-	.long_name_jpn = "ƒCƒ“ƒZƒNƒ^[‚w",
-	.board = "B97",
+	.long_name_jpn = "ã‚¤ãƒ³ã‚»ã‚¯ã‚¿ãƒ¼ï¼¸",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_kageki[] =
@@ -3140,8 +3133,7 @@ GAME( kageki, "Kageki", TAITO, 1988, GAME_BEAT,
 	.romsw = romsw_tnzs /*kageki_romsw */,
 	.video = &video_drtoppel,
 	.exec = execute_tnzs,
-	.long_name_jpn = "‰ÎŒƒ",
-	.board = "B35",
+	.long_name_jpn = "ç«æ¿€",
 	.sound = sound_kageki,
 );
 static struct DIR_INFO dir_plumppop[] =
@@ -3156,7 +3148,6 @@ GAME( plumppop, "Plump Pop", TAITO, 1987, GAME_BREAKOUT,
 	.romsw = romsw_plumppop,
 	.video = &video_tnzs,
 	.exec = execute_tnzs,
-	.board = "A98",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_tnzs[] =
@@ -3168,13 +3159,12 @@ static struct DIR_INFO dir_tnzs[] =
 };
 GME(tnzs, "The New Zealand Story (bootleg)", BOOTLEG, 1988, GAME_PLATFORM,
 	.input = input_kageki,
-	.long_name_jpn = "ƒjƒ…[ƒW[ƒ‰ƒ“ƒhƒXƒg[ƒŠ[ (bootleg)",
+	.long_name_jpn = "ãƒ‹ãƒ¥ãƒ¼ã‚¸ãƒ¼ãƒ©ãƒ³ãƒ‰ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ (bootleg)",
 );
 #define load_tnzs load_tnzsjo
 CLNEI( tnzsjo, tnzs, "The New Zealand Story (old tnzs raine set)", TAITO, 1988, GAME_PLATFORM,
-	.long_name_jpn = "ƒjƒ…[ƒW[ƒ‰ƒ“ƒhƒXƒg[ƒŠ[",
+	.long_name_jpn = "ãƒ‹ãƒ¥ãƒ¼ã‚¸ãƒ¼ãƒ©ãƒ³ãƒ‰ã‚¹ãƒˆãƒ¼ãƒªãƒ¼",
 	.input = input_tnzs,
-	.board = "B53",
 	.sound = sound_arknoid2,
 );
 static struct DIR_INFO dir_tnzsop[] =
@@ -3185,7 +3175,7 @@ static struct DIR_INFO dir_tnzsop[] =
    { NULL, },
 };
 CLNE(tnzsop, tnzs, "The New Zealand Story (World, Prototype)", TAITO, 1988, GAME_PLATFORM,
-	.long_name_jpn = "ƒjƒ…[ƒW[ƒ‰ƒ“ƒhƒXƒg[ƒŠ[ƒGƒLƒXƒgƒ‰",
+	.long_name_jpn = "ãƒ‹ãƒ¥ãƒ¼ã‚¸ãƒ¼ãƒ©ãƒ³ãƒ‰ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ã‚¨ã‚­ã‚¹ãƒˆãƒ©",
 	.input = input_tnzs,
      );
 

@@ -1866,7 +1866,7 @@ static struct DIR_INFO dir_jumping[] =
 CLNE( jumping, rainbow, "Jumping Islands", BOOTLEG, 1989, GAME_PLATFORM,
 	.input = input_jumping,
 	.dsw = dsw_jumping,
-	.long_name_jpn = "ƒWƒƒƒ“ƒsƒ“ƒOƒAƒCƒ‰ƒ“ƒh",
+	.long_name_jpn = "ã‚¸ãƒ£ãƒ³ãƒ”ãƒ³ã‚°ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰",
 	.sound = sound_jumping,
 );
 static struct DIR_INFO dir_rainbow[] =
@@ -1879,8 +1879,7 @@ static struct DIR_INFO dir_rainbow[] =
 };
 GME( rainbow, "Rainbow Islands", TAITO, 1987, GAME_PLATFORM,
 	.romsw = romsw_rainbow,
-	.long_name_jpn = "ƒŒƒCƒ“ƒ{[ƒAƒCƒ‰ƒ“ƒh",
-	.board = "B22",
+	.long_name_jpn = "ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰",
 );
 static struct DIR_INFO dir_rainbowa[] =
 {
@@ -1892,8 +1891,7 @@ static struct DIR_INFO dir_rainbowa[] =
 };
 CLNE( rainbowa, rainbow,"Rainbow Islands (alternate)", TAITO, 1987, GAME_PLATFORM,
 	.romsw = romsw_rainbow,
-	.long_name_jpn = "ƒŒƒCƒ“ƒ{[ƒAƒCƒ‰ƒ“ƒh",
-	.board = "B22",
+	.long_name_jpn = "ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰",
 );
 static struct DIR_INFO dir_rainbowe[] =
 {
@@ -1905,7 +1903,6 @@ static struct DIR_INFO dir_rainbowe[] =
 };
 CLNE( rainbowe,rainbow, "Rainbow Islands (extra)", TAITO, 1988, GAME_PLATFORM,
 	.romsw = romsw_rainbow,
-	.long_name_jpn = "ƒŒƒCƒ“ƒ{[ƒAƒCƒ‰ƒ“ƒhƒGƒLƒXƒgƒ‰",
-	.board = "B22",
+	.long_name_jpn = "ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã‚¨ã‚­ã‚¹ãƒˆãƒ©",
 );
 

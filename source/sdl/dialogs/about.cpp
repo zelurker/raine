@@ -610,6 +610,7 @@ TAbout_menu::~TAbout_menu() {
 void TAbout_menu::update_fg_layer(int nb_to_update) {
   static unsigned int tt = 0;
   TBitmap_menu::update_fg_layer(nb_to_update);
+  if (!palette_size) return;
   if (nb_to_update >= 0 && bmp) {
      int indice = (tt*palette_size*4);
      // printf("indice %d\n",indice);

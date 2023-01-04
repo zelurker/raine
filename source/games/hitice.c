@@ -414,8 +414,7 @@ GAME( hitice, "Hit the Ice", WILLIAMS, 1990, GAME_SPORTS,
 	.clear = ClearHitTheIce,
 	.video = &b_system_r180_video,
 	.exec = execute_hitice,
-	.long_name_jpn = "ヒットジアイス",
-	.board = "C59",
+	.long_name_jpn = "繝偵ャ繝医ず繧｢繧､繧ｹ",
 	.sound = taito_ym2203_m6295_sound,
 );
 

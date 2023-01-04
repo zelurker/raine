@@ -143,6 +143,8 @@ void hist_open(char *name,const char *game) {
 	  *commands = 0;
 
 	  hist_add("\nGame: %s",current_game->long_name);
+	  if (current_game->long_name_jpn)
+	      hist_add("Japenese name (requires a ttf font with jap chars):\n%s",current_game->long_name_jpn);
 	  hist_add("Company: %s", game_company_name(current_game->company_id));
 
 	  hist_add("Year: %4d", current_game->year);
@@ -173,15 +175,6 @@ void hist_open(char *name,const char *game) {
 	      for( j = 0; j < SndMachine->control_max; j++ )
 		  hist_add("   %s",get_sound_chip_name( SndMachine->init[j] ));
 	  }
-
-	  /*
-
-	     board number [optional]
-
-*/
-
-	  if(current_game->board)
-	      hist_add("\nBoard: %s", current_game->board);
 
 	  /*
 

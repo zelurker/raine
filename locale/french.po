@@ -2162,7 +2162,7 @@ msgstr ""
 #: source/sdl/dialogs/video_options.cpp:107
 #: source/sdl/dialogs/video_options.cpp:175
 msgid "Close"
-msgstr ""
+msgstr "Proche"
 
 #: source/sdl/dialogs/sound_commands.cpp:149
 msgid "Close this dialog to stop playback (Return, ESC or mouse button)"
@@ -2244,25 +2244,25 @@ msgstr ""
 
 #: source/sdl/control.c:2005
 msgid "Coinage"
-msgstr ""
+msgstr "Sous nécessaires"
 
 #: source/games/gunbird.c:295
 msgid "Coinage A"
-msgstr ""
+msgstr "Sous pour fente A"
 
 #: source/games/gunbird.c:304
 msgid "Coinage B"
-msgstr ""
+msgstr "Sous pour fente B"
 
 #: source/games/bloodbro.c:61
 msgid "Coinage Mode 1"
-msgstr ""
+msgstr "Sous Mode 1"
 
 #: source/games/esd16.c:78 source/games/seta.c:2165 source/games/seta.c:2276
 #: source/games/seta.c:2332 source/games/seta.c:2347 source/games/seta.c:2453
 #: source/games/seta.c:2623
 msgid "Coinage Type"
-msgstr ""
+msgstr "Sous nécessaires"
 
 #: source/sdl/dialogs/gui_options.cpp:46
 msgid "Colors..."
@@ -3671,7 +3671,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:178
 msgid "Integer scaling"
-msgstr ""
+msgstr "Facteur d'échelle entier"
 
 #: source/games/cps1drv.c:3206 source/games/cps1drv.c:3254
 msgid "Internal Diff. on Life Loss"
@@ -5430,7 +5430,7 @@ msgstr ""
 
 #: source/sdl/console/scripts.cpp:392
 msgid "Set"
-msgstr "Actif"
+msgstr "Active"
 
 #: source/sdl/dialogs/game_selection.cpp:46
 msgid "Seta"
@@ -7116,3 +7116,20 @@ msgstr "Jeux les + joués"
 # source/sdl/dialogs/game_selection.cpp:177 (added by update_po.pl)
 msgid "Most recent games"
 msgstr "Jeux les + récents"
+
+#: source/games/arkanoid.c:112
+msgid "Ball speed"
+msgstr "Vitesse de la balle"
+
+#: source/games/arkanoid.c:114
+msgid "Faster"
+msgstr "+ rapide"
+
+#: source/sdl/gui/tfont.cpp:52
+msgid "Japanese font"
+msgstr "Fonte japonnaise"
+
+#: source/sdl/gui/tfont.cpp:36
+msgid "Select true type font"
+msgstr "Choisis une fonte true type"
+

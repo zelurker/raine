@@ -90,6 +90,23 @@ int TStatic::get_len() {
   return strlen(menu->label);
 }
 
+int TStatic::has_jap_glyph() {
+    // The japenese glyphs seem to start by some 0xex character, see the table there : https://en.wikipedia.org/wiki/UTF-8
+    // so we just parse the string, assuming it's utf8, and see what the higher glyph is, if it's 0xe0 or higher, return true
+    char *s = menu->label;
+    for (unsigned int n=0; n<strlen(s); n++) {
+	u8 c = s[n];
+	if (c < 0x80) continue;
+	else if ((c & 0xe0) == 0xc0) {
+	    n++;
+	    continue;
+	} else {
+	    return 1;
+	}
+    }
+    return 0;
+}
+
 int TStatic::can_be_selected() {
   if (menu->menu_func)
     return 1;

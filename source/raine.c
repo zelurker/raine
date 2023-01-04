@@ -107,6 +107,7 @@ char raine_cpu_model[80]; // declared in gui/about.c, not available with sdl...
 #endif
 
 char language[6];
+static char *game_type0[NB_GAME_TYPE];
 
 void init_lang() {
     if (!language[0]) {
@@ -134,8 +135,10 @@ void init_lang() {
     /* 1st argument of setlocale is *not* a bit mask, and since I don't want numeric conversions here I need to call it twice */
     setlocale(LC_ALL,"");
     setlocale(LC_NUMERIC,"C");
+    if (!game_type0[0])
+	memcpy(game_type0,game_type,sizeof(char*)*NB_GAME_TYPE);
     for (int n=0; n<NB_GAME_TYPE; n++) {
-	game_type[n] = gettext(game_type[n]);
+	game_type[n] = gettext(game_type0[n]);
     }
 #endif
 }

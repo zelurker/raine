@@ -2248,8 +2248,7 @@ GAME( qzchikyu, "Quiz Chikyu Bouei Gun", TAITO, 1991, GAME_QUIZZ,
 	.dsw = dsw_qzchikyu,
 	.romsw = romsw_qzchikyu,
 	.video = &video_qzchikyu,
-	.long_name_jpn = "ÉNÉCÉYínãÖñhâqåR",
-	.board = "D19",
+	.long_name_jpn = "„ÇØ„Ç§„Ç∫Âú∞ÁêÉÈò≤Ë°õËªç",
 );
 static struct DIR_INFO dir_qcrayon[] =
 {
@@ -2257,9 +2256,7 @@ static struct DIR_INFO dir_qcrayon[] =
    { "qcrayon", },
    { NULL, },
 };
-GME( qcrayon, "Quiz Crayon Shinchan", TAITO, 1993, GAME_QUIZZ | GAME_PUZZLE,
-	.board = "D55",
-);
+GME( qcrayon, "Quiz Crayon Shinchan", TAITO, 1993, GAME_QUIZZ | GAME_PUZZLE);
 static struct DIR_INFO dir_qcrayon2[] =
 {
    { "quiz_crayon_shinchan_2", },
@@ -2270,7 +2267,6 @@ GAME( qcrayon2, "Quiz Crayon Shinchan 2", TAITO, 1993, GAME_QUIZZ,
 	.input = input_qcrayon,
 	.dsw = dsw_qcrayon2,
 	.video = &video_qcrayon,
-	.board = "D63",
 );
 static struct DIR_INFO dir_quizhq[] =
 {
@@ -2283,8 +2279,7 @@ GAME( quizhq, "Quiz HQ", TAITO, 1990, GAME_QUIZZ,
 	.dsw = dsw_quizhq,
 	.romsw = romsw_quizhq,
 	.video = &video_qtorimon,
-	.long_name_jpn = "ÉNÉCÉYÇgÇp",
-	.board = "C53",
+	.long_name_jpn = "„ÇØ„Ç§„Ç∫Ôº®Ôº±",
 );
 static struct DIR_INFO dir_qjinsei[] =
 {
@@ -2296,8 +2291,7 @@ GAME( qjinsei, "Quiz Jinsei Gekijoh", TAITO, 1992, GAME_QUIZZ,
 	.input = input_qcrayon,
 	.dsw = dsw_qjinsei,
 	.video = &video_qcrayon,
-	.long_name_jpn = "ÉNÉCÉYêlê∂åÄèÍ",
-	.board = "D48",
+	.long_name_jpn = "„ÇØ„Ç§„Ç∫‰∫∫ÁîüÂäáÂ†¥",
 );
 static struct DIR_INFO dir_qtorimon[] =
 {
@@ -2306,9 +2300,8 @@ static struct DIR_INFO dir_qtorimon[] =
    { NULL, },
 };
 GME( qtorimon, "Quiz Torimonochou", TAITO, 1990, GAME_QUIZZ,
-	.long_name_jpn = "ãÍà›ìºïˇï®í∑",
+	.long_name_jpn = "Ëã¶ËÉÉÈ†≠ÊçïÁâ©Âºµ",
 	.romsw = romsw_qtorimon,
-	.board = "C41",
 );
 static struct DIR_INFO dir_yuyugogo[] =
 {
@@ -2318,7 +2311,6 @@ static struct DIR_INFO dir_yuyugogo[] =
 };
 GME( yuyugogo, "Yuuyu no Quiz de Go!Go!", TAITO, 1990, GAME_QUIZZ,
 	.romsw = romsw_yuyugogo,
-	.long_name_jpn = "Ç‰Ç±Ç‰ÇÃÉNÉCÉYÇ≈ÇfÇnÅIÅ@ÇfÇnÅI",
-	.board = "C83",
+	.long_name_jpn = "„ÇÜ„Åì„ÇÜ„ÅÆ„ÇØ„Ç§„Ç∫„ÅßÔºßÔºØÔºÅ„ÄÄÔºßÔºØÔºÅ",
 );
 

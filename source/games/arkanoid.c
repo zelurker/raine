@@ -107,32 +107,32 @@ static struct DSW_INFO dsw_arkanoid[] =
   { 0, 0, NULL }
 };
 
-static struct DSW_DATA dsw_data_arknoidj_4[] =
+static struct DSW_DATA dsw_data_arkangc_1[] =
 {
-  { _("Allow Continue"), 0x01, 2 },
-  { MSG_NO, 0x01},
-  { MSG_YES, 0x00},
-  DSW_SCREEN( 0x02, 0x00),
-  DSW_SERVICE( 0, 0x04),
-  { MSG_DIFFICULTY, 0x08, 2 },
-  { _("Easy") , 0x08},
-  { _("Hard") , 0x00},
-  { MSG_EXTRA_LIFE, 0x10, 2 },
-  { _("20K 60K and every 60K") , 0x10},
-  { _("20K only") , 0x00},
-  { MSG_LIVES, 0x20, 2 },
-  { "3" , 0x20},
-  { "5" , 0x00},
-  { MSG_COINAGE, 0x40, 2 },
-  { MSG_1COIN_1PLAY, 0x40},
-  { MSG_1COIN_1PLAY, 0x00},
-  DSW_CABINET( 0x00, 0x80),
-  { NULL, 0}
+    {_("Ball speed"), 1, 2 },
+    { MSG_NORMAL, 1 },
+    { _("Faster"), 0 },
+    DSW_SCREEN( 0x02, 0x00),
+    DSW_SERVICE( 0, 0x04),
+    { MSG_DIFFICULTY, 0x08, 2 },
+    { _("Easy") , 0x08},
+    { _("Hard") , 0x00},
+    { MSG_EXTRA_LIFE, 0x10, 2 },
+    { _("20K 60K and every 60K") , 0x10},
+    { _("20K only") , 0x00},
+    { MSG_LIVES, 0x20, 2 },
+    { "3" , 0x20},
+    { "5" , 0x00},
+    { MSG_COINAGE, 0x40, 2 },
+    { MSG_1COIN_1PLAY, 0x40},
+    { MSG_1COIN_1PLAY, 0x00},
+    DSW_CABINET( 0x00, 0x80),
+    { NULL, 0 }
 };
 
 static struct DSW_INFO dsw_arknoidj[] =
 {
-  { 8, 0x7e, dsw_data_arknoidj_4 },
+  { 0x8, 0x7f, dsw_data_arkangc_1 },
   { 0, 0, NULL }
 };
 

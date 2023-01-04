@@ -382,6 +382,5 @@ static struct VIDEO_INFO video_koshien =
 };
 GMEI( koshien, "Koshien", TAITO, 1990, GAME_SPORTS,
 	.romsw = romsw_koshien,
-	.board = "C81",
 );
 

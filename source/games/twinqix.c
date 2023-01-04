@@ -353,7 +353,6 @@ GAME( twinqix, "Twin Qix", TAITO, 1995, GAME_PUZZLE,
 	.romsw = romsw_twinqix,
 	.video = &video_twinqix,
 	.exec = ExecuteF3SystemFrame_NoInt5,
-	.long_name_jpn = "ツインクイックス",
-	.board = NULL /* "E??" */,
+	.long_name_jpn = "繝�繧､繝ｳ繧ｯ繧､繝�繧ｯ繧ｹ",
 );
 

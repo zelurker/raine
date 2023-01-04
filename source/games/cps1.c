@@ -4051,6 +4051,12 @@ static void draw_cps1_partial(int scanline)
 	 if (l3pri > maxpri) { maxpri = l3pri; maxl = l3; maxi = nb-1;}
      }
 
+#ifdef RAINE_WIN32
+     // There seems to be an optimization problem with gcc-12.2.0 around here somewhere either putting a print here
+     // or simply these 2 pbitmap_needed++ then -- seem to fix it, otherwise in 64 bits optimized raine.exe -nogui sfa2 crashes around here
+     pbitmap_needed++; pbitmap_needed--;
+#endif
+
      if (nb) {
        if (pbitmap_needed) {
 	 clear_bitmap(pbitmap);
@@ -4121,7 +4127,7 @@ static void draw_cps1_partial(int scanline)
      // delayed sprites
      if (cps1_game_config->bootleg_kludge)
 	 cps1_port[CPS1_OBJ_BASE] = 0x9100;
-     memcpy(cps1_buffered_obj, cps1_base(CPS1_OBJ_BASE, cps1_obj_size),cps1_obj_size);;
+     memcpy(cps1_buffered_obj, cps1_base(CPS1_OBJ_BASE, cps1_obj_size),cps1_obj_size);
    }
 }
 

@@ -481,6 +481,5 @@ static struct DIR_INFO dir_topland[] =
 GME( topland, "Top Landing", TAITO, 1988, GAME_MISC | GAME_NOT_WORKING,
 	.romsw = romsw_topland,
 	.clear = ClearTopLanding,
-	.board = "B62",
 );
 

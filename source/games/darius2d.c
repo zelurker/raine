@@ -543,8 +543,7 @@ GAME( drius2do, "Darius 2 (dual screen)", TAITO, 1989, GAME_SHOOT,
 	.clear = clear_darius_2_dual,
 	.video = &video_drius2do,
 	.exec = execute_drius2do,
-	.long_name_jpn = "ƒ_ƒ‰ƒCƒAƒX‚Qi‚Q‰‘–Êj",
-	.board = "C07",
+	.long_name_jpn = "ãƒ€ãƒ©ã‚¤ã‚¢ã‚¹ï¼’ï¼ˆï¼’è‹‘é¢ï¼‰",
 	.sound = contcirc_ym2610_sound,
 );
 

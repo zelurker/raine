@@ -691,6 +691,5 @@ GAME( superchs, "Super Chase", TAITO, 1992, GAME_RACE | GAME_NOT_WORKING,
 	.clear = ClearSuperChase,
 	.video = &video_superchs,
 	.exec = execute_superchs,
-	.board = "D46",
 );
 

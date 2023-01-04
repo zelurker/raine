@@ -822,14 +822,12 @@ static struct DIR_INFO dir_ddragon3[] =
 #include "game_def.h"
 
 GME( ddragon3, "Double Dragon 3", TECHNOS, 1990, GAME_BEAT,
-	.long_name_jpn = "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
-	.board = "TA-0030",
+	.long_name_jpn = "ãƒ€ãƒ–ãƒ«ãƒ‰ãƒ©ã‚´ãƒ³ï¼“",
 );
 
 CLNEI( ddrago3b, ddragon3, "Double Dragon 3 (bootleg)", TECHNOS, 1990, GAME_BEAT,
 	.input = input_ddrago3b,
 	.dsw = dsw_ddrago3b,
 	.exec = execute_ddrago3b,
-	.long_name_jpn = "ƒ_ƒuƒ‹ƒhƒ‰ƒSƒ“‚R",
-	.board = "TA-0030",
+	.long_name_jpn = "ãƒ€ãƒ–ãƒ«ãƒ‰ãƒ©ã‚´ãƒ³ï¼“",
 );

@@ -99,7 +99,7 @@ static struct DSW_DATA dsw_data_bonze_adventure_0[] =
     DSW_TAITO_SCREEN_TEST_DEMO,
     DSW_REGION(2), // World region
       DSW_TAITO_COINAGE_WORLD,
-    DSW_DEFAULT_REGION,                    \
+    DSW_DEFAULT_REGION,
       DSW_TAITO_COINAGE_OLD_JAPAN,
     { NULL,		      0,	 },
 };
@@ -665,7 +665,6 @@ static struct DIR_INFO dir_bonzeadv[] =
    { NULL, },
 };
 GME( bonzeadv, "Bonze's Adventure", TAITO, 1988, GAME_PLATFORM,
-	.long_name_jpn = "ínçñÇˇÇΩÇË American",
+	.long_name_jpn = "Âú∞ÁçÑ„ÇÅ„Åê„Çä American",
 	.romsw = romsw_bonzeadv,
-	.board = "B41",
 );

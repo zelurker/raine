@@ -14,6 +14,7 @@ class TStatic {
     virtual ~TStatic() {} // virtual destructor required so that objects
     // which overload this one can have one !
     virtual int get_len();
+    virtual int has_jap_glyph();
     virtual int can_be_selected();
     virtual int can_draw_selection();
     virtual int get_len_max_options();

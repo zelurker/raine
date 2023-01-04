@@ -447,7 +447,6 @@ GAME( akkanvdr, "Akkanvader", TAITO, 1995, GAME_SHOOT,
 	.clear = ClearSpcInv95,
 	.video = &video_akkanvdr,
 	.exec = ExecuteF3SystemFrame,
-	.long_name_jpn = "ÇﬂÇ¡Ç©Ç§Ç◊Å[ÇæÅ[",
-	.board = "E06",
+	.long_name_jpn = "„ÇÅ„Å£„Åã„ÅÜ„Åπ„Éº„Å†„Éº",
 );
 

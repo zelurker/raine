@@ -1424,8 +1424,7 @@ GAME( darius2, "Darius 2", TAITO, 1989, GAME_SHOOT,
 	.romsw = romsw_darius2,
 	.video = &video_ninjaw,
 	.exec = execute_ninjaw,
-	.long_name_jpn = "â_âëâCâAâXéQ",
-	.board = "C07",
+	.long_name_jpn = "ç§¬ç²±ç£´ç£šç¦®é¤¡",
 	.sound = sound_darius2,
 );
 static struct DIR_INFO dir_ninjaw[] =
@@ -1435,8 +1434,7 @@ static struct DIR_INFO dir_ninjaw[] =
    { NULL, },
 };
 GME( ninjaw, "Ninja Warriors", TAITO, 1987, GAME_BEAT,
-	.long_name_jpn = "öEÄÒâEâHü[âèâAü[âY",
-	.board = "B31",
+	.long_name_jpn = "å¿è€…ã‚¦ã‚©ãƒ¼ãƒªã‚¢ãƒ¼ã‚º",
 );
 static struct DIR_INFO dir_ninjawj[] =
 {
@@ -1448,7 +1446,6 @@ static struct DIR_INFO dir_ninjawj[] =
 };
 CLNE( ninjawj,ninjaw, "Ninja Warriors (Japan)", TAITO, 1987, GAME_BEAT,
 	.dsw = dsw_ninjawj,
-	.long_name_jpn = "öEÄÒâEâHü[âèâAü[âY (Japan)",
-	.board = "B31",
+	.long_name_jpn = "å¿è€…ã‚¦ã‚©ãƒ¼ãƒªã‚¢ãƒ¼ã‚º",
 );
 

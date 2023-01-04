@@ -7,12 +7,14 @@
 #include <string.h>
 #include <stdio.h>
 #include "compat.h"
+#include "raine.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "tfont.h"
 #include <dirent.h>
 #include "confile.h"
 #include "menu.h"
 #include "display_sdl.h"
+#include "dialogs/fsel.h"
 
 #if SDL==2
 #define stringColor(surf,x,y,s,col) stringColor(rend,x,y,s,col)
@@ -23,17 +25,39 @@
 int min_font_size = 8;
 int max_font_size = 30;
 
+static int do_font(int sel) {
+    char res[FILENAME_MAX];
+    char *exts[] = { "ttf", NULL };
+    char temp[FILENAME_MAX];
+    strcpy(temp,jap_font);
+    char *p = strrchr(temp,SLASH[0]);
+    if (p) *p = 0;
+    strcpy(res,jap_font);
+    fsel(temp,exts, res, _("Select true type font"));
+    if (res[0] && strcmp(jap_font,res) && !stricmp(&res[strlen(res)-3],"ttf")) {
+	if (*jap_font) free(jap_font);
+	jap_font = strdup(res);
+    }
+
+    return 1;
+}
+
+static int bidon;
+
 // These lists of 3 values are ranges : min, max, step
 static menu_item_t font_options[] =
 {
   { _("Minimum font size"), NULL, &min_font_size, 3, {8, 20, 1} },
   { _("Maximum font size"), NULL, &max_font_size, 3, {20, 40, 1} },
+  { _("Japanese font"), &do_font, &bidon, 1, {0}, { jap_font } },
 };
 
 int add_fonts_gui_options(menu_item_t *menu) {
   menu[0] = font_options[0];
   menu[1] = font_options[1];
-  return 2;
+  font_options[2].values_list_label[0] = jap_font;
+  menu[2] = font_options[2];
+  return 3;
 }
 
 static void get_font_dimensions(char *s, unsigned int *width, unsigned int *height) {
@@ -330,8 +354,12 @@ void TFont_ttf::load_font(char *myfont) {
   if (!strstr(myfont,"ttf"))
     myfont = "Vera.ttf";
   char tpath[1024];
-  sprintf(tpath,"fonts/%s",myfont);
-  ttf = TTF_OpenFont((*get_shared_hook)(tpath),charHeight*3/2);
+  if (myfont[0] == '/')
+      ttf = TTF_OpenFont(myfont,charHeight*3/2);
+  else {
+      sprintf(tpath,"fonts/%s",myfont);
+      ttf = TTF_OpenFont((*get_shared_hook)(tpath),charHeight*3/2);
+  }
   if ( ttf == NULL ) {
     fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
 	charHeight, myfont, SDL_GetError());

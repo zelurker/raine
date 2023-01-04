@@ -1130,7 +1130,7 @@ GAME( ballbros, "Balloon Brothers", EAST_TECHNOLOGY, 1992, GAME_PUZZLE,
 	.dsw = dsw_ballbros,
 	.clear = clear_balloon_bros,
 	.video = &video_gigandes,
-	.long_name_jpn = "ƒoƒ‹[ƒ“ƒuƒ‰ƒU[ƒY",
+	.long_name_jpn = "ãƒãƒ«ãƒ¼ãƒ³ãƒ–ãƒ©ã‚¶ãƒ¼ã‚º",
 );
 static struct DIR_INFO dir_daisenpu[] =
 {
@@ -1142,8 +1142,7 @@ static struct DIR_INFO dir_daisenpu[] =
 CLONE(daisenpu, twinhawk, "Daisenpu", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_daisenpu,
 	.video = &video_twinhawk,
-	.long_name_jpn = "µåù•—",
-	.board = "B87",
+	.long_name_jpn = "å¤§æ—‹é¢¨",
 	.sound = taito_ym2151_sound,
 );
 GMEI( gigandes, "Gigandes", EAST_TECHNOLOGY, 1989, GAME_SHOOT);
@@ -1156,8 +1155,7 @@ GAME( superman, "Superman", TAITO, 1988, GAME_BEAT | GAME_SHOOT,
 	.dsw = dsw_superman,
 	.romsw = romsw_superman,
 	.video = &video_gigandes,
-	.long_name_jpn = "ƒX[ƒp[ƒ}ƒ“",
-	.board = "B61",
+	.long_name_jpn = "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒãƒ³",
 );
 static struct DIR_INFO dir_twinhawk[] =
 {
@@ -1167,8 +1165,6 @@ static struct DIR_INFO dir_twinhawk[] =
 GAME( twinhawk, "Twin Hawk", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_twinhawk,
 	.video = &video_twinhawk,
-	.long_name_jpn = "µåù•—",
-	.board = "B87",
 	.sound = taito_ym2151_sound,
 );
 

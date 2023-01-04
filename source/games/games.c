@@ -15,6 +15,8 @@
 struct GAME_MAIN *current_game;
 int game_count;
 
+// Notice, it's too early for _() to work, but never mind, it allows to mark the strings as translatable
+// the array is re-affected later in init_lang
 char *game_type[NB_GAME_TYPE] =
 { _("All"),
   _("Breakout"),

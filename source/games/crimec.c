@@ -498,8 +498,7 @@ static struct DIR_INFO dir_crimec[] =
 GAME( crimec, "Crime City", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_crimec,
 	.exec = execute_crimec,
-	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B",
-	.board = "B99",
+	.long_name_jpn = "Á•öÁ≤±Á£¥Á∞ìÈΩãÁ®ôÁ£Ω",
 );
 static struct DIR_INFO dir_crimecu[] =
 {
@@ -511,8 +510,7 @@ static struct DIR_INFO dir_crimecu[] =
 };
 CLNE( crimecu,crimec, "Crime City (US)", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_crimecu,
-	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B (US)",
-	.board = "B99",
+	.long_name_jpn = "Á•öÁ≤±Á£¥Á∞ìÈΩãÁ®ôÁ£Ω (US)",
 );
 static struct DIR_INFO dir_crimecj[] =
 {
@@ -524,7 +522,6 @@ static struct DIR_INFO dir_crimecj[] =
 };
 CLNE( crimecj, crimec, "Crime City (Japan)", TAITO, 1989, GAME_SHOOT,
 	.dsw = dsw_crimecj,
-	.long_name_jpn = "‚N‚Î‚C‚«‚V‚e‚B (Japan)",
-	.board = "B99",
+	.long_name_jpn = "Á•öÁ≤±Á£¥Á∞ìÈΩãÁ®ôÁ£Ω (Japan)",
 );
 

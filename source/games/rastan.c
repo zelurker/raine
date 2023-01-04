@@ -573,8 +573,7 @@ static struct VIDEO_INFO video_rastan =
 };
 GMEI( rastan, "Rastan", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
 	.romsw = romsw_rastan,
-	.long_name_jpn = "ラスタンサーガ",
-	.board = "B04",
+	.long_name_jpn = "繝ｩ繧ｹ繧ｿ繝ｳ繧ｵ繝ｼ繧ｬ",
 );
 static struct DIR_INFO dir_rastanu[] =
 {
@@ -587,8 +586,7 @@ static struct DIR_INFO dir_rastanu[] =
 };
 CLNE( rastanu,rastan, "Rastan American", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
 	.romsw = romsw_rastan,
-	.long_name_jpn = "ラスタンサーガ American",
-	.board = "B04",
+	.long_name_jpn = "繝ｩ繧ｹ繧ｿ繝ｳ繧ｵ繝ｼ繧ｬ American",
 );
 static struct DIR_INFO dir_rastanu2[] =
 {
@@ -601,8 +599,7 @@ static struct DIR_INFO dir_rastanu2[] =
 };
 CLNE( rastanu2, rastan,"Rastan American (alternate)", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
 	.romsw = romsw_rastan,
-	.long_name_jpn = "ラスタンサーガ American (alternate)",
-	.board = "B04",
+	.long_name_jpn = "繝ｩ繧ｹ繧ｿ繝ｳ繧ｵ繝ｼ繧ｬ American (alternate)",
 );
 static struct DIR_INFO dir_rastsaga[] =
 {
@@ -615,7 +612,6 @@ static struct DIR_INFO dir_rastsaga[] =
 CLNE( rastsaga,rastan, "Rastan Saga", TAITO, 1987, GAME_BEAT | GAME_PLATFORM,
 	.dsw = dsw_rastsaga,
 	.romsw = NULL, // rastan_saga_romsw,
-	.long_name_jpn = "ラスタンサーガ Saga",
-	.board = "B04",
+	.long_name_jpn = "繝ｩ繧ｹ繧ｿ繝ｳ繧ｵ繝ｼ繧ｬ Saga",
 );
 

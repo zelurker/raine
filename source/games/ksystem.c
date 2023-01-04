@@ -1339,7 +1339,6 @@ GAME( kicknrun, "Kick and Run", TAITO, 1986, GAME_SPORTS,
 	.dsw = dsw_kicknrun,
 	.video = &video_kicknrun,
 	.exec = execute_kikikai,
-	.board = "A87",
 	.sound = sound_kikikai,
 );
 static struct DIR_INFO dir_kikikai[] =
@@ -1350,9 +1349,7 @@ static struct DIR_INFO dir_kikikai[] =
    { "knightb", },
    { NULL, },
 };
-GME( kikikai, "Kiki Kai Kai", TAITO, 1986, GAME_PLATFORM,
-	.board = "A85",
-);
+GME( kikikai, "Kiki Kai Kai", TAITO, 1986, GAME_PLATFORM);
 static struct DIR_INFO dir_knightb[] =
 {
    { "knight_boy", },

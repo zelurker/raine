@@ -368,8 +368,7 @@ GAME( masterw, "Master of Weapons", TAITO, 1989, GAME_SHOOT,
 	.clear = ClearMasterW,
 	.video = &video_masterw,
 	.exec = execute_masterw,
-	.long_name_jpn = "マスターオブウェポン",
-	.board = "B72",
+	.long_name_jpn = "繝槭せ繧ｿ繝ｼ繧ｪ繝悶え繧ｧ繝昴Φ",
 	.sound = taito_ym2203_sound,
 );
 

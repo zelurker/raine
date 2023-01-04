@@ -811,7 +811,6 @@ static struct DIR_INFO dir_wwfsstar[] =
    { NULL, },
 };
 GME( wwfsstar, "WWF Superstars", TECHNOS, 1989, GAME_BEAT,
-	.long_name_jpn = "ÇvÇvÇeÉXÅ[ÉpÅ[ÉXÉ^Å[ÉY",
-	.board = "TA-0024",
+	.long_name_jpn = "Ôº∑Ôº∑Ôº¶„Çπ„Éº„Éë„Éº„Çπ„Çø„Éº„Ç∫",
 );
 

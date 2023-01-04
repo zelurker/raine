@@ -1354,7 +1354,6 @@ static struct DIR_INFO dir_bublbobl[] =
 };
 GME( bublbobl, "Bubble Bobble", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル",
-	.board = "A78",
 );
 CLNE( boblbobl, bublbobl, "Bobble Bobble", BOOTLEG, 1986, GAME_PLATFORM,
 	.input = input_sboblbob,
@@ -1376,7 +1375,6 @@ static struct DIR_INFO dir_bublboblr[] =
 };
 CLNE( bublboblr, bublbobl, "Bubble Bobble (US mode select)", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル (US mode select)",
-	.board = "A78",
 );
 CLNEI( bublcave, bublbobl, "Bubble Bobble Lost Cave (Ver 1.2)", HACK, 2013, GAME_PLATFORM);
 CLNEI( bublredux, bublbobl, "Bubble Bobble Redux (With Level Skipper)", HACK, 2013, GAME_PLATFORM,
@@ -1394,7 +1392,6 @@ static struct DIR_INFO dir_bubboblr1[] =
 };
 CLNE( bubboblr1, bublbobl,"Bubble Bobble (US)", TAITO, 1986, GAME_PLATFORM,
 	.long_name_jpn = "バブルボブル (US)",
-	.board = "A78",
 );
 static struct DIR_INFO dir_sboblbob[] =
 {

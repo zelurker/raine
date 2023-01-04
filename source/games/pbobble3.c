@@ -467,8 +467,7 @@ GAME( pbobble3, "Puzzle Bobble 3", TAITO, 1996, GAME_PUZZLE,
 	.romsw = romsw_pbobble3,
 	.video = &video_pbobble3,
 	.exec = ExecuteF3SystemFrame_int2,
-	.long_name_jpn = "ƒpƒYƒ‹ƒ{ƒuƒ‹‚R",
-	.board = "E29",
+	.long_name_jpn = "ãƒ‘ã‚ºãƒ«ãƒœãƒ–ãƒ«ï¼“",
 	.sound = f3_sound,
 );
 

@@ -494,7 +494,6 @@ GAME( deadconx, "Dead Connection", TAITO, 1992, GAME_SHOOT,
 	.clear = ClearDeadConnection,
 	.video = &video_deadconx,
 	.exec = execute_deadconx,
-	.board = "D28",
 	.sound = taito_ym2610_sound,
 );
 

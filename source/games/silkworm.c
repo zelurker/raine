@@ -1338,15 +1338,12 @@ static struct DIR_INFO dir_gemini[] =
 GME( gemini, "Gemini Wing", TECMO, 1987, GAME_SHOOT,
 	.clear = ClearSilkworm,
 	.video = &video_gemini,
-	.board = "6217",
 );
 GMEI( rygar, "Rygar - Legendary Warrior", TECMO, 1986, GAME_PLATFORM,
 	.clear = ClearSilkworm,
-	.board = "6217",
 );
 GMEI( silkworm, "Silkworm (Set 1)", TECMO, 1988, GAME_SHOOT,
 	.clear = ClearSilkworm,
-	.board = "6217",
 );
 static struct DIR_INFO dir_silkwrm2[] =
 {
@@ -1358,6 +1355,5 @@ static struct DIR_INFO dir_silkwrm2[] =
 };
 CLNE(silkwrm2, silkworm, "Silkworm (Set 2)", TECMO, 1988, GAME_SHOOT,
 	.clear = ClearSilkworm,
-	.board = "6217",
 );
 

@@ -497,7 +497,6 @@ GAME( ringrage, "Ring Rage", TAITO, 1992, GAME_BEAT | GAME_PARTIALLY_WORKING,
 	.romsw = romsw_ringrage,
 	.video = &video_ringrage,
 	.exec = execute_ringrage,
-	.board = "D21",
 	.sound = f3_sound,
 );
 

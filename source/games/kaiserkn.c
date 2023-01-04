@@ -596,8 +596,7 @@ static struct DIR_INFO dir_kaiserkn[] =
 GAME( kaiserkn, "Kaiser Knuckle", TAITO, 1994, GAME_BEAT,
 	.romsw = romsw_kaiserkn,
 	.video = &video_kaiserkn,
-	.long_name_jpn = "カイザーナックル",
-	.board = "D84",
+	.long_name_jpn = "繧ｫ繧､繧ｶ繝ｼ繝翫ャ繧ｯ繝ｫ",
 );
 static struct DIR_INFO dir_dankuga[] =
 {
@@ -609,7 +608,6 @@ static struct DIR_INFO dir_dankuga[] =
 CLNE( dankuga,kaiserkn, "Dankuga", TAITO, 1994, GAME_BEAT,
 	.romsw = romsw_dankuga,
 	.video = &video_kaiserkn,
-	.long_name_jpn = "カイザーナックル (alternate)",
-	.board = "D84",
+	.long_name_jpn = "繧ｫ繧､繧ｶ繝ｼ繝翫ャ繧ｯ繝ｫ (alternate)",
 );
 

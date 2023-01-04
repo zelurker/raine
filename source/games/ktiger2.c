@@ -467,7 +467,6 @@ GAME( ktiger2, "Kyukyoku Tiger 2", TAITO, 1995, GAME_SHOOT,
 	.clear = ClearKyukyokuTiger2,
 	.video = &video_ktiger2,
 	.exec = ExecuteF3SystemFrameB,
-	.board = "E15",
 	.sound = f3_sound,
 );
 

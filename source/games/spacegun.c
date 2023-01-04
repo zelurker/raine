@@ -932,7 +932,6 @@ static struct DIR_INFO dir_spacegun[] =
 };
 GME( spacegun, "Space Gun", TAITO, 1990, GAME_SHOOT,
 	.romsw = romsw_spacegun,
-	.long_name_jpn = "‚X‚y¸[‚X‚K‚Ù",
-	.board = "C57",
+	.long_name_jpn = "„Çπ„Éö„Éº„Çπ„Ç¨„É≥",
 );
 

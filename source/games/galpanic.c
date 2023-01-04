@@ -1077,7 +1077,6 @@ GAME( galpanic, "Gals Panic", KANEKO, 1990, GAME_ADULT,
 	.romsw = romsw_galpanic,
 	.video = &video_newfant,
 	.exec = execute_newfant,
-	.long_name_jpn = "Gals Panic",
 	.sound = sound_newfant,
 );
 GMEI( newfant, "New Fantasia", COMAD, 1995, GAME_ADULT);

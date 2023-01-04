@@ -190,7 +190,6 @@ static struct DIR_INFO dir_tetrist[] =
    { NULL, },
 };
 GME( tetrist, "Taito Tetris", TAITO, 1989, GAME_PUZZLE,
-	.long_name_jpn = "ƒeƒgƒŠƒX",
-	.board = "C12",
+	.long_name_jpn = "ãƒ†ãƒˆãƒªã‚¹",
 );
 
