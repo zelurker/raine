@@ -1282,7 +1282,7 @@ endif #CROSSCOMPILE
 endif #HAS_NEO
 endif #RAINE32
 ifdef target
-LIBS += $(shell /usr/${target}/bin/${SDLCONFIG} --libs) -lSDL2_ttf -lSDL2_image
+LIBS += $(shell /usr/${target}/bin/${SDLCONFIG} --libs) -lSDL2_ttf -lSDL2_image -lcrypto
 ifdef USE_CURL
 LIBS += $(shell /usr/${target}/bin/curl-config --libs) # -lefence
 endif
@@ -1293,7 +1293,7 @@ else
 LIBS += $(shell ${SDLCONFIG} --libs) -lSDL2_ttf -lSDL2_image
 endif
 ifdef USE_CURL
-LIBS += $(shell curl-config --libs) # -lefence
+LIBS += $(shell curl-config --libs) -lcrypto # -lefence
 endif
 endif
 ifdef HAS_NEO
