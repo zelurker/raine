@@ -4013,7 +4013,7 @@ static void draw_cps1_partial(int scanline)
    update_transmasks();
 
    if (cps_version == 2) {
-     int layer[3],layerpri[3];
+     int layer[4],layerpri[4];
      int nb = 0;
      int l0pri,l1pri,l2pri,l3pri;
 /*      int primasks[8],i; */
