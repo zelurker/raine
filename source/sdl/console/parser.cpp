@@ -11,6 +11,7 @@
 #include "cpumain.h"
 #include <vector>
 #include "arpro.h"
+#include <openssl/rand.h>
 
 /* muParser is specialised in double numbers, so it lacks some basic integer
  * operations, but can be easily extended, so let's go... */
@@ -41,6 +42,14 @@ void set_script_param(int n,int myp) {
 
 void init_script_param(int n) {
     param = vec.at(n);
+}
+
+value_type rnd() {
+    unsigned char buf[2];
+    if (RAND_bytes(buf,1) != 1)
+	throw "RAND_bytes returned an error";
+
+    return buf[0];
 }
 
 value_type peek(value_type fadr) {
@@ -273,6 +282,7 @@ int parse(char *orig)
       p.DefineFun( "dpeek", dpeek, false);
       p.DefineFun( "peek", peek, false);
       p.DefineFun( "lpeek", lpeek, false);
+      p.DefineFun( "rnd", rnd, false);
       p.SetVarFactory(AddVariable,&p);
       // p.DefineFun( _T("r"), reg, false);
       for (int n=0; n<8; n++) {

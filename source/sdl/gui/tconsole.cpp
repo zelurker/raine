@@ -461,7 +461,7 @@ int TConsole::run_cmd(char *string) {
     try {
       while (cmd->name) {
 	if (!strcasecmp(cmd->name,argv[0])) {
-	  (*cmd->handler)(argc,argv);
+	  if (cmd->handler) (*cmd->handler)(argc,argv);
 	  break;
 	}
 	cmd++;
