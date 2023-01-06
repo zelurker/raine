@@ -1,5 +1,5 @@
 # Raine Translation (base file).
-# Copyright (C) 2022
+# Copyright (C) 2023
 # This file is distributed under the same license as the raine package.
 # Emmanuel Anne.
 #
@@ -6791,88 +6791,88 @@ msgid "Zooming Object"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:90
-msgid "accelerated color fills"
+msgid "Accelerated color fills"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:86
-msgid "accelerated hardware->hardware alpha blits"
+msgid "Accelerated hardware->hardware alpha blits"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:84
-msgid "accelerated hardware->hardware blits"
+msgid "Accelerated hardware->hardware blits"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:85
-msgid "accelerated hardware->hardware colorkey blits"
+msgid "Accelerated hardware->hardware colorkey blits"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:89
-msgid "accelerated software->hardware alpha blits"
+msgid "Accelerated software->hardware alpha blits"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:87
-msgid "accelerated software->hardware blits"
+msgid "Accelerated software->hardware blits"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:88
-msgid "accelerated software->hardware colorkey blits"
+msgid "Accelerated software->hardware colorkey blits"
 msgstr ""
 
 #: source/neocd/cdrom.c:327
-msgid "allocation error"
+msgid "Allocation error"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:45
-msgid "alpha"
+msgid "Alpha"
 msgstr ""
 
 #: source/sdl/sasound.c:535
-msgid "audio format not supported"
+msgid "Audio format not supported"
 msgstr ""
 
 #: source/games/pirates.c:379
-msgid "background"
+msgid "Background"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:44
-msgid "blue"
+msgid "Blue"
 msgstr ""
 
 #: source/neocd/cdrom.c:243
-msgid "can't find ISO file"
+msgid "Can't find ISO file"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:41
-msgid "color"
+msgid "Color"
 msgstr ""
 
 #: source/games/cps1.c:1382
-msgid "cps2"
+msgid "Cps 2"
 msgstr ""
 
 #: source/emumain.c:505
 #, c-format
-msgid "cpusldn:Running CPU Every %01d Frames"
+msgid "Cpusldn:Running CPU Every %01d Frames"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1191
-msgid "d-pad + main stick"
+msgid "D-pad + main stick"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:125
-msgid "d-pad down"
+msgid "D-pad down"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:126
-msgid "d-pad left"
+msgid "D-pad left"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:127
-msgid "d-pad right"
+msgid "D-pad right"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:124
-msgid "d-pad up"
+msgid "D-pad up"
 msgstr ""
 
 #: source/sdl/dialogs/dirs.cpp:58
@@ -6880,11 +6880,11 @@ msgid "d6502 (console)"
 msgstr ""
 
 #: source/neocd/neocd.c:3702
-msgid "decrypting sprites (kof99 type)"
+msgid "Decrypting sprites (kof99 type)"
 msgstr ""
 
 #: source/games/cave.c:2742
-msgid "disabling row select (agallet)"
+msgid "Disabling row select (agallet)"
 msgstr ""
 
 #: source/sdl/dialogs/dirs.cpp:55
@@ -6892,31 +6892,31 @@ msgid "dz80 (console)"
 msgstr ""
 
 #: source/sdl/glsl.c:202
-msgid "error while attaching fragment shader"
+msgid "Error while attaching fragment shader"
 msgstr ""
 
 #: source/sdl/glsl.c:192
-msgid "error while attaching vertex shader"
+msgid "Error while attaching vertex shader"
 msgstr ""
 
 #: source/games/toaplan2.c:1654
-msgid "every 1000k"
+msgid "Every 1000k"
 msgstr ""
 
 #: source/games/toaplan2.c:1653
-msgid "every 1500k"
+msgid "Every 1500k"
 msgstr ""
 
 #: source/games/toaplan2.c:1655 source/games/toaplan2.c:5457
-msgid "every 2000k"
+msgid "Every 2000k"
 msgstr ""
 
 #: source/games/toaplan2.c:5458
-msgid "every 3000k"
+msgid "Every 3000k"
 msgstr ""
 
 #: source/games/toaplan2.c:5459
-msgid "every 4000k"
+msgid "Every 4000k"
 msgstr ""
 
 #: source/games/bsystem.c:197
@@ -6924,91 +6924,91 @@ msgid "fb"
 msgstr ""
 
 #: source/sdl/gui.cpp:301
-msgid "from internet archive"
+msgid "From internet archive"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:43
-msgid "green"
+msgid "Green"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:82
-msgid "hardware surface available"
+msgid "Hardware surface available"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:847
 msgid ""
-"history.dat not found\n"
+"History.dat not found\n"
 "Download it from http://www.arcade-history.com/index.php?page=download\n"
 "and install it in your Raine directory\n"
 "in linux ~/.raine or /usr/share/games/raine\n"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:120
-msgid "hq2x/3x"
+msgid "Hq2x/3x"
 msgstr ""
 
 #: source/neocd/cdrom.c:381
-msgid "indexes alloc error"
+msgid "Indexes alloc error"
 msgstr ""
 
 #: source/neocd/cdrom.c:414
-msgid "indexes allocation error"
+msgid "Indexes allocation error"
 msgstr ""
 
 #: source/neocd/neocd.c:4692
-msgid "kof97oro decrypt fix..."
+msgid "Kof97oro decrypt fix..."
 msgstr ""
 
 #: source/neocd/neocd.c:4685
-msgid "kof97oro decrypt rom..."
+msgid "Kof97oro decrypt rom..."
 msgstr ""
 
 #: source/neocd/neocd.c:4694
-msgid "kof97oro decrypt sprites..."
+msgid "Kof97oro decrypt sprites..."
 msgstr ""
 
 #: source/sdl/gui/tedit.cpp:304 source/sdl2/gui/tedit.cpp:301
-msgid "label"
+msgid "Label"
 msgstr ""
 
 #: source/sdl/dialogs/sprite_viewer.cpp:169
-msgid "layer"
+msgid "Layer"
 msgstr ""
 
 #: source/games/cave.c:2634
 #, c-format
-msgid "layer %d disabled"
+msgid "Layer %d disabled"
 msgstr ""
 
 #: source/games/gunbird.c:1783
-msgid "layer 1 disabled"
+msgid "Layer 1 disabled"
 msgstr ""
 
 #: source/games/cave.c:2923
 #, c-format
-msgid "line scroll %d"
+msgid "Line scroll %d"
 msgstr ""
 
 #: source/games/gunbird.c:1711
 #, c-format
-msgid "line scroll bg0 %d %d size %d"
+msgid "Line scroll bg0 %d %d size %d"
 msgstr ""
 
 #: source/games/gunbird.c:1763
 #, c-format
-msgid "line scroll bg1 %d %d size %d"
+msgid "Line scroll bg1 %d %d size %d"
 msgstr ""
 
 #: source/emudx.c:275
-msgid "loading EmuDX big sprites"
+msgid "Loading EmuDX big sprites"
 msgstr ""
 
 #: source/emudx.c:222
-msgid "loading EmuDX sprites"
+msgid "Loading EmuDX sprites"
 msgstr ""
 
 #: source/emudx.c:160
-msgid "loading EmuDX tiles"
+msgid "Loading EmuDX tiles"
 msgstr ""
 
 #: source/sdl/dialogs/dirs.cpp:52
@@ -7017,21 +7017,21 @@ msgstr ""
 
 #: source/games/cave.c:3050
 #, c-format
-msgid "no line scroll %d"
+msgid "No line scroll %d"
 msgstr ""
 
 #: source/games/gcpball.c:106 source/games/toaplan1.c:121
-msgid "none"
+msgid "None"
 msgstr ""
 
 #: source/sdl/compat.c:300 source/sdl/dsw.c:146 source/sdl/glsl.c:192
 #: source/sdl/glsl.c:202 source/sdl/glsl.c:227 source/sdl/glsl.c:385
 #: source/sdl/opengl.c:229
-msgid "ok"
+msgid "Ok"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:329
-msgid "or Escape key to delete this control"
+msgid "Or Escape key to delete this control"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:572
@@ -7041,25 +7041,25 @@ msgid ""
 msgstr ""
 
 #: source/neocd/neocd.c:3766
-msgid "recreating fixed layer"
+msgid "Recreating fixed layer"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:42
-msgid "red"
+msgid "Red"
 msgstr ""
 
 #: source/games/cps1.c:3736
 #, c-format
-msgid "row scroll %d"
+msgid "Row scroll %d"
 msgstr ""
 
 #: source/games/cave.c:2758
-msgid "row scroll on 8x8 layer unemulated"
+msgid "Row scroll on 8x8 layer unemulated"
 msgstr ""
 
 #: source/games/cave.c:2749
 #, c-format
-msgid "row select layer %d size %d"
+msgid "Row select layer %d size %d"
 msgstr ""
 
 #: source/sdl/sasound.c:510
@@ -7068,27 +7068,27 @@ msgstr ""
 
 #: source/games/esd16.c:509 source/games/galaga.c:1071
 #: source/games/pirates.c:380
-msgid "sprites"
+msgid "Sprites"
 msgstr ""
 
 #: source/games/gunbird.c:1419
-msgid "sprites disabled"
+msgid "Sprites disabled"
 msgstr ""
 
 #: source/games/pengo.c:625
-msgid "switch to 16bpp color depth and reload"
+msgid "Switch to 16bpp color depth and reload"
 msgstr ""
 
 #: source/games/galaga.c:1070 source/games/pirates.c:381
-msgid "text"
+msgid "Text"
 msgstr ""
 
 #: source/games/esd16.c:510
-msgid "tilemap0"
+msgid "Tilemap0"
 msgstr ""
 
 #: source/games/esd16.c:511
-msgid "tilemap1"
+msgid "Tilemap1"
 msgstr ""
 
 #: source/sdl/sasound.c:514
@@ -7105,24 +7105,24 @@ msgstr ""
 
 #: source/neocd/cdrom.c:637 source/neocd/cdrom.c:650
 #, c-format
-msgid "used override for %s"
+msgid "Used override for %s"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:83
-msgid "window manager available"
+msgid "Window manager available"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:917
 #, c-format
-msgid "with an unknown gcc ???"
+msgid "With an unknown gcc ???"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:913
 #, c-format
-msgid "with gcc %d.%d.%d"
+msgid "With gcc %d.%d.%d"
 msgstr ""
 
 #: source/sdl/dialogs/about.cpp:911
 #, c-format
-msgid "with llvm/clang %d.%d.%d"
+msgid "With llvm/clang %d.%d.%d"
 msgstr ""
