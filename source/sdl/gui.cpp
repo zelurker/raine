@@ -68,6 +68,7 @@ extern "C" void init_glsl();
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;
+static int autostart_drivers;
 
 #if SDL == 2
 
@@ -194,6 +195,7 @@ static void save_menu_config() {
 
   raine_set_config_32bit_hex("GUI", "bg_dialog_bar", bg_dialog_bar);
   raine_set_config_int("GUI", "keep_vga", keep_vga);
+  raine_set_config_int("GUI", "bg_anim", bg_anim);
 }
 
 static void read_menu_config() {
@@ -212,6 +214,7 @@ static void read_menu_config() {
   bg_dialog_bar_gfx = makecol_alpha(a,b,g,r);
 #endif
   keep_vga = raine_get_config_int("GUI","keep_vga",1);
+  bg_anim = raine_get_config_int("GUI","bg_anim",0);
 }
 
 static void save_font_config() {
@@ -232,7 +235,8 @@ void read_gui_config() {
 #define SDL_DEFAULT_REPEAT_INTERVAL 50
 #endif
   repeat_delay = raine_get_config_int("GUI","repeat_delay",SDL_DEFAULT_REPEAT_DELAY);
-  repeat_interval = raine_get_config_int("gui","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
+  repeat_interval = raine_get_config_int("GUI","repeat_interval",SDL_DEFAULT_REPEAT_INTERVAL);
+  autostart_drivers = raine_get_config_int("GUI","autostart_drivers",1);
   read_game_list_config();
 #if HAS_NEO
   restore_cdrom_config();
@@ -248,6 +252,7 @@ void read_gui_config() {
 void write_gui_config() {
   raine_set_config_int("GUI","repeat_delay",repeat_delay);
   raine_set_config_int("GUI","repeat_interval",repeat_interval);
+  raine_set_config_int("GUI","autostart_drivers",autostart_drivers);
   save_game_list_config();
 #if HAS_NEO
   save_cdrom_config();
@@ -272,12 +277,14 @@ static menu_item_t gui_options_menu[] =
 {
 {  _("Key repeat delay"), &set_repeat_rate, &repeat_delay, 11, {0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 } },
 {  _("Key repeat interval"), &set_repeat_rate, &repeat_interval, 10, { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 } },
+{ _("Autostart drivers"), NULL, &autostart_drivers, 2, { 0, 1 }, { "No", "Yes" } }
 };
 
 int add_gui_options(menu_item_t *menu) {
   menu[0] = gui_options_menu[0];
   menu[1] = gui_options_menu[1];
-  return 2;
+  menu[2] = gui_options_menu[2];
+  return 3;
 }
 
 static TDialog *loading_dialog;
@@ -738,7 +745,7 @@ void StartGUI(void)
 
 	   do_load_game();
 #if SDL == 2
-	   if (current_game && !raine_cfg.no_gui) rdesktop->preinit();
+	   if (current_game && !raine_cfg.no_gui && autostart_drivers) rdesktop->preinit();
 #endif
        }
 

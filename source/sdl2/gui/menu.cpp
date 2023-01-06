@@ -110,7 +110,7 @@
 int return_mandatory = 0, use_transparency = 1;
 int keep_vga = 1,gui_level;
 
-int repeat_interval, repeat_delay; // in gui.cpp
+int repeat_interval, repeat_delay,bg_anim; // in gui.cpp
 
 char *jap_font = "";
 SDL_PixelFormat *fg_format;
@@ -130,6 +130,7 @@ menu_item_t menu_options[] =
   { _("Return mandatory"), NULL, &return_mandatory, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("GUI transparency"), NULL, &use_transparency, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Minimum GUI resolution = VGA"), NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
+  { _("Background animation"), NULL, &bg_anim, 3, { 0, 1, 2 }, { "Standard", "Static", "Black" } }
 };
 
 int fg_color = mymakecol(255,255,255),
@@ -146,7 +147,8 @@ int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
   menu[1] = menu_options[1];
   menu[2] = menu_options[2];
-  return 3;
+  menu[3] = menu_options[3];
+  return 4;
 }
 
 void sort_menu(menu_item_t *menu) {
@@ -222,15 +224,17 @@ void TDesktop::draw() {
 	hlimit = sdl_screen->h;
     int w = sdl_screen->w-1, h = hlimit-1;
     float ratio = w*1.0/h;
-    for (step=0; step<=10; step++) {
-	int x1 = w*step/10+count*ratio;
-	int y1 = h*step/10+count;
-	SDL_RenderDrawLine(rend,x1,0,w,y1);
-	SDL_RenderDrawLine(rend,w,y1,w-x1,h);
-	SDL_RenderDrawLine(rend,w-x1,h,0,h-y1);
-	SDL_RenderDrawLine(rend,0,h-y1,x1,0);
-    }
-    count++;
+    if (bg_anim == 0 || bg_anim == 1)
+	for (step=0; step<=10; step++) {
+	    int x1 = w*step/10+count*ratio;
+	    int y1 = h*step/10+count;
+	    SDL_RenderDrawLine(rend,x1,0,w,y1);
+	    SDL_RenderDrawLine(rend,w,y1,w-x1,h);
+	    SDL_RenderDrawLine(rend,w-x1,h,0,h-y1);
+	    SDL_RenderDrawLine(rend,0,h-y1,x1,0);
+	}
+    if (!bg_anim)
+	count++;
     if (count >= hlimit/10) count = 0;
     SDL_RenderSetViewport(rend,NULL);
 }

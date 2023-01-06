@@ -30,7 +30,7 @@ static int set_lang(int sel) {
     return 0;
 }
 
-#define MAX_GUI 16
+#define MAX_GUI 18
 
 static menu_item_t gui_menu[MAX_GUI] =
 {

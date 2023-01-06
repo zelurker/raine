@@ -52,7 +52,7 @@ class TDesktop {
 extern TDesktop *desktop;
 
 extern int repeat_interval, repeat_delay;
-extern int return_mandatory, use_transparency;
+extern int return_mandatory, use_transparency,bg_anim;
 // All windows event are passed to this hook, returns 1 only if
 extern void (*event_hook)(SDL_Event *event); // Actually it's now passed any event to the gui and can modify it before the gui processes it...
 extern char * (*get_shared_hook)(char *name); // to get a shared directory
