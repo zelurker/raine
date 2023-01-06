@@ -523,8 +523,8 @@ static menu_item_t main_items[] =
 { _("Play game"), &play_game, },
 { _("Game options"), &do_game_options },
 { _("Game command list"), &show_moves },
+{ _("Game cheats"), &do_cheats, },
 { _("Region"), &set_region, },
-{ _("Action Replay cheats"), &do_cheats, },
 { _("Dipswitches"), &do_dlg_dsw, },
 { _("Change/Load game"), &do_game_sel },
 #if HAS_NEO
@@ -550,9 +550,9 @@ int TMain_menu::can_be_displayed(int n) {
 	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
-    case 3: // Region
+    case 4: // Region
 	return current_game != NULL && current_game->romsw != NULL;
-    case 4: // cheats
+    case 3: // cheats
 	return current_game != NULL && (CheatCount > 0
 #ifdef HAS_CONSOLE
 		|| nb_scripts > 0
@@ -672,12 +672,12 @@ static void do_main_menu() {
   int old_region;
   // init romsw
   if (current_game && current_game->romsw) {
-    main_items[3].values_list_size = LanguageSw.Count;
-    main_items[3].value_int = &region_code;
+    main_items[4].values_list_size = LanguageSw.Count;
+    main_items[4].value_int = &region_code;
     old_region = region_code = GetLanguageSwitch();
     for (int n=0; n<LanguageSw.Count; n++) {
-      main_items[3].values_list[n] = n;
-      main_items[3].values_list_label[n] = LanguageSw.data[n].Mode;
+      main_items[4].values_list[n] = n;
+      main_items[4].values_list_label[n] = LanguageSw.data[n].Mode;
     }
   }
 

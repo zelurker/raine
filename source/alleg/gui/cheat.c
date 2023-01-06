@@ -123,7 +123,7 @@ DIALOG actionreplay_dialog[] =
    { x_raine_button_proc,48,   164+12,48,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'D',  D_EXIT,  0,    0,    "&Done"},
    { cheat_edit_proc,    48,   144+12,56,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'T',  D_EXIT,  0,    0,    "&Toggle"},
    { cheatdata_edit_proc,112,  144+12,48,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'E',  D_EXIT,  0,    0,    "&Edit"},
-   { x_text_proc,        48,   26,   0,    8,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Action Replay cheats:"},
+   { x_text_proc,        48,   26,   0,    8,    GUI_COL_TEXT_2,  GUI_BOX_COL_MIDDLE,  0,    0,       0,    0,    "Game cheats:"},
    { x_raine_button_proc,216,  164+12,56,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'S',  D_EXIT,  0,    0,    "&Search>>"},
    { cheat_new_proc,     168,  144+12,32,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  'N',  D_EXIT,  0,    0,    "&New"},
    { cheat_del_proc,     208,  144+12,56,  16,   GUI_COL_TEXT_1,  GUI_BOX_COL_MIDDLE,  0,    D_EXIT,  0,    0,    "Delete"},

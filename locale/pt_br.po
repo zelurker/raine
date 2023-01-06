@@ -1592,8 +1592,8 @@ msgid "Accelerator"
 msgstr "Acelerador"
 
 #: source/sdl/gui.cpp:520
-msgid "Action Replay cheats"
-msgstr "Trapaças do Action Replay"
+msgid "Game cheats"
+msgstr "Trapaças"
 
 #: source/sdl/dialogs/video_info.cpp:25
 msgid "Adaptive"

@@ -1589,7 +1589,7 @@ msgid "Accelerator"
 msgstr ""
 
 #: source/sdl/gui.cpp:520
-msgid "Action Replay cheats"
+msgid "Game cheats"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:25

@@ -1628,8 +1628,8 @@ msgstr "Acceleratore"
 
 #: source/sdl/gui.cpp:518
 #, fuzzy
-msgid "Action Replay cheats"
-msgstr "Trucchi per Action replay"
+msgid "Game cheats"
+msgstr "Trucchi"
 
 #: source/sdl/dialogs/video_info.cpp:25
 msgid "Adaptive"
