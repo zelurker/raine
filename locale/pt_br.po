@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Raine 0.94.08\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-29 12:00+0200\n"
-"PO-Revision-Date: 2023-01-04 11:46-0300\n"
+"PO-Revision-Date: 2023-01-06 12:48-0300\n"
 "Last-Translator: Felipe <felipefplzx@gmail.com>\n"
 "Language-Team: Felipe\n"
 "Language: pt_BR\n"
@@ -1353,7 +1353,7 @@ msgstr "6502/65c02: versão do MAME 125"
 
 #: source/sdl/dialogs/about.cpp:699
 msgid "68000,68020 : Musashi v3.4 by Karl Stenerud"
-msgstr "68000,68020 : Musashi v3.4 do Karl Stenerud"
+msgstr "68000, 68020 : Musashi v3.4 do Karl Stenerud"
 
 #: source/sdl/dialogs/about.cpp:702
 msgid "68020: Musashi v3.4 by Karl Stenerud"
@@ -1579,7 +1579,7 @@ msgstr "A+B/A,B"
 msgid "A,B/A"
 msgstr "A,B/A"
 
-#: source/sdl/gui.cpp:531
+#: source/sdl/gui.cpp:538
 msgid "About..."
 msgstr "Sobre..."
 
@@ -1590,10 +1590,6 @@ msgstr "Aceleração"
 #: source/games/chasehq.c:129
 msgid "Accelerator"
 msgstr "Acelerador"
-
-#: source/sdl/gui.cpp:520
-msgid "Game cheats"
-msgstr "Trapaças"
 
 #: source/sdl/dialogs/video_info.cpp:25
 msgid "Adaptive"
@@ -1712,7 +1708,7 @@ msgstr "Joystick Analógico"
 msgid "Analog input"
 msgstr "Controle analógico"
 
-#: source/speed_hack.c:80
+#: source/speed_hack.c:83
 #, c-format
 msgid "Applied speed hack %d at %x"
 msgstr "Aplicou o hack de velocidade %d em %x"
@@ -1722,7 +1718,7 @@ msgstr "Aplicou o hack de velocidade %d em %x"
 msgid "Applied speed hack at %x:%s"
 msgstr "Aplicou o hack de velocidade em %x:%s"
 
-#: source/sdl/gui.cpp:379
+#: source/sdl/gui.cpp:386
 msgid "Applying graphics layouts and stuff..."
 msgstr "Aplicando os esquemas dos gráficos e tal..."
 
@@ -1803,6 +1799,10 @@ msgstr "Controles do auto-disparo"
 msgid "Autofire..."
 msgstr "Auto-disparo..."
 
+#: source/sdl/gui.cpp:280
+msgid "Autostart drivers"
+msgstr "Auto-iniciar os drivers"
+
 #: source/sdl/dialogs/game_selection.cpp:440
 msgid "Available"
 msgstr "Disponíveis"
@@ -1854,6 +1854,10 @@ msgstr "BG2"
 #: source/games/f3system.c:792
 msgid "BG3"
 msgstr "BG3"
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Background animation"
+msgstr "Animação do 2º plano"
 
 #: source/sdl/dialogs/colors.cpp:109
 msgid "Background color"
@@ -1916,6 +1920,10 @@ msgstr "Grande"
 #: source/games/taito_f2.c:950
 msgid "Biggest"
 msgstr "Maior de Todos"
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Black"
+msgstr "Preto"
 
 #: source/sdl/dialogs/video_options.cpp:280
 msgid "Blend file options..."
@@ -2176,7 +2184,7 @@ msgstr "Mudar diretório|Remover diretório"
 msgid "Change video mode"
 msgstr "Mudar o modo de vídeo"
 
-#: source/sdl/gui.cpp:522
+#: source/sdl/gui.cpp:529
 msgid "Change/Load game"
 msgstr "Mudar/Carregar o Jogo"
 
@@ -2369,7 +2377,7 @@ msgstr "Companhia: %s"
 #: source/sdl/dialogs/about.cpp:922
 #, c-format
 msgid "Compiled on %s %s"
-msgstr "Compilado no %s %s"
+msgstr "Compilado em %s %s"
 
 #: source/games/rainbow.c:97 source/games/rainbow.c:212
 msgid "Complete Bonus"
@@ -2383,8 +2391,8 @@ msgstr "Modo de configuração"
 msgid "Confirmation"
 msgstr "Confirmação"
 
-#: source/sdl/console/console.cpp:1439 source/sdl/console/console.cpp:1534
-#: source/sdl/control.c:700 source/sdl/gui.cpp:533
+#: source/sdl/console/console.cpp:1446 source/sdl/console/console.cpp:1541
+#: source/sdl/control.c:700 source/sdl/gui.cpp:540
 msgid "Console"
 msgstr "Console"
 
@@ -2805,7 +2813,7 @@ msgstr "Exibir Dipswitch"
 msgid "Dipswitch"
 msgstr "Dipswitch"
 
-#: source/sdl/gui.cpp:521
+#: source/sdl/gui.cpp:528
 msgid "Dipswitches"
 msgstr "Dipswitches"
 
@@ -3212,7 +3220,7 @@ msgstr "A Cada 900k"
 
 #: source/sdl/dialogs/neocd_options.cpp:185
 msgid "Exit to"
-msgstr "Sair pra"
+msgstr "Sair pro(a)"
 
 #: source/games/cps1drv.c:4133
 msgid "Extend"
@@ -3465,7 +3473,7 @@ msgstr "Hack de tela cheia pro intel"
 msgid "Fully-auto"
 msgstr "Completamente-auto"
 
-#: source/sdl/gui.cpp:529
+#: source/sdl/gui.cpp:536
 msgid "GUI options"
 msgstr "Opções da GUI"
 
@@ -3524,7 +3532,11 @@ msgstr "Idioma do Título do Jogo"
 msgid "Game Type"
 msgstr "Tipo de Jogo"
 
-#: source/sdl/gui.cpp:518
+#: source/sdl/gui.cpp:526
+msgid "Game cheats"
+msgstr "Trapaças do jogo"
+
+#: source/sdl/gui.cpp:525
 msgid "Game command list"
 msgstr "Lista de comandos do jogo"
 
@@ -3536,7 +3548,7 @@ msgstr "O jogo não suporta o carregamento."
 msgid "Game does not support Saving."
 msgstr "O jogo não suporta o salvamento."
 
-#: source/sdl/gui.cpp:517
+#: source/sdl/gui.cpp:524
 msgid "Game options"
 msgstr "Opções do jogo"
 
@@ -3759,7 +3771,7 @@ msgstr "Vitalidade Inicial"
 msgid "Innings"
 msgstr "Turnos"
 
-#: source/sdl/gui.cpp:530
+#: source/sdl/gui.cpp:537
 msgid "Inputs"
 msgstr "Entradas"
 
@@ -3894,7 +3906,7 @@ msgstr "Japonês (Toaplan)"
 
 #: source/sdl/gui/tfont.cpp:52
 msgid "Japanese font"
-msgstr "Fonte japonês"
+msgstr "Fonte japonesa"
 
 #: source/games/seta.c:2237
 msgid "Jordan"
@@ -3917,11 +3929,11 @@ msgstr "Índices dos joysticks"
 msgid "Keep aspect ratio"
 msgstr "Manter a proporção do aspecto"
 
-#: source/sdl/gui.cpp:273
+#: source/sdl/gui.cpp:278
 msgid "Key repeat delay"
 msgstr "Atraso da repetição das teclas"
 
-#: source/sdl/gui.cpp:274
+#: source/sdl/gui.cpp:279
 msgid "Key repeat interval"
 msgstr "Intervalo de repetição das teclas"
 
@@ -4106,7 +4118,7 @@ msgstr "Vidas (Não Puxar)"
 msgid "Lives (Midnight Wanderers)"
 msgstr "Vidas (Andarilhos da Meia Noite)"
 
-#: source/sdl/gui.cpp:506 source/sdl/gui.cpp:524
+#: source/sdl/gui.cpp:513 source/sdl/gui.cpp:531
 msgid "Load Neo-Geo CD game"
 msgstr "Carregar o jogo do Neo-Geo CD"
 
@@ -4135,7 +4147,7 @@ msgstr "Carregar o state com o nome"
 msgid "Loading CPU code"
 msgstr "Carregando o código da CPU"
 
-#: source/sdl/gui.cpp:321
+#: source/sdl/gui.cpp:328
 msgid "Loading Game"
 msgstr "Carregando o Jogo"
 
@@ -4147,15 +4159,15 @@ msgstr "Carregar a velocidade das animações"
 msgid "Loading audio regions"
 msgstr "Carregando as regiões do áudio"
 
-#: source/sdl/gui.cpp:469
+#: source/sdl/gui.cpp:476
 msgid "Loading error"
 msgstr "Erro ao carregar"
 
-#: source/sdl/gui.cpp:384
+#: source/sdl/gui.cpp:391
 msgid "Loading game"
 msgstr "Carregando o Jogo"
 
-#: source/sdl/gui.cpp:433
+#: source/sdl/gui.cpp:440
 msgid "Loading problem"
 msgstr "Carregando o problema"
 
@@ -4216,7 +4228,7 @@ msgstr "Mágica"
 msgid "Magician"
 msgstr "Mágico"
 
-#: source/sdl/gui.cpp:677 source/test_gui.cpp:61
+#: source/sdl/gui.cpp:684 source/test_gui.cpp:61
 msgid "Main menu"
 msgstr "Menu principal"
 
@@ -4446,7 +4458,7 @@ msgstr "Bios do Neo-Geo CD: %s"
 msgid "Neo-Geo logo"
 msgstr "Logo do NeoGeo"
 
-#: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:525
+#: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:532
 msgid "Neo-Geo/Neo-Geo CD options"
 msgstr "Opções do Neo-Geo/Neo-Geo CD"
 
@@ -4526,7 +4538,7 @@ msgstr "Não há BIOS de Neo-Geo CD"
 
 #: source/sdl/dialogs/video_info.cpp:63
 msgid "No OpenGL information yet, run something first."
-msgstr "Ainda nenhuma informação do OpenGL, execute algo primeiro."
+msgstr "Ainda sem informação do OpenGL, execute algo primeiro."
 
 #: source/sdl/dialogs/about.cpp:555
 msgid "No Raine logo"
@@ -4552,7 +4564,7 @@ msgstr "Ainda não há botões mapeados por este jogo pra auto-disparar"
 msgid "No change"
 msgstr "Sem mudança"
 
-#: source/sdl/gui.cpp:568
+#: source/sdl/gui.cpp:575
 msgid "No game loaded"
 msgstr "Nenhum jogo carregado"
 
@@ -4568,7 +4580,7 @@ msgstr "Nenhum jogo usa entradas personalizadas no seu arquivo de configuração
 msgid "No hardware support for overlays"
 msgstr "Nenhum suporte de hardware pras sobreposições"
 
-#: source/sdl/gui.cpp:847
+#: source/sdl/gui.cpp:854
 msgid "No mixer yet"
 msgstr "Ainda sem misturador"
 
@@ -4915,7 +4927,7 @@ msgstr "Dobro de pixels"
 msgid "Platform"
 msgstr "Plataforma"
 
-#: source/sdl/gui.cpp:516
+#: source/sdl/gui.cpp:523
 msgid "Play game"
 msgstr "Jogar o jogo"
 
@@ -5232,7 +5244,7 @@ msgstr "Bloqueio anterior da imagem móvel"
 msgid "Profiler"
 msgstr "Criador de Perfil"
 
-#: source/sdl/gui.cpp:290 source/sdl/gui.cpp:293
+#: source/sdl/gui.cpp:297 source/sdl/gui.cpp:300
 msgid "Progress"
 msgstr "Progresso"
 
@@ -5253,7 +5265,7 @@ msgstr "Pergunta"
 msgid "Quickly"
 msgstr "Rapidamente"
 
-#: source/sdl/gui.cpp:535
+#: source/sdl/gui.cpp:542
 msgid "Quit"
 msgstr "Sair"
 
@@ -5350,7 +5362,7 @@ msgstr "Gravando em wav..."
 msgid "Regain Power Price"
 msgstr "Recuperar o Poder do Preço"
 
-#: source/sdl/gui.cpp:519
+#: source/sdl/gui.cpp:527
 msgid "Region"
 msgstr "Região"
 
@@ -5761,7 +5773,7 @@ msgstr "Driver de som"
 msgid "Sound effects volume"
 msgstr "Volume dos efeitos sonoros"
 
-#: source/sdl/gui.cpp:528
+#: source/sdl/gui.cpp:535
 msgid "Sound options"
 msgstr "Opções de som"
 
@@ -5857,6 +5869,10 @@ msgstr "Pular o Estágio"
 msgid "Stage Start/Timer Cont"
 msgstr "Contagem do Start/Cronômetro do Estágio"
 
+#: source/sdl2/gui/menu.cpp:133
+msgid "Standard"
+msgstr "Padrão"
+
 #: source/sdl/dialogs/about.cpp:706
 msgid "Starscream 0.26r4 by Neill Corlett"
 msgstr "Starscream 0.26r4 do Neill Corlett"
@@ -5886,6 +5902,10 @@ msgstr "Bolas Iniciais"
 #: source/games/doubled3.c:117
 msgid "Starting Life"
 msgstr "Vidas Iniciais"
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Static"
+msgstr "Estática"
 
 #: source/sdl/dialogs/game_selection.cpp:42
 msgid "Status"
@@ -6245,7 +6265,7 @@ msgstr "Tipo 2"
 
 #: source/sdl/dialogs/about.cpp:704
 msgid "UAE 68020 Emulator: old hacked ASM version from UAE"
-msgstr "Emulador do UAE 68020 : versão em ASM antiga hackeada do UAE"
+msgstr "Emulador do UAE 68020 : Versão em ASM antigo hackeada do UAE"
 
 #: source/games/toaplan2.c:1223
 msgid "UK (JP Leisure)"
@@ -6555,7 +6575,7 @@ msgstr "Informações do vídeo..."
 msgid "Video layers"
 msgstr "Camadas do vídeo"
 
-#: source/sdl/gui.cpp:527
+#: source/sdl/gui.cpp:534
 msgid "Video options"
 msgstr "Opções de vídeo"
 
@@ -6931,7 +6951,7 @@ msgstr "A cada 4000k"
 msgid "fb"
 msgstr "1º plano"
 
-#: source/sdl/gui.cpp:294
+#: source/sdl/gui.cpp:301
 msgid "from internet archive"
 msgstr "Do arquivo compactado da internet"
 
@@ -7140,6 +7160,9 @@ msgstr "com gcc %d.%d.%d"
 #, c-format
 msgid "with llvm/clang %d.%d.%d"
 msgstr "com llvm/clang %d.%d.%d"
+
+#~ msgid "Action Replay cheats"
+#~ msgstr "Trapaças do Action Replay"
 
 #~ msgid " 2  Minutes"
 #~ msgstr " 2  Minutos"
