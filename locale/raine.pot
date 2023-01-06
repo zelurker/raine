@@ -1576,7 +1576,7 @@ msgstr ""
 msgid "A,B/A"
 msgstr ""
 
-#: source/sdl/gui.cpp:531
+#: source/sdl/gui.cpp:538
 msgid "About..."
 msgstr ""
 
@@ -1586,10 +1586,6 @@ msgstr ""
 
 #: source/games/chasehq.c:129
 msgid "Accelerator"
-msgstr ""
-
-#: source/sdl/gui.cpp:520
-msgid "Game cheats"
 msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp:25
@@ -1709,7 +1705,7 @@ msgstr ""
 msgid "Analog input"
 msgstr ""
 
-#: source/speed_hack.c:80
+#: source/speed_hack.c:83
 #, c-format
 msgid "Applied speed hack %d at %x"
 msgstr ""
@@ -1719,7 +1715,7 @@ msgstr ""
 msgid "Applied speed hack at %x:%s"
 msgstr ""
 
-#: source/sdl/gui.cpp:379
+#: source/sdl/gui.cpp:386
 msgid "Applying graphics layouts and stuff..."
 msgstr ""
 
@@ -1800,6 +1796,10 @@ msgstr ""
 msgid "Autofire..."
 msgstr ""
 
+#: source/sdl/gui.cpp:280
+msgid "Autostart drivers"
+msgstr ""
+
 #: source/sdl/dialogs/game_selection.cpp:440
 msgid "Available"
 msgstr ""
@@ -1850,6 +1850,10 @@ msgstr ""
 
 #: source/games/f3system.c:792
 msgid "BG3"
+msgstr ""
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Background animation"
 msgstr ""
 
 #: source/sdl/dialogs/colors.cpp:109
@@ -1910,6 +1914,10 @@ msgstr ""
 #: source/games/cps1drv.c:3388 source/games/deadconx.c:115
 #: source/games/taito_f2.c:950
 msgid "Biggest"
+msgstr ""
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Black"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:280
@@ -2171,7 +2179,7 @@ msgstr ""
 msgid "Change video mode"
 msgstr ""
 
-#: source/sdl/gui.cpp:522
+#: source/sdl/gui.cpp:529
 msgid "Change/Load game"
 msgstr ""
 
@@ -2377,8 +2385,8 @@ msgstr ""
 msgid "Confirmation"
 msgstr ""
 
-#: source/sdl/console/console.cpp:1439 source/sdl/console/console.cpp:1534
-#: source/sdl/control.c:700 source/sdl/gui.cpp:533
+#: source/sdl/console/console.cpp:1446 source/sdl/console/console.cpp:1541
+#: source/sdl/control.c:700 source/sdl/gui.cpp:540
 msgid "Console"
 msgstr ""
 
@@ -2795,7 +2803,7 @@ msgstr ""
 msgid "Dipswitch"
 msgstr ""
 
-#: source/sdl/gui.cpp:521
+#: source/sdl/gui.cpp:528
 msgid "Dipswitches"
 msgstr ""
 
@@ -3453,7 +3461,7 @@ msgstr ""
 msgid "Fully-auto"
 msgstr ""
 
-#: source/sdl/gui.cpp:529
+#: source/sdl/gui.cpp:536
 msgid "GUI options"
 msgstr ""
 
@@ -3512,7 +3520,11 @@ msgstr ""
 msgid "Game Type"
 msgstr ""
 
-#: source/sdl/gui.cpp:518
+#: source/sdl/gui.cpp:526
+msgid "Game cheats"
+msgstr ""
+
+#: source/sdl/gui.cpp:525
 msgid "Game command list"
 msgstr ""
 
@@ -3524,7 +3536,7 @@ msgstr ""
 msgid "Game does not support Saving."
 msgstr ""
 
-#: source/sdl/gui.cpp:517
+#: source/sdl/gui.cpp:524
 msgid "Game options"
 msgstr ""
 
@@ -3747,7 +3759,7 @@ msgstr ""
 msgid "Innings"
 msgstr ""
 
-#: source/sdl/gui.cpp:530
+#: source/sdl/gui.cpp:537
 msgid "Inputs"
 msgstr ""
 
@@ -3905,11 +3917,11 @@ msgstr ""
 msgid "Keep aspect ratio"
 msgstr ""
 
-#: source/sdl/gui.cpp:273
+#: source/sdl/gui.cpp:278
 msgid "Key repeat delay"
 msgstr ""
 
-#: source/sdl/gui.cpp:274
+#: source/sdl/gui.cpp:279
 msgid "Key repeat interval"
 msgstr ""
 
@@ -4093,7 +4105,7 @@ msgstr ""
 msgid "Lives (Midnight Wanderers)"
 msgstr ""
 
-#: source/sdl/gui.cpp:506 source/sdl/gui.cpp:524
+#: source/sdl/gui.cpp:513 source/sdl/gui.cpp:531
 msgid "Load Neo-Geo CD game"
 msgstr ""
 
@@ -4122,7 +4134,7 @@ msgstr ""
 msgid "Loading CPU code"
 msgstr ""
 
-#: source/sdl/gui.cpp:321
+#: source/sdl/gui.cpp:328
 msgid "Loading Game"
 msgstr ""
 
@@ -4134,15 +4146,15 @@ msgstr ""
 msgid "Loading audio regions"
 msgstr ""
 
-#: source/sdl/gui.cpp:469
+#: source/sdl/gui.cpp:476
 msgid "Loading error"
 msgstr ""
 
-#: source/sdl/gui.cpp:384
+#: source/sdl/gui.cpp:391
 msgid "Loading game"
 msgstr ""
 
-#: source/sdl/gui.cpp:433
+#: source/sdl/gui.cpp:440
 msgid "Loading problem"
 msgstr ""
 
@@ -4203,7 +4215,7 @@ msgstr ""
 msgid "Magician"
 msgstr ""
 
-#: source/sdl/gui.cpp:677 source/test_gui.cpp:61
+#: source/sdl/gui.cpp:684 source/test_gui.cpp:61
 msgid "Main menu"
 msgstr ""
 
@@ -4433,7 +4445,7 @@ msgstr ""
 msgid "Neo-Geo logo"
 msgstr ""
 
-#: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:525
+#: source/sdl/dialogs/neocd_options.cpp:240 source/sdl/gui.cpp:532
 msgid "Neo-Geo/Neo-Geo CD options"
 msgstr ""
 
@@ -4539,7 +4551,7 @@ msgstr ""
 msgid "No change"
 msgstr ""
 
-#: source/sdl/gui.cpp:568
+#: source/sdl/gui.cpp:575
 msgid "No game loaded"
 msgstr ""
 
@@ -4555,7 +4567,7 @@ msgstr ""
 msgid "No hardware support for overlays"
 msgstr ""
 
-#: source/sdl/gui.cpp:847
+#: source/sdl/gui.cpp:854
 msgid "No mixer yet"
 msgstr ""
 
@@ -4902,7 +4914,7 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
-#: source/sdl/gui.cpp:516
+#: source/sdl/gui.cpp:523
 msgid "Play game"
 msgstr ""
 
@@ -5217,7 +5229,7 @@ msgstr ""
 msgid "Profiler"
 msgstr ""
 
-#: source/sdl/gui.cpp:290 source/sdl/gui.cpp:293
+#: source/sdl/gui.cpp:297 source/sdl/gui.cpp:300
 msgid "Progress"
 msgstr ""
 
@@ -5238,7 +5250,7 @@ msgstr ""
 msgid "Quickly"
 msgstr ""
 
-#: source/sdl/gui.cpp:535
+#: source/sdl/gui.cpp:542
 msgid "Quit"
 msgstr ""
 
@@ -5335,7 +5347,7 @@ msgstr ""
 msgid "Regain Power Price"
 msgstr ""
 
-#: source/sdl/gui.cpp:519
+#: source/sdl/gui.cpp:527
 msgid "Region"
 msgstr ""
 
@@ -5744,7 +5756,7 @@ msgstr ""
 msgid "Sound effects volume"
 msgstr ""
 
-#: source/sdl/gui.cpp:528
+#: source/sdl/gui.cpp:535
 msgid "Sound options"
 msgstr ""
 
@@ -5840,6 +5852,10 @@ msgstr ""
 msgid "Stage Start/Timer Cont"
 msgstr ""
 
+#: source/sdl2/gui/menu.cpp:133
+msgid "Standard"
+msgstr ""
+
 #: source/sdl/dialogs/about.cpp:706
 msgid "Starscream 0.26r4 by Neill Corlett"
 msgstr ""
@@ -5868,6 +5884,10 @@ msgstr ""
 
 #: source/games/doubled3.c:117
 msgid "Starting Life"
+msgstr ""
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Static"
 msgstr ""
 
 #: source/sdl/dialogs/game_selection.cpp:42
@@ -6537,7 +6557,7 @@ msgstr ""
 msgid "Video layers"
 msgstr ""
 
-#: source/sdl/gui.cpp:527
+#: source/sdl/gui.cpp:534
 msgid "Video options"
 msgstr ""
 
@@ -6903,7 +6923,7 @@ msgstr ""
 msgid "fb"
 msgstr ""
 
-#: source/sdl/gui.cpp:294
+#: source/sdl/gui.cpp:301
 msgid "from internet archive"
 msgstr ""
 

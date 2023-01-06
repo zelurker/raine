@@ -7133,3 +7133,19 @@ msgstr "Fonte japonnaise"
 msgid "Select true type font"
 msgstr "Choisis une fonte true type"
 
+#: source/sdl2/gui/menu.cpp:133
+msgid "Background animation"
+msgstr "Animation de fond"
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Static"
+msgstr "Statique"
+
+#: source/sdl2/gui/menu.cpp:133
+msgid "Black"
+msgstr "Noire"
+
+#: source/sdl/gui.cpp:280
+msgid "Autostart drivers"
+msgstr "Démarrage auto des drivers"
+

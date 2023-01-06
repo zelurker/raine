@@ -130,7 +130,7 @@ menu_item_t menu_options[] =
   { _("Return mandatory"), NULL, &return_mandatory, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("GUI transparency"), NULL, &use_transparency, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Minimum GUI resolution = VGA"), NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
-  { _("Background animation"), NULL, &bg_anim, 3, { 0, 1, 2 }, { "Standard", "Static", "Black" } }
+  { _("Background animation"), NULL, &bg_anim, 3, { 0, 1, 2 }, { _("Standard"), _("Static"), _("Black") } }
 };
 
 int fg_color = mymakecol(255,255,255),
