@@ -233,7 +233,7 @@ void TMoveStatic::disp(SDL_Surface *sf, TFont *font, int x, int y, int w, int h,
 	    case 'V':	col = mymakecol(170,0,255); break;
 	    }
 	    if (*s >= 'E' && *s <= 'J') {
-		if (has_input(KB_DEF_P1_B6)) {
+		if (has_input(KB_DEF_P1_B6) && !is_current_game("daioh")) {
 		    // Street fighter games
 		    char *keys[] = { "lp","mp","sp","lk","mk","sk" };
 		    sprintf(str,"%s",keys[*s-'E']);
