@@ -767,8 +767,8 @@ static struct VIDEO_INFO video_flstory =
 };
 static struct DIR_INFO dir_flstory[] =
 {
-   { "fairy_land_story", },
    { "flstory", },
+   { "fairy_land_story", },
    { NULL, },
 };
 GME( flstory, "The FairyLand Story", TAITO, 1985, GAME_PLATFORM);
