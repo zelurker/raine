@@ -3731,11 +3731,11 @@ static void cps1_render_scroll2_bitmap(int mask)
       }
     }
     distort_scroll2 = worthit;
-#ifdef RAINE_DEBUG
-    if (worthit) {
-      print_ingame(1,gettext("row scroll %d"),worthit);
-    }
-#endif
+// #ifdef RAINE_DEBUG
+//     if (worthit) {
+//       print_ingame(1,gettext("row scroll %d"),worthit);
+//     }
+// #endif
   }
   for (sx=CPS1_SCROLL2_WIDTH-1; sx>=0; sx--) {
     int n=ny;
