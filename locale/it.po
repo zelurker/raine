@@ -5926,8 +5926,8 @@ msgstr "Modifica su velocita' (hack) non trovata, esecuzione lenta..."
 #: source/sdl/control.c:414
 #, c-format
 #, fuzzy
-msgid "Speed limit %d FPS"
-msgstr "Velocità limitata a %d fps"
+msgid "Speed limit %g FPS"
+msgstr "Velocità limitata a %g fps"
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"

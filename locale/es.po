@@ -5650,8 +5650,8 @@ msgstr "Hack de velocidad no encontrado, desacelerando..."
 #: source/sdl/control.c:414
 #, c-format
 #, fuzzy
-msgid "Speed limit %d FPS"
-msgstr "Límite de velocidad %d cps"
+msgid "Speed limit %g FPS"
+msgstr "Límite de velocidad %g cps"
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"

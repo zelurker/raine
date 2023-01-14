@@ -4112,7 +4112,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:290
 msgid "Max FPS for drivers"
-msgstr ""
+msgstr "FPS maxi pour les drivers"
 
 #: source/games/hitice.c:75 source/games/cps1drv.c:3560
 #: source/games/cps1drv.c:3921 source/games/cps1drv.c:4005
@@ -5592,8 +5592,8 @@ msgstr "Hack de vitesse pas trouve, on ralentit..."
 
 #: source/sdl/control.c:414
 #, c-format
-msgid "Speed limit %d FPS"
-msgstr "Limite de vitesse %d FPS"
+msgid "Speed limit %g FPS"
+msgstr "Limite de vitesse %g FPS"
 
 #: source/sdl/dialogs/game_options.cpp:238
 msgid "Sprite viewer"

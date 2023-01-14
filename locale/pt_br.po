@@ -5816,8 +5816,8 @@ msgstr "Hack de velocidade não encontrado, desacelerando..."
 
 #: source/sdl/control.c:414
 #, c-format
-msgid "Speed limit %d FPS"
-msgstr "Límite de velocidade %d FPS"
+msgid "Speed limit %g FPS"
+msgstr "Límite de velocidade %g FPS"
 
 #: source/games/games.c:28
 msgid "Sport"

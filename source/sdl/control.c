@@ -406,13 +406,22 @@ static void frame_skip_down(void)
 extern void cpu_speed_up(); // emumain.c
 extern void cpu_slow_down(); // emumain.c
 
+static int my_frame;
+static double my_time;
+
 static void toggle_limit_speed() {
 	if(display_cfg.limit_speed){
 		print_ingame(60,gettext("No speed limit!"));
 		display_cfg.limit_speed = 0;
+		my_frame = cpu_frame_count;
+		my_time = timer_get_time();
 	} else {
-		print_ingame(60,gettext("Speed limit %d FPS"),fps);
-		display_cfg.limit_speed = 1;
+	    double t = timer_get_time();
+	    if (t > my_time) {
+		print_ingame(120,gettext("%d frames in %gs -> %g fps"),cpu_frame_count-my_frame,t-my_time,(cpu_frame_count-my_time)/(t-my_time));
+	    }
+	    print_ingame(120,gettext("Speed limit %g FPS"),fps);
+	    display_cfg.limit_speed = 1;
 	}
 }
 
