@@ -415,6 +415,8 @@ static void toggle_limit_speed() {
 		display_cfg.limit_speed = 0;
 		my_frame = cpu_frame_count;
 		my_time = timer_get_time();
+		if (display_cfg.video_mode == 0) // opengl
+		    update_ogl_dbuf(0);
 	} else {
 	    double t = timer_get_time();
 	    if (t > my_time) {
@@ -422,6 +424,8 @@ static void toggle_limit_speed() {
 	    }
 	    print_ingame(120,gettext("Speed limit %g FPS"),fps);
 	    display_cfg.limit_speed = 1;
+	    if (display_cfg.video_mode == 0) // opengl
+		update_ogl_dbuf(ogl.dbuf);
 	}
 }
 

@@ -17,6 +17,7 @@ void opengl_text(char *msg, int x, int y);
 void finish_opengl();
 void opengl_done();
 void render_texture(int linear);
+void update_ogl_dbuf(int dbuf);
 
 void check_error(char *msg);
 

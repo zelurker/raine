@@ -97,6 +97,33 @@ void ogl_save_png(char *name) {
 SDL_GLContext *context;
 #endif
 
+void update_ogl_dbuf(int dbuf) {
+    if (!dbuf) {
+#if SDL == 2
+	SDL_GL_SetSwapInterval(0);
+#endif
+	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, dbuf );
+    } else {
+#if SDL == 2
+	if (dbuf == 2) { // forced
+	    if (SDL_GL_SetSwapInterval(1) < 0) {
+		printf("can't call GL_SetSwapInterval(1) ???\n");
+	    }
+	    ogl.infos.vbl = 1;
+	} else {
+	    if (SDL_GL_SetSwapInterval(-1) < 0) {
+		ogl.infos.vbl = 1;
+		SDL_GL_SetSwapInterval(1);
+	    } else
+		ogl.infos.vbl = -1;
+	}
+#else
+	ogl.infos.vbl = 1;
+#endif
+	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, dbuf ? 1 : 0);
+    }
+}
+
 void opengl_reshape(int w, int h) {
     /* There is a conflict between rend and context for the use of glDrawPixels and glBitmap
      * These 2 functions produce nothing visible on screen if using any rendering function after the gl context has been created
@@ -133,30 +160,7 @@ void opengl_reshape(int w, int h) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
-    if (!ogl.dbuf) {
-#if SDL == 2
-	SDL_GL_SetSwapInterval(0);
-#endif
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf );
-    } else {
-#if SDL == 2
-	if (ogl.dbuf == 2) { // forced
-	    if (SDL_GL_SetSwapInterval(1) < 0) {
-		printf("can't call GL_SetSwapInterval(1) ???\n");
-	    }
-	    ogl.infos.vbl = 1;
-	} else {
-	    if (SDL_GL_SetSwapInterval(-1) < 0) {
-		ogl.infos.vbl = 1;
-		SDL_GL_SetSwapInterval(1);
-	    } else
-		ogl.infos.vbl = -1;
-	}
-#else
-	ogl.infos.vbl = 1;
-#endif
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, ogl.dbuf ? 1 : 0);
-    }
+    update_ogl_dbuf(ogl.dbuf);
     check_error("end opengl_reshape");
 #endif
 }
