@@ -61,7 +61,12 @@ class TCheatDlg : public TMenu
 	  static int frame,inc;
 	  if (!inc) inc = 1;
 
+#if SDL==2
+	  // Color mapping seems to be abgr with sdl2, rgba with sdl1 !
+	  int r = bg_frame & 255, g = (bg_frame >> 8) & 255, b = (bg_frame >> 16) & 255;
+#else
 	  int r = bg_frame >> 24, g = (bg_frame >> 16) & 255, b = (bg_frame >> 8) & 255;
+#endif
 	  r = (30-frame)*r/30;
 	  g = (30-frame)*g/30;
 	  b = (30-frame)*b/30;
