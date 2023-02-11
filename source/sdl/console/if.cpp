@@ -19,6 +19,12 @@ static void restore_field(char *field, int argc) {
 
 static void skip_if(char *field) {
   int argc; char *argv[10];
+  if (!strcasestr(field,"if") && !strcasestr(field,"else"))
+      // Small optimization to skip big if statements in a run: section
+      // with this I go from 20-21% down to 13-14% for xmcotar1d when activating the console cheat
+      // The ideal solution would probably to pre-parse the scripts but it would make something much heavier than what it is now.
+      // This is a cheap 2 lines optimization and it brings a lot for now !
+      return;
   split_command(field,argv,&argc,10);
   if (!stricmp(argv[0],"else")) {
     if (!level)
@@ -40,7 +46,7 @@ static void skip_if(char *field) {
   } else if (!stricmp(argv[0],"if"))
     level++;
   restore_field(field,argc);
-} 
+}
 
 static void exec_if(char *field) {
   int argc; char *argv[10];
@@ -51,9 +57,9 @@ static void exec_if(char *field) {
     if (inner) {
       /* Apparently the only consequence of having another if executing
        * is only the handling of endif... */
-      cons->end_interactive();
-    } else
       inner--;
+    } else
+      cons->end_interactive();
   } else {
     // just execute the instruction, then come back here
     // 1st restore field...
@@ -67,7 +73,7 @@ static void exec_if(char *field) {
     else
       inner++;
     return;
-  } 
+  }
   restore_field(field,argc);
 }
 
