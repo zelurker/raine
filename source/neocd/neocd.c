@@ -824,26 +824,17 @@ static void neo_irq1pos_w(int offset, UINT16 data)
 
 static int offx, maxx;
 
-static void myblit(al_bitmap *src,al_bitmap *dst,int x1,int y1,int x2,int y2,int w,int h) {
-    // There is a very strange crash here in linux, just running raine zedblade on this very specific blit
-    // and it's not even at the end of the bitmap, it's about the 16 1st lines
-    // I am not sure of the real cause, gcc, sdl2 or elsewhere ? hard to say exactly
-    // anyway this function does exactly what this blit is supposed to do, but without the crash !
-    // Since both bitmaps are software surfaces there shouldn't be a big speed difference here
-    SDL_Surface *s = get_surface_from_bmp(src);
-    int bpp = s->format->BytesPerPixel;
-    for (int y=0; y<h; y++) {
-	memcpy(dst->line[y2+y]+x2*bpp,
-		src->line[y1+y]+x1*bpp,
-		w*bpp);
-    }
-}
-
+#if USE_MUSASHI != 2
+// For StarScream : stack is aligned on 4 bytes boundaries, but sdl might call some sse function like SDL_memcpySSE from SDL_BlitSurface
+// which requires stacks to be aligned on 16 bytes boundaries !
+// Without this, we get a crash in the very 1st frame of zedblade after the bios boot if using starscream !
+__attribute__ ((force_align_arg_pointer))
+#endif
 static void update_raster() {
     start_line -= START_SCREEN;
     debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
     draw_sprites(0,381,start_line,scanline-START_SCREEN);
-    myblit(GameBitmap,raster_bitmap,16,start_line+16,
+    blit(GameBitmap,raster_bitmap,16,start_line+16,
 	    0,start_line,
 	    neocd_video.screen_x,
 	    scanline-start_line);
@@ -1540,7 +1531,7 @@ void video_draw_fix(void)
   UINT16 code, colour;
   UINT16 *fixarea=&neogeo_vidram[0x7002];
   UINT8 *map;
-  UINT8 *fix_usage = video_fix_usage;;
+  UINT8 *fix_usage = video_fix_usage;
   int garouoffsets[32];
 
   if (!is_neocd()) {
