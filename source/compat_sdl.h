@@ -58,9 +58,7 @@ extern PALETTE pal;			// 256 Colour palette for the game
 
 #define blit(src,dst,x1,y1,x2,y2,w1,h1) \
 { \
-  SDL_Rect r1,r2; \
-  r1.x = x1; r1.y = y1; r1.w = w1; r1.h = h1; \
-  r2.x = x2; r2.y = y2; r2.w = w1; r2.h = h1; \
+  SDL_Rect r1 = {x1,y1,w1,h1},r2 = {x2,y2,w1,h1}; \
   SDL_BlitSurface(get_surface_from_bmp(src),&r1,get_surface_from_bmp(dst),&r2);}
 
 #define rectfill(bmp,x1,y1,x2,y2,coul) \

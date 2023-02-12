@@ -824,11 +824,26 @@ static void neo_irq1pos_w(int offset, UINT16 data)
 
 static int offx, maxx;
 
+static void myblit(al_bitmap *src,al_bitmap *dst,int x1,int y1,int x2,int y2,int w,int h) {
+    // There is a very strange crash here in linux, just running raine zedblade on this very specific blit
+    // and it's not even at the end of the bitmap, it's about the 16 1st lines
+    // I am not sure of the real cause, gcc, sdl2 or elsewhere ? hard to say exactly
+    // anyway this function does exactly what this blit is supposed to do, but without the crash !
+    // Since both bitmaps are software surfaces there shouldn't be a big speed difference here
+    SDL_Surface *s = get_surface_from_bmp(src);
+    int bpp = s->format->BytesPerPixel;
+    for (int y=0; y<h; y++) {
+	memcpy(dst->line[y2+y]+x2*bpp,
+		src->line[y1+y]+x1*bpp,
+		w*bpp);
+    }
+}
+
 static void update_raster() {
     start_line -= START_SCREEN;
     debug(DBG_RASTER,"draw_sprites between %d and %d\n",start_line,scanline-START_SCREEN);
     draw_sprites(0,381,start_line,scanline-START_SCREEN);
-    blit(GameBitmap,raster_bitmap,16,start_line+16,
+    myblit(GameBitmap,raster_bitmap,16,start_line+16,
 	    0,start_line,
 	    neocd_video.screen_x,
 	    scanline-start_line);
