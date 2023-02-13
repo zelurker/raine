@@ -125,7 +125,7 @@ void init_scripts() {
       char buff[10240];
       *buff = 0;
     while (!feof(f)) {
-	if (strncmp(buff,"script",6))  // if containing a script line then it's just a loop, don't erase it !
+	if (strncmp(buff,"script",6) && strncmp(buff,"hidden",6))  // if containing a script line then it's just a loop, don't erase it !
 	    myfgets(buff,10240,f);
 	while (*buff && buff[strlen(buff)-1] == '\\')
 	    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
@@ -221,7 +221,7 @@ void init_scripts() {
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
 		    n++;
-		if (buff[n] == 0 || !strncmp(&buff[n],"script",6)) // optional empty line to end the script
+		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
 		if (buff[n] == '#')
 		    continue; // don't keep comments !
@@ -276,7 +276,7 @@ void init_scripts() {
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
 		    n++;
-		if (buff[n] == 0 || !strncmp(&buff[n],"script",6)) // optional empty line to end the script
+		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
 		if (buff[n] == '#')
 		    continue; // don't keep comments !
@@ -315,6 +315,12 @@ void init_scripts() {
 }
 
 static int activate_cheat(int n) {
+    int nb_hidden = 0;
+    // Hidden scripts break the indexes so we fix it here
+    for (int x=0; x<=n; x++)
+	if (script[x].hidden)
+	    nb_hidden++;
+    n += nb_hidden;
     if (script[n].nb_param) {
 	if (script[n].nb_param == 3 && !script[n].value_list_label[0]) { // interval
 	    menu_item_t *menu;
@@ -452,7 +458,11 @@ void do_start_script(int argc, char **argv) {
 	throw "Syntax : start_script name\n";
     for (int n=0; n<nb_scripts; n++) {
 	if (!strcmp(script[n].title,argv[1])) {
-	    script[n].status = 1;
+	    if (script[n].run)
+		script[n].status = 1;
+	    else if (script[n].on)
+		for (char **l = script[n].on; l && *l; l++)
+		    run_console_command(*l);
 	    return;
 	}
     }
@@ -479,3 +489,8 @@ void do_script(int argc, char **argv) {
   }
 }
 
+void stop_scripts() {
+    // Stop scripts which run every frame, useful after an error in a script
+    for (int n=0; n<nb_scripts; n++)
+	script[n].status = 0;
+}

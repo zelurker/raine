@@ -12,6 +12,7 @@
 #include <vector>
 #include "arpro.h"
 #include <openssl/rand.h>
+#include "scripts.h"
 
 /* muParser is specialised in double numbers, so it lacks some basic integer
  * operations, but can be easily extended, so let's go... */
@@ -320,8 +321,9 @@ int parse(char *orig)
     strncpy(msg, e.GetMsg().c_str(),80);
     msg[79] = 0;
 #ifdef RAINE_DEBUG
-    printf("console: %s\n",msg);
+    printf("console: %s I had orig:%s\n",msg,orig);
 #endif
+    stop_scripts();
     throw msg;
   }
   return res;

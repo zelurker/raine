@@ -11,6 +11,7 @@ void update_scripts();
 void do_script(int argc, char **argv);
 void do_start_script(int argc, char **argv);
 char *get_script_comment(int n);
+void stop_scripts();
 
 extern int nb_scripts;
 
