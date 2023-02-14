@@ -244,6 +244,29 @@ int parse(char *orig)
    * calling it... */
   strlwr(expr);
   char *s = expr;
+  if (!strncmp(s,"0x",2) || s[0] == '$') {
+      // Optimize separately an hex at start because we can interpret it alone without calling muparser
+      if (s[0] == '$') s++;
+      else s+=2;
+      int res = 0;
+      while ((*s >= '0' && *s <= '9') || (*s >= 'a' && *s <= 'f')) {
+	  int digit;
+	  if (*s >= 'a') digit = *s - 'a' + 10;
+	  else
+	      digit = *s - '0';
+	  res = res*16 + digit;
+	  s++;
+      }
+      if (*s == 0) {
+	  // Reached end of string, we have the whole number
+	  return res;
+      }
+      char buf2[1024];
+      sprintf(buf2,"%d%s",res,s);
+      strcpy(expr,buf2);
+  }
+
+  s = expr;
   while ((s = strstr(s,"0x"))) {
     s[1] = '$';
     strcpy(s,s+1);

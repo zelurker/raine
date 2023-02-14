@@ -341,25 +341,31 @@ static void run_script(int n) {
     if (!script[n].status) {
 	if (!script[n].off & !script[n].run) {
 	    // no off, nor run, nor changing -> it's a set script, try on in this case !
-	    running++;
-	    section = "on";
-	    for (sline=0; script[n].on[sline]; sline++)
-		run_console_command(script[n].on[sline]);
-	    running--;
+	    if (script[n].on) {
+		running++;
+		section = "on";
+		for (sline=0; script[n].on[sline]; sline++)
+		    run_console_command(script[n].on[sline]);
+		running--;
+	    }
 	    return;
 	}
-	running++;
-	section = "off";
-	for (sline=0; script[n].off[sline]; sline++)
-	    run_console_command(script[n].off[sline]);
-	running--;
+	if (script[n].off) {
+	    running++;
+	    section = "off";
+	    for (sline=0; script[n].off[sline]; sline++)
+		run_console_command(script[n].off[sline]);
+	    running--;
+	}
 	return;
     }
-    running++;
-    section = "on";
-    for (sline=0; script[n].on[sline]; sline++)
-	run_console_command(script[n].on[sline]);
-    running--;
+    if (script[n].on) {
+	running++;
+	section = "on";
+	for (sline=0; script[n].on[sline]; sline++)
+	    run_console_command(script[n].on[sline]);
+	running--;
+    }
 }
 
 static int activate_cheat(int n) {
@@ -442,11 +448,13 @@ void update_scripts() {
 	if (script[n].status) {
 	    init_script_param(n);
 	    nb_script = n;
-	    running++;
-	    section = "run";
-	    for ( sline=0; script[n].run[sline]; sline++)
-		run_console_command(script[n].run[sline]);
-	    running--;
+	    if (script[n].run) {
+		running++;
+		section = "run";
+		for ( sline=0; script[n].run[sline]; sline++)
+		    run_console_command(script[n].run[sline]);
+		running--;
+	    }
 	}
     }
 }
