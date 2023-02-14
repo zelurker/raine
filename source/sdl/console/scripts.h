@@ -14,6 +14,7 @@ char *get_script_comment(int n);
 void stop_scripts();
 int get_running_script_info(int *nb, int *line, char **sect);
 char* get_script_title(int n);
+void stop_script(int n);
 
 extern int nb_scripts;
 

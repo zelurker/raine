@@ -495,7 +495,8 @@ int TConsole::run_cmd(char *string) {
 		      section,
 		      line+1);
 	      strncat(msg, e.what(),240-strlen(msg));
-	      stop_scripts();
+	      stop_script(nb);
+	      strncat(msg,"\n(script stopped)",240-strlen(msg));
 	      MessageBox("script error",msg,"ok");
 	  } else
 	      MessageBox("script error",e.what(),"ok");

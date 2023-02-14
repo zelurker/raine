@@ -5,6 +5,7 @@
 #include "console.h"
 #include "dialogs/messagebox.h"
 #include "profile.h"
+#include "gui/tconsole.h"
 
 #define MAX_PARAM 190
 
@@ -502,13 +503,13 @@ void do_start_script(int argc, char **argv) {
 	if (!strcmp(script[n].title,argv[1])) {
 	    if (script[n].run)
 		script[n].status = 1;
-	    else if (script[n].on)
-		for (char **l = script[n].on; l && *l; l++)
-		    run_console_command(*l);
+	    else
+		run_script(n);
 	    return;
 	}
     }
-    cons->print("Didn't find script %s",argv[1]);
+
+    throw ConsExcept("Didn't find script %s",argv[1]);
 }
 
 void do_script(int argc, char **argv) {
@@ -543,3 +544,9 @@ char* get_script_title(int n) {
 	return script[n].title;
     return "";
 }
+
+void stop_script(int n) {
+    if (n < nb_scripts && n>=0)
+	script[n].status = 0;
+}
+
