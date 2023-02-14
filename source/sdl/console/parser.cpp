@@ -315,11 +315,18 @@ int parse(char *orig)
   catch (mu::Parser::exception_type &e)
   {
     parser_error = 1;
-    char msg[80];
+    char msg[240];
     // apparently the e.GetMsg().c_str() is corrupted in the 2nd throw below,
     // so we must copy the string to a temp buffer instead of using it directly
-    strncpy(msg, e.GetMsg().c_str(),80);
-    msg[79] = 0;
+    int nb,line;
+    char *section;
+    if (get_running_script_info(&nb,&line,&section)) {
+	sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
+		get_script_title(nb),
+		section,
+		line);
+    }
+    strncat(msg, e.GetMsg().c_str(),240-strlen(msg));
 #ifdef RAINE_DEBUG
     printf("console: %s I had orig:%s\n",msg,orig);
 #endif

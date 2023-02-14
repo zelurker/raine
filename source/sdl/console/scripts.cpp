@@ -314,6 +314,54 @@ void init_scripts() {
   set_nb_scripts(nb_scripts);
 }
 
+static int running,nb_script,sline;
+static char *section;
+
+int get_running_script_info(int *nb, int *line, char **sect) {
+    if (running) {
+	*nb = nb_script;
+	*line = sline;
+	*sect = section;
+	return 1;
+    }
+    return 0;
+}
+
+static void run_script(int n) {
+    nb_script = n;
+    if (script[n].change) {
+	running++;
+	section = "change";
+	for (sline=0; script[n].change[sline]; sline++)
+	    run_console_command(script[n].change[sline]);
+	running--;
+	return;
+    }
+
+    if (!script[n].status) {
+	if (!script[n].off & !script[n].run) {
+	    // no off, nor run, nor changing -> it's a set script, try on in this case !
+	    running++;
+	    section = "on";
+	    for (sline=0; script[n].on[sline]; sline++)
+		run_console_command(script[n].on[sline]);
+	    running--;
+	    return;
+	}
+	running++;
+	section = "off";
+	for (sline=0; script[n].off[sline]; sline++)
+	    run_console_command(script[n].off[sline]);
+	running--;
+	return;
+    }
+    running++;
+    section = "on";
+    for (sline=0; script[n].on[sline]; sline++)
+	run_console_command(script[n].on[sline]);
+    running--;
+}
+
 static int activate_cheat(int n) {
     int nb_hidden = 0;
     // Hidden scripts break the indexes so we fix it here
@@ -354,25 +402,7 @@ static int activate_cheat(int n) {
 		script[n].status = 0;
 	}
     }
-    if (script[n].change) {
-	for (char **l = script[n].change; l && *l; l++)
-	    run_console_command(*l);
-	return 0;
-    }
-
-    if (!script[n].status) {
-	if (!script[n].off & !script[n].run) {
-	    // no off, nor run, nor changing -> it's a set script, try on in this case !
-	    for (char **l = script[n].on; l && *l; l++)
-		run_console_command(*l);
-	    return 0;
-	}
-	for (char **l = script[n].off; l && *l; l++)
-	    run_console_command(*l);
-	return 0;
-    }
-    for (char **l = script[n].on; l && *l; l++)
-	run_console_command(*l);
+    run_script(n);
     return 0;
 }
 
@@ -411,8 +441,12 @@ void update_scripts() {
     for (n=0; n<nb_scripts; n++) {
 	if (script[n].status) {
 	    init_script_param(n);
-	    for (char **l = script[n].run; l && *l; l++)
-		run_console_command(*l);
+	    nb_script = n;
+	    running++;
+	    section = "run";
+	    for ( sline=0; script[n].run[sline]; sline++)
+		run_console_command(script[n].run[sline]);
+	    running--;
 	}
     }
 }
@@ -493,4 +527,11 @@ void stop_scripts() {
     // Stop scripts which run every frame, useful after an error in a script
     for (int n=0; n<nb_scripts; n++)
 	script[n].status = 0;
+    running = 0;
+}
+
+char* get_script_title(int n) {
+    if (n < nb_scripts && n>=0)
+	return script[n].title;
+    return "";
 }

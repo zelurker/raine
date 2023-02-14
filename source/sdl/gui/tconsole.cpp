@@ -11,6 +11,7 @@
 #include "games.h"
 #include "gui.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "console/scripts.h"
 
 void split_command(char *field, char **argv, int *argc, int max) {
   char *quote = strrchr(field,'"'); // Ensure that comments are not inside a string !!!
@@ -484,7 +485,20 @@ int TConsole::run_cmd(char *string) {
     catch(ConsExcept &e) {
       if (visible) print(e.what());
       else {
-	MessageBox("script error",e.what(),"ok");
+	  char msg[240];
+	  int nb,line;
+	  char *section;
+	  if (get_running_script_info(&nb,&line,&section)) {
+	      // Line numbers are unprecise because lines with only a comment are jumped
+	      sprintf(msg,"script: %s\nsection: %s\nline: %d+\n\n",
+		      get_script_title(nb),
+		      section,
+		      line+1);
+	      strncat(msg, e.what(),240-strlen(msg));
+	      stop_scripts();
+	      MessageBox("script error",msg,"ok");
+	  } else
+	      MessageBox("script error",e.what(),"ok");
       }
     }
     catch(const char *msg) {

@@ -12,6 +12,8 @@ void do_script(int argc, char **argv);
 void do_start_script(int argc, char **argv);
 char *get_script_comment(int n);
 void stop_scripts();
+int get_running_script_info(int *nb, int *line, char **sect);
+char* get_script_title(int n);
 
 extern int nb_scripts;
 
