@@ -291,9 +291,9 @@ void TRaineConsole::load_history() {
     }
 }
 
-int TRaineConsole::run_cmd(char *string) {
+int TRaineConsole::run_cmd(char *string,int interactive) {
   int ret;
-  if (*string) {
+  if (*string && interactive) {
     char *s = string;
     while (*s == ' ') s++;
     char *end = strchr(s,' ');
@@ -301,6 +301,8 @@ int TRaineConsole::run_cmd(char *string) {
     strcpy(last_cmd,s);
     if (end) *end = ' ';
     ret = TConsole::run_cmd(string);
+  } else if (*string) {
+      ret = TConsole::run_cmd(string);
   } else {
     ret = TConsole::run_cmd(last_cmd);
   }
@@ -1542,8 +1544,9 @@ void run_console_command(char *command) {
     lastw = screen->w;
     lasth = screen->h;
   }
-  get_regs(cpu_id);
-  cons->run_cmd(command);
-  set_regs(cpu_id);
+  // This function is called only for scripts, and I don't see how a script could modify a register, so just forget about that... !
+  // get_regs(cpu_id);
+  cons->run_cmd(command,0);
+  // set_regs(cpu_id);
 }
 

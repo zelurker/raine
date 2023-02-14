@@ -28,7 +28,7 @@ class TRaineConsole : public TConsole
     void save_history();
     virtual void handle_mouse(SDL_Event *event);
     virtual void unknown_command(int argc, char **argv);
-    virtual int run_cmd(char *field);
+    virtual int run_cmd(char *field, int interactive=1);
     virtual void post_print() {
       pointer_on = 0; // erase mouse cursor after a print
     }
