@@ -410,8 +410,9 @@ void TConsole::do_help(int argc, char **argv) {
 
 static char temp[MAX_FIELD+1];
 
-int TConsole::run_cmd(char *string) {
+int TConsole::parse_cmd(char *string) {
   int len = strlen(string);
+  cmd = NULL;
   if (string[len-1] == '\\') {
       string[len-1] = 0;
       strncat(temp,string,MAX_FIELD);
@@ -426,50 +427,57 @@ int TConsole::run_cmd(char *string) {
 
   while (len && string[len-1] < 32)
     string[--len] = 0;
-  if (interactive) {
-    interactive(string);
-    temp[0] = 0;
-    return 0;
-  }
-  char *argv[50];
-  int argc;
   if (field != string) {
     strncpy(field,string,MAX_FIELD);
     field[MAX_FIELD-1] = 0;
   }
   if (*field) {
-    if (!strchr(field,'#'))
-      print("\E[31m>\E[0m %s",field);
-    if (!strcasecmp(field,"exit")) {
-      *field = 0;
-      *temp = 0;
-      return 1;
-    }
-    split_command(field,argv,&argc,50);
-    if (argc < 1) { *field = 0; *temp = 0; return 0; } // empty line (or spaces)
-    if (argv[0][0] == '#') {
-      *field = 0;
-      *temp = 0;
-      return 0; // comment
-    }
-    if (!strcasecmp(argv[0],"help") || !strcmp(argv[0],"?")) {
-      do_help(argc, argv);
-      *field = 0;
-      *temp = 0;
-      return 0;
-    }
-    commands_t *cmd = commands;
-    try {
+      if (!strchr(field,'#') && visible)
+	  print("\E[31m>\E[0m %s",field);
+      if (!strcasecmp(field,"exit")) {
+	  *field = 0;
+	  *temp = 0;
+	  return 1;
+      }
+      split_command(field,argv,&argc,50);
+      if (argc < 1) { *field = 0; *temp = 0; return 0; } // empty line (or spaces)
+      if (argv[0][0] == '#') {
+	  *field = 0;
+	  *temp = 0;
+	  return 0; // comment
+      }
+      if (!strcasecmp(argv[0],"help") || !strcmp(argv[0],"?")) {
+	  do_help(argc, argv);
+	  *field = 0;
+	  *temp = 0;
+	  return 0;
+      }
+      cmd = commands;
+      oldfield = *field;
       while (cmd->name) {
-	if (!strcasecmp(cmd->name,argv[0])) {
-	  if (cmd->handler) (*cmd->handler)(argc,argv);
-	  break;
+	  if (!strcmp(cmd->name,argv[0])) {
+	      return 1;
+	      break;
+	  }
+	  cmd++;
+      }
+  }
+  return 0;
+}
+
+int TConsole::run_cmd(char *string) {
+    if (interactive) {
+	interactive(string);
+	temp[0] = 0;
+	return 0;
+    }
+    int ret = parse_cmd(string);
+    try {
+	if (ret)
+	    if (cmd->handler) (*cmd->handler)(argc,argv);
+	if (!cmd->name) {
+	    unknown_command(argc,argv);
 	}
-	cmd++;
-      }
-      if (!cmd->name) {
-	unknown_command(argc,argv);
-      }
     }
     /* Exception handling :
      * C++ obliges to use classes if you want to do something as simple as
@@ -483,35 +491,35 @@ int TConsole::run_cmd(char *string) {
      * example by throw, then the temporary string is never freed (or so I have
      * read), so it's better to use a class by reference instead of this. */
     catch(ConsExcept &e) {
-      if (visible) print(e.what());
-      else {
-	  char msg[240];
-	  int nb,line;
-	  char *section;
-	  if (get_running_script_info(&nb,&line,&section)) {
-	      // Line numbers are unprecise because lines with only a comment are jumped
-	      sprintf(msg,"script: %s\nsection: %s\nline: %d+\n\n",
-		      get_script_title(nb),
-		      section,
-		      line+1);
-	      strncat(msg, e.what(),240-strlen(msg));
-	      stop_script(nb);
-	      strncat(msg,"\n(script stopped)",240-strlen(msg));
-	      MessageBox("script error",msg,"ok");
-	  } else
-	      MessageBox("script error",e.what(),"ok");
-      }
+	if (visible) print(e.what());
+	else {
+	    char msg[240];
+	    int nb,line;
+	    char *section;
+	    if (get_running_script_info(&nb,&line,&section)) {
+		// Line numbers are unprecise because lines with only a comment are jumped
+		sprintf(msg,"script: %s\nsection: %s\nline: %d+\n\n",
+			get_script_title(nb),
+			section,
+			line+1);
+		strncat(msg, e.what(),240-strlen(msg));
+		stop_script(nb);
+		strncat(msg,"\n(script stopped)",240-strlen(msg));
+		MessageBox("script error",msg,"ok");
+	    } else
+		MessageBox("script error",e.what(),"ok");
+	}
     }
     catch(const char *msg) {
-      if (visible) print(msg);
-      else {
-	MessageBox("script error",(char *)msg,"ok");
-      }
+	if (visible) print(msg);
+	else {
+	    MessageBox("script error",(char *)msg,"ok");
+	}
     }
+    oldfield = *field;
     *field = 0;
-  }
-  *temp = 0;
-  return 0;
+    *temp = 0;
+    return 0;
 }
 
 int TConsole::handler(int cause) {
@@ -522,4 +530,33 @@ void TConsole::execute()
 {
     TDialog::execute();
     visible = 0;
+}
+
+void TConsole::get_parsed_info(int *myargc, char ***myargv,void (**mycmd)(int, char **) ) {
+    // to be called after a call to run_cmd
+    *field = oldfield;
+    *myargc = argc;
+    *myargv = argv;
+    if (cmd)
+	*mycmd = cmd->handler;
+    else if (argc) {
+	// When the console is interactive mode for commands such as if, the line is passed directly to interactive and the handler is not even searched
+	// in this case we search it here, it can be useful later
+	cmd = commands;
+	while (cmd->name) {
+	    if (!strcmp(cmd->name,argv[0])) {
+		*mycmd = cmd->handler;
+		return;
+	    }
+	    cmd++;
+	}
+	*mycmd = NULL;
+    } else
+	*mycmd = NULL;
+    argc = 0;
+}
+
+void TConsole::finish_parsed_info() {
+    // the console internally uses field to parse its commands so it's better to set it to 0 in the end otherwise the last processed command appears when you open the console !
+    *field = 0;
 }

@@ -58,13 +58,16 @@ class TConsole : public TDialog
     TStatic **last_child;
     unsigned int len_max;
     commands_t *commands;
-    char *field;
-    tinteractive interactive;
+    char *field,oldfield;
+    // results from the last call to run_cmd
+    commands_t *cmd;
+    int argc; char *argv[50];
 
     // handler is for internal use only, not supposed to be called from the
     // outside
     virtual int handler(int cause);
   public:
+    tinteractive interactive;
     TConsole(char *my_title, char *init_label, int maxlen, int maxlines, commands_t *mycmd, int is_visible = 1);
     ~TConsole();
     // virtual void compute_nb_items();
@@ -90,6 +93,9 @@ class TConsole : public TDialog
     virtual int run_cmd(char *field);
     void set_visible() { visible = 1; }
     int is_visible() { return visible; }
+    void get_parsed_info(int *myargc, char ***myargv,void (**mycmd)(int, char **) );
+    void finish_parsed_info();
+    int parse_cmd(char *string);
 };
 #endif
 #endif

@@ -10,6 +10,12 @@
 #define MAX_PARAM 190
 
 typedef struct {
+    int argc;
+    char **argv;
+    void (*cmd)(int, char **);
+} tparsed;
+
+typedef struct {
   char *title;
   // status : 0 = off, 1 = on (in dialog)
   int status, hidden;
@@ -19,6 +25,7 @@ typedef struct {
   int value_list[MAX_PARAM];
   char *value_list_label[MAX_PARAM];
   char *comment;
+  tparsed *parsed;
 } tscript;
 
 tscript *script;
@@ -85,6 +92,16 @@ void done_scripts() {
   if (nb_scripts) {
     for (int n=0; n<nb_scripts; n++) {
       free(script[n].title);
+      if (script[n].parsed) {
+	  int nb = 0;
+	  for ( nb=0; script[n].run[nb]; nb++);
+	  for (int a=0; a<nb; a++) {
+	      for (int x=0; x<script[n].parsed[a].argc; x++)
+		  free(script[n].parsed[a].argv[x]);
+	      free(script[n].parsed[a].argv);
+	  }
+	  free(script[n].parsed);
+      }
       if (script[n].run) {
 	  for (char **l = script[n].run; l && *l; l++)
 	      free(*l);
@@ -159,6 +176,7 @@ void init_scripts() {
 		return;
 	    }
 	    script[nb_scripts].title = strdup(argv[1]);
+	    script[nb_scripts].parsed = NULL;
 	    script[nb_scripts].comment = NULL;
 	    script[nb_scripts].status = 0;
 	    script[nb_scripts].nb_param = 0;
@@ -315,7 +333,7 @@ void init_scripts() {
   set_nb_scripts(nb_scripts);
 }
 
-static int running,nb_script,sline;
+static int running,nb_script,sline,parsing;
 static char *section;
 
 int get_running_script_info(int *nb, int *line, char **sect) {
@@ -452,8 +470,42 @@ void update_scripts() {
 	    if (script[n].run) {
 		running++;
 		section = "run";
-		for ( sline=0; script[n].run[sline]; sline++)
-		    run_console_command(script[n].run[sline]);
+		parsing = 0;
+		if (!script[n].parsed) {
+		    int nb = 0;
+		    for ( nb=0; script[n].run[nb]; nb++);
+
+		    script[n].parsed = (tparsed*)calloc(nb,sizeof(tparsed));
+		    parsing = 1;
+		}
+
+		for ( sline=0; script[n].run[sline]; sline++) {
+		    if (parsing) {
+			run_console_command(script[n].run[sline]);
+			int argc; char **argv; void (*cmd)(int, char **);
+			cons->get_parsed_info(&argc,&argv,&cmd);
+			if (argc) {
+			    script[n].parsed[sline].argc = argc;
+			    script[n].parsed[sline].argv = (char**)calloc(argc,sizeof(char*));
+			    script[n].parsed[sline].cmd = cmd;
+			}
+			for (int x=0; x<argc; x++)
+			    script[n].parsed[sline].argv[x] = strdup(argv[x]);
+			cons->finish_parsed_info();
+		    } else {
+			if (cons->interactive)
+			    (*cons->interactive)(script[n].run[sline]);
+			else if (script[n].parsed[sline].cmd)
+			    (*script[n].parsed[sline].cmd)(script[n].parsed[sline].argc,script[n].parsed[sline].argv);
+			else {
+			    printf("no command for ");
+			    for (int x=0; x<script[n].parsed[sline].argc; x++)
+				printf("%s ",script[n].parsed[sline].argv[x]);
+			    printf("\n");
+			    exit(1);
+			}
+		    }
+		}
 		running--;
 	    }
 	}
@@ -548,5 +600,23 @@ char* get_script_title(int n) {
 void stop_script(int n) {
     if (n < nb_scripts && n>=0)
 	script[n].status = 0;
+}
+
+int is_script_parsing() { return parsing; }
+
+void get_script_parsed(int n, int line, int *myargc, char ***myargv,void (**mycmd)(int, char **) ) {
+    *myargc = script[n].parsed[line].argc;
+    *myargv = script[n].parsed[line].argv;
+    *mycmd = script[n].parsed[line].cmd;
+}
+
+void script_set_parsed(int n, int line, int argc, char **argv, void (*cmd)(int, char **) ) {
+    if (argc) {
+	script[n].parsed[line].argc = argc;
+	script[n].parsed[line].argv = (char**)calloc(argc,sizeof(char*));
+	script[n].parsed[line].cmd = cmd;
+    }
+    for (int x=0; x<argc; x++)
+	script[n].parsed[line].argv[x] = strdup(argv[x]);
 }
 
