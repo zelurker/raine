@@ -1,11 +1,13 @@
-script "Infinite Time"  
+credits=$ff4bdd
+choice=$ff2000
+script "Infinite Time"
 run:
     poke $FF4808 $99
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $FF4808 $00
-script "Invincibility [Master Code]"  
+script "Invincibility [Master Code]"
 on:
     temp0=lpeek($014F4A)
     temp1=dpeek($014F4E)
@@ -90,7 +92,7 @@ off:
     lpoke $1B2DDA temp24
     dpoke $1B2DDE temp25
     dpoke $1B2DE0 temp26
-script "Hit Anywhere (Both Players)"  
+script "Hit Anywhere (Both Players)"
 on:
     temp0=dpeek($01510E)
 run:
@@ -98,7 +100,7 @@ run:
 off:
     dpoke $01510E temp0
 script "Challenge Gouki Surely" \
- "comm:Just Before Juggernaut"  
+ "comm:Just Before Juggernaut"
 on:
     temp0=peek($FF4921)
 run:
@@ -117,43 +119,43 @@ script "Select Background" \
  "0x08/Omega Red"\
  "0x09/Sentinel"\
  "0x0A/Juggernaut"\
- "0x0B/Magneto" 
+ "0x0B/Magneto"
 run:
     poke $FF488F param
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $FF4191 $8F
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF4191 $00
 script "P1 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($FF4055)
 run:
     poke $FF4055 $FF
 off:
     poke $FF4055 temp0
-script "P1 Never Faint"  
+script "P1 Never Faint"
 run:
     poke $FF40FD $00
-script "P1 Action Speed Up"  
+script "P1 Action Speed Up"
 run:
     poke $FF403F $01
-script "P1 Always have Max Power"  
+script "P1 Always have Max Power"
 run:
     poke $FF4198 $02
     poke $FF4195 $8E
-script "P1 Always have Min Power"  
+script "P1 Always have Min Power"
 run:
     poke $FF4198 $00
     poke $FF4195 $00
-script "P1 Get Max Power Now!"  
+script "P1 Get Max Power Now!"
 on:
     poke $FF4198 $02
     poke $FF4195 $8E
-script "P1 Get Min Power Now!"  
+script "P1 Get Min Power Now!"
 on:
     poke $FF4198 $00
     poke $FF4195 $00
@@ -170,43 +172,43 @@ script "P1 Select Character" \
  "0x12/Sentinel"\
  "0x14/#Juggernaut"\
  "0x16/#Magneto"\
- "0x18/#Gouki" 
+ "0x18/#Gouki"
 run:
     poke $FF4051 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $FF4591 $8F
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF4591 $00
 script "P2 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($FF4455)
 run:
     poke $FF4455 $FF
 off:
     poke $FF4455 temp0
-script "P2 Never Faint"  
+script "P2 Never Faint"
 run:
     poke $FF44FD $00
-script "P2 Action Speed Up"  
+script "P2 Action Speed Up"
 run:
     poke $FF443F $01
-script "P2 Always have Max Power"  
+script "P2 Always have Max Power"
 run:
     poke $FF4598 $02
     poke $FF4595 $8E
-script "P2 Always have Min Power"  
+script "P2 Always have Min Power"
 run:
     poke $FF4598 $00
     poke $FF4595 $00
-script "P2 Get Max Power Now!"  
+script "P2 Get Max Power Now!"
 on:
     poke $FF4598 $02
     poke $FF4595 $8E
-script "P2 Get Min Power Now!"  
+script "P2 Get Min Power Now!"
 on:
     poke $FF4598 $00
     poke $FF4595 $00
@@ -223,16 +225,16 @@ script "P2 Select Character" \
  "0x12/Sentinel"\
  "0x14/#Juggernaut"\
  "0x16/#Magneto"\
- "0x18/#Gouki" 
+ "0x18/#Gouki"
 run:
     poke $FF4451 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
-script "Hide Background"  
+script "Hide Background"
 on:
     temp0=dpeek($FF4BCC)
     temp1=dpeek($FF4BCE)
@@ -240,18 +242,18 @@ on:
     temp3=dpeek($FFEADE)
 run:
     if (peek($FF4800)==$04)
-      dpoke $FF4BCC $0
-      dpoke $FF4BCE $0
-      dpoke $FFEADC $0
-      dpoke $FFEADE $0
-      lpoke $FFD20E $0
+        dpoke $FF4BCC $0
+        dpoke $FF4BCE $0
+        dpoke $FFEADC $0
+        dpoke $FFEADE $0
+        lpoke $FFD20E $0
     endif
 off:
     dpoke $FF4BCC temp0
     dpoke $FF4BCE temp1
     dpoke $FFEADC temp2
     dpoke $FFEADE temp3
-script "White background"  
+script "White background"
 run:
     poke $FFEE75 $1
 script "Select Region" \
@@ -261,10 +263,385 @@ script "Select Region" \
  "0x04/Euro"\
  "0x06/ASIA"\
  "0x08/Hispanic"\
- "0x0A/Brazil" 
+ "0x0A/Brazil"
 run:
     poke $FF4BF7 param
 script "Display Hidden Debug EDIT MENU" \
- "comm:Activate on the TEST MENU (F2)."  
+ "comm:Activate on the TEST MENU (F2)."
 run:
     poke $FFEAEB $E5
+script " "
+script "Forum cheats, see topic 'sharing of cheat used in Raine'"
+script " "
+script "Console Mode" \
+ "comm:On the title screen, press up or down to select modes. Coin button is used for pause.
+In training mode, pause the game and then press start to select character."
+run:
+    #Start-up#
+    if (peek(credits)==$00)
+	printed=0
+        poke $6B6F0 'PRESS START@'
+        poke $B0D $01 #Restore initial value#
+        poke $B1D $00
+        poke $B17 $AA
+        poke $B35 $AC
+        poke choice $00
+        if (peek($FF4BAE)>=$10) #Max Credit#
+            poke credits $09
+        endif
+    endif
+    #Menu in the Title screen#
+    if (dpeek($FF4B84)==$FFF0)and(peek(credits)>$00)and(peek($FF4881)==$00)
+        if ((peek($FF4BAB)==$00)and(peek($FF4BAD)==$00))and(peek($FF2001)==$FF)
+            poke $FF2001 $00
+        endif
+        if (dpeek(choice)==$0000)and((peek($FF4BAB)==$04)or(peek($FF$4BAD)==$04))
+            dpoke choice $01FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0100)and((peek($FF4BAB)==$04)or(peek($FF$4BAD)==$04))
+            dpoke choice $02FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0200)and((peek($FF4BAB)==$04)or(peek($FF$4BAD)==$04))
+            dpoke choice $03FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0300)and((peek($FF4BAB)==$04)or(peek($FF$4BAD)==$04))
+            dpoke choice $00FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0000)and((peek($FF4BAB)==$08)or(peek($FF4BAB)==$08))
+            dpoke choice $03FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0300)and((peek($FF4BAB)==$08)or(peek($FF4BAB)==$08))
+            dpoke choice $02FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0200)and((peek($FF4BAB)==$08)or(peek($FF4BAB)==$08))
+            dpoke choice $01FF
+            printed=0
+        endif
+        if (dpeek(choice)==$0100)and((peek($FF4BAB)==$08)or(peek($FF4BAB)==$08))
+            dpoke choice $00FF
+            printed=0
+        endif
+        #Menu Text#
+        if !printed
+            poke $908E73 $14 #Text Color#
+            poke $908EF3 $14
+            poke $908F73 $14
+            poke $908FF3 $14
+            poke $909073 $14
+            poke $9090F3 $14
+            poke $909173 $14
+            poke $9091F3 $14
+            if (peek(choice)==$00) #Arcade#
+                poke $908E71 ' '
+                poke $908EF1 'A'
+                poke $908F71 'R'
+                poke $908FF1 'C'
+                poke $909071 'A'
+                poke $9090F1 'D'
+                poke $909171 'E'
+                poke $9091F1 ' '
+                printed=1
+            elsif (peek(choice)==$01) #Versus#
+                poke $908E71 ' '
+                poke $908EF1 'V'
+                poke $908F71 'E'
+                poke $908FF1 'R'
+                poke $909071 'S'
+                poke $9090F1 'U'
+                poke $909171 'S'
+                poke $9091F1 ' '
+                printed=1
+            elsif (peek(choice)==$02) #Training#
+                poke $908E71 'T'
+                poke $908EF1 'R'
+                poke $908F71 'A'
+                poke $908FF1 'I'
+                poke $909071 'N'
+                poke $9090F1 'I'
+                poke $909171 'N'
+                poke $9091F1 'G'
+                printed=1
+            elsif (peek(choice)==$03) #Option#
+                poke $908E71 ' '
+                poke $908EF1 'O'
+                poke $908F71 'P'
+                poke $908FF1 'T'
+                poke $909071 'I'
+                poke $9090F1 'O'
+                poke $909171 'N'
+                poke $9091F1 ' '
+                printed=1
+            endif
+        endif
+    endif
+    #Arcade Mode Script#
+    if (peek(choice)==$00)and(peek($FF4885)==$04)
+        poke credits $09 #Infinity Credits#
+    endif
+    #Versus Mode Script#
+    if (peek(choice)==$01)
+        poke $FF48A3 $03 #Prevent Continue Text#
+        if (peek($FF4885)==$04)and((peek($FF4003)==$00)or(peek($FF4403)==$00)) #Player Select Screen#
+            poke $FF4881 $03
+            poke $FF4912 $03
+            poke $FF4003 $01
+            poke $FF4403 $01
+        endif
+        if (peek($FF4885)==$0C)and(peek($FF4887)==$04)and(peek($FF48D9)>$00)and(peek($FF48D9)<=$04) #Return#
+            poke $FF4885 $00
+        endif
+    endif
+    #Training Mode Script#
+    if (peek(choice)==$02)
+        if (peek($FF4885)==$04) #Player Select Screen#
+            if (peek($FF4003)==$00)or(peek($FF4403)==$00)
+                poke $FF4881 $03
+                poke $FF4912 $03
+                poke $FF4003 $01
+                poke $FF4403 $01
+                poke $FF48A3 $03 #Prevent Continue Text#
+            endif
+            if (peek($FF4BAB)>$00)or(peek($FF4BAA)>$00) #P1 Buttons 'stopper'#
+                poke $ff2003 $FF
+            endif
+            if (peek($FF4BAB)==$00)and(peek($FF4BAA)==$00) #P1 Buttons 'resumer'#
+                poke $ff2003 $00
+            endif
+            if (peek($FF4BAD)>$00)or(peek($FF4BAC)>$00) #P2 Buttons 'stopper'#
+                poke $ff2004 $FF
+            endif
+            if (peek($FF4BAD)==$00)and(peek($FF4BAC)==$00) #P2 Buttons 'resumer'#
+                poke $ff2004 $00
+            endif
+            if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$02)and(peek($ff2003)==$00) #Switching control#
+                poke $B0D $00
+                poke $B1D $01
+                poke $B17 $AC
+                poke $B35 $AA
+                poke $ff2005 01
+            endif
+            if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$01)and(peek($ff2004)==$00) #Switching control#
+                poke $B0D $00
+                poke $B1D $01
+                poke $B17 $AC
+                poke $B35 $AA
+                poke $ff2005 02
+            endif
+            if (peek($FF4907)==$02)and((peek($FF4919)==$00)and(peek($FF491B)==$00)) #Restore to original#
+                poke $B0D $01
+                poke $B1D $00
+                poke $B17 $AA
+                poke $B35 $AC
+            endif
+            if (peek($FF4907)==$04)and(peek($ff2005)==$01)and(peek($FF4919)==$01)and(peek($ff2003)==$00) #Switching control#
+                poke $B0D $00
+                poke $B1D $01
+                poke $B17 $AC
+                poke $B35 $AA
+            endif
+            if (peek($FF4907)==$04)and(peek($ff2005)==$02)and(peek($FF491B)==$01)and(peek($ff2004)==$00) #Switching control#
+                poke $B0D $00
+                poke $B1D $01
+                poke $B17 $AC
+                poke $B35 $AA
+            endif
+            if (peek($FF4919)==$01)and(peek($FF491B)==$01) #Restore to original, P1 or P2 stage#
+                if (peek($ff2005)==$01)
+                    poke $FF4881 $03
+                    poke $FF4003 $01
+                    poke $FF4403 $00
+                endif
+                if (peek($ff2005)==$02)
+                    poke $FF4881 $03
+                    poke $FF4003 $00
+                    poke $FF4403 $01
+                endif
+                poke $B0D $01 #Restore to original#
+                poke $B1D $00
+                poke $B17 $AA
+                poke $B35 $AC
+            endif
+        endif
+        if (peek($FF4885)==$08)
+            poke $FF48A3 $03
+            if (peek($FF0040)==$00)and((peek($FF4BAE)==$01)or(peek($FF4BAE)==$02)) #Return to Character Select#
+                poke $FF0040 $01
+                poke $FF4885 $00
+            endif
+            poke $FF4809 $28 #Battle Parameters#
+            poke $FF4191 $8F
+            poke $FF4198 $02
+            poke $FF4195 $8E
+            poke $FF4591 $8F
+            poke $FF4598 $02
+            poke $FF4595 $8E
+        endif
+    endif
+    #Option Mode Script#
+    if (peek(choice)==$03)and(peek($FF4881)==$01)
+        poke $FF4BAF $FF
+        printed=0
+    endif
+    #Pause Function Script#
+    if (peek($FF4885)==$08)and(peek($FF4807)==$FF)
+        if (peek($FF4BAE)==$00)
+            poke $FF2002 $00
+        endif
+        if (peek($FF0040)==$01)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
+            poke $FF0040 $00
+            poke $FF2002 $FF
+        endif
+        if (peek($FF0040)==$00)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
+            poke $FF0040 $01
+            poke $FF2002 $FF
+        endif
+    endif
+off:
+    poke $B0D $01 #Restore to original#
+    poke $B1D $00
+    poke $B17 $AA
+    poke $B35 $AC
+    poke $6B6F0 'INSERT COIN@'
+
+script "Enable Bosses" \
+ "comm:Highlight Colossus, Psylocke or Silver Samurai and hold the down button, then press any buttons to select the bosses"
+run:
+    if (peek($FF4885)==$04)
+        #For Bosses P1#
+        if (peek($FF4912)==$01)or(peek($FF4912)==$03)
+            if (peek($FF4900)<=$04) #Buttons 'stopper'#
+                poke $FF2010 $FF
+            endif
+            if (peek($FF4900)>=$05)and(peek($FF4BAB)==$00) #Buttons 'resumer'#
+                poke $FF2010 $00
+            endif
+            if (peek($FF4900)==$07)and(peek($FF2010)==$00)and(peek($FF4BAB)==$04)
+                p1char=peek($FF4900)
+                poke $FF4900 $0C
+            endif
+            if (peek($FF4900)==$0C)and(peek($FF4BAB)==$00)
+                poke $FF4900 p1char
+            endif
+            if (peek($FF4900)==$06)and(peek($FF4BAB)==$04)and(peek($FF2010)==$00)
+                p1char=peek($FF4900)
+                poke $FF4900 $0A
+            endif
+            if (peek($FF4900)==$0A)and(peek($FF4BAB)==$00)
+                poke $FF4900 p1char
+            endif
+            if (peek($FF4900)==$08)and(peek($FF4BAB)==$04)and(peek($FF2010)==$00)
+                p1char=peek($FF4900)
+                poke $FF4900 $0B
+            endif
+            if (peek($FF4900)==$0B)and(peek($FF4BAB)==$00)
+                poke $FF4900 p1char
+            endif
+        endif
+        #For Bosses P2#
+        if (peek($FF4912)==$02)or(peek($FF4912)==$03)
+            if (peek($FF4902)<=$04) #Buttons 'stopper'#
+                poke $FF2011 $FF
+            endif
+            if (peek($FF4902)>=$05)and(peek($FF4BAD)==$00) #Buttons 'resumer'#
+                poke $FF2011 $00
+            endif
+            if (peek($FF4902)==$07)and(peek($FF2011)==$00)and(peek($FF4BAD)==$04)
+                p2char=peek($FF4902)
+                poke $FF4902 $0C
+            endif
+            if (peek($FF4902)==$0C)and(peek($FF4BAD)==$00)
+                poke $FF4902 p2char
+            endif
+            if (peek($FF4902)==$06)and(peek($FF4BAD)==$04)and(peek($FF2011)==$00)
+                p2char=peek($FF4902)
+                poke $FF4902 $0A
+            endif
+            if (peek($FF4902)==$0A)and(peek($FF4BAD)==$00)
+                poke $FF4902 p2char
+            endif
+            if (peek($FF4902)==$08)and(peek($FF4BAD)==$04)and(peek($FF2011)==$00)
+                p2char=peek($FF4902)
+                poke $FF4902 $0B
+            endif
+            if (peek($FF4902)==$0B)and(peek($FF4BAD)==$00)
+                poke $FF4902 p2char
+            endif
+        endif
+    endif
+    #Boss Battle & Ending Fix in Arcade Mode#
+    if peek(choice)==$00
+        if (peek($FF4003)==$01)and(peek($FF4403)==$00)
+            if (peek($FF4900)==$0B) #Fix for P1 Magneto Play#
+                poke $FF4923 $18
+            endif
+            if (peek($FF4900)!=$0B) #Normal case for P1 Play#
+                poke $FF4923 $16
+            endif
+            if (peek($FF4900)==$0B)and(peek($FF4451)==$18) #Fix for P1 Akuman Stage Select & Magneto Ending#
+                poke $FF488F $0B
+                if (peek($FF4885)==$1C)and(peek($FF4887)==$02)and(peek($FF2464)==$0F)
+                    poke $FF4887 $0A
+                endif
+            endif
+            if (peek($FF4900)==$0A)and(peek($FF4451)==$16) #Fix for P1 Juggernaut Ending#
+                if (peek($FF4885)==$1C)and(peek($FF4887)==$02)and(peek($FF2464)==$0F)
+                    poke $FF4887 $0A
+                endif
+            endif
+        endif
+        if (peek($FF4003)==$00)and(peek($FF4403)==$01)
+            if (peek($FF4902)==$0B) #Fix for P2 Magneto Play#
+                poke $FF4923 $18
+            endif
+            if (peek($FF4902)!=$0B) #Normal case for P2 Play#
+                poke $FF4923 $16
+            endif
+            if (peek($FF4902)==$0B)and(peek($FF4051)==$18) #Fix for P2 Akuman Stage Select & Magneto Ending#
+                poke $FF488F $0B
+                if (peek($FF4885)==$1C)and(peek($FF4887)==$02)and(peek($FF2464)==$0F)
+                    poke $FF4887 $0A
+                endif
+            endif
+            if (peek($FF4902)==$0A)and(peek($FF4051)==$16) #Fix for P2 Juggernaut Ending#
+                if (peek($FF4885)==$1C)and(peek($FF4887)==$02)and(peek($FF2464)==$0F)
+                    poke $FF4887 $0A
+                endif
+            endif
+        endif
+    endif
+    #Skip Boss intro for human player#
+    if (peek($FF488F)==$0B)and(peek($FF4003)==$01)and(peek($FF4403)==$01)
+        if (peek($FF4011)==$B0)and(peek($FF4005)!=$02)
+            poke $FF4001 $00
+            lpoke $FF400A $000E0100
+        endif
+        if (dpeek($FF4010)==$0115)
+            poke $FF4001 $01
+        endif
+        if (peek($FF4411)==$B0)and(peek($FF4405)!=$02)
+            poke $FF4401 $00
+            lpoke $FF440A $000E0200
+        endif
+        if (dpeek($FF4410)==$0115)
+            poke $FF4401 $01
+        endif
+    endif
+    #Enable Bosses stage in versus mode#
+    if (peek(choice)==$01)
+        if (peek($FF4885)==$04)and(peek($FF4919)==$01)and(peek($FF491B)==$01)
+            if rnd()<=127
+                poke $FF4003 $01
+                poke $FF4403 $00
+                else
+                poke $FF4003 $00
+                poke $FF4403 $01
+            endif
+        endif
+    endif
+
