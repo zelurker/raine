@@ -670,26 +670,48 @@ static void do_poke(int argc, char **argv) {
     throw("syntax: poke adr value");
 
   UINT32 adr = parse(argv[1]);
-  UINT32 val  = parse(argv[2]);
   UINT8 *ptr = get_ptr(adr);
   UINT8 *ptr2 = ptr;
+  int param_str = argv[2][0] == 39; // '
 
   if (!ptr) {
-      gen_cpu_write_byte(adr,val);
+      if (param_str) {
+	  for (unsigned int n=1; n<strlen(argv[2])-1; n++)
+	      gen_cpu_write_byte(adr+n-1,argv[2][n]);
+      } else {
+	  UINT32 val  = parse(argv[2]);
+	  gen_cpu_write_byte(adr,val);
+      }
       return;
   }
 
   int cpu = cpu_id >> 4;
   if (cpu == CPU_Z80)
       ptr2 = Z80_context[cpu_id & 0xf].z80Base;
+  UINT32 val;
+  if (!param_str)
+      val = parse(argv[2]);
   if (!strcasecmp(argv[0],"poke")) {
-      if (cpu== CPU_68000) // 68k
-	  ptr[adr^1] = val;
-      else {
-	  ptr[adr] = val;
-	  ptr2[adr] = val;
+      if (cpu== CPU_68000) {// 68k
+	  if (param_str) {
+	      for (u32 n=1; n<strlen(argv[2])-1; n++)
+		  ptr[(adr+n-1)^1] = argv[2][n];
+	  } else {
+	      ptr[adr^1] = val;
+	  }
+      } else {
+	  if (param_str) {
+	      for (uint n=1; n<strlen(argv[2])-1; n++) {
+		  ptr[adr+n-1] = argv[2][n];
+		  ptr2[adr+n-1] = argv[2][n];
+	      }
+	  } else {
+	      ptr[adr] = val;
+	      ptr2[adr] = val;
+	  }
       }
   } else if (!strcasecmp(argv[0],"dpoke")) {
+      if (param_str) throw "dpoke: can't handle string parameter";
       if (cpu == CPU_68020)
 	  WriteWord68k(&ptr[adr],val);
       else {
@@ -697,6 +719,7 @@ static void do_poke(int argc, char **argv) {
 	  WriteWord(&ptr2[adr],val);
       }
   } else if (!strcasecmp(argv[0],"lpoke")) {
+      if (param_str) throw "lpoke: can't handle string parameter";
       if (cpu == CPU_68000) {
 	  WriteLongSc(&ptr[adr],val);
       } else if (cpu == CPU_68020)
@@ -1367,7 +1390,7 @@ commands_t commands[] =
   { "peek", NULL, "peek(adr) : returns a byte from memory"},
   { "dpeek", NULL, "dpeek(adr) : returns a word from memory"},
   { "lpeek", NULL, "lpeek(adr) : returns a long from memory"},
-  { "poke", &do_poke, "\E[32mpoke/dpoke/lpoke\E[0m adr value : put the byte/word/long in ram"},
+  { "poke", &do_poke, "\E[32mpoke/dpoke/lpoke\E[0m adr value : put the byte/word/long in ram","poke can now also accept a char or a string parameter for its value, enclosed between ' like this :\npoke adr 'abc'\nIt can be used when you want to poke an ascii code to ram, 1 char only then, or if you get lucky enough to be able to send a whole string, very rare with some arcade hardware, unless you change the rom itself !"},
   { "dpoke", &do_poke },
   { "lpoke", &do_poke },
   { "print_ingame", &do_print_ingame, "\E[32mprint_ingame\E[0m nb_frames msg [arguments...]\nthis is a script command only, it useless from the console.\nDisplays a message at the bottom of the screen while the game is running\n(max 3 arguments)" },
