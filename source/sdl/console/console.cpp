@@ -672,7 +672,7 @@ static void do_poke(int argc, char **argv) {
   UINT32 adr = parse(argv[1]);
   UINT8 *ptr = get_ptr(adr);
   UINT8 *ptr2 = ptr;
-  int param_str = argv[2][0] == 39; // '
+  int param_str = argv[2][0] == 39 || argv[2][0] == 34; // ' or "
 
   if (!ptr) {
       if (param_str) {

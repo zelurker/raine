@@ -13,7 +13,10 @@
 #include "SDL_gfx/SDL_gfxPrimitives.h"
 #include "console/scripts.h"
 
-void split_command(char *field, char **argv, int *argc, int max) {
+void split_command(char *field, char **argv, int *argc, int max, int strip_quotes) {
+    // strip_quotes is now a parameter because quotes are a handy way to pass strings
+    // and if they are stripped then there is no way to make the difference between a string and a variable name if there is no space
+    // the only place where stripping quotes is really useful is in init_scripts, so it uses this parameter for that.
   char *quote = strrchr(field,'"'); // Ensure that comments are not inside a string !!!
   if (quote)
       quote++;
@@ -51,7 +54,7 @@ void split_command(char *field, char **argv, int *argc, int max) {
 	  while (*s == ' ' || *s==9)
 	      s++;
 	  if (*s) {
-	      if (*s == '"') {
+	      if (strip_quotes && *s == '"') {
 		  s++;
 		  char *e = strchr(s,'"');
 		  if (e) {

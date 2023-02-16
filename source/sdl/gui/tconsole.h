@@ -20,7 +20,7 @@ typedef struct {
 UINT32 ansilen(const char *s);
 int ansi_pos(char *s,int pos);
 char* ansistr(char *s,int n);
-void split_command(char *field, char **argv, int *argc, int max);
+void split_command(char *field, char **argv, int *argc, int max,int strip_quotes = 0);
 
 #ifdef __cplusplus
 }
