@@ -701,7 +701,7 @@ static void do_poke(int argc, char **argv) {
 	  }
       } else {
 	  if (param_str) {
-	      for (uint n=1; n<strlen(argv[2])-1; n++) {
+	      for (u32 n=1; n<strlen(argv[2])-1; n++) {
 		  ptr[adr+n-1] = argv[2][n];
 		  ptr2[adr+n-1] = argv[2][n];
 	      }
