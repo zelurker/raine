@@ -469,6 +469,8 @@ int TConsole::parse_cmd(char *string) {
 }
 
 int TConsole::run_cmd(char *string) {
+    if (string[0] == '#' || string[0] == ';')
+	return 0; // comment
     if (interactive) {
 	interactive(string);
 	temp[0] = 0;
@@ -501,7 +503,7 @@ int TConsole::run_cmd(char *string) {
 	    char *section;
 	    if (get_running_script_info(&nb,&line,&section)) {
 		// Line numbers are unprecise because lines with only a comment are jumped
-		sprintf(msg,"script: %s\nsection: %s\nline: %d+\n\n",
+		sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
 			get_script_title(nb),
 			section,
 			line+1);

@@ -347,7 +347,7 @@ int parse(char *orig)
 	sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
 		get_script_title(nb),
 		section,
-		line);
+		line+1);
     }
     strncat(msg, e.GetMsg().c_str(),240-strlen(msg));
 #ifdef RAINE_DEBUG
