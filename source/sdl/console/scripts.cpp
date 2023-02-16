@@ -242,8 +242,6 @@ void init_scripts() {
 		    n++;
 		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
-		if (buff[n] == '#')
-		    continue; // don't keep comments !
 		if (!strcmp(&buff[n],"on:")) {
 		    on = true;
 		    off = run = change = false;
@@ -297,8 +295,6 @@ void init_scripts() {
 		    n++;
 		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
-		if (buff[n] == '#')
-		    continue; // don't keep comments !
 		if (!strcmp(&buff[n],"on:")) {
 		    lines = script[nb_scripts].on;
 		    l = 0;
@@ -480,6 +476,7 @@ void update_scripts() {
 		}
 
 		for ( sline=0; script[n].run[sline]; sline++) {
+		    if (*script[n].run[sline] == '#') continue;
 		    if (parsing) {
 			run_console_command(script[n].run[sline]);
 			int argc; char **argv; void (*cmd)(int, char **);
