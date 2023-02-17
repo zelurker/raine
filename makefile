@@ -1195,19 +1195,20 @@ OBJS +=	 \
 	$(OBJDIR)/sdl/control.o \
 	$(OBJDIR)/sdl/opengl.o \
 	$(OBJDIR)/math/matrix.o \
-	$(OBJDIR)/sdl/glsl.o \
-	$(OBJDIR)/sdl/profile.o
+	$(OBJDIR)/sdl/glsl.o
 
 ifeq (${SDL},1)
 OBJS += $(OBJDIR)/sdl/blit.o \
 	$(OBJDIR)/sdl/display.o \
 	$(OBJDIR)/sdl/winpos.o \
+	$(OBJDIR)/sdl/profile.o \
 	$(OBJDIR)/sdl/compat.o
 else
 OBJS += $(OBJDIR)/sdl2/blit.o \
 	$(OBJDIR)/sdl2/display.o \
 	$(OBJDIR)/sdl2/controllermap.o \
-	$(OBJDIR)/sdl2/compat.o
+	$(OBJDIR)/sdl2/compat.o \
+	$(OBJDIR)/sdl2/profile.o
 endif
 
 ifdef USE_CURL

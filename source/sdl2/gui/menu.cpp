@@ -104,6 +104,7 @@
 #include "neocd/neocd.h"
 #include "newmem.h" // GetMemoryPoolSize
 #include "control_internal.h"
+#include "profile.h"
 
 #define SPACE_HEADER 10 // space between the header and the normal menu entries
 
@@ -130,7 +131,8 @@ menu_item_t menu_options[] =
   { _("Return mandatory"), NULL, &return_mandatory, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("GUI transparency"), NULL, &use_transparency, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Minimum GUI resolution = VGA"), NULL,&keep_vga, 2, { 0,1 }, { _("No"),_("Yes") }},
-  { _("Background animation"), NULL, &bg_anim, 3, { 0, 1, 2 }, { _("Standard"), _("Static"), _("Black") } }
+  { _("Background animation"), NULL, &bg_anim, 3, { 0, 1, 2 }, { _("Standard"), _("Static"), _("Black") } },
+  { _("Profiler mode"), NULL, &profiler_mode,2, {0, 1}, { "RDTSC", "SDL performance counter" } },
 };
 
 int fg_color = mymakecol(255,255,255),
@@ -148,7 +150,8 @@ int add_menu_options(menu_item_t *menu) {
   menu[1] = menu_options[1];
   menu[2] = menu_options[2];
   menu[3] = menu_options[3];
-  return 4;
+  menu[4] = menu_options[4];
+  return 5;
 }
 
 void sort_menu(menu_item_t *menu) {

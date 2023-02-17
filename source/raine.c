@@ -477,6 +477,9 @@ int main(int argc,char *argv[])
 
    raine_cfg.run_count		= raine_get_config_int( "General",      "run_count",                            0);
    raine_cfg.no_curl		= raine_get_config_int( "General",      "no_curl",                              0);
+#if SDL == 2
+   profiler_mode = raine_get_config_int("General", "profiler_mode", 0); // 0 = rdtsc, 1 = sdl performance counter (SDL2 only)
+#endif
    raine_cfg.version_no 	= raine_get_config_int( "General",      "version",                              0);
 
    s = strchr(VERSION,'.');
@@ -776,6 +779,9 @@ int main(int argc,char *argv[])
 
    raine_set_config_int(	"General",      "run_count",            raine_cfg.run_count);
    raine_set_config_int(	"General",      "no_curl",              raine_cfg.no_curl);
+#if SDL == 2
+   raine_set_config_int(	"General",      "profiler_mode",        profiler_mode);
+#endif
    raine_set_config_int(	"General",      "version",              raine_cfg.version_no);
    raine_set_config_int(	"General",      "LimitSpeed",           display_cfg.limit_speed);
    raine_set_config_int(	"General",      "frame_skip",           display_cfg.frame_skip);
