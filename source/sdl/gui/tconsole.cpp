@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <muParser.h>
+#include "console/muParser.h"
 #include "raine.h"
 #include "version.h"
 #include "tfont.h"

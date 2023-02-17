@@ -65,7 +65,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
-# target=i686-w64-mingw32
+target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
@@ -1008,18 +1008,14 @@ CONSOLE = \
 	$(OBJDIR)/sdl/console/scripts.o \
 	$(OBJDIR)/sdl/console/if.o \
 	$(OBJDIR)/sdl/gui/tconsole.o \
-	$(OBJDIR)/sdl/console/exec.o
+	$(OBJDIR)/sdl/console/exec.o \
+	$(OBJDIR)/sdl/console/muParser.o \
+	$(OBJDIR)/sdl/console/muParserBase.o \
+	$(OBJDIR)/sdl/console/muParserBytecode.o \
+	$(OBJDIR)/sdl/console/muParserCallback.o \
+	$(OBJDIR)/sdl/console/muParserError.o \
+	$(OBJDIR)/sdl/console/muParserTokenReader.o
 
-ifdef DARWIN
-ifdef FRAMEWORK
-LIBS += -framework muparser
-else
-LIBS += -lmuparser
-endif
-else # DARWIN
-LIBS += -lmuparser
-endif
-LIBS_DEBUG += -lmuparser
 endif
 
 ifdef SDL
@@ -1760,7 +1756,7 @@ endif
 test_gui: $(OBJDIR)/test_gui.o $(OBJDIR)/sdl2/gui/menu.o $(OBJDIR)/sdl/gui/widget.o $(OBJDIR)/sdl/gui/tslider.o $(OBJDIR)/sdl2/gui/tedit.o $(OBJDIR)/sdl2/SDL_gfx/SDL_gfxPrimitives.o \
 	$(OBJDIR)/sdl/gui/tfont.o $(OBJDIR)/sdl/gui/tlift.o $(OBJDIR)/sdl/SDL_gfx/SDL_framerate.o $(OBJDIR)/sdl/gui/tconsole.o $(OBJDIR)/sdl/dialogs/messagebox.o \
 	$(OBJDIR)/sdl2/SDL_gfx/SDL_rotozoom.o
-	$(LDV) $(LDFLAGS) $(LFLAGS) -o $@ -DSDL=2 `sdl2-config --cflags` `sdl2-config --libs` $^ -lSDL2_image -lSDL2_ttf -lmuparser
+	$(LDV) $(LDFLAGS) $(LFLAGS) -o $@ -DSDL=2 `sdl2-config --cflags` `sdl2-config --libs` $^ -lSDL2_image -lSDL2_ttf
 
 uninstall:
 ifdef RAINE_UNIX

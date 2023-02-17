@@ -1,6 +1,6 @@
 #include "z80/mz80help.h"
 #include "68020/u020help.h"
-#include <muParser.h>
+#include "muParser.h"
 #include <stdio.h>
 #include "compat.h"
 #include "dialogs/messagebox.h"
