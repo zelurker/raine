@@ -545,9 +545,12 @@ static int do_ips(int sel) {
 	u32 ofs = (ofs_str[0] << 16) | (ofs_str[1] << 8) | ofs_str[2];
 	u16 len = (len_str[0] << 8) | len_str[1];
 	if (len == 0) {
-	    MessageBox("IPS Error", "RLE not supported yet, sorry","ok");
-	    fclose(f);
-	    return 0;
+	    // rle block : len, followed by byte
+	    fread(len_str,1,2,f);
+	    u16 len = (len_str[0] << 8) | len_str[1];
+	    fread(ofs_str,1,1,f);
+	    memset(&ROM[ofs],ofs_str[0],len);
+	    continue;
 	}
 	char buf[len];
 	n = fread(buf,1,len,f);
@@ -596,13 +599,13 @@ int TMain_menu::can_be_displayed(int n) {
     switch(n) {
     case 0: // Play Game
     case 1: // game options
+    case 4: // ips
 	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
     case 5: // Region
 	return current_game != NULL && current_game->romsw != NULL;
     case 3: // cheats
-    case 4: // ips
 	return current_game != NULL && (CheatCount > 0
 #ifdef HAS_CONSOLE
 		|| nb_scripts > 0
