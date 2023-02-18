@@ -57,10 +57,15 @@ my @file = <F>;
 close(F);
 my (%def,%args) = ();
 
+my $comment = undef;
 while ($_ = shift @file) {
 	chomp;
 	s/\r//;
-	if (/^#define (.+?)( .+)/ || /^#define (.+)/) {
+	if ($comment) {
+		$comment = undef if (/\*\//);
+		say;
+		next;
+	} elsif (/^#define (.+?)( .+)/ || /^#define (.+)/) {
 		my $name = $1;
 		my $fin = $2;
 		my $args = undef;
@@ -272,7 +277,7 @@ while ($_ = shift @file) {
 				s/\r$//;
 				my $line = $_;
 				foreach (keys %def) {
-					if ($line =~ /^[ \t]*$_/) {
+					if (index($line,$_) > 0) {
 						if ($_ eq "NEOGEO_BIOS") {
 							print STDERR "skipping neogeo_bios\n";
 							last;
@@ -318,6 +323,9 @@ while ($_ = shift @file) {
 			my $genre = genres::get_genre($args[2],$long);
 			say "CLNEI( $args[1],$args[2],$args[$rot+2],$args[$rot+1],$args[0], $genre );";
 		}
+	} elsif (/\/\*/ && !/\*\//) {
+		$comment = 1;
+		say;
 	}
 }
 
