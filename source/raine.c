@@ -226,6 +226,7 @@ int main(int argc,char *argv[])
 		 "roms",
 		 "demos",
 		 "artwork",
+		 "ips",
 #ifdef HAS_CONSOLE
 		 "debug",
 #endif

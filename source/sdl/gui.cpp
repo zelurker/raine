@@ -519,7 +519,7 @@ static int load_neo_game(int sel) {
 static int do_ips(int sel) {
     char res[1024];
     char *exts[] = { ".ips", NULL };
-    fsel(dir_cfg.exe_path,exts,res,_("Select IPS file"));
+    fsel(get_shared("ips"),exts,res,_("Select IPS file"));
     if (!*res) return 0;
     // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
     // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
