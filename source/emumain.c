@@ -59,6 +59,9 @@
 #ifdef HAS_CONSOLE
 #include "console/scripts.h"
 #endif
+#ifdef GENS_SH2
+#include "gens_sh2/sh2.h"
+#endif
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
@@ -603,6 +606,11 @@ void reset_game_hardware(void)
       print_ingame(120,gettext("CPU M6502#2 Reset"));
    }
 #endif
+#ifdef GENS_SH2
+   if (sh2Engine) {
+       SH2_Reset(&M_SH2,0);
+   }
+#endif
 
    stop_cpu_main();
 
@@ -622,5 +630,8 @@ void reset_game_hardware(void)
 	 hist_open("command.dat",parent_name());
    }
 
+#if HAS_CONSOLE
+   stop_scripts();
+#endif
    print_debug("reset_game_hardware(): OK\n");
 }
