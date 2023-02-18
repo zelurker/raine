@@ -1430,6 +1430,7 @@ commands_t commands[] =
       "Equivalent to turn a script on using the cheats dialog (when it's not hidden)" },
   { "step", &do_step, "(s)\E[32mtep\E[0m : execute next instruction" },
   { "s", &do_step },
+  { "stop", &do_stop, "\E[32mstop\E[0m [\"name\"] : stop the script, without parameter : current script" },
   { "until", &do_until, "\E[32m(u)ntil\E[0m pc : executes cycles until pc reaches value given in parameter. Can be interrupted with ESC or Ctrl-C" },
   { "u", &do_until },
   { "watch", &do_watch, "\E[32mwatch\E[0m [read] [adr] [size] [value] : adds/lists watchpoints", "when passing adr, adds a watch point on adr (2 actually, 1 for the byte, and 1 for the word), which are trigered everytime something is writen to this adress.\n"

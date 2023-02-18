@@ -9,6 +9,8 @@
 
 #define MAX_PARAM 190
 
+extern int active_if_script_section();
+
 typedef struct {
     int argc;
     char **argv;
@@ -455,6 +457,26 @@ void add_scripts(menu_item_t *menu) {
 
 extern double frame;
 
+void do_stop(int argc, char **argv) {
+    // Without argument, it's handled directly by update_scripts
+    if (argc == 2) {
+	char *s = argv[1];
+	char old = 0;
+	if (*s == '"' || *s == 39) {
+	    s++;
+	    old = s[strlen(s)-1];
+	    s[strlen(s)-1] = 0;
+	}
+	for (int n=0; n<nb_scripts; n++) {
+	    if (!strcmp(script[n].title,s)) {
+		script[n].status = 0;
+		break;
+	    }
+	}
+	if (old) s[strlen(s)-1] = old;
+    }
+}
+
 void update_scripts() {
     if (!nb_scripts) return;
     int n;
@@ -501,6 +523,11 @@ void update_scripts() {
 			    printf("\n");
 			    exit(1);
 			}
+		    }
+		    if (active_if_script_section() && script[n].parsed[sline].argc == 1 && !strcmp(script[n].parsed[sline].argv[0],"stop")) {
+			// stop current script
+			script[n].status = 0;
+			break;
 		    }
 		}
 		running--;

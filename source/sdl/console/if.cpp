@@ -139,3 +139,7 @@ void do_if(int argc, char **argv) {
   }
 }
 
+int active_if_script_section() {
+    // true if outside any if block or if in an executed if block
+    return (!cons->interactive || cons->interactive == &exec_if);
+}
