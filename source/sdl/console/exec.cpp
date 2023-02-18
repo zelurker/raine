@@ -443,7 +443,7 @@ static void set_offs(int adr, int offset, int line) {
 }
 
 static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
-   char *header)
+   char *header, int target=0)
 {
   char name[1024];
   char dir[FILENAME_MAX];
@@ -459,11 +459,12 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   char cmd[1024];
   int cpu_id = get_cpu_id()>>4;
   int has_pc = 0;
-  if (pc >= start && pc < end) {
+  if ((pc >= start && pc < end) || target) {
       FILE *f = fopen("pc","w");
       if (f) {
 	  has_pc = 1;
-	  fprintf(f,"%d\n",int(pc));
+	  if (pc >= start && pc < end) fprintf(f,"%d\n",int(pc));
+	  if (target) fprintf(f,"%d\n",target);
 	  fclose(f);
       }
   }
@@ -573,7 +574,7 @@ static FILE *open_asm(UINT32 target) {
 
   FILE *f = fopen(str,"rb");
   if (!f) {
-    generate_asm(str,start,end,ptr,checksum);
+    generate_asm(str,start,end,ptr,checksum,target);
     f = fopen(str,"rb");
     myfgets(buf,256,f);
   } else {
