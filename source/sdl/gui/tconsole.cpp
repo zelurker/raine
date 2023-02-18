@@ -468,7 +468,7 @@ int TConsole::parse_cmd(char *string) {
   return 0;
 }
 
-int TConsole::run_cmd(char *string) {
+int TConsole::run_cmd(char *string,int myinteractive) {
     if (string[0] == '#' || string[0] == ';')
 	return 0; // comment
     if (interactive) {

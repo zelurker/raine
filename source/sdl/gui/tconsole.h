@@ -90,7 +90,7 @@ class TConsole : public TDialog
       interactive = NULL;
     }
     virtual void  execute();
-    virtual int run_cmd(char *field);
+    virtual int run_cmd(char *field,int myinteractive=1);
     void set_visible() { visible = 1; }
     int is_visible() { return visible; }
     void get_parsed_info(int *myargc, char ***myargv,void (**mycmd)(int, char **) );
