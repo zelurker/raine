@@ -2,6 +2,7 @@
 #include <SDL_image.h>
 #include <time.h>
 #include <dirent.h>
+#include <sys/stat.h>
 #include "display.h"
 #include "dejap.h"
 #include "games/games.h"
@@ -518,8 +519,13 @@ static int load_neo_game(int sel) {
 static int do_ips(int sel) {
     char res[1024];
     char *exts[] = { ".ips", NULL };
-    fsel(dir_cfg.exe_path,exts,res,_("Load Neo-Geo CD game"));
+    fsel(dir_cfg.exe_path,exts,res,_("Select IPS file"));
     if (!*res) return 0;
+    // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
+    // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
+    struct stat stbuf;
+    if (!stat(res,&stbuf) && S_ISDIR(stbuf.st_mode))
+	return 0; // it's a dir indeed
     FILE *f = fopen(res,"rb");
     if (!f) return 0;
     char buf[6];
@@ -527,6 +533,7 @@ static int do_ips(int sel) {
     if (strncmp(buf,"PATCH",5)) {
 	fclose(f);
 	MessageBox("Error",_("Bad IPS header"), "Ok");
+	return 0;
     }
     do {
 	unsigned char ofs_str[4], len_str[2];
@@ -547,12 +554,12 @@ static int do_ips(int sel) {
 	if (n < len) {
 	    MessageBox("IPS Error","Preamture eof", "ok");
 	    fclose(f);
-	    break;
+	    return 0;
 	}
 	memcpy(&ROM[ofs],buf,len); // no swap...
     } while (!feof(f));
     fclose(f);
-    MessageBox("IPS ok", "everything went well apparently, IPS applied","ok");
+    MessageBox("IPS ok", _("everything went well apparently, IPS applied"),"ok");
     return 0;
 }
 
@@ -595,6 +602,7 @@ int TMain_menu::can_be_displayed(int n) {
     case 5: // Region
 	return current_game != NULL && current_game->romsw != NULL;
     case 3: // cheats
+    case 4: // ips
 	return current_game != NULL && (CheatCount > 0
 #ifdef HAS_CONSOLE
 		|| nb_scripts > 0
