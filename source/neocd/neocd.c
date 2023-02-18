@@ -4781,9 +4781,7 @@ void load_neocd() {
 	} else if (is_current_game("kof2002")) {
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0xec);
-	} else if (is_current_game("kf2k5uni"))
-	    decrypt_kf2k5uni();
-	else if (is_current_game("matrim")) {
+	} else if (is_current_game("matrim")) {
 	    fixed_layer_bank_type = 2;
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x6a);
@@ -4960,7 +4958,9 @@ void load_neocd() {
 	    } else if (is_current_game("kof2002")) {
 		kof2002_decrypt_68k();
 		neo_pcm2_swap(0);
-	    } else if (is_current_game("mslug5") || is_current_game("mslug5h")) {
+	    } else if (is_current_game("kf2k5uni"))
+		decrypt_kf2k5uni();
+	    else if (is_current_game("mslug5") || is_current_game("mslug5h")) {
 		mslug5_decrypt_68k();
 		if (!init_pvc()) return;
 	    } else if (is_current_game("svc")) {
