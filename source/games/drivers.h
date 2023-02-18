@@ -1008,6 +1008,7 @@
   DRV(kof2000ps2)
   DRV(kof2k1bs)
   DRV(kf2k3ps2)
+  DRV(kf2k5uni)
 
 // ninjak.c
   DRV(ninjak)
@@ -1342,4 +1343,8 @@
 DRV(gauntlet)
 DRV(gauntlets)
 DRV(gaunt2)
+
+#ifdef GENS_SH2
+    DRV(gunbird2)
+#endif
 

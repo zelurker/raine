@@ -4570,6 +4570,53 @@ static UINT16 neogeo_unmapped_r(UINT32 offset) {
     return ReadWord(&ROM[pc]);
 }
 
+/* The King of Fighters 10th Anniversary 2005 Unique (The King of Fighters 2002 bootleg) */
+
+static void kf2k5uni_px_decrypt( )
+{
+	int i, j, ofst;
+	UINT8 *src = ROM;
+	UINT8 *dst = AllocateMem(0x80);
+
+	for (i = 0; i < 0x800000; i+=0x80)
+	{
+		for (j = 0; j < 0x80; j+=2)
+		{
+			ofst = BITSWAP8(j, 0, 3, 4, 5, 6, 1, 2, 7);
+			memcpy(dst + j, src + i + ofst, 2);
+		}
+		memcpy(src + i, dst, 0x80);
+	}
+	free(dst);
+
+	memcpy(src, src + 0x600000, 0x100000); // Seems to be the same as kof10th
+}
+
+static void kf2k5uni_sx_decrypt(  )
+{
+	int i;
+	UINT8 *srom = load_region[REGION_FIXED];
+
+	for (i = 0; i < 0x20000; i++)
+		srom[i] = BITSWAP8(srom[i], 4, 5, 6, 7, 0, 1, 2, 3);
+}
+
+static void kf2k5uni_mx_decrypt( )
+{
+	int i;
+	UINT8 *mrom = Z80ROM;
+
+	for (i = 0; i < 0x30000; i++)
+		mrom[i] = BITSWAP8(mrom[i], 4, 5, 6, 7, 0, 1, 2, 3);
+}
+
+void decrypt_kf2k5uni( )
+{
+	kf2k5uni_px_decrypt();
+	kf2k5uni_sx_decrypt();
+	kf2k5uni_mx_decrypt();
+}
+
 void load_neocd() {
     if (is_current_game("ghostlop"))
 	end_screen = 240+START_SCREEN; // don't know why...
@@ -4734,7 +4781,9 @@ void load_neocd() {
 	} else if (is_current_game("kof2002")) {
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0xec);
-	} else if (is_current_game("matrim")) {
+	} else if (is_current_game("kf2k5uni"))
+	    decrypt_kf2k5uni();
+	else if (is_current_game("matrim")) {
 	    fixed_layer_bank_type = 2;
 	    neogeo_cmc50_m1_decrypt();
 	    kof2000_neogeo_gfx_decrypt(0x6a);

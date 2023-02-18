@@ -3500,3 +3500,35 @@ static struct ROM_INFO rom_kf2k3ps2[] = /* decrypted version with PS2 hack */
 };
 
 CLNEI( kf2k3ps2, neogeo, "The King of Fighters 2003 Playstation 2 (EGCG HACK)", SNK, 2003, GAME_BEAT);
+
+static struct ROM_INFO rom_kf2k5uni[] = // clone of kof2002
+{
+  { REGION_EMPTY, 0, 0 , REGION_AUDIOCRYPT, 0, LOAD_NORMAL },
+  LOAD_SW16( CPU1, "5006-p2a.bin", 0x000000, 0x400000, 0xced883a2),
+  LOAD_SW16( CPU1, "5006-p1.bin", 0x400000, 0x400000, 0x72c39c46),
+  LOAD( FIXED, "5006-s1.bin", 0x000000, 0x20000, 0x91f8c544),
+  LOAD( ROM2, "5006-m1.bin", 	 0x00000, 0x20000, 0x9050bfe7),
+  LOAD( ROM2, "5006-m1.bin", 0x10000, 0x20000, 0x9050bfe7),
+  LOAD( SMP1, "kf10-v1.bin", 0x000000, 0x800000, 0x0fc9a58d),
+  LOAD( SMP1, "kf10-v2.bin", 0x800000, 0x800000, 0xb8c475a4),
+  LOAD_16_8( SPRITES, "kf10-c1a.bin", 0x0000000, 0x400000, 0x3bbc0364), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c2a.bin", 0x0000001, 0x400000, 0x91230075), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c1b.bin", 0x0800000, 0x400000, 0xb5abfc28), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c2b.bin", 0x0800001, 0x400000, 0x6cc4c6e1), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c3a.bin", 0x1000000, 0x400000, 0x5b3d4a16), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c4a.bin", 0x1000001, 0x400000, 0xc6f3419b), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c3b.bin", 0x1800000, 0x400000, 0x9d2bba19), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c4b.bin", 0x1800001, 0x400000, 0x5a4050cb), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c5a.bin", 0x2000000, 0x400000, 0xa289d1e1), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c6a.bin", 0x2000001, 0x400000, 0xe6494b5d), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c5b.bin", 0x2800000, 0x400000, 0x404fff02), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c6b.bin", 0x2800001, 0x400000, 0xf2ccfc9e), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c7a.bin", 0x3000000, 0x400000, 0xbe79c5a8), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c8a.bin", 0x3000001, 0x400000, 0xa5952ca4), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "kf10-c7b.bin", 0x3800000, 0x400000, 0x3fdb3542), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "kf10-c8b.bin", 0x3800001, 0x400000, 0x661b7a52), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( kf2k5uni,kof2002,"The King of Fighters 10th Anniversary 2005 Unique (The King of Fighters 2002 bootleg)",BOOTLEG,2004, GAME_BEAT );
+
