@@ -12,6 +12,9 @@ extern "C" {
 // I need to access this variable very quickly for the timers (see timer.c)
 // If you want to change this variable, do it in the load_game function only !
 extern float fps,default_fps;
+#if SDL == 2
+extern int profiler_mode;
+#endif
 
 void switch_fps_mode(void);
 void init_fps(void);
