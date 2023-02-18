@@ -515,6 +515,47 @@ static int load_neo_game(int sel) {
 }
 #endif
 
+static int do_ips(int sel) {
+    char res[1024];
+    char *exts[] = { ".ips", NULL };
+    fsel(dir_cfg.exe_path,exts,res,_("Load Neo-Geo CD game"));
+    if (!*res) return 0;
+    FILE *f = fopen(res,"rb");
+    if (!f) return 0;
+    char buf[6];
+    fread(buf,1,5,f);
+    if (strncmp(buf,"PATCH",5)) {
+	fclose(f);
+	MessageBox("Error",_("Bad IPS header"), "Ok");
+    }
+    do {
+	unsigned char ofs_str[4], len_str[2];
+	int n = fread(ofs_str,1,3,f);
+	if (!strncmp((char*)ofs_str,"EOF",3)) {
+	    break; // normal end
+	}
+	fread(len_str,1,2,f);
+	u32 ofs = (ofs_str[0] << 16) | (ofs_str[1] << 8) | ofs_str[2];
+	u16 len = (len_str[0] << 8) | len_str[1];
+	if (len == 0) {
+	    MessageBox("IPS Error", "RLE not supported yet, sorry","ok");
+	    fclose(f);
+	    return 0;
+	}
+	char buf[len];
+	n = fread(buf,1,len,f);
+	if (n < len) {
+	    MessageBox("IPS Error","Preamture eof", "ok");
+	    fclose(f);
+	    break;
+	}
+	memcpy(&ROM[ofs],buf,len); // no swap...
+    } while (!feof(f));
+    fclose(f);
+    MessageBox("IPS ok", "everything went well apparently, IPS applied","ok");
+    return 0;
+}
+
 extern int do_sound_options(int sel);
 static TMain_menu *main_menu;
 
@@ -524,6 +565,7 @@ static menu_item_t main_items[] =
 { _("Game options"), &do_game_options },
 { _("Game command list"), &show_moves },
 { _("Game cheats"), &do_cheats, },
+{ _("Apply IPS to ROM code"), &do_ips, },
 { _("Region"), &set_region, },
 { _("Dipswitches"), &do_dlg_dsw, },
 { _("Change/Load game"), &do_game_sel },
@@ -550,7 +592,7 @@ int TMain_menu::can_be_displayed(int n) {
 	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
-    case 4: // Region
+    case 5: // Region
 	return current_game != NULL && current_game->romsw != NULL;
     case 3: // cheats
 	return current_game != NULL && (CheatCount > 0
@@ -558,7 +600,7 @@ int TMain_menu::can_be_displayed(int n) {
 		|| nb_scripts > 0
 #endif
 		);
-    case 5: // dsw
+    case 6: // dsw
 	return current_game != NULL && current_game->dsw != NULL;
     default:
 	return 1;
@@ -672,12 +714,12 @@ static void do_main_menu() {
   int old_region;
   // init romsw
   if (current_game && current_game->romsw) {
-    main_items[4].values_list_size = LanguageSw.Count;
-    main_items[4].value_int = &region_code;
+    main_items[5].values_list_size = LanguageSw.Count;
+    main_items[5].value_int = &region_code;
     old_region = region_code = GetLanguageSwitch();
     for (int n=0; n<LanguageSw.Count; n++) {
-      main_items[4].values_list[n] = n;
-      main_items[4].values_list_label[n] = LanguageSw.data[n].Mode;
+      main_items[5].values_list[n] = n;
+      main_items[5].values_list_label[n] = LanguageSw.data[n].Mode;
     }
   }
 
