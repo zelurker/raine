@@ -4587,7 +4587,7 @@ static void kf2k5uni_px_decrypt( )
 		}
 		memcpy(src + i, dst, 0x80);
 	}
-	free(dst);
+	FreeMem(dst);
 
 	memcpy(src, src + 0x600000, 0x100000); // Seems to be the same as kof10th
 }
