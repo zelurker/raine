@@ -52,7 +52,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size) {
 	    printf("ips : ofs overflow %s ofs %x when max is %x\n",res,ofs,max_size);
 	    continue;
 	}
-	if (ofs + len >= max_size) {
+	if (ofs + len > max_size) {
 	    printf("ips: len too big, ofs %x len %x max_size %x\n",ofs,len,max_size);
 	    len = max_size-ofs-1;
 	}

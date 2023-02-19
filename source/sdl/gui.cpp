@@ -541,9 +541,14 @@ static int do_preload_ips(int sel) {
     int nb = 0;
     while (!feof(f)) {
 	myfgets(buf,1024,f);
+	if (!buf[0]) continue;
+	if (!strncmp(buf,"#define",7))
+	    continue;
 	char *tab = strchr(buf,9);
 	if (!tab) break;
 	*tab = 0;
+	char *tab2 = strchr(&tab[1],9);
+	if (tab2) *tab2 = 0; // optional crc after that
 	ips_info.rom[nb] = strdup(buf);
 	ips_info.ips[nb++] = strdup(&tab[1]);
 	if (nb == MAX_IPS) {
