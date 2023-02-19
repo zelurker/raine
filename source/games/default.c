@@ -42,6 +42,7 @@
 #include "bld.h"
 #include "history.h"
 #include "leds.h"
+#include "ips.h"
 
 void LoadDefault(void)
 {
@@ -89,6 +90,9 @@ void LoadDefault(void)
 #ifdef HAVE_6502
    ClearM6502List();				// Clear M6502 memory lists
    M6502Engine=0;				// No M6502 by default
+#endif
+#ifdef GENS_SH2
+   sh2Engine = 0;
 #endif
 
    GameSound=0; 				// No Sound emulation by default
@@ -226,5 +230,10 @@ void ClearDefault(void)
     for (int n=0; n<MAX_LEDS; n++)
 	switch_led(n,0);
 #endif
+    for (int n=0; n<ips_info.nb; n++) {
+	free(ips_info.rom[n]);
+	free(ips_info.ips[n]);
+    }
+    ips_info.nb = 0;
 }
 

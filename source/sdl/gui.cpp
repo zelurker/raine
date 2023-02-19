@@ -60,6 +60,7 @@
 #include "mz80help.h"
 #include "starhelp.h"
 #include "m6502hlp.h"
+#include "ips.h"
 
 static time_t played_time;
 #if USE_MUSASHI == 2
@@ -516,6 +517,58 @@ static int load_neo_game(int sel) {
 }
 #endif
 
+static int do_preload_ips(int sel) {
+    char res[1024];
+    char *exts[] = { ".dat", NULL };
+    fsel(get_shared("ips"),exts,res,_("Select IPS .dat file"));
+    // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
+    // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
+    struct stat stbuf;
+    if (!stat(res,&stbuf) && S_ISDIR(stbuf.st_mode))
+	return 0; // it's a dir indeed
+    FILE *f = fopen(res,"r");
+    if (!f) return 0;
+    char buf[1024];
+    char *s = strrchr(res,'/');
+    if (!s) {
+	printf("can't decode path : %s\n",res);
+	fclose(f);
+	return 0;
+    }
+    s[1] = 0;
+    strcpy(ips_info.path,res);
+    ips_info.nb = 0; // just to be sure, but normally already at 0
+    int nb = 0;
+    while (!feof(f)) {
+	myfgets(buf,1024,f);
+	char *tab = strchr(buf,9);
+	if (!tab) break;
+	*tab = 0;
+	ips_info.rom[nb] = strdup(buf);
+	ips_info.ips[nb++] = strdup(&tab[1]);
+	if (nb == MAX_IPS) {
+	    MessageBox("dat error", "Too many roms in this dat !","ok");
+	    fclose(f);
+	    for (int n=0; n<nb; n++) {
+		free(ips_info.rom[n]);
+		free(ips_info.ips[n]);
+	    }
+	    return 0;
+	}
+    }
+    fclose(f);
+    if (nb == 0) {
+	MessageBox("dat error", "couldn't find any rom there... !","ok");
+	for (int n=0; n<nb; n++) {
+	    free(ips_info.rom[n]);
+	    free(ips_info.ips[n]);
+	}
+	return 0;
+    }
+    ips_info.nb = nb;
+    return 0;
+}
+
 static int do_ips(int sel) {
     char res[1024];
     char *exts[] = { ".ips", NULL };
@@ -526,43 +579,7 @@ static int do_ips(int sel) {
     struct stat stbuf;
     if (!stat(res,&stbuf) && S_ISDIR(stbuf.st_mode))
 	return 0; // it's a dir indeed
-    FILE *f = fopen(res,"rb");
-    if (!f) return 0;
-    char buf[6];
-    fread(buf,1,5,f);
-    if (strncmp(buf,"PATCH",5)) {
-	fclose(f);
-	MessageBox("Error",_("Bad IPS header"), "Ok");
-	return 0;
-    }
-    do {
-	unsigned char ofs_str[4], len_str[2];
-	int n = fread(ofs_str,1,3,f);
-	if (!strncmp((char*)ofs_str,"EOF",3)) {
-	    break; // normal end
-	}
-	fread(len_str,1,2,f);
-	u32 ofs = (ofs_str[0] << 16) | (ofs_str[1] << 8) | ofs_str[2];
-	u16 len = (len_str[0] << 8) | len_str[1];
-	if (len == 0) {
-	    // rle block : len, followed by byte
-	    fread(len_str,1,2,f);
-	    u16 len = (len_str[0] << 8) | len_str[1];
-	    fread(ofs_str,1,1,f);
-	    memset(&ROM[ofs],ofs_str[0],len);
-	    continue;
-	}
-	char buf[len];
-	n = fread(buf,1,len,f);
-	if (n < len) {
-	    MessageBox("IPS Error","Preamture eof", "ok");
-	    fclose(f);
-	    return 0;
-	}
-	memcpy(&ROM[ofs],buf,len); // no swap...
-    } while (!feof(f));
-    fclose(f);
-    MessageBox("IPS ok", _("everything went well apparently, IPS applied"),"ok");
+    load_ips(res,ROM,get_region_size(REGION_CPU1));
     return 0;
 }
 
@@ -578,6 +595,7 @@ static menu_item_t main_items[] =
 { _("Apply IPS to ROM code"), &do_ips, },
 { _("Region"), &set_region, },
 { _("Dipswitches"), &do_dlg_dsw, },
+{ _("Preload ips dat file"), &do_preload_ips, },
 { _("Change/Load game"), &do_game_sel },
 #if HAS_NEO
 { _("Load Neo-Geo CD game"), &load_neo_game },
@@ -613,6 +631,8 @@ int TMain_menu::can_be_displayed(int n) {
 		);
     case 6: // dsw
 	return current_game != NULL && current_game->dsw != NULL;
+    case 7: // preload ips
+	return !current_game; // only if no game is loaded !
     default:
 	return 1;
     }

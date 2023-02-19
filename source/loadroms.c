@@ -20,6 +20,7 @@
 #if defined(SDL) && defined(USE_CURL)
 #include "curl.h"
 #endif
+#include "ips.h"
 
 #undef _
 #define _(string) gettext(string)
@@ -264,21 +265,37 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		    return 1;
 
 		sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
+		int ret = 0;
 		if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
 		    // printf("loaded %s from %s\n",rec_rom_info.name,path);
-		    return 1;
+		    ret = 1;
+		} else {
+		    sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
+		    if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
+			// printf("loaded %s from %s\n",rec_rom_info.name,path);
+			ret = 1;
+		    } else {
+			sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
+			if((load_file(path, rec_dest, rec_rom_info.size)))
+			    ret = 1;
+		    }
 		}
-
-		sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
-		if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-		    // printf("loaded %s from %s\n",rec_rom_info.name,path);
-		    return 1;
+		if (ret) {
+		    for (int n=0; n<ips_info.nb; n++) {
+			if (!strcmp(rec_rom_info.name,ips_info.rom[n])) {
+			    printf("rom found for ips %s size %x\n",rec_rom_info.name,rec_rom_info.size);
+			    char ips[1024];
+			    strcpy(ips,ips_info.path);
+			    strcat(ips,ips_info.ips[n]);
+			    int l = strlen(ips);
+			    if (strcmp(&ips[l-4],".ips"))
+				strcat(ips,".ips");
+			    printf("ips file %s\n",ips);
+			    load_ips(ips,rec_dest,rec_rom_info.size);
+			}
+		    }
+		    return ret;
 		}
-
-		sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
-		if((load_file(path, rec_dest, rec_rom_info.size)))
-		    return 1;
-
             }
          }
       }
@@ -981,6 +998,9 @@ void load_game_rom_info(void)
 #endif
 #if HAVE_Z80
    test &= !MZ80Engine;
+#endif
+#if GENS_SH2
+   test &= !sh2Engine;
 #endif
 
    if (test) {
