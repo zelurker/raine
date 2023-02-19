@@ -542,6 +542,8 @@ class TMyMultiFileSel : public TMultiFileSel
 
 	virtual void compute_nb_items();
 	virtual int mychdir(int n);
+	virtual int get_max_bot_frame_dimensions(int &w, int &h);
+	virtual void draw_bot_frame();
 };
 
 static void save_ips_ini(char **res) {
@@ -618,6 +620,62 @@ void TMyMultiFileSel::compute_nb_items()
 	}
     }
     fclose(f);
+}
+
+int TMyMultiFileSel::get_max_bot_frame_dimensions(int &w, int &h) {
+  if (font) {
+      font->dimensions("ABCDEFGHIJ",&w,&h);
+      w*= 10;
+      h*= 3;
+      if (h < 224) {
+	  h = 224;
+      }
+  }
+  return 100;
+}
+
+void TMyMultiFileSel::draw_bot_frame() {
+    int base = work_area.y+work_area.h;
+    boxColor(rend,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
+    if (sel >= 0) {
+	char *l = menu[sel].label;
+	int len = strlen(l);
+	if (strcmp(&l[len-4],".dat")) return;
+	// display the what there is in an eventual [en_US] block in the selected .dat...
+	FILE *f = fopen(l,"r");
+	if (!f) return;
+	int y = base;
+	while (!feof(f)) {
+	    char buf[1024];
+	    myfgets(buf,1024,f);
+	    if (!strncmp(buf,"[en_US]",7))
+		break;
+	}
+	while (!feof(f)) {
+	    char buf[1024];
+	    myfgets(buf,1024,f);
+	    if (buf[0] == '[') break;
+	    int w,h;
+	    font->dimensions(buf,&w,&h);
+	    if (y + h > sdl_screen->h) break;
+	    font->put_string(HMARGIN,y,buf,fg_frame,bg_frame);
+	    y += h;
+	}
+	fclose(f);
+	char pic[len+1];
+	strcpy(pic,l);
+	strcpy(&pic[len-4],".png");
+	SDL_Texture *tex = IMG_LoadTexture(rend,pic);
+	if (!tex) return;
+	int wi,hi,access; u32 format;
+	SDL_QueryTexture(tex,&format,&access,&wi,&hi);
+	if (hi > 224) hi = 224;
+	if (wi > 320) wi = 320;
+	SDL_Rect dest = { sdl_screen->w-wi, base, wi, hi };
+	SDL_RenderCopy(rend,tex,NULL, &dest);
+	SDL_DestroyTexture(tex);
+
+    }
 }
 
 static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res, char *title) {
