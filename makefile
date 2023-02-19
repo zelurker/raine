@@ -1097,7 +1097,8 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/soundcfg.o \
 	$(OBJDIR)/speed_hack.o \
 	$(OBJDIR)/savepng.o \
- 	$(OBJDIR)/loadroms.o
+ 	$(OBJDIR)/loadroms.o \
+	$(OBJDIR)/ips.o
 
 ifdef USE_MEMWATCH
 	CORE += $(OBJDIR)/memwatch.o
