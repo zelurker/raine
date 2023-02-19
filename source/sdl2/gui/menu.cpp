@@ -760,7 +760,7 @@ int TMenu::compute_selcolor() {
   return selcolor;
 }
 
-void TMenu::disp_menu(int n,int y,int w,int h) {
+void TMenu::disp_menu(int n,int x,int y,int w,int h) {
   /* This is only a simplification function :
    * it's passed y,s,w,h from update_fg_layer so that it can concentrate
    * only on what to display, and forget about the layers (just update
@@ -769,7 +769,7 @@ void TMenu::disp_menu(int n,int y,int w,int h) {
    * then there is more to display than just the label passed in s, and this
    * function also handles the flashing background on the current selection */
 
-  int fw = HMARGIN;
+  int fw = HMARGIN+x;
   int selcolor;
   int myfg = get_fgcolor(n);
   if ((!focus && n == sel)) {
@@ -917,7 +917,7 @@ void TMenu::update_fg_layer(int nb_to_update) {
 	SDL_Rect r = { HMARGIN, y, w, h };
 	// Clear the background in case we draw an option which had just its length reduced
 	SDL_RenderFillRect(rend,&r);
-	disp_menu(index,y,w,h);
+	disp_menu(index,0,y,w,h);
       // if (nb_to_update == index) {
 	//  blit_area(fw,y,w,h);
       // }
@@ -2058,9 +2058,9 @@ void TMenuMultiCol::compute_width_from_font() {
   if (width_max > work_area.w) width_max = work_area.w;
 }
 
-void TMenuMultiCol::disp_menu(int n,int y,int w,int h) {
+void TMenuMultiCol::disp_menu(int n,int x,int y,int w,int h) {
   // Just need to add the columns after the normal line
-  TMenu::disp_menu(n,y,w,h);
+  TMenu::disp_menu(n,x,y,w,h);
   for (int c=0; c<nb_cols; c++) {
     if (n == sel) {
       int selcolor = compute_selcolor();
@@ -2098,13 +2098,13 @@ int TMenuPostCb::can_be_selected(int n) {
     return 1;
 }
 
-void TMenuPostCb::disp_menu(int n,int y,int w,int h) {
+void TMenuPostCb::disp_menu(int n,int x,int y,int w,int h) {
   // Just need to add the columns after the normal line
-  TMenu::disp_menu(n,y,w,h);
+  TMenu::disp_menu(n,x,y,w,h);
   if (n == 0) {
       font->surf_string_tr(NULL,pos_cb,y,legend,fg);
   } else {
-      int x = pos_cb + HMARGIN;
+      x = pos_cb + HMARGIN;
       rectangleColor(rend,x,y,x+wcb,y+h-1,fg);
       if (cb[n]) {
 	  lineColor(rend,x,y,x+wcb,y+h-1,mymakecol(0,255,0));

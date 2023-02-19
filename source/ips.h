@@ -13,6 +13,7 @@ typedef struct {
 extern tips_info ips_info;
 
 void load_ips(char *res, unsigned char *ROM, int max_size);
+void add_ips_file(char *file);
 
 #ifdef __cplusplus
 }

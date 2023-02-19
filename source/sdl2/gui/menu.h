@@ -169,7 +169,7 @@ class TMenu {
     virtual int get_fgcolor(int n) {
       return fg;
     }
-    virtual void disp_menu(int n,int y,int w,int h);
+    virtual void disp_menu(int n,int x,int y,int w,int h);
     virtual void update_header_entry(int nb);
     virtual void disp_header(int n,int y,int w,int h);
     int get_list_index(int n);
@@ -214,7 +214,7 @@ class TMenuMultiCol : public TMenu {
     ~TMenuMultiCol();
     virtual void adjust_len_max_options(unsigned int &len_max_options);
     virtual void compute_width_from_font();
-    virtual void disp_menu(int n,int y,int w,int h);
+    virtual void disp_menu(int n,int x,int y,int w,int h);
 };
 
 // Version with a check box at the end of every line
@@ -232,7 +232,7 @@ class TMenuPostCb : public TMenu {
     }
     virtual void adjust_len_max_options(unsigned int &len_max_options);
     virtual void compute_width_from_font();
-    virtual void disp_menu(int n,int y,int w,int h);
+    virtual void disp_menu(int n,int x,int y,int w,int h);
     virtual int can_be_selected(int n);
     virtual void handle_key(SDL_Event *event);
     virtual void handle_button(SDL_Event *event, int index);

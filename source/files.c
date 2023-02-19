@@ -584,6 +584,8 @@ int myfgets(char *buff, int size, FILE *f) {
     int len = strlen(buff);
     while (len > 0 && buff[len-1] < 32 && buff[len-1] > 0)
 	buff[--len] = 0;
+    if (buff[0] < 0 && buff[1] < 0 && buff[2] < 0) // 3 utf8 characters at the beg of a file sometimes
+	memmove(&buff[0],&buff[3],len-2);
     return len;
 }
 

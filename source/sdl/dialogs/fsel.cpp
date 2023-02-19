@@ -13,36 +13,11 @@
 #endif
 #include "fsel.h"
 #include "gui.h"
-
-class TFileSel : public TMain_menu
-{
-  protected:
-    int nb_files;
-    char **ext;
-    int options;
-    char *title2;
-  public:
-    char path[FILENAME_MAX];
-    char *res_file;
-    TFileSel(char *my_title, char *mypath, char **myext, char *res_str,int opts = 0, char* mytitle2 = NULL);
-    virtual char* get_top_string();
-    virtual ~TFileSel();
-    virtual void compute_nb_items();
-    virtual int get_fgcolor(int n);
-    int can_be_selected(int n) {
-      return can_be_displayed(n);
-    }
-    int can_be_displayed(int n) {
-	return 1;
-    }
-    virtual void set_dir(char *mypath);
-    virtual int mychdir(int n);
-    virtual int myexec_file(int sel);
-    void free_files();
-};
+#include "SDL_gfx/SDL_gfxPrimitives.h"
+#include "dialogs/messagebox.h"
 
 static int selected_path;
-static TFileSel *dlg;
+TFileSel *fsel_dlg;
 
 static int sel_path(int sel) {
   selected_path = sel;
@@ -84,11 +59,11 @@ class path_sel {
 
 static int exec_dir(int sel) {
   // just a wrapper to call mychdir
-  return dlg->mychdir(sel);
+  return fsel_dlg->mychdir(sel);
 }
 
 static int exec_file(int sel) {
-  return dlg->myexec_file(sel);
+  return fsel_dlg->myexec_file(sel);
 }
 
 class TPathDlg : public TMenu
@@ -98,7 +73,7 @@ class TPathDlg : public TMenu
     TMenu(my_title,menu, NULL,-1, -1,-1,-1, /* to_translate */ 0)
   {}
   char *get_top_string() {
-    return dlg->get_top_string();
+    return fsel_dlg->get_top_string();
   }
 };
 
@@ -174,7 +149,7 @@ static int do_paths(int sel) {
   TMenu *menu = new TPathDlg("",paths->get_menu());
   menu->execute();
   if (selected_path >= 0)
-    dlg->set_dir((char*)paths->get_menu()[selected_path].label);
+    fsel_dlg->set_dir((char*)paths->get_menu()[selected_path].label);
   delete menu;
   delete paths;
   return 0;
@@ -183,10 +158,6 @@ static int do_paths(int sel) {
 int qsort_menu(const void *a, const void *b) {
   return stricmp(((menu_item_t *)a)->label, ((menu_item_t *)b)->label);
 }
-
-// the only used option for now !
-#define ONLY_DIRS 1
-#define SAVE 2
 
 TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, int opts,char *mytitle2) :
   TMain_menu(my_title,NULL)
@@ -239,7 +210,7 @@ static char res_file[FILENAME_MAX+1];
 static int ihead;
 
 static int validate_file(int res) {
-    snprintf(dlg->res_file,FILENAME_MAX,"%s%s%s",dlg->path,SLASH,res_file);
+    snprintf(fsel_dlg->res_file,FILENAME_MAX,"%s%s%s",fsel_dlg->path,SLASH,res_file);
     return 1;
 }
 
@@ -406,7 +377,7 @@ void TFileSel::compute_nb_items() {
     strcat(res_file,SLASH);
   if (options & SAVE)
       set_header(myheader_save);
-  else
+  else if (!(options & NO_HEADER))
       set_header(myheader);
   int tmpsel = sel;
   if (found_iso && !found_cue && strcmp(ext[0],".iso")) {
@@ -429,9 +400,12 @@ void TFileSel::free_files() {
 	free(menu[nb].values_list_label[0]);
     }
   }
+  if (nb_files && strcmp(menu[0].label,"..")) // if entry 0 is different from .. it can be freed
+    free((void*)menu[0].label);
   if (menu)
     free(menu);
   menu = NULL;
+  nb_files = 0;
 }
 
 TFileSel::~TFileSel() {
@@ -514,21 +488,111 @@ int TFileSel::myexec_file(int sel) {
 }
 
 void fsel(char *mypath, char **ext, char *res_str, char *title) {
-  dlg = new TFileSel(mypath,mypath,ext,res_str,0,title);
-  dlg->execute();
-  delete dlg;
+  fsel_dlg = new TFileSel(mypath,mypath,ext,res_str,0,title);
+  fsel_dlg->execute();
+  delete fsel_dlg;
 }
 
 void fsel_save(char *mypath, char **ext, char *res_str, char *title) {
-  dlg = new TFileSel(mypath,mypath,ext,res_str,SAVE,title);
-  dlg->execute();
-  delete dlg;
+  fsel_dlg = new TFileSel(mypath,mypath,ext,res_str,SAVE,title);
+  fsel_dlg->execute();
+  delete fsel_dlg;
 }
 
 void dsel(char *mypath, char **ext, char *res_str,char *title) {
-  dlg = new TFileSel(mypath,mypath,ext,res_str,ONLY_DIRS,title);
-  dlg->execute();
-  delete dlg;
+  fsel_dlg = new TFileSel(mypath,mypath,ext,res_str,ONLY_DIRS,title);
+  fsel_dlg->execute();
+  delete fsel_dlg;
 }
 
+void multi_fsel(char *mypath, char **ext, char **res_str, int max_res, char *title) {
+  fsel_dlg = new TMultiFileSel(mypath,mypath,ext,res_str,max_res,0,title);
+  fsel_dlg->execute();
+  delete fsel_dlg;
+}
+
+TMultiFileSel::TMultiFileSel(char *my_title, char *mypath, char **myext, char **my_res_str,int my_max_res,int opts, char* mytitle2) :
+    TFileSel(my_title,mypath,myext,my_res_str[0],opts,mytitle2)
+{
+    selected = NULL;
+    max_res = my_max_res;
+    res_str = my_res_str;
+    if (!res_file) {
+	res_file = (char*)malloc(FILENAME_MAX);
+	alloc = 1;
+	*res_file = 0;
+    } else
+	alloc = 0;
+}
+
+void TMultiFileSel::free_files() {
+    if (selected) {
+	free(selected);
+	selected = NULL;
+    }
+    nb_sel = 0;
+    TFileSel::free_files();
+}
+
+void TMultiFileSel::compute_nb_items() {
+    TFileSel::compute_nb_items();
+    selected = (int*)calloc(nb_files,sizeof(int));
+    memset(selected,0,nb_files*sizeof(int));
+}
+
+int TMultiFileSel::myexec_file(int sel) {
+    if (nb_sel == max_res && !selected[sel]) {
+	MessageBox("Error","Already have max selections","ok");
+	return 0;
+    }
+    selected[sel] ^= 1;
+    if (selected[sel])
+	nb_sel++;
+    else
+	nb_sel--;
+    return 0;
+}
+
+void TMultiFileSel::compute_width_from_font() {
+    TFileSel::compute_width_from_font();
+    int h;
+    font->dimensions("X",&wcb,&h);
+    width_max += wcb+HMARGIN*2;
+}
+
+void TMultiFileSel::disp_menu(int n,int x,int y,int w,int h) {
+  x += HMARGIN;
+  if (menu[n].menu_func != &exec_dir) {
+      rectangleColor(rend,x,y,x+wcb,y+h-1,fg);
+      if (selected[n]) {
+	  lineColor(rend,x,y,x+wcb,y+h-1,mymakecol(0,255,0));
+#ifdef RAINE_WIN32
+	  // Totally crazy bug in windows with sdl-2.0.20 at lest :
+	  // the color chosen for the lines here is applied as a filter to the game bitmap when returning to the game
+	  // as if using some kind of blend mode, but even calling SDL_SetBlendMode(BLEND_NONE) doesn't change anything
+	  // to it. The only way to work around it seems to be to use a white color for the last line !!!
+	  // windows only !
+	  lineColor(rend,x+wcb,y,x,y+h-1,mymakecol(255,255,255));
+#else
+	  lineColor(rend,x+wcb,y,x,y+h-1,mymakecol(0,255,0));
+#endif
+      }
+  }
+  TMenu::disp_menu(n,x+HMARGIN,y,w,h);
+}
+
+TMultiFileSel::~TMultiFileSel() {
+    int x = 0;
+    for (int n=0; n<nb_files; n++) {
+	if (selected[n]) {
+	    if (!res_str[x])
+		res_str[x] = (char*)malloc(FILENAME_MAX);
+	    if (res_str[x])
+		sprintf(res_str[x++],"%s" SLASH "%s",path,menu[n].label);
+	}
+    }
+    if (alloc)
+	free(res_file);
+    free_files();
+}
 

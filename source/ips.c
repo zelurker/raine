@@ -4,6 +4,10 @@
 #include "deftypes.h"
 #include "sdl/dialogs/messagebox.h"
 #include "translate.h"
+#include "files.h"
+#ifdef MEMWATCH
+#include "memwatch.h"
+#endif
 
 tips_info ips_info;
 
@@ -59,5 +63,61 @@ void load_ips(char *res, unsigned char *ROM, int max_size) {
 	memcpy(&ROM[ofs],buf,len); // no swap...
     } while (!feof(f));
     fclose(f);
+}
+
+void add_ips_file(char *file) {
+    FILE *f = fopen(file,"r");
+    if (!f) {
+	char err[1024];
+	sprintf(err,"add_ips_file: Can't open %s",file);
+	MessageBox("error",err,"ok");
+	return;
+    }
+    printf("add_ips_file %s\n",file);
+    char buf[1024];
+    char *s = strrchr(file,'/');
+    if (!s) {
+	char err[1024];
+	sprintf(err,"add_ips_file: Can't decode path : %s",file);
+	MessageBox("Error",err,"ok");
+	fclose(f);
+	return;
+    }
+    s[1] = 0;
+    strcpy(ips_info.path,file);
+    int nb = ips_info.nb;
+    while (!feof(f)) {
+	myfgets(buf,1024,f);
+	if (!buf[0]) continue; // no empty line at start normally... !
+	if (!strncmp(buf,"#define",7)) // found this in a broken dat, nothing to do there
+	    continue;
+	char *tab = strchr(buf,9);
+	if (!tab) break;
+	*tab = 0;
+	char *tab2 = strchr(&tab[1],9);
+	if (tab2) *tab2 = 0; // optional crc after that
+	ips_info.rom[nb] = strdup(buf);
+	ips_info.ips[nb++] = strdup(&tab[1]);
+	printf("add_ips_file: adding rom %s ips %s (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],nb-1);
+	if (nb == MAX_IPS) {
+	    MessageBox("dat error", "Too many roms in this dat !","ok");
+	    fclose(f);
+	    for (int n=0; n<nb; n++) {
+		free(ips_info.rom[n]);
+		free(ips_info.ips[n]);
+	    }
+	    return;
+	}
+    }
+    fclose(f);
+    if (nb == 0) {
+	MessageBox("dat error", "couldn't find any rom there... !","ok");
+	for (int n=0; n<nb; n++) {
+	    free(ips_info.rom[n]);
+	    free(ips_info.ips[n]);
+	}
+	return;
+    }
+    ips_info.nb = nb;
 }
 

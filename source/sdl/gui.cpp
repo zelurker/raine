@@ -365,6 +365,22 @@ static void load_game_proc()
 	fps = 60.0; // 60 fps (default)
     if (fps > max_fps)
 	fps = max_fps;
+    char file[FILENAME_MAX];
+    snprintf(file,1024,"%s" SLASH "%s.ini",get_shared("ips"),current_game->main_name);
+    file[FILENAME_MAX-1] = 0;
+    FILE *f = fopen(file,"r");
+    file[strlen(file)-4] = 0; // just keep the path, without the .ini extension
+    int l = strlen(file);
+    if (f) {
+	char buf[1024];
+	while (!feof(f)) {
+	    if (myfgets(buf,1024,f)) {
+		sprintf(&file[l],"/%s",buf);
+		add_ips_file(file);
+	    }
+	}
+	fclose(f);
+    }
 
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
@@ -517,60 +533,111 @@ static int load_neo_game(int sel) {
 }
 #endif
 
-static int do_preload_ips(int sel) {
-    char res[1024];
-    char *exts[] = { ".dat", NULL };
-    fsel(get_shared("ips"),exts,res,_("Select IPS .dat file"));
-    // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
-    // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
-    struct stat stbuf;
-    if (!stat(res,&stbuf) && S_ISDIR(stbuf.st_mode))
-	return 0; // it's a dir indeed
-    FILE *f = fopen(res,"r");
-    if (!f) return 0;
-    char buf[1024];
-    char *s = strrchr(res,'/');
-    if (!s) {
-	printf("can't decode path : %s\n",res);
-	fclose(f);
-	return 0;
+class TMyMultiFileSel : public TMultiFileSel
+{
+    public:
+	TMyMultiFileSel(char *my_title, char *mypath, char **myext, char **my_res_str,int my_max_res,int opts = 0, char* mytitle2 = NULL) :
+	    TMultiFileSel(my_title, mypath, myext, my_res_str,my_max_res, opts, mytitle2)
+    {}
+
+	virtual void compute_nb_items();
+	virtual int mychdir(int n);
+};
+
+static void save_ips_ini(char **res) {
+    char *slash = strrchr(res[0],'/');
+    if (slash) *slash = 0;
+    char *slash2 = strrchr(res[0],'/');
+    if (!slash2 || !slash) {
+	MessageBox("Error","can't find the name of the game in the path","ok");
+	return;
     }
-    s[1] = 0;
-    strcpy(ips_info.path,res);
+    char game[1024];
+    strcpy(game,res[0]);
+    strcat(game,".ini");
+    *slash = '/';
+    printf("save_ips_ini %s\n",game);
+    FILE *g = fopen(game,"w");
+    if (!g) {
+	MessageBox("Error","Can't create ini file","ok");
+	return;
+    }
     ips_info.nb = 0; // just to be sure, but normally already at 0
-    int nb = 0;
-    while (!feof(f)) {
-	myfgets(buf,1024,f);
-	if (!buf[0]) continue;
-	if (!strncmp(buf,"#define",7))
-	    continue;
-	char *tab = strchr(buf,9);
-	if (!tab) break;
-	*tab = 0;
-	char *tab2 = strchr(&tab[1],9);
-	if (tab2) *tab2 = 0; // optional crc after that
-	ips_info.rom[nb] = strdup(buf);
-	ips_info.ips[nb++] = strdup(&tab[1]);
-	if (nb == MAX_IPS) {
-	    MessageBox("dat error", "Too many roms in this dat !","ok");
-	    fclose(f);
-	    for (int n=0; n<nb; n++) {
-		free(ips_info.rom[n]);
-		free(ips_info.ips[n]);
+    for (int n=0; n<10; n++) {
+	if (res[n]) {
+	    char *s = strrchr(res[n],'/');
+	    if (s) {
+		*s = 0;
+		fprintf(g,"%s\n",&s[1]);
+	    } else
+		fprintf(g,"%s\n",res[n]); // rather unlikely it ever happens... !
+	    free(res[n]); // must free the results allocated by multi_fsel
+	}
+    }
+    fclose(g);
+}
+
+int TMyMultiFileSel::mychdir(int n) {
+    if (n == 0 && !strcmp(menu[n].label,"..")) {
+	int x = 0;
+	for (int n=0; n<nb_files; n++) {
+	    if (selected[n]) {
+		if (!res_str[x])
+		    res_str[x] = (char*)malloc(FILENAME_MAX);
+		if (res_str[x])
+		    sprintf(res_str[x++],"%s" SLASH "%s",path,menu[n].label);
 	    }
-	    return 0;
+	}
+	save_ips_ini(res_str);
+    }
+    return TMultiFileSel::mychdir(n);
+}
+
+void TMyMultiFileSel::compute_nb_items()
+{
+    TMultiFileSel::compute_nb_items();
+    set_header(NULL);
+    if (!strcmp(path,get_shared("ips")) && !strcmp(menu[0].label,"..")) {
+	// remove .. entry if in the root of the ips directory
+	memmove(&menu[0],&menu[1],(nb_files-1)*sizeof(menu_item_t));
+	nb_files--;
+	return;
+    }
+    char file[FILENAME_MAX];
+    snprintf(file,1024,"%s.ini",path);
+    file[1023] = 0;
+    // read the ini to initialize the selected entries
+    FILE *f = fopen(file,"r");
+    if (!f) return;
+    while (!feof(f)) {
+	char buf[1024];
+	myfgets(buf,1024,f);
+	for (int n=0; n<nb_files; n++) {
+	    if (!strcmp(menu[n].label,buf))
+		selected[n] = 1;
 	}
     }
     fclose(f);
-    if (nb == 0) {
-	MessageBox("dat error", "couldn't find any rom there... !","ok");
-	for (int n=0; n<nb; n++) {
-	    free(ips_info.rom[n]);
-	    free(ips_info.ips[n]);
-	}
-	return 0;
-    }
-    ips_info.nb = nb;
+}
+
+static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res, char *title) {
+  fsel_dlg = new TMyMultiFileSel(mypath,mypath,ext,res_str,max_res,NO_HEADER,title);
+  fsel_dlg->execute();
+  delete fsel_dlg;
+}
+
+static int do_preload_ips(int sel) {
+    char *res[10];
+    memset(res,0,10*sizeof(char*));
+    char *exts[] = { ".dat", NULL };
+    my_multi_fsel(get_shared("ips"),exts,res,10,_("Select IPS .dat file"));
+    // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
+    // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
+    struct stat stbuf;
+    if (!res[0] || (!stat(res[0],&stbuf) && S_ISDIR(stbuf.st_mode)))
+	return 0; // it's a dir indeed
+    // Here we have at least 1 result, 1st find the name of the game
+    save_ips_ini(res);
     return 0;
 }
 
