@@ -279,8 +279,8 @@ In training mode, pause the game and then press start to select character."
 run:
     #Start-up#
     if (peek(credits)==$00)
-	printed=0
-        poke $6B6F0 'PRESS START@'
+	    printed=0
+        poke $6B6F0 "PRESS START@"
         poke $B0D $01 #Restore initial value#
         poke $B1D $00
         poke $B17 $AA
