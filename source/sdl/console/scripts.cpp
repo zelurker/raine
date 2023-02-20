@@ -77,14 +77,18 @@ char *get_script_comment(int n) {
 
 int atoh(char *s) {
     int val = 0;
+    int plus;
     while (*s) {
-	val *= 16;
 	if (*s >= '0' && *s <= '9')
-	    val += (*s-'0');
+	    plus = (*s-'0');
 	else if (*s >= 'A' && *s <= 'F')
-	    val += (*s-'A'+10);
+	    plus = (*s-'A'+10);
 	else if (*s >= 'a' && *s <= 'f')
-	    val += (*s-'a'+10);
+	    plus = (*s-'a'+10);
+	else
+	    break;
+	val *= 16;
+	val += plus;
 	s++;
     }
     return val;

@@ -282,8 +282,8 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		}
 		if (ret) {
 		    for (int n=0; n<ips_info.nb; n++) {
-			if (!strcmp(rec_rom_info.name,ips_info.rom[n])) {
-			    printf("rom found for ips %s size %x\n",rec_rom_info.name,rec_rom_info.size);
+			if (!strcmp(rec_rom_info.name,ips_info.rom[n]) || (ips_info.crc[n] && ips_info.crc[n] == rec_rom_info.crc32)) {
+			    printf("rom found for ips %s size %x crc %x\n",rec_rom_info.name,rec_rom_info.size,rec_rom_info.crc32);
 			    char ips[1024];
 			    strcpy(ips,ips_info.path);
 			    strcat(ips,ips_info.ips[n]);

@@ -8,6 +8,7 @@ typedef struct {
     char path[1024];
     int nb;
     char *rom[MAX_IPS],*ips[MAX_IPS];
+    int crc[MAX_IPS];
 } tips_info;
 
 extern tips_info ips_info;

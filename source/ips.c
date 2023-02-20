@@ -8,6 +8,7 @@
 #ifdef MEMWATCH
 #include "memwatch.h"
 #endif
+#include "console/scripts.h" // atoh
 
 tips_info ips_info;
 
@@ -97,8 +98,10 @@ void add_ips_file(char *file) {
 	char *tab2 = strchr(&tab[1],9);
 	if (tab2) *tab2 = 0; // optional crc after that
 	ips_info.rom[nb] = strdup(buf);
+	if (tab2)
+	    ips_info.crc[nb] = atoh(tab2+5);
 	ips_info.ips[nb++] = strdup(&tab[1]);
-	printf("add_ips_file: adding rom %s ips %s (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],nb-1);
+	printf("add_ips_file: adding rom %s ips %s crc %x (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],ips_info.crc[nb-1],nb-1);
 	if (nb == MAX_IPS) {
 	    MessageBox("dat error", "Too many roms in this dat !","ok");
 	    fclose(f);
