@@ -235,5 +235,6 @@ void ClearDefault(void)
 	free(ips_info.ips[n]);
     }
     ips_info.nb = 0;
+    free_ips_patches();
 }
 
