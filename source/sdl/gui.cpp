@@ -695,7 +695,7 @@ static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res,
   delete fsel_dlg;
 }
 
-static int do_preload_ips(int sel) {
+int do_preload_ips(int sel) {
     char *res[10];
     memset(res,0,10*sizeof(char*));
     char *exts[] = { ".dat", NULL };
@@ -736,7 +736,6 @@ static menu_item_t main_items[] =
 { _("Apply IPS to ROM code"), &do_ips, },
 { _("Region"), &set_region, },
 { _("Dipswitches"), &do_dlg_dsw, },
-{ _("Preload ips dat file"), &do_preload_ips, },
 { _("Change/Load game"), &do_game_sel },
 #if HAS_NEO
 { _("Load Neo-Geo CD game"), &load_neo_game },
@@ -772,8 +771,6 @@ int TMain_menu::can_be_displayed(int n) {
 		);
     case 6: // dsw
 	return current_game != NULL && current_game->dsw != NULL;
-    case 7: // preload ips
-	return !current_game; // only if no game is loaded !
     default:
 	return 1;
     }

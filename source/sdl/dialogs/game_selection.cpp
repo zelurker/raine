@@ -196,6 +196,7 @@ static menu_item_t header[] =
     {  _("-- Options --"), &do_options },
     { _("Recent games..."), &do_recent },
     { _("Most played games..."), do_recent },
+    { _("Preload ips dat file"), &do_preload_ips, },
     { NULL },
 };
 

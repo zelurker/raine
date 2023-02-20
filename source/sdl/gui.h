@@ -50,6 +50,7 @@ void curl_progress_f(int count);
 void setup_curl_dlg(char *name);
 void load_message(char *msg);
 void StartGUI(void);
+int do_preload_ips(int sel);
 #ifdef __cplusplus
 }
 #endif
