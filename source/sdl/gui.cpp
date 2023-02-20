@@ -606,6 +606,7 @@ void TMyMultiFileSel::compute_nb_items()
     set_header(NULL);
     if (!strcmp(path,get_shared("ips")) && !strcmp(menu[0].label,"..")) {
 	// remove .. entry if in the root of the ips directory
+	if (nb_files == 1) throw _("ips directory empty !!!");
 	memmove(&menu[0],&menu[1],(nb_files-1)*sizeof(menu_item_t));
 	nb_files--;
 	return;
@@ -685,7 +686,12 @@ void TMyMultiFileSel::draw_bot_frame() {
 
 static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res, char *title) {
   fsel_dlg = new TMyMultiFileSel(mypath,mypath,ext,res_str,max_res,NO_HEADER,title);
-  fsel_dlg->execute();
+  try {
+      fsel_dlg->execute();
+  }
+  catch(const char *msg) {
+      MessageBox(_("Error"),(char*)msg,"Ok");
+  }
   delete fsel_dlg;
 }
 
