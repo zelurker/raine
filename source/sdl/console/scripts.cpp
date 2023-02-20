@@ -562,7 +562,7 @@ static void get_script_mode(char *field) {
     cons->print("looping script");
     fprintf(fscript," always");
   }
-  *field = 0;
+  if (*field) *field = 0;
   fprintf(fscript,"\n");
   cons->print("now type your commands, a . to finish...");
   cons->set_interactive(&get_script_commands);

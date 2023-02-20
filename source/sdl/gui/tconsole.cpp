@@ -480,6 +480,8 @@ int TConsole::run_cmd(char *string,int myinteractive) {
     try {
 	if (ret)
 	    if (cmd->handler) (*cmd->handler)(argc,argv);
+	if (!cmd)
+	    return 0;
 	if (!cmd->name) {
 	    unknown_command(argc,argv);
 	}
