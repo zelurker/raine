@@ -291,7 +291,7 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 			    if (strcmp(&ips[l-4],".ips"))
 				strcat(ips,".ips");
 			    printf("ips file %s\n",ips);
-			    load_ips(ips,rec_dest,rec_rom_info.size);
+			    load_ips(ips,rec_dest,rec_rom_info.size,n,rec_rom_info.name);
 			}
 		    }
 		    return ret;

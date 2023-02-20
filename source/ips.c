@@ -12,7 +12,50 @@
 
 tips_info ips_info;
 
-void load_ips(char *res, unsigned char *ROM, int max_size) {
+typedef struct {
+    int offset, len;
+    int index;
+    char *rom_name;
+} tpatch;
+
+static tpatch *patch;
+int alloc_patch, nb_patch;
+#define LEN 1024*5
+static char ips_error[LEN];
+
+void free_ips_patches() {
+    if (patch) {
+	free(patch);
+	patch = NULL;
+    }
+}
+
+char *get_ips_error() { return ips_error; }
+
+static void check_patch(int offset, int len, int index, char *rom_name) {
+    int end = offset + len;
+    if (nb_patch == alloc_patch) {
+	alloc_patch += 10;
+	patch = realloc(patch, alloc_patch*sizeof(tpatch));
+    }
+
+    for (int n=0; n<nb_patch; n++) {
+	int pend = patch[n].offset + patch[n].len;
+	if (patch[n].rom_name != rom_name)
+	    continue;
+	if ((pend > offset && pend < offset + len) ||
+		(patch[n].offset < end && pend > end)) {
+	    snprintf(&ips_error[strlen(ips_error)],LEN-strlen(ips_error),"conflict for rom %s between %s offset %x len %x &\nips %s offset %x len %x\n",rom_name,ips_info.ips[index],offset,len,ips_info.ips[patch[n].index],patch[n].offset,patch[n].len);
+	    ips_error[LEN-1] = 0;
+	}
+    }
+    patch[nb_patch].offset = offset;
+    patch[nb_patch].len = len;
+    patch[nb_patch].rom_name = rom_name;
+    patch[nb_patch++].index = index;
+}
+
+void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_name) {
     FILE *f = fopen(res,"rb");
     if (!f) {
 	printf("couldn't load ips %s\n",res);
@@ -43,6 +86,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size) {
 		printf("ips : ofs overflow %s %x when max is %x\n",res,ofs,max_size);
 		continue;
 	    }
+	    check_patch(ofs,len,index,rom_name);
 	    memset(&ROM[ofs],ofs_str[0],len);
 	    continue;
 	}
@@ -61,6 +105,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size) {
 	    printf("ips: len too big, ofs %x len %x max_size %x\n",ofs,len,max_size);
 	    len = max_size-ofs-1;
 	}
+	check_patch(ofs,len,index,rom_name);
 	memcpy(&ROM[ofs],buf,len); // no swap...
     } while (!feof(f));
     fclose(f);

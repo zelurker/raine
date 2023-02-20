@@ -426,6 +426,9 @@ static void do_load_game(void)
 {
      char neocd_wm_title[160];
 
+     char *error = get_ips_error();
+     *error = 0;
+
    /*
 
    satisfy the request
@@ -500,6 +503,8 @@ static void do_load_game(void)
      break;
    }
 
+   if (*error)
+       MessageBox(_("IPS error"),error,"OK");
    free(load_debug);
 }
 
@@ -709,7 +714,7 @@ static int do_ips(int sel) {
     struct stat stbuf;
     if (!stat(res,&stbuf) && S_ISDIR(stbuf.st_mode))
 	return 0; // it's a dir indeed
-    load_ips(res,ROM,get_region_size(REGION_CPU1));
+    load_ips(res,ROM,get_region_size(REGION_CPU1),0,"");
     return 0;
 }
 
