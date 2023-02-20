@@ -6,6 +6,10 @@
 #ifdef __cplusplus
 extern "C" {
 
+#if defined(MessageBox)
+#undef MessageBox
+#endif
+
 int MessageBox(char *title, char *content, char *buttons = NULL);
 
 }
