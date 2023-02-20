@@ -552,9 +552,9 @@ class TMyMultiFileSel : public TMultiFileSel
 };
 
 static void save_ips_ini(char **res) {
-    char *slash = strrchr(res[0],'/');
+    char *slash = strrchr(res[0],SLASH[0]);
     if (slash) *slash = 0;
-    char *slash2 = strrchr(res[0],'/');
+    char *slash2 = strrchr(res[0],SLASH[0]);
     if (!slash2 || !slash) {
 	MessageBox("Error","can't find the name of the game in the path","ok");
 	return;
@@ -562,7 +562,7 @@ static void save_ips_ini(char **res) {
     char game[1024];
     strcpy(game,res[0]);
     strcat(game,".ini");
-    *slash = '/';
+    *slash = SLASH[0];
     printf("save_ips_ini %s\n",game);
     FILE *g = fopen(game,"w");
     if (!g) {
@@ -572,7 +572,7 @@ static void save_ips_ini(char **res) {
     ips_info.nb = 0; // just to be sure, but normally already at 0
     for (int n=0; n<10; n++) {
 	if (res[n]) {
-	    char *s = strrchr(res[n],'/');
+	    char *s = strrchr(res[n],SLASH[0]);
 	    if (s) {
 		*s = 0;
 		fprintf(g,"%s\n",&s[1]);

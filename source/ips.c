@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "ips.h"
-#include "deftypes.h"
+#include "raine.h"
 #include "sdl/dialogs/messagebox.h"
 #include "translate.h"
 #include "files.h"
@@ -121,7 +121,7 @@ void add_ips_file(char *file) {
     }
     printf("add_ips_file %s\n",file);
     char buf[1024];
-    char *s = strrchr(file,'/');
+    char *s = strrchr(file,SLASH[0]);
     if (!s) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't decode path : %s",file);
