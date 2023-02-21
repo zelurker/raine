@@ -16,6 +16,74 @@ extern float fps,default_fps;
 extern int profiler_mode;
 #endif
 
+#ifdef RDTSC_PROFILE
+
+// This is one of the very rare code which remains used when NO_ASM is used...
+#if defined(RAINE_DOS) || defined(RAINE_UNIX) || defined(__MINGW32__)
+#define RDTSC_32(dest) ({				    \
+   __asm__ __volatile__ (				    \
+   " rdtsc "                                                \
+   : "=a" (((UINT32 *)dest)[0])                             \
+   :							    \
+   : "%edx" ); })                                           \
+
+#define RDTSC_64(dest) ({				    \
+   __asm__ __volatile__ (				    \
+   " rdtsc "                                                \
+   : "=a" (((UINT32 *)dest)[0]), "=d" (((UINT32 *)dest)[1]) \
+   : ); })						    \
+
+#else
+
+#undef UINT64
+#define UINT64 __int64
+
+DEF_INLINE UINT32 read_rdtsc_32(void)
+{
+	UINT32 time_rdtsc;
+
+	__asm
+	{
+		push	eax
+		push	edx
+//		rdtsc
+		_emit	0x0f
+		_emit	0x31
+		mov		time_rdtsc, eax
+		pop		edx
+		pop		eax
+	}
+
+	return time_rdtsc;
+}
+
+DEF_INLINE UINT64 read_rdtsc_64(void)
+{
+   UINT32 time_rdtsc_low,time_rdtsc_high;
+
+   __asm
+   {
+      push	eax
+      push	edx
+    //rdtsc
+      _emit	0x0f
+      _emit	0x31
+      mov	time_rdtsc_low, eax
+      mov	time_rdtsc_high, edx
+      pop	edx
+      pop	eax
+   }
+
+   return ( (time_rdtsc_high<<32) | (time_rdtsc_low));
+}
+
+#define RDTSC_32(dest)		((UINT32 *)dest)[0] = read_rdtsc_32()
+
+#define RDTSC_64(dest)		((UINT64 *)dest)[0] = read_rdtsc_64()
+
+#endif
+#endif // RDTSC_PROFILE
+
 void switch_fps_mode(void);
 void init_fps(void);
 
