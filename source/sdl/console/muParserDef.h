@@ -45,6 +45,9 @@
   This datatype must be a built in value type. You can not use custom classes.
   It should be working with all types except "int"!
 */
+// Raine notice : works with unsigned int, but not with int.
+// only drawback so far : not being able to handle any float number, but advantage : much faster especially in windows !
+// It's possible to have long int here to get 8 bytes ints when using 64 bits, but for now I don't see any advantage in doing this...
 #define MUP_BASETYPE unsigned int
 
 /** \brief Activate this option in order to compile with OpenMP support.

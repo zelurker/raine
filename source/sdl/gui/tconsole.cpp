@@ -437,7 +437,7 @@ int TConsole::parse_cmd(char *string) {
   if (*field) {
       if (!strchr(field,'#') && visible)
 	  print("\E[31m>\E[0m %s",field);
-      if (!strcasecmp(field,"exit")) {
+      if (!strcmp(field,"exit")) {
 	  *field = 0;
 	  *temp = 0;
 	  return 1;
@@ -478,10 +478,10 @@ int TConsole::run_cmd(char *string,int myinteractive) {
     }
     int ret = parse_cmd(string);
     try {
+	if (!cmd)
+	    return ret;
 	if (ret)
 	    if (cmd->handler) (*cmd->handler)(argc,argv);
-	if (!cmd)
-	    return 0;
 	if (!cmd->name) {
 	    unknown_command(argc,argv);
 	}
