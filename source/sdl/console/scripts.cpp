@@ -484,7 +484,6 @@ void do_stop(int argc, char **argv) {
 void update_scripts() {
     if (!nb_scripts) return;
     int n;
-    frame = cpu_frame_count;
     for (n=0; n<nb_scripts; n++) {
 	if (script[n].status) {
 	    init_script_param(n);

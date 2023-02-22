@@ -2,7 +2,6 @@
 #define CONSOLE_H
 
 #ifdef __cplusplus
-extern "C" {
 
 #include "gui/tconsole.h"
 #include "parser.h"
@@ -35,6 +34,7 @@ class TRaineConsole : public TConsole
     int get_dump_cols() { return dump_cols; }
 };
 
+extern "C" {
 extern TRaineConsole *cons;
 int get_cpu_id();
 void set_cpu_id(int cpu);

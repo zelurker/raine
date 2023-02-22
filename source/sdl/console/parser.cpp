@@ -13,25 +13,22 @@
 #include "arpro.h"
 #include <openssl/rand.h>
 #include "scripts.h"
-
-/* muParser is specialised in double numbers, so it lacks some basic integer
- * operations, but can be easily extended, so let's go... */
+#include "profile.h"
 
 using namespace mu;
-static value_type mod(value_type v1, value_type v2) { return int(rint(v1))%int(rint(v2)); }
-static value_type rol(value_type v1, value_type v2) { return int(rint(v1))<<int(rint(v2)); }
-static value_type ror(value_type v1, value_type v2) { return int(rint(v1))>>int(rint(v2)); }
-static value_type Or(value_type v1, value_type v2) { return int(v1) | int(v2); }
-static value_type And(value_type v1, value_type v2) { return int(v1) & int(v2); }
-static value_type lor(value_type v1, value_type v2) { return int(v1) || int(v2); }
-static value_type land(value_type v1, value_type v2) { return int(v1) && int(v2); }
-static value_type Not(value_type v1) { return ~int(rint(v1)); }
-static value_type LogNot(value_type v1) { return !int(rint(v1)); }
+static value_type mod(value_type v1, value_type v2) { return v1%v2; }
+static value_type rol(value_type v1, value_type v2) { return v1<<v2; }
+static value_type ror(value_type v1, value_type v2) { return v1>>v2; }
+static value_type Or(value_type v1, value_type v2) { return (v1) | (v2); }
+static value_type And(value_type v1, value_type v2) { return (v1) & (v2); }
+static value_type lor(value_type v1, value_type v2) { return (v1) || (v2); }
+static value_type land(value_type v1, value_type v2) { return (v1) && (v2); }
+static value_type Not(value_type v1) { return ~v1; }
+static value_type LogNot(value_type v1) { return !v1; }
 
-double sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
-static double param;
-static std::vector<double> vec;
-double frame;
+MUP_BASETYPE sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
+static MUP_BASETYPE param;
+static std::vector<MUP_BASETYPE> vec;
 
 void set_nb_scripts(int n) {
     vec.resize(n);
@@ -54,7 +51,12 @@ value_type rnd() {
 }
 
 value_type peek(value_type fadr) {
+// Can't test easily a type in an #if, it's just some code to slightly improve the peek functions if MUP_BASETYPE is int
+#if 1 // sizeof(MUP_BASETYPE) == 4
+#define adr fadr
+#else
   UINT32 adr = fadr;
+#endif
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) {
       // workaround for cases where we don't have a memory pointer
@@ -73,7 +75,9 @@ value_type peek(value_type fadr) {
 }
 
 value_type dpeek(value_type fadr) {
+#if 0 // sizeof(MUP_BASETYPE) > 4
   UINT32 adr = fadr;
+#endif
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
   if (get_cpu_id() >> 4 == CPU_68020)
@@ -83,7 +87,9 @@ value_type dpeek(value_type fadr) {
 }
 
 value_type lpeek(value_type fadr) {
+#if 0 // sizeof(MUP_BASETYPE) > 4
   UINT32 adr = fadr;
+#endif
   UINT8 *ptr = get_ptr(adr);
   if (!ptr) throw "this adr isn't in ram !";
 
@@ -218,10 +224,10 @@ static value_type alert(const char_type *msg_and_btns) {
 static int initialised = 0;
 static mu::Parser p;
 int parser_error;
-static double afValBuf[100];
+static MUP_BASETYPE afValBuf[100];
 static int iVal = 0;
 
-double* AddVariable(const char *a_szName, void *pUserData)
+MUP_BASETYPE* AddVariable(const char *a_szName, void *pUserData)
 {
 
   afValBuf[iVal++] = 0;
@@ -327,12 +333,24 @@ int parse(char *orig)
       p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
       p.DefineVar("param",&param);
-      p.DefineVar("frame",&frame);
+      p.DefineVar("frame",&cpu_frame_count);
       initialised = 1;
     }
+#if 0
+    int nb,sline; char *sect;
+    get_running_script_info(&nb,&sline,&sect);
+    u32 start,end;
+    if (sline == 104)
+	RDTSC_32(&start);
+#endif
     p.SetExpr(expr);
     res = p.Eval();
-
+#if 0
+    if (sline == 104) {
+	RDTSC_32(&end);
+	printf("104: parse cond: %d\n",end-start);
+    }
+#endif
     // STd::cout << p.Eval() << endl;
   }
   catch (mu::Parser::exception_type &e)

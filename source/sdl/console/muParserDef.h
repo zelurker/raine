@@ -45,7 +45,7 @@
   This datatype must be a built in value type. You can not use custom classes.
   It should be working with all types except "int"!
 */
-#define MUP_BASETYPE double
+#define MUP_BASETYPE unsigned int
 
 /** \brief Activate this option in order to compile with OpenMP support.
 
@@ -86,7 +86,7 @@
 
 #if defined(_MSC_VER)
 	#pragma warning(push)
-	#pragma warning(disable : 26812) 
+	#pragma warning(disable : 26812)
 #endif
 
 
@@ -169,7 +169,7 @@ namespace mu
 		// operators and functions
 		cmFUNC = 26,		///< Code for a generic function item
 		cmFUNC_STR,			///< Code for a function with a string parameter
-		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index 
+		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index
 		cmSTRING,			///< Code for a string token
 		cmOPRT_BIN,			///< user defined binary operator
 		cmOPRT_POSTFIX,		///< code for postfix operators
@@ -252,12 +252,12 @@ namespace mu
 		ecINVALID_POSTFIX_IDENT = 21,	///< Invalid function, variable or constant name.
 
 		ecBUILTIN_OVERLOAD = 22, ///< Trying to overload builtin operator
-		ecINVALID_FUN_PTR = 23, ///< Invalid callback function pointer 
-		ecINVALID_VAR_PTR = 24, ///< Invalid variable pointer 
+		ecINVALID_FUN_PTR = 23, ///< Invalid callback function pointer
+		ecINVALID_VAR_PTR = 24, ///< Invalid variable pointer
 		ecEMPTY_EXPRESSION = 25, ///< The Expression is empty
 		ecNAME_CONFLICT = 26, ///< Name conflict
 		ecOPT_PRI = 27, ///< Invalid operator priority
-		// 
+		//
 		ecDOMAIN_ERROR = 28, ///< catch division by zero, sqrt(-1), log(0) (currently unused)
 		ecDIV_BY_ZERO = 29, ///< Division by zero (currently unused)
 		ecGENERIC = 30, ///< Generic error
@@ -278,7 +278,7 @@ namespace mu
 		// internal errors
 		ecINTERNAL_ERROR = 39,    ///< Internal error of any kind.
 
-		// The last two are special entries 
+		// The last two are special entries
 		ecCOUNT,                      ///< This is no error code, It just stores just the total number of error codes
 		ecUNDEFINED = -1  ///< Undefined message, placeholder to detect unassigned error messages
 	};
