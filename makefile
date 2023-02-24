@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.94.12b"
+VERSION = "0.95"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -65,7 +65,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
-target=i686-w64-mingw32
+# target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
