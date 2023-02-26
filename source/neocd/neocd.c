@@ -688,11 +688,14 @@ static void get_scanline() {
     // scanline isn't available, find it
     // Use start_frame here because current_eno_frame
     // can vary when finding a speed hack
-    int cycles = s68000readOdometer() - start_frame;
+    // int cycles = s68000readOdometer() - start_frame;
     // The +0xf0 is to try to make garou happy, it freezes on a certain stage 3 otherwise
     // sadly I can't check it works, lost the savegame and the details of the problem !
     // See the call from read_videoreg, the value of the scanline is expected to go from f0 to 1ff, see details there
-    scanline = cycles * NB_LINES / current_neo_frame + 0xf0;
+    // Simplifcation : actually when in a normal frame, most of the code which tests this is waiting to receive f8, which corresponds to the 1st scanline (0)
+    // so we just return 0 here, I'll see if I find a spot where it doesn't work.
+    // Actually with this the music is back during the neogeo logo in a game like aodk when calling s68000tripOdometer at the end of starscream frame, which should be the case by default.
+    scanline = 0; // cycles * NB_LINES / current_neo_frame + 0xf0;
   }
 }
 
@@ -923,7 +926,7 @@ static UINT16 read_videoreg(UINT32 offset) {
 	     * and the counter goes from 0xf8 to 0x1ff with a twist... ! */
 	    {
 	      get_scanline();
-	      int vcounter = scanline + 0x100;
+	      int vcounter = scanline + 0xf8;
 	      if (vcounter >= 0x200) vcounter -= 0x108; // to have the range f8..1ff
 	      // All the dev docs said about this was that the highest bit was 1 for the displayed area
 	      // which is actually wrong ! This counter goes from f8 to 1ff, and the vbl starts at line f0
