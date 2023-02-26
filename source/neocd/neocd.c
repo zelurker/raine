@@ -164,7 +164,7 @@ UINT8* get_neogeo_saveram() {
 }
 
 void restore_neocd_config() {
-  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
+  allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",0);
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
   neogeo_bios = raine_get_config_int("neogeo","bios",0);
@@ -2860,9 +2860,11 @@ static void write_pal(UINT32 offset, UINT16 data) {
   /* There are REALLY mirrors of the palette, used by kof96ng at least,
    * see demo / story */
   offset &= 0x1fff;
-  WriteWord(&RAM_PAL[offset],data);
-/*  get_scanline();
-  print_debug("write_pal %x,%x scanline %d\n",offset,data,scanline); */
+  if (ReadWord(&RAM_PAL[offset]) != data) {
+      WriteWord(&RAM_PAL[offset],data);
+      print_debug("write_pal %x,%x pc %x sr %x\n",offset,data,s68000readPC(),s68000context.sr);
+  }
+/*  get_scanline(); */
 }
 
 static void kof99_bankswitch_w(UINT32 offset, UINT16 data) {
