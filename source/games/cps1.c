@@ -4068,10 +4068,22 @@ static void draw_cps1_partial(int scanline)
 	      * https://www.1emulation.com/forums/topic/36589-raine-0923-mer-curious-version/page/2/ */
 	     layerpri[maxi] = 0;
 	 }
-	 render_cps2_sprites_pbitmap();
-	 render_cps2_layer(layer[0],layerpri[0]);
-	 render_cps2_layer(layer[1],layerpri[1]);
-	 render_cps2_layer(layer[2],layerpri[2]);
+	 if (!strncmp(current_game->main_name,"csclu",5) || !strncmp(current_game->main_name,"mvsc",4)) {
+	     // while I don't find a reliable way to emulate these priority masks for cps2, I'll be forced to add hacks like this one
+	     // for csclub in the intro you see only yellow in the projector light with the default draw order
+	     // For mvsc it's the selection square which hides the character below it when selecting a character at the start of the game
+	     // This hack stinks !
+	     render_cps2_sprites_pbitmap();
+	     render_cps2_layer(layer[0],layerpri[0]);
+	     render_cps2_layer(layer[1],layerpri[1]);
+	     render_cps2_layer(layer[2],layerpri[2]);
+	 } else {
+	     // This order seems to be the best for most of the others, that is sprites on top.
+	     render_cps2_layer(layer[0],layerpri[0]);
+	     render_cps2_layer(layer[1],layerpri[1]);
+	     render_cps2_layer(layer[2],layerpri[2]);
+	     render_cps2_sprites_pbitmap();
+	 }
 #endif
        } else {
 	 for (nb=0; nb<=layerpri[0]; nb++) {
