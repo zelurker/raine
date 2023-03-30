@@ -105,13 +105,14 @@ static void init_sound_driver(int changed) {
 	}
     }
     // Must also init the names of the devices, they depend on the driver... !
-    sound_menu[1].values_list_size = SDL_GetNumAudioDevices(0)+1;
+    const int devs = SDL_GetNumAudioDevices(0); // This function can trigger a redetection of all audio devices so it's best to call it only once
+    sound_menu[1].values_list_size = devs+1;
     sound_menu[1].values_list_label[0] = "None";
     if (menu) {
 	menu->update_list_label(1,0,_("None"));
 	menu->update_list_size(1,sound_menu[1].values_list_size);
     }
-    for (int i = 0; i < SDL_GetNumAudioDevices(0); i++) {
+    for (int i = 0; i < devs; i++) {
 	if (sound_menu[1].values_list_label[i+1])
 	    free(sound_menu[1].values_list_label[i+1]);
 	sound_menu[1].values_list_label[i+1] = strdup(SDL_GetAudioDeviceName(i, 0));
