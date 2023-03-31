@@ -75,6 +75,11 @@ void sound_load_cfg() {
 #ifdef ALLEGRO_SOUND
    max_mixer_volume = raine_get_config_int( "Sound",        "max_mixer_volume",0 );
 #endif
+   if (!audio_sample_rate) {
+       sdl_init();
+       saInitSoundCard(RaineSoundCard,audio_sample_rate);
+   }
+
 }
 
 void sound_save_cfg() {
