@@ -375,7 +375,7 @@ static void load_game_proc()
 	char buf[1024];
 	while (!feof(f)) {
 	    if (myfgets(buf,1024,f)) {
-		sprintf(&file[l],"/%s",buf);
+		snprintf(&file[l],FILENAME_MAX-l,"/%s",buf);
 		add_ips_file(file);
 	    }
 	}
@@ -552,6 +552,7 @@ class TMyMultiFileSel : public TMultiFileSel
 };
 
 static void save_ips_ini(char **res) {
+    if (!res[0]) return;
     char *slash = strrchr(res[0],SLASH[0]);
     if (slash) *slash = 0;
     char *slash2 = strrchr(res[0],SLASH[0]);
@@ -609,6 +610,8 @@ void TMyMultiFileSel::compute_nb_items()
 	if (nb_files == 1) throw _("ips directory empty !!!");
 	memmove(&menu[0],&menu[1],(nb_files-1)*sizeof(menu_item_t));
 	nb_files--;
+	nb_items--;
+	nb_disp_items--;
 	return;
     }
     char file[FILENAME_MAX];

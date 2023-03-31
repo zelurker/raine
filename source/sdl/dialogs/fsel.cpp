@@ -442,7 +442,7 @@ void TFileSel::set_dir(char *mypath) {
 
 int TFileSel::mychdir(int n) {
     char *old = NULL;
-    if (n == 0) { // ..
+    if (n == 0 && !strcmp(menu[0].label,"..")) { // .. but check menu[0] in case something changed... !
 	char *s = strrchr(path,SLASH[0]);
 	if (s) {
 	    *s = 0;

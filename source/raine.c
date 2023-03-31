@@ -349,6 +349,7 @@ int main(int argc,char *argv[])
  } else
 	 sprintf(dir_cfg.share_path, "/usr/share/games/raine/");
    sprintf(dir_cfg.exe_path, "%s/.raine/", getenv("HOME"));
+   chdir("/"); // to avoid any path collision between temp work dir and personnal dir
 #else
 #if !defined(RAINE_WIN32) || defined(__MINGW32__)
    strcpy(dir_cfg.exe_path, argv[0]);
