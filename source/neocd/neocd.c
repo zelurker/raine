@@ -695,7 +695,7 @@ static void get_scanline() {
     // Simplifcation : actually when in a normal frame, most of the code which tests this is waiting to receive f8, which corresponds to the 1st scanline (0)
     // so we just return 0 here, I'll see if I find a spot where it doesn't work.
     // Actually with this the music is back during the neogeo logo in a game like aodk when calling s68000tripOdometer at the end of starscream frame, which should be the case by default.
-    scanline = 0; // cycles * NB_LINES / current_neo_frame + 0xf0;
+    scanline = (scanline == 0 ? 100 : 0); // cycles * NB_LINES / current_neo_frame + 0xf0;
   }
 }
 
