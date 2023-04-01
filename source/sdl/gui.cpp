@@ -375,6 +375,8 @@ static void load_game_proc()
 	char buf[1024];
 	while (!feof(f)) {
 	    if (myfgets(buf,1024,f)) {
+		if (!buf[0] || !strncmp(buf,"//",2))
+		    continue;
 		snprintf(&file[l],FILENAME_MAX-l,"/%s",buf);
 		add_ips_file(file);
 	    }
@@ -623,6 +625,11 @@ void TMyMultiFileSel::compute_nb_items()
     while (!feof(f)) {
 	char buf[1024];
 	myfgets(buf,1024,f);
+	// Ultra basic attempt to allow files edited by hand : skip blank lines, and lines starting with //
+	// notice that a line starting with a space and then // will be rejected, so it's really ultra basic !
+	// This thing has never been intended to be edited
+	if (!buf[0] || !strncmp(buf,"//",2))
+	    continue;
 	for (int n=0; n<nb_files; n++) {
 	    if (!strcmp(menu[n].label,buf))
 		selected[n] = 1;
