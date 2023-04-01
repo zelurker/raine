@@ -573,7 +573,6 @@ int main(int argc,char *argv[])
    auto_stop_cdda = raine_get_config_int("neocd","auto_stop_cdda",1);
    mute_sfx = raine_get_config_int("neocd","mute_sfx",0);
    mute_music = raine_get_config_int("neocd","mute_music",0);
-   allowed_speed_hacks = raine_get_config_int("neocd","allowed_speed_hacks",1);
 #endif
 
    for(i = 0; dir_cfg.rom_dir[i]; i ++){
