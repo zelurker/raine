@@ -129,8 +129,10 @@ void add_ips_file(char *file) {
 	fclose(f);
 	return;
     }
+    char old = s[1];
     s[1] = 0;
     strcpy(ips_info.path,file);
+    s[1] = old;
     int nb = ips_info.nb;
     while (!feof(f)) {
 	myfgets(buf,1024,f);
@@ -159,7 +161,10 @@ void add_ips_file(char *file) {
     }
     fclose(f);
     if (nb == 0) {
-	MessageBox("dat error", "couldn't find any rom there... !","ok");
+	char msg[1024];
+	sprintf(msg,"%s: couldn't find any rom there... !",&s[1]);
+
+	MessageBox("dat error", msg,"ok");
 	for (int n=0; n<nb; n++) {
 	    free(ips_info.rom[n]);
 	    free(ips_info.ips[n]);
