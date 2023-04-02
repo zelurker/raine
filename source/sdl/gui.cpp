@@ -556,7 +556,10 @@ class TMyMultiFileSel : public TMultiFileSel
 static void save_ips_ini(char **res) {
     if (!res[0]) return;
     char *slash = strrchr(res[0],SLASH[0]);
-    if (slash) *slash = 0;
+    if (slash) {
+	*slash = 0;
+	if (slash > res[0] && slash[-1] == SLASH[0]) slash[-1] = 0; // for windows and its stupide double \\ !
+    }
     char *slash2 = strrchr(res[0],SLASH[0]);
     if (!slash2 || !slash) {
 	MessageBox("Error","can't find the name of the game in the path","ok");

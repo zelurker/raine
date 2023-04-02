@@ -142,7 +142,10 @@ static int choose_shader(int sel) {
     else {
 	strcpy(dir,ogl.shader);
 	char *p = strrchr(dir,SLASH[0]);
-	if (p) *p = 0;
+	if (p) {
+	    *p = 0;
+	    if (p > dir && p[-1] == SLASH[0]) p[-1] = 0; // for windows and its stupide double \\ !
+	}
     }
     fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&

@@ -187,8 +187,10 @@ TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, in
     res = stat(path,&buf);
     if (res < 0) { // does not exist
       s = strrchr(path,SLASH[0]);
-      if (s)
+      if (s) {
 	*s = 0;
+	if (s > path && s[-1] == SLASH[0]) s[-1] = 0; // for windows and its stupide double \\ !
+      }
       else {
 	strcat(path,SLASH);
 	res = 0;
@@ -448,7 +450,7 @@ int TFileSel::mychdir(int n) {
 	    *s = 0;
 	    old = strdup(s+1);
 #ifdef RAINE_WIN32
-	    if (s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
+	    if (s > path && s[-1] == SLASH[0]) { s[-1] = 0; // double \ in windows
 		printf("double replace for %s\n",path);
 	    }
 #endif

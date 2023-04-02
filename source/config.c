@@ -298,8 +298,10 @@ int load_neo_from_name(char *res) {
   if (!s) {
       getcwd(neocd_dir,FILENAME_MAX);
       snprintf(neocd_path,FILENAME_MAX,"%s%s%s",neocd_dir,SLASH,res);
-  } else
+  } else {
       *s = 0; // neocd_dir without ending slash
+      if (s > neocd_dir && s[-1] == SLASH[0]) s[-1] = 0; // for windows and its stupide double \\ !
+  }
   print_debug("load_neo_from_name: file %s neocd_dir %s\n",neocd_path,neocd_dir);
   return actual_load_neo_game();
 }

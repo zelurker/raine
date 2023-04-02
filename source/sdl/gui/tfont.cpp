@@ -31,7 +31,10 @@ static int do_font(int sel) {
     char temp[FILENAME_MAX];
     strcpy(temp,jap_font);
     char *p = strrchr(temp,SLASH[0]);
-    if (p) *p = 0;
+    if (p) {
+	*p = 0;
+	if (p > temp && p[-1] == SLASH[0]) p[-1] = 0; // for windows and its stupide double \\ !
+    }
     strcpy(res,jap_font);
     fsel(temp,exts, res, _("Select true type font"));
     if (res[0] && strcmp(jap_font,res) && !stricmp(&res[strlen(res)-3],"ttf")) {

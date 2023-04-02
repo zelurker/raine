@@ -437,8 +437,10 @@ void init_load_type() {
 	  char *path = strrchr(neocd_path,SLASH[0]);
 	  // path is defined (checked before)
 	  *path = 0;
+	  if (path > neocd_path && path[-1] == SLASH[0]) path[-1] = 0; // for windows and its stupide double \\ !
 	  chdir(neocd_path);
 	  *path = SLASH[0];
+	  if (path > neocd_path && path[-1] == 0) path[-1] = SLASH[0]; // what a mess !
 	}
 	load_type = CUE_TYPE;
       }
