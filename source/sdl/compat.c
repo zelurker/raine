@@ -217,9 +217,9 @@ void sdl_init() {
 }
 
 static void save_game_stats() {
-    FILE *f = fopen(get_shared("savedata/stats"),"w");
+    FILE *f = fopen(get_shared("savedata" SLASH "stats"),"w");
     if (!f) {
-	printf("save_game_stats: can't create savedata/stats ?!!\n");
+	printf("save_game_stats: can't create savedata/stats ?!! path:%s\n",get_shared("savedata" SLASH "stats"));
 	return;
     }
     for (int n=0; n<game_count; n++) {

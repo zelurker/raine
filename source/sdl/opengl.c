@@ -325,7 +325,7 @@ void opengl_text(char *msg, int x, int y) {
 
     // static GLuint opaque_buff,gl_font;
     if (!font) {
-	char *name= get_shared("fonts/10x20.fnt");
+	char *name= get_shared("fonts" SLASH "10x20.fnt");
 	UINT32 size = size_file(name);
 	if (!size) {
 	    printf("couldn't find font %s\n",name);

@@ -377,7 +377,7 @@ static void load_game_proc()
 	    if (myfgets(buf,1024,f)) {
 		if (!buf[0] || !strncmp(buf,"//",2))
 		    continue;
-		snprintf(&file[l],FILENAME_MAX-l,"/%s",buf);
+		snprintf(&file[l],FILENAME_MAX-l,SLASH "%s",buf);
 		add_ips_file(file);
 	    }
 	}
@@ -816,7 +816,7 @@ void setup_font()
   ingame_font = (UINT8*)calloc(1,1792);
   FILE *f = fopen (get_shared("font6x8.bin"), "rb");
   if (!f)
-    f = fopen(get_shared("fonts/font6x8.bin"),"rb");
+    f = fopen(get_shared("fonts" SLASH "font6x8.bin"),"rb");
   if (f) {
    fread(ingame_font,1,1792,f);
    fclose(f);
@@ -926,7 +926,7 @@ void StartGUI(void)
     init_glsl();
 #endif
 #else
-    setup_mouse_cursor(IMG_Load("bitmaps/cursor.png"));
+    setup_mouse_cursor(IMG_Load("bitmaps" SLASH "cursor.png"));
 #endif
     get_shared_hook = &get_shared;
 

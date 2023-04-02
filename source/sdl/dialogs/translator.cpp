@@ -101,7 +101,7 @@ TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
     cursorx = cursory = 0;
     printf("Clearing colors\n");
     memset(&pal[8],0,sizeof(SDL_Color)*8); // clear parasite colors in font
-    FILE *f = fopen(get_shared("fonts/8x16.fnt"),"rb");
+    FILE *f = fopen(get_shared("fonts" SLASH "8x16.fnt"),"rb");
     sprites_changed = 0;
     if (!f) {
 	ErrorMsg("No 8x16 font available!");
@@ -119,7 +119,7 @@ TTransBitmap::TTransBitmap(menu_item_t *my_menu) : TBitmap(my_menu)
     map = (UINT16*)calloc(size,sizeof(UINT16));
     size_map = size;
     used_map = 0;
-    f = fopen(get_shared("savedata/ssrpg.map"),"rb");
+    f = fopen(get_shared("savedata" SLASH "ssrpg.map"),"rb");
     if (f) {
 	fread(map,1,size*2,f);
 	fclose(f);

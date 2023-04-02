@@ -140,7 +140,7 @@ static void init_recent() {
 #endif
 
 static void read_game_stats() {
-    FILE *f = fopen(get_shared("savedata/stats"),"r");
+    FILE *f = fopen(get_shared("savedata" SLASH "stats"),"r");
     unsigned long found_last_played = 0;
     if (f) {
 	while (!feof(f)) {

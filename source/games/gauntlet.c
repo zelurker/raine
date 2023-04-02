@@ -446,7 +446,7 @@ static void load_gauntlet() {
     eeprom = AllocateMem(0x800);
     if (!eeprom) return;
     memset(eeprom,0xff,0x800);
-    load_file(get_shared("savedata/gauntlet.epr"),eeprom,0x800);
+    load_file(get_shared("savedata" SLASH "gauntlet.epr"),eeprom,0x800);
     playfield = RAM + 0x3000;
     sprites = playfield + 0x2000;
     alpha = sprites + 0x2000;
@@ -564,7 +564,7 @@ static void load_gauntlet() {
 static void clear_gauntlet() {
     if (eeprom) {
 	char path[80];
-	snprintf(path,80,"savedata/%s.epr",current_game->main_name);
+	snprintf(path,80,"savedata" SLASH "%s.epr",current_game->main_name);
 	save_file(get_shared(path),eeprom,0x800);
     }
 }

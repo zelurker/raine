@@ -922,7 +922,7 @@ int do_about(int sel) {
     snprintf(date,80,_("Compiled on %s %s"), __DATE__, __TIME__);
     about_items[1].label = date;
     about_items[2].label = gcc_version;
-    path = get_shared("bitmaps/raine_logo.png");
+    path = get_shared("bitmaps" SLASH "raine_logo.png");
     snprintf(about_cpu, 64, "CPU: %s", raine_cpu_model);
     about_items[3].label = about_cpu;
     char about_sdl[80];

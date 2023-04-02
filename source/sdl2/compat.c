@@ -208,7 +208,7 @@ void sdl_init() {
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (display_cfg.fullscreen == 2)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
-	SDL_Surface *sf = IMG_Load("bitmaps/bub2.png");
+	SDL_Surface *sf = IMG_Load(get_shared("bitmaps" SLASH "bub2.png"));
 	if (!sf) {
 	    printf("can't load icon\n");
 	} else {
@@ -229,9 +229,9 @@ void sdl_init() {
 }
 
 static void save_game_stats() {
-    FILE *f = fopen(get_shared("savedata/stats"),"w");
+    FILE *f = fopen(get_shared("savedata" SLASH "stats"),"w");
     if (!f) {
-	printf("save_game_stats: can't create savedata/stats ?!!\n");
+	printf("save_game_stats: can't create savedata/stats ?!! path:%s\n",get_shared("savedata" SLASH "stats"));
 	return;
     }
     for (int n=0; n<game_count; n++) {

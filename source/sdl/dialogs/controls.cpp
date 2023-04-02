@@ -1138,7 +1138,7 @@ static int do_mapping(int sel) {
     SDL_JoystickClose(joy);
     if (*map) {
 	int l = strlen(map);
-	FILE *f = fopen(get_shared("config/userdb.txt"),"r");
+	FILE *f = fopen(get_shared("config" SLASH "userdb.txt"),"r");
 	if (f) {
 	    char *s = strchr(map,',');
 	    if (!s) {
@@ -1146,7 +1146,7 @@ static int do_mapping(int sel) {
 		return 0;
 	    }
 	    *s = 0;
-	    FILE *g = fopen(get_shared("config/userdb2.txt"),"w");
+	    FILE *g = fopen(get_shared("config" SLASH "userdb2.txt"),"w");
 	    int found = 0;
 	    while (!feof(f)) {
 		char buf[1024];
@@ -1165,14 +1165,14 @@ static int do_mapping(int sel) {
 		fprintf(g,"%s\n",map);
 	    }
 	    fclose(g);
-	    unlink(get_shared("config/userdb.txt"));
-	    rename(get_shared("config/userdb2.txt"),get_shared("config/userdb.txt"));
+	    unlink(get_shared("config" SLASH "userdb.txt"));
+	    rename(get_shared("config" SLASH "userdb2.txt"),get_shared("config" SLASH "userdb.txt"));
 	} else {
-	    f = fopen(get_shared("config/userdb.txt"),"w");
+	    f = fopen(get_shared("config" SLASH "userdb.txt"),"w");
 	    fprintf(f,"%s\n",map);
 	    fclose(f);
 	}
-	int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config/userdb.txt"));
+	int ret = SDL_GameControllerAddMappingsFromFile(get_shared("config" SLASH "userdb.txt"));
 	printf("mappings added %d from userdb.txt\n",ret);
     }
     return 0;
