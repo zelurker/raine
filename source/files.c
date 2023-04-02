@@ -93,6 +93,12 @@ char *get_shared(char *name) {
   // so current directory is lost, so we test the initial working directory
   // here... !
   snprintf(shared,FILENAME_MAX, "%s" SLASH "%s", pwd,name);
+  if (!ret) {
+	  print_debug("get_shared: using cwd\n");
+	  return shared;
+  }
+  // And otherwise assume it's a write, and to the config dir in this case...
+  snprintf(shared,FILENAME_MAX, "%s%s", dir_cfg.exe_path,name);
   return shared;
 }
 #endif
