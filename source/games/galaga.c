@@ -752,7 +752,7 @@ void namco_06xx_init(int chipnum, int cpu,
 
 static int watchdog;
 
-static void watchdog_reset_w(UINT32, UINT8 offset) {
+static void watchdog_reset_w(UINT32 offset, UINT8 data) {
     watchdog = 8;
 }
 
