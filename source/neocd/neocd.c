@@ -2862,7 +2862,7 @@ static void write_pal(UINT32 offset, UINT16 data) {
   offset &= 0x1fff;
   if (ReadWord(&RAM_PAL[offset]) != data) {
       WriteWord(&RAM_PAL[offset],data);
-      print_debug("write_pal %x,%x pc %x sr %x\n",offset,data,s68000readPC(),s68000context.sr);
+      print_debug("write_pal %x,%x pc %x sr %x\n",offset,data,s68000readPC(),s68000_sr);
   }
 /*  get_scanline(); */
 }
