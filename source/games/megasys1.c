@@ -21,6 +21,7 @@
 #include "2203intf.h"
 #include "adpcm.h"
 #include "def_dsw.h"
+#include "emumain.h"
 
 #define ROM_COUNT       23
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound
@@ -112,11 +113,13 @@ static struct ROM_INFO rom_64street[] =
 
 static struct INPUT_INFO input_lordofk[] =
 {
+   INP0( P1_START, 0x010000, 0x01 ),
+   INP0( P2_START, 0x010000, 0x02 ),
+   INP0( SERVICE, 0x010000, 0x20 ),
    INP0( COIN1, 0x010000, 0x40 ),
    INP0( COIN2, 0x010000, 0x80 ),
-   INP0( SERVICE, 0x010000, 0x3C ),
+   INP0( UNUSED, 0x010000, 0x1c),
 
-   INP0( P1_START, 0x010000, 0x01 ),
    INP0( P1_UP, 0x010002, 0x08 ),
    INP0( P1_DOWN, 0x010002, 0x04 ),
    INP0( P1_LEFT, 0x010002, 0x02 ),
@@ -124,8 +127,8 @@ static struct INPUT_INFO input_lordofk[] =
    INP0( P1_B1, 0x010002, 0x10 ),
    INP0( P1_B2, 0x010002, 0x20 ),
    INP0( P1_B3, 0x010002, 0x40 ),
+   INP0( UNKNOWN, 0x010002, 0x80 ),
 
-   INP0( P2_START, 0x010000, 0x02 ),
    INP0( P2_UP, 0x010004, 0x08 ),
    INP0( P2_DOWN, 0x010004, 0x04 ),
    INP0( P2_LEFT, 0x010004, 0x02 ),
@@ -133,6 +136,7 @@ static struct INPUT_INFO input_lordofk[] =
    INP0( P2_B1, 0x010004, 0x10 ),
    INP0( P2_B2, 0x010004, 0x20 ),
    INP0( P2_B3, 0x010004, 0x40 ),
+   INP0( UNKNOWN, 0x010004, 0x80 ),
 
    END_INPUT
 };
@@ -2584,18 +2588,19 @@ static void unprotect_64thstreet() {
      But I could not find how to use this function yet !!! */
 
   // This one makes the game to go a little faster (why ??!)
-   WriteWord68k(&ROM[0x055F6],0x4E71);
+   // WriteWord68k(&ROM[0x055F6],0x4E71);
    // These two prevent black screen on startup
-   WriteWord68k(&ROM[0x10F5A],0x4E73);
-   WriteWord68k(&ROM[0x10FB6],0x4E75);
+   // WriteWord68k(&ROM[0x10F5A],0x4E73);
+   // WriteWord68k(&ROM[0x10FB6],0x4E75);
 
-   WriteLong68k(&ROM[0x804B2],0x4E714E71);      //
-   WriteWord68k(&ROM[0x81912],0x4E71);          //
-
-
-   ROM[0x10EDE]=0x60;                           //      Watch Dog Timer
+   // WriteLong68k(&ROM[0x804B2],0x4E714E71);      //
+   // WriteWord68k(&ROM[0x81912],0x4E71);          //
 
 
+   // ROM[0x10EDE]=0x60;                           //      Watch Dog Timer
+
+
+#if 0
    WriteWord68k(&ROM[0x10F28],0x33F9);          //      move.w src,dest
    WriteLong68k(&ROM[0x10F2A],0x000C0000);
    WriteLong68k(&ROM[0x10F2E],0x00FFB6C8);
@@ -2615,6 +2620,7 @@ static void unprotect_64thstreet() {
    WriteWord68k(&ROM[0x10F50],0x33F9);          //      move.w src,dest
    WriteLong68k(&ROM[0x10F52],0x000C0006);
    WriteLong68k(&ROM[0x10F56],0x00FFB6D0);
+#endif
 
    // Sub 68000
    // ---------
@@ -2622,6 +2628,49 @@ static void unprotect_64thstreet() {
    // Without this move, music is TOOOOO SLOW !!!
    WriteLong68k(&ROM[0x804AA],0x13FC0000);      // move.b #$00,$AA0000
    WriteLong68k(&ROM[0x804AE],0x00AA0000);      //
+}
+
+static UINT8 ip_select, ip_select_values[5];
+
+static void _64street_reset() {
+    ip_select = 0;
+}
+
+static u16 ip_select_r(u32 offset) {
+            int i;
+
+//  Coins   P1      P2      DSW1    DSW2
+//  57      53      54      55      56      < 64street
+//  37      35      36      33      34      < avspirit
+//  58      54      55      56      57      < bigstrik
+//  56      52      53      54      55      < cybattlr
+//  20      21      22      23      24      < edf
+//  51      52      53      54      55      < hayaosi1
+
+
+        /* f(x) = ((x*x)>>4)&0xFF ; f(f($D)) == 6 */
+        if ((ip_select & 0xF0) == 0xF0) return 0x000D;
+
+        for (i = 0; i < 5; i++) if (ip_select == ip_select_values[i]) break;
+
+	print_debug("ip_select_r: %d from %x\n",i,s68000_read_pc);
+        switch (i)
+        {
+                        case 0 :        return RAM[0x10000]; // system port
+                        case 1 :        return RAM[0x10002]; // p1
+                        case 2 :        return RAM[0x10004]; // p2
+                        case 3 :        return RAM[0x10007]; // coinage dsw
+                        case 4 :        return RAM[0x10006]; // dsw
+                        default  :      return 0x0006;
+	}
+}
+
+static void ip_select_w(UINT32 offset, u8 data) {
+    ip_select = data;
+    print_debug("ip_select_w %x from %x sr %x\n",data,s68000_read_pc,s68000_sr);
+//    if ((s68000_sr & 0x700) < 0x200) {
+	cpu_interrupt(CPU_68K_0,2);
+//    }
 }
 
 static void load_64street(void)
@@ -2649,16 +2698,25 @@ static void load_64street(void)
  */
 
    ByteSwap(ROM,0xA0000);
-   ByteSwap(RAM,0x60000);
 
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
+   set_reset_function(_64street_reset);
+   ip_select_values[0] = 0x57;
+   ip_select_values[1] = 0x53;
+   ip_select_values[2] = 0x54;
+   ip_select_values[3] = 0x55;
+   ip_select_values[4] = 0x56;
 
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                 // 68000 RAM
    add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
+   add_68000_rb(0,0x0d8000,0x0d8001, ip_select_r, NULL);
+   add_68000_rw(0,0x0d8000,0x0d8001, ip_select_r, NULL);
+   add_68000_wb(0,0x0d8000,0x0d8001, ip_select_w, NULL);
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
-   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   // No speed hack for 64street main cpu
+   // add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
    finish_conf_68000(0);
 }
 
@@ -3205,17 +3263,17 @@ static void execute_lordofk(void)
 
 static void execute_64street(void)
 {
-   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));
+   cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(4,60));
    // For musashi, the order must be 1,2,3,4 and not 4,3,2,1, and we must execute at some cycle between each interrupt
    // otherwise the last one takes priority (with the simplest interrupt handling).
    // Since starscream doesn't care, I'll keep this code for both emulators then...
-   cpu_interrupt(CPU_68K_0, 1);
-   cpu_execute_cycles(CPU_68K_0,1);
-   cpu_interrupt(CPU_68K_0, 2);
-   cpu_execute_cycles(CPU_68K_0,1);
-   cpu_interrupt(CPU_68K_0, 3);
-   cpu_execute_cycles(CPU_68K_0,1);
    cpu_interrupt(CPU_68K_0, 4);
+   cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(4,60));
+   cpu_interrupt(CPU_68K_0, 2);
+   cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(4,60));
+   // cpu_interrupt(CPU_68K_0, 3);
+   // cpu_execute_cycles(CPU_68K_0,1);
+   cpu_interrupt(CPU_68K_0, 1);
 
    ExecuteSoundFrame();
 }
