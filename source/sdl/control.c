@@ -1700,6 +1700,7 @@ void control_handle_event(SDL_Event *event) {
       break;
 #endif
     case SDL_KEYDOWN:
+      if (event->key.repeat) break; // ignore repeating keys while in the emulation !!!
       input = event->key.keysym.scancode; // | ((event->key.keysym.mod & 0x4fc0)<<16);
       key[input & 0x1ff] = 1;
       if (!reading_demo) {
@@ -1724,12 +1725,13 @@ void control_handle_event(SDL_Event *event) {
       // Now check the gui inputs, the logic is slightly different since
       // we check for the keysym + modifiers here
 
-      modifier = (event->key.keysym.mod & 0x4fc3);
+      // keep only shift, ctrl, alt, gui...
+      modifier = (event->key.keysym.mod & 0xfc3);
       emu_input = &def_input_emu[0];
       nb = raine_get_emu_nb_ctrl();
       int handled=0;
       if (!check_emu_inputs(emu_input,nb,input,modifier) && driver_nb_emu_inputs)
-	handled = check_emu_inputs(driver_emu_list,driver_nb_emu_inputs,input,modifier);
+	  handled = check_emu_inputs(driver_emu_list,driver_nb_emu_inputs,input,modifier);
       if (!handled)
 	handled = check_layer_key(input);
       break;
