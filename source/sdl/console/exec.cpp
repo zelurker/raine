@@ -150,7 +150,7 @@ void do_break(int argc, char **argv) {
 // #else
     // The hard rule of mz80 : rombase takes priority on the memory map for code execution, so that's rombase that we want here
     // actually it's done for mame_Z80 too for now, which might get incompatible if passing a memory map in conflict with this...
-    UINT8 *ptr = Z80_context[cpu_id & 0xf].z80Base;
+    UINT8 *ptr = (cpu_id >> 4 == CPU_Z80 ? Z80_context[cpu_id & 0xf].z80Base : get_userdata(cpu_id,adr));
 // #endif
     if (!ptr) {
       if (cons) cons->print("no data known for this adr");
