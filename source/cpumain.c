@@ -295,7 +295,7 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
          ret = s68000exec(cycles);
 #endif
 	  active[cpu_id & 0xf] = 0;
-	 print_debug("PC:%06x SR:%04x SP:%04x\n",s68000_pc,s68000_sr,s68000_areg[7]);
+	 print_debug("%s%06x SR:%04x SP:%04x\n",(cpu_id & 0xf ? "PC1:" : "PC:" ),s68000_pc,s68000_sr,s68000_areg[7]);
 #if USE_MUSASHI < 2
 #ifdef RAINE_DEBUG
 	 if (ret == 0x80000001) {
