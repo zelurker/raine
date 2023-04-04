@@ -22,6 +22,7 @@
 #include "adpcm.h"
 #include "def_dsw.h"
 #include "emumain.h"
+#include "speed_hack.h"
 
 #define ROM_COUNT       23
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound
@@ -113,30 +114,30 @@ static struct ROM_INFO rom_64street[] =
 
 static struct INPUT_INFO input_lordofk[] =
 {
-   INP0( P1_START, 0x010000, 0x01 ),
-   INP0( P2_START, 0x010000, 0x02 ),
-   INP0( SERVICE, 0x010000, 0x20 ),
-   INP0( COIN1, 0x010000, 0x40 ),
-   INP0( COIN2, 0x010000, 0x80 ),
-   INP0( UNUSED, 0x010000, 0x1c),
+   INP0( P1_START, 0x00, 0x01 ),
+   INP0( P2_START, 0x00, 0x02 ),
+   INP0( SERVICE, 0x00, 0x20 ),
+   INP0( COIN1, 0x00, 0x40 ),
+   INP0( COIN2, 0x00, 0x80 ),
+   INP0( UNUSED, 0x00, 0x1c),
 
-   INP0( P1_UP, 0x010002, 0x08 ),
-   INP0( P1_DOWN, 0x010002, 0x04 ),
-   INP0( P1_LEFT, 0x010002, 0x02 ),
-   INP0( P1_RIGHT, 0x010002, 0x01 ),
-   INP0( P1_B1, 0x010002, 0x10 ),
-   INP0( P1_B2, 0x010002, 0x20 ),
-   INP0( P1_B3, 0x010002, 0x40 ),
-   INP0( UNKNOWN, 0x010002, 0x80 ),
+   INP0( P1_UP, 0x02, 0x08 ),
+   INP0( P1_DOWN, 0x02, 0x04 ),
+   INP0( P1_LEFT, 0x02, 0x02 ),
+   INP0( P1_RIGHT, 0x02, 0x01 ),
+   INP0( P1_B1, 0x02, 0x10 ),
+   INP0( P1_B2, 0x02, 0x20 ),
+   INP0( P1_B3, 0x02, 0x40 ),
+   INP0( UNKNOWN, 0x02, 0x80 ),
 
-   INP0( P2_UP, 0x010004, 0x08 ),
-   INP0( P2_DOWN, 0x010004, 0x04 ),
-   INP0( P2_LEFT, 0x010004, 0x02 ),
-   INP0( P2_RIGHT, 0x010004, 0x01 ),
-   INP0( P2_B1, 0x010004, 0x10 ),
-   INP0( P2_B2, 0x010004, 0x20 ),
-   INP0( P2_B3, 0x010004, 0x40 ),
-   INP0( UNKNOWN, 0x010004, 0x80 ),
+   INP0( P2_UP, 0x04, 0x08 ),
+   INP0( P2_DOWN, 0x04, 0x04 ),
+   INP0( P2_LEFT, 0x04, 0x02 ),
+   INP0( P2_RIGHT, 0x04, 0x01 ),
+   INP0( P2_B1, 0x04, 0x10 ),
+   INP0( P2_B2, 0x04, 0x20 ),
+   INP0( P2_B3, 0x04, 0x40 ),
+   INP0( UNKNOWN, 0x04, 0x80 ),
 
    END_INPUT
 };
@@ -191,8 +192,8 @@ static struct DSW_DATA dsw_data_64street_1[] =
 
 static struct DSW_INFO dsw_64street[] =
 {
-   { 0x010007, 0xFF, dsw_data_coinage_8bits },
-   { 0x010006, 0xBD, dsw_data_64street_1 },
+   { 0x07, 0xFF, dsw_data_coinage_8bits },
+   { 0x06, 0xBD, dsw_data_64street_1 },
    { 0,        0,    NULL,      },
 };
 
@@ -1750,9 +1751,6 @@ static void MS1SoundFrame(void)
 #else
   for( ta = MS1SoundLoop; ta > 0; ta-- ){
     cpu_execute_cycles(CPU_68K_1, MS1SoundClock);
-#ifdef RAINE_DEBUG
-    if(ta==1) print_debug("PC1:%06x SR:%04x\n",s68000_pc,s68000_sr);
-#endif
     cpu_interrupt(CPU_68K_1, 4);
   }
 #endif
@@ -2584,8 +2582,6 @@ static void load_cybattlr(void)
 
 static void unprotect_64thstreet() {
   /* This function hacks the rom to ignore the protection */
-  /* Note that the work of ip_select_r (in mame) is to decode this protection !
-     But I could not find how to use this function yet !!! */
 
   // This one makes the game to go a little faster (why ??!)
    // WriteWord68k(&ROM[0x055F6],0x4E71);
@@ -2625,44 +2621,38 @@ static void unprotect_64thstreet() {
    // Sub 68000
    // ---------
 
-   // Without this move, music is TOOOOO SLOW !!!
+   // Without this move, music is TOOOOO SLOW !!! (and tooo fast with the protection emulation from mame !)
    WriteLong68k(&ROM[0x804AA],0x13FC0000);      // move.b #$00,$AA0000
    WriteLong68k(&ROM[0x804AE],0x00AA0000);      //
 }
 
-static UINT8 ip_select, ip_select_values[5];
+static UINT8 ip_select;
+static const u8 ip_select_values[5] = { 0x57, 0x53, 0x54, 0x55, 0x56 };
 
 static void _64street_reset() {
+    // Not even it's necessary, the 4 ports are read every frame, so this is probably reseted all the time
+    // but let's stay on the safe side in case there is an exception somewhere... !
     ip_select = 0;
 }
 
 static u16 ip_select_r(u32 offset) {
-            int i;
+    int i;
 
-//  Coins   P1      P2      DSW1    DSW2
-//  57      53      54      55      56      < 64street
-//  37      35      36      33      34      < avspirit
-//  58      54      55      56      57      < bigstrik
-//  56      52      53      54      55      < cybattlr
-//  20      21      22      23      24      < edf
-//  51      52      53      54      55      < hayaosi1
+    /* f(x) = ((x*x)>>4)&0xFF ; f(f($D)) == 6 */
+    if ((ip_select & 0xF0) == 0xF0) return 0x000D;
 
+    for (i = 0; i < 5; i++) if (ip_select == ip_select_values[i]) break;
 
-        /* f(x) = ((x*x)>>4)&0xFF ; f(f($D)) == 6 */
-        if ((ip_select & 0xF0) == 0xF0) return 0x000D;
-
-        for (i = 0; i < 5; i++) if (ip_select == ip_select_values[i]) break;
-
-	print_debug("ip_select_r: %d from %x\n",i,s68000_read_pc);
-        switch (i)
-        {
-                        case 0 :        return RAM[0x10000]; // system port
-                        case 1 :        return RAM[0x10002]; // p1
-                        case 2 :        return RAM[0x10004]; // p2
-                        case 3 :        return RAM[0x10007]; // coinage dsw
-                        case 4 :        return RAM[0x10006]; // dsw
-                        default  :      return 0x0006;
-	}
+    print_debug("ip_select_r: %d from %x\n",i,s68000_read_pc);
+    switch (i)
+    {
+    case 0 :        return input_buffer[0]; // system port
+    case 1 :        return input_buffer[2]; // p1
+    case 2 :        return input_buffer[4]; // p2
+    case 3 :        return input_buffer[7]; // coinage dsw
+    case 4 :        return input_buffer[6]; // dsw
+    default  :      return 0x0006;
+    }
 }
 
 static void ip_select_w(UINT32 offset, u8 data) {
@@ -2679,7 +2669,8 @@ static void load_64street(void)
 
    if (!setup_ms1_gfx()) return;
 
-   if(!(RAM=AllocateMem(0x80000))) return;
+   RAMSize=0x60000;
+   if(!(RAM=AllocateMem(RAMSize))) return;
 
    /*-----[Sound Setup]-----*/
 
@@ -2690,7 +2681,6 @@ static void load_64street(void)
 
    /*-----------------------*/
 
-   RAMSize=0x60000;
    unprotect_64thstreet();
 
 /*
@@ -2701,11 +2691,6 @@ static void load_64street(void)
 
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
    set_reset_function(_64street_reset);
-   ip_select_values[0] = 0x57;
-   ip_select_values[1] = 0x53;
-   ip_select_values[2] = 0x54;
-   ip_select_values[3] = 0x55;
-   ip_select_values[4] = 0x56;
 
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
@@ -2715,8 +2700,9 @@ static void load_64street(void)
    add_68000_rw(0,0x0d8000,0x0d8001, ip_select_r, NULL);
    add_68000_wb(0,0x0d8000,0x0d8001, ip_select_w, NULL);
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                 // SCREEN RAM
-   // No speed hack for 64street main cpu
-   // add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   add_68000_wb(0,0xAA0000,0xAA0001,Stop68000,NULL);                   // Trap Idle 68000
+   apply_hack(0x55f2,0); // there is a loop waiting for an irq here...
+			 // more precisely : it waits for the sprites irq to happen (irq 1)
    finish_conf_68000(0);
 }
 
@@ -3263,17 +3249,15 @@ static void execute_lordofk(void)
 
 static void execute_64street(void)
 {
+    // 12 MHz, 3 interrupts, so...
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(4,60));
-   // For musashi, the order must be 1,2,3,4 and not 4,3,2,1, and we must execute at some cycle between each interrupt
-   // otherwise the last one takes priority (with the simplest interrupt handling).
-   // Since starscream doesn't care, I'll keep this code for both emulators then...
-   cpu_interrupt(CPU_68K_0, 4);
+   // Usually finishes in 7d6, just after a stop
+   cpu_interrupt(CPU_68K_0, 4); // vbl ?
    cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(4,60));
-   cpu_interrupt(CPU_68K_0, 2);
+   // finishes in a loop in 55f2/55f6, added a speed hack for this one
+   cpu_interrupt(CPU_68K_0, 1); // sprites
    cpu_execute_cycles(CPU_68K_0,CPU_FRAME_MHz(4,60));
-   // cpu_interrupt(CPU_68K_0, 3);
-   // cpu_execute_cycles(CPU_68K_0,1);
-   cpu_interrupt(CPU_68K_0, 1);
+   cpu_interrupt(CPU_68K_0, 2); // controls / protection, and also triggered by a write
 
    ExecuteSoundFrame();
 }
