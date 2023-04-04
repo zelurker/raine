@@ -205,6 +205,10 @@ void sdl_init() {
 	if (display_cfg.fullscreen && !hack_fs)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif
+	if (!win) {
+	    printf("Couldn't create window, error: %s\n",SDL_GetError());
+	    exit(1);
+	}
 	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (display_cfg.fullscreen == 2)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
