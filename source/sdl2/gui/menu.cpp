@@ -1814,6 +1814,7 @@ void TMenu::execute() {
 		delete font;
 		font = NULL;
 	    }
+	    top = 0;
 	    SDL_DestroyTexture(fg_layer);
 	    fg_layer = NULL;
 	    sdl_screen->w = event.window.data1;
