@@ -527,19 +527,15 @@ TMultiFileSel::TMultiFileSel(char *my_title, char *mypath, char **myext, char **
 	alloc = 0;
 }
 
-void TMultiFileSel::free_files() {
-    if (selected) {
-	free(selected);
-	selected = NULL;
-    }
-    nb_sel = 0;
-    TFileSel::free_files();
-}
-
 void TMultiFileSel::compute_nb_items() {
+    int old = nb_items;
     TFileSel::compute_nb_items();
-    selected = (int*)calloc(nb_files,sizeof(int));
-    memset(selected,0,nb_files*sizeof(int));
+    if (old != nb_items) {
+	if (selected) free(selected);
+	nb_sel = 0;
+	selected = (int*)calloc(nb_files,sizeof(int));
+	memset(selected,0,nb_files*sizeof(int));
+    }
 }
 
 int TMultiFileSel::myexec_file(int sel) {
@@ -597,5 +593,10 @@ TMultiFileSel::~TMultiFileSel() {
     if (alloc)
 	free(res_file);
     free_files();
+    if (selected) {
+	free(selected);
+	selected = NULL;
+    }
+    nb_sel = 0;
 }
 

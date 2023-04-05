@@ -48,7 +48,6 @@ class TMultiFileSel : public TFileSel
 	~TMultiFileSel();
 	virtual void compute_nb_items();
 	virtual int myexec_file(int sel);
-	virtual void free_files();
 	virtual void compute_width_from_font();
 	virtual void disp_menu(int n,int x,int y,int w,int h);
 };
