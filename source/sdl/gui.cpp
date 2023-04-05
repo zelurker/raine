@@ -648,6 +648,9 @@ int TMyMultiFileSel::mychdir(int n) {
 
 void TMyMultiFileSel::compute_nb_items()
 {
+    char str[FILENAME_MAX];
+    snprintf(str,FILENAME_MAX,"%s%s",path,SLASH);
+    int path_changed = strcmp(str,res_file);
     TMultiFileSel::compute_nb_items();
     set_header(NULL);
     if (!strcmp(path,get_shared("ips")) && !strcmp(menu[0].label,"..")) {
@@ -659,28 +662,31 @@ void TMyMultiFileSel::compute_nb_items()
 	nb_disp_items--;
 	return;
     }
-    char file[FILENAME_MAX];
-    snprintf(file,1024,"%s.ini",path);
-    file[1023] = 0;
-    // read the ini to initialize the selected entries
-    FILE *f = fopen(file,"r");
-    if (!f) return;
-    while (!feof(f)) {
-	char buf[1024];
-	myfgets(buf,1024,f);
-	// Ultra basic attempt to allow files edited by hand : skip blank lines, and lines starting with //
-	// notice that a line starting with a space and then // will be rejected, so it's really ultra basic !
-	// This thing has never been intended to be edited
-	if (!buf[0] || !strncmp(buf,"//",2))
-	    continue;
-	for (int n=0; n<nb_files; n++) {
-	    if (!strcmp(menu[n].label,buf)) {
-		selected[n] = 1;
-		nb_sel++;
+    if (path_changed) {
+	// compute_nb_items is called also when the window size changes, re-read selection only when the path changes !
+	char file[FILENAME_MAX];
+	snprintf(file,1024,"%s.ini",path);
+	file[1023] = 0;
+	// read the ini to initialize the selected entries
+	FILE *f = fopen(file,"r");
+	if (!f) return;
+	while (!feof(f)) {
+	    char buf[1024];
+	    myfgets(buf,1024,f);
+	    // Ultra basic attempt to allow files edited by hand : skip blank lines, and lines starting with //
+	    // notice that a line starting with a space and then // will be rejected, so it's really ultra basic !
+	    // This thing has never been intended to be edited
+	    if (!buf[0] || !strncmp(buf,"//",2))
+		continue;
+	    for (int n=0; n<nb_files; n++) {
+		if (!strcmp(menu[n].label,buf)) {
+		    selected[n] = 1;
+		    nb_sel++;
+		}
 	    }
 	}
+	fclose(f);
     }
-    fclose(f);
 }
 
 int TMyMultiFileSel::get_max_bot_frame_dimensions(int &w, int &h) {
@@ -726,6 +732,7 @@ void TMyMultiFileSel::draw_bot_frame() {
 	char pic[len+1];
 	strcpy(pic,l);
 	strcpy(&pic[len-4],".png");
+	if (!exists(pic)) return;
 	SDL_Texture *tex = IMG_LoadTexture(rend,pic);
 	if (!tex) return;
 	int wi,hi,access; u32 format;

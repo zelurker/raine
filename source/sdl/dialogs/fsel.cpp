@@ -528,9 +528,11 @@ TMultiFileSel::TMultiFileSel(char *my_title, char *mypath, char **myext, char **
 }
 
 void TMultiFileSel::compute_nb_items() {
-    int old = nb_items;
+    char str[FILENAME_MAX];
+    snprintf(str,FILENAME_MAX,"%s%s",path,SLASH);
+    int path_changed = strcmp(str,res_file);
     TFileSel::compute_nb_items();
-    if (old != nb_items) {
+    if (path_changed) {
 	if (selected) free(selected);
 	nb_sel = 0;
 	selected = (int*)calloc(nb_files,sizeof(int));
