@@ -164,6 +164,11 @@ TFont::~TFont() {
 }
 
 void TFont::dimensions(const char *s, int *w, int *h) {
+    if (!*s) {
+	*w = 0;
+	*h = 0;
+	return;
+    }
   if (loaded_font) {
     *w = strlen(s)*charWidth;
     *h = charHeight;
@@ -227,6 +232,12 @@ TFont_ttf::~TFont_ttf() {
 }
 
 void TFont_ttf::dimensions(const char *s,int *w, int *h) {
+    if (!*s) {
+	*w = 0;
+	*h = 0;
+	return;
+    }
+
   if (ttf) {
       int is_utf = test_utf((const unsigned char*)s);
       if (is_utf)
