@@ -547,11 +547,35 @@ class TMyMultiFileSel : public TMultiFileSel
 	    TMultiFileSel(my_title, mypath, myext, my_res_str,my_max_res, opts, mytitle2)
     {}
 
+	~TMyMultiFileSel();
 	virtual void compute_nb_items();
 	virtual int mychdir(int n);
 	virtual int get_max_bot_frame_dimensions(int &w, int &h);
 	virtual void draw_bot_frame();
 };
+
+TMyMultiFileSel::~TMyMultiFileSel() {
+    if (!nb_sel) {
+	char res[FILENAME_MAX];
+	char *shared = get_shared("ips");
+	strcpy(res,shared);
+	strcat(res,SLASH);
+	if (strcmp(res,res_file)) { // if not in the root of the ips directory...
+	    strcpy(res,res_file);
+	    int l = strlen(res);
+	    if (res[l-1] == SLASH[0]) {
+		res[l-1] = 0;
+		l--;
+	    }
+	    if (res[l-1] == SLASH[0]) {
+		res[l-1] = 0;
+		l--;
+	    }
+	    strcat(res,".ini");
+	    unlink(res);
+	}
+    }
+}
 
 static void save_ips_ini(char **res) {
     if (!res[0]) return;
@@ -593,12 +617,28 @@ static void save_ips_ini(char **res) {
 int TMyMultiFileSel::mychdir(int n) {
     if (n == 0 && !strcmp(menu[n].label,"..")) {
 	int x = 0;
-	for (int n=0; n<nb_files; n++) {
-	    if (selected[n]) {
-		if (!res_str[x])
-		    res_str[x] = (char*)malloc(FILENAME_MAX);
-		if (res_str[x])
-		    sprintf(res_str[x++],"%s" SLASH "%s",path,menu[n].label);
+	if (!nb_sel) {
+	    char res[FILENAME_MAX];
+	    strcpy(res,res_file);
+	    int l = strlen(res);
+	    if (res[l-1] == SLASH[0]) {
+		res[l-1] = 0;
+		l--;
+	    }
+	    if (res[l-1] == SLASH[0]) {
+		res[l-1] = 0;
+		l--;
+	    }
+	    strcat(res,".ini");
+	    unlink(res);
+	} else {
+	    for (int n=0; n<nb_files; n++) {
+		if (selected[n]) {
+		    if (!res_str[x])
+			res_str[x] = (char*)malloc(FILENAME_MAX);
+		    if (res_str[x])
+			sprintf(res_str[x++],"%s" SLASH "%s",path,menu[n].label);
+		}
 	    }
 	}
 	save_ips_ini(res_str);
@@ -634,8 +674,10 @@ void TMyMultiFileSel::compute_nb_items()
 	if (!buf[0] || !strncmp(buf,"//",2))
 	    continue;
 	for (int n=0; n<nb_files; n++) {
-	    if (!strcmp(menu[n].label,buf))
+	    if (!strcmp(menu[n].label,buf)) {
 		selected[n] = 1;
+		nb_sel++;
+	    }
 	}
     }
     fclose(f);
