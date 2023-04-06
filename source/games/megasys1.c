@@ -2663,6 +2663,13 @@ static void ip_select_w(UINT32 offset, u8 data) {
 //    }
 }
 
+static void write_ramb(UINT32 offset, u8 data) {
+    // byte writes seem to be mirrored to words !
+    // found by David Haywood in mame, and then his fix was found by Antiriad in the git web interface !
+    RAM[offset & 0xffff] = data;
+    RAM[(offset & 0xffff) ^ 1] = data;
+}
+
 static void load_64street(void)
 {
    romset=9; spr_pri_needed=0;
@@ -2694,6 +2701,7 @@ static void load_64street(void)
 
    AddMS2Controls();
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
+   add_68000_wb(0,0xff0000, 0xffffff, write_ramb, NULL);
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                 // 68000 RAM
    add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    add_68000_rb(0,0x0d8000,0x0d8001, ip_select_r, NULL);
@@ -2711,7 +2719,8 @@ static void load_chimerab(void)
    romset=18; spr_pri_needed=0;
    if (!setup_ms1_gfx()) return;
 
-   if(!(RAM=AllocateMem(0x80000))) return;
+   RAMSize=0x60000;
+   if(!(RAM=AllocateMem(RAMSize))) return;
 
    /*-----[Sound Setup]-----*/
 
@@ -2722,7 +2731,6 @@ static void load_chimerab(void)
 
    /*-----------------------*/
 
-   RAMSize=0x60000;
 
    WriteWord68k(&ROM[0x0EB06],0x4E75);
 
@@ -2770,7 +2778,6 @@ static void load_chimerab(void)
  */
 
    ByteSwap(ROM,0xA0000);
-   ByteSwap(RAM,0x60000);
 
    AddMS1SoundCPU(0x80000, 0x50000, 0x0E0000);
 
@@ -2778,6 +2785,7 @@ static void load_chimerab(void)
    add_68000_rom(0,0x000000,0x07FFFF,ROM+0x000000);                 // 68000 ROM
    add_68000_program_region(0,0xFF0000,0xFFFFFF,RAM+0x000000-0xFF0000);              // 68000 RAM
 
+   add_68000_wb(0,0xff0000, 0xffffff, write_ramb, NULL);
    add_68000_ram(0,0xFF0000,0xFFFFFF,RAM+0x000000);                // 68000 RAM
    add_68000_ww(0,0x0C8000,0x0C8001,MS2SoundWrite,NULL);               // SOUND
    add_68000_ram(0,0x0C0000,0x0FFFFF,RAM+0x010000);                // SCREEN RAM
@@ -3431,8 +3439,8 @@ static void RenderMS1Sprites(int pri)
             while(SPR1[0]==r1){
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
-               if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+	       if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
+		   Draw16x16_Trans_Mapped_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3442,8 +3450,8 @@ static void RenderMS1Sprites(int pri)
             while(SPR1[0]==r1){
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
-               if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_FlipY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+	       if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
+		   Draw16x16_Trans_Mapped_FlipY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3454,7 +3462,7 @@ static void RenderMS1Sprites(int pri)
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_FlipX_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		   Draw16x16_Trans_Mapped_FlipX_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3465,7 +3473,7 @@ static void RenderMS1Sprites(int pri)
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_FlipXY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		   Draw16x16_Trans_Mapped_FlipXY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3507,7 +3515,7 @@ static void RenderMS1Sprites(int pri)
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		   Draw16x16_Trans_Mapped_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3520,7 +3528,7 @@ static void RenderMS1Sprites(int pri)
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
 		   if (!((romset==5) && (!render_hachoo_spr) &&		// when to not draw
 			   (rx>=x_start) && (rx<=x_start+0x40)))
-               Draw16x16_Trans_Mapped_FlipY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		       Draw16x16_Trans_Mapped_FlipY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3531,7 +3539,7 @@ static void RenderMS1Sprites(int pri)
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_FlipX_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		   Draw16x16_Trans_Mapped_FlipX_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -3542,7 +3550,7 @@ static void RenderMS1Sprites(int pri)
                rx=(x+ReadWord(&SPR1[2]))&0x1FF;
                ry=(y+ReadWord(&SPR1[4]))&0x1FF;
                if((rx>16)&&(ry>16)&&(rx<256+32)&&(ry<224+32)){
-               Draw16x16_Trans_Mapped_FlipXY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
+		   Draw16x16_Trans_Mapped_FlipXY_Rot(&SPRITE_GFX[((ta+ReadWord(&SPR1[6]))&MSK_SPR)<<8],rx,ry,MAP);
                }
                SPR1+=8;
             }
@@ -4221,24 +4229,24 @@ static void BG1ColPatch(void)
 
    if(romset==10){	// EDF
 
-   tb = ReadWord(&RAM_COL[0x01E]);
+       tb = ReadWord(&RAM_COL[0x01E]);
 
-   for(ta=0;ta<16;ta++){
-      WriteWord(&RAM_COL[0x21E + (ta<<5)],tb);
-   }
+       for(ta=0;ta<16;ta++){
+	   WriteWord(&RAM_COL[0x21E + (ta<<5)],tb);
+       }
 
-   return;
+       return;
    }
 
    if((romset==2)||(romset==14)){	// P47-J/USA
 
-   tb = 0x0000;
+       tb = 0x0000;
 
-   for(ta=0;ta<16;ta++){
-      WriteWord(&RAM_COL[0x21E + (ta<<5)],tb);
-   }
+       for(ta=0;ta<16;ta++){
+	   WriteWord(&RAM_COL[0x21E + (ta<<5)],tb);
+       }
 
-   return;
+       return;
    }
 
 }
@@ -4398,40 +4406,40 @@ static void DrawMegaSystem2(void)
    JalecoLayerCount=0;
 
    if(RefreshBuffers){
-   JalecoLayers[0].RAM          =RAM+0x30000;
-   JalecoLayers[0].GFX16        =GFX_BG0;
-   JalecoLayers[0].GFX8         =NULL;
-   JalecoLayers[0].MSK16        =BG0_Mask;
-   JalecoLayers[0].MSK8         =NULL;
-   JalecoLayers[0].SCR          =RAM+0x12000;
-   JalecoLayers[0].PAL          =0x00;
+       JalecoLayers[0].RAM          =RAM+0x30000;
+       JalecoLayers[0].GFX16        =GFX_BG0;
+       JalecoLayers[0].GFX8         =NULL;
+       JalecoLayers[0].MSK16        =BG0_Mask;
+       JalecoLayers[0].MSK8         =NULL;
+       JalecoLayers[0].SCR          =RAM+0x12000;
+       JalecoLayers[0].PAL          =0x00;
 
-   JalecoLayers[1].RAM          =RAM+0x38000;
-   JalecoLayers[1].GFX16        =GFX_BG1;
-   JalecoLayers[1].GFX8         =NULL;
-   JalecoLayers[1].MSK16        =BG1_Mask;
-   JalecoLayers[1].MSK8         =NULL;
-   JalecoLayers[1].SCR          =RAM+0x12008;
-   JalecoLayers[1].PAL          =0x10;
+       JalecoLayers[1].RAM          =RAM+0x38000;
+       JalecoLayers[1].GFX16        =GFX_BG1;
+       JalecoLayers[1].GFX8         =NULL;
+       JalecoLayers[1].MSK16        =BG1_Mask;
+       JalecoLayers[1].MSK8         =NULL;
+       JalecoLayers[1].SCR          =RAM+0x12008;
+       JalecoLayers[1].PAL          =0x10;
 
-   JalecoLayers[2].RAM          =RAM+0x40000;
-   JalecoLayers[2].GFX16        =NULL;
-   JalecoLayers[2].GFX8         =GFX_FG0;
-   JalecoLayers[2].MSK16        =NULL;
-   JalecoLayers[2].MSK8         =FG0_Mask;
-   JalecoLayers[2].SCR          =RAM+0x12100;
-   JalecoLayers[2].PAL          =0x20;
+       JalecoLayers[2].RAM          =RAM+0x40000;
+       JalecoLayers[2].GFX16        =NULL;
+       JalecoLayers[2].GFX8         =GFX_FG0;
+       JalecoLayers[2].MSK16        =NULL;
+       JalecoLayers[2].MSK8         =FG0_Mask;
+       JalecoLayers[2].SCR          =RAM+0x12100;
+       JalecoLayers[2].PAL          =0x20;
 
-   RenderSpr=0;
+       RenderSpr=0;
    }
 
    if((ReadWord(&RAM[0x12108]) & 0x0001) == 0){
-   SPRITE_GFX=GFX_SPR;
-   SPRITE_MSK=SPR_Mask;
+       SPRITE_GFX=GFX_SPR;
+       SPRITE_MSK=SPR_Mask;
    }
    else{
-   SPRITE_GFX=GFX_SPR+0x100000;
-   SPRITE_MSK=SPR_Mask+0x1000;
+       SPRITE_GFX=GFX_SPR+0x100000;
+       SPRITE_MSK=SPR_Mask+0x1000;
    }
 
    {
