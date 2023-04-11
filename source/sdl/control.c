@@ -491,6 +491,7 @@ static void update_input_buffer(int ta, int input_valid);
 static void remove_valid_input(int ta);
 
 void invalidate_inputs() {
+  if (!current_game || !current_game->input) return;
   int ta = 0;
   const INPUT_INFO *input_src = current_game->input;
   while(input_src[ta].name){
