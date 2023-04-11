@@ -487,6 +487,22 @@ static void call_console() {
 }
 #endif
 
+static void update_input_buffer(int ta, int input_valid);
+static void remove_valid_input(int ta);
+
+void invalidate_inputs() {
+  int ta = 0;
+  const INPUT_INFO *input_src = current_game->input;
+  while(input_src[ta].name){
+
+      update_input_buffer(ta,0); // say input is not valid for now
+      remove_valid_input(ta);
+
+      ta++;
+  }
+  memset(key,0,sizeof(key));
+}
+
 static void call_cheats() {
   do_cheats(0);
   reset_ingame_timer();

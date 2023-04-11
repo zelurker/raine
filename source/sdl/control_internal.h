@@ -140,6 +140,7 @@ int get_axis_from_hat(int which, int hat);
 int get_console_key();
 int has_input(int inp);
 void control_handle_event(SDL_Event *event);
+void invalidate_inputs();
 
 #ifdef __cplusplus
 }

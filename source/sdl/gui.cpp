@@ -931,6 +931,7 @@ static void gui_end() {
     }
     if (!main_menu)
 	sa_unpause_sound();
+    invalidate_inputs();
     SDL_ShowCursor(0);
 }
 
