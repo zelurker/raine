@@ -2,14 +2,6 @@ script "Console Mode" \
 "comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
 run:
 #Start up#
-if (peek($FF8001)>=$0C)and(peek($FF8170)==$00) #Start button start#
-    if (peek($804020)<$FF)
-      poke $FF8170 $09
-    endif
-endif
-if (peek($FF8170)==$00)
-    poke $EB63 "PRESS START"
-endif
 if (peek($FF8170)==$00) #Restore original values at start in case of reset#
     poke $1571d $50
     poke $15723 $54
@@ -19,6 +11,23 @@ if (peek($FF8170)==$00) #Restore original values at start in case of reset#
     lpoke $1624 $1B400058
     lpoke $1618 $2B40005C
     lpoke $1632 $1B40005C
+endif
+if (peek($FF8001)>=$0C)and(peek($FF8170)==$00) #Start button start#
+    if (peek($804020)<$FF)
+      if (peek($FF8005)==$0C) #skip title screen if press start lately#
+        lpoke $160E $00000000
+        lpoke $1624 $00000000
+        lpoke $FF8058 $00000000
+        lpoke $1618 $00000000
+        lpoke $1632 $00000000
+        region=peek($FF8191)
+        poke $FF0020 $02
+      endif
+      poke $FF8170 $09
+    endif
+endif
+if (peek($FF8170)==$00)
+    poke $EB63 "PRESS START"
 endif
 #Title Screen#
 if (dpeek($FFAE18)==$02E7)and(peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek($FF802D)==$00) #Disable original start & service button#
@@ -37,6 +46,7 @@ if (dpeek($FFAE18)==$02E7)and(peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek(
 endif
 if (dpeek($FFAE18)==$02E7)and(peek($FF0020)==$01) #Leaving title screen#
     if (peek($804020)==$FE)or(peek($804020)==$FD)
+       poke $FF817B $01 #coin sound#
        poke $FF0020 $02
     endif
 endif
@@ -179,10 +189,17 @@ if dpeek($FFAE18)==$02E7
           poke $FF0035 $03
        endif
        #Control in the Menu screen#
-       if ((peek($FF8051)==$00)and(peek($FF8055)==$00))and(peek($FF0001)==$FF) #Act as button 'resumer'#
-          poke $FF0001 $00
+       if ((peek($FF8051)==$00)and(peek($FF8055)==$00))and(peek($FF0001)==$FF) #When no button is pressed#
+          poke $FF0001 $00 #Act as button 'stopper'#
+          poke $FF0006 $00 #Act as music 'stopper'#
        endif
-       if ((peek($FF8051)==$04)or(peek($FF8055)==$04))
+   	if ((peek($FF8051)==$04)or(peek($FF8055)==$04))
+          if peek($FF0006)==$00 #Sound effect#
+            poke $618001 $00
+            poke $618003 $F8
+            poke $61801F $00
+            poke $FF0006 $FF
+          endif
           if dpeek($FF0000)==$0000
              dpoke $FF0000 $01FF
           elsif dpeek($FF0000)==$0100
@@ -198,6 +215,12 @@ if dpeek($FFAE18)==$02E7
           endif
    	endif
    	if (peek($FF8051)==$08)or(peek($FF8055)==$08)
+          if peek($FF0006)==$00 #Sound effect#
+            poke $618001 $00
+            poke $618003 $F8
+            poke $61801F $00
+            poke $FF0006 $FF
+          endif
           if dpeek($FF0000)==$0000
              dpoke $FF0000 $05FF
           elsif dpeek($FF0000)==$0500
@@ -214,12 +237,16 @@ if dpeek($FFAE18)==$02E7
    	endif
        #Start game#
        if (peek($FF8050)>$00) #P1 start game#
-          poke $FF8058 $01
-          poke $FF817B $01
+          poke $FF8058 $01 #start#
+          poke $618001 $00 #sound effect#
+          poke $618003 $FA
+          poke $61801F $00
        endif
        if (peek($FF8054)>$00) #P2 start game#
-          poke $FF8058 $02
-          poke $FF817B $01
+          poke $FF8058 $02 #start#
+          poke $618001 $00 #sound effect#
+          poke $618003 $FA
+          poke $61801F $00
        endif
    endif
    if (peek($FF8001)==$00)and(peek($FF81A8)>$00)and(peek($FF0000)!=$05) #Restore value after start#
@@ -410,77 +437,101 @@ off:
 script "Enable Bosses" \
  "comm:Press Down button at the ?box"
 run:
- if (dpeek($FFA322)==$3876)or(dpeek($FFA322)==$2D82)
+if (dpeek($FFA322)==$3876)or(dpeek($FFA322)==$2D82)
+    #For P1#
     if (peek($FF8434)==$0D)or(peek($FF8434)==$14)
-    poke $FF0003 $00
+      poke $FF0003 $00
     endif
     if (peek($FF8434)==$13)and((peek($FF81AC)==$00)or(peek($FF81AC)==$02))
        if (peek($FF8051)==$00)and(peek($FF0003)==$00)
-       poke $FF0003 $01
+         poke $FF0003 $01
        endif
-       if (peek($FF84BB)==$04)and(peek($FF0003)==$01)
-       lpoke $FF843E $00000000
-       poke $FF84A2 $0A
-       poke $FF843B $00
-       poke $FF0003 $02
+       if (peek($FF84BB)==$04)
+         if peek($FF0006)==$00 #Sound effect#
+           poke $618001 $00
+           poke $618003 $F8
+           poke $61801F $00
+           poke $FF0006 $FF
+         endif
+         if (peek($FF0003)==$01)
+           lpoke $FF843E $00000000
+           poke $FF84A2 $0A
+           poke $FF843B $00
+           poke $FF0003 $02
+          endif
+         if (peek($FF0003)==$03)
+           lpoke $FF843E $00000000
+           poke $FF84A2 $02
+           poke $FF0003 $04
+         endif
+         if (peek($FF0003)==$05)
+           lpoke $FF843E $00000000
+           poke $FF84A2 $0C
+           poke $FF0003 $06
+         endif
        endif
-       if (peek($FF84BB)==$00)and((peek($FF0003)==$02)or(peek($FF0003)==$03))
-       lpoke $FF843E $0100FF00
-       poke $FF0003 $03
-       endif
-       if (peek($FF84BB)==$04)and(peek($FF0003)==$03)
-       lpoke $FF843E $00000000
-       poke $FF84A2 $02
-       poke $FF0003 $04
-       endif
-       if (peek($FF84BB)==$00)and((peek($FF0003)==$04)or(peek($FF0003)==$05))
-       lpoke $FF843E $0100FF00
-       poke $FF0003 $05
-       endif
-       if (peek($FF84BB)==$04)and(peek($FF0003)==$05)
-       lpoke $FF843E $00000000
-       poke $FF84A2 $0C
-       poke $FF0003 $06
-       endif
-       if (peek($FF84BB)==$00)and((peek($FF0003)==$06)or(peek($FF84A2)==$0C))
-       lpoke $FF843E $0100FF00
-       poke $FF0003 $01
+       if (peek($FF84BB)==$00)
+         poke $FF0006 $00 #Act as music 'stopper'#
+         if (peek($FF0003)==$02)or(peek($FF0003)==$03)
+           lpoke $FF843E $0100FF00
+           poke $FF0003 $03
+         endif
+         if (peek($FF0003)==$04)or(peek($FF0003)==$05)
+           lpoke $FF843E $0100FF00
+           poke $FF0003 $05
+         endif
+         if (peek($FF0003)==$06)or(peek($FF84A2)==$0C)
+           lpoke $FF843E $0100FF00
+           poke $FF0003 $01
+         endif
        endif
     endif
-    if (peek($FF8834)==$10)or(peek($FF8834)==$15)
-    poke $FF0004 $00
+    #For P2#
+     if (peek($FF8834)==$10)or(peek($FF8834)==$15)
+      poke $FF0004 $00
     endif
     if (peek($FF8834)==$16)and((peek($FF81AC)==$00)or(peek($FF81AC)==$01))
        if (peek($FF88BB)==$00)and(peek($FF0004)==$00)
-       poke $FF0004 $01
+         poke $FF0004 $01
        endif
-       if (peek($FF88BB)==$04)and(peek($FF0004)==$01)
-       lpoke $FF883E $00000000
-       poke $FF88A2 $0A
-       poke $FF883B $00
-       poke $FF0004 $02
+       if (peek($FF88BB)==$04)
+         if peek($FF0006)==$00 #Sound effect#
+           poke $618001 $00
+           poke $618003 $F8
+           poke $61801F $00
+           poke $FF0006 $FF
+         endif
+         if (peek($FF0004)==$01)
+           lpoke $FF883E $00000000
+           poke $FF88A2 $0A
+           poke $FF883B $00
+           poke $FF0004 $02
+          endif
+         if (peek($FF0004)==$03)
+           lpoke $FF883E $00000000
+           poke $FF88A2 $02
+           poke $FF0004 $04
+         endif
+         if (peek($FF0004)==$05)
+           lpoke $FF883E $00000000
+           poke $FF88A2 $0C
+           poke $FF0004 $06
+         endif
        endif
-       if (peek($FF88BB)==$00)and((peek($FF0004)==$02)or(peek($FF0004)==$03))
-       lpoke $FF883E $0100FF00
-       poke $FF0004 $03
-       endif
-       if (peek($FF88BB)==$04)and(peek($FF0004)==$03)
-       lpoke $FF883E $00000000
-       poke $FF88A2 $02
-       poke $FF0004 $04
-       endif
-       if (peek($FF88BB)==$00)and((peek($FF0004)==$04)or(peek($FF0004)==$05))
-       lpoke $FF883E $0100FF00
-       poke $FF0004 $05
-       endif
-       if (peek($FF88BB)==$04)and(peek($FF0004)==$05)
-       lpoke $FF883E $00000000
-       poke $FF88A2 $0C
-       poke $FF0004 $06
-       endif
-       if (peek($FF88BB)==$00)and((peek($FF0004)==$06)or(peek($FF88A2)==$0C))
-       lpoke $FF883E $0100FF00
-       poke $FF0004 $01
+       if (peek($FF88BB)==$00)
+         poke $FF0006 $00 #Act as music 'stopper'#
+         if (peek($FF0004)==$02)or(peek($FF0004)==$03)
+           lpoke $FF883E $0100FF00
+           poke $FF0004 $03
+         endif
+         if (peek($FF0004)==$04)or(peek($FF0004)==$05)
+           lpoke $FF883E $0100FF00
+           poke $FF0004 $05
+         endif
+         if (peek($FF0004)==$06)or(peek($FF88A2)==$0C)
+           lpoke $FF883E $0100FF00
+           poke $FF0004 $01
+         endif
        endif
     endif
 endif
@@ -488,12 +539,14 @@ endif
 script "Single Dramatic Battle - Ryu" \
  "comm:Control Ryu using controler 1 and CPU as Ken. Use with the Console Mode"
 run:
+if (peek($FF0000)==$04)
     if (peek($FFAE2C)==$04)
     poke $FF84C5 $00
     poke $FF88C5 $01
     endif
     poke $1571d $50
     poke $15723 $50
+endif
 off:
     poke $1571d $50
     poke $15723 $54
@@ -501,12 +554,14 @@ off:
 script "Single Dramatic Battle - Ken" \
  "comm:Control Ken using controler 1 and CPU as Ryu. Use with the Console Mode"
 run:
+if (peek($FF0000)==$04)
     if (peek($FFAE2C)==$04)
     poke $FF84C5 $01
     poke $FF88C5 $00
     endif
     poke $1571d $50
     poke $15723 $50
+endif
 off:
     poke $1571d $50
     poke $15723 $54
@@ -514,12 +569,14 @@ off:
 script "Single Dramatic Battle - Simultaneous" \
  "comm:Control Ryu & Ken at the same time using controler 1. Use with the Console Mode"
 run:
+if (peek($FF0000)==$04)
     if (peek($FFAE2C)==$04)
     poke $FF84C5 $00
     poke $FF88C5 $00
     endif
     poke $1571d $50
     poke $15723 $50
+endif
 off:
     poke $1571d $50
     poke $15723 $54
