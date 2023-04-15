@@ -70,7 +70,7 @@ extern "C" void init_glsl();
 static int WantScreen;
 static int WantQuit;
 static int WantPlay;
-static int autostart_drivers;
+static int autostart_drivers, ips_enabled;
 
 #if SDL == 2
 
@@ -198,9 +198,11 @@ static void save_menu_config() {
   raine_set_config_32bit_hex("GUI", "bg_dialog_bar", bg_dialog_bar);
   raine_set_config_int("GUI", "keep_vga", keep_vga);
   raine_set_config_int("GUI", "bg_anim", bg_anim);
+  raine_set_config_int("General", "ips", ips_enabled);
 }
 
 static void read_menu_config() {
+    ips_enabled = raine_get_config_int("General","ips",1);
   return_mandatory = raine_get_config_int("GUI", "return_mandatory", 0);
   use_transparency = raine_get_config_int("GUI", "use_transparency", 1);
   fg_color = raine_get_config_hex("GUI", "fg_color", mymakecol(255,255,255));
@@ -365,23 +367,25 @@ static void load_game_proc()
 	fps = 60.0; // 60 fps (default)
     if (fps > max_fps)
 	fps = max_fps;
-    char file[FILENAME_MAX];
-    snprintf(file,1024,"%s" SLASH "%s.ini",get_shared("ips"),current_game->main_name);
-    file[FILENAME_MAX-1] = 0;
-    FILE *f = fopen(file,"r");
-    file[strlen(file)-4] = 0; // just keep the path, without the .ini extension
-    int l = strlen(file);
-    if (f) {
-	char buf[1024];
-	while (!feof(f)) {
-	    if (myfgets(buf,1024,f)) {
-		if (!buf[0] || !strncmp(buf,"//",2))
-		    continue;
-		snprintf(&file[l],FILENAME_MAX-l,SLASH "%s",buf);
-		add_ips_file(file);
+    if (ips_enabled) {
+	char file[FILENAME_MAX];
+	snprintf(file,1024,"%s" SLASH "%s.ini",get_shared("ips"),current_game->main_name);
+	file[FILENAME_MAX-1] = 0;
+	FILE *f = fopen(file,"r");
+	file[strlen(file)-4] = 0; // just keep the path, without the .ini extension
+	int l = strlen(file);
+	if (f) {
+	    char buf[1024];
+	    while (!feof(f)) {
+		if (myfgets(buf,1024,f)) {
+		    if (!buf[0] || !strncmp(buf,"//",2))
+			continue;
+		    snprintf(&file[l],FILENAME_MAX-l,SLASH "%s",buf);
+		    add_ips_file(file);
+		}
 	    }
+	    fclose(f);
 	}
-	fclose(f);
     }
 
     // I have to change the depth BEFORE loading.
@@ -652,7 +656,6 @@ void TMyMultiFileSel::compute_nb_items()
     snprintf(str,FILENAME_MAX,"%s%s",path,SLASH);
     int path_changed = strcmp(str,res_file);
     TMultiFileSel::compute_nb_items();
-    set_header(NULL);
     if (!strcmp(path,get_shared("ips")) && !strcmp(menu[0].label,"..")) {
 	// remove .. entry if in the root of the ips directory
 	if (nb_files == 1) throw _("ips directory empty !!!");
@@ -746,8 +749,15 @@ void TMyMultiFileSel::draw_bot_frame() {
     }
 }
 
+static menu_item_t header_fsel[] =
+{
+    { "IPS files", NULL, &ips_enabled, 2, {0, 1}, {"Disabled", "Enabled"} },
+    { NULL }
+};
+
 static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res, char *title) {
   fsel_dlg = new TMyMultiFileSel(mypath,mypath,ext,res_str,max_res,NO_HEADER,title);
+  fsel_dlg->set_header(header_fsel);
   try {
       fsel_dlg->execute();
   }
