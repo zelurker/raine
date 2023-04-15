@@ -1165,8 +1165,20 @@ static int do_mapping(int sel) {
 		fprintf(g,"%s\n",map);
 	    }
 	    fclose(g);
-	    unlink(get_shared("config" SLASH "userdb.txt"));
-	    rename(get_shared("config" SLASH "userdb2.txt"),get_shared("config" SLASH "userdb.txt"));
+	    char userdb[FILENAME_MAX];
+	    strcpy(userdb,get_shared("config" SLASH "userdb.txt"));
+	    if (unlink(userdb)) {
+		char err[FILENAME_MAX];
+		snprintf(err,FILENAME_MAX,"could not delete old mapping file\n%s",userdb);
+		MessageBox("Error",err,"ok");
+		return 0;
+	    }
+	    if (rename(get_shared("config" SLASH "userdb2.txt"),get_shared("config" SLASH "userdb.txt"))) {
+		char err[FILENAME_MAX];
+		snprintf(err,FILENAME_MAX,"could not rename mapping file to\n%s",get_shared("config" SLASH "userdb.txt"));
+		MessageBox("Error",err,"ok");
+		return 0;
+	    }
 	} else {
 	    f = fopen(get_shared("config" SLASH "userdb.txt"),"w");
 	    fprintf(f,"%s\n",map);
