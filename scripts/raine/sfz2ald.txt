@@ -55,7 +55,7 @@ if (peek($FFB31E)==$9E)
          lpoke $13B22 $0061801F
        endif
        #Text display in menu#
-       poke $FF8012 $00 #Stop flashing#
+       dpoke $FF8012 $0000 #Stop flashing#
        poke $FF8024 $00 #Text and Logo shift#
        poke $FF803C $FE
        lpoke $90C820 $F422F523 #Green color#
@@ -165,7 +165,8 @@ if (peek($FFB31E)==$9E)
        lpoke $9042F0 $A5A20000+peek($FF0026)
        lpoke $904330 $A5A80000+peek($FF0026)
        lpoke $904370 $A5A70000+peek($FF0026)
-       if (peek($FF0000)==$00) #Arcade Mode pointer#
+       mode=peek($FF0000)
+       if mode==$00 #Arcade Mode pointer#
           poke $FF0020 $03
           poke $FF0021 $07
           poke $FF0022 $07
@@ -173,7 +174,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $07
           poke $FF0025 $07
           poke $FF0026 $07
-       elsif (peek($FF0000)==$01) #Versus Mode pointer#
+       elsif mode==$01 #Versus Mode pointer#
           poke $FF0020 $07
           poke $FF0021 $03
           poke $FF0022 $07
@@ -181,7 +182,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $07
           poke $FF0025 $07
           poke $FF0026 $07
-       elsif (peek($FF0000)==$02) #Training Mode pointer#
+       elsif mode==$02 #Training Mode pointer#
           poke $FF0020 $07
           poke $FF0021 $07
           poke $FF0022 $03
@@ -189,7 +190,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $07
           poke $FF0025 $07
           poke $FF0026 $07
-       elsif (peek($FF0000)==$03) #Survival Mode pointer#
+       elsif mode==$03 #Survival Mode pointer#
           poke $FF0020 $07
           poke $FF0021 $07
           poke $FF0022 $07
@@ -197,7 +198,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $07
           poke $FF0025 $07
           poke $FF0026 $07
-       elsif (peek($FF0000)==$04) #Akuma Mode pointer#
+       elsif mode==$04 #Akuma Mode pointer#
           poke $FF0020 $07
           poke $FF0021 $07
           poke $FF0022 $07
@@ -205,7 +206,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $03
           poke $FF0025 $07
           poke $FF0026 $07
-       elsif (peek($FF0000)==$05) #Dramatic Battle pointer#
+       elsif mode==$05 #Dramatic Battle pointer#
           poke $FF0020 $07
           poke $FF0021 $07
           poke $FF0022 $07
@@ -213,7 +214,7 @@ if (peek($FFB31E)==$9E)
           poke $FF0024 $07
           poke $FF0025 $03
           poke $FF0026 $07
-       elsif (peek($FF0000)==$06) #Option pointer#
+       elsif mode==$06 #Option pointer#
           poke $FF0020 $07
           poke $FF0021 $07
           poke $FF0022 $07
@@ -631,7 +632,7 @@ endif
 script "Stop Flashing on Title Screen"
 run:
     if (peek($FFB31E)==$9E)
-    poke $FF8012 $00
+    dpoke $FF8012 $0000
     endif
 
 script "Free Play Mode 'ON'"

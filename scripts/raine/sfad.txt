@@ -2,8 +2,8 @@ script "Console Mode" \
 "comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
 run:
 #Start up#
-if (peek($FF8170)==$00) #Restore original values at start in case of reset#
-    poke $1571d $50
+if (peek($FF8170)==$00)
+    poke $1571d $50 #Restore original values at start in case of reset#
     poke $15723 $54
     p1win=peek($FF84D0)
     p2win=peek($FF88D0)
@@ -11,23 +11,21 @@ if (peek($FF8170)==$00) #Restore original values at start in case of reset#
     lpoke $1624 $1B400058
     lpoke $1618 $2B40005C
     lpoke $1632 $1B40005C
-endif
-if (peek($FF8001)>=$0C)and(peek($FF8170)==$00) #Start button start#
-    if (peek($804020)<$FF)
-      if (peek($FF8005)==$0C) #skip title screen if press start lately#
-        lpoke $160E $00000000
-        lpoke $1624 $00000000
-        lpoke $FF8058 $00000000
-        lpoke $1618 $00000000
-        lpoke $1632 $00000000
-        region=peek($FF8191)
-        poke $FF0020 $02
-      endif
-      poke $FF8170 $09
-    endif
-endif
-if (peek($FF8170)==$00)
-    poke $EB63 "PRESS START"
+    if (peek($FF8001)>=$0C) #Start button start#
+       if (peek($804020)<$FF)
+         if (peek($FF8005)==$0C) #skip title screen if press start lately#
+           lpoke $160E $00000000
+           lpoke $1624 $00000000
+           lpoke $FF8058 $00000000
+           lpoke $1618 $00000000
+           lpoke $1632 $00000000
+           region=peek($FF8191)
+           poke $FF0020 $02
+         endif
+         poke $FF8170 $09
+       endif
+   endif
+   poke $EB63 "PRESS START"
 endif
 #Title Screen#
 if (dpeek($FFAE18)==$02E7)and(peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek($FF802D)==$00) #Disable original start & service button#
@@ -39,9 +37,9 @@ if (dpeek($FFAE18)==$02E7)and(peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek(
     region=peek($FF8191)
     if (peek($FF0000)!=$05)
       poke $FF0000 $00 #Set Arcade Mode as default#
-    endif
-    if (peek($804020)==$FF)
-      poke $FF0020 $01
+      if (peek($804020)==$FF)
+        poke $FF0020 $01
+      endif
     endif
 endif
 if (dpeek($FFAE18)==$02E7)and(peek($FF0020)==$01) #Leaving title screen#
@@ -56,16 +54,19 @@ if dpeek($FFAE18)==$02E7
        #Text display in menu#
        poke $FF802D $FF #Text and Logo shift#
        poke $FF804A $FF
-       lpoke $914800 $00FFFEEF #Text color#
+       lpoke $914800 $00FFFEEF #White color#
        lpoke $914804 $FDDEFCCD
        lpoke $914808 $FBBCFAAB
        lpoke $91480C $F99AF889
        dpoke $914810 $F555
-       lpoke $914820 $F6D5F5C5
-       lpoke $914824 $F4B5F3A5
-       lpoke $914828 $F295F185
-       lpoke $91482C $F075F065
+       lpoke $914820 $FFEEFFEC #Green Color#
+       lpoke $914824 $F9D5F5B5
+       lpoke $914828 $F3A5F295
+       lpoke $91482C $F185F075
        dpoke $914830 $F555
+       lpoke $914860 $FFE9FFE9 #Orange Color#
+       lpoke $914864 $FFD5FEA4
+       lpoke $914868 $FE96FD81
        lpoke $90C18C $F1090001 #Mode Select#
        lpoke $90C1CC $F10B0001
        lpoke $90C20C $F1000001
@@ -145,42 +146,43 @@ if dpeek($FFAE18)==$02E7
        lpoke $90C2F0 $F1050000+peek($FF0035)
        lpoke $90C330 $F10B0000+peek($FF0035)
        lpoke $90C370 $F10A0000+peek($FF0035)
-       if (peek($FF0000)==$00) #Arcade Mode pointer#
+       mode=peek($FF0000)
+       if mode==$00 #Arcade Mode pointer#
           poke $FF0030 $03
           poke $FF0031 $00
           poke $FF0032 $00
           poke $FF0033 $00
           poke $FF0034 $00
           poke $FF0035 $00
-       elsif (peek($FF0000)==$01) #Versus Mode pointer#
+       elsif mode==$01 #Versus Mode pointer#
           poke $FF0030 $00
           poke $FF0031 $03
           poke $FF0032 $00
           poke $FF0033 $00
           poke $FF0034 $00
           poke $FF0035 $00
-       elsif (peek($FF0000)==$02) #Training Mode pointer#
+       elsif mode==$02 #Training Mode pointer#
           poke $FF0030 $00
           poke $FF0031 $00
           poke $FF0032 $03
           poke $FF0033 $00
           poke $FF0034 $00
           poke $FF0035 $00
-       elsif (peek($FF0000)==$03) #Akuma Mode pointer#
+       elsif mode==$03 #Akuma Mode pointer#
           poke $FF0030 $00
           poke $FF0031 $00
           poke $FF0032 $00
           poke $FF0033 $03
           poke $FF0034 $00
           poke $FF0035 $00
-       elsif (peek($FF0000)==$04) #Dramatic Battle pointer#
+       elsif mode==$04 #Dramatic Battle pointer#
           poke $FF0030 $00
           poke $FF0031 $00
           poke $FF0032 $00
           poke $FF0033 $00
           poke $FF0034 $03
           poke $FF0035 $00
-       elsif (peek($FF0000)==$05) #Option pointer#
+       elsif mode==$05 #Option pointer#
           poke $FF0030 $00
           poke $FF0031 $00
           poke $FF0032 $00
@@ -199,7 +201,7 @@ if dpeek($FFAE18)==$02E7
             poke $618003 $F8
             poke $61801F $00
             poke $FF0006 $FF
-          endif
+          endif                      
           if dpeek($FF0000)==$0000
              dpoke $FF0000 $01FF
           elsif dpeek($FF0000)==$0100
@@ -220,7 +222,7 @@ if dpeek($FFAE18)==$02E7
             poke $618003 $F8
             poke $61801F $00
             poke $FF0006 $FF
-          endif
+          endif 
           if dpeek($FF0000)==$0000
              dpoke $FF0000 $05FF
           elsif dpeek($FF0000)==$0500
@@ -405,10 +407,8 @@ if (peek($FF0000)==$05)
        lpoke $FF8058 $00000000
        lpoke $1618 $00000000
        lpoke $1632 $00000000
-       poke $FF0005 $04
-    endif
-    if (peek($FF802D)!=$FF)and(peek($FF0005)==$04) #step 4#
-       poke $FF802D $FF
+       poke $FF0005 $00
+       poke $FF0020 $02
     endif
 endif
 #Pause Function Script.#
