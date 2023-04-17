@@ -665,6 +665,30 @@ void do_regs(int argc, char **argv) {
   }
 }
 
+static void do_for(int argc, char **argv) {
+    if (argc < 4)
+	throw "syntax: for init test increment, see help if";
+
+    char *arg2, *arg3, *arg4 = NULL;
+    parse(argv[1]);
+    for (int n=4; n<=argc-2; n++)
+	argv[n][strlen(argv[n])]=32;
+    if (argc > 4) {
+	printf("for instruction to execute %s\n",argv[4]);
+	arg4 = strdup(argv[4]);
+    }
+    arg2 = strdup(argv[2]);
+    arg3 = strdup(argv[3]);
+    while (parse(arg2)) {
+	parse(arg3);
+	// the call to parse_cmd here resets the argv array and obliges to make copies of the needed strings...
+	if (arg4) cons->parse_cmd(arg4);
+    }
+    free(arg2);
+    free(arg3);
+    if (arg4) free(arg4);
+}
+
 static void do_poke(int argc, char **argv) {
   if (argc != 3)
     throw("syntax: poke adr value");
@@ -1362,6 +1386,8 @@ commands_t commands[] =
     { "cpu", &do_cpu, "\E[32mcpu\E[0m [cpu] : show/set active cpu(s)."},
   { "dump", &do_dump,"\E[32mdump\E[0m adr : dump the contents of ram, starting at adr",
   "a click on a value of a dump gives you the corresponding adress in the command line. If some search results are in the dump, they appear in green. You can also use 'dump search' to dump the search results (in this mode, all the lines start with a search result). In a dump the numbers which have changed since the last time you called the console and which are not search results are displayed in cyan."},
+  { "for", &do_for, "\E[32mfor\E[0m init test increment instruction... : like the C for loop",
+      "init like i=0\ntest like i<=12\nincrement like i=i+4 (i+=4 notation not supported ! and don't call a function like poke here, only variable manipulation please)\nand rest of the line a normal instruction like dpoke adr+i value"},
   { "if", &do_if, "\E[32mif\E[0m cond ... [\E[32melse|elsif\E[0m]...\E[32mendif\E[0m",
     "it's a simple if, it takes only 1 argument which is the test, then the "
       "instructions to execute on the following lines if the test is true, "
