@@ -520,11 +520,8 @@ void update_scripts() {
 			else if (script[n].parsed[sline].cmd)
 			    (*script[n].parsed[sline].cmd)(script[n].parsed[sline].argc,script[n].parsed[sline].argv);
 			else {
-			    printf("no command for ");
-			    for (int x=0; x<script[n].parsed[sline].argc; x++)
-				printf("%s ",script[n].parsed[sline].argv[x]);
-			    printf("\n");
-			    exit(1);
+			    // Simple line of the type variable=value or variable=function(arg)
+			    run_console_command(script[n].run[sline]);
 			}
 		    }
 		    if (active_if_script_section() && script[n].parsed[sline].argc == 1 && !strcmp(script[n].parsed[sline].argv[0],"stop")) {
