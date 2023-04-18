@@ -680,9 +680,9 @@ static void do_for(int argc, char **argv) {
     arg2 = strdup(argv[2]);
     arg3 = strdup(argv[3]);
     while (parse(arg2)) {
-	parse(arg3);
 	// the call to parse_cmd here resets the argv array and obliges to make copies of the needed strings...
-	if (arg4) cons->parse_cmd(arg4);
+	if (arg4) cons->run_cmd(arg4,0);
+	parse(arg3);
     }
     free(arg2);
     free(arg3);
