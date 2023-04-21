@@ -1,41 +1,41 @@
-script "Infinite Time"  
+script "Infinite Time"
 run:
     poke $FF4808 $99
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $FF4808 $00
-script "Hit Anywhere (Both Players)"  
+script "Hit Anywhere (Both Players)"
 on:
     temp0=dpeek($0915AA)
 run:
     dpoke $0915AA $6002
 off:
     dpoke $0915AA temp0
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $FF4191 $90
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF4191 $00
-script "P1 Always have Max Power"  
+script "P1 Always have Max Power"
 run:
     poke $FF4198 $03
     poke $FF4195 $90
-script "P1 Always have Min Power"  
+script "P1 Always have Min Power"
 run:
     poke $FF4198 $00
     poke $FF4195 $00
-script "P1 Get Max Power Now!"  
+script "P1 Get Max Power Now!"
 on:
     poke $FF4198 $03
     poke $FF4195 $90
-script "P1 Get Min Power Now!"  
+script "P1 Get Min Power Now!"
 on:
     poke $FF4198 $00
     poke $FF4195 $00
-script "P1 No Ground Attacks"  
+script "P1 No Ground Attacks"
 run:
     poke $FF406A $80
 script "P1 Select Character" \
@@ -52,33 +52,33 @@ script "P1 Select Character" \
  "0x12/Magneto"\
  "0x14/Doc Doom"\
  "0x16/Thanos"\
- "0x18/Anita" 
+ "0x18/Anita"
 run:
     poke $FF4051 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $FF4591 $90
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF4591 $00
-script "P2 Always have Max Power"  
+script "P2 Always have Max Power"
 run:
     poke $FF4598 $03
     poke $FF4595 $90
-script "P2 Always have Min Power"  
+script "P2 Always have Min Power"
 run:
     poke $FF4598 $00
     poke $FF4595 $00
-script "P2 Get Max Power Now!"  
+script "P2 Get Max Power Now!"
 on:
     poke $FF4598 $03
     poke $FF4595 $90
-script "P2 Get Min Power Now!"  
+script "P2 Get Min Power Now!"
 on:
     poke $FF4598 $00
     poke $FF4595 $00
-script "P2 No Ground Attacks"  
+script "P2 No Ground Attacks"
 run:
     poke $FF446A $80
 script "P2 Select Character" \
@@ -95,16 +95,16 @@ script "P2 Select Character" \
  "0x12/Magneto"\
  "0x14/Doc Doom"\
  "0x16/Thanos"\
- "0x18/Anita" 
+ "0x18/Anita"
 run:
     poke $FF4451 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
-script "Hide Background"  
+script "Hide Background"
 on:
     temp0=dpeek($FF4BEA)
     temp1=dpeek($FF4BEC)
@@ -133,6 +133,6 @@ script "Select Region" \
  "0x04/Hispanic"\
  "0x06/Asia"\
  "0x08/Euro"\
- "0x0A/Brazil" 
+ "0x0A/Brazil"
 run:
     poke $FF4C23 param

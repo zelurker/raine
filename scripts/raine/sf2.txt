@@ -1,3 +1,307 @@
+script "Console Mode" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
+run:
+#Start-up#
+if (peek($FF82DD)==$00)
+    poke $8DBDF "            " #Remove INSERT COIN text#
+    poke $25BB $7E #Restore initial value#
+    poke $25C1 $82
+    lpoke $16BA $2B400076
+    lpoke $16C6 $1B400076
+    poke $FF1000 $00
+    p1char=$00
+    p2char=$04
+    if (peek($FF8003)==$00)and((peek($FF8076)==$10)or(peek($FF8076)==$20)) #Start button start#
+      poke $FF82DD $09 #Max credit#
+      poke $800181 $20 #Sound effect#
+    endif
+endif
+#Title Screen#
+if (dpeek($FFD1E6)==$16F8)and(peek($FF82DD)>$00)and(peek($FF82E4)==$00)
+    if (peek($FF1010)==$00)and(peek($800018)==$FF)
+       lpoke $16BA $00000000 #Disable original start button#
+       lpoke $16C6 $00000000
+       poke $800181 $16 
+    endif
+    if (peek($FF16BA)==$00)and((peek($800018)==$EF)or(peek($800018)==$DF))and(peek($FF8076)==$00) #Leaving title screen#
+       poke $800181 $20 #Set sound effect#
+       poke $FF1010 $01
+     endif
+    if (peek($FF1010)==$01)and(peek($800018)==$FF)
+      lpoke $16BA $2B400076 #Restore original start button#
+      lpoke $16C6 $1B400076
+      poke $FF1010 $02
+    endif
+endif
+#Menu in the Title screen#
+if (dpeek($FFD1E6)==$16F8)and(peek($FF1010)==$02)
+    if (peek($800018)==$EF)or(peek($800018)==$DF) #Game start#
+       poke $800181 $20 #Set sound effect#
+       poke $FF1010 $00
+    endif
+    #Mode Select#
+    if ((peek($FF807F)==$00)and(peek($FF8083)==$00))and(peek($FF1001)==$FF)
+      poke $FF1001 $00
+      poke $800181 $FF #Pre-allow sound effect#
+    endif
+    if (peek($FF807F)==$04)or(peek($FF8083)==$04)
+       poke $800181 $21 #Set sound effect#
+       if (dpeek($FF1000)==$0000)
+         dpoke $FF1000 $01FF
+       elsif (dpeek($FF1000)==$0100)
+         dpoke $FF1000 $02FF
+       elsif (dpeek($FF1000)==$0200)
+         dpoke $FF1000 $00FF
+       endif
+    endif
+    if (peek($FF807F)==$08)or(peek($FF8083)==$08)
+       poke $800181 $21 #Set sound effect#
+       if (dpeek($FF1000)==$0000)
+         dpoke $FF1000 $02FF
+       elsif (dpeek($FF1000)==$0200)
+         dpoke $FF1000 $01FF
+       elsif (dpeek($FF1000)==$0100)
+         dpoke $FF1000 $00FF
+       endif
+    endif
+    #Game Level Select#
+    if ((peek($FF807F)==$01)or(peek($FF8083)==$01))and(peek($FF1001)==$00) #Lv. increase#
+       if (peek($FF82C7)<=$06) #Lv.0 to Lv.7, increase#
+         poke $FF82C7 peek($FF82C7)+1
+         poke $FF1001 $FF
+       elsif (peek($FF82C7)==$07) #Lv.7 to Lv.0#
+         poke $FF82C7 $00
+         poke $FF1001 $FF
+       endif
+    endif
+    if ((peek($FF807F)==$02)or(peek($FF8083)==$02))and(peek($FF1001)==$00) #Lv. decrease#
+       if (peek($FF82C7)>=$01) #Lv.7 to Lv.0, dcrease#
+         poke $FF82C7 peek($FF82C7)-1
+         poke $FF1001 $FF
+       elsif (peek($FF82C7)==$00) #Lv.0 to Lv.7#
+         poke $FF82C7 $07
+         poke $FF1001 $FF
+       endif
+    endif
+    #All Menu Text#
+    if (peek($FF8039)!=$3B)
+      poke $FF8039 $3B #Switch the y-location of the original text#
+      poke $FFD04A $00 #Disable companyy text#
+      poke $90C941 'G'
+      poke $90C9C1 'A'
+      poke $90CA41 'M'
+      poke $90CAC1 'E'
+      poke $90CB41 ' '
+      poke $90CBC1 'S'
+      poke $90CC41 'T'
+      poke $90CCC1 'A'
+      poke $90CD41 'R'
+      poke $90CDC1 'T'
+      poke $90C945 'V'
+      poke $90C9C5 '.'
+      poke $90CA45 'S'
+      poke $90CAC5 '.'
+      poke $90CB45 ' '
+      poke $90CBC5 'B'
+      poke $90CC45 'A'
+      poke $90CCC5 'T'
+      poke $90CD45 'T'
+      poke $90CDC5 'L'
+      poke $90CE45 'E'
+      poke $90C8C9 'T'
+      poke $90C949 'R'
+      poke $90C9C9 'A'
+      poke $90CA49 'I'
+      poke $90CAC9 'N'
+      poke $90CB49 'I'
+      poke $90CBC9 'N'
+      poke $90CC49 'G'
+      poke $90CCC9 ' '
+      poke $90CD49 'M'
+      poke $90CDC9 'O'
+      poke $90CE49 'D'
+      poke $90CEC9 'E'
+      poke $90C8D5 'D'
+      poke $90C955 'I'
+      poke $90C9D5 'F'
+      poke $90CA55 'F'
+      poke $90CAD5 'I'
+      poke $90CB55 'C'
+      poke $90CBD5 'U'
+      poke $90CC55 'L'
+      poke $90CCD5 'T'
+      poke $90CD55 'Y'
+      poke $90CDD5 ':'
+      poke $910004 $0C #Airplane sprite#
+      poke $910005 $3A
+      poke $910007 $4D
+    endif
+      if (peek($FF1000)==$00) #Arcade Mode pointer#
+        poke $910001 $B8
+        poke $910003 $B6
+      elsif (peek($FF1000)==$01) #Versus Mode pointer#
+        poke $910001 $B8
+        poke $910003 $BE
+      elsif (peek($FF1000)==$02) #Training Mode pointer#
+        poke $910001 $B0
+        poke $910003 $C6
+      endif
+      poke $90CED5  peek($FF82C7) #Get Game Level no.#
+endif
+#Restore text shift in Test Menu#
+if peek($FF8078)==$40
+    poke $FF1010 $FF
+    poke $FF8039 $00
+endif
+#Infinity credit Script#
+if (peek($FF82DD)>$00)
+    poke $FF82DD $09
+endif
+#Versus Mode Script#
+if (peek($FF1000)==$01)
+    if (dpeek($FFD1E6)==$16F8)and(peek($FF82E4)>$00) #Auto activate P1 & P2#
+      poke $FF82E4 $03
+      poke $FF8954 $01
+      lpoke $FF8946 $02010400
+    endif
+    if (peek($FF8009)==$04) #Memorizes characters#
+      p1char=peek($FF8657)
+      p2char=peek($FF8957)
+    endif
+    if (peek($FF8656)==$02)or(peek($FF8956)==$02) #Prevent continue text#
+      poke $FF8646 $FF
+      poke $FF8946 $FF
+    endif
+    if (peek($FF800D)==$0C)and((peek($FF8656)==$02)or(peek($FF8956)==$02))
+      poke $FF8005 $00 #Return to character screen#
+      poke $FF8009 $00
+      poke $FF800D $00
+      poke $FF82E4 $03 #Reactivate P1 & P2#
+      poke $FF8654 $01
+      poke $FF8954 $01
+      poke $FF8655 $00 #Deselect characters#
+      poke $FF8955 $00
+      dpoke $FF89F8 $0000 #Prevent bonus stage#
+      lpoke $ff89E9 $00000000 #Prevent character turn grey after lose#
+      lpoke $FF89ED $00000000
+      poke $FF89E9 $00 #Repeated due to bug#
+      poke $FF89F0 $00 #Repeated due to bug#
+      poke $FF1005 $01
+    endif
+    if (peek($FF1005)==01)and(dpeek($FFDDC2)==$203B) #Re-load last round characters#
+      poke $FF8657 p1char
+      poke $FF8957 p2char
+      poke $FF1005 $00
+    endif
+       if rnd()<=127 #Stage 50/50 chance from 1P or 2P#
+         poke $FF89DD peek($FF8657) #Flight start at P1#
+         poke $FFDD7F peek($FF8957) #P2 character's stage#
+       else 
+         poke $FF89DD peek($FF8957) #Flight start at P2#
+         poke $FFDD7F peek($FF8657) #P1 character's stage#
+       endif
+    poke $FF89DC $00 #Prevent CPU stage#
+endif
+#Training Mode Script#
+if (peek($FF1000)==$02)
+    if (dpeek($FFD1E6)==$16F8)and(peek($FF82E4)>$00) #Auto activate P1 & P2#
+      poke $FF82E4 $03
+      poke $FF8954 $01
+      lpoke $FF8946 $02010400
+    endif
+    if (peek($FF8655)==$01)and(peek($FF8955)==$00) #P1 as main player#
+      poke $25BB $82 #Switch control#
+      poke $25C1 $7E
+      poke $FF1003 $01
+    endif
+    if (peek($FF8955)==$01)and(peek($FF8655)==$00) #P2 as main player#
+      poke $25BB $82 #Switch control#
+      poke $25C1 $7E
+      poke $FF1003 $02
+    endif
+    if (peek($FF8655)==$01)and(peek($FF8955)==$01)
+      poke $25BB $7E #Restore control#
+      poke $25C1 $82
+      poke $FF89DC $00 #Fix for stage select#
+    endif
+    if (peek($FF1003)==$01)or(peek($FF1003)==$00) #P2 character's stage#
+      poke $FFDD7F peek($FF8957)
+    endif
+    if (peek($FF1003)==$02) #P1 character's stage#
+      poke $FFDD7F peek($FF8657)
+    endif
+    if (peek($FF8009)==$04) #Memorizes characters#
+      p1char=peek($FF8657)
+      p2char=peek($FF8957)
+    endif
+    poke $FF8ACF $28 #infinite time#
+    if (dpeek($FF83F0)<$60)and((peek($FF83C9)&$10)==$00)and(peek($FF89E0)==$0) #P1 infinite energy#
+      dpoke $FF83F0 $90
+      dpoke $FF8582 $90
+    endif
+    if (dpeek($FF86F0)<$60)and((peek($FF86C9)&$10)==$00)and(peek($FF89E0)==$0) #P2 infinite energy#
+      dpoke $FF86F0 $90
+      dpoke $FF8882 $90
+    endif
+    if (peek($FF8000)==$F0)and((peek($FF8076)==$10)or(peek($FF8076)==$20)) #Return to Character Screen Step 1#
+      poke $FF8655 $00
+      poke $FF8955 $00
+      poke $FF8005 $0C
+      poke $FF8009 $02
+      poke $FF800B $01
+      poke $FF1004 $01
+      poke $FF1005 $01
+    endif
+    if (peek($FF1004)==$01) #Return to Character Screen Step 2#
+      poke $FF8000 $00
+      poke $FF1004 $00
+    endif
+    if (peek($FF1005)==01)and(dpeek($FFDDC2)==$203B) #Re-load last round characters#
+      poke $FF8657 p1char
+      poke $FF8957 p2char
+      poke $FF1005 $00
+    endif
+endif
+#Pause Function Script#
+    if (peek($FF8009)==$0A)
+       if (peek($FF8076)==$00)
+         poke $FF1002 $00
+       endif
+       if (peek($FF8000)==$00)and((peek($FF8076)==$01)or(peek($FF8076)==$02))and(peek($FF1002)==$00)
+         poke $FF8000 $F0
+         poke $FF1002 $FF
+       endif
+       if (peek($FF8000)==$F0)and((peek($FF8076)==$01)or(peek($FF8076)==$02))and(peek($FF1002)==$00)
+         poke $FF8000 $00
+         poke $FF1002 $FF
+       endif
+    endif
+off:
+    poke $8DBDF "INSERT COIN."
+    poke $25BB $7E
+    poke $25C1 $82
+    lpoke $16BA $2B400076
+    lpoke $16C6 $1B400076
+
+script "Select Same Character"
+run:
+    if (peek($$25C1)==$82)and(peek($FFD1E6)==$3D) #For Normal Control#
+       if (peek($$FF8655)==$00)and(peek($FF8076)==$01)
+         poke $FF8657 peek($FF8957)
+       endif
+       if (peek($FF8955)==$00)and(peek($FF8076)==$02)
+         poke $FF8957 peek($FF8657)
+       endif
+    endif
+    if (peek($$25C1)==$7E)and(peek($FFD1E6)==$3D) #For Switched Control#
+       if (peek($FF8955)==$00)and(peek($FF8076)==$01)
+         poke $FF8957 peek($FF8657)
+       endif
+       if (peek($$FF8655)==$00)and(peek($FF8076)==$02)
+         poke $FF8657 peek($FF8957)
+       endif
+    endif
+
 script "Infinite Credits"  
 run:
     poke $FF82DD $09
