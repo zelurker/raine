@@ -116,6 +116,7 @@
 #include <time.h>
 #include <limits.h>
 #include "memwatch.h"
+#include "raine.h"
 
 #ifndef toupper
 #include <ctype.h>
@@ -418,7 +419,9 @@ void mwInit( void ) {
 	MW_MUTEX_INIT();
 
     /* start a log if none is running */
-    if( mwLogR() == NULL ) mwLogFile( "memwatch.log" );
+	char logpath[1024];
+	snprintf(logpath,1024,"%s/memwatch.log",dir_cfg.exe_path);
+    if( mwLogR() == NULL ) mwLogFile( logpath );
     if( mwLogR() == NULL ) {
         int i;
         char buf[32];
