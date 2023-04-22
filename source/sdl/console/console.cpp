@@ -666,27 +666,40 @@ void do_regs(int argc, char **argv) {
 }
 
 static void do_for(int argc, char **argv) {
+    char *arg0 = argv[0];
     if (argc < 4)
 	throw "syntax: for init test increment, see help if";
 
-    char *arg2, *arg3, *arg4 = NULL;
+    char *arg1, *arg2, *arg3;
+    int parsing = is_script_parsing();
+    if (parsing)
+	arg1 = strdup(argv[1]);
     parse(argv[1]);
-    for (int n=4; n<=argc-2; n++)
-	argv[n][strlen(argv[n])]=32;
-    if (argc > 4) {
-	printf("for instruction to execute %s\n",argv[4]);
-	arg4 = strdup(argv[4]);
+    // Once for has been parsed, the next time argv is passed is from strduped strings, which means we can't assume argv[5] follows argv[4],
+    // and so we must rebuild completely the command here instead of just replacing the 0 end of string by some space !
+    char cmd[1024];
+    *cmd = 0;
+    for (int n=4; n<argc; n++) {
+	int len = strlen(cmd);
+	snprintf(&cmd[len],1024-len,"%s ",argv[n]);
     }
+    cmd[strlen(cmd)-1] = 0;
     arg2 = strdup(argv[2]);
     arg3 = strdup(argv[3]);
     while (parse(arg2)) {
 	// the call to parse_cmd here resets the argv array and obliges to make copies of the needed strings...
-	if (arg4) cons->run_cmd(arg4,0);
+	if (*cmd) cons->run_cmd(cmd);
 	parse(arg3);
     }
+    // *** restore old command line !!!
+    // otherwise the parsed info of the for loop is lost and the loop can be executed only once !
+    if (parsing) {
+	sprintf(arg0,"for %s %s %s %s",arg1,arg2,arg3,cmd);
+	cons->parse_cmd(arg0);
+    }
+    if (parsing) free(arg1);
     free(arg2);
     free(arg3);
-    if (arg4) free(arg4);
 }
 
 static void do_poke(int argc, char **argv) {
