@@ -459,8 +459,6 @@ ifndef DARWIN
 	LIBS_DEBUG += -lGL -lGLU
 endif
 
-LIBS += -llua
-LIBS_DEBUG += -llua
 endif
 
 ifndef SDL
@@ -1242,6 +1240,10 @@ ifdef RAINE_DEBUG
 LIBS = $(LIBS_DEBUG)
 # Uncomment only if you want to debug the cpu cores
 # AFLAGS += -g
+endif
+
+ifndef RAINE_DOS
+LIBS += -llua
 endif
 
 ifdef X86_64
