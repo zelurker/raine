@@ -714,6 +714,8 @@ static void do_poke(int argc, char **argv) {
   UINT8 *ptr2 = ptr;
 
   if (!ptr) {
+      if (strcmp(argv[0],"poke"))
+	  throw(ConsExcept("%s: %x not in ram (allowed only for poke)",argv[0],adr));
       if (param_str) {
 	  for (unsigned int n=1; n<strlen(argv[2])-1; n++)
 	      gen_cpu_write_byte(adr+n-1,argv[2][n]);
@@ -1625,8 +1627,8 @@ static int peek(lua_State* L) {
     int arg1 = lua_tointeger(L,1);
     UINT8 *ptr = get_ptr(arg1);
     if (!ptr) {
-	lua_pushliteral(L, "peek: address not in ram");
-	lua_error(L);
+	lua_pushinteger(L,gen_cpu_read_byte(arg1));
+	return 1;
     }
     int cpu = cpu_id >> 4;
     if (cpu == CPU_68000)
@@ -1638,17 +1640,37 @@ static int peek(lua_State* L) {
 
 static int poke(lua_State* L) {
     int arg1 = lua_tointeger(L,1);
-    int arg2 = lua_tointeger(L,2);
+    int is_string = !lua_isnumber(L,2); // lua_isstring returns true for 32 !
+    int arg2;
+    size_t len;
+    const char *s;
+    if (is_string)
+	s = lua_tolstring(L,2,&len);
+    else
+	arg2 = lua_tointeger(L,2);
     UINT8 *ptr = get_ptr(arg1);
     if (!ptr) {
-	lua_pushliteral(L, "poke: address not in ram");
-	lua_error(L);
+	if (is_string) {
+	    for (size_t n=0; n<len; n++)
+		gen_cpu_write_byte(arg1+n,s[n]);
+	} else
+	    gen_cpu_write_byte(arg1,arg2);
+	return 0;
     }
     int cpu = cpu_id >> 4;
     if (cpu == CPU_68000)
-	ptr[arg1 ^ 1] = arg2;
-    else
-	ptr[arg1] = arg2;
+	if (is_string) {
+	    for(size_t n=0; n<len; n++)
+		ptr[(arg1+n) ^ 1] = s[n];
+	} else {
+	    ptr[arg1 ^ 1] = arg2;
+	}
+    else {
+	if (is_string)
+	    memcpy(&ptr[arg1],s,len);
+	else
+	    ptr[arg1] = arg2;
+    }
     return 0;
 }
 
@@ -1743,14 +1765,19 @@ void do_lua(int argc, char **argv) {
 	lua_pushcfunction(L, lpeek);
 	lua_setglobal(L,"lpeek");
     }
-    char code[1024];
-    *code = 0;
-    for (int n=1; n<argc; n++) {
-	int len = strlen(code);
-	snprintf(&code[len],1024-len,"%s ",argv[n]);
-    }
-    code[strlen(code)-1] = 0;
-    if (luaL_dostring(L, code) == LUA_OK)
+    int ret;
+    if (argc > 2) {
+	char code[1024];
+	*code = 0;
+	for (int n=1; n<argc; n++) {
+	    int len = strlen(code);
+	    snprintf(&code[len],1024-len,"%s ",argv[n]);
+	}
+	code[strlen(code)-1] = 0;
+	ret = luaL_dostring(L, code);
+    } else
+	ret = luaL_dostring(L,argv[1]);
+    if (ret == LUA_OK)
 	cons->print("lua ok");
     else {
 	throw ConsExcept("lua error: %s",lua_tostring(L,-1));
