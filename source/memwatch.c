@@ -116,8 +116,25 @@
 #include <time.h>
 #include <limits.h>
 #include "memwatch.h"
-#include "raine.h"
 
+typedef struct DIR_CFG
+{
+   char exe_path[FILENAME_MAX]; 		// current path of raine.exe
+   char share_path[FILENAME_MAX];		// location of data files
+#ifndef SDL
+   char language_file[FILENAME_MAX];		// language translation file (no path)
+#endif
+   char screen_dir[FILENAME_MAX];		// screenshot path
+   char emudx_dir[FILENAME_MAX];		// screenshot path
+   char artwork_dir[FILENAME_MAX];		// screenshot path
+   char **rom_dir;		// rom paths
+   char config_file[FILENAME_MAX];		// config file (no path)
+   char m68kdis[FILENAME_MAX],dz80[FILENAME_MAX],d6502[FILENAME_MAX];
+   unsigned int long_file_names;		// enable long file name support
+   unsigned int last_screenshot_num;		// counter for last screenshot
+} DIR_CFG;
+
+extern struct DIR_CFG dir_cfg;
 #ifndef toupper
 #include <ctype.h>
 #endif
