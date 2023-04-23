@@ -6,8 +6,8 @@ while (<>) {
 	chomp;
 	s/^script/luascript/;
 	s/\$/0x/g;
-	s/poke (.+?) "(.+)"/poke($1,"$2")/;
-	s/poke (.+?) '(.+)'/poke($1,"$2")/;
+	s/poke ([^ ]+?) "(.+)"/poke($1,"$2")/;
+	s/poke ([^ ]+?) '(.+)'/poke($1,"$2")/;
 	s/poke (.+?) (.+?) /poke($1,$2) /;
 	s/poke (.+?) (.+)/poke($1,$2)/;
 	s/if ([^#]+)/if $1 then/;
