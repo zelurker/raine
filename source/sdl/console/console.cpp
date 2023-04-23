@@ -751,8 +751,10 @@ static void do_poke(int argc, char **argv) {
       }
   } else if (!strcasecmp(argv[0],"dpoke")) {
       if (param_str) throw "dpoke: can't handle string parameter";
-      if (cpu == CPU_68020 || cpu == CPU_68000)
+      if (cpu == CPU_68020)
 	  WriteWord68k(&ptr[adr],val);
+      else if (cpu == CPU_68000)
+	  WriteWord(&ptr[adr],val);
       else {
 	  WriteWord(&ptr[adr],val);
 	  WriteWord(&ptr2[adr],val);
@@ -1622,14 +1624,71 @@ void run_console_command(char *command) {
   // set_regs(cpu_id);
 }
 
-static int dpoke(lua_State* L) {
-    int arg2 = lua_tointeger(L,-1);
-    int arg1 = lua_tointeger(L,-2);
+static int peek(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
     UINT8 *ptr = get_ptr(arg1);
-    if (!ptr)
-	throw ConsExcept("dpoke: not in ram %x",arg1); // not sure a throw from a lua function is really safe... !
-    WriteWord(&ptr[arg1],arg2);
+    if (!ptr) {
+	lua_pushliteral(L, "peek: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68000)
+	lua_pushinteger(L,ptr[arg1 ^ 1]);
+    else
+	lua_pushinteger(L,ptr[arg1]);
+    return 1;
+}
+
+static int poke(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
+    int arg2 = lua_tointeger(L,2);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr) {
+	lua_pushliteral(L, "poke: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68000)
+	ptr[arg1 ^ 1] = arg2;
+    else
+	ptr[arg1] = arg2;
     return 0;
+}
+
+static int dpoke(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
+    int arg2 = lua_tointeger(L,2);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr) {
+	lua_pushliteral(L, "dpoke: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68020)
+	WriteWord68k(&ptr[arg1],arg2);
+    else {
+	WriteWord(&ptr[arg1],arg2);
+	if (cpu == CPU_Z80) {
+	    u8 *ptr2 = Z80_context[cpu_id & 0xf].z80Base;
+	    WriteWord(&ptr2[arg1],arg2);
+	}
+    }
+    return 0;
+}
+
+static int dpeek(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr) {
+	lua_pushliteral(L, "dpeek: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68020)
+	lua_pushinteger(L,ReadWord68k(&ptr[arg1]));
+    else
+	lua_pushinteger(L,ReadWord(&ptr[arg1]));
+    return 1;
 }
 
 static void do_lua(int argc, char **argv) {
@@ -1641,6 +1700,12 @@ static void do_lua(int argc, char **argv) {
 	luaL_openlibs(L);
 	lua_pushcfunction(L, dpoke);
 	lua_setglobal(L,"dpoke");
+	lua_pushcfunction(L, poke);
+	lua_setglobal(L,"poke");
+	lua_pushcfunction(L, peek);
+	lua_setglobal(L,"peek");
+	lua_pushcfunction(L, dpeek);
+	lua_setglobal(L,"dpeek");
     }
     char code[1024];
     *code = 0;
