@@ -151,11 +151,7 @@ void init_scripts() {
   // rb should allow fseek in windoze...
   FILE *f = fopen(get_script_name(0),"rb");
   int nb_alloc = 0;
-#ifdef RAINE_UNIX
-  int size_cr = 1;
-#else
-  int size_cr = 2;
-#endif
+  const int size_cr = 1; // I thought about 2 for windows, but apparently not ?
   if (f) {
       char buff[10240];
       *buff = 0;
