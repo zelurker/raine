@@ -718,7 +718,7 @@ struct DEF_INPUT_EMU def_input_emu[] =
 #endif
  { SDL_SCANCODE_F1,      0x00,           _("Reset game"),           0, cold_boot},
  { SDL_SCANCODE_P,       0x00,           _("Pause game"),           0, key_pause_game},
- { SDL_SCANCODE_ESCAPE,     0x00,           _("Stop emulation"),    0, key_stop_emulation_esc},
+ { SDL_SCANCODE_ESCAPE,  JOY(1,0,6,0),           _("Stop emulation"),    0, key_stop_emulation_esc},
  { SDL_SCANCODE_TAB,     0x00,           _("Return to GUI"),        0, key_stop_emulation_tab},
  // { SDL_SCANCODE_WORLD_18,   0x00,           _("Switch Mixer"), switch_mixer },
  { SDL_SCANCODE_F2 , 0x00, _("Save state with name"), KMOD_CTRL, GameSaveName },
