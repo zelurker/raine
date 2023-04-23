@@ -51,6 +51,7 @@ void preinit_console();
 void done_console();
 void run_console_command(char *command);
 void do_regs(int argc, char **argv);
+void do_lua(int argc, char **argv);
 #ifdef __cplusplus
 UINT8 *get_ptr(UINT32 addr, UINT32 *the_block = NULL);
 

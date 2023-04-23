@@ -23,11 +23,13 @@ typedef struct {
   int status, hidden;
   int changing; // keeps last value selected
   char **on, **off, **run, **change;
+  char *on_lua, *off_lua, *run_lua, *change_lua;
   int nb_param;
   int value_list[MAX_PARAM];
   char *value_list_label[MAX_PARAM];
   char *comment;
   tparsed *parsed;
+  int lua;
 } tscript;
 
 tscript *script;
@@ -128,6 +130,10 @@ void done_scripts() {
 	      free(*l);
 	  free(script[n].change);
       }
+      if (script[n].run_lua) free(script[n].run_lua);
+      if (script[n].on_lua) free(script[n].on_lua);
+      if (script[n].off_lua) free(script[n].off_lua);
+      if (script[n].change_lua) free(script[n].change_lua);
       if (script[n].nb_param && script[n].value_list_label[0]) {
 	  for (int x=0; x<script[n].nb_param; x++)
 	      free(script[n].value_list_label[x]);
@@ -145,11 +151,16 @@ void init_scripts() {
   // rb should allow fseek in windoze...
   FILE *f = fopen(get_script_name(0),"rb");
   int nb_alloc = 0;
+#ifdef RAINE_UNIX
+  int size_cr = 1;
+#else
+  int size_cr = 2;
+#endif
   if (f) {
       char buff[10240];
       *buff = 0;
     while (!feof(f)) {
-	if (strncmp(buff,"script",6) && strncmp(buff,"hidden",6))  // if containing a script line then it's just a loop, don't erase it !
+	if (strncmp(buff,"script",6) && strncmp(buff,"hidden",6) && strncmp(buff,"luascript",9))  // if containing a script line then it's just a loop, don't erase it !
 	    myfgets(buff,10240,f);
 	while (*buff && buff[strlen(buff)-1] == '\\')
 	    myfgets(buff+strlen(buff)-1,10240-strlen(buff)+1,f);
@@ -161,16 +172,22 @@ void init_scripts() {
 	    }
 	}
 	if (!strncmp(buff,"script \"",8) ||
-		!strncmp(buff,"hidden \"",8)) {
+		!strncmp(buff,"hidden \"",8) ||
+		!strncmp(buff,"luascript \"",11)) {
 	    if (nb_scripts == nb_alloc) {
 		nb_alloc += 10;
 		script = (tscript *)realloc(script,sizeof(tscript)*nb_alloc);
 	    }
 	    script[nb_scripts].hidden = !strncmp(buff,"hidden",6);
+	    script[nb_scripts].lua = !strncmp(buff,"luascript",9);
 	    script[nb_scripts].on =
 		script[nb_scripts].off =
 		script[nb_scripts].run =
 		script[nb_scripts].change = NULL;
+	    script[nb_scripts].on_lua =
+		script[nb_scripts].off_lua =
+		script[nb_scripts].run_lua =
+		script[nb_scripts].change_lua = NULL;
 	    script[nb_scripts].changing = 0;
 	    int argc;
 	    char *argv[200];
@@ -237,6 +254,7 @@ void init_scripts() {
 
 	    int pos = ftell(f);
 	    int nb_on = 0, nb_off = 0, nb_run = 0, nb_change = 0;
+	    int size_on = 0, size_off = 0, size_run = 0, size_change = 0;
 	    bool on = false, off = false, change = false, run = false;
 	    while (!feof(f)) {
 		myfgets(buff,10240,f);
@@ -246,7 +264,7 @@ void init_scripts() {
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
 		    n++;
-		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
+		if (buff[n] == 0 || !strncmp(&buff[n],"luascript",9) || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
 		if (!strcmp(&buff[n],"on:")) {
 		    on = true;
@@ -266,31 +284,57 @@ void init_scripts() {
 		    continue;
 		}
 
-		if (on) nb_on++;
-		else if (off) nb_off++;
-		else if (run) nb_run++;
-		else if (change) nb_change++;
+		if (on) {
+		    nb_on++;
+		    size_on += strlen(buff)+size_cr;
+		} else if (off) {
+		    nb_off++;
+		    size_off += strlen(buff)+size_cr;
+		} else if (run) {
+		    nb_run++;
+		    size_run += strlen(buff)+size_cr;
+		}
+		else if (change) {
+		    nb_change++;
+		    size_change += strlen(buff) + size_cr;
+		}
 	    }
 	    fseek(f,pos,SEEK_SET);
 	    int l = 0;
-	    if (nb_on) {
-		script[nb_scripts].on = (char**)malloc(sizeof(char*)*(nb_on+1));
-		script[nb_scripts].on[nb_on] = NULL;
-	    }
-	    if (nb_off) {
-		script[nb_scripts].off = (char**)malloc(sizeof(char*)*(nb_off+1));
-		script[nb_scripts].off[nb_off] = NULL;
-	    }
-	    if (nb_run) {
-		script[nb_scripts].run = (char**)malloc(sizeof(char*)*(nb_run+1));
-		script[nb_scripts].run[nb_run] = NULL;
-	    }
-	    if (nb_change) {
-		script[nb_scripts].change = (char**)malloc(sizeof(char*)*(nb_change+1));
-		script[nb_scripts].change[nb_change] = NULL;
+	    if (script[nb_scripts].lua) {
+		if (nb_on) {
+		    script[nb_scripts].on_lua = (char*)malloc(size_on+1);
+		}
+		if (nb_off) {
+		    script[nb_scripts].off_lua = (char*)malloc(size_off+1);
+		}
+		if (nb_run) {
+		    script[nb_scripts].run_lua = (char*)malloc(size_run+1);
+		}
+		if (nb_change) {
+		    script[nb_scripts].change_lua = (char*)malloc(size_change+1);
+		}
+	    } else {
+		if (nb_on) {
+		    script[nb_scripts].on = (char**)malloc(sizeof(char*)*(nb_on+1));
+		    script[nb_scripts].on[nb_on] = NULL;
+		}
+		if (nb_off) {
+		    script[nb_scripts].off = (char**)malloc(sizeof(char*)*(nb_off+1));
+		    script[nb_scripts].off[nb_off] = NULL;
+		}
+		if (nb_run) {
+		    script[nb_scripts].run = (char**)malloc(sizeof(char*)*(nb_run+1));
+		    script[nb_scripts].run[nb_run] = NULL;
+		}
+		if (nb_change) {
+		    script[nb_scripts].change = (char**)malloc(sizeof(char*)*(nb_change+1));
+		    script[nb_scripts].change[nb_change] = NULL;
+		}
 	    }
 
 	    char **lines = NULL;
+	    char *file = NULL;
 	    while (!feof(f)) {
 		myfgets(buff,10240,f);
 		while (*buff && buff[strlen(buff)-1] == '\\')
@@ -299,31 +343,58 @@ void init_scripts() {
 		// skip spaces, tabs, and comments
 		while (buff[n] == ' ' || buff[n] == 9)
 		    n++;
-		if (buff[n] == 0 || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
+		if (buff[n] == 0 || !strncmp(&buff[n],"luascript",9) || !strncmp(&buff[n],"script",6) || !strncmp(&buff[n],"hidden",6)) // optional empty line to end the script
 		    break;
-		if (!strcmp(&buff[n],"on:")) {
-		    lines = script[nb_scripts].on;
-		    l = 0;
-		    continue;
-		} else if (!strcmp(&buff[n],"off:")) {
-		    lines = script[nb_scripts].off;
-		    l = 0;
-		    continue;
-		} else if (!strcmp(&buff[n],"change:")) {
-		    lines = script[nb_scripts].change;
-		    l = 0;
-		    continue;
-		} else if (!strcmp(&buff[n],"run:")) {
-		    lines = script[nb_scripts].run;
-		    l = 0;
-		    continue;
+		if (script[nb_scripts].lua) {
+		    if (!strcmp(&buff[n],"on:")) {
+			file = script[nb_scripts].on_lua;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"off:")) {
+			file = script[nb_scripts].off_lua;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"change:")) {
+			file = script[nb_scripts].change_lua;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"run:")) {
+			file = script[nb_scripts].run_lua;
+			l = 0;
+			continue;
+		    }
+		    if (!file) {
+			MessageBox("alert","cheats file in the wrong format, please update ! (luascript)","ok");
+			fclose(f);
+			return;
+		    }
+		    sprintf(&file[l],"%s\n",buff);
+		    l += strlen(buff)+size_cr;
+		} else {
+		    if (!strcmp(&buff[n],"on:")) {
+			lines = script[nb_scripts].on;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"off:")) {
+			lines = script[nb_scripts].off;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"change:")) {
+			lines = script[nb_scripts].change;
+			l = 0;
+			continue;
+		    } else if (!strcmp(&buff[n],"run:")) {
+			lines = script[nb_scripts].run;
+			l = 0;
+			continue;
+		    }
+		    if (!lines) {
+			MessageBox("alert","cheats file in the wrong format, please update !","ok");
+			fclose(f);
+			return;
+		    }
+		    lines[l++] = strdup(&buff[n]);
 		}
-		if (!lines) {
-		    MessageBox("alert","cheats file in the wrong format, please update !","ok");
-		    fclose(f);
-		    return;
-		}
-		lines[l++] = strdup(&buff[n]);
 	    }
 	    nb_scripts++;
 	} else { // script line
@@ -350,6 +421,8 @@ int get_running_script_info(int *nb, int *line, char **sect) {
 
 static void run_script(int n) {
     nb_script = n;
+    if (!cons)
+	run_console_command("");
     if (script[n].change) {
 	running++;
 	section = "change";
@@ -357,6 +430,13 @@ static void run_script(int n) {
 	    run_console_command(script[n].change[sline]);
 	running--;
 	return;
+    } else if (script[n].change_lua) {
+	running++;
+	char *argv[2];
+	argv[0] = "luascript";
+	argv[1] = script[n].change_lua;
+	do_lua(2,argv);
+	running--;
     }
 
     if (!script[n].status) {
@@ -368,6 +448,13 @@ static void run_script(int n) {
 		for (sline=0; script[n].on[sline]; sline++)
 		    run_console_command(script[n].on[sline]);
 		running--;
+	    } else if (script[n].on_lua) {
+		running++;
+		char *argv[2];
+		argv[0] = "luascript";
+		argv[1] = script[n].on_lua;
+		do_lua(2,argv);
+		running--;
 	    }
 	    return;
 	}
@@ -377,6 +464,11 @@ static void run_script(int n) {
 	    for (sline=0; script[n].off[sline]; sline++)
 		run_console_command(script[n].off[sline]);
 	    running--;
+	} else if (script[n].off_lua) {
+	    char *argv[2];
+	    argv[0] = "luascript";
+	    argv[1] = script[n].off_lua;
+	    do_lua(2,argv);
 	}
 	return;
     }
@@ -385,6 +477,13 @@ static void run_script(int n) {
 	section = "on";
 	for (sline=0; script[n].on[sline]; sline++)
 	    run_console_command(script[n].on[sline]);
+	running--;
+    } else if (script[n].on_lua) {
+	running++;
+	char *argv[2];
+	argv[0] = "luascript";
+	argv[1] = script[n].on_lua;
+	do_lua(2,argv);
 	running--;
     }
 }
@@ -440,10 +539,11 @@ void add_scripts(menu_item_t *menu) {
   for (int n=0; n<nb_scripts; n++) {
       if (script[n].hidden) continue;
       menu->label = script[n].title;
-      if (script[n].on || script[n].off || script[n].run || script[n].change) {
+      if ((!script[n].lua && (script[n].on || script[n].off || script[n].run || script[n].change)) ||
+	      (script[n].lua && (script[n].on_lua || script[n].off_lua || script[n].run_lua || script[n].change_lua))) {
 	  menu->value_int = &script[n].status;
 	  menu->menu_func = &activate_cheat;
-	  if (script[n].run || script[n].off) {
+	  if (script[n].run || script[n].off || script[n].run_lua || script[n].off_lua) {
 	      menu->values_list_size = 2;
 	      menu->values_list[0] = 0;
 	      menu->values_list[1] = 1;
@@ -483,55 +583,94 @@ void do_stop(int argc, char **argv) {
 
 void update_scripts() {
     if (!nb_scripts) return;
+    if (!cons)
+	run_console_command("");
     int n;
-    for (n=0; n<nb_scripts; n++) {
-	if (script[n].status) {
-	    init_script_param(n);
-	    nb_script = n;
-	    if (script[n].run) {
-		running++;
-		section = "run";
-		parsing = 0;
-		if (!script[n].parsed) {
-		    int nb = 0;
-		    for ( nb=0; script[n].run[nb]; nb++);
+    try {
+	for (n=0; n<nb_scripts; n++) {
+	    if (script[n].status) {
+		init_script_param(n);
+		nb_script = n;
+		if (script[n].run || script[n].run_lua) {
+		    running++;
+		    section = "run";
+		    parsing = 0;
+		    if (!script[n].parsed && !script[n].lua) {
+			int nb = 0;
+			for ( nb=0; script[n].run[nb]; nb++);
 
-		    script[n].parsed = (tparsed*)calloc(nb,sizeof(tparsed));
-		    parsing = 1;
-		}
+			script[n].parsed = (tparsed*)calloc(nb,sizeof(tparsed));
+			parsing = 1;
+		    }
 
-		for ( sline=0; script[n].run[sline]; sline++) {
-		    if (*script[n].run[sline] == '#') continue;
-		    if (parsing) {
-			run_console_command(script[n].run[sline]);
-			int argc; char **argv; void (*cmd)(int, char **);
-			cons->get_parsed_info(&argc,&argv,&cmd);
-			if (argc) {
-			    script[n].parsed[sline].argc = argc;
-			    script[n].parsed[sline].argv = (char**)calloc(argc,sizeof(char*));
-			    script[n].parsed[sline].cmd = cmd;
-			}
-			for (int x=0; x<argc; x++)
-			    script[n].parsed[sline].argv[x] = strdup(argv[x]);
-			cons->finish_parsed_info();
-		    } else {
-			if (cons->interactive)
-			    (*cons->interactive)(script[n].run[sline]);
-			else if (script[n].parsed[sline].cmd)
-			    (*script[n].parsed[sline].cmd)(script[n].parsed[sline].argc,script[n].parsed[sline].argv);
-			else {
-			    // Simple line of the type variable=value or variable=function(arg)
+		    if (script[n].lua) {
+			char *argv[2];
+			argv[0] = "luascript";
+			argv[1] = script[n].run_lua;
+			do_lua(2,argv);
+			running--;
+			continue;
+		    }
+
+		    for ( sline=0; script[n].run[sline]; sline++) {
+			if (*script[n].run[sline] == '#') continue;
+			if (parsing) {
 			    run_console_command(script[n].run[sline]);
+			    int argc; char **argv; void (*cmd)(int, char **);
+			    cons->get_parsed_info(&argc,&argv,&cmd);
+			    if (argc) {
+				script[n].parsed[sline].argc = argc;
+				script[n].parsed[sline].argv = (char**)calloc(argc,sizeof(char*));
+				script[n].parsed[sline].cmd = cmd;
+			    }
+			    for (int x=0; x<argc; x++)
+				script[n].parsed[sline].argv[x] = strdup(argv[x]);
+			    cons->finish_parsed_info();
+			} else {
+			    if (cons->interactive)
+				(*cons->interactive)(script[n].run[sline]);
+			    else if (script[n].parsed[sline].cmd)
+				(*script[n].parsed[sline].cmd)(script[n].parsed[sline].argc,script[n].parsed[sline].argv);
+			    else {
+				// Simple line of the type variable=value or variable=function(arg)
+				run_console_command(script[n].run[sline]);
+			    }
+			}
+			if (active_if_script_section() && script[n].parsed[sline].argc == 1 && !strcmp(script[n].parsed[sline].argv[0],"stop")) {
+			    // stop current script
+			    script[n].status = 0;
+			    break;
 			}
 		    }
-		    if (active_if_script_section() && script[n].parsed[sline].argc == 1 && !strcmp(script[n].parsed[sline].argv[0],"stop")) {
-			// stop current script
-			script[n].status = 0;
-			break;
-		    }
+		    running--;
 		}
-		running--;
 	    }
+	}
+    }
+    catch(ConsExcept &e) {
+	if (cons && cons->is_visible()) cons->print(e.what());
+	else {
+	    char msg[240];
+	    int nb,line;
+	    char *section;
+	    if (get_running_script_info(&nb,&line,&section)) {
+		// Line numbers are unprecise because lines with only a comment are jumped
+		sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
+			get_script_title(nb),
+			section,
+			line+1);
+		strncat(msg, e.what(),240-strlen(msg));
+		stop_script(nb);
+		strncat(msg,"\n(script stopped)",240-strlen(msg));
+		MessageBox("script error",msg,"ok");
+	    } else
+		MessageBox("script error",e.what(),"ok");
+	}
+    }
+    catch(const char *msg) {
+	if (cons && cons->is_visible()) cons->print(msg);
+	else {
+	    MessageBox("script error",(char *)msg,"ok");
 	}
     }
 }

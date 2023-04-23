@@ -1391,8 +1391,6 @@ static void do_cpu(int argc, char **argv) {
    }
 }
 
-static void do_lua(int argc, char **argv);
-
 commands_t commands[] =
 {
   { "break", &do_break, "\E[32mbreak\E[0m [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
@@ -1608,13 +1606,12 @@ void done_console() {
 }
 
 void run_console_command(char *command) {
-    if (!*command) return;
     if (!cpu_id) {
 	init_cpuid();
 	cpu_get_ram(cpu_id,ram,&nb_ram);
     }
   if (!cons) {
-    cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,50, commands,0);
+    cons = new TRaineConsole(_("Console"),"", sdl_screen->w/min_font_size-4,1000, commands,0);
     lastw = screen->w;
     lasth = screen->h;
   }
@@ -1691,7 +1688,42 @@ static int dpeek(lua_State* L) {
     return 1;
 }
 
-static void do_lua(int argc, char **argv) {
+static int lpoke(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
+    int arg2 = lua_tointeger(L,2);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr) {
+	lua_pushliteral(L, "lpoke: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68000) {
+	WriteLongSc(&ptr[arg1],arg2);
+    } else if (cpu == CPU_68020)
+	WriteLong68k(&ptr[arg1],arg2);
+    else
+	WriteLong(&ptr[arg1],arg2);
+    return 0;
+}
+
+static int lpeek(lua_State* L) {
+    int arg1 = lua_tointeger(L,1);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr) {
+	lua_pushliteral(L, "lpeek: address not in ram");
+	lua_error(L);
+    }
+    int cpu = cpu_id >> 4;
+    if (cpu == CPU_68020)
+	lua_pushinteger(L,ReadLong68k(&ptr[arg1]));
+    else if (cpu == CPU_68000)
+	lua_pushinteger(L,ReadLongSc(&ptr[arg1]));
+    else
+	lua_pushinteger(L,ReadLong(&ptr[arg1]));
+    return 1;
+}
+
+void do_lua(int argc, char **argv) {
     if (argc < 2)
 	throw "syntax: lua code...";
 
@@ -1706,6 +1738,10 @@ static void do_lua(int argc, char **argv) {
 	lua_setglobal(L,"peek");
 	lua_pushcfunction(L, dpeek);
 	lua_setglobal(L,"dpeek");
+	lua_pushcfunction(L, lpoke);
+	lua_setglobal(L,"lpoke");
+	lua_pushcfunction(L, lpeek);
+	lua_setglobal(L,"lpeek");
     }
     char code[1024];
     *code = 0;
