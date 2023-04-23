@@ -1,3 +1,5 @@
+#include <lua.hpp>
+
 #include "raine.h"
 #include "console.h"
 #include "starhelp.h"
@@ -706,10 +708,10 @@ static void do_poke(int argc, char **argv) {
   if (argc != 3)
     throw("syntax: poke adr value");
 
+  int param_str = argv[2][0] == 39 || argv[2][0] == 34; // ' or "
   UINT32 adr = parse(argv[1]);
   UINT8 *ptr = get_ptr(adr);
   UINT8 *ptr2 = ptr;
-  int param_str = argv[2][0] == 39 || argv[2][0] == 34; // ' or "
 
   if (!ptr) {
       if (param_str) {
@@ -749,7 +751,7 @@ static void do_poke(int argc, char **argv) {
       }
   } else if (!strcasecmp(argv[0],"dpoke")) {
       if (param_str) throw "dpoke: can't handle string parameter";
-      if (cpu == CPU_68020)
+      if (cpu == CPU_68020 || cpu == CPU_68000)
 	  WriteWord68k(&ptr[adr],val);
       else {
 	  WriteWord(&ptr[adr],val);
@@ -1387,6 +1389,8 @@ static void do_cpu(int argc, char **argv) {
    }
 }
 
+static void do_lua(int argc, char **argv);
+
 commands_t commands[] =
 {
   { "break", &do_break, "\E[32mbreak\E[0m [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
@@ -1423,6 +1427,7 @@ commands_t commands[] =
 "Z80 3\n"
 "PCM 4\n"
 "PAT 5\n"},
+  { "lua", &do_lua, "lua code... : execute lua code, highly experimental" },
   { "map", &do_map, "\E[32mmap\E[0m  : show locations of ram in memory map"},
   { "next", &do_next, "\E[32m(n)ext\E[0m : like step, but don't step into subprograms or traps - can be interrupted by ESC or Ctrl-C" },
   { "n", &do_next },
@@ -1573,6 +1578,8 @@ void preinit_console() {
     }
 }
 
+static lua_State *L;
+
 void done_console() {
   if (cons) {
       delete cons;
@@ -1594,6 +1601,8 @@ void done_console() {
   done_breakpoints();
   nb_watch = 0;
   cpu_id = 0;
+  if (L)
+      lua_close(L);
 }
 
 void run_console_command(char *command) {
@@ -1613,3 +1622,37 @@ void run_console_command(char *command) {
   // set_regs(cpu_id);
 }
 
+static int dpoke(lua_State* L) {
+    int arg2 = lua_tointeger(L,-1);
+    int arg1 = lua_tointeger(L,-2);
+    UINT8 *ptr = get_ptr(arg1);
+    if (!ptr)
+	throw ConsExcept("dpoke: not in ram %x",arg1); // not sure a throw from a lua function is really safe... !
+    WriteWord(&ptr[arg1],arg2);
+    return 0;
+}
+
+static void do_lua(int argc, char **argv) {
+    if (argc < 2)
+	throw "syntax: lua code...";
+
+    if (!L) {
+	L = luaL_newstate();
+	luaL_openlibs(L);
+	lua_pushcfunction(L, dpoke);
+	lua_setglobal(L,"dpoke");
+    }
+    char code[1024];
+    *code = 0;
+    for (int n=1; n<argc; n++) {
+	int len = strlen(code);
+	snprintf(&code[len],1024-len,"%s ",argv[n]);
+    }
+    code[strlen(code)-1] = 0;
+    if (luaL_dostring(L, code) == LUA_OK)
+	cons->print("lua ok");
+    else {
+	throw ConsExcept("lua error: %s",lua_tostring(L,-1));
+	lua_pop(L,1);
+    }
+}

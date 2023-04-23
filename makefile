@@ -17,7 +17,7 @@
 VERSION = "0.95.3"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -458,6 +458,9 @@ ifndef DARWIN
 	LIBS += -lGL
 	LIBS_DEBUG += -lGL -lGLU
 endif
+
+LIBS += -llua
+LIBS_DEBUG += -llua
 endif
 
 ifndef SDL

@@ -22,9 +22,8 @@ void split_command(char *field, char **argv, int *argc, int max, int strip_quote
       quote++;
   else
       quote = field;
-  char *s = strchr(quote,';'); // strip comments starting by ; or #. # might be used some day for something else...
-  if (s) *s = 0;
-  s = strchr(quote,'#');
+  // Don't take ; as comments for lua
+  char *s = strchr(quote,'#');
   if (s) *s = 0;
   s = field;
   char *copie = strdup(field);
