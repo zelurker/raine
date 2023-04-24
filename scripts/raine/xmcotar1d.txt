@@ -1,328 +1,654 @@
-script "Console Mode" \
-"comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
+luascript "Console Mode [lua]" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
 run:
-#Start-up#
-if (peek($FF4BDD)==$00)
-    poke $6B6F0 "PRESS START"
-    poke $B0D $01 #Restore initial value#
-    poke $B1D $00
-    poke $B17 $AA
-    poke $B35 $AC
-    lpoke $AF4 $1B40CBAE
-    poke $FF2000 $00
-    if (peek($804020)<$FF)and(peek($FF0060)>$00) #Start button start#
-       poke $FF0040 $02
-       poke $618001 $FF #Stop the opening music#
-       poke $618003 $00
-       poke $61801F $00
-    endif
-    if (peek($804020)==$FF)and(peek($FF0040)==$02) #Start button start cont.#
-       poke $FF0040 $01
-       poke $618001 $00 #sound effect#
-       poke $618003 $70
-       poke $61801F $00
-      poke $FF4BDD $09 #Max Credit#
-    endif
-endif
-#Title screen#
-if (dpeek($FF4B84)==$FFF0)
-   if (peek($FF4BDD)>$00)and(peek($FF4880)==$00)and(peek($FFEADE)==$01)
-    lpoke $AF4 $00000000 #Disable original start button#
-    region=peek($FF4BF7)
-    if (peek($FF2000)!=$03)
-      poke $FF2000 $00 #Set Arcade Mode as default#
-      if (peek($FF2020)==$00)and(peek($804020)==$FF)
-        poke $FF2020 $01
-      endif
-      if (peek($FF2020)==$01)and((peek($804020)==$FE)or(peek($804020)==$FD)) #Leaving title screen#
-        poke $FF2020 $02
-        poke $618001 $00 #sound effect#
-        poke $618003 $73
-        poke $61801F $00
-      endif
-      if (peek($FF2020)==$02)and(peek($804020)==$FF)
-        poke $FF2020 $03
-      endif
-    endif
-   endif
-   #Menu Screen#
-    if (peek($FF4880)==$00)and(peek($FF2020)==$03)
-       if (peek($804020)==$FF) #Restore original start button#
-         lpoke $AF4 $1B40CBAE
-       endif
-       #Text display in menu#
-       dpoke $FF4990 $0F78 #Shift logo and text#
-       poke $FFEADE $00
-       lpoke $908D1C $00410000+peek($FF2030) #Arcade Mode#
-       lpoke $908D9C $00520000+peek($FF2030)
-       lpoke $908E1C $00430000+peek($FF2030)
-       lpoke $908E9C $00410000+peek($FF2030)
-       lpoke $908F1C $00440000+peek($FF2030)
-       lpoke $908F9C $00450000+peek($FF2030)
-       lpoke $90909C $004D0000+peek($FF2030)
-       lpoke $90911C $004F0000+peek($FF2030)
-       lpoke $90919C $00440000+peek($FF2030)
-       lpoke $90921C $00450000+peek($FF2030)
-       lpoke $908D20 $00560000+peek($FF2031) #Versus Mode#
-       lpoke $908DA0 $00450000+peek($FF2031)
-       lpoke $908E20 $00520000+peek($FF2031)
-       lpoke $908EA0 $00530000+peek($FF2031)
-       lpoke $908F20 $00550000+peek($FF2031)
-       lpoke $908FA0 $00530000+peek($FF2031)
-       lpoke $9090A0 $004D0000+peek($FF2031)
-       lpoke $909120 $004F0000+peek($FF2031)
-       lpoke $9091A0 $00440000+peek($FF2031)
-       lpoke $909220 $00450000+peek($FF2031)
-       lpoke $908CA4 $00540000+peek($FF2032) #Training Mode#
-       lpoke $908D24 $00520000+peek($FF2032)
-       lpoke $908DA4 $00410000+peek($FF2032)
-       lpoke $908E24 $00490000+peek($FF2032)
-       lpoke $908EA4 $004E0000+peek($FF2032)
-       lpoke $908F24 $00490000+peek($FF2032)
-       lpoke $908FA4 $004E0000+peek($FF2032)
-       lpoke $909024 $00470000+peek($FF2032)
-       lpoke $909124 $004D0000+peek($FF2032)
-       lpoke $9091A4 $004F0000+peek($FF2032)
-       lpoke $909224 $00440000+peek($FF2032)
-       lpoke $9092A4 $00450000+peek($FF2032)
-       lpoke $908D28 $004F0000+peek($FF2033) #Option Mode#
-       lpoke $908DA8 $00500000+peek($FF2033)
-       lpoke $908E28 $00540000+peek($FF2033)
-       lpoke $908EA8 $00490000+peek($FF2033)
-       lpoke $908F28 $004F0000+peek($FF2033)
-       lpoke $908FA8 $004E0000+peek($FF2033)
-       lpoke $9090A8 $004D0000+peek($FF2033)
-       lpoke $909128 $004F0000+peek($FF2033)
-       lpoke $9091A8 $00440000+peek($FF2033)
-       lpoke $909228 $00450000+peek($FF2033)
-       if (peek($FF2000)==$00) #Arcade Mode Pointer#
-         poke $FF2030 $15
-         poke $FF2031 $14
-         poke $FF2032 $14
-         poke $FF2033 $14
-       elsif (peek($FF2000)==$01) #Versus Mode Pointer#
-         poke $FF2030 $14
-         poke $FF2031 $15
-         poke $FF2032 $14
-         poke $FF2033 $14
-       elsif (peek($FF2000)==$02) #Training Mode Pointer#
-         poke $FF2030 $14
-         poke $FF2031 $14
-         poke $FF2032 $15
-         poke $FF2033 $14
-       elsif (peek($FF2000)==$03) #Option Mode Pointer#
-         poke $FF2030 $14
-         poke $FF2031 $14
-         poke $FF2032 $14
-         poke $FF2033 $15
-       endif
-       #Control in the Menu screen#
-       if ((peek($FF4BAB)==$00)and(peek($FF4BAD)==$00))and(peek($FF2001)==$FF)
-          poke $FF2001 $00
-          poke $FF2021 $00 #Act as music 'stopper'#
-       endif
-       if (peek($FF4BAB)==$04)or(peek($FF$4BAD)==$04)
-          if peek($FF2021)==$00 #Sound effect#
-            poke $618001 $00
-            poke $618003 $71
-            poke $61801F $00
-            poke $FF2021 $FF
-          endif
-          if (dpeek($FF2000)==$0000)
-            dpoke $FF2000 $01FF
-          elsif (dpeek($FF2000)==$0100)
-            dpoke $FF2000 $02FF
-          elsif (dpeek($FF2000)==$0200)
-            dpoke $FF2000 $03FF
-          elsif (dpeek($FF2000)==$0300)
-            dpoke $FF2000 $00FF
-          endif
-       endif
-       if (peek($FF4BAB)==$08)or(peek($FF4BAD)==$08)
-          if peek($FF2021)==$00 #Sound effect#
-            poke $618001 $00
-            poke $618003 $71
-            poke $61801F $00
-            poke $FF2021 $FF
-          endif
-          if (dpeek($FF2000)==$0000)
-            dpoke $FF2000 $03FF
-          elsif (dpeek($FF2000)==$0300)
-            dpoke $FF2000 $02FF
-          elsif (dpeek($FF2000)==$0200)
-            dpoke $FF2000 $01FF
-          elsif (dpeek($FF2000)==$0100)
-            dpoke $FF2000 $00FF
-          endif
-       endif
-       #Start game#
-       if (peek($804020)==$FE)or(peek($804020)==$FD) #Start game#
-          poke $618001 $00 #sound effect#
-          poke $618003 $73
-          poke $61801F $00
-          poke $FF2020 $04
-       endif
-    endif
-endif
-if (peek($FF2020)==$04)and((peek($618003)==$73)or(peek($618003)==$00)) #Keep sound effect#
-    poke $FF4C02 $00
-    poke $FF4C12 $00
-    poke $FF4C22 $00
-    poke $FF4C32 $00
-endif
-if (peek($FF2020)==$04)and(peek($618003)==$01) #Finished all menu work#
-    poke $FF2020 $00
-endif
-#Infinity Credits Script#
-if (peek($FF4BDD)>$00)
-    poke $FF4BDD $09
-endif
-#Versus Mode Script#
-if (peek($FF2000)==$01)
-    poke $FF48A3 $03 #Prevent Continue Text#
-    if (peek($FF4885)==$04)and((peek($FF4003)==$00)or(peek($FF4403)==$00)) #Player Select Screen#
-    poke $FF4881 $03
-    poke $FF4912 $03
-    poke $FF4003 $01
-    poke $FF4403 $01
-    endif
-    if (peek($FF4885)==$0C)and(peek($FF4887)==$04)and(peek($FF48D9)>$00)and(peek($FF48D9)<=$04) #Return#
-    poke $FF4885 $00
-    endif
-endif
-#Training Mode Script#
-if (peek($FF2000)==$02)
-    if (peek($FF4885)==$04) #Player Select Screen#
-      if (peek($FF4003)==$00)or(peek($FF4403)==$00)
-      poke $FF4881 $03
-      poke $FF4912 $03
-      poke $FF4003 $01
-      poke $FF4403 $01
-      poke $FF48A3 $03 #Prevent Continue Text#
-      endif
-      if (dpeek($FF4BAA)>$0000) #P1 Buttons 'stopper'#
-       poke $FF2003 $FF
-      endif
-      if (dpeek($FF4BAA)==$0000) #P1 Buttons 'resumer'#
-       poke $FF2003 $00
-      endif
-      if (dpeek($FF4BAC)>$0000) #P2 Buttons 'stopper'#
-       poke $FF2004 $FF
-      endif
-      if (dpeek($FF4BAC)==$0000) #P2 Buttons 'resumer'#
-       poke $FF2004 $00
-      endif
-      if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$02)and(peek($ff2003)==$00) #Switching control#
-      poke $B0D $00
-      poke $B1D $01
-      poke $B17 $AC
-      poke $B35 $AA
-      poke $FF2005 01
-      endif
-      if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$01)and(peek($ff2004)==$00) #Switching control#
-      poke $B0D $00
-      poke $B1D $01
-      poke $B17 $AC
-      poke $B35 $AA
-      poke $FF2005 02
-      endif
-      if (peek($FF4907)==$02)and((peek($FF4919)==$00)and(peek($FF491B)==$00)) #Restore to original#
-      poke $B0D $01
+   -- Start-up --
+   if (peek(0xFF4BDD)==0x00) then
+      poke(0x6B6F0,"PRESS START")
+      poke(0xB0D,0x01) -- Restore initial value --
+      poke(0xB1D,0x00)
+      poke(0xB17,0xAA)
+      poke(0xB35,0xAC)
+      lpoke(0xAF4,0x1B40CBAE)
+      poke(0xFF2000,0x00)
+      if (peek(0x804020)<0xFF) and (peek(0xFF0060)>0x00) then -- Start button start --
+         poke(0xFF0040,0x02)
+         poke(0x618001,0xFF) -- Stop the opening music --
+         poke(0x618003,0x00)
+         poke(0x61801F,0x00)
+      end
+      if (peek(0x804020)==0xFF) and (peek(0xFF0040)==0x02) then -- Start button start cont. --
+         poke(0xFF0040,0x01)
+         poke(0x618001,0x00) -- sound effect --
+         poke(0x618003,0x70)
+         poke(0x61801F,0x00)
+         poke(0xFF4BDD,0x09) -- Max Credit --
+      end
+   end
+   -- Title screen --
+   if (dpeek(0xFF4B84)==0xFFF0) then
+      if (peek(0xFF4BDD)>0x00) and (peek(0xFF4880)==0x00) and (peek(0xFFEADE)==0x01) then
+         lpoke(0xAF4,0x00000000) -- Disable original start button --
+         region=peek(0xFF4BF7)
+         if (peek(0xFF2000)~=0x03) then
+            poke(0xFF2000,0x00) -- Set Arcade Mode as default --
+            if (peek(0xFF2020)==0x00) and (peek(0x804020)==0xFF) then
+               poke(0xFF2020,0x01)
+            end
+            if (peek(0xFF2020)==0x01) and ((peek(0x804020)==0xFE) or (peek(0x804020)==0xFD)) then -- Leaving title screen --
+               poke(0xFF2020,0x02)
+               poke(0x618001,0x00) -- sound effect --
+               poke(0x618003,0x73)
+               poke(0x61801F,0x00)
+            end
+            if (peek(0xFF2020)==0x02) and (peek(0x804020)==0xFF) then
+               poke(0xFF2020,0x03)
+            end
+         end
+      end
+      -- Menu Screen --
+      if (peek(0xFF4880)==0x00) and (peek(0xFF2020)==0x03) then
+         if (peek(0x804020)==0xFF) then -- Restore original start button --
+            lpoke(0xAF4,0x1B40CBAE)
+         end
+         -- Text display in menu --
+         dpoke(0xFF4990,0x0F78) -- Shift logo and text --
+         poke(0xFFEADE,0x00)
+         lpoke(0x908D1C,0x00410000+peek(0xFF2030)) -- Arcade Mode --
+         lpoke(0x908D9C,0x00520000+peek(0xFF2030))
+         lpoke(0x908E1C,0x00430000+peek(0xFF2030))
+         lpoke(0x908E9C,0x00410000+peek(0xFF2030))
+         lpoke(0x908F1C,0x00440000+peek(0xFF2030))
+         lpoke(0x908F9C,0x00450000+peek(0xFF2030))
+         lpoke(0x90909C,0x004D0000+peek(0xFF2030))
+         lpoke(0x90911C,0x004F0000+peek(0xFF2030))
+         lpoke(0x90919C,0x00440000+peek(0xFF2030))
+         lpoke(0x90921C,0x00450000+peek(0xFF2030))
+         lpoke(0x908D20,0x00560000+peek(0xFF2031)) -- Versus Mode --
+         lpoke(0x908DA0,0x00450000+peek(0xFF2031))
+         lpoke(0x908E20,0x00520000+peek(0xFF2031))
+         lpoke(0x908EA0,0x00530000+peek(0xFF2031))
+         lpoke(0x908F20,0x00550000+peek(0xFF2031))
+         lpoke(0x908FA0,0x00530000+peek(0xFF2031))
+         lpoke(0x9090A0,0x004D0000+peek(0xFF2031))
+         lpoke(0x909120,0x004F0000+peek(0xFF2031))
+         lpoke(0x9091A0,0x00440000+peek(0xFF2031))
+         lpoke(0x909220,0x00450000+peek(0xFF2031))
+         lpoke(0x908CA4,0x00540000+peek(0xFF2032)) -- Training Mode --
+         lpoke(0x908D24,0x00520000+peek(0xFF2032))
+         lpoke(0x908DA4,0x00410000+peek(0xFF2032))
+         lpoke(0x908E24,0x00490000+peek(0xFF2032))
+         lpoke(0x908EA4,0x004E0000+peek(0xFF2032))
+         lpoke(0x908F24,0x00490000+peek(0xFF2032))
+         lpoke(0x908FA4,0x004E0000+peek(0xFF2032))
+         lpoke(0x909024,0x00470000+peek(0xFF2032))
+         lpoke(0x909124,0x004D0000+peek(0xFF2032))
+         lpoke(0x9091A4,0x004F0000+peek(0xFF2032))
+         lpoke(0x909224,0x00440000+peek(0xFF2032))
+         lpoke(0x9092A4,0x00450000+peek(0xFF2032))
+         lpoke(0x908D28,0x004F0000+peek(0xFF2033)) -- Option Mode --
+         lpoke(0x908DA8,0x00500000+peek(0xFF2033))
+         lpoke(0x908E28,0x00540000+peek(0xFF2033))
+         lpoke(0x908EA8,0x00490000+peek(0xFF2033))
+         lpoke(0x908F28,0x004F0000+peek(0xFF2033))
+         lpoke(0x908FA8,0x004E0000+peek(0xFF2033))
+         lpoke(0x9090A8,0x004D0000+peek(0xFF2033))
+         lpoke(0x909128,0x004F0000+peek(0xFF2033))
+         lpoke(0x9091A8,0x00440000+peek(0xFF2033))
+         lpoke(0x909228,0x00450000+peek(0xFF2033))
+         if (peek(0xFF2000)==0x00) then -- Arcade Mode Pointer --
+            poke(0xFF2030,0x15)
+            poke(0xFF2031,0x14)
+            poke(0xFF2032,0x14)
+            poke(0xFF2033,0x14)
+         elseif (peek(0xFF2000)==0x01) then -- Versus Mode Pointer --
+            poke(0xFF2030,0x14)
+            poke(0xFF2031,0x15)
+            poke(0xFF2032,0x14)
+            poke(0xFF2033,0x14)
+         elseif (peek(0xFF2000)==0x02) then -- Training Mode Pointer --
+            poke(0xFF2030,0x14)
+            poke(0xFF2031,0x14)
+            poke(0xFF2032,0x15)
+            poke(0xFF2033,0x14)
+         elseif (peek(0xFF2000)==0x03) then -- Option Mode Pointer --
+            poke(0xFF2030,0x14)
+            poke(0xFF2031,0x14)
+            poke(0xFF2032,0x14)
+            poke(0xFF2033,0x15)
+         end
+         -- Control in the Menu screen --
+         if ((peek(0xFF4BAB)==0x00) and (peek(0xFF4BAD)==0x00)) and (peek(0xFF2001)==0xFF) then
+            poke(0xFF2001,0x00)
+            poke(0xFF2021,0x00) -- Act as music 'stopper' --
+         end
+         if (peek(0xFF4BAB)==0x04) or (peek(0xFF4BAD)==0x04) then
+            if peek(0xFF2021)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0x71)
+               poke(0x61801F,0x00)
+               poke(0xFF2021,0xFF)
+            end
+            if (dpeek(0xFF2000)==0x0000) then
+               dpoke(0xFF2000,0x01FF)
+            elseif (dpeek(0xFF2000)==0x0100) then
+               dpoke(0xFF2000,0x02FF)
+            elseif (dpeek(0xFF2000)==0x0200) then
+               dpoke(0xFF2000,0x03FF)
+            elseif (dpeek(0xFF2000)==0x0300) then
+               dpoke(0xFF2000,0x00FF)
+            end
+         end
+         if (peek(0xFF4BAB)==0x08) or (peek(0xFF4BAD)==0x08) then
+            if peek(0xFF2021)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0x71)
+               poke(0x61801F,0x00)
+               poke(0xFF2021,0xFF)
+            end
+            if (dpeek(0xFF2000)==0x0000) then
+               dpoke(0xFF2000,0x03FF)
+            elseif (dpeek(0xFF2000)==0x0300) then
+               dpoke(0xFF2000,0x02FF)
+            elseif (dpeek(0xFF2000)==0x0200) then
+               dpoke(0xFF2000,0x01FF)
+            elseif (dpeek(0xFF2000)==0x0100) then
+               dpoke(0xFF2000,0x00FF)
+            end
+         end
+         -- Start game --
+         if (peek(0x804020)==0xFE) or (peek(0x804020)==0xFD) then -- Start game --
+            poke(0x618001,0x00) -- sound effect --
+            poke(0x618003,0x73)
+            poke(0x61801F,0x00)
+            poke(0xFF2020,0x04)
+         end
+      end
+   end
+   if (peek(0xFF2020)==0x04) and ((peek(0x618003)==0x73) or (peek(0x618003)==0x00)) then -- Keep sound effect --
+      poke(0xFF4C02,0x00)
+      poke(0xFF4C12,0x00)
+      poke(0xFF4C22,0x00)
+      poke(0xFF4C32,0x00)
+   end
+   if (peek(0xFF2020)==0x04) and (peek(0x618003)==0x01) then -- Finished all menu work --
+      poke(0xFF2020,0x00)
+   end
+   -- Infinity Credits Script --
+   if (peek(0xFF4BDD)>0x00) then
+      poke(0xFF4BDD,0x09)
+   end
+   -- Versus Mode Script --
+   if (peek(0xFF2000)==0x01) then
+      poke(0xFF48A3,0x03) -- Prevent Continue Text --
+      if (peek(0xFF4885)==0x04) and ((peek(0xFF4003)==0x00) or (peek(0xFF4403)==0x00)) then -- Player Select Screen --
+         poke(0xFF4881,0x03)
+         poke(0xFF4912,0x03)
+         poke(0xFF4003,0x01)
+         poke(0xFF4403,0x01)
+      end
+      if (peek(0xFF4885)==0x0C) and (peek(0xFF4887)==0x04) and (peek(0xFF48D9)>0x00) and (peek(0xFF48D9)<=0x04) then -- Return --
+         poke(0xFF4885,0x00)
+      end
+   end
+   -- Training Mode Script --
+   if (peek(0xFF2000)==0x02) then
+      if (peek(0xFF4885)==0x04) then -- Player Select Screen --
+         if (peek(0xFF4003)==0x00) or (peek(0xFF4403)==0x00) then
+            poke(0xFF4881,0x03)
+            poke(0xFF4912,0x03)
+            poke(0xFF4003,0x01)
+            poke(0xFF4403,0x01)
+            poke(0xFF48A3,0x03) -- Prevent Continue Text --
+         end
+         if (dpeek(0xFF4BAA)>0x0000) then -- P1 Buttons 'stopper' --
+            poke(0xFF2003,0xFF)
+         end
+         if (dpeek(0xFF4BAA)==0x0000) then -- P1 Buttons 'resumer' --
+            poke(0xFF2003,0x00)
+         end
+         if (dpeek(0xFF4BAC)>0x0000) then -- P2 Buttons 'stopper' --
+            poke(0xFF2004,0xFF)
+         end
+         if (dpeek(0xFF4BAC)==0x0000) then -- P2 Buttons 'resumer' --
+            poke(0xFF2004,0x00)
+         end
+         if ((peek(0xFF4003)==0x01) and (peek(0xFF4403)==0x01)) and (peek(0xFF4912)==0x02) and (peek(0xff2003)==0x00) then -- Switching control --
+            poke(0xB0D,0x00)
+            poke(0xB1D,0x01)
+            poke(0xB17,0xAC)
+            poke(0xB35,0xAA)
+            poke(0xFF2005,01)
+         end
+         if ((peek(0xFF4003)==0x01) and (peek(0xFF4403)==0x01)) and (peek(0xFF4912)==0x01) and (peek(0xff2004)==0x00) then -- Switching control --
+            poke(0xB0D,0x00)
+            poke(0xB1D,0x01)
+            poke(0xB17,0xAC)
+            poke(0xB35,0xAA)
+            poke(0xFF2005,02)
+         end
+         if (peek(0xFF4907)==0x02) and ((peek(0xFF4919)==0x00) and (peek(0xFF491B)==0x00)) then -- Restore to original --
+            poke(0xB0D,0x01)
+            poke(0xB1D,0x00)
+            poke(0xB17,0xAA)
+            poke(0xB35,0xAC)
+         end
+         if (peek(0xFF4907)==0x04) and (peek(0xFF2005)==0x01) and (peek(0xFF4919)==0x01) and (peek(0xff2003)==0x00) then -- Switching control --
+            poke(0xB0D,0x00)
+            poke(0xB1D,0x01)
+            poke(0xB17,0xAC)
+            poke(0xB35,0xAA)
+         end
+         if (peek(0xFF4907)==0x04) and (peek(0xFF2005)==0x02) and (peek(0xFF491B)==0x01) and (peek(0xff2004)==0x00) then -- Switching control --
+            poke(0xB0D,0x00)
+            poke(0xB1D,0x01)
+            poke(0xB17,0xAC)
+            poke(0xB35,0xAA)
+         end
+         if (peek(0xFF4919)==0x01) and (peek(0xFF491B)==0x01) then -- Restore to original, P1 or P2 stage --
+            if (peek(0xFF2005)==0x01) then
+               poke(0xFF4881,0x03)
+               poke(0xFF4003,0x01)
+               poke(0xFF4403,0x00)
+            end
+            if (peek(0xFF2005)==0x02) then
+               poke(0xFF4881,0x03)
+               poke(0xFF4003,0x00)
+               poke(0xFF4403,0x01)
+            end
+            poke(0xB0D,0x01) -- Restore to original --
+            poke(0xB1D,0x00)
+            poke(0xB17,0xAA)
+            poke(0xB35,0xAC)
+         end
+         if (peek(0xFF4905)==0x0A) then -- Correct the Auto-block selection --
+            poke(0xFF4189,peek(0xFF4918))
+            poke(0xFF4589,peek(0xFF491A))
+         end
+      end
+      if (peek(0xFF4885)==0x08) then
+         poke(0xFF48A3,0x03)
+         if (peek(0xFF0040)==0x00) and ((peek(0xFF4BAE)==0x01) or (peek(0xFF4BAE)==0x02)) then -- Return to Character Select --
+            poke(0xFF0040,0x01)
+            poke(0xFF4885,0x00)
+         end
+         poke(0xFF4809,0x28) -- Battle Parameters --
+         poke(0xFF4191,0x8F)
+         poke(0xFF4198,0x02)
+         poke(0xFF4195,0x8E)
+         poke(0xFF4591,0x8F)
+         poke(0xFF4598,0x02)
+         poke(0xFF4595,0x8E)
+      end
+   end
+   -- Option Mode Script --
+   if (peek(0xFF2000)==0x03) and (peek(0xFF4880)==0x01) then -- Entering --
+      poke(0xFF4BAF,0x02) -- Enter --
+      poke(0xFF4BF7,0x02) -- English menu --
+      poke(0xFF2006,0x01)
+   end
+   if (peek(0xFF4880)==0x00) and (peek(0xFF2006)==0x01) then -- Restart --
+      poke(0xFF2000,0x03)
+      poke(0xFF4BF7,region)
+      poke(0xFF2020,0x03) -- Menu screen --
+      poke(0xFF4BDD,0x09) -- Increase credit --
+      poke(0xFF0E1D,0x00) -- Shorten text screen --
+      poke(0xFF0F1D,0x00)
+      poke(0xFF101D,0x00)
+      poke(0xFF111D,0x00)
+      poke(0xFF121D,0x00)
+      poke(0xFF4BD2,0xFF) -- Hide text --
+   end
+   if (dpeek(0xFF4B84)==0xFFF0) and (peek(0xFF2006)==0x01) then -- Restore --
+      poke(0xFF4BD2,0x90)
+      poke(0xFF2006,0x00)
+   end
+   -- Pause Function Script --
+   if (peek(0xFF4885)==0x08) and (peek(0xFF4807)==0xFF) then
+      if (peek(0xFF4BAE)==0x00) then
+         poke(0xFF2002,0x00)
+      end
+      if (peek(0xFF0040)==0x01) and ((peek(0xFF4BAE)==0x10) or (peek(0xFF4BAE)==0x20)) and (peek(0xFF2002)==0x00) then
+         poke(0xFF0040,0x00)
+         poke(0xFF2002,0xFF)
+      end
+      if (peek(0xFF0040)==0x00) and ((peek(0xFF4BAE)==0x10) or (peek(0xFF4BAE)==0x20)) and (peek(0xFF2002)==0x00) then
+         poke(0xFF0040,0x01)
+         poke(0xFF2002,0xFF)
+      end
+   end
+off:
+   poke(0x6B6F0,"INSERT COIN")
+   poke(0xB0D,0x01)
+   poke(0xB1D,0x00)
+   poke(0xB17,0xAA)
+   poke(0xB35,0xAC)
+   lpoke(0xAF4,0x1B40CBAE)
+
+script "Console Mode" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
+run:
+   #Start-up#
+   if (peek($FF4BDD)==$00)
+      poke $6B6F0 "PRESS START"
+      poke $B0D $01 #Restore initial value#
       poke $B1D $00
       poke $B17 $AA
       poke $B35 $AC
+      lpoke $AF4 $1B40CBAE
+      poke $FF2000 $00
+      if (peek($804020)<$FF)and(peek($FF0060)>$00) #Start button start#
+         poke $FF0040 $02
+         poke $618001 $FF #Stop the opening music#
+         poke $618003 $00
+         poke $61801F $00
       endif
-      if (peek($FF4907)==$04)and(peek($FF2005)==$01)and(peek($FF4919)==$01)and(peek($ff2003)==$00) #Switching control#
-      poke $B0D $00
-      poke $B1D $01
-      poke $B17 $AC
-      poke $B35 $AA
-      endif
-      if (peek($FF4907)==$04)and(peek($FF2005)==$02)and(peek($FF491B)==$01)and(peek($ff2004)==$00) #Switching control#
-      poke $B0D $00
-      poke $B1D $01
-      poke $B17 $AC
-      poke $B35 $AA
-      endif
-      if (peek($FF4919)==$01)and(peek($FF491B)==$01) #Restore to original, P1 or P2 stage#
-       if (peek($FF2005)==$01)
-       poke $FF4881 $03
-       poke $FF4003 $01
-       poke $FF4403 $00
-       endif
-       if (peek($FF2005)==$02)
-       poke $FF4881 $03
-       poke $FF4003 $00
-       poke $FF4403 $01
-       endif
-       poke $B0D $01 #Restore to original#
-       poke $B1D $00
-       poke $B17 $AA
-       poke $B35 $AC
-      endif
-      if (peek($FF4905)==$0A) #Correct the Auto-block selection#
-        poke $FF4189 peek($FF4918)
-        poke $FF4589 peek($FF491A)
-      endif
-    endif
-    if (peek($FF4885)==$08)
-       poke $FF48A3 $03
-       if (peek($FF0040)==$00)and((peek($FF4BAE)==$01)or(peek($FF4BAE)==$02)) #Return to Character Select#
+      if (peek($804020)==$FF)and(peek($FF0040)==$02) #Start button start cont.#
          poke $FF0040 $01
+         poke $618001 $00 #sound effect#
+         poke $618003 $70
+         poke $61801F $00
+         poke $FF4BDD $09 #Max Credit#
+      endif
+   endif
+   #Title screen#
+   if (dpeek($FF4B84)==$FFF0)
+      if (peek($FF4BDD)>$00)and(peek($FF4880)==$00)and(peek($FFEADE)==$01)
+         lpoke $AF4 $00000000 #Disable original start button#
+         region=peek($FF4BF7)
+         if (peek($FF2000)!=$03)
+            poke $FF2000 $00 #Set Arcade Mode as default#
+            if (peek($FF2020)==$00)and(peek($804020)==$FF)
+               poke $FF2020 $01
+            endif
+            if (peek($FF2020)==$01)and((peek($804020)==$FE)or(peek($804020)==$FD)) #Leaving title screen#
+               poke $FF2020 $02
+               poke $618001 $00 #sound effect#
+               poke $618003 $73
+               poke $61801F $00
+            endif
+            if (peek($FF2020)==$02)and(peek($804020)==$FF)
+               poke $FF2020 $03
+            endif
+         endif
+      endif
+      #Menu Screen#
+      if (peek($FF4880)==$00)and(peek($FF2020)==$03)
+         if (peek($804020)==$FF) #Restore original start button#
+            lpoke $AF4 $1B40CBAE
+         endif
+         #Text display in menu#
+         dpoke $FF4990 $0F78 #Shift logo and text#
+         poke $FFEADE $00
+         lpoke $908D1C $00410000+peek($FF2030) #Arcade Mode#
+         lpoke $908D9C $00520000+peek($FF2030)
+         lpoke $908E1C $00430000+peek($FF2030)
+         lpoke $908E9C $00410000+peek($FF2030)
+         lpoke $908F1C $00440000+peek($FF2030)
+         lpoke $908F9C $00450000+peek($FF2030)
+         lpoke $90909C $004D0000+peek($FF2030)
+         lpoke $90911C $004F0000+peek($FF2030)
+         lpoke $90919C $00440000+peek($FF2030)
+         lpoke $90921C $00450000+peek($FF2030)
+         lpoke $908D20 $00560000+peek($FF2031) #Versus Mode#
+         lpoke $908DA0 $00450000+peek($FF2031)
+         lpoke $908E20 $00520000+peek($FF2031)
+         lpoke $908EA0 $00530000+peek($FF2031)
+         lpoke $908F20 $00550000+peek($FF2031)
+         lpoke $908FA0 $00530000+peek($FF2031)
+         lpoke $9090A0 $004D0000+peek($FF2031)
+         lpoke $909120 $004F0000+peek($FF2031)
+         lpoke $9091A0 $00440000+peek($FF2031)
+         lpoke $909220 $00450000+peek($FF2031)
+         lpoke $908CA4 $00540000+peek($FF2032) #Training Mode#
+         lpoke $908D24 $00520000+peek($FF2032)
+         lpoke $908DA4 $00410000+peek($FF2032)
+         lpoke $908E24 $00490000+peek($FF2032)
+         lpoke $908EA4 $004E0000+peek($FF2032)
+         lpoke $908F24 $00490000+peek($FF2032)
+         lpoke $908FA4 $004E0000+peek($FF2032)
+         lpoke $909024 $00470000+peek($FF2032)
+         lpoke $909124 $004D0000+peek($FF2032)
+         lpoke $9091A4 $004F0000+peek($FF2032)
+         lpoke $909224 $00440000+peek($FF2032)
+         lpoke $9092A4 $00450000+peek($FF2032)
+         lpoke $908D28 $004F0000+peek($FF2033) #Option Mode#
+         lpoke $908DA8 $00500000+peek($FF2033)
+         lpoke $908E28 $00540000+peek($FF2033)
+         lpoke $908EA8 $00490000+peek($FF2033)
+         lpoke $908F28 $004F0000+peek($FF2033)
+         lpoke $908FA8 $004E0000+peek($FF2033)
+         lpoke $9090A8 $004D0000+peek($FF2033)
+         lpoke $909128 $004F0000+peek($FF2033)
+         lpoke $9091A8 $00440000+peek($FF2033)
+         lpoke $909228 $00450000+peek($FF2033)
+         if (peek($FF2000)==$00) #Arcade Mode Pointer#
+            poke $FF2030 $15
+            poke $FF2031 $14
+            poke $FF2032 $14
+            poke $FF2033 $14
+         elsif (peek($FF2000)==$01) #Versus Mode Pointer#
+            poke $FF2030 $14
+            poke $FF2031 $15
+            poke $FF2032 $14
+            poke $FF2033 $14
+         elsif (peek($FF2000)==$02) #Training Mode Pointer#
+            poke $FF2030 $14
+            poke $FF2031 $14
+            poke $FF2032 $15
+            poke $FF2033 $14
+         elsif (peek($FF2000)==$03) #Option Mode Pointer#
+            poke $FF2030 $14
+            poke $FF2031 $14
+            poke $FF2032 $14
+            poke $FF2033 $15
+         endif
+         #Control in the Menu screen#
+         if ((peek($FF4BAB)==$00)and(peek($FF4BAD)==$00))and(peek($FF2001)==$FF)
+            poke $FF2001 $00
+            poke $FF2021 $00 #Act as music 'stopper'#
+         endif
+         if (peek($FF4BAB)==$04)or(peek($FF4BAD)==$04)
+            if peek($FF2021)==$00 #Sound effect#
+               poke $618001 $00
+               poke $618003 $71
+               poke $61801F $00
+               poke $FF2021 $FF
+            endif
+            if (dpeek($FF2000)==$0000)
+               dpoke $FF2000 $01FF
+            elsif (dpeek($FF2000)==$0100)
+               dpoke $FF2000 $02FF
+            elsif (dpeek($FF2000)==$0200)
+               dpoke $FF2000 $03FF
+            elsif (dpeek($FF2000)==$0300)
+               dpoke $FF2000 $00FF
+            endif
+         endif
+         if (peek($FF4BAB)==$08)or(peek($FF4BAD)==$08)
+            if peek($FF2021)==$00 #Sound effect#
+               poke $618001 $00
+               poke $618003 $71
+               poke $61801F $00
+               poke $FF2021 $FF
+            endif
+            if (dpeek($FF2000)==$0000)
+               dpoke $FF2000 $03FF
+            elsif (dpeek($FF2000)==$0300)
+               dpoke $FF2000 $02FF
+            elsif (dpeek($FF2000)==$0200)
+               dpoke $FF2000 $01FF
+            elsif (dpeek($FF2000)==$0100)
+               dpoke $FF2000 $00FF
+            endif
+         endif
+         #Start game#
+         if (peek($804020)==$FE)or(peek($804020)==$FD) #Start game#
+            poke $618001 $00 #sound effect#
+            poke $618003 $73
+            poke $61801F $00
+            poke $FF2020 $04
+         endif
+      endif
+   endif
+   if (peek($FF2020)==$04)and((peek($618003)==$73)or(peek($618003)==$00)) #Keep sound effect#
+      poke $FF4C02 $00
+      poke $FF4C12 $00
+      poke $FF4C22 $00
+      poke $FF4C32 $00
+   endif
+   if (peek($FF2020)==$04)and(peek($618003)==$01) #Finished all menu work#
+      poke $FF2020 $00
+   endif
+   #Infinity Credits Script#
+   if (peek($FF4BDD)>$00)
+      poke $FF4BDD $09
+   endif
+   #Versus Mode Script#
+   if (peek($FF2000)==$01)
+      poke $FF48A3 $03 #Prevent Continue Text#
+      if (peek($FF4885)==$04)and((peek($FF4003)==$00)or(peek($FF4403)==$00)) #Player Select Screen#
+         poke $FF4881 $03
+         poke $FF4912 $03
+         poke $FF4003 $01
+         poke $FF4403 $01
+      endif
+      if (peek($FF4885)==$0C)and(peek($FF4887)==$04)and(peek($FF48D9)>$00)and(peek($FF48D9)<=$04) #Return#
          poke $FF4885 $00
-       endif
-       poke $FF4809 $28 #Battle Parameters#
-       poke $FF4191 $8F
-       poke $FF4198 $02
-       poke $FF4195 $8E
-       poke $FF4591 $8F
-       poke $FF4598 $02
-       poke $FF4595 $8E
-    endif
-endif
-#Option Mode Script#
-if (peek($FF2000)==$03)and(peek($FF4880)==$01) #Entering#
-    poke $FF4BAF $02 #Enter#
-    poke $FF4BF7 $02 #English menu#
-    poke $FF2006 $01
-endif
-if (peek($FF4880)==$00)and(peek($FF2006)==$01) #Restart#
-    poke $FF2000 $03
-    poke $FF4BF7 region
-    poke $FF2020 $03 #Menu screen#
-    poke $FF4BDD $09 #Increase credit#
-    poke $FF0E1D $00 #Shorten text screen#
-    poke $FF0F1D $00
-    poke $FF101D $00
-    poke $FF111D $00
-    poke $FF121D $00
-    poke $FF4BD2 $FF #Hide text#
-endif
-if (dpeek($FF4B84)==$FFF0)and(peek($FF2006)==$01) #Restore#
-    poke $FF4BD2 $90
-    poke $FF2006 $00
-endif
-#Pause Function Script#
-    if (peek($FF4885)==$08)and(peek($FF4807)==$FF)
-       if (peek($FF4BAE)==$00)
-       poke $FF2002 $00
-       endif
-       if (peek($FF0040)==$01)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
-       poke $FF0040 $00
-       poke $FF2002 $FF
-       endif
-       if (peek($FF0040)==$00)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
-       poke $FF0040 $01
-       poke $FF2002 $FF
-       endif
-    endif
+      endif
+   endif
+   #Training Mode Script#
+   if (peek($FF2000)==$02)
+      if (peek($FF4885)==$04) #Player Select Screen#
+         if (peek($FF4003)==$00)or(peek($FF4403)==$00)
+            poke $FF4881 $03
+            poke $FF4912 $03
+            poke $FF4003 $01
+            poke $FF4403 $01
+            poke $FF48A3 $03 #Prevent Continue Text#
+         endif
+         if (dpeek($FF4BAA)>$0000) #P1 Buttons 'stopper'#
+            poke $FF2003 $FF
+         endif
+         if (dpeek($FF4BAA)==$0000) #P1 Buttons 'resumer'#
+            poke $FF2003 $00
+         endif
+         if (dpeek($FF4BAC)>$0000) #P2 Buttons 'stopper'#
+            poke $FF2004 $FF
+         endif
+         if (dpeek($FF4BAC)==$0000) #P2 Buttons 'resumer'#
+            poke $FF2004 $00
+         endif
+         if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$02)and(peek($ff2003)==$00) #Switching control#
+            poke $B0D $00
+            poke $B1D $01
+            poke $B17 $AC
+            poke $B35 $AA
+            poke $FF2005 01
+         endif
+         if ((peek($FF4003)==$01)and(peek($FF4403)==$01))and(peek($FF4912)==$01)and(peek($ff2004)==$00) #Switching control#
+            poke $B0D $00
+            poke $B1D $01
+            poke $B17 $AC
+            poke $B35 $AA
+            poke $FF2005 02
+         endif
+         if (peek($FF4907)==$02)and((peek($FF4919)==$00)and(peek($FF491B)==$00)) #Restore to original#
+            poke $B0D $01
+            poke $B1D $00
+            poke $B17 $AA
+            poke $B35 $AC
+         endif
+         if (peek($FF4907)==$04)and(peek($FF2005)==$01)and(peek($FF4919)==$01)and(peek($ff2003)==$00) #Switching control#
+            poke $B0D $00
+            poke $B1D $01
+            poke $B17 $AC
+            poke $B35 $AA
+         endif
+         if (peek($FF4907)==$04)and(peek($FF2005)==$02)and(peek($FF491B)==$01)and(peek($ff2004)==$00) #Switching control#
+            poke $B0D $00
+            poke $B1D $01
+            poke $B17 $AC
+            poke $B35 $AA
+         endif
+         if (peek($FF4919)==$01)and(peek($FF491B)==$01) #Restore to original, P1 or P2 stage#
+            if (peek($FF2005)==$01)
+               poke $FF4881 $03
+               poke $FF4003 $01
+               poke $FF4403 $00
+            endif
+            if (peek($FF2005)==$02)
+               poke $FF4881 $03
+               poke $FF4003 $00
+               poke $FF4403 $01
+            endif
+            poke $B0D $01 #Restore to original#
+            poke $B1D $00
+            poke $B17 $AA
+            poke $B35 $AC
+         endif
+         if (peek($FF4905)==$0A) #Correct the Auto-block selection#
+            poke $FF4189 peek($FF4918)
+            poke $FF4589 peek($FF491A)
+         endif
+      endif
+      if (peek($FF4885)==$08)
+         poke $FF48A3 $03
+         if (peek($FF0040)==$00)and((peek($FF4BAE)==$01)or(peek($FF4BAE)==$02)) #Return to Character Select#
+            poke $FF0040 $01
+            poke $FF4885 $00
+         endif
+         poke $FF4809 $28 #Battle Parameters#
+         poke $FF4191 $8F
+         poke $FF4198 $02
+         poke $FF4195 $8E
+         poke $FF4591 $8F
+         poke $FF4598 $02
+         poke $FF4595 $8E
+      endif
+   endif
+   #Option Mode Script#
+   if (peek($FF2000)==$03)and(peek($FF4880)==$01) #Entering#
+      poke $FF4BAF $02 #Enter#
+      poke $FF4BF7 $02 #English menu#
+      poke $FF2006 $01
+   endif
+   if (peek($FF4880)==$00)and(peek($FF2006)==$01) #Restart#
+      poke $FF2000 $03
+      poke $FF4BF7 region
+      poke $FF2020 $03 #Menu screen#
+      poke $FF4BDD $09 #Increase credit#
+      poke $FF0E1D $00 #Shorten text screen#
+      poke $FF0F1D $00
+      poke $FF101D $00
+      poke $FF111D $00
+      poke $FF121D $00
+      poke $FF4BD2 $FF #Hide text#
+   endif
+   if (dpeek($FF4B84)==$FFF0)and(peek($FF2006)==$01) #Restore#
+      poke $FF4BD2 $90
+      poke $FF2006 $00
+   endif
+   #Pause Function Script#
+   if (peek($FF4885)==$08)and(peek($FF4807)==$FF)
+      if (peek($FF4BAE)==$00)
+         poke $FF2002 $00
+      endif
+      if (peek($FF0040)==$01)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
+         poke $FF0040 $00
+         poke $FF2002 $FF
+      endif
+      if (peek($FF0040)==$00)and((peek($FF4BAE)==$10)or(peek($FF4BAE)==$20))and(peek($FF2002)==$00)
+         poke $FF0040 $01
+         poke $FF2002 $FF
+      endif
+   endif
 off:
-    poke $6B6F0 "INSERT COIN"
-    poke $B0D $01
-    poke $B1D $00
-    poke $B17 $AA
-    poke $B35 $AC
-    lpoke $AF4 $1B40CBAE
+   poke $6B6F0 "INSERT COIN"
+   poke $B0D $01
+   poke $B1D $00
+   poke $B17 $AA
+   poke $B35 $AC
+   lpoke $AF4 $1B40CBAE
 
 script "Enable Bosses" \
 "comm:Highlight Colossus, Psylocke or Silver Samurai and hold the down button, then press any buttons to select the bosses"
