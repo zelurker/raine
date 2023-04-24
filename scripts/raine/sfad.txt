@@ -1,438 +1,874 @@
-script "Console Mode" \
-"comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
+luascript "Console Mode [lua]" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
 run:
-#Start up#
-if (peek($FF8170)==$00)
-    poke $1571d $50 #Restore original values at start in case of reset#
-    poke $15723 $54
-    p1win=peek($FF84D0)
-    p2win=peek($FF88D0)
-    lpoke $160E $2B400058
-    lpoke $1624 $1B400058
-    lpoke $1618 $2B40005C
-    lpoke $1632 $1B40005C
-    if (peek($FF8001)>=$0C) #Start button start#
-       if (peek($804020)<$FF)
-         if (peek($FF8005)==$0C) #skip title screen if press start lately#
-           lpoke $160E $00000000
-           lpoke $1624 $00000000
-           lpoke $FF8058 $00000000
-           lpoke $1618 $00000000
-           lpoke $1632 $00000000
-           region=peek($FF8191)
-           poke $FF0020 $02
-         endif
-         poke $FF8170 $09
-       endif
-   endif
-   poke $EB63 "PRESS START"
-endif
-#Title Screen#
-if (dpeek($FFAE18)==$02E7)and(peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek($FF802D)==$00) #Disable original start & service button#
-    lpoke $160E $00000000
-    lpoke $1624 $00000000
-    lpoke $FF8058 $00000000
-    lpoke $1618 $00000000
-    lpoke $1632 $00000000
-    region=peek($FF8191)
-    if (peek($FF0000)!=$05)
-      poke $FF0000 $00 #Set Arcade Mode as default#
-      if (peek($804020)==$FF)
-        poke $FF0020 $01
-      endif
-    endif
-endif
-if (dpeek($FFAE18)==$02E7)and(peek($FF0020)==$01) #Leaving title screen#
-    if (peek($804020)==$FE)or(peek($804020)==$FD)
-       poke $FF817B $01 #coin sound#
-       poke $FF0020 $02
-    endif
-endif
-#Menu Screen#
-if dpeek($FFAE18)==$02E7
-   if (peek($FF81A8)==$00)and(peek($FF0020)==$02)
-       #Text display in menu#
-       poke $FF802D $FF #Text and Logo shift#
-       poke $FF804A $FF
-       lpoke $914800 $00FFFEEF #White color#
-       lpoke $914804 $FDDEFCCD
-       lpoke $914808 $FBBCFAAB
-       lpoke $91480C $F99AF889
-       dpoke $914810 $F555
-       lpoke $914820 $FFEEFFEC #Green Color#
-       lpoke $914824 $F9D5F5B5
-       lpoke $914828 $F3A5F295
-       lpoke $91482C $F185F075
-       dpoke $914830 $F555
-       lpoke $914860 $FFE9FFE9 #Orange Color#
-       lpoke $914864 $FFD5FEA4
-       lpoke $914868 $FE96FD81
-       lpoke $90C18C $F1090001 #Mode Select#
-       lpoke $90C1CC $F10B0001
-       lpoke $90C20C $F1000001
-       lpoke $90C24C $F1010001
-       lpoke $90C2CC $F10F0001
-       lpoke $90C30C $F1010001
-       lpoke $90C34C $F1080001
-       lpoke $90C38C $F1010001
-       lpoke $90C3CC $F0FF0001
-       lpoke $90C40C $F1100001
-       lpoke $90C194 $F0FD0000+peek($FF0030) #Arcade Mode#
-       lpoke $90C1D4 $F10E0000+peek($FF0030)
-       lpoke $90C214 $F0FF0000+peek($FF0030)
-       lpoke $90C254 $F0FD0000+peek($FF0030)
-       lpoke $90C294 $F1000000+peek($FF0030)
-       lpoke $90C2D4 $F1010000+peek($FF0030)
-       lpoke $90C354 $F1090000+peek($FF0030)
-       lpoke $90C394 $F10B0000+peek($FF0030)
-       lpoke $90C3D4 $F1000000+peek($FF0030)
-       lpoke $90C414 $F1010000+peek($FF0030)
-       lpoke $90C198 $F1120000+peek($FF0031) #Versus Mode#
-       lpoke $90C1D8 $F1010000+peek($FF0031)
-       lpoke $90C218 $F10E0000+peek($FF0031)
-       lpoke $90C258 $F10F0000+peek($FF0031)
-       lpoke $90C298 $F1110000+peek($FF0031)
-       lpoke $90C2D8 $F10F0000+peek($FF0031)
-       lpoke $90C358 $F1090000+peek($FF0031)
-       lpoke $90C398 $F10B0000+peek($FF0031)
-       lpoke $90C3D8 $F1000000+peek($FF0031)
-       lpoke $90C418 $F1010000+peek($FF0031)
-       lpoke $90C15C $F1100000+peek($FF0032) #Training Mode#
-       lpoke $90C19C $F10E0000+peek($FF0032)
-       lpoke $90C1DC $F0FD0000+peek($FF0032)
-       lpoke $90C21C $F1050000+peek($FF0032)
-       lpoke $90C25C $F10A0000+peek($FF0032)
-       lpoke $90C29C $F1050000+peek($FF0032)
-       lpoke $90C2DC $F10A0000+peek($FF0032)
-       lpoke $90C31C $F1030000+peek($FF0032)
-       lpoke $90C39C $F1090000+peek($FF0032)
-       lpoke $90C3DC $F10B0000+peek($FF0032)
-       lpoke $90C41C $F1000000+peek($FF0032)
-       lpoke $90C45C $F1010000+peek($FF0032)
-       if (peek($FF8191)>=$02) #Akuma Mode#
-           lpoke $90C1A4 $F0FD0000+peek($FF0033)
-           lpoke $90C1E4 $F1070000+peek($FF0033)
-           lpoke $90C224 $F1110000+peek($FF0033)
-           lpoke $90C264 $F1090000+peek($FF0033)
-           lpoke $90C2A4 $F0FD0000+peek($FF0033)
-       elsif (peek($FF8191)==$00) #Gouki Mode#
-           lpoke $90C1A4 $F1030000+peek($FF0033)
-           lpoke $90C1E4 $F10B0000+peek($FF0033)
-           lpoke $90C224 $F1110000+peek($FF0033)
-           lpoke $90C264 $F1070000+peek($FF0033)
-           lpoke $90C2A4 $F1050000+peek($FF0033)
-       endif
-       lpoke $90C324 $F1090000+peek($FF0033)
-       lpoke $90C364 $F10B0000+peek($FF0033)
-       lpoke $90C3A4 $F1000000+peek($FF0033)
-       lpoke $90C3E4 $F1010000+peek($FF0033)
-       lpoke $90C128 $F1000000+peek($FF0034) #Dramatic Battle#
-       lpoke $90C168 $F10E0000+peek($FF0034)
-       lpoke $90C1A8 $F0FD0000+peek($FF0034)
-       lpoke $90C1E8 $F1090000+peek($FF0034)
-       lpoke $90C228 $F0FD0000+peek($FF0034)
-       lpoke $90C268 $F1100000+peek($FF0034)
-       lpoke $90C2A8 $F1050000+peek($FF0034)
-       lpoke $90C2E8 $F0FF0000+peek($FF0034)
-       lpoke $90C368 $F0FE0000+peek($FF0034)
-       lpoke $90C3A8 $F0FD0000+peek($FF0034)
-       lpoke $90C3E8 $F1100000+peek($FF0034)
-       lpoke $90C428 $F1100000+peek($FF0034)
-       lpoke $90C468 $F1080000+peek($FF0034)
-       lpoke $90C4A8 $F1010000+peek($FF0034)
-       lpoke $90C230 $F10B0000+peek($FF0035) #Option#
-       lpoke $90C270 $F10C0000+peek($FF0035)
-       lpoke $90C2B0 $F1100000+peek($FF0035)
-       lpoke $90C2F0 $F1050000+peek($FF0035)
-       lpoke $90C330 $F10B0000+peek($FF0035)
-       lpoke $90C370 $F10A0000+peek($FF0035)
-       mode=peek($FF0000)
-       if mode==$00 #Arcade Mode pointer#
-          poke $FF0030 $03
-          poke $FF0031 $00
-          poke $FF0032 $00
-          poke $FF0033 $00
-          poke $FF0034 $00
-          poke $FF0035 $00
-       elsif mode==$01 #Versus Mode pointer#
-          poke $FF0030 $00
-          poke $FF0031 $03
-          poke $FF0032 $00
-          poke $FF0033 $00
-          poke $FF0034 $00
-          poke $FF0035 $00
-       elsif mode==$02 #Training Mode pointer#
-          poke $FF0030 $00
-          poke $FF0031 $00
-          poke $FF0032 $03
-          poke $FF0033 $00
-          poke $FF0034 $00
-          poke $FF0035 $00
-       elsif mode==$03 #Akuma Mode pointer#
-          poke $FF0030 $00
-          poke $FF0031 $00
-          poke $FF0032 $00
-          poke $FF0033 $03
-          poke $FF0034 $00
-          poke $FF0035 $00
-       elsif mode==$04 #Dramatic Battle pointer#
-          poke $FF0030 $00
-          poke $FF0031 $00
-          poke $FF0032 $00
-          poke $FF0033 $00
-          poke $FF0034 $03
-          poke $FF0035 $00
-       elsif mode==$05 #Option pointer#
-          poke $FF0030 $00
-          poke $FF0031 $00
-          poke $FF0032 $00
-          poke $FF0033 $00
-          poke $FF0034 $00
-          poke $FF0035 $03
-       endif
-       #Control in the Menu screen#
-       if ((peek($FF8051)==$00)and(peek($FF8055)==$00))and(peek($FF0001)==$FF) #When no button is pressed#
-          poke $FF0001 $00 #Act as button 'stopper'#
-          poke $FF0006 $00 #Act as music 'stopper'#
-       endif
-   	if ((peek($FF8051)==$04)or(peek($FF8055)==$04))
-          if peek($FF0006)==$00 #Sound effect#
-            poke $618001 $00
-            poke $618003 $F8
-            poke $61801F $00
-            poke $FF0006 $FF
-          endif                      
-          if dpeek($FF0000)==$0000
-             dpoke $FF0000 $01FF
-          elsif dpeek($FF0000)==$0100
-             dpoke $FF0000 $02FF
-          elsif dpeek($FF0000)==$0200
-             dpoke $FF0000 $03FF
-          elsif dpeek($FF0000)==$0300
-             dpoke $FF0000 $04FF
-          elsif dpeek($FF0000)==$0400
-             dpoke $FF0000 $05FF
-          elsif dpeek($FF0000)==$0500
-             dpoke $FF0000 $00FF
-          endif
-   	endif
-   	if (peek($FF8051)==$08)or(peek($FF8055)==$08)
-          if peek($FF0006)==$00 #Sound effect#
-            poke $618001 $00
-            poke $618003 $F8
-            poke $61801F $00
-            poke $FF0006 $FF
-          endif 
-          if dpeek($FF0000)==$0000
-             dpoke $FF0000 $05FF
-          elsif dpeek($FF0000)==$0500
-             dpoke $FF0000 $04FF
-          elsif dpeek($FF0000)==$0400
-             dpoke $FF0000 $03FF
-          elsif dpeek($FF0000)==$0300
-             dpoke $FF0000 $02FF
-          elsif dpeek($FF0000)==$0200
-             dpoke $FF0000 $01FF
-          elsif dpeek($FF0000)==$0100
-             dpoke $FF0000 $00FF
-          endif
-   	endif
-       #Start game#
-       if (peek($FF8050)>$00) #P1 start game#
-          poke $FF8058 $01 #start#
-          poke $618001 $00 #sound effect#
-          poke $618003 $FA
-          poke $61801F $00
-       endif
-       if (peek($FF8054)>$00) #P2 start game#
-          poke $FF8058 $02 #start#
-          poke $618001 $00 #sound effect#
-          poke $618003 $FA
-          poke $61801F $00
-       endif
-   endif
-   if (peek($FF8001)==$00)and(peek($FF81A8)>$00)and(peek($FF0000)!=$05) #Restore value after start#
-       poke $FF802D $00
-       poke $FF804A $23
-       poke $FF0020 $00
-       lpoke $160E $2B400058
-       lpoke $1624 $1B400058
-       lpoke $1618 $2B40005C
-       lpoke $1632 $1B40005C
-       poke $FF0005 $00 #restore counter used in option#
-   endif
-endif # (dpeek($FFAE18)==$02E7)
-#Infinity Credits#
-if (peek($FF8170)>$00)
-    poke $FF8170 $09
-endif
-#VS Mode Script#
-if (peek($FF0000)==$01)
-    if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
-    poke $FF81A8 $03  #Activites 1P & 2P#
-    endif
-    if (peek($FF800D)==$08)and((peek($FF84AC)==$09)or(peek($FF88AC)==$09))
-    p1win=peek($FF84D0) #Memorizes the P1 win point#
-    p2win=peek($FF88D0) #Memorizes the P2 win point#
-    poke $FF84A0 $00 #Prepare for returning to char. screen#
-    poke $FF88A0 $00
-    poke $FF818D $03
-    poke $FF81AC $00
-    poke $ff84E5 $FF #for bug fix of p1 character box after battle 1#
-    poke $ff88E5 $FF #for bug fix of p2 character box after battle 1#
-    endif
-    if (peek($FF800D)==$0A)and((peek($FF84AC)==$09)or(peek($FF88AC)==$09)) #Returning to char. screen#
-    poke $FF84A4 $04
-    poke $FF88A4 $04
-    endif
-    if (peek($FF800D)==$02)and(peek($FF81AC)==$00)
-    poke $FF802C $00 #for bug fix of Z animation#
-    endif
-    if (dpeek($FFA090)==$0150)
-    poke $FF84D0 p1win #Load the P1 win point#
-    poke $FF88D0 p2win #Load the P2 win point#
-    endif
-endif
-#Training Mode Script.#
-if (peek($FF0000)==$02)
-    if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
-    poke $FF81A8 $03
-    endif
-    if (dpeek($FFA090)==$0150)and(((peek($FF8430)==$06)and(dpeek($FF8051)==$0000))or((peek($FF8830)==$06)and(dpeek($FF8055)==$0000)))
-    poke $1571d $54 #Switching of P1,P2 control.#
-    poke $15723 $50
-    endif
-    if (dpeek($FFAE2C)==$0400)
-    poke $1571d $50 #Restoring of P1, P2 control.#
-    poke $15723 $54
-    endif
-    if (peek($FFAE2C)>=$01)
-       poke $FFAE0A $3B #Battle parameters.#
-       poke $FF8441 $90
-       poke $FF8841 $90
-       poke $FF84BF $90
-       poke $FF88BF $90
-    endif
-    if (dpeek($FFAE2C)==$0401)
-       if (peek($FF8004)==01)and((peek($FF8058)==$01)or(peek($FF8058)==$02))
-       poke $FF81AC $00
-       poke $ff84E5 $FF #for bug fix of p1 character box after battle 1.#
-       poke $ff88E5 $FF #for bug fix of p2 character box after battle 1.#
-       poke $FF84A0 $00 #Prepare for returning to char. screen#
-       poke $FF88A0 $00
-       endif
-       if (peek($FF84A5)==$02)and(peek($FF88A5)==$02) #Returning to char. screen#
-       poke $FF84A4 $04
-       poke $FF88A4 $04
-       endif
-    endif
-endif
-#Akuma/Gouki Mode Script#
-if (peek($FF0000)==$03)
-    poke $FFAE48 $01
-    if (peek($FF81A8)==$01)and(peek($FF84A2)==$02)and(peek($FF84C8)==$00) #Color fix for two Akuma.#
-    poke $FF88C8 $01
-    endif
-    if (peek($FF81A8)==$02)and(peek($FF88A2)==$02)and(peek($FF88C8)==$00) #Color fix for two Akuma.#
-    poke $FF84C8 $01
-    endif
-    if (peek($FF81A8)==$02)and(peek($FF88A2)==$02)and(peek($FF88C8)==$01) #Color fix for two Akuma.#
-    poke $FF84C8 $00
-    endif
-endif
-#Dramatic Battle Mode Script.#
-if (peek($FF0000)==$04)
-    poke $FFAE49 $01
-    if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
-    poke $FF81A8 $03
-    endif
-    if (dpeek($FFA322)==$3876) #For auto selection of character#
-    poke $FF8439 $01
-    poke $FF8839 $01
-    poke $FF88C8 $00
-    poke $FF8430 $04
-    poke $FF8435 $01
-    poke $FF8437 $04
-    poke $FF8830 $06
-    poke $FF8835 $01
-    endif
-    if (peek($FF365D)==$09) #Fix: Activate both player#
-    poke $FF81AC $03
-    endif
-    if (peek($FFAE2C)==$04) #Fix: Set both side as human#
-    poke $FF84C5 $00
-    poke $FF88C5 $00
-    endif
-    if (peek($FF84AC)>$00)and(peek($FF88A0)==$02) #Auto continue for other side#
-    dpoke $FF84A0 $0200
-    dpoke $FF84A4 $0600
-    poke $FF818D $03
-    poke $FF84AC $00
-    endif
-    if (peek($FF88AC)>$00)and(peek($FF84A0)==$02) #Auto continue for other side#
-    dpoke $FF88A0 $0201
-    dpoke $FF88A4 $0600
-    poke $FF818D $03
-    poke $FF88AC $00
-    endif
-endif
-#Option Mode Script#
-if (peek($FF0000)==$05)
-    if (dpeek($FFAE18)==$02E7)and((peek($FF8050)>$00)or(peek($FF8054)>$00)) #Step 1#
-       poke $FF8191 $02 #English menu#
-       poke $FF817C $01 #set timer for coin sound#
-       poke $FF0005 $01
-    endif
-    if (peek($FF0005)==$01) #step 2 - wait for the coin sound disappeared#
-       if (peek($FF817D)==$22)
-         poke $FF805C $02 #go to the menu#
-         poke $FF0005 $02
-       endif
-    endif
-    if (dpeek($FF804A)==$1234)and(peek($FF0005)==$02) #step 3#
-       dpoke $4D7A8 $0000
-       lpoke $160E $2B400058
-       lpoke $1624 $1B400058
-       lpoke $1618 $2B40005C
-       lpoke $1632 $1B40005C
-       poke $FF0005 $03
-    endif
-    if (peek($FF8001)==$06)and(peek($FF0005)==$03) #step 4#
-       poke $FF8191 region
-       poke $FF8003 $00
-       poke $FF8170 $09
-       dpoke $4D7A8 $3B40
-       lpoke $160E $00000000
-       lpoke $1624 $00000000
-       lpoke $FF8058 $00000000
-       lpoke $1618 $00000000
-       lpoke $1632 $00000000
-       poke $FF0005 $00
-       poke $FF0020 $02
-    endif
-endif
-#Pause Function Script.#
-    if (dpeek($FFAE2C)==$0401)
-       if (peek($FF8058)==$00) #Act as button 'resumer'#
-       poke $FF0002 $00
-       endif
-       if (peek($FF8004)==$00)and((peek($FF8058)==$10)or(peek($FF8058)==$20))and(peek($FF0002)==$00)
-       poke $FF8004 $01
-       poke $FF0002 $FF
-       endif
-       if (peek($FF8004)==$01)and((peek($FF8058)==$10)or(peek($FF8058)==$20))and(peek($FF0002)==$00)
-       poke $FF8004 $00
-       poke $FF0002 $FF
-       endif
-    endif
+   -- Start up --
+   if (peek(0xFF8170)==0x00) then
+      poke(0x1571d,0x50) -- Restore original values at start in case of reset --
+      poke(0x15723,0x54)
+      p1win=peek(0xFF84D0)
+      p2win=peek(0xFF88D0)
+      lpoke(0x160E,0x2B400058)
+      lpoke(0x1624,0x1B400058)
+      lpoke(0x1618,0x2B40005C)
+      lpoke(0x1632,0x1B40005C)
+      if (peek(0xFF8001)>=0x0C) then -- Start button start --
+         if (peek(0x804020)<0xFF) then
+            if (peek(0xFF8005)==0x0C) then -- skip title screen if press start lately --
+               lpoke(0x160E,0x00000000)
+               lpoke(0x1624,0x00000000)
+               lpoke(0xFF8058,0x00000000)
+               lpoke(0x1618,0x00000000)
+               lpoke(0x1632,0x00000000)
+               region=peek(0xFF8191)
+               poke(0xFF0020,0x02)
+            end
+            poke(0xFF8170,0x09)
+         end
+      end
+      poke(0xEB63,"PRESS START")
+   end
+   -- Title Screen --
+   if dpeek(0xFFAE18)==0x02E7 then
+      if (peek(0xFF8170)>0x00) and (peek(0xFF81A8)==0x00) and (peek(0xFF802D)==0x00) then -- Disable original start & service button --
+         lpoke(0x160E,0x00000000)
+         lpoke(0x1624,0x00000000)
+         lpoke(0xFF8058,0x00000000)
+         lpoke(0x1618,0x00000000)
+         lpoke(0x1632,0x00000000)
+         region=peek(0xFF8191)
+         if (peek(0xFF0000)~=0x05) then
+            poke(0xFF0000,0x00) -- Set Arcade Mode as default --
+            if (peek(0x804020)==0xFF) then
+               poke(0xFF0020,0x01)
+            end
+         end
+      end
+      if (peek(0xFF0020)==0x01) then -- Leaving title screen --
+         if (peek(0x804020)==0xFE) or (peek(0x804020)==0xFD) then
+            poke(0xFF817B,0x01) -- coin sound --
+            poke(0xFF0020,0x02)
+         end
+      end
+      -- Menu Screen --
+      if (peek(0xFF81A8)==0x00) and (peek(0xFF0020)==0x02) then
+         -- Text display in menu --
+         poke(0xFF802D,0xFF) -- Text and Logo shift --
+         poke(0xFF804A,0xFF)
+         lpoke(0x914800,0x00FFFEEF) -- White color --
+         lpoke(0x914804,0xFDDEFCCD)
+         lpoke(0x914808,0xFBBCFAAB)
+         lpoke(0x91480C,0xF99AF889)
+         dpoke(0x914810,0xF555)
+         lpoke(0x914820,0xFFEEFFEC) -- Green Color --
+         lpoke(0x914824,0xF9D5F5B5)
+         lpoke(0x914828,0xF3A5F295)
+         lpoke(0x91482C,0xF185F075)
+         dpoke(0x914830,0xF555)
+         lpoke(0x914860,0xFFE9FFE9) -- Orange Color --
+         lpoke(0x914864,0xFFD5FEA4)
+         lpoke(0x914868,0xFE96FD81)
+         lpoke(0x90C18C,0xF1090001) -- Mode Select --
+         lpoke(0x90C1CC,0xF10B0001)
+         lpoke(0x90C20C,0xF1000001)
+         lpoke(0x90C24C,0xF1010001)
+         lpoke(0x90C2CC,0xF10F0001)
+         lpoke(0x90C30C,0xF1010001)
+         lpoke(0x90C34C,0xF1080001)
+         lpoke(0x90C38C,0xF1010001)
+         lpoke(0x90C3CC,0xF0FF0001)
+         lpoke(0x90C40C,0xF1100001)
+         lpoke(0x90C194,0xF0FD0000+peek(0xFF0030)) -- Arcade Mode --
+         lpoke(0x90C1D4,0xF10E0000+peek(0xFF0030))
+         lpoke(0x90C214,0xF0FF0000+peek(0xFF0030))
+         lpoke(0x90C254,0xF0FD0000+peek(0xFF0030))
+         lpoke(0x90C294,0xF1000000+peek(0xFF0030))
+         lpoke(0x90C2D4,0xF1010000+peek(0xFF0030))
+         lpoke(0x90C354,0xF1090000+peek(0xFF0030))
+         lpoke(0x90C394,0xF10B0000+peek(0xFF0030))
+         lpoke(0x90C3D4,0xF1000000+peek(0xFF0030))
+         lpoke(0x90C414,0xF1010000+peek(0xFF0030))
+         lpoke(0x90C198,0xF1120000+peek(0xFF0031)) -- Versus Mode --
+         lpoke(0x90C1D8,0xF1010000+peek(0xFF0031))
+         lpoke(0x90C218,0xF10E0000+peek(0xFF0031))
+         lpoke(0x90C258,0xF10F0000+peek(0xFF0031))
+         lpoke(0x90C298,0xF1110000+peek(0xFF0031))
+         lpoke(0x90C2D8,0xF10F0000+peek(0xFF0031))
+         lpoke(0x90C358,0xF1090000+peek(0xFF0031))
+         lpoke(0x90C398,0xF10B0000+peek(0xFF0031))
+         lpoke(0x90C3D8,0xF1000000+peek(0xFF0031))
+         lpoke(0x90C418,0xF1010000+peek(0xFF0031))
+         lpoke(0x90C15C,0xF1100000+peek(0xFF0032)) -- Training Mode --
+         lpoke(0x90C19C,0xF10E0000+peek(0xFF0032))
+         lpoke(0x90C1DC,0xF0FD0000+peek(0xFF0032))
+         lpoke(0x90C21C,0xF1050000+peek(0xFF0032))
+         lpoke(0x90C25C,0xF10A0000+peek(0xFF0032))
+         lpoke(0x90C29C,0xF1050000+peek(0xFF0032))
+         lpoke(0x90C2DC,0xF10A0000+peek(0xFF0032))
+         lpoke(0x90C31C,0xF1030000+peek(0xFF0032))
+         lpoke(0x90C39C,0xF1090000+peek(0xFF0032))
+         lpoke(0x90C3DC,0xF10B0000+peek(0xFF0032))
+         lpoke(0x90C41C,0xF1000000+peek(0xFF0032))
+         lpoke(0x90C45C,0xF1010000+peek(0xFF0032))
+         if (peek(0xFF8191)>=0x02) then -- Akuma Mode --
+            lpoke(0x90C1A4,0xF0FD0000+peek(0xFF0033))
+            lpoke(0x90C1E4,0xF1070000+peek(0xFF0033))
+            lpoke(0x90C224,0xF1110000+peek(0xFF0033))
+            lpoke(0x90C264,0xF1090000+peek(0xFF0033))
+            lpoke(0x90C2A4,0xF0FD0000+peek(0xFF0033))
+         elseif (peek(0xFF8191)==0x00) then -- Gouki Mode --
+            lpoke(0x90C1A4,0xF1030000+peek(0xFF0033))
+            lpoke(0x90C1E4,0xF10B0000+peek(0xFF0033))
+            lpoke(0x90C224,0xF1110000+peek(0xFF0033))
+            lpoke(0x90C264,0xF1070000+peek(0xFF0033))
+            lpoke(0x90C2A4,0xF1050000+peek(0xFF0033))
+         end
+         lpoke(0x90C324,0xF1090000+peek(0xFF0033))
+         lpoke(0x90C364,0xF10B0000+peek(0xFF0033))
+         lpoke(0x90C3A4,0xF1000000+peek(0xFF0033))
+         lpoke(0x90C3E4,0xF1010000+peek(0xFF0033))
+         lpoke(0x90C128,0xF1000000+peek(0xFF0034)) -- Dramatic Battle --
+         lpoke(0x90C168,0xF10E0000+peek(0xFF0034))
+         lpoke(0x90C1A8,0xF0FD0000+peek(0xFF0034))
+         lpoke(0x90C1E8,0xF1090000+peek(0xFF0034))
+         lpoke(0x90C228,0xF0FD0000+peek(0xFF0034))
+         lpoke(0x90C268,0xF1100000+peek(0xFF0034))
+         lpoke(0x90C2A8,0xF1050000+peek(0xFF0034))
+         lpoke(0x90C2E8,0xF0FF0000+peek(0xFF0034))
+         lpoke(0x90C368,0xF0FE0000+peek(0xFF0034))
+         lpoke(0x90C3A8,0xF0FD0000+peek(0xFF0034))
+         lpoke(0x90C3E8,0xF1100000+peek(0xFF0034))
+         lpoke(0x90C428,0xF1100000+peek(0xFF0034))
+         lpoke(0x90C468,0xF1080000+peek(0xFF0034))
+         lpoke(0x90C4A8,0xF1010000+peek(0xFF0034))
+         lpoke(0x90C230,0xF10B0000+peek(0xFF0035)) -- Option --
+         lpoke(0x90C270,0xF10C0000+peek(0xFF0035))
+         lpoke(0x90C2B0,0xF1100000+peek(0xFF0035))
+         lpoke(0x90C2F0,0xF1050000+peek(0xFF0035))
+         lpoke(0x90C330,0xF10B0000+peek(0xFF0035))
+         lpoke(0x90C370,0xF10A0000+peek(0xFF0035))
+         mode=peek(0xFF0000)
+         if mode==0x00 then -- Arcade Mode pointer --
+            poke(0xFF0030,0x03)
+            poke(0xFF0031,0x00)
+            poke(0xFF0032,0x00)
+            poke(0xFF0033,0x00)
+            poke(0xFF0034,0x00)
+            poke(0xFF0035,0x00)
+         elseif mode==0x01 then -- Versus Mode pointer --
+            poke(0xFF0030,0x00)
+            poke(0xFF0031,0x03)
+            poke(0xFF0032,0x00)
+            poke(0xFF0033,0x00)
+            poke(0xFF0034,0x00)
+            poke(0xFF0035,0x00)
+         elseif mode==0x02 then -- Training Mode pointer --
+            poke(0xFF0030,0x00)
+            poke(0xFF0031,0x00)
+            poke(0xFF0032,0x03)
+            poke(0xFF0033,0x00)
+            poke(0xFF0034,0x00)
+            poke(0xFF0035,0x00)
+         elseif mode==0x03 then -- Akuma Mode pointer --
+            poke(0xFF0030,0x00)
+            poke(0xFF0031,0x00)
+            poke(0xFF0032,0x00)
+            poke(0xFF0033,0x03)
+            poke(0xFF0034,0x00)
+            poke(0xFF0035,0x00)
+         elseif mode==0x04 then -- Dramatic Battle pointer --
+            poke(0xFF0030,0x00)
+            poke(0xFF0031,0x00)
+            poke(0xFF0032,0x00)
+            poke(0xFF0033,0x00)
+            poke(0xFF0034,0x03)
+            poke(0xFF0035,0x00)
+         elseif mode==0x05 then -- Option pointer --
+            poke(0xFF0030,0x00)
+            poke(0xFF0031,0x00)
+            poke(0xFF0032,0x00)
+            poke(0xFF0033,0x00)
+            poke(0xFF0034,0x00)
+            poke(0xFF0035,0x03)
+         end
+         -- Control in the Menu screen --
+         if ((peek(0xFF8051)==0x00) and (peek(0xFF8055)==0x00)) and (peek(0xFF0001)==0xFF) then -- When no button is pressed --
+            poke(0xFF0001,0x00) -- Act as button 'stopper' --
+            poke(0xFF0006,0x00) -- Act as music 'stopper' --
+         end
+         if ((peek(0xFF8051)==0x04) or (peek(0xFF8055)==0x04)) then
+            if peek(0xFF0006)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0xF8)
+               poke(0x61801F,0x00)
+               poke(0xFF0006,0xFF)
+            end
+            if dpeek(0xFF0000)==0x0000 then
+               dpoke(0xFF0000,0x01FF)
+            elseif dpeek(0xFF0000)==0x0100 then
+               dpoke(0xFF0000,0x02FF)
+            elseif dpeek(0xFF0000)==0x0200 then
+               dpoke(0xFF0000,0x03FF)
+            elseif dpeek(0xFF0000)==0x0300 then
+               dpoke(0xFF0000,0x04FF)
+            elseif dpeek(0xFF0000)==0x0400 then
+               dpoke(0xFF0000,0x05FF)
+            elseif dpeek(0xFF0000)==0x0500 then
+               dpoke(0xFF0000,0x00FF)
+            end
+         end
+         if (peek(0xFF8051)==0x08) or (peek(0xFF8055)==0x08) then
+            if peek(0xFF0006)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0xF8)
+               poke(0x61801F,0x00)
+               poke(0xFF0006,0xFF)
+            end
+            if dpeek(0xFF0000)==0x0000 then
+               dpoke(0xFF0000,0x05FF)
+            elseif dpeek(0xFF0000)==0x0500 then
+               dpoke(0xFF0000,0x04FF)
+            elseif dpeek(0xFF0000)==0x0400 then
+               dpoke(0xFF0000,0x03FF)
+            elseif dpeek(0xFF0000)==0x0300 then
+               dpoke(0xFF0000,0x02FF)
+            elseif dpeek(0xFF0000)==0x0200 then
+               dpoke(0xFF0000,0x01FF)
+            elseif dpeek(0xFF0000)==0x0100 then
+               dpoke(0xFF0000,0x00FF)
+            end
+         end
+         -- Start game --
+         if (peek(0xFF8050)>0x00) then -- P1 start game --
+            poke(0xFF8058,0x01) -- start --
+            poke(0x618001,0x00) -- sound effect --
+            poke(0x618003,0xFA)
+            poke(0x61801F,0x00)
+         end
+         if (peek(0xFF8054)>0x00) then -- P2 start game --
+            poke(0xFF8058,0x02) -- start --
+            poke(0x618001,0x00) -- sound effect --
+            poke(0x618003,0xFA)
+            poke(0x61801F,0x00)
+         end
+      end
+      if (peek(0xFF8001)==0x00) and (peek(0xFF81A8)>0x00) and (peek(0xFF0000)~=0x05) then -- Restore value after start --
+         poke(0xFF802D,0x00)
+         poke(0xFF804A,0x23)
+         poke(0xFF0020,0x00)
+         lpoke(0x160E,0x2B400058)
+         lpoke(0x1624,0x1B400058)
+         lpoke(0x1618,0x2B40005C)
+         lpoke(0x1632,0x1B40005C)
+         poke(0xFF0005,0x00) -- restore counter used in option --
+      end
+   end -- (dpeek(0xFFAE18)==0x02E7)
+   -- Infinity Credits --
+   if (peek(0xFF8170)>0x00) then
+      poke(0xFF8170,0x09)
+   end
+   -- VS Mode Script --
+   if (peek(0xFF0000)==0x01) then
+      if (dpeek(0xFFAE18)==0x02E7) and (peek(0xFF81A8)>0x00) then
+         poke(0xFF81A8,0x03)  -- Activites 1P & 2P --
+      end
+      if (peek(0xFF800D)==0x08) and ((peek(0xFF84AC)==0x09) or (peek(0xFF88AC)==0x09)) then
+         p1win=peek(0xFF84D0) -- Memorizes the P1 win point --
+         p2win=peek(0xFF88D0) -- Memorizes the P2 win point --
+         poke(0xFF84A0,0x00) -- Prepare for returning to char. screen --
+         poke(0xFF88A0,0x00)
+         poke(0xFF818D,0x03)
+         poke(0xFF81AC,0x00)
+         poke(0xff84E5,0xFF) -- for bug fix of p1 character box after battle 1 --
+         poke(0xff88E5,0xFF) -- for bug fix of p2 character box after battle 1 --
+      end
+      if (peek(0xFF800D)==0x0A) and ((peek(0xFF84AC)==0x09) or (peek(0xFF88AC)==0x09)) then -- Returning to char. screen --
+         poke(0xFF84A4,0x04)
+         poke(0xFF88A4,0x04)
+      end
+      if (peek(0xFF800D)==0x02) and (peek(0xFF81AC)==0x00) then
+         poke(0xFF802C,0x00) -- for bug fix of Z animation --
+      end
+      if (dpeek(0xFFA090)==0x0150) then
+         poke(0xFF84D0,p1win) -- Load the P1 win point --
+         poke(0xFF88D0,p2win) -- Load the P2 win point --
+      end
+   end
+   -- Training Mode Script. --
+   if (peek(0xFF0000)==0x02) then
+      if (dpeek(0xFFAE18)==0x02E7) and (peek(0xFF81A8)>0x00) then
+         poke(0xFF81A8,0x03)
+      end
+      if (dpeek(0xFFA090)==0x0150) and (((peek(0xFF8430)==0x06) and (dpeek(0xFF8051)==0x0000)) or ((peek(0xFF8830)==0x06) and (dpeek(0xFF8055)==0x0000))) then
+         poke(0x1571d,0x54) -- Switching of P1,P2 control. --
+         poke(0x15723,0x50)
+      end
+      if (dpeek(0xFFAE2C)==0x0400) then
+         poke(0x1571d,0x50) -- Restoring of P1, P2 control. --
+         poke(0x15723,0x54)
+      end
+      if (peek(0xFFAE2C)>=0x01) then
+         poke(0xFFAE0A,0x3B) -- Battle parameters. --
+         poke(0xFF8441,0x90)
+         poke(0xFF8841,0x90)
+         poke(0xFF84BF,0x90)
+         poke(0xFF88BF,0x90)
+      end
+      if (dpeek(0xFFAE2C)==0x0401) then
+         if (peek(0xFF8004)==01) and ((peek(0xFF8058)==0x01) or (peek(0xFF8058)==0x02)) then
+            poke(0xFF81AC,0x00)
+            poke(0xff84E5,0xFF) -- for bug fix of p1 character box after battle 1. --
+            poke(0xff88E5,0xFF) -- for bug fix of p2 character box after battle 1. --
+            poke(0xFF84A0,0x00) -- Prepare for returning to char. screen --
+            poke(0xFF88A0,0x00)
+         end
+         if (peek(0xFF84A5)==0x02) and (peek(0xFF88A5)==0x02) then -- Returning to char. screen --
+            poke(0xFF84A4,0x04)
+            poke(0xFF88A4,0x04)
+         end
+      end
+   end
+   -- Akuma/Gouki Mode Script --
+   if (peek(0xFF0000)==0x03) then
+      poke(0xFFAE48,0x01)
+      if (peek(0xFF81A8)==0x01) and (peek(0xFF84A2)==0x02) and (peek(0xFF84C8)==0x00) then -- Color fix for two Akuma. --
+         poke(0xFF88C8,0x01)
+      end
+      if (peek(0xFF81A8)==0x02) and (peek(0xFF88A2)==0x02) and (peek(0xFF88C8)==0x00) then -- Color fix for two Akuma. --
+         poke(0xFF84C8,0x01)
+      end
+      if (peek(0xFF81A8)==0x02) and (peek(0xFF88A2)==0x02) and (peek(0xFF88C8)==0x01) then -- Color fix for two Akuma. --
+         poke(0xFF84C8,0x00)
+      end
+   end
+   -- Dramatic Battle Mode Script. --
+   if (peek(0xFF0000)==0x04) then
+      poke(0xFFAE49,0x01)
+      if (dpeek(0xFFAE18)==0x02E7) and (peek(0xFF81A8)>0x00) then
+         poke(0xFF81A8,0x03)
+      end
+      if (dpeek(0xFFA322)==0x3876) then -- For auto selection of character --
+         poke(0xFF8439,0x01)
+         poke(0xFF8839,0x01)
+         poke(0xFF88C8,0x00)
+         poke(0xFF8430,0x04)
+         poke(0xFF8435,0x01)
+         poke(0xFF8437,0x04)
+         poke(0xFF8830,0x06)
+         poke(0xFF8835,0x01)
+      end
+      if (peek(0xFF365D)==0x09) then -- Fix: Activate both player --
+         poke(0xFF81AC,0x03)
+      end
+      if (peek(0xFFAE2C)==0x04) then -- Fix: Set both side as human --
+         poke(0xFF84C5,0x00)
+         poke(0xFF88C5,0x00)
+      end
+      if (peek(0xFF84AC)>0x00) and (peek(0xFF88A0)==0x02) then -- Auto continue for other side --
+         dpoke(0xFF84A0,0x0200)
+         dpoke(0xFF84A4,0x0600)
+         poke(0xFF818D,0x03)
+         poke(0xFF84AC,0x00)
+      end
+      if (peek(0xFF88AC)>0x00) and (peek(0xFF84A0)==0x02) then -- Auto continue for other side --
+         dpoke(0xFF88A0,0x0201)
+         dpoke(0xFF88A4,0x0600)
+         poke(0xFF818D,0x03)
+         poke(0xFF88AC,0x00)
+      end
+   end
+   -- Option Mode Script --
+   if (peek(0xFF0000)==0x05) then
+      if (dpeek(0xFFAE18)==0x02E7) and ((peek(0xFF8050)>0x00) or (peek(0xFF8054)>0x00)) then -- Step 1 --
+         poke(0xFF8191,0x02) -- English menu --
+         poke(0xFF817C,0x01) -- set timer for coin sound --
+         poke(0xFF0005,0x01)
+      end
+      if (peek(0xFF0005)==0x01) then -- step 2 - wait for the coin sound disappeared --
+         if (peek(0xFF817D)==0x22) then
+            poke(0xFF805C,0x02) -- go to the menu --
+            poke(0xFF0005,0x02)
+         end
+      end
+      if (dpeek(0xFF804A)==0x1234) and (peek(0xFF0005)==0x02) then -- step 3 --
+         dpoke(0x4D7A8,0x0000)
+         lpoke(0x160E,0x2B400058)
+         lpoke(0x1624,0x1B400058)
+         lpoke(0x1618,0x2B40005C)
+         lpoke(0x1632,0x1B40005C)
+         poke(0xFF0005,0x03)
+      end
+      if (peek(0xFF8001)==0x06) and (peek(0xFF0005)==0x03) then -- step 4 --
+         poke(0xFF8191,region)
+         poke(0xFF8003,0x00)
+         poke(0xFF8170,0x09)
+         dpoke(0x4D7A8,0x3B40)
+         lpoke(0x160E,0x00000000)
+         lpoke(0x1624,0x00000000)
+         lpoke(0xFF8058,0x00000000)
+         lpoke(0x1618,0x00000000)
+         lpoke(0x1632,0x00000000)
+         poke(0xFF0005,0x00)
+         poke(0xFF0020,0x02)
+      end
+   end
+   -- Pause Function Script. --
+   if (dpeek(0xFFAE2C)==0x0401) then
+      if (peek(0xFF8058)==0x00) then -- Act as button 'resumer' --
+         poke(0xFF0002,0x00)
+      end
+      if (peek(0xFF8004)==0x00) and ((peek(0xFF8058)==0x10) or (peek(0xFF8058)==0x20)) and (peek(0xFF0002)==0x00) then
+         poke(0xFF8004,0x01)
+         poke(0xFF0002,0xFF)
+      end
+      if (peek(0xFF8004)==0x01) and ((peek(0xFF8058)==0x10) or (peek(0xFF8058)==0x20)) and (peek(0xFF0002)==0x00) then
+         poke(0xFF8004,0x00)
+         poke(0xFF0002,0xFF)
+      end
+   end
 off:
-    poke $EB63 "INSERT COIN"
-    poke $1571d $50
-    poke $15723 $54
-    lpoke $160E $2B400058
-    lpoke $1624 $1B400058
-    lpoke $1618 $2B40005C
-    lpoke $1632 $1B40005C
+   poke(0xEB63,"INSERT COIN")
+   poke(0x1571d,0x50)
+   poke(0x15723,0x54)
+   lpoke(0x160E,0x2B400058)
+   lpoke(0x1624,0x1B400058)
+   lpoke(0x1618,0x2B40005C)
+   lpoke(0x1632,0x1B40005C)
+
+script "Console Mode" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
+run:
+   #Start up#
+   if (peek($FF8170)==$00)
+      poke $1571d $50 #Restore original values at start in case of reset#
+      poke $15723 $54
+      p1win=peek($FF84D0)
+      p2win=peek($FF88D0)
+      lpoke $160E $2B400058
+      lpoke $1624 $1B400058
+      lpoke $1618 $2B40005C
+      lpoke $1632 $1B40005C
+      if (peek($FF8001)>=$0C) #Start button start#
+         if (peek($804020)<$FF)
+            if (peek($FF8005)==$0C) #skip title screen if press start lately#
+               lpoke $160E $00000000
+               lpoke $1624 $00000000
+               lpoke $FF8058 $00000000
+               lpoke $1618 $00000000
+               lpoke $1632 $00000000
+               region=peek($FF8191)
+               poke $FF0020 $02
+            endif
+            poke $FF8170 $09
+         endif
+      endif
+      poke $EB63 "PRESS START"
+   endif
+   #Title Screen#
+   if dpeek($FFAE18)==$02E7
+      if (peek($FF8170)>$00)and(peek($FF81A8)==$00)and(peek($FF802D)==$00) #Disable original start & service button#
+         lpoke $160E $00000000
+         lpoke $1624 $00000000
+         lpoke $FF8058 $00000000
+         lpoke $1618 $00000000
+         lpoke $1632 $00000000
+         region=peek($FF8191)
+         if (peek($FF0000)!=$05)
+            poke $FF0000 $00 #Set Arcade Mode as default#
+            if (peek($804020)==$FF)
+               poke $FF0020 $01
+            endif
+         endif
+      endif
+      if (peek($FF0020)==$01) #Leaving title screen#
+         if (peek($804020)==$FE)or(peek($804020)==$FD)
+            poke $FF817B $01 #coin sound#
+            poke $FF0020 $02
+         endif
+      endif
+      #Menu Screen#
+      if (peek($FF81A8)==$00)and(peek($FF0020)==$02)
+         #Text display in menu#
+         poke $FF802D $FF #Text and Logo shift#
+         poke $FF804A $FF
+         lpoke $914800 $00FFFEEF #White color#
+         lpoke $914804 $FDDEFCCD
+         lpoke $914808 $FBBCFAAB
+         lpoke $91480C $F99AF889
+         dpoke $914810 $F555
+         lpoke $914820 $FFEEFFEC #Green Color#
+         lpoke $914824 $F9D5F5B5
+         lpoke $914828 $F3A5F295
+         lpoke $91482C $F185F075
+         dpoke $914830 $F555
+         lpoke $914860 $FFE9FFE9 #Orange Color#
+         lpoke $914864 $FFD5FEA4
+         lpoke $914868 $FE96FD81
+         lpoke $90C18C $F1090001 #Mode Select#
+         lpoke $90C1CC $F10B0001
+         lpoke $90C20C $F1000001
+         lpoke $90C24C $F1010001
+         lpoke $90C2CC $F10F0001
+         lpoke $90C30C $F1010001
+         lpoke $90C34C $F1080001
+         lpoke $90C38C $F1010001
+         lpoke $90C3CC $F0FF0001
+         lpoke $90C40C $F1100001
+         lpoke $90C194 $F0FD0000+peek($FF0030) #Arcade Mode#
+         lpoke $90C1D4 $F10E0000+peek($FF0030)
+         lpoke $90C214 $F0FF0000+peek($FF0030)
+         lpoke $90C254 $F0FD0000+peek($FF0030)
+         lpoke $90C294 $F1000000+peek($FF0030)
+         lpoke $90C2D4 $F1010000+peek($FF0030)
+         lpoke $90C354 $F1090000+peek($FF0030)
+         lpoke $90C394 $F10B0000+peek($FF0030)
+         lpoke $90C3D4 $F1000000+peek($FF0030)
+         lpoke $90C414 $F1010000+peek($FF0030)
+         lpoke $90C198 $F1120000+peek($FF0031) #Versus Mode#
+         lpoke $90C1D8 $F1010000+peek($FF0031)
+         lpoke $90C218 $F10E0000+peek($FF0031)
+         lpoke $90C258 $F10F0000+peek($FF0031)
+         lpoke $90C298 $F1110000+peek($FF0031)
+         lpoke $90C2D8 $F10F0000+peek($FF0031)
+         lpoke $90C358 $F1090000+peek($FF0031)
+         lpoke $90C398 $F10B0000+peek($FF0031)
+         lpoke $90C3D8 $F1000000+peek($FF0031)
+         lpoke $90C418 $F1010000+peek($FF0031)
+         lpoke $90C15C $F1100000+peek($FF0032) #Training Mode#
+         lpoke $90C19C $F10E0000+peek($FF0032)
+         lpoke $90C1DC $F0FD0000+peek($FF0032)
+         lpoke $90C21C $F1050000+peek($FF0032)
+         lpoke $90C25C $F10A0000+peek($FF0032)
+         lpoke $90C29C $F1050000+peek($FF0032)
+         lpoke $90C2DC $F10A0000+peek($FF0032)
+         lpoke $90C31C $F1030000+peek($FF0032)
+         lpoke $90C39C $F1090000+peek($FF0032)
+         lpoke $90C3DC $F10B0000+peek($FF0032)
+         lpoke $90C41C $F1000000+peek($FF0032)
+         lpoke $90C45C $F1010000+peek($FF0032)
+         if (peek($FF8191)>=$02) #Akuma Mode#
+            lpoke $90C1A4 $F0FD0000+peek($FF0033)
+            lpoke $90C1E4 $F1070000+peek($FF0033)
+            lpoke $90C224 $F1110000+peek($FF0033)
+            lpoke $90C264 $F1090000+peek($FF0033)
+            lpoke $90C2A4 $F0FD0000+peek($FF0033)
+         elsif (peek($FF8191)==$00) #Gouki Mode#
+            lpoke $90C1A4 $F1030000+peek($FF0033)
+            lpoke $90C1E4 $F10B0000+peek($FF0033)
+            lpoke $90C224 $F1110000+peek($FF0033)
+            lpoke $90C264 $F1070000+peek($FF0033)
+            lpoke $90C2A4 $F1050000+peek($FF0033)
+         endif
+         lpoke $90C324 $F1090000+peek($FF0033)
+         lpoke $90C364 $F10B0000+peek($FF0033)
+         lpoke $90C3A4 $F1000000+peek($FF0033)
+         lpoke $90C3E4 $F1010000+peek($FF0033)
+         lpoke $90C128 $F1000000+peek($FF0034) #Dramatic Battle#
+         lpoke $90C168 $F10E0000+peek($FF0034)
+         lpoke $90C1A8 $F0FD0000+peek($FF0034)
+         lpoke $90C1E8 $F1090000+peek($FF0034)
+         lpoke $90C228 $F0FD0000+peek($FF0034)
+         lpoke $90C268 $F1100000+peek($FF0034)
+         lpoke $90C2A8 $F1050000+peek($FF0034)
+         lpoke $90C2E8 $F0FF0000+peek($FF0034)
+         lpoke $90C368 $F0FE0000+peek($FF0034)
+         lpoke $90C3A8 $F0FD0000+peek($FF0034)
+         lpoke $90C3E8 $F1100000+peek($FF0034)
+         lpoke $90C428 $F1100000+peek($FF0034)
+         lpoke $90C468 $F1080000+peek($FF0034)
+         lpoke $90C4A8 $F1010000+peek($FF0034)
+         lpoke $90C230 $F10B0000+peek($FF0035) #Option#
+         lpoke $90C270 $F10C0000+peek($FF0035)
+         lpoke $90C2B0 $F1100000+peek($FF0035)
+         lpoke $90C2F0 $F1050000+peek($FF0035)
+         lpoke $90C330 $F10B0000+peek($FF0035)
+         lpoke $90C370 $F10A0000+peek($FF0035)
+         mode=peek($FF0000)
+         if mode==$00 #Arcade Mode pointer#
+            poke $FF0030 $03
+            poke $FF0031 $00
+            poke $FF0032 $00
+            poke $FF0033 $00
+            poke $FF0034 $00
+            poke $FF0035 $00
+         elsif mode==$01 #Versus Mode pointer#
+            poke $FF0030 $00
+            poke $FF0031 $03
+            poke $FF0032 $00
+            poke $FF0033 $00
+            poke $FF0034 $00
+            poke $FF0035 $00
+         elsif mode==$02 #Training Mode pointer#
+            poke $FF0030 $00
+            poke $FF0031 $00
+            poke $FF0032 $03
+            poke $FF0033 $00
+            poke $FF0034 $00
+            poke $FF0035 $00
+         elsif mode==$03 #Akuma Mode pointer#
+            poke $FF0030 $00
+            poke $FF0031 $00
+            poke $FF0032 $00
+            poke $FF0033 $03
+            poke $FF0034 $00
+            poke $FF0035 $00
+         elsif mode==$04 #Dramatic Battle pointer#
+            poke $FF0030 $00
+            poke $FF0031 $00
+            poke $FF0032 $00
+            poke $FF0033 $00
+            poke $FF0034 $03
+            poke $FF0035 $00
+         elsif mode==$05 #Option pointer#
+            poke $FF0030 $00
+            poke $FF0031 $00
+            poke $FF0032 $00
+            poke $FF0033 $00
+            poke $FF0034 $00
+            poke $FF0035 $03
+         endif
+         #Control in the Menu screen#
+         if ((peek($FF8051)==$00)and(peek($FF8055)==$00))and(peek($FF0001)==$FF) #When no button is pressed#
+            poke $FF0001 $00 #Act as button 'stopper'#
+            poke $FF0006 $00 #Act as music 'stopper'#
+         endif
+         if ((peek($FF8051)==$04)or(peek($FF8055)==$04))
+            if peek($FF0006)==$00 #Sound effect#
+               poke $618001 $00
+               poke $618003 $F8
+               poke $61801F $00
+               poke $FF0006 $FF
+            endif
+            if dpeek($FF0000)==$0000
+               dpoke $FF0000 $01FF
+            elsif dpeek($FF0000)==$0100
+               dpoke $FF0000 $02FF
+            elsif dpeek($FF0000)==$0200
+               dpoke $FF0000 $03FF
+            elsif dpeek($FF0000)==$0300
+               dpoke $FF0000 $04FF
+            elsif dpeek($FF0000)==$0400
+               dpoke $FF0000 $05FF
+            elsif dpeek($FF0000)==$0500
+               dpoke $FF0000 $00FF
+            endif
+         endif
+         if (peek($FF8051)==$08)or(peek($FF8055)==$08)
+            if peek($FF0006)==$00 #Sound effect#
+               poke $618001 $00
+               poke $618003 $F8
+               poke $61801F $00
+               poke $FF0006 $FF
+            endif
+            if dpeek($FF0000)==$0000
+               dpoke $FF0000 $05FF
+            elsif dpeek($FF0000)==$0500
+               dpoke $FF0000 $04FF
+            elsif dpeek($FF0000)==$0400
+               dpoke $FF0000 $03FF
+            elsif dpeek($FF0000)==$0300
+               dpoke $FF0000 $02FF
+            elsif dpeek($FF0000)==$0200
+               dpoke $FF0000 $01FF
+            elsif dpeek($FF0000)==$0100
+               dpoke $FF0000 $00FF
+            endif
+         endif
+         #Start game#
+         if (peek($FF8050)>$00) #P1 start game#
+            poke $FF8058 $01 #start#
+            poke $618001 $00 #sound effect#
+            poke $618003 $FA
+            poke $61801F $00
+         endif
+         if (peek($FF8054)>$00) #P2 start game#
+            poke $FF8058 $02 #start#
+            poke $618001 $00 #sound effect#
+            poke $618003 $FA
+            poke $61801F $00
+         endif
+      endif
+      if (peek($FF8001)==$00)and(peek($FF81A8)>$00)and(peek($FF0000)!=$05) #Restore value after start#
+         poke $FF802D $00
+         poke $FF804A $23
+         poke $FF0020 $00
+         lpoke $160E $2B400058
+         lpoke $1624 $1B400058
+         lpoke $1618 $2B40005C
+         lpoke $1632 $1B40005C
+         poke $FF0005 $00 #restore counter used in option#
+      endif
+   endif # (dpeek($FFAE18)==$02E7)
+   #Infinity Credits#
+   if (peek($FF8170)>$00)
+      poke $FF8170 $09
+   endif
+   #VS Mode Script#
+   if (peek($FF0000)==$01)
+      if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
+         poke $FF81A8 $03  #Activites 1P & 2P#
+      endif
+      if (peek($FF800D)==$08)and((peek($FF84AC)==$09)or(peek($FF88AC)==$09))
+         p1win=peek($FF84D0) #Memorizes the P1 win point#
+         p2win=peek($FF88D0) #Memorizes the P2 win point#
+         poke $FF84A0 $00 #Prepare for returning to char. screen#
+         poke $FF88A0 $00
+         poke $FF818D $03
+         poke $FF81AC $00
+         poke $ff84E5 $FF #for bug fix of p1 character box after battle 1#
+         poke $ff88E5 $FF #for bug fix of p2 character box after battle 1#
+      endif
+      if (peek($FF800D)==$0A)and((peek($FF84AC)==$09)or(peek($FF88AC)==$09)) #Returning to char. screen#
+         poke $FF84A4 $04
+         poke $FF88A4 $04
+      endif
+      if (peek($FF800D)==$02)and(peek($FF81AC)==$00)
+         poke $FF802C $00 #for bug fix of Z animation#
+      endif
+      if (dpeek($FFA090)==$0150)
+         poke $FF84D0 p1win #Load the P1 win point#
+         poke $FF88D0 p2win #Load the P2 win point#
+      endif
+   endif
+   #Training Mode Script.#
+   if (peek($FF0000)==$02)
+      if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
+         poke $FF81A8 $03
+      endif
+      if (dpeek($FFA090)==$0150)and(((peek($FF8430)==$06)and(dpeek($FF8051)==$0000))or((peek($FF8830)==$06)and(dpeek($FF8055)==$0000)))
+         poke $1571d $54 #Switching of P1,P2 control.#
+         poke $15723 $50
+      endif
+      if (dpeek($FFAE2C)==$0400)
+         poke $1571d $50 #Restoring of P1, P2 control.#
+         poke $15723 $54
+      endif
+      if (peek($FFAE2C)>=$01)
+         poke $FFAE0A $3B #Battle parameters.#
+         poke $FF8441 $90
+         poke $FF8841 $90
+         poke $FF84BF $90
+         poke $FF88BF $90
+      endif
+      if (dpeek($FFAE2C)==$0401)
+         if (peek($FF8004)==01)and((peek($FF8058)==$01)or(peek($FF8058)==$02))
+            poke $FF81AC $00
+            poke $ff84E5 $FF #for bug fix of p1 character box after battle 1.#
+            poke $ff88E5 $FF #for bug fix of p2 character box after battle 1.#
+            poke $FF84A0 $00 #Prepare for returning to char. screen#
+            poke $FF88A0 $00
+         endif
+         if (peek($FF84A5)==$02)and(peek($FF88A5)==$02) #Returning to char. screen#
+            poke $FF84A4 $04
+            poke $FF88A4 $04
+         endif
+      endif
+   endif
+   #Akuma/Gouki Mode Script#
+   if (peek($FF0000)==$03)
+      poke $FFAE48 $01
+      if (peek($FF81A8)==$01)and(peek($FF84A2)==$02)and(peek($FF84C8)==$00) #Color fix for two Akuma.#
+         poke $FF88C8 $01
+      endif
+      if (peek($FF81A8)==$02)and(peek($FF88A2)==$02)and(peek($FF88C8)==$00) #Color fix for two Akuma.#
+         poke $FF84C8 $01
+      endif
+      if (peek($FF81A8)==$02)and(peek($FF88A2)==$02)and(peek($FF88C8)==$01) #Color fix for two Akuma.#
+         poke $FF84C8 $00
+      endif
+   endif
+   #Dramatic Battle Mode Script.#
+   if (peek($FF0000)==$04)
+      poke $FFAE49 $01
+      if (dpeek($FFAE18)==$02E7)and(peek($FF81A8)>$00)
+         poke $FF81A8 $03
+      endif
+      if (dpeek($FFA322)==$3876) #For auto selection of character#
+         poke $FF8439 $01
+         poke $FF8839 $01
+         poke $FF88C8 $00
+         poke $FF8430 $04
+         poke $FF8435 $01
+         poke $FF8437 $04
+         poke $FF8830 $06
+         poke $FF8835 $01
+      endif
+      if (peek($FF365D)==$09) #Fix: Activate both player#
+         poke $FF81AC $03
+      endif
+      if (peek($FFAE2C)==$04) #Fix: Set both side as human#
+         poke $FF84C5 $00
+         poke $FF88C5 $00
+      endif
+      if (peek($FF84AC)>$00)and(peek($FF88A0)==$02) #Auto continue for other side#
+         dpoke $FF84A0 $0200
+         dpoke $FF84A4 $0600
+         poke $FF818D $03
+         poke $FF84AC $00
+      endif
+      if (peek($FF88AC)>$00)and(peek($FF84A0)==$02) #Auto continue for other side#
+         dpoke $FF88A0 $0201
+         dpoke $FF88A4 $0600
+         poke $FF818D $03
+         poke $FF88AC $00
+      endif
+   endif
+   #Option Mode Script#
+   if (peek($FF0000)==$05)
+      if (dpeek($FFAE18)==$02E7)and((peek($FF8050)>$00)or(peek($FF8054)>$00)) #Step 1#
+         poke $FF8191 $02 #English menu#
+         poke $FF817C $01 #set timer for coin sound#
+         poke $FF0005 $01
+      endif
+      if (peek($FF0005)==$01) #step 2 - wait for the coin sound disappeared#
+         if (peek($FF817D)==$22)
+            poke $FF805C $02 #go to the menu#
+            poke $FF0005 $02
+         endif
+      endif
+      if (dpeek($FF804A)==$1234)and(peek($FF0005)==$02) #step 3#
+         dpoke $4D7A8 $0000
+         lpoke $160E $2B400058
+         lpoke $1624 $1B400058
+         lpoke $1618 $2B40005C
+         lpoke $1632 $1B40005C
+         poke $FF0005 $03
+      endif
+      if (peek($FF8001)==$06)and(peek($FF0005)==$03) #step 4#
+         poke $FF8191 region
+         poke $FF8003 $00
+         poke $FF8170 $09
+         dpoke $4D7A8 $3B40
+         lpoke $160E $00000000
+         lpoke $1624 $00000000
+         lpoke $FF8058 $00000000
+         lpoke $1618 $00000000
+         lpoke $1632 $00000000
+         poke $FF0005 $00
+         poke $FF0020 $02
+      endif
+   endif
+   #Pause Function Script.#
+   if (dpeek($FFAE2C)==$0401)
+      if (peek($FF8058)==$00) #Act as button 'resumer'#
+         poke $FF0002 $00
+      endif
+      if (peek($FF8004)==$00)and((peek($FF8058)==$10)or(peek($FF8058)==$20))and(peek($FF0002)==$00)
+         poke $FF8004 $01
+         poke $FF0002 $FF
+      endif
+      if (peek($FF8004)==$01)and((peek($FF8058)==$10)or(peek($FF8058)==$20))and(peek($FF0002)==$00)
+         poke $FF8004 $00
+         poke $FF0002 $FF
+      endif
+   endif
+off:
+   poke $EB63 "INSERT COIN"
+   poke $1571d $50
+   poke $15723 $54
+   lpoke $160E $2B400058
+   lpoke $1624 $1B400058
+   lpoke $1618 $2B40005C
+   lpoke $1632 $1B40005C
 
 script "Enable Bosses" \
  "comm:Press Down button at the ?box"
