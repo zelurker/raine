@@ -1789,12 +1789,15 @@ void do_lua(int argc, char **argv) {
 	    // which means that run scripts are compiled only once !
 	    lua_pop(L,1);
 	    lua_pushstring(L,title);
-	    luaL_loadstring(L,argv[1]);
-	    lua_settable(L,LUA_REGISTRYINDEX);
-	    lua_pushstring(L,title);
-	    lua_gettable(L,LUA_REGISTRYINDEX);
-	}
-	lua_pcall(L, 0, LUA_MULTRET, 0);
+	    ret = luaL_loadstring(L,argv[1]);
+	    if (ret == LUA_OK) {
+		lua_settable(L,LUA_REGISTRYINDEX);
+		lua_pushstring(L,title);
+		lua_gettable(L,LUA_REGISTRYINDEX);
+		ret = lua_pcall(L, 0, LUA_MULTRET, 0);
+	    }
+	} else
+	    ret = lua_pcall(L, 0, LUA_MULTRET, 0);
     }
     if (ret == LUA_OK)
 	cons->print("lua ok");

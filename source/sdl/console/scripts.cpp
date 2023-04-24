@@ -651,10 +651,16 @@ void update_scripts() {
 	    char *section;
 	    if (get_running_script_info(&nb,&line,&section)) {
 		// Line numbers are unprecise because lines with only a comment are jumped
-		sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
-			get_script_title(nb),
-			section,
-			line+1);
+		if (script[nb].lua)
+		    sprintf(msg,"script: %s\nsection: %s\nLUA\n\n",
+			    get_script_title(nb),
+			    section,
+			    line+1);
+		else
+		    sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
+			    get_script_title(nb),
+			    section,
+			    line+1);
 		strncat(msg, e.what(),240-strlen(msg));
 		stop_script(nb);
 		strncat(msg,"\n(script stopped)",240-strlen(msg));
