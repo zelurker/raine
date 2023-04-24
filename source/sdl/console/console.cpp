@@ -1775,8 +1775,27 @@ void do_lua(int argc, char **argv) {
 	}
 	code[strlen(code)-1] = 0;
 	ret = luaL_dostring(L, code);
-    } else
-	ret = luaL_dostring(L,argv[1]);
+    } else {
+	// Could test here if argv[0] is luascript but normally it is
+	int nb,line; char *sect;
+	get_running_script_info(&nb, &line, &sect);
+	char *title = get_script_title(nb);
+	lua_pushstring(L,title);
+	lua_gettable(L,LUA_REGISTRYINDEX);
+	if (!lua_isfunction(L,-1)) {
+	    // That's the trick about lua, you can control when the code is compiled !
+	    // luaL_dostring compiles the code then executes it. Here the code doesn't change, so we compile it just the 1st time
+	    // store it in the registryindex using the script name as index and then finally executes it
+	    // which means that run scripts are compiled only once !
+	    lua_pop(L,1);
+	    lua_pushstring(L,title);
+	    luaL_loadstring(L,argv[1]);
+	    lua_settable(L,LUA_REGISTRYINDEX);
+	    lua_pushstring(L,title);
+	    lua_gettable(L,LUA_REGISTRYINDEX);
+	}
+	lua_pcall(L, 0, LUA_MULTRET, 0);
+    }
     if (ret == LUA_OK)
 	cons->print("lua ok");
     else {
