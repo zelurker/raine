@@ -10,6 +10,10 @@ run:
       poke(0xB35,0xAC)
       lpoke(0xAF4,0x1B40CBAE)
       poke(0xFF2000,0x00)
+      p1char1=0x00
+      p1char2=0x02
+      p2char1=0x02
+      p2char2=0x07
       if (peek(0x804020)<0xFF) and (peek(0xFF0060)>0x00) then -- Start button start --
          poke(0xFF0040,0x02)
          poke(0x618001,0xFF) -- Stop the opening music --
@@ -180,25 +184,87 @@ run:
    -- Versus Mode Script --
    if (peek(0xFF2000)==0x01) then
       poke(0xFF48A3,0x03) -- Prevent Continue Text --
-      if (peek(0xFF4885)==0x04) and ((peek(0xFF4003)==0x00) or (peek(0xFF4403)==0x00)) then -- Player Select Screen --
-         poke(0xFF4881,0x03)
-         poke(0xFF4912,0x03)
-         poke(0xFF4003,0x01)
-         poke(0xFF4403,0x01)
+      if (peek(0xFF4885)==0x04) then
+         if (peek(0xFF4003)==0x00) or (peek(0xFF4403)==0x00) then -- Activites 1P & 2P --
+           poke(0xFF4881,0x03)
+           poke(0xFF4912,0x03)
+           poke(0xFF4003,0x01)
+           poke(0xFF4403,0x01)
+         end
+         if (peek(0xFF4905)==0x02) and (dpeek(0xFF4910)>=0x05FF) then -- Reload previous characters --
+            if peek(0xFF4051)<=0x12 then
+              poke(0xFF4051,p1char1)
+              poke(0xFF4900,p1char2)
+            elseif peek(0xFF4051)==0x14 then
+              poke (0xFF4051,0x04)
+              poke (0xFF4900,0x06)
+            elseif peek(0xFF4051)==0x16 then
+              poke (0xFF4051,0x0E)
+              poke (0xFF4900,0x08)
+            elseif peek(0xFF4)==0x18 then
+              poke (0xFF4051,0x02)
+              poke (0xFF4900,0x06)
+            end
+            if peek(0xFF4451)<=0x12 then
+              poke(0xFF4451,p2char1)
+              poke(0xFF4902,p2char2)
+            elseif peek(0xFF4451)==0x14 then
+              poke (0xFF4451,0x04)
+              poke (0xFF4902,0x06)
+            elseif peek(0xFF4451)==0x16 then
+              poke (0xFF4451,0x0E)
+              poke (0xFF4902,0x08)
+            elseif peek(0xFF4)==0x18 then
+              poke (0xFF4451,0x02)
+              poke (0xFF4902,0x06)
+            end
+         end
       end
       if (peek(0xFF4885)==0x0C) and (peek(0xFF4887)==0x04) and (peek(0xFF48D9)>0x00) and (peek(0xFF48D9)<=0x04) then -- Return --
+         p1char1=peek(0xFF4051) -- Memorize characters --
+         p1char2=peek(0xFF4900)
+         p2char1=peek(0xFF4451)
+         p2char2=peek(0xFF4902)
          poke(0xFF4885,0x00)
       end
    end
    -- Training Mode Script --
    if (peek(0xFF2000)==0x02) then
-      if (peek(0xFF4885)==0x04) then -- Player Select Screen --
+      if (peek(0xFF4885)==0x04) then -- Activites 1P & 2P --
          if (peek(0xFF4003)==0x00) or (peek(0xFF4403)==0x00) then
             poke(0xFF4881,0x03)
             poke(0xFF4912,0x03)
             poke(0xFF4003,0x01)
             poke(0xFF4403,0x01)
             poke(0xFF48A3,0x03) -- Prevent Continue Text --
+         end
+         if (peek(0xFF4905)==0x02) and (dpeek(0xFF4910)>=0x05FF) then -- Reload previous characters --
+            if peek(0xFF4051)<=0x12 then
+              poke(0xFF4051,p1char1)
+              poke(0xFF4900,p1char2)
+            elseif peek(0xFF4051)==0x14 then
+              poke (0xFF4051,0x04)
+              poke (0xFF4900,0x06)
+            elseif peek(0xFF4051)==0x16 then
+              poke (0xFF4051,0x0E)
+              poke (0xFF4900,0x08)
+            elseif peek(0xFF4)==0x18 then
+              poke (0xFF4051,0x02)
+              poke (0xFF4900,0x06)
+            end
+            if peek(0xFF4451)<=0x12 then
+              poke(0xFF4451,p2char1)
+              poke(0xFF4902,p2char2)
+            elseif peek(0xFF4451)==0x14 then
+              poke (0xFF4451,0x04)
+              poke (0xFF4902,0x06)
+            elseif peek(0xFF4451)==0x16 then
+              poke (0xFF4451,0x0E)
+              poke (0xFF4902,0x08)
+            elseif peek(0xFF4)==0x18 then
+              poke (0xFF4451,0x02)
+              poke (0xFF4902,0x06)
+            end
          end
          if (dpeek(0xFF4BAA)>0x0000) then -- P1 Buttons 'stopper' --
             poke(0xFF2003,0xFF)
@@ -260,9 +326,13 @@ run:
             poke(0xB17,0xAA)
             poke(0xB35,0xAC)
          end
-         if (peek(0xFF4905)==0x0A) then -- Correct the Auto-block selection --
-            poke(0xFF4189,peek(0xFF4918))
+         if (peek(0xFF4905)==0x0A) then
+            poke(0xFF4189,peek(0xFF4918)) -- Correct the Auto-block selection --
             poke(0xFF4589,peek(0xFF491A))
+            p1char1=peek(0xFF4051) -- Memorize characters --
+            p1char2=peek(0xFF4900)
+            p2char1=peek(0xFF4451)
+            p2char2=peek(0xFF4902)
          end
       end
       if (peek(0xFF4885)==0x08) then
