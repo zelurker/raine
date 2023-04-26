@@ -654,8 +654,7 @@ void update_scripts() {
 		if (script[nb].lua)
 		    sprintf(msg,"script: %s\nsection: %s\nLUA\n\n",
 			    get_script_title(nb),
-			    section,
-			    line+1);
+			    section);
 		else
 		    sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
 			    get_script_title(nb),

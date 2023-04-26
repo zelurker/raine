@@ -1776,7 +1776,6 @@ void do_lua(int argc, char **argv) {
 	code[strlen(code)-1] = 0;
 	ret = luaL_dostring(L, code);
     } else {
-	// Could test here if argv[0] is luascript but normally it is
 	int nb,line; char *sect;
 	if (get_running_script_info(&nb, &line, &sect)) {
 	    char *title = get_script_title(nb);
