@@ -1,4 +1,4 @@
-luascript "Console Mode" \
+luascript "Console Mode [lua]" \
  "comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
 run:
 -- Start-up --
