@@ -1617,6 +1617,7 @@ void run_console_command(char *command) {
     lastw = screen->w;
     lasth = screen->h;
   }
+  if (!*command) return; // used to initialize the console by scripts
   // This function is called only for scripts, and I don't see how a script could modify a register, so just forget about that... !
   // get_regs(cpu_id);
   cons->run_cmd(command,0);
