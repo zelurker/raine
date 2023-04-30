@@ -680,6 +680,7 @@ static void add_game_controller(int n) {
 }
 
 static void cold_boot() {
+    if (!current_game) return; // can be called from the gui with no game loaded by remaping a joystick control !
     hs_close(); // save hiscores BEFORE erasing the ram !
 #if HAS_NEO
     cdda_stop();
