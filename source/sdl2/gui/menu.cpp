@@ -1557,6 +1557,9 @@ void TMenu::handle_joystick(SDL_Event *event) {
       case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
 	  axis_x = 1;
 	  break;
+      case SDL_CONTROLLER_BUTTON_BACK:
+	  toggle_header();
+	  break;
       }
       if (axis_x || axis_y) {
 	jmoved = 1;
@@ -1597,7 +1600,7 @@ void TMenu::handle_joystick(SDL_Event *event) {
       axis = (event->type == SDL_JOYAXISMOTION ? event->jaxis.axis : event->caxis.axis);
       val = (event->type == SDL_JOYAXISMOTION ? event->jaxis.value : event->caxis.value);
       switch(axis) {
-      case 0: // x axis normally
+      case SDL_CONTROLLER_AXIS_LEFTX: // x axis normally
 	  if (val < -16000) {
 	      if (axis_x > -1) {
 		  axis_x = -1;
@@ -1619,7 +1622,7 @@ void TMenu::handle_joystick(SDL_Event *event) {
 	      phase_repeat = 0;
 	  }
 	  break;
-      case 1: // y axis
+      case SDL_CONTROLLER_AXIS_LEFTY: // y axis
 	  if (val < -16000) {
 	      if (axis_y > -1) {
 		  axis_y = -1;
