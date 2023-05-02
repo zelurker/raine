@@ -278,7 +278,7 @@ static void add_value(int v) {
     int n = sound_menu[0].values_list_size++;
     if (n<NB_VALUES) {
 	sound_menu[0].values_list[n] = v;
-	char hex[4];
+	char hex[5];
 	sprintf(hex,"%xh",v);
 	sound_menu[0].values_list_label[n] = strdup(hex);
     }
@@ -338,11 +338,10 @@ int do_sound_cmd(int sel) {
 	break;
     case 20: // cps2
 	{
-	    int last = last_song;
-	    if (last < 0x3e) last = 0x3f;
+	    int last = ReadWord68k(&Z80ROM[qsound_base-6]);
 	    int nb=0;
 	    // for (int n=(last < NB_VALUES ? 1 : last-NB_VALUES+2); n<=last; n++) {
-	    for (int n=1; n<0xff; n++) {
+	    for (int n=1; n<=last; n++) {
 		int v = ReadLong(&Z80ROM[qsound_base+n*4]);
 		UINT8 *base = Z80ROM + qsound_base + n*4;
 		int offset = (base[0]<<16) + (base[1]<<8) + base[2];
@@ -350,7 +349,6 @@ int do_sound_cmd(int sel) {
 		// then the 1st 3 bytes are an offset to the sample data or 0 if no sound
 		// and the 1st byte at this offset is 0 if it's a song, non 0 if sound effect !!!
 		if (v && Z80ROM[offset] == 0) {
-		    printf("adding %x, v=%x\n",n,v);
 		    add_value(n);
 		    nb++;
 		    if (nb == NB_VALUES-1) break;
