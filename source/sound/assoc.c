@@ -50,7 +50,8 @@ static int search(int len, UINT8 *needle, int n) {
     return n;
 }
 
-static int qsound_base,qsound_playing;
+int qsound_base;
+static int qsound_playing;
 
 void init_assoc(int kind) {
     adr2 = 0;
@@ -249,7 +250,7 @@ void init_assoc(int kind) {
 	} while (Z80ROM[n+2] != 0x56);
 	qsound_base = ReadWord(&Z80ROM[n])+6;
 	qsound_playing = 0;
-	printf("final qsound base : %x\n",qsound_base);
+	print_debug("assoc: qsound_base %x from offset %x\n",qsound_base,n);
     }
 
     if (type == 1) mode = MUSIC;
@@ -385,7 +386,6 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
 	}
 	UINT8 *base = Z80ROM + qsound_base + cmd*4;
 	// This table gives the sound offset data on 3 bytes (cleverly converted to a bank + offset in the rom)
-	// the 1st byte seems to be 0 for the songs
 	int offset = (base[0]<<16) + (base[1]<<8) + base[2];
 	offset &= get_region_size(REGION_ROM2)-1;
 	if (Z80ROM[offset] == 0) {

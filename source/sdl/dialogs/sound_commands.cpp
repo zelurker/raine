@@ -337,16 +337,25 @@ int do_sound_cmd(int sel) {
 	add_value(0x32);
 	break;
     case 20: // cps2
-	// I didn't find yet how to get the list of songs, all we have is last_song, and usually they start at 1...
 	{
 	    int last = last_song;
-	    // 3e is the song for the qsound logo in sfa2, but it's not constant in all the games
-	    // 3f is a 2nd song played in the background in channel 10 while this song is playing, I just hope it's an exception !
-	    // I take this as a default maximum, some games will probably have more songs like that but since it considers last_song 1st,
-	    // it should be ok...
 	    if (last < 0x3e) last = 0x3f;
-	    for (int n=(last < NB_VALUES ? 1 : last-NB_VALUES+2); n<=last; n++)
-		add_value(n);
+	    int nb=0;
+	    // for (int n=(last < NB_VALUES ? 1 : last-NB_VALUES+2); n<=last; n++) {
+	    for (int n=1; n<0xff; n++) {
+		int v = ReadLong(&Z80ROM[qsound_base+n*4]);
+		UINT8 *base = Z80ROM + qsound_base + n*4;
+		int offset = (base[0]<<16) + (base[1]<<8) + base[2];
+		// Ok, the format of the table is a little weird, entries of 4 bytes from qsound_base with the sound command as index
+		// then the 1st 3 bytes are an offset to the sample data or 0 if no sound
+		// and the 1st byte at this offset is 0 if it's a song, non 0 if sound effect !!!
+		if (v && Z80ROM[offset] == 0) {
+		    printf("adding %x, v=%x\n",n,v);
+		    add_value(n);
+		    nb++;
+		    if (nb == NB_VALUES-1) break;
+		}
+	    }
 	}
 	break;
     default: // includes mslug and gunbird...
