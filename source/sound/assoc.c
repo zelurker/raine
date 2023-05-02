@@ -375,7 +375,7 @@ static int process_song(int cmd) {
 
 int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
     if (type == 0) return 0;
-    if (offset == 7) {
+    if (offset == 15) {
 	cmd = ReadWord68k(&shared[0]);
 	if (cmd >= 0xff00) { // mute all
 	    if (qsound_playing) {
