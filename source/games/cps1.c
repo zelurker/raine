@@ -55,6 +55,8 @@
 #include "alpha.h"
 #include "sound/assoc.h"
 
+#define EMULATE_RASTERS 1
+
 /* Output ports */
 #define CPS1_OBJ_BASE		0x00	/* Base address of objects */
 #define CPS1_SCROLL1_BASE	0x01	/* Base address of scroll 1 */
@@ -1512,6 +1514,19 @@ static UINT16 protection_rw(UINT32 offset)
    if (pang3 && offset == 0x7a/2)
       return cps1_eeprom_port_r(0);
 
+#ifndef EMULATE_RASTERS
+   if (offset == 0x28) {
+       // Hack for the rasters, the phoenix bootlegs wait for scanline 262 here
+       // at boot...
+       static int res;
+       if (res)
+          res = 0;
+       else
+          res = 262;
+       return res;
+   }
+#endif
+
    return cps1_port[offset];
 }
 
@@ -1533,12 +1548,16 @@ static void protection_ww(UINT32 offset, UINT16 data)
        cps1_port[cps1_game_config->layer_control/2] = data;
    else if (sf2m3 && offset >= 0xa0/2 && offset < 0xc4/2) {
        cps1_port[offset - 0xa0/2] = data;
+#ifdef EMULATE_RASTERS
    } else if (offset == 0x28) {
        scanline1 = data & 0x1ff;
        cps1_port[offset] = data;
+       print_debug("scanline1 = %x\n",scanline1);
    } else if (offset == 0x29) {
        scanline2 = data & 0x1ff;
        cps1_port[offset] = data;
+       print_debug("scanline2 = %x\n",scanline1);
+#endif
    } else {
        cps1_port[offset] = data;
    }
@@ -2255,6 +2274,11 @@ static void qsound_sharedram1_w(UINT32 offset, UINT16 data)
 
 static void qsound_sharedram1_wb(UINT32 offset, UINT8 data)
 {
+#if RAINE_DEBUG
+    if (offset < 0x619000)
+	printf("qsound %x,%x\n",offset,data);
+#endif
+
   offset = ((offset & 0x1fff) >> 1);
   if (!handle_cps2_cmd(qsound_sharedram1,offset,data)) {
       qsound_sharedram1[offset] = data;
@@ -2667,7 +2691,8 @@ void load_cps2() {
     cps2_qsound_volume = 0x2021;
   else
     cps2_qsound_volume = 0xe021;
-  cps2_qsound_volume &= ~0x4000; // clear bit 14 to tell we have some more ram in 0x660000
+  // Don't clear this bit after all, it breaks progear !
+  // cps2_qsound_volume &= ~0x4000; // clear bit 14 to tell we have some more ram in 0x660000
   AddReadBW(0x804030, 0x804031, NULL, (UINT8*)&cps2_qsound_volume);
 
   AddWriteByte(0xAA0000, 0xAA0001, myStop68000, NULL);			// Trap Idle 68000
@@ -3003,7 +3028,6 @@ static int nb_ticks, nb_executed;
 static void draw_cps1_partial(int scanline);
 static int min1,min2;
 static al_bitmap *raster_bitmap;
-#define EMULATE_RASTERS 1
 
 void clear_cps2() {
     if (raster_bitmap)
@@ -3057,6 +3081,7 @@ void execute_cps2_frame(void)
       }
       cpu_execute_cycles(CPU_68K_0, frame_68k*min1/262);	  // Main 68000
       cps1_port[port1] = 0;
+      print_debug("irq4 scanline1\n");
       cpu_interrupt(CPU_68K_0,4);
       draw_cps1_partial(min1);
       blit(GameBitmap, raster_bitmap, 32, 32, 0, 0, GameScreen.xview, min1);
@@ -3064,9 +3089,10 @@ void execute_cps2_frame(void)
       if (min2 < 224) {
 	  if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(min2-min1)/262);	  // Main 68000
-	  cpu_interrupt(CPU_68K_0,4);
-	  draw_cps1_partial(min2);
 	  cps1_port[port1 == 0x28 ? 0x29 : 0x28] = 0;
+	  cpu_interrupt(CPU_68K_0,4);
+	  print_debug("irq4 scanline1\n");
+	  draw_cps1_partial(min2);
 	  blit(GameBitmap, raster_bitmap, 32, 32+min1, 0, min1, GameScreen.xview, min2-min1);
 	  // if (!stopped_68k)
 	      cpu_execute_cycles(CPU_68K_0, frame_68k*(240-min2)/262);	  // Main 68000
@@ -3116,9 +3142,9 @@ void execute_cps2_frame(void)
   if (min1 < 240 || min2 < 240)
       draw_cps1_partial(240); // the vbl replaces the scroll registers to their normal values so we must draw the bitmap now !
   cpu_interrupt(CPU_68K_0, 2);
+#if EMULATE_RASTERS
   cps1_port[0x28] = scanline1;
   cps1_port[0x29] = scanline2;
-#if EMULATE_RASTERS
   if (min1 < 240 && !stopped_68k)
       cpu_execute_cycles(CPU_68K_0, frame_68k*22/262);	  // Main 68000
 #endif
