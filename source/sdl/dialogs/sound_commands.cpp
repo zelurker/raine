@@ -211,13 +211,13 @@ static int associations(int sel) {
 	asso[nb].values_list_size = 1;
 	asso[nb].values_list_label[0] = _("File");
 	nb++;
-	for (int cmd=2; cmd<256; cmd++) {
+	for (int cmd=1; cmd<MAX_ASSOC; cmd++) {
 	    char *s = get_assoc(cmd);
 	    if (s) {
 		asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
 		loop = (int*)realloc(loop,sizeof(int)*(nb+1));
-		char key[4];
-		sprintf(key,"%xh",cmd);
+		char key[5];
+		snprintf(key,5,"%xh",cmd);
 		asso[nb].label = strdup(key);
 		asso[nb].menu_func = &menu_asso;
 		asso[nb].value_int = &bidon;

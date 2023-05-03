@@ -23,7 +23,7 @@ static void start_music_fadeout(double time) {
 // same code, so if we use cdda.playing, neocd tracks are stopped very very
 // quickly !!!
 static int type,adr,adr2,active,end_sound_codes,variant;
-static char *track[256],loop[256];
+static char *track[MAX_ASSOC],loop[MAX_ASSOC];
 int disable_assoc,last_song;
 enum {
     MUSIC=0,
@@ -300,7 +300,7 @@ void del_assoc(int cmd) {
 void save_assoc(char *section) {
     int cmd;
     raine_clear_config_section(section);
-    for (cmd=1; cmd<256; cmd++)
+    for (cmd=1; cmd<MAX_ASSOC; cmd++)
 	if (track[cmd]) {
 	    char key[5];
 	    sprintf(key,"%d",cmd);
@@ -316,7 +316,7 @@ void save_assoc(char *section) {
 void clear_assoc() {
     type = 0;
     int cmd;
-    for (cmd=1; cmd<256; cmd++)
+    for (cmd=1; cmd<MAX_ASSOC; cmd++)
 	if (track[cmd]) {
 	    del_assoc(cmd);
 	}
@@ -324,7 +324,7 @@ void clear_assoc() {
 
 void load_assoc(char *section) {
     int cmd;
-    for (cmd=1; cmd<256; cmd++) {
+    for (cmd=1; cmd<MAX_ASSOC; cmd++) {
 	char key[5];
 	sprintf(key,"%d",cmd);
 	char *s = raine_get_config_string(section,key,NULL);
@@ -377,13 +377,17 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
     if (type == 0) return 0;
     if (offset == 15) {
 	cmd = ReadWord68k(&shared[0]);
-	if (cmd >= 0xff00) { // mute all
+	if (cmd == 0xff00 || cmd == 0xff05) { // mute all
+	    print_debug("mute song on cmd %x\n",cmd);
 	    if (qsound_playing) {
 		qsound_playing = 0;
 		mute_song();
 	    }
 	    return 0;
 	}
+	int max = ReadWord68k(&Z80ROM[qsound_base-6]);
+	if (cmd > max) return 0; // > last song
+
 	UINT8 *base = Z80ROM + qsound_base + cmd*4;
 	// This table gives the sound offset data on 3 bytes (cleverly converted to a bank + offset in the rom)
 	int offset = (base[0]<<16) + (base[1]<<8) + base[2];
@@ -395,8 +399,10 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
 		qsound_playing = 1;
 		memset(shared,0,16);
 		shared[0] = 255;
-	    } else
+	    } else {
+		print_debug("mute song because %x identified as song\n",cmd);
 		mute_song();
+	    }
 	    return ret;
 	}
     }

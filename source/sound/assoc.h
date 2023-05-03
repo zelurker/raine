@@ -4,6 +4,8 @@ extern "C" {
 
 #include "deftypes.h"
 
+#define MAX_ASSOC 1024
+
 extern int disable_assoc,last_song,use_music,qsound_base;
 
 void init_assoc(int kind);
