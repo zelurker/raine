@@ -229,7 +229,7 @@ void init_assoc(int kind) {
 		    if (n2 > n && n2 - n < 0x100) {
 			qsound_base = ReadWord(&Z80ROM[adr])+6;
 			qsound_playing = 0;
-			printf("found alt method qsound_base %x\n",qsound_base);
+			print_debug("found alt method qsound_base %x last song %x\n",qsound_base,ReadWord68k(&Z80ROM[qsound_base-6]));
 			return;
 		    }
 		}
@@ -238,7 +238,6 @@ void init_assoc(int kind) {
 	    type = 0;
 	    return;
 	}
-	printf("found needle at %x\n",n);
 	needle[0] = 0x21;
 	do {
 	    n = search(1,needle,n+1);
@@ -250,7 +249,7 @@ void init_assoc(int kind) {
 	} while (Z80ROM[n+2] != 0x56);
 	qsound_base = ReadWord(&Z80ROM[n])+6;
 	qsound_playing = 0;
-	print_debug("assoc: qsound_base %x from offset %x\n",qsound_base,n);
+	print_debug("assoc: qsound_base %x from offset %x last song %x\n",qsound_base,n,ReadWord68k(&Z80ROM[qsound_base-6]));
     }
 
     if (type == 1) mode = MUSIC;
