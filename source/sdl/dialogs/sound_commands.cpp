@@ -341,17 +341,23 @@ int do_sound_cmd(int sel) {
 	    int last = ReadWord68k(&Z80ROM[qsound_base-6]);
 	    int nb=0;
 	    // for (int n=(last < NB_VALUES ? 1 : last-NB_VALUES+2); n<=last; n++) {
-	    for (int n=1; n<=last; n++) {
+	    for (int n=1; n<last; n++) {
 		int v = ReadLong(&Z80ROM[qsound_base+n*4]);
-		UINT8 *base = Z80ROM + qsound_base + n*4;
-		int offset = (base[0]<<16) + (base[1]<<8) + base[2];
-		// Ok, the format of the table is a little weird, entries of 4 bytes from qsound_base with the sound command as index
-		// then the 1st 3 bytes are an offset to the sample data or 0 if no sound
-		// and the 1st byte at this offset is 0 if it's a song, non 0 if sound effect !!!
-		if (v && Z80ROM[offset] == 0) {
-		    add_value(n);
-		    nb++;
-		    if (nb == NB_VALUES-1) break;
+		if (v) {
+		    UINT8 *base = Z80ROM + qsound_base + n*4;
+		    u32 offset = (base[0]<<16) + (base[1]<<8) + base[2];
+		    if (offset >= get_region_size(REGION_CPU2)) {
+			printf("offset too high for n=%x last %x offset=%x region=%x\n",n,last,offset,get_region_size(REGION_CPU2));
+			exit(1);
+		    }
+		    // Ok, the format of the table is a little weird, entries of 4 bytes from qsound_base with the sound command as index
+		    // then the 1st 3 bytes are an offset to the sample data or 0 if no sound
+		    // and the 1st byte at this offset is 0 if it's a song, non 0 if sound effect !!!
+		    if (Z80ROM[offset] == 0) {
+			add_value(n);
+			nb++;
+			if (nb == NB_VALUES-1) break;
+		    }
 		}
 	    }
 	}
