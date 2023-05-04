@@ -347,13 +347,12 @@ static void mute_song() {
 
 static int process_song(int cmd) {
     // Separate the last part of handle_sound_cmd for drivers which have a special way with commands like cps2
-    if (cmd > 255) return 0; // Only cps2 can have commands > 255, I assume all the songs are <= 255 but I can't be sure !
     last_song = cmd;
 #ifdef RAINE_DEBUG
     print_ingame(180,"playing %x track %s\n",cmd,track[cmd]);
     print_debug("assoc: playing %x track %s\n",cmd,track[cmd]);
 #endif
-    if (cmd > 1 && track[cmd]) {
+    if (track[cmd]) {
 	// An association to an empty track allows to just forbid playing this
 	// MUSIC
 	print_debug("assoc: playing song %x track %s\n",cmd,track[cmd]);
