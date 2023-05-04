@@ -235,6 +235,13 @@ void init_assoc(int kind) {
 		    }
 		}
 	    }
+	    if (!strcmp(parent_name(),"spf2t")) { // exception for spf2t, code totally different !
+		qsound_base = 0x6005;
+		qsound_last_song = ReadWord(&Z80ROM[qsound_base-6]);
+		qsound_playing = 0;
+		print_debug("found specific to spf2t qsound_base %x last song %x\n",qsound_base,qsound_last_song);
+		return;
+	    }
 	    printf("didn't find needle, aborting sound associations\n");
 	    type = 0;
 	    return;
