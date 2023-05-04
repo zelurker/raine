@@ -346,6 +346,7 @@ int do_sound_cmd(int sel) {
 		if (v) {
 		    UINT8 *base = Z80ROM + qsound_base + n*4;
 		    u32 offset = (base[0]<<16) + (base[1]<<8) + base[2];
+		    offset &= get_region_size(REGION_ROM2)-1;
 		    if (offset >= get_region_size(REGION_CPU2)) {
 			printf("offset too high for n=%x last %x offset=%x region=%x\n",n,last,offset,get_region_size(REGION_CPU2));
 			exit(1);
