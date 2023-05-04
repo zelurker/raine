@@ -120,7 +120,7 @@ TConsole::~TConsole() {
   }
   free(menu);
   delete edit_child;
-  delete field;
+  delete [] field;
 }
 
 /* void TConsole::compute_nb_items() {
