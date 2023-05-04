@@ -6,7 +6,7 @@ extern "C" {
 
 #define MAX_ASSOC 1024
 
-extern int disable_assoc,last_song,use_music,qsound_base;
+extern int disable_assoc,last_song,use_music,qsound_last_song;
 
 void init_assoc(int kind);
 void clear_assoc();
@@ -21,6 +21,7 @@ void load_assoc(char *section);
 int handle_sound_cmd(int cmd);
 int handle_cps2_cmd(UINT8 *shared, int offset, int cmd);
 int get_assoc_type();
+int is_qsound_song(int cmd);
 
 #ifdef __cplusplus
 }
