@@ -151,12 +151,12 @@ ifndef PKG_CONFIG
 	PKG_CONFIG := pkg-config
 endif
 
-lua :=$(shell if $(PKG_CONFIG) --exists lua; then echo lua; else echo no; fi)
-ifeq ("$(lua)","no")
-lua :=$(shell if $(PKG_CONFIG) --exists lua5.4; then echo lua5.4; else echo no; fi)
+lua :=$(shell if $(PKG_CONFIG) --exists lua; then echo lua; fi)
+ifndef lua
+lua :=$(shell if $(PKG_CONFIG) --exists lua5.4; then echo lua5.4; fi)
 endif
-ifeq ("$(lua)","no")
-lua :=$(shell if $(PKG_CONFIG) --exists lua5.3; then echo lua5.3; else echo no; fi)
+ifndef lua
+lua :=$(shell if $(PKG_CONFIG) --exists lua5.3; then echo lua5.3; fi)
 endif
 # probably not necessary to search any further, but maybe some systems have packages of the form lua-version
 # in this case they'll have to change the makefile !
