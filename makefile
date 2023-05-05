@@ -147,6 +147,22 @@ else
 endif
 endif
 
+ifndef PKG_CONFIG
+	PKG_CONFIG := pkg-config
+endif
+
+lua :=$(shell if $(PKG_CONFIG) --exists lua; then echo lua; else echo no; fi)
+ifeq ("$(lua)","no")
+lua :=$(shell if $(PKG_CONFIG) --exists lua5.4; then echo lua5.4; else echo no; fi)
+endif
+ifeq ("$(lua)","no")
+lua :=$(shell if $(PKG_CONFIG) --exists lua5.3; then echo lua5.3; else echo no; fi)
+endif
+# probably not necessary to search any further, but maybe some systems have packages of the form lua-version
+# in this case they'll have to change the makefile !
+cflags_lua := $(shell $(PKG_CONFIG) --cflags $(lua))
+lflags_lua := $(shell $(PKG_CONFIG) --libs $(lua))
+
 ifeq ("$(shell uname)","Darwin")
 # Mac os X
 DARWIN=1
@@ -684,7 +700,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS += -O2
+CFLAGS += -O3
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
@@ -1261,7 +1277,8 @@ LIBS = $(LIBS_DEBUG)
 endif
 
 ifndef RAINE_DOS
-LIBS += -llua
+CFLAGS += $(cflags_lua)
+LIBS += $(lflags_lua)
 endif
 
 ifdef X86_64
@@ -1370,16 +1387,16 @@ CFLAGS_BS := -Wall -O2 $(shell ${SDLCONFIG} --cflags) $(INCDIR) -DSTANDALONE -DN
 # Using gcc here instead of $(CC) because we don't want a 32 bit binary in
 # an amd64 arch.
 byteswap: $(OBJDIR)/byteswap.o $(OBJDIR)/files_b.o $(OBJDIR)/newmem_b.o
-	gcc -o byteswap $^
+	$(CC) -o byteswap $^
 
 $(OBJDIR)/byteswap.o: source/byteswap.c
-	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
+	$(CC) $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 $(OBJDIR)/files_b.o: source/files.c
-	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
+	$(CC) $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 $(OBJDIR)/newmem_b.o: source/newmem.c
-	gcc $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
+	$(CC) $(CFLAGS_BS) -DSDL={SDL} -o $@ $<
 
 depend:
 	@echo dependencies : if you get an error here, install the required dev package
@@ -1388,6 +1405,8 @@ ifndef RAINE_DOS
 	@libpng-config --version
 	@echo -n SDL:
 	@${SDLCONFIG} --version
+	@echo "lua: $(lua) cflags $(cflags_lua) libs $(lflags_lua)"
+
 endif
 ifdef RAINE_UNIX
 ifndef SDL
@@ -1720,6 +1739,7 @@ else
 	$(INSTALL_DATA) gamecontrollerdb.txt $(rainedata)
 	$(INSTALL_DATA) command.dat $(rainedata)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
+	$(INSTALL_DATA) index_roms.html $(rainedata)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f command.dat ]; then install command.dat $(rainedata); fi"
