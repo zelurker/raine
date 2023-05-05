@@ -290,7 +290,7 @@ static menu_item_t video_items[] =
   { _("None"), "90°", "180°", "270°" } },
 { _("Flip screen"), NULL, (int*)&display_cfg.user_flip, 4, {0, 1, 2, 3 },
   { _("None"), _("Flip X"), _("Flip Y"), _("Flip XY") } },
-{ _("Save per game screen settings"), NULL, (int*)&raine_cfg.save_game_screen_settings, 2, {0, 1}, _("No"),_("Yes")},
+{ _("Save per game screen settings"), NULL, (int*)&raine_cfg.save_game_screen_settings, 2, {0, 1}, {_("No"),_("Yes")}},
 { _("Max FPS for drivers"), NULL, &ifps, ITEM_FLOATEDIT, { 10,0,180 }, { "", (char*)&max_fps, "1", "200" } },
 { _("Video information..."), &do_video, },
 {  NULL },

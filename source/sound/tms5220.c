@@ -685,7 +685,7 @@ tryagain:
         if (u[0] > 511)
             buffer[buf_count] = 127<<8;
         else if (u[0] < -512)
-            buffer[buf_count] = -128<<8;
+            buffer[buf_count] = -(128<<8);
         else
             buffer[buf_count] = u[0] << 6;
 
@@ -888,108 +888,108 @@ static int parse_frame(int the_first_frame)
         new_k[i] = 0;
 
     /* if the previous frame was a stop frame, don't do anything */
-	if ((! the_first_frame) && (old_energy == (energytable[15] >> 6)))
-		/*return 1;*/
-	{
-		buffer_empty = 1;
-		return 1;
-	}
+    if ((! the_first_frame) && (old_energy == (energytable[15] >> 6)))
+	/*return 1;*/
+    {
+	buffer_empty = 1;
+	return 1;
+    }
 
-	if (speak_external)
-    	/* count the total number of bits available */
-		bits = fifo_count * 8 - fifo_bits_taken;
+    if (speak_external)
+	/* count the total number of bits available */
+	bits = fifo_count * 8 - fifo_bits_taken;
 
     /* attempt to extract the energy index */
-	if (speak_external)
-	{
-    bits -= 4;
-    if (bits < 0)
-        goto ranout;
-	}
+    if (speak_external)
+    {
+	bits -= 4;
+	if (bits < 0)
+	    goto ranout;
+    }
     indx = extract_bits(4);
     new_energy = energytable[indx] >> 6;
 
-	/* if the index is 0 or 15, we're done */
-	if (indx == 0 || indx == 15)
-	{
-		if (DEBUG_5220) logerror("  (4-bit energy=%d frame)\n",new_energy);
+    /* if the index is 0 or 15, we're done */
+    if (indx == 0 || indx == 15)
+    {
+	if (DEBUG_5220) logerror("  (4-bit energy=%d frame)\n",new_energy);
 
-		/* clear fifo if stop frame encountered */
-		if (indx == 15)
-		{
-			fifo_head = fifo_tail = fifo_count = fifo_bits_taken = 0;
-			speak_external = tms5220_speaking = 0;
-			last_frame = 1;
-		}
-		goto done;
+	/* clear fifo if stop frame encountered */
+	if (indx == 15)
+	{
+	    fifo_head = fifo_tail = fifo_count = fifo_bits_taken = 0;
+	    speak_external = tms5220_speaking = 0;
+	    last_frame = 1;
 	}
+	goto done;
+    }
 
     /* attempt to extract the repeat flag */
-	if (speak_external)
-	{
-    bits -= 1;
-    if (bits < 0)
-        goto ranout;
-	}
+    if (speak_external)
+    {
+	bits -= 1;
+	if (bits < 0)
+	    goto ranout;
+    }
     rep_flag = extract_bits(1);
 
     /* attempt to extract the pitch */
-	if (speak_external)
-	{
-    bits -= 6;
-    if (bits < 0)
-        goto ranout;
-	}
+    if (speak_external)
+    {
+	bits -= 6;
+	if (bits < 0)
+	    goto ranout;
+    }
     indx = extract_bits(6);
     new_pitch = pitchtable[indx] / 256;
 
     /* if this is a repeat frame, just copy the k's */
     if (rep_flag)
     {
-        for (i = 0; i < 10; i++)
-            new_k[i] = old_k[i];
+	for (i = 0; i < 10; i++)
+	    new_k[i] = old_k[i];
 
-        if (DEBUG_5220) logerror("  (11-bit energy=%d pitch=%d rep=%d frame)\n", new_energy, new_pitch, rep_flag);
-        goto done;
+	if (DEBUG_5220) logerror("  (11-bit energy=%d pitch=%d rep=%d frame)\n", new_energy, new_pitch, rep_flag);
+	goto done;
     }
 
     /* if the pitch index was zero, we need 4 k's */
     if (indx == 0)
     {
-        /* attempt to extract 4 K's */
-		if (speak_external)
-		{
-        bits -= 18;
-        if (bits < 0)
-            goto ranout;
-		}
-        new_k[0] = k1table[extract_bits(5)];
-        new_k[1] = k2table[extract_bits(5)];
-        new_k[2] = k3table[extract_bits(4)];
-		if (variant == variant_tms0285)
-			new_k[3] = k3table[extract_bits(4)];	/* ??? */
-		else
-			new_k[3] = k4table[extract_bits(4)];
+	/* attempt to extract 4 K's */
+	if (speak_external)
+	{
+	    bits -= 18;
+	    if (bits < 0)
+		goto ranout;
+	}
+	new_k[0] = k1table[extract_bits(5)];
+	new_k[1] = k2table[extract_bits(5)];
+	new_k[2] = k3table[extract_bits(4)];
+	if (variant == variant_tms0285)
+	    new_k[3] = k3table[extract_bits(4)];	/* ??? */
+	else
+	    new_k[3] = k4table[extract_bits(4)];
 
-        if (DEBUG_5220) logerror("  (29-bit energy=%d pitch=%d rep=%d 4K frame)\n", new_energy, new_pitch, rep_flag);
-        goto done;
+	if (DEBUG_5220) logerror("  (29-bit energy=%d pitch=%d rep=%d 4K frame)\n", new_energy, new_pitch, rep_flag);
+	goto done;
     }
 
     /* else we need 10 K's */
-	if (speak_external)
-	{
-    bits -= 39;
-    if (bits < 0)
-        goto ranout;
-	}
+    if (speak_external)
+    {
+	bits -= 39;
+	if (bits < 0)
+	    goto ranout;
+    }
 
     new_k[0] = k1table[extract_bits(5)];
     new_k[1] = k2table[extract_bits(5)];
     new_k[2] = k3table[extract_bits(4)];
-	if (variant == variant_tms0285)
-		new_k[3] = k3table[extract_bits(4)];	/* ??? */
-	else
-		new_k[3] = k4table[extract_bits(4)];
+    if (variant == variant_tms0285)
+	new_k[3] = k3table[extract_bits(4)];	/* ??? */
+    else
+	new_k[3] = k4table[extract_bits(4)];
     new_k[4] = k5table[extract_bits(4)];
     new_k[5] = k6table[extract_bits(4)];
     new_k[6] = k7table[extract_bits(4)];
@@ -1000,21 +1000,21 @@ static int parse_frame(int the_first_frame)
     if (DEBUG_5220) logerror("  (50-bit energy=%d pitch=%d rep=%d 10K frame)\n", new_energy, new_pitch, rep_flag);
 
 done:
-	if (DEBUG_5220)
-	{
-		if (speak_external)
-			logerror("Parsed a frame successfully in FIFO - %d bits remaining\n", bits);
-		else
-			logerror("Parsed a frame successfully in ROM\n");
-	}
+    if (DEBUG_5220)
+    {
+	if (speak_external)
+	    logerror("Parsed a frame successfully in FIFO - %d bits remaining\n", bits);
+	else
+	    logerror("Parsed a frame successfully in ROM\n");
+    }
 
-	if (the_first_frame)
-	{
-		/* if this is the first frame, no previous frame to take as a starting point */
-		old_energy = new_energy;
-		old_pitch = new_pitch;
-		for (i = 0; i < 10; i++)
-			old_k[i] = new_k[i];
+    if (the_first_frame)
+    {
+	/* if this is the first frame, no previous frame to take as a starting point */
+	old_energy = new_energy;
+	old_pitch = new_pitch;
+	for (i = 0; i < 10; i++)
+	    old_k[i] = new_k[i];
     }
 
     /* update the buffer_low status */
@@ -1027,10 +1027,10 @@ ranout:
 
     /* this is an error condition; mark the buffer empty and turn off speaking */
     buffer_empty = 1;
-	talk_status = speak_external = tms5220_speaking = the_first_frame = last_frame = 0;
+    talk_status = speak_external = tms5220_speaking = the_first_frame = last_frame = 0;
     fifo_count = fifo_head = fifo_tail = 0;
 
-	RDB_flag = FALSE;
+    RDB_flag = FALSE;
 
     /* generate an interrupt if necessary */
     set_interrupt_state(1);

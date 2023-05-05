@@ -727,10 +727,8 @@ static void render_sprites(int n,int xscroll,int yscroll,int miny, int maxy) {
      R/W   ------xx xxxxxxxx      (3072: Link to next object)
      */
     UINT8 *map;
-    int nb = 0;
     while (!is_visited(n)) {
 	set_visited(n);
-	nb++;
 	UINT16 code = (ReadWord(&sprites[n*2]) ^ 0x800);
 	UINT16 link = ReadWord(&sprites[(n*2)+3072*2]) & 0x3ff;
 	code &= 0x7fff;

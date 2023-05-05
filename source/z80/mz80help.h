@@ -179,7 +179,6 @@ void soundcmd_wb(UINT32 offset,UINT8 data);
 void soundcmd_w_nonmi(UINT32 offset,UINT16 data);
 void soundcmd_wb_nonmi(UINT32 offset,UINT8 data);
 
-#ifdef RAINE_DEBUG
 // debuger functions
 int add_z80_debug_rb(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2);
 void remove_z80_debug_rb(UINT32 cpu, int index);
@@ -198,8 +197,6 @@ void allow_writebank(int allow);
 void add_z80_r(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void add_z80_w(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void add_z80_rw(UINT32 cpu, UINT32 d0, UINT32 d1, void *d2);
-
-#endif
 
 #ifdef __cplusplus
 }

@@ -570,7 +570,6 @@ void mwAbort( void ) {
 				errors ++;
 				mwWrite( "internal: NML/unfreed scan restarting\n" );
 				FLUSH();
-				mwHead = mwHead;
 				continue;
 			}
 			mwWrite( "internal: NML/unfreed scan aborted, heap too damaged\n" );
@@ -854,7 +853,8 @@ static int mwARI( const char *estr ) {
     int c;
     fprintf(mwSTDERR, "\n%s\nMEMWATCH: Abort, Retry or Ignore? ", estr);
     (void) fgets(inbuf,sizeof(inbuf),stdin);
-	for( c=0; inbuf[c] && inbuf[c] <= ' '; c++ ) ;
+	for( c=0; inbuf[c] && inbuf[c] <= ' '; c++ )
+	    ;
     c = inbuf[c];
     if( c == 'R' || c == 'r' ) {
         mwBreakOut( estr );
@@ -2428,7 +2428,6 @@ static void mwSIGSEGV( int n );
 
 static void mwSIGSEGV( int n )
 {
-	n = n;
 	longjmp( mwSIGSEGVjump, 1 );
 }
 

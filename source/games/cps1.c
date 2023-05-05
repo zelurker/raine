@@ -1635,7 +1635,7 @@ static UINT8 cps1_ioc_rb(UINT32 offset)
 	return input_buffer[(4+offset - cps1_game_config->in2_addr) ^ 1];
     else if (offset == cps1_game_config->in3_addr || offset == cps1_game_config->in3_addr+1)
 	return input_buffer[(6+offset - cps1_game_config->in3_addr) ^ 1];
-    else if (sf2m3 && abs(offset - 0x186) <= 1)
+    else if (sf2m3 && (offset - 0x186) <= 1)
 	return input_buffer[5];
     else if (sf2m3 && (offset == 0x10 || offset == 0x11))
 	return input_buffer[(2+offset-0x10)^1];
@@ -2274,10 +2274,6 @@ static void qsound_sharedram1_w(UINT32 offset, UINT16 data)
 
 static void qsound_sharedram1_wb(UINT32 offset, UINT8 data)
 {
-#if RAINE_DEBUG
-    if (offset < 0x619000)
-	printf("qsound %x,%x\n",offset,data);
-#endif
 
   offset = ((offset & 0x1fff) >> 1);
   if (!handle_cps2_cmd(qsound_sharedram1,offset,data)) {
@@ -3059,15 +3055,12 @@ void execute_cps2_frame(void)
   if (min1 < 224) {
       if (get_speed_hack()) {
 	  int size_code = get_region_size(REGION_CPU1);
-	  int nb=0;
 	  while (s68000_pc > size_code || s68000_sr & 0x200) {
 	      // outside of rom or in vbl
 	      // 5 lines of frame execution to get out of it
 	      // once is enough for msh...
 	      cpu_execute_cycles(CPU_68K_0,default_frame*5/262);
-	      nb++;
 	  }
-	  // printf("sorti en %d fois\n",nb);
 	  undo_hack();
 	  frame_68k = default_frame;
 	  stopped_speed = 1;
@@ -3943,7 +3936,7 @@ static void render_layer(int layer,int mask)
   if (cps1_layer_enabled[layer] && check_layer_enabled(layer_id_data[layer])){
 
     switch(layer) {
-    case 0: render_sprites(mask); break;
+    case 0: render_sprites(); break;
     case 1: render_scroll1(mask); break;
     case 2: cps1_render_scroll2(mask); break;
     case 3: render_scroll3(mask); break;

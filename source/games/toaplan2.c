@@ -5689,13 +5689,13 @@ static const int toaplan2_interrupt[ROM_COUNT] =
 static void execute_kbash(void)
 {
     start_frame = cpu_get_cycles_done(CPU_68K_0);
-   if((romset==8)){
+   if(romset==8){
 
       update_paddle();
 
    }
 
-   if((romset==11)){
+   if(romset==11){
 
       cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));    // M68000 28MHz (60fps)
       cpu_interrupt(CPU_68K_0, 2);
@@ -5732,7 +5732,7 @@ static void execute_kbash(void)
       //cpu_interrupt(CPU_Z80_0, 0x38);
    }
 
-   if((romset==11)){
+   if(romset==11){
 
      if(sound_nmi){
        sound_nmi = 0;
@@ -5742,7 +5742,7 @@ static void execute_kbash(void)
 
 
    }
-   if((romset==14)){
+   if(romset==14){
      execute_z80_audio_frame();
    }
 

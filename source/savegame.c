@@ -547,7 +547,7 @@ void NewLoad(gzFile fin)
 
    switch(t_id){
       case SAVE_RAM:
-	 if (abs(t_size-RAMSize) > 0x10000) {
+	 if ((t_size-RAMSize) > 0x10000) {
 		 print_dbg("endianess bug detected, ramsize = %x instead of %x\n",t_size,RAMSize);
 		 gzseek(fin,-4,SEEK_CUR);
 		 t_size = mgetl(fin);

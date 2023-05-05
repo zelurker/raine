@@ -29,7 +29,7 @@ class TCheatDlg : public TMenu
       if (sel < CheatCount) {
 	snprintf(cheat_info,512,"Info: %s",CheatList[sel].info);
       } else {
-	snprintf(cheat_info,512,get_script_comment(sel));
+	snprintf(cheat_info,512,"%s",get_script_comment(sel));
       }
       cheat_info[511] = 0;
       return cheat_info;

@@ -444,7 +444,7 @@ static void cookbib_draw_8x8_layer(int scrollx,int scrolly, int palbase, UINT8 *
 				     map
 				     );
 
-	      if((GFX_TILE8x8_SOLID[tileno]==1))
+	      if(GFX_TILE8x8_SOLID[tileno]==1)
 		{
 		  Draw8x8_Trans_Mapped_Rot(&GFX_TILE8x8[tileno<<6], x, y, map);
 		}
@@ -568,7 +568,7 @@ static void jumppop_draw_layer8(int scrollx,int scrolly, int palbase, UINT8 *PFR
 
 	  if( GFX_TILE8x8_SOLID[tileno] )
 	    {
-	      if((GFX_TILE8x8_SOLID[tileno]==1))
+	      if(GFX_TILE8x8_SOLID[tileno]==1)
 		{
 		  Draw8x8_Trans_Mapped_Rot(&GFX_TILE8x8[tileno<<6], x, y, map);
 		}
@@ -604,7 +604,7 @@ static void jumppop_draw_layer16(int scrollx,int scrolly, int palbase, UINT8 *PF
 
 	  if( GFX_TILE16x16_SOLID[tileno] )
 	    {
-	      if((GFX_TILE16x16_SOLID[tileno]==1))
+	      if(GFX_TILE16x16_SOLID[tileno]==1)
 		{
 		  Draw16x16_Trans_Mapped_Rot(&GFX_TILE16x16[tileno<<8], x, y, map);
 		}

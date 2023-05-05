@@ -532,7 +532,7 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	// For the z80 all the rombase is executable, so...
 	*start = 0;
 	*end = 0xffff;
-	UINT8 *base = mz80GetBase(cpu & 0xf);
+	u8 *base = mz80GetBase(cpu & 0xf);
 	int n;
 	for (n=REGION_CPU1; n<=REGION_CPU4; n++)
 	    if (base == load_region[n]) {

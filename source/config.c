@@ -1145,7 +1145,7 @@ void find_romof(const struct DIR_INFO *dir_list, int *romof) {
 
 static void GameInfo(GAME_MAIN *game_info)
 {
-   int tb,tc,td,romof,cloneof,dup;
+   int tb,tc,td,romof,dup;
    const DIR_INFO *dir_list;
    const ROM_INFO *rom_list, *rom_list_tmp;
    const DSW_INFO *dsw;
@@ -1212,8 +1212,6 @@ static void GameInfo(GAME_MAIN *game_info)
 
    */
 
-   cloneof = 0;
-
    dir_list = game_info->dir_list;
 
    while(dir_list->maindir){
@@ -1221,8 +1219,6 @@ static void GameInfo(GAME_MAIN *game_info)
       if(dir_list->maindir[0] == '$'){
 
             printf(INDENT "cloneof %s\n", (dir_list->maindir) + 1 );
-
-            cloneof ++;
 
       }
 

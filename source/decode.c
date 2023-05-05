@@ -56,18 +56,6 @@ void decode_ssmissin(void)
     }
 }
 
-static DEF_INLINE UINT8 encode_byte(UINT8 src, UINT8 *bitp)
-{
-   UINT8 ret;
-   UINT8 ta;
-
-   ret=0;
-   for(ta=0;ta<8;ta++)
-      ret |= (((src>>(7-ta))&1) << bitp[ta]);
-
-   return ret;
-}
-
 static DEF_INLINE UINT16 decode_word(UINT16 src, UINT8 *bitp)
 {
    UINT16 ret;
@@ -76,18 +64,6 @@ static DEF_INLINE UINT16 decode_word(UINT16 src, UINT8 *bitp)
    ret=0;
    for(ta=0;ta<16;ta++)
       ret |= (((src>>bitp[ta])&1) << (15-ta));
-
-   return ret;
-}
-
-static DEF_INLINE UINT16 encode_word(UINT16 src, UINT8 *bitp)
-{
-   UINT16 ret;
-   UINT8 ta;
-
-   ret=0;
-   for(ta=0;ta<16;ta++)
-      ret |= (((src>>(15-ta))&1) << bitp[ta]);
 
    return ret;
 }

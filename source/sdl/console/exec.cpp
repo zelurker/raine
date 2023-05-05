@@ -627,7 +627,7 @@ static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
 }
 
 void do_list(int argc, char **argv) {
-  int offset, line;
+  int offset = 0, line;
   static UINT32 last_list_adr, last_list_pc;
   static char buffadr[10];
   int cpu_id = get_cpu_id();
@@ -773,7 +773,7 @@ void do_irq(int argc, char **argv) {
   if (cpu_id == 2) {
       if ((int(iff)&1))
 	  throw "z80: not in an irq !";
-      while (!((int) iff) & 1)
+      while (!(int (iff) & 1))
 	  do_cycles();
   }
   if (cpu_id != 2) {

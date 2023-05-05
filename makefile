@@ -22,6 +22,12 @@ VERSION = "0.95.4b"
 # Be verbose ?
 # VERBOSE = 1
 
+# Uncomment to use clang instead of gcc.
+# It works, it produces more warnings for the debug builds which allowed me to fix a few things.
+# I don't know if it produces a faster binary in optimized build... !
+# You'll need clang and clang++ of course, tested in 32 bits debug and optimized builds
+# USE_CLANG=1
+
 # use curl to try to get unavailable roms from rom archive ?
 # curl is a nice idea, the problem is that it requires a ton of dlls in
 # windows
@@ -132,8 +138,13 @@ CC=${target}-gcc
 CXX=${target}-g++
 INCDIR = -I/usr/${target}/include
 else
-CC=gcc
-CXX=g++
+ifdef USE_CLANG
+	CC=clang
+	CXX=clang++
+else
+	CC=gcc
+	CXX=g++
+endif
 endif
 
 ifeq ("$(shell uname)","Darwin")
@@ -656,8 +667,15 @@ endif
 # The -fno-stack-protector is because of a stack smash which happens on only 1 computer and which does not make any sense at all !
 # see comment in TConsole::TConsole
 ifdef RAINE_DEBUG
-CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation
-CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -Wno-format-truncation -fno-stack-protector
+CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -fno-stack-protector
+ifndef USE_CLANG
+	CFLAGS_MCU += -Wno-format-truncation
+	CFLAGS += -Wno-format-truncation
+else
+	CFLAGS_MCU += -Wno-initializer-overrides -Wno-invalid-source-encoding
+	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding
+endif
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
 # the 68020 core in dos. -Wno-trigraphs suppress some anoying warnings with
@@ -666,7 +684,7 @@ else
 
 ifdef RAINE32
 # when starting a game -> black screen if -O > 1 (bug in uint64 calculation)
-CFLAGS += -O3
+CFLAGS += -O2
 else
 # Seems to work now, at least with the sdl version ? (to be tested with windows !)
 CFLAGS = -O3
@@ -1270,8 +1288,10 @@ OBJS += $(OBJDIR)/sdl2/sdl_sound/SDL_sound.o \
 endif
 ifdef target
 CFLAGS += $(shell /usr/${target}/bin/${SDLCONFIG} --cflags)
+CFLAGS_MCU += $(shell /usr/${target}/bin/${SDLCONFIG} --cflags)
 else
 CFLAGS += $(shell ${SDLCONFIG} --cflags)
+CFLAGS_MCU += $(shell ${SDLCONFIG} --cflags)
 endif
 ifdef RAINE32
 # I was unable to build a dll for SDL_sound or FLAC. So they must be here first

@@ -119,7 +119,7 @@ const int nb_companies = sizeof(company_name)/4;
 #ifndef RAINE_WIN32
 // st_atime is to say the least unreliable in windows, it's really a bad idea to initialize this based on that
 static void init_recent() {
-    int n,nb = 0;
+    int n;
     for (n=0; n<game_count; n++) {
 	if (!game_list[n]->last_played) {
 	    struct stat buf;
@@ -132,7 +132,6 @@ static void init_recent() {
 	    }
 	    if (!ret) {
 		game_list[n]->last_played = buf.st_atim.tv_sec;
-		nb++;
 	    }
 	}
     }

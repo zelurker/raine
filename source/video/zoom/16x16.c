@@ -74,19 +74,24 @@ void init_16x16_zoom(void)
 UINT8 *make_16x16_zoom_ofs_type1(void)
 {
 	UINT8 *zoom16_ofs;
-	int ta,tb,tc,td;
+	int ta,tb,tc;
+#ifdef DEBUG_TABLES
+	int td;
+#endif
 
 	zoom16_ofs = AllocateMem(256*32);
 
 	for(ta=0;ta<256;ta++){
+#ifdef DEBUG_TABLES
 		td=0;
+#endif
 		for(tb=0;tb<32;tb++){
 			tc = ((((tb+1)*16)*(ta+1))/256) - (((tb*16)*(ta+1))/256);
 			zoom16_ofs[((255-ta)*32)+(31-tb)] = tc;
 #ifdef DEBUG_TABLES
 			print_debug("%02x ",tc);
-#endif
 			td += tc;
+#endif
 		}
 #ifdef DEBUG_TABLES
 		print_debug("[%02x]\n",td);
@@ -102,19 +107,24 @@ UINT8 *make_16x16_zoom_ofs_type1(void)
 UINT8 *make_16x16_zoom_ofs_type1z(void)
 {
 	UINT8 *zoom16_ofs;
-	int ta,tb,tc,td;
+	int ta,tb,tc;
+#ifdef DEBUG_TABLES
+	int td;
+#endif
 
 	zoom16_ofs = AllocateMem(128*8);
 
 	for(ta=0;ta<128;ta++){
+#ifdef DEBUG_TABLES
 		td=0;
+#endif
 		for(tb=0;tb<8;tb++){
 			tc = ((((tb+1)*16)*(ta+1))/128) - (((tb*16)*(ta+1))/128);
 			zoom16_ofs[(ta*8)+(7-tb)] = tc;
 #ifdef DEBUG_TABLES
 			print_debug("%02x ",tc);
-#endif
 			td += tc;
+#endif
 		}
 #ifdef DEBUG_TABLES
 		print_debug("[%02x]\n",td);
@@ -127,19 +137,24 @@ UINT8 *make_16x16_zoom_ofs_type1z(void)
 UINT8 *make_16x16_zoom_ofs_type1zz(void)
 {
 	UINT8 *zoom16_ofs;
-	int ta,tb,tc,td;
+	int ta,tb,tc;
+#ifdef DEBUG_TABLES
+	int td;
+#endif
 
 	zoom16_ofs = AllocateMem(64*4);
 
 	for(ta=0;ta<64;ta++){
+#ifdef DEBUG_TABLES
 		td=0;
+#endif
 		for(tb=0;tb<4;tb++){
 			tc = ((((tb+1)*16)*(ta+1))/64) - (((tb*16)*(ta+1))/64);
 			zoom16_ofs[(ta*4)+(3-tb)] = tc;
 #ifdef DEBUG_TABLES
 			print_debug("%02x ",tc);
-#endif
 			td += tc;
+#endif
 		}
 #ifdef DEBUG_TABLES
 		print_debug("[%02x]\n",td);
@@ -196,19 +211,24 @@ void init_16x16_zoom_32(void)
 UINT8 *make_16x16_zoom_ofs_type2(void)
 {
 	UINT8 *zoom16_ofs;
-	int ta,tb,tc,td;
+	int ta,tb,tc;
+#ifdef DEBUG_TABLES
+	int td;
+#endif
 
 	zoom16_ofs = AllocateMem(128*4);
 
 	for(ta=0;ta<128;ta++){
+#ifdef DEBUG_TABLES
 		td=0;
+#endif
 		for(tb=0;tb<4;tb++){
 			tc = ((((tb+1)*16)*(ta+1))/64) - (((tb*16)*(ta+1))/64);
 			zoom16_ofs[((ta)*4)+(3-tb)] = tc;
 #ifdef DEBUG_TABLES
 			print_debug("%02x ",tc);
-#endif
 			td += tc;
+#endif
 		}
 #ifdef DEBUG_TABLES
 		print_debug("[%02x]\n",td);

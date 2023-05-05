@@ -1949,7 +1949,6 @@ static void load_hotdogst(void)
 
 static void load_esprade(void)
 {
-  UINT32 hack_adr;
   romset = 0;
 
   setup_nolayouts();
@@ -1974,12 +1973,11 @@ static void load_esprade(void)
 
   // 68000 speed hack
 
-   if (!strcmp(current_game->main_name,"espradeo")) // normal
-     hack_adr = 0x4f156;
-   else if (!strcmp(current_game->main_name,"espradej")) // japan
-     hack_adr = 0x4f158;
-   else if (!strcmp(current_game->main_name,"esprade")) // new set
-     hack_adr = 0x4f382;
+  u32 hack_adr = 0x4f382; // esprade
+  if (!strcmp(current_game->main_name,"espradeo")) // normal
+      hack_adr = 0x4f156;
+  else if (!strcmp(current_game->main_name,"espradej")) // japan
+      hack_adr = 0x4f158;
 
   InitPaletteMap(RAM+0x38000, 0x80, 0x100, 0x8000);
   init_16x16_zoom_64();

@@ -312,23 +312,21 @@ static UINT8 *z_step;
 static UINT8 *make_16x16_zoom_ofs_type3b(void)
 {
    UINT8 *zoom16_ofs;
-   int ta,tb,tc,td;
+   int ta,tb,tc;
 
    zoom16_ofs = AllocateMem(128*32);
 
    for(ta=0;ta<128;ta++){
-      td=0;
       for(tb=0;tb<32;tb++){
          tc = ((((tb+1)*16)*(ta+1))/64) - (((tb*16)*(ta+1))/64) + 16;
          zoom16_ofs[((ta)*32)+(31-tb)] = tc;
-         #ifdef DEBUG_TABLES
+#ifdef DEBUG_TABLES
          print_debug("%02x ",tc);
-         #endif
-         td += tc;
+#endif
       }
-      #ifdef DEBUG_TABLES
+#ifdef DEBUG_TABLES
       print_debug("[%02x]\n",td);
-      #endif
+#endif
    }
 
    return zoom16_ofs;

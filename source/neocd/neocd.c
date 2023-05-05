@@ -2311,7 +2311,7 @@ void postprocess_ipl() {
 	  int fps = raine_cfg.show_fps_mode;
 	  raine_cfg.show_fps_mode = 0;
 	  clear_ingame_message_list();
-	  clear_screen(0);
+	  clear_game_screen(0);
 	  DrawNormal();
 	  raine_cfg.show_fps_mode = fps;
   }
@@ -2541,7 +2541,7 @@ static void write_upload_word(UINT32 offset, UINT16 data) {
 }
 
 UINT8 *get_target(UINT32 target,int *size) {
-    UINT8 *dst;
+    UINT8 *dst = NULL;
     if (target < 0x200000)
 	dst = &RAM[target];
     else if (target >= 0x400000 && target < 0x402000) {
@@ -2552,7 +2552,6 @@ UINT8 *get_target(UINT32 target,int *size) {
     } else if (target >= 0xe00000) {
 	if (upload_type == 0) { // spr
 	    /* Huge hack !!! */
-	    dst = NULL;
 	    print_debug("target in sprites\n");
 	} else if (upload_type == 1) { // pcm
 	    target = ((target & 0xfffff)>>1) + (pcm_bank<<19);
@@ -4274,7 +4273,7 @@ static void mslugx_prot_w(UINT32 offset, UINT16 data) {
 }
 
 static UINT16 mslugx_prot_r(UINT32 offset) {
-    UINT16 res;
+    UINT16 res = 0;
     switch(mslugx_command) {
     case 1: res = (ROM[(0xdedd2 + ((mslugx_counter >> 3) & 0xfff)) ^ 1] >> (~mslugx_counter & 0x07)) & 1;
 	    mslugx_counter++;

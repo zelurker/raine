@@ -764,13 +764,13 @@ static struct DSW_INFO dsw_truxton[] =
 #define MAX_PRI         32              // 32 levels of priority
 #define MAX_TILES       0x8000          // 0x4000*0x14=0x60000
 
-static struct TILE_Q
+struct TILE_Q
 {
    UINT32 tile;                          // Tile number
    UINT32 x,y;                           // X,Y position
    UINT8 *map;                          // Colour map data
    struct TILE_Q *next;                 // Next item with equal priority
-} TILE_Q;
+};
 
 static struct TILE_Q *TileQueue;               // full list
 static struct TILE_Q *last_tile;               // last tile in use
@@ -1402,7 +1402,7 @@ static char *layer_id_name[5] =
 
 static int tp1_setup_gfx() {
   GFX_BG0 = NULL;
-  if(!(TileQueue = (struct TILE_Q *) AllocateMem(sizeof(TILE_Q)*MAX_TILES)))return -1;
+  if(!(TileQueue = (struct TILE_Q *) AllocateMem(sizeof(struct TILE_Q)*MAX_TILES)))return -1;
   AddResetHandler(&quiet_reset_handler);
   return 0;
 }

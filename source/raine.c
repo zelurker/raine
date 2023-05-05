@@ -214,7 +214,7 @@ int main(int argc,char *argv[])
     setvbuf(stderr,NULL,_IONBF,0);
 #endif
    int i;
-   unsigned int version_id;
+   unsigned int version_id = 0;
 #ifndef SDL
    int ta;
 #endif

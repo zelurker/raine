@@ -296,7 +296,7 @@ static void crospang_draw_16x16_layer(int scrollx,int scrolly, int palbase, UINT
 				     map
 				     );
 
-	      if((gfx1_solid[tileno]==1))
+	      if(gfx1_solid[tileno]==1)
 		{
 		  Draw16x16_Trans_Mapped_Rot(&gfx1[tileno<<8], x, y, map);
 		}

@@ -538,13 +538,13 @@ static void load_tokib(void)
 #if 1
 static void execute_tokib(void)
 {
-   static int ta;
+   // static int ta;
 
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(16,60));	// M68000 12MHz (60fps)
    cpu_interrupt(CPU_68K_0, 1);
    cpu_execute_cycles(CPU_68K_0, CPU_FRAME_MHz(4,60));	// Sync
 
-   ta++;
+   // ta++;
 
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(1,60));       // Z80 4MHz (60fps) Timer on YM3812 needs fixing!!
    cpu_execute_cycles(CPU_Z80_0, CPU_FRAME_MHz(1,60));       // Z80 4MHz (60fps)
