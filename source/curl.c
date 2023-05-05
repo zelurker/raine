@@ -98,7 +98,7 @@ int get_url(char *file, char *url)
   strncat(fname,s,20);
   snprintf(fname2,30,"Roms.zip/%s",s);
   total_size = 0;
-  FILE *f = fopen("index_roms.html","r");
+  FILE *f = fopen(get_shared("index_roms.html"),"r");
   if (f) {
       char buff[256];
       while (!feof(f)) {

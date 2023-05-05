@@ -130,7 +130,6 @@ void sdl_create_overlay( int w, int h);
 #define create_bitmap_ex sdl_create_bitmap_ex
 #define create_bitmap(w, h) sdl_create_bitmap_ex(display_cfg.bpp,w,h)
 
-extern void load_message(char *);
 #include "SDL_gfx/SDL_rotozoom.h"
 
 #define load_explicit_progress(a,b) load_progress("emudx",(a)*100/(b))

@@ -226,7 +226,6 @@ int load_rom_index(UINT32 num, UINT8 *dest, UINT32 size);
 int load_rom_dir(const DIR_INFO *dir_list, char *rom, UINT8 *dest, UINT32 size, UINT32 crc32,int actual_load);
 
 int rom_size_dir(const DIR_INFO *dir_list, char *rom, UINT32 size, UINT32 crc32);
-void load_message(char *);
 
 // unpacking sprites (2 x 4 bits -> 1 byte)
 void unpack_region_lsb(UINT32 region);

@@ -1239,6 +1239,7 @@ beg:
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
 	   setup_curl_dlg(name);
 	   int ret = get_url(path,url);
+	   setup_curl_dlg(NULL);
 	   if (ret) {
 	       sprintf(load_debug+strlen(load_debug),"No %s.zip on internet archive\n",dir);
 	   } else
