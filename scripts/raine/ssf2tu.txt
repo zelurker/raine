@@ -1,4 +1,4 @@
-script "Infinite Time"  
+script "Infinite Time"
 run:
     if peek($FF8DCE)>01
       dpoke $FF8DCE $9928
@@ -10,10 +10,10 @@ run:
     if dpeek($FF88D6)==$0101
       dpoke $FF886C $0258
     endif
-script "Finish this Round Now!"  
+script "Finish this Round Now!"
 on:
     dpoke $FF8DCE $0101
-script "Disable projectile impact slowdown"  
+script "Disable projectile impact slowdown"
 run:
     if (peek($FF8478)!=$FF)and(peek($FF8878)!=$FF)
       poke $FF82F2 $00
@@ -30,7 +30,7 @@ script "Select Starting Stage" \
  "0x08/Stage 9 (Boxer)"\
  "0x09/Stage 10 (Claw)"\
  "0x0A/Stage 11 (Sagat)"\
- "0x0B/Stage 12 (Dictator)" 
+ "0x0B/Stage 12 (Dictator)"
 run:
     if (peek($FF8C51)==$00)
       poke $FF8C51 param
@@ -51,13 +51,13 @@ script "Select Background" \
  "0x0C/Cammy"\
  "0x0D/T.Hawk"\
  "0x0E/Fei Long"\
- "0x0F/Dee Jay" 
+ "0x0F/Dee Jay"
 run:
     dpoke $FFE18A param
 script "Select Ending" \
  "1/No Losses (Akuma/Gouki)"\
  "2/No Continues (Akuma/Gouki)"\
- "3/Normal (Dictator)" 
+ "3/Normal (Dictator)"
 run:
     poke $FF831A $00
     if param==$1
@@ -70,7 +70,7 @@ run:
       poke $FF831A $01
     endif
 script "Turbo Mode!" \
- "comm:Characters move faster"  
+ "comm:Characters move faster"
 run:
     poke $FF82ED $01
 script "Select Speed" \
@@ -79,7 +79,7 @@ script "Select Speed" \
  "0x70/Turbo 2 (Japan)/Turbo 1 (other)"\
  "0x60/Turbo 3 (Japan)/Turbo 2 (other)"\
  "0x50/Turbo 4 (Japan)/Turbo 3 (other)"\
- "0x00/Maximum frameskip (double speed)" 
+ "0x00/Maximum frameskip (double speed)"
 run:
     poke $FF8CD3 param
 off:
@@ -97,8 +97,8 @@ off:
     if (temp0==$3)or((temp0==$4)and(temp1==$2))
       poke $FF8CD3 $0x50
     endif
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     if (dpeek($FF8478)<$60)and((peek($FF8451)&$10)==$00)
       dpoke $FF8478 $90
@@ -106,55 +106,55 @@ run:
     endif
 script "P1 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF84AA param
     dpoke $FF84AC param
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF8479 $00
     poke $FF860B $00
-script "P1 Infinite Power"  
+script "P1 Infinite Power"
 run:
     if dpeek($FF8008)==$A
       poke $FF8702 $30
     endif
-script "P1 Set Power = 0 Now!"  
+script "P1 Set Power = 0 Now!"
 on:
     poke $FF8702 $00
-script "P1 Invincibility"  
+script "P1 Invincibility"
 run:
     poke $FF860D $01
-script "P1 Have Sprite Trails"  
+script "P1 Have Sprite Trails"
 run:
     poke $FF8703 $01
-script "P1 Set Sets won = 0 Now!"  
+script "P1 Set Sets won = 0 Now!"
 on:
     poke $FF87DE $00
-script "P1 Set Sets won = 1 Now!"  
+script "P1 Set Sets won = 1 Now!"
 on:
     poke $FF87DE $01
-script "P1 Set Sets won = 2 Now!"  
+script "P1 Set Sets won = 2 Now!"
 on:
     poke $FF87DE $02
-script "P1 Sets won always = 0"  
+script "P1 Sets won always = 0"
 run:
     poke $FF87DE $00
-script "P1 Sets won always = 2"  
+script "P1 Sets won always = 2"
 run:
     poke $FF87DE $02
-script "P1 Command during jump"  
+script "P1 Command during jump"
 run:
     poke $FF85CF $00
-script "P1 Always motion cancel"  
+script "P1 Always motion cancel"
 run:
     poke $FF8467 $01
 script "P1 Hadouken motion cancel" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF846C $01
 script "P1 No limit next shot" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8622 $00
     poke $FF8623 $00
@@ -166,13 +166,13 @@ script "P1 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if (peek(FF844E+$391)==$0A)and(peek(FF844E+$3BD)==$00)
       dpoke ($FF844E+$B6) param
       dpoke ($FF844E+$B8) param
     endif
-script "P1 Easy charge moves"  
+script "P1 Easy charge moves"
 run:
     temp0=peek($FF844E+$391)
     temp1=peek($FF844E+$3B6)
@@ -270,7 +270,7 @@ run:
     if (temp0==$F)and(temp1==$0)and(peek(FF844E+$AF)<=$02)
       poke ($FF844E+$B0) $01
     endif
-script "P1 Easy button tap moves"  
+script "P1 Easy button tap moves"
 run:
     temp0=peek($FF844E+$391)
     temp1=peek($FF844E+$3B6)
@@ -307,7 +307,7 @@ run:
     if ((temp0==$2)or(temp0==$5))and(peek(FF844E+$9E)<$3)
       poke ($FF844E+$9E) $3
     endif
-script "P1 Easy QCF + QCB moves"  
+script "P1 Easy QCF + QCB moves"
 run:
     temp0=peek($FF844E+$391)
     temp1=peek($FF844E+$3B6)
@@ -338,7 +338,7 @@ run:
       poke ($FF844E+$90) $04
       poke ($FF844E+$A0) $04
     endif
-script "P1 Easy F,D,DF + B,D,DB moves"  
+script "P1 Easy F,D,DF + B,D,DB moves"
 run:
     temp0=peek($FF844E+$391)
     if peek($FF844E+$3BD)!=$0
@@ -378,7 +378,7 @@ run:
       dpoke ($FF844E+$9E) $0608
       poke ($FF844E+$A5) $06
     endif
-script "P1 Easy 360 + half-circle moves"  
+script "P1 Easy 360 + half-circle moves"
 run:
     temp0=peek($FF844E+$391)
     temp1=peek($FF844E+$3B6)
@@ -418,7 +418,7 @@ run:
     if (temp0==$D)and(peek(FF844E+$12)==$0)
       lpoke ($FF844E+$91) $05060800
     endif
-script "P1 Easy F,DF,D + tiger-knee moves"  
+script "P1 Easy F,DF,D + tiger-knee moves"
 run:
     temp0=peek($FF844E+$391)
     temp1=peek($FF844E+$3B6)
@@ -443,7 +443,7 @@ run:
     if (temp0==$E)and(temp1==$0)
       poke ($FF844E+$B4) $06
     endif
-script "P1 Easy super moves"  
+script "P1 Easy super moves"
 run:
     temp0=peek($FF844E+$391)
     if (peek($FF844E)==$0)or(peek(FF844E+$3BD)!=$0)or(peek(FF844E+$3B6)!=$0)
@@ -521,7 +521,7 @@ script "P1 Select Character" \
  "0x0D/T. Hawk"\
  "0x0E/Fei Long"\
  "0x0F/Dee Jay"\
- "0x10/#Akuma/Gouki" 
+ "0x10/#Akuma/Gouki"
 run:
     if param<=0F
       poke $FF87DF param
@@ -535,7 +535,7 @@ run:
 script "P1 Select Character Mode" \
  "comm:Use on the character select screen." \
  "0x01/Old (SSF2)"\
- "0x00/New (SSF2T)" 
+ "0x00/New (SSF2T)"
 run:
     poke $FF8804 param
 script "P1 Select Colour" \
@@ -548,13 +548,13 @@ script "P1 Select Colour" \
  "0x06/Start button"\
  "0x07/Hold any P/K button"\
  "0x08/SSF2 primary"\
- "0x09/SSF2 alternate" 
+ "0x09/SSF2 alternate"
 run:
     if peek($FF880B)==$00
       poke $FF87FF param
     endif
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     if (dpeek($FF8878)<$60)and((peek($FF8851)&$10)==$00)
       dpoke $FF8878 $90
@@ -562,55 +562,55 @@ run:
     endif
 script "P2 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF88AA param
     dpoke $FF88AC param
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF8879 $00
     poke $FF8A0B $00
-script "P2 Infinite Power"  
+script "P2 Infinite Power"
 run:
     if dpeek($FF8008)==$A
       poke $FF8B02 $30
     endif
-script "P2 Set Power = 0 Now!"  
+script "P2 Set Power = 0 Now!"
 on:
     poke $FF8B02 $00
-script "P2 Invincibility"  
+script "P2 Invincibility"
 run:
     poke $FF8A0D $90
-script "P2 Have Sprite Trails"  
+script "P2 Have Sprite Trails"
 run:
     poke $FF8B03 $01
-script "P2 Set Sets won = 0 Now!"  
+script "P2 Set Sets won = 0 Now!"
 on:
     poke $FF8BDE $00
-script "P2 Set Sets won = 1 Now!"  
+script "P2 Set Sets won = 1 Now!"
 on:
     poke $FF8BDE $01
-script "P2 Set Sets won = 2 Now!"  
+script "P2 Set Sets won = 2 Now!"
 on:
     poke $FF8BDE $02
-script "P2 Sets won always = 0"  
+script "P2 Sets won always = 0"
 run:
     poke $FF8BDE $00
-script "P2 Sets won always = 2"  
+script "P2 Sets won always = 2"
 run:
     poke $FF8BDE $02
-script "P2 Command during jump"  
+script "P2 Command during jump"
 run:
     poke $FF89CF $00
-script "P2 Always motion cancel"  
+script "P2 Always motion cancel"
 run:
     poke $FF8867 $01
 script "P2 Hadouken motion cancel" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF886C $01
 script "P2 No limit next shot" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8A22 $00
     poke $FF8A23 $00
@@ -622,13 +622,13 @@ script "P2 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if (peek(FF884E+$391)==$0A)and(peek(FF884E+$3BD)==$00)
       dpoke ($FF884E+$B6) param
       dpoke ($FF884E+$B8) param
     endif
-script "P2 Easy charge moves"  
+script "P2 Easy charge moves"
 run:
     temp0=peek($FF884E+$391)
     temp1=peek($FF884E+$3B6)
@@ -726,7 +726,7 @@ run:
     if (temp0==$F)and(temp1==$0)and(peek(FF884E+$AF)<=$02)
       poke ($FF884E+$B0) $01
     endif
-script "P2 Easy button tap moves"  
+script "P2 Easy button tap moves"
 run:
     temp0=peek($FF884E+$391)
     temp1=peek($FF884E+$3B6)
@@ -763,7 +763,7 @@ run:
     if ((temp0==$2)or(temp0==$5))and(peek(FF884E+$9E)<$3)
       poke ($FF884E+$9E) $3
     endif
-script "P2 Easy QCF + QCB moves"  
+script "P2 Easy QCF + QCB moves"
 run:
     temp0=peek($FF884E+$391)
     temp1=peek($FF884E+$3B6)
@@ -794,7 +794,7 @@ run:
       poke ($FF884E+$90) $04
       poke ($FF884E+$A0) $04
     endif
-script "P2 Easy F,D,DF + B,D,DB moves"  
+script "P2 Easy F,D,DF + B,D,DB moves"
 run:
     temp0=peek($FF884E+$391)
     if peek($FF884E+$3BD)!=$0
@@ -834,7 +834,7 @@ run:
       dpoke ($FF884E+$9E) $0608
       poke ($FF884E+$A5) $06
     endif
-script "P2 Easy 360 + half-circle moves"  
+script "P2 Easy 360 + half-circle moves"
 run:
     temp0=peek($FF884E+$391)
     temp1=peek($FF884E+$3B6)
@@ -874,7 +874,7 @@ run:
     if (temp0==$D)and(peek(FF884E+$12)==$0)
       lpoke ($FF884E+$91) $05060800
     endif
-script "P2 Easy F,DF,D + tiger-knee moves"  
+script "P2 Easy F,DF,D + tiger-knee moves"
 run:
     temp0=peek($FF884E+$391)
     temp1=peek($FF884E+$3B6)
@@ -899,7 +899,7 @@ run:
     if (temp0==$E)and(temp1==$0)
       poke ($FF884E+$B4) $06
     endif
-script "P2 Easy super moves"  
+script "P2 Easy super moves"
 run:
     temp0=peek($FF884E+$391)
     if (peek($FF884E)==$0)or(peek(FF884E+$3BD)!=$0)or(peek(FF884E+$3B6)!=$0)
@@ -977,7 +977,7 @@ script "P2 Select Character" \
  "0x0D/T. Hawk"\
  "0x0E/Fei Long"\
  "0x0F/Dee Jay"\
- "0x10/#Akuma/Gouki" 
+ "0x10/#Akuma/Gouki"
 run:
     if param<=0F
       poke $FF8BDF param
@@ -991,7 +991,7 @@ run:
 script "P2 Select Character Mode" \
  "comm:Use on the character select screen." \
  "0x01/Old (SSF2)"\
- "0x00/New (SSF2T)" 
+ "0x00/New (SSF2T)"
 run:
     poke $FF8C04 param
 script "P2 Select Colour" \
@@ -1004,23 +1004,14 @@ script "P2 Select Colour" \
  "0x06/Start button"\
  "0x07/Hold any P/K button"\
  "0x08/SSF2 primary"\
- "0x09/SSF2 alternate" 
+ "0x09/SSF2 alternate"
 run:
     if peek($FF8C0B)==$00
       poke $FF8BFF param
     endif
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/ETC"\
- "0x08/Asia"\
- "0x0A/Asia TW" 
-run:
-    poke $FF82CF param

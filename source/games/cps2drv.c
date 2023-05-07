@@ -4090,6 +4090,40 @@ static struct ROMSW_DATA romswd_phoenix[] =
   { NULL,                    0    },
 };
 
+static struct ROMSW_DATA romsd_ssf2t[] =
+{
+    { "Japan", 0 },
+    { "USA", 2 },
+    { "ETC", 4 },
+    { "Hispanic", 6 },
+    { "Asia", 8 },
+    { "Asia TW", 10 },
+    { NULL, 0 },
+};
+
+static struct ROMSW_INFO romsw_ssf2t[] =
+{
+    { 0x1cd, 4, romsd_ssf2t },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_ssf2tu[] =
+{
+    { 0x1cd, 2, romsd_ssf2t },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_ssf2ud[] =
+{
+    { 0x23f561, 2, romsd_ssf2t },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_ssf2jd[] =
+{
+    { 0x37f561, 0, romsd_ssf2t },
+    { 0, 0, NULL },
+};
 
 static struct ROMSW_INFO romsw_phoenix[] =
 {
@@ -4105,7 +4139,8 @@ CLNEI( ssf2j, ssf2, "Super Street Fighter II: The New Challengers (Japan 931005)
 CLNEI( ssf2jr1, ssf2, "Super Street Fighter II: The New Challengers (Japan 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2jr2, ssf2, "Super Street Fighter II: The New Challengers (Japan 930910)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2h, ssf2, "Super Street Fighter II: The New Challengers (Hispanic 930911)", CAPCOM, 1993, GAME_BEAT);
-CLNEI( ssf2tb, ssf2, "Super Street Fighter II: The Tournament Battle (World 931119)", CAPCOM, 1993, GAME_BEAT);
+CLNEI( ssf2tb, ssf2, "Super Street Fighter II: The Tournament Battle (World 931119)", CAPCOM, 1993, GAME_BEAT,
+	.romsw = romsw_ssf2t);
 CLNEI( ssf2tbr1, ssf2, "Super Street Fighter II: The Tournament Battle (World 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2tbj, ssf2, "Super Street Fighter II: The Tournament Battle (Japan 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2tbh, ssf2, "Super Street Fighter II: The Tournament Battle (Hispanic 931005)", CAPCOM, 1993, GAME_BEAT);
@@ -4143,10 +4178,13 @@ CLNEI( ddtodhr1, ddtod, "Dungeons & Dragons: Tower of Doom (Hispanic 940125)", C
   .input = input_p4b4);
 CLNEI( ddtodhr2, ddtod, "Dungeons & Dragons: Tower of Doom (Hispanic 940113)", CAPCOM, 1993, GAME_BEAT,
   .input = input_p4b4);
-GMEI( ssf2t, "Super Street Fighter II Turbo (World 940223)", CAPCOM, 1994, GAME_BEAT);
+GMEI( ssf2t, "Super Street Fighter II Turbo (World 940223)", CAPCOM, 1994, GAME_BEAT,
+	.romsw = romsw_ssf2t);
 CLNEI( ssf2ta, ssf2t, "Super Street Fighter II Turbo (Asia 940223)", CAPCOM, 1994, GAME_BEAT);
-CLNEI( ssf2tu, ssf2t, "Super Street Fighter II Turbo (USA 940323)", CAPCOM, 1994, GAME_BEAT);
-CLNEI( ssf2tur1, ssf2t, "Super Street Fighter II Turbo (USA 940223)", CAPCOM, 1994, GAME_BEAT);
+CLNEI( ssf2tu, ssf2t, "Super Street Fighter II Turbo (USA 940323)", CAPCOM, 1994, GAME_BEAT,
+	.romsw = romsw_ssf2tu);
+CLNEI( ssf2tur1, ssf2t, "Super Street Fighter II Turbo (USA 940223)", CAPCOM, 1994, GAME_BEAT,
+	.romsw = romsw_ssf2tu);
 CLNEI( ssf2xj, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan 940223)", CAPCOM, 1994, GAME_BEAT);
 CLNEI( ssf2xjr, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan 940223 rent version)", CAPCOM, 1994, GAME_BEAT);
 GMEI( avsp, "Alien vs. Predator (Euro 940520)", CAPCOM, 1994, GAME_BEAT,
@@ -4444,7 +4482,8 @@ CLNEI( progearj, progear, "Progear no Arashi (Japan 010117)", CAVE, 2001, GAME_S
   .input = input_p2b3);
 CLNEI( progeara, progear, "Progear (Asia 010117)", CAVE, 2001, GAME_SHOOT,
   .input = input_p2b3);
-CLNEI( ssf2ud, ssf2, "Super Street Fighter II: The New Challengers (USA 930911 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT);
+CLNEI( ssf2ud, ssf2, "Super Street Fighter II: The New Challengers (USA 930911 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT,
+	.romsw = romsw_ssf2ud);
 CLNEI( ddtodd, ddtod, "Dungeons & Dragons: Tower of Doom (Euro 940412 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT,
   .input = input_p4b4);
 CLNEI( ecofghtrd, ecofghtr, "Eco Fighters (World 931203 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_SHOOT,
@@ -4495,7 +4534,8 @@ CLNEI( progearjbl, progear, "Progear no Arashi (Japan 010117) (decrypted bootleg
   .input = input_p2b3);
 CLNEI( hsf2d, hsf2, "Hyper Street Fighter II: The Anniversary Edition (Asia 040202 Phoenix Edition) (bootleg)", BOOTLEG, 2004, GAME_BEAT);
 CLNEI( ssf2tbd, ssf2, "Super Street Fighter II: The Tournament Battle (World 931119 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT);
-CLNEI( ssf2xjd, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan 940223 Phoenix Edition) (bootleg)", BOOTLEG, 1994, GAME_BEAT);
+CLNEI( ssf2xjd, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan 940223 Phoenix Edition) (bootleg)", BOOTLEG, 1994, GAME_BEAT,
+	.romsw = romsw_ssf2jd);
 CLNEI( sgemfd, sgemf, "Super Gem Fighter Mini Mix (USA 970904 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT,
   .input = input_p2b3);
 CLNEI( mmatrixd, mmatrix, "Mars Matrix: Hyper Solid Shooting (USA 000412 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,

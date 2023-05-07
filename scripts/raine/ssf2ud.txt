@@ -1200,13 +1200,3 @@ run:
     cpu audio
     dpoke $F018 $0000
     cpu main
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/ETC"\
- "0x06/Hispanic"\
- "0x08/Asia"\
- "0x0A/Asia TW"
-run:
-    poke $FF82CF param

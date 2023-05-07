@@ -2508,6 +2508,13 @@ void load_cps2() {
     default_frame = CPU_FRAME_MHz(16,60);
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
+  /* Phoenix games seem to get the region from the eeprom ! and changing the eeprom is a nightmare, so the easiest workaround is to change their code to get it from the rom in the end
+   * then assign a region switch to this address */
+  if (is_current_game("ssf2ud")) {
+      WriteLongSc(&ROM[0x23f55e],0x3c3c0000);
+  }  else if (is_current_game("ssf2xjd")) {
+      WriteLongSc(&ROM[0x37f55e],0x3c3c0000);
+  }
   cps2crpt();
   if (is_current_game("gigaman2")) {
       xor = (UINT16*)ROM;
