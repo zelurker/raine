@@ -742,6 +742,14 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
 	     // so the offset must indeed be corrected by substracting the low addr
             if(M68000_dataregion_rb[0][ta].memorycall==NULL && M68000_dataregion_rb[0][ta].userdata){
                WriteByte( ((UINT8 *) M68000_dataregion_rb[0][ta].userdata) + (address^1),data);
+	       // This part is essentially for cps2 encrypted roms : if the region switch in rom, that is the very 1st memfetch region
+	       // then also update this area
+	       if (address >= M68000_programregion[0][0].lowaddr && M68000_programregion[0][0].highaddr >= address)
+#if USE_MUSASHI == 2
+		   *(M68000_programregion[0][0].offset + (address ^ 1))  = data;
+#else
+	       *(((UINT8*)M68000_programregion[0][0].offset)+(address ^ 1))   = data;
+#endif
 	       return;
             }
 	    // there can't be any function called here, it's a write, not a read !
