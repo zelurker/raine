@@ -105,6 +105,7 @@
 #include "newmem.h" // GetMemoryPoolSize
 #include "control_internal.h"
 #include "profile.h"
+#include "IMG_png.h"
 
 #define SPACE_HEADER 10 // space between the header and the normal menu entries
 
@@ -1922,7 +1923,12 @@ void TMenu::execute() {
 TBitmap_menu::TBitmap_menu(char *my_title, menu_item_t *mymenu, char *bitmap_path) :
   TMenu(my_title,mymenu)
 {
-  bmp = IMG_Load(bitmap_path);
+    if (!strcasecmp(&bitmap_path[strlen(bitmap_path)-3],"png")) {
+	// special case for png since sdl2_image uses stb to load png from 2.6.0 and it returns only rgb surfaces, no palette !
+	SDL_RWops *src = SDL_RWFromFile(bitmap_path, "rb");
+	bmp = raine_LoadPNG_RW(src);
+    } else
+	bmp = IMG_Load(bitmap_path);
   if (!bmp) {
     printf("TBitmap_menu: couldn't load %s\n",bitmap_path);
   }

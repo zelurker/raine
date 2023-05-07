@@ -71,6 +71,9 @@
 #endif
 #endif
 #include "leds.h"
+#if SDL==2
+#include "IMG_png.h"
+#endif
 
 struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
@@ -276,6 +279,9 @@ int main(int argc,char *argv[])
 
    */
 
+#if SDL==2
+  raine_InitPNG();
+#endif
    // Use ansi color codes in linux. Windows still does not support ansi codes natively !
    // windows is really a paradox !
 #ifdef RAINE_UNIX
@@ -910,6 +916,9 @@ int main(int argc,char *argv[])
 #endif
    ScreenUpdate(saved_screen);
    ScreenSetCursor(cur_row,cur_col);
+#endif
+#if SDL==2
+   raine_QuitPNG();
 #endif
 
    return 0;
