@@ -739,6 +739,9 @@ static void do_poke(int argc, char **argv) {
 		  ptr[(adr+n-1)^1] = argv[2][n];
 	  } else {
 	      ptr[adr^1] = val;
+	      u32 start, end;
+	      u8 *code = get_code_range(0x10,adr,&start,&end);
+	      if (code) code[adr ^ 1] = val;
 	  }
       } else {
 	  if (param_str) {
@@ -755,9 +758,12 @@ static void do_poke(int argc, char **argv) {
       if (param_str) throw "dpoke: can't handle string parameter";
       if (cpu == CPU_68020)
 	  WriteWord68k(&ptr[adr],val);
-      else if (cpu == CPU_68000)
+      else if (cpu == CPU_68000) {
 	  WriteWord(&ptr[adr],val);
-      else {
+	  u32 start, end;
+	  u8 *code = get_code_range(0x10,adr,&start,&end);
+	  if (code) WriteWord(&code[adr], val);
+      } else {
 	  WriteWord(&ptr[adr],val);
 	  WriteWord(&ptr2[adr],val);
       }
@@ -765,6 +771,9 @@ static void do_poke(int argc, char **argv) {
       if (param_str) throw "lpoke: can't handle string parameter";
       if (cpu == CPU_68000) {
 	  WriteLongSc(&ptr[adr],val);
+	  u32 start, end;
+	  u8 *code = get_code_range(0x10,adr,&start,&end);
+	  if (code) WriteLongSc(&code[adr], val);
       } else if (cpu == CPU_68020)
 	  WriteLong68k(&ptr[adr],val);
       else {
