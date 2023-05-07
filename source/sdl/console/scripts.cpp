@@ -416,71 +416,112 @@ int get_running_script_info(int *nb, int *line, char **sect) {
 }
 
 static void run_script(int n) {
-    nb_script = n;
-    if (!cons)
-	run_console_command("");
-    if (script[n].change) {
-	running++;
-	section = "change";
-	for (sline=0; script[n].change[sline]; sline++)
-	    run_console_command(script[n].change[sline]);
-	running--;
-	return;
-    } else if (script[n].change_lua) {
-	running++;
-	char *argv[2];
-	argv[0] = "luascript";
-	argv[1] = script[n].change_lua;
-	do_lua(2,argv);
-	running--;
-    }
+    // It's annoying, in case of error in an on: clause then the error can be caught only here so we must duplicate the try...catch system !
+    try {
+	nb_script = n;
+	if (!cons)
+	    run_console_command("");
+	if (script[n].change) {
+	    running++;
+	    section = "change";
+	    for (sline=0; script[n].change[sline]; sline++)
+		run_console_command(script[n].change[sline]);
+	    running--;
+	    return;
+	} else if (script[n].change_lua) {
+	    running++;
+	    section = "change";
+	    char *argv[2];
+	    argv[0] = "luascript";
+	    argv[1] = script[n].change_lua;
+	    do_lua(2,argv);
+	    running--;
+	}
 
-    if (!script[n].status) {
-	if (!script[n].off & !script[n].run) {
-	    // no off, nor run, nor changing -> it's a set script, try on in this case !
-	    if (script[n].on) {
+	if (!script[n].status) {
+	    if (!script[n].off & !script[n].run) {
+		// no off, nor run, nor changing -> it's a set script, try on in this case !
+		if (script[n].on) {
+		    running++;
+		    section = "on";
+		    for (sline=0; script[n].on[sline]; sline++)
+			run_console_command(script[n].on[sline]);
+		    running--;
+		} else if (script[n].on_lua) {
+		    running++;
+		    section = "on";
+		    char *argv[2];
+		    argv[0] = "luascript";
+		    argv[1] = script[n].on_lua;
+		    do_lua(2,argv);
+		    running--;
+		}
+		return;
+	    }
+	    if (script[n].off) {
 		running++;
-		section = "on";
-		for (sline=0; script[n].on[sline]; sline++)
-		    run_console_command(script[n].on[sline]);
+		section = "off";
+		for (sline=0; script[n].off[sline]; sline++)
+		    run_console_command(script[n].off[sline]);
 		running--;
-	    } else if (script[n].on_lua) {
-		running++;
+	    } else if (script[n].off_lua) {
 		char *argv[2];
+		section = "off";
 		argv[0] = "luascript";
-		argv[1] = script[n].on_lua;
+		argv[1] = script[n].off_lua;
 		do_lua(2,argv);
-		running--;
 	    }
 	    return;
 	}
-	if (script[n].off) {
+	if (script[n].on) {
 	    running++;
-	    section = "off";
-	    for (sline=0; script[n].off[sline]; sline++)
-		run_console_command(script[n].off[sline]);
+	    section = "on";
+	    for (sline=0; script[n].on[sline]; sline++)
+		run_console_command(script[n].on[sline]);
 	    running--;
-	} else if (script[n].off_lua) {
+	} else if (script[n].on_lua) {
+	    running++;
+	    section = "on";
 	    char *argv[2];
 	    argv[0] = "luascript";
-	    argv[1] = script[n].off_lua;
+	    argv[1] = script[n].on_lua;
 	    do_lua(2,argv);
+	    running--;
 	}
-	return;
     }
-    if (script[n].on) {
-	running++;
-	section = "on";
-	for (sline=0; script[n].on[sline]; sline++)
-	    run_console_command(script[n].on[sline]);
-	running--;
-    } else if (script[n].on_lua) {
-	running++;
-	char *argv[2];
-	argv[0] = "luascript";
-	argv[1] = script[n].on_lua;
-	do_lua(2,argv);
-	running--;
+    catch(ConsExcept &e) {
+	if (cons && cons->is_visible()) cons->print(e.what());
+	else {
+	    char msg[240];
+	    int nb,line;
+	    char *section;
+	    if (get_running_script_info(&nb,&line,&section)) {
+		// Line numbers are unprecise because lines with only a comment are jumped
+		if (script[nb].lua)
+		    sprintf(msg,"script: %s\nsection: %s\nLUA\n\n",
+			    get_script_title(nb),
+			    section);
+		else
+		    sprintf(msg,"script: %s\nsection: %s\nline: %d\n\n",
+			    get_script_title(nb),
+			    section,
+			    line+1);
+		strncat(msg, e.what(),240-strlen(msg));
+		stop_script(nb);
+		strncat(msg,"\n(script stopped)",240-strlen(msg));
+		MessageBox("script error",msg,"ok");
+	    } else
+		MessageBox("script error",e.what(),"ok");
+	    reset_ingame_timer();
+	}
+	script[n].status = 0;
+    }
+    catch(const char *msg) {
+	if (cons && cons->is_visible()) cons->print(msg);
+	else {
+	    MessageBox("script error",(char *)msg,"ok");
+	}
+	script[n].status = 0;
     }
 }
 

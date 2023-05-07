@@ -1765,6 +1765,8 @@ void do_lua(int argc, char **argv) {
 	lua_setglobal(L,"lpoke");
 	lua_pushcfunction(L, lpeek);
 	lua_setglobal(L,"lpeek");
+	lua_pushinteger(L,script_param);
+	lua_setglobal(L,"param");
     }
     int ret;
     if (argc > 2) {

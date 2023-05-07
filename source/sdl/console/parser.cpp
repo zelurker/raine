@@ -27,7 +27,7 @@ static value_type Not(value_type v1) { return ~v1; }
 static value_type LogNot(value_type v1) { return !v1; }
 
 MUP_BASETYPE sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
-static MUP_BASETYPE param;
+MUP_BASETYPE script_param;
 static std::vector<MUP_BASETYPE> vec;
 
 void set_nb_scripts(int n) {
@@ -39,7 +39,7 @@ void set_script_param(int n,int myp) {
 }
 
 void init_script_param(int n) {
-    param = vec.at(n);
+    script_param = vec.at(n);
 }
 
 value_type rnd() {
@@ -332,7 +332,7 @@ int parse(char *orig)
       p.DefineVar("hl",&zhl);
       p.DefineVar("iff",&iff);
       p.DefineVar("pc",&pc);
-      p.DefineVar("param",&param);
+      p.DefineVar("param",&script_param);
       p.DefineVar("frame",&cpu_frame_count);
       initialised = 1;
     }

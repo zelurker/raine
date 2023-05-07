@@ -8,6 +8,7 @@ extern "C" {
 #endif
 
 extern MUP_BASETYPE sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
+extern MUP_BASETYPE script_param;
 
 extern int get_cpu_id();
 int parse(char *expr);
