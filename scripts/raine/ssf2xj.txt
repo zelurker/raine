@@ -1,3 +1,342 @@
+luascript "Console Mode [lua]" \
+ "comm:Coin button is used for pause. In training mode, pause the game and then press start to select character."
+run:
+-- Start-up --
+if (peek(0xFF82E9)==0x00) then
+    poke(0x1BD47,"            ")
+    poke(0x1BD6B,"            ")
+    poke(0x1BD8F,"            ")
+    poke(0x2CD7,0x86) -- Restore initial value --
+    poke(0x2CDD,0x8A)
+    poke(0xFF2000,0x00)
+    p1char=0x00
+    p2char=0x04
+    if (peek(0xFF8005)>0x00) and (peek(0xFF807E)>0x00) then -- Start button start --
+      poke(0xFF2021,0xFF)
+      poke(0xFF82E9,0x09) -- Max credit --
+    end
+end
+-- Menu in the Title screen --
+if ((dpeek(0xFFD23E)==0xCB78) or (dpeek(0xFFD2FE)==0xCB78)) and (peek(0xFF82E9)>0x00) then
+    if ((peek(0xFF8087)==0x00) and (peek(0xFF808B)==0x00)) and (peek(0xFF2001)==0xFF) then
+      poke(0xFF2001,0x00)
+      poke(0xFF2020,0x00) -- Act as music 'stopper' --
+    end
+    if (peek(0xFF8087)==0x04) or (peek(0xFF808B)==0x04) then
+            if peek(0xFF2020)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0x42)
+               poke(0x61801F,0x00)
+               poke(0xFF2020,0xFF)
+            end
+       if (dpeek(0xFF2000)==0x0000) then
+         dpoke(0xFF2000,0x01FF)
+       elseif (dpeek(0xFF2000)==0x0100) then
+         dpoke(0xFF2000,0x02FF)
+       elseif (dpeek(0xFF2000)==0x0200) then
+         dpoke(0xFF2000,0x03FF)
+       elseif (dpeek(0xFF2000)==0x0300) then
+         dpoke(0xFF2000,0x00FF)
+       end
+    end
+    if (peek(0xFF8087)==0x08) or (peek(0xFF808B)==0x08) then
+            if peek(0xFF2020)==0x00 then -- Sound effect --
+               poke(0x618001,0x00)
+               poke(0x618003,0x42)
+               poke(0x61801F,0x00)
+               poke(0xFF2020,0xFF)
+            end
+       if (dpeek(0xFF2000)==0x0000) then
+         dpoke(0xFF2000,0x03FF)
+       elseif (dpeek(0xFF2000)==0x0300) then
+         dpoke(0xFF2000,0x02FF)
+       elseif (dpeek(0xFF2000)==0x0200) then
+         dpoke(0xFF2000,0x01FF)
+       elseif (dpeek(0xFF2000)==0x0100) then
+         dpoke(0xFF2000,0x00FF)
+       end
+    end
+    if (peek(0x90CCD5)~=0x4E) then -- All menu text --
+        if (peek(0xFF82CF)==0x00) then -- Switch the y-location of the original text --
+          poke(0xFF8035,0x38) -- For JP version --
+        else
+          poke(0xFF8035,0x28) -- For other version --
+        end
+        poke(0x90C8C9,"S")
+        poke(0x90C949,"U")
+        poke(0x90C9C9,"P")
+        poke(0x90CA49,"E")
+        poke(0x90CAC9,"R")
+        poke(0x90CB49," ")
+        if (peek(0xFF82CF)==0x00) then
+          poke(0x90CBC9,"X")
+          poke(0x90CC49," ")
+          poke(0x90CCC9,"B")
+          poke(0x90CD49,"A")
+          poke(0x90CDC9,"T")
+          poke(0x90CE49,"T")
+          poke(0x90CEC9,"L")
+          poke(0x90CF49,"E")
+        elseif (peek(0xFF82CF)>0x00) then
+          poke(0x90CBC9,"B")
+          poke(0x90CC49,"A")
+          poke(0x90CCC9,"T")
+          poke(0x90CD49,"T")
+          poke(0x90CDC9,"L")
+          poke(0x90CE49,"E")
+          poke(0x90CEC9," ")
+          poke(0x90CF49," ")
+        end
+        poke(0x90C8CD,"V")
+        poke(0x90C94D,"E")
+        poke(0x90C9CD,"R")
+        poke(0x90CA4D,"S")
+        poke(0x90CACD,"U")
+        poke(0x90CB4D,"S")
+        poke(0x90CBCD," ")
+        poke(0x90CC4D,"B")
+        poke(0x90CCCD,"A")
+        poke(0x90CD4D,"T")
+        poke(0x90CDCD,"T")
+        poke(0x90CE4D,"L")
+        poke(0x90CECD,"E")
+        poke(0x90C8D1,"T")
+        poke(0x90C951,"R")
+        poke(0x90C9D1,"A")
+        poke(0x90CA51,"I")
+        poke(0x90CAD1,"N")
+        poke(0x90CB51,"I")
+        poke(0x90CBD1,"N")
+        poke(0x90CC51,"G")
+        poke(0x90CCD1," ")
+        poke(0x90CD51,"M")
+        poke(0x90CDD1,"O")
+        poke(0x90CE51,"D")
+        poke(0x90CED1,"E")
+        poke(0x90CA55,"O")
+        poke(0x90CAD5,"P")
+        poke(0x90CB55,"T")
+        poke(0x90CBD5,"I")
+        poke(0x90CC55,"O")
+        poke(0x90CCD5,"N")
+    end
+    -- Menu Text --
+      if (peek(0xFF2000)==0x00) and (peek(0x90C8CB)~=0x01) then -- Arcade Mode pointer --
+         for i=0,0x680,0x80 do
+            poke(0x90C8CB+i,0x01)
+         end
+         for i=0,0x280,0x80 do
+            poke(0x90CA57+i,0x00)
+         end
+         for i=0,0x600,0x80 do
+            poke(0x90C8CF+i,0x00)
+         end
+      elseif (peek(0xFF2000)==0x01) and (peek(0x90C8CF)~=0x01) then -- Versus Mode pointer --
+         for i=0,0x600,0x80 do
+            poke(0x90C8CF+i,0x01)
+         end
+         for i=0,0x680,0x80 do
+            poke(0x90C8CB+i,0x00)
+         end
+         for i=0,0x600,0x80 do
+            poke(0x90C8D3+i,0x00)
+         end
+      elseif (peek(0xFF2000)==0x02) and (peek(0x90C8D3)~=0x01) then -- Training Mode pointer --
+         for i=0,0x600,0x80 do
+            poke(0x90C8D3+i,0x01)
+         end
+         for i=0,0x600,0x80 do
+            poke(0x90C8CF+i,0x00)
+         end
+         for i=0,0x280,0x80 do
+            poke(0x90CA57+i,0x00)
+         end
+      elseif (peek(0xFF2000)==0x03) and (peek(0x90CA57)~=0x01) then -- Option pointer --
+         for i=0,0x280,0x80 do
+            poke(0x90CA57+i,0x01)
+         end
+         for i=0,0x600,0x80 do
+            poke(0x90C8D3+i,0x00)
+         end
+         for i=0,0x680,0x80 do
+            poke(0x90C8CB+i,0x00)
+         end
+      end
+    -- Game Start --
+    if (peek(0x90CCD5)==0x4E) and ((peek(0x804020)==0xFE) or (peek(0x804020)==0xFD)) and (peek(0xFF2021)==0x00) then
+       poke(0x618001,0x00) -- Sound effect --
+       poke(0x618003,0x40)
+       poke(0x61801F,0x00)
+       poke(0xFF2021,0xFF)
+    end
+    if (peek(0xFF8001)==0x04) and (peek(0x804020)==0xFF) then
+       poke(0xFF2021,0x00) -- Act as music 'stopper' --
+    end
+end
+-- Infinity Credits Script --
+if (peek(0xFF82E9)>0x00) then
+    poke(0xFF82E9,0x09) -- Infinity Credits --
+end
+-- Versus Mode Script --
+if (peek(0xFF2000)==0x01) then
+    if ((dpeek(0xFFD23E)==0xCB78) or (dpeek(0xFFD2FE)==0xCB78)) and (peek(0xFF82F0)>0x00) then -- Auto activate P1 & P2 --
+       poke(0xFF82F0,0x03)
+       poke(0xFF8BDC,0x01)
+       lpoke(0xFF8BCE,0x02010400)
+    end
+    if (peek(0xFF8009)==0x04) then -- Memorizes characters --
+      p1char=peek(0xFF87DF)
+      p2char=peek(0xFF8BDF)
+    end
+    if (peek(0xFF8009)>=0x0C) then -- Prevent continue text --
+       poke(0xFF87CE,0xFF)
+       poke(0xFF8BCE,0xFF)
+    end
+    if (peek(0xFF800D)==0x0C) and (peek(0xFF8009)==0x12) then
+       poke(0xFF8005,0x00) -- Return to character screen --
+       poke(0xFF8009,0x00)
+       poke(0xFF800D,0x00)
+       poke(0xFF8811,0x00) -- Re-allow speed select --
+       poke(0xFF82F0,0x03) -- Reactivate P1 & P2 --
+       poke(0xFF87DC,0x01)
+       poke(0xFF8BDC,0x01)
+       poke(0xFF87DD,0x00) -- Deselect characters --
+       poke(0xFF8BDD,0x00)
+       poke(0xFF2006,0x01)
+    end
+    if (peek(0xFF2006)==01) and (dpeek(0xFFE1D2)==0x253B) then -- Re-load last round characters --
+      poke(0xFF87DF,p1char)
+      poke(0xFF8BDF,p2char)
+      poke(0xFF2006,0x00)
+    end
+    if (dpeek(0xFFD242)==0x9C01) and (peek(0xFF86D2)==0x00) then -- Randomize stage select - P1 or P2 --
+       if math.random()*255<=127 then
+         poke(0xFF2003,0x01)
+       else
+         poke(0xFF2003,0x02)
+       end
+    end
+    if (dpeek(0xFFD242)==0x9C01) then
+       if (peek(0xFF2003)==0x01) then
+         poke(0xFFE18B,peek(0xFF8BDF)) -- P2 character's stage --
+         if (peek(0xFF8BFA)==0x42) then -- Flight start at P1 --
+           poke(0xFF8BDD,0x01)
+           poke(0xFF8BFA,0x00)
+         end
+       end
+       if (peek(0xFF2003)==0x02) then
+         poke(0xFFE18B,peek(0xFF87DF)) -- P1 character's stage --
+         if (peek(0xFF87FA)==0x42) then -- Flight start at P2 --
+           poke(0xFF87DD,0x01)
+           poke(0xFF87FA,0x00)
+         end
+       end
+       poke(0xFF8C60,0x00) -- Fix for stage select --
+    end
+end
+-- Training Mode Script --
+if (peek(0xFF2000)==0x02) then
+    if ((dpeek(0xFFD23E)==0xCB78) or (dpeek(0xFFD2FE)==0xCB78)) and (peek(0xFF82F0)>0x00) then -- Auto activate P1 & P2 --
+       poke(0xFF82F0,0x03)
+       poke(0xFF8BDC,0x01)
+       lpoke(0xFF8BCE,0x02010400)
+    end
+    if (peek(0xFF8803)==0x01) and (peek(0xFF8C03)==0x00) and (dpeek(0xFF8086)==0x0000) then -- P1 as main player --
+      poke(0x2CD7,0x8A) -- Switch control --
+      poke(0x2CDD,0x86)
+      poke(0xFF2003,0x01)
+    end
+    if (peek(0xFF8C03)==0x01) and (peek(0xFF8803)==0x00) and (dpeek(0xFF808A)==0x0000) then -- P2 as main player --
+      poke(0x2CD7,0x8A) -- Switch control --
+      poke(0x2CDD,0x86)
+      poke(0xFF2003,0x02)
+    end
+    if (peek(0xFF87DD)==0x01) and (peek(0xFF8BDD)==0x01) then -- Restore control --
+      poke(0x2CD7,0x86)
+      poke(0x2CDD,0x8A)
+    end
+    if (peek(0xFF2003)==0x01) or (peek(0xFF2003)==0x00) then
+      poke(0xFFE18B,peek(0xFF8BDF)) -- P2 character's stage --
+      if (peek(0xFF8BFA)==0x42) then -- Flight start at P1 --
+        poke(0xFF8BDD,0x01)
+        poke(0xFF8BFA,0x00)
+      end
+    end
+    if (peek(0xFF2003)==0x02) then
+      poke(0xFFE18B,peek(0xFF87DF)) -- P1 character's stage --
+      if (peek(0xFF87FA)==0x42) then -- Flight start at P2 --
+        poke(0xFF87DD,0x01)
+        poke(0xFF87FA,0x00)
+      end
+    end
+    if (peek(0xFF8009)==0x04) then -- Memorizes characters --
+      p1char=peek(0xFF87DF)
+      p2char=peek(0xFF8BDF)
+    end
+    if (peek(0xFF8009)==0x0A) then
+       poke(0xFF8DCF,0x28) -- infinite time --
+       if (dpeek(0xFF8478)<0x60) and ((peek(0xFF8451)&0x10)==0x00) then -- P1 infinite energy --
+         dpoke(0xFF8478,0x90)
+         dpoke(0xFF860A,0x90)
+       end
+       if (dpeek(0xFF8878)<0x60) and ((peek(0xFF8851)&0x10)==0x00) then -- P2 infinite energy --
+         dpoke(0xFF8878,0x90)
+         dpoke(0xFF8A0A,0x90)
+       end
+       poke(0xFF8702,0x30) -- P1 infinite power --
+       poke(0xFF8B02,0x30) -- P2 infinite power --
+       if (peek(0xFF8005)==0x08) and ((peek(0xFF807E)==0x10) or (peek(0xFF807E)==0x20)) then -- Return to Character Screen Step 1 --
+         poke(0xFF8811,0x00) -- Re-allow speed select --
+         poke(0xFF87DD,0x00) -- Deselect characters --
+         poke(0xFF8BDD,0x00)
+         poke(0xFF8009,0x02)
+         poke(0xFF800B,0x01)
+         poke(0xFF2004,0x01)
+         poke(0xFF2006,0x01)
+       end
+       if (peek(0xFF2004)==0x01) then -- Return to Character Screen Step 2 --
+         poke(0xFF8005,0x0C)
+         poke(0xFF2004,0x00)
+       end
+    end
+    if (peek(0xFF2006)==01) and (dpeek(0xFFE1D2)==0x253B) then -- Re-load last round characters --
+      poke(0xFF87DF,p1char)
+      poke(0xFF8BDF,p2char)
+      poke(0xFF2006,0x00)
+    end
+end
+-- Option Mode Script --
+if (peek(0xFF2000)==0x03) and ((peek(0xFF807E)==0x10) or (peek(0xFF807E)==0x20)) and (peek(0xFF801F)==0x08) then -- Step 1 --
+    lpoke(0x1BA8,0x00000000) -- Rom hack --
+    lpoke(0x1BE2,0x00000000)
+    poke(0xFF2005,0x01)
+    poke(0xFF807E,0x40)
+end
+if (peek(0xFF2000)==0x03) and (peek(0xFF8001)==0x02) and (peek(0xFF2005)==0x01) then -- step 2 - Restore value --
+    lpoke(0x1BA8,0x2B40007E)
+    lpoke(0x1BE2,0x1B42007E)
+    poke(0xFF2005,0x00)
+end
+-- Pause Function Script --
+    if (peek(0xFF8009)==0x0A) then
+       if (peek(0xFF807E)==0x00) then
+       poke(0xFF2002,0x00)
+       end
+       if (peek(0xFF8005)==0x04) and ((peek(0xFF807E)==0x01) or (peek(0xFF807E)==0x02)) and (peek(0xFF2002)==0x00) then
+       poke(0xFF8005,0x08)
+       poke(0xFF2002,0xFF)
+       end
+       if (peek(0xFF8005)==0x08) and ((peek(0xFF807E)==0x01) or (peek(0xFF807E)==0x02)) and (peek(0xFF2002)==0x00) then
+       poke(0xFF8005,0x04)
+       poke(0xFF2002,0xFF)
+       end
+    end
+off:
+    poke(0x1BD47,"INSERT COIN.")
+    poke(0x1BD6B,"INSERT COIN.")
+    poke(0x1BD8F,"INSERT COIN.")
+    poke(0x2CD7,0x86)
+    poke(0x2CDD,0x8A)
 script "Infinite Time"
 run:
     if peek($FF8DCE)>01

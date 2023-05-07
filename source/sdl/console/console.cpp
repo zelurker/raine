@@ -1665,6 +1665,9 @@ static int poke(lua_State* L) {
 		ptr[(arg1+n) ^ 1] = s[n];
 	} else {
 	    ptr[arg1 ^ 1] = arg2;
+	    u32 start, end;
+	    u8 *code = get_code_range(0x10,arg1,&start,&end);
+	    if (code) code[arg1 ^ 1] = arg2;
 	}
     else {
 	if (is_string)
@@ -1688,6 +1691,11 @@ static int dpoke(lua_State* L) {
 	WriteWord68k(&ptr[arg1],arg2);
     else {
 	WriteWord(&ptr[arg1],arg2);
+	if (cpu == CPU_68000) {
+	    u32 start, end;
+	    u8 *code = get_code_range(0x10,arg1,&start,&end);
+	    if (code) WriteWord(&code[arg1],arg2);
+	}
 	if (cpu == CPU_Z80) {
 	    u8 *ptr2 = Z80_context[cpu_id & 0xf].z80Base;
 	    WriteWord(&ptr2[arg1],arg2);
@@ -1722,6 +1730,9 @@ static int lpoke(lua_State* L) {
     int cpu = cpu_id >> 4;
     if (cpu == CPU_68000) {
 	WriteLongSc(&ptr[arg1],arg2);
+	u32 start, end;
+	u8 *code = get_code_range(0x10,arg1,&start,&end);
+	if (code) WriteLongSc(&code[arg1],arg2);
     } else if (cpu == CPU_68020)
 	WriteLong68k(&ptr[arg1],arg2);
     else
