@@ -1240,7 +1240,8 @@ OBJS += $(OBJDIR)/sdl2/blit.o \
 	$(OBJDIR)/sdl2/display.o \
 	$(OBJDIR)/sdl2/controllermap.o \
 	$(OBJDIR)/sdl2/compat.o \
-	$(OBJDIR)/sdl2/profile.o
+	$(OBJDIR)/sdl2/profile.o \
+	$(OBJDIR)/sdl2/gui/IMG_png.o
 endif
 
 ifdef USE_CURL
@@ -1554,8 +1555,15 @@ $(OBJDIR)/68000/s68000.o: $(OBJDIR)/68000/s68000.asm
             rm -f $*.d
 
 ifdef CROSSCOMPILE
-$(OBJDIR)/68000/s68000.asm: $(NATIVE)/object/68000/star.exe
-	cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
+$(OBJDIR)/68000/s68000.asm:
+	sh -c "if [ -f $(NATIVE)/object/68000/star.exe ]; then
+	  cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
+	elif [ -f $(NATIVE)/objectd/68000/star.exe ]; then
+	  cp -fv $(NATIVE)/objectd/68000/star.exe $(OBJDIR)/68000/
+	else
+	  @echo -n you will need to generate star.exe from a native build, not cross compilation
+	  exit 1
+	fi"
 else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
@@ -1578,8 +1586,15 @@ $(OBJDIR)/z80/mz80.o: $(OBJDIR)/z80/mz80.asm
             rm -f $*.d
 
 ifdef CROSSCOMPILE
-$(OBJDIR)/z80/mz80.asm: $(NATIVE)/object/z80/makez80.exe
-	cp -fv $(NATIVE)/object/z80/makez80.exe $(OBJDIR)/z80/
+$(OBJDIR)/z80/mz80.asm:
+	sh -c "if [ -f $(NATIVE)/object/z80/makez80.exe ]; then
+	  cp -fv $(NATIVE)/object/z80/makez80.exe $(OBJDIR)/z80/
+	elif [ -f $(NATIVE)/objectd/z80/makez80.exe ]; then
+	  cp -fv $(NATIVE)/objectd/z80/makez80.exe $(OBJDIR)/z80/
+	else
+	  @echo you will need to generate makez80.exe from a native build, not cross compilation
+	  exit 1
+	fi"
 else
 $(OBJDIR)/z80/mz80.asm: $(OBJDIR)/z80/makez80.o
 	$(CCV) $(LFLAGS) -s -o $(OBJDIR)/z80/makez80.exe $<
@@ -1741,9 +1756,9 @@ else
 #	$(INSTALL_DATA) blend/* $(bld_dir)
 	$(INSTALL_DATA) index_roms.html $(rainedata)
 endif
-	sh -c "if [ -f hiscore.dat ]; then install hiscore.dat $(rainedata); fi"
-	sh -c "if [ -f command.dat ]; then install command.dat $(rainedata); fi"
-	sh -c "if [ -f history.dat ]; then install history.dat $(rainedata); fi"
+	sh -c "if [ -f hiscore.dat ]; then $(INSTALL_DATA) hiscore.dat $(rainedata); fi"
+	sh -c "if [ -f command.dat ]; then $(INSTALL_DATA) command.dat $(rainedata); fi"
+	sh -c "if [ -f history.dat ]; then $(INSTALL_DATA) history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/debug_dips.txt $(rainedata)
 ifdef RAINE_DOS
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
