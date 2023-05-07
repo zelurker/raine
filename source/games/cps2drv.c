@@ -4101,6 +4101,17 @@ static struct ROMSW_DATA romsd_ssf2t[] =
     { NULL, 0 },
 };
 
+static struct ROMSW_DATA romsd_sfz2[] = {
+    { "Japan", 0x00 },
+    { "USA", 0x02 },
+    { "Hispanic", 0x04 },
+    { "Oceania", 0x06 },
+    { "Asia", 0x08 },
+    { "Euro", 0x0A },
+    { "Brazil", 0x0C },
+    { NULL, 0 },
+};
+
 static struct ROMSW_INFO romsw_ssf2t[] =
 {
     { 0x1cd, 4, romsd_ssf2t },
@@ -4110,6 +4121,18 @@ static struct ROMSW_INFO romsw_ssf2t[] =
 static struct ROMSW_INFO romsw_ssf2a[] =
 {
     { 0x18d, 8, romsd_ssf2t },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfz2ald[] =
+{
+    { 0xff561, 8, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfz2alj[] =
+{
+    { 0xff9, 0, romsd_sfz2 },
     { 0, 0, NULL },
 };
 
@@ -4379,8 +4402,10 @@ CLNEI( sfz2b, sfa2, "Street Fighter Zero 2 (Brazil 960531)", CAPCOM, 1996, GAME_
 CLNEI( sfz2br1, sfa2, "Street Fighter Zero 2 (Brazil 960304)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2h, sfa2, "Street Fighter Zero 2 (Hispanic 960304)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2n, sfa2, "Street Fighter Zero 2 (Oceania 960229)", CAPCOM, 1996, GAME_BEAT);
-GMEI( sfz2al, "Street Fighter Zero 2 Alpha (Asia 960826)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfz2alj, sfz2al, "Street Fighter Zero 2 Alpha (Japan 960805)", CAPCOM, 1996, GAME_BEAT);
+GMEI( sfz2al, "Street Fighter Zero 2 Alpha (Asia 960826)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfz2alj);
+CLNEI( sfz2alj, sfz2al, "Street Fighter Zero 2 Alpha (Japan 960805)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfz2alj);
 CLNEI( sfz2alh, sfz2al, "Street Fighter Zero 2 Alpha (Hispanic 960813)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2alb, sfz2al, "Street Fighter Zero 2 Alpha (Brazil 960813)", CAPCOM, 1996, GAME_BEAT);
 GMEI( spf2t, "Super Puzzle Fighter II Turbo (USA 960620)", CAPCOM, 1996, GAME_PUZZLE,
@@ -4567,7 +4592,8 @@ CLNEI( gigaman2, megaman2, "Giga Man 2: The Power Fighters (bootleg of Mega Man 
   .input = input_p2b3);
 CLNEI( megamn2d, megaman2, "Mega Man 2: The Power Fighters (USA 960708 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT,
   .input = input_p2b3);
-CLNEI( sfz2ald, sfz2al, "Street Fighter Zero 2 Alpha (Asia 960826 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
+CLNEI( sfz2ald, sfz2al, "Street Fighter Zero 2 Alpha (Asia 960826 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT,
+	.romsw = romsw_sfz2ald);
 CLNEI( xmvsfu1d, xmvsf, "X-Men Vs. Street Fighter (USA 961004 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
 CLNEI( batcird, batcir, "Battle Circuit (Euro 970319 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT,
   .input = input_p4b2);

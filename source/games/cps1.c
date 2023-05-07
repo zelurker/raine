@@ -2512,11 +2512,14 @@ void load_cps2() {
    * then assign a region switch to this address */
   if (is_current_game("ssf2ud")) {
       WriteLongSc(&ROM[0x23f55e],0x3c3c0000);
-  }  else if (is_current_game("ssf2xjd")) {
+  } else if (is_current_game("ssf2xjd")) {
       WriteLongSc(&ROM[0x37f55e],0x3c3c0000);
   } else if (is_current_game("ssf2tbd")) {
       WriteLongSc(&ROM[0x23f56a], 0x3c3c0004);
+  } else if (is_current_game("sfz2ald")) {
+      WriteLongSc(&ROM[0xff55e], 0x3c3c0008);
   }
+
   cps2crpt();
   if (is_current_game("gigaman2")) {
       xor = (UINT16*)ROM;
