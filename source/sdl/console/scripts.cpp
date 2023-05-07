@@ -666,6 +666,7 @@ void update_scripts() {
 		MessageBox("script error",msg,"ok");
 	    } else
 		MessageBox("script error",e.what(),"ok");
+	    reset_ingame_timer();
 	}
     }
     catch(const char *msg) {
