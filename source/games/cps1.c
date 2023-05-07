@@ -2514,6 +2514,8 @@ void load_cps2() {
       WriteLongSc(&ROM[0x23f55e],0x3c3c0000);
   }  else if (is_current_game("ssf2xjd")) {
       WriteLongSc(&ROM[0x37f55e],0x3c3c0000);
+  } else if (is_current_game("ssf2tbd")) {
+      WriteLongSc(&ROM[0x23f56a], 0x3c3c0004);
   }
   cps2crpt();
   if (is_current_game("gigaman2")) {

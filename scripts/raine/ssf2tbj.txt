@@ -1,19 +1,19 @@
-script "Infinite Time"  
+script "Infinite Time"
 run:
     if (peek($FF8CD2)==$00)and(peek($FF8CCE)>$01)
       dpoke $FF8CCE $9928
       dpoke $FFE0D2 $253C
     endif
-script "Finish this Round Now!"  
+script "Finish this Round Now!"
 on:
     dpoke $FF8CCE $0101
-script "Disable projectile impact slowdown"  
+script "Disable projectile impact slowdown"
 run:
     if (peek($FF83F8)!=$FF)and(peek($FF87F8)!=$FF)
       poke $FF82F2 $00
     endif
 script "Always in Turbo Mode" \
- "comm:Characters move faster"  
+ "comm:Characters move faster"
 run:
     poke $FF82ED $01
 script "Select Starting Stage" \
@@ -31,7 +31,7 @@ script "Select Starting Stage" \
  "0x0902/Bonus stage: drums"\
  "0x0903/Stage 10 (Claw)"\
  "0x0A03/Stage 11 (Sagat)"\
- "0x0B03/Stage 12 (Dictator)" 
+ "0x0B03/Stage 12 (Dictator)"
 run:
     if ((dpeek($FF8C01)==$0000))or((peek($FF8BD1)=$00))or((dpeek($FF8C01)==param))
       poke $FF8BD1 param/$100
@@ -40,7 +40,7 @@ run:
 script "Select Ending" \
  "0/No Losses"\
  "1/No Continues"\
- "2/Normal" 
+ "2/Normal"
 run:
     if param<2
       poke $FF831A $00
@@ -49,8 +49,8 @@ run:
     if param==$2
       poke $FF831A $01
     endif
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     if (dpeek($FF83F8)<$60)and((peek($FF83D1)&$10)==$00)and(peek($FF8BE4)==$0)
       dpoke $FF83F8 $90
@@ -58,34 +58,34 @@ run:
     endif
 script "P1 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF842A param
     dpoke $FF842C param
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF83F9 $00
-script "P1 Finish round to win match"  
+script "P1 Finish round to win match"
 run:
     poke $FF875E $02
-script "P1 Rounds won always set = 0"  
+script "P1 Rounds won always set = 0"
 run:
     poke $FF875E $00
-script "P1 Rounds won set = 0 Now!"  
+script "P1 Rounds won set = 0 Now!"
 on:
     poke $FF875E $00
-script "P1 Invincibility"  
+script "P1 Invincibility"
 run:
     poke $FF858D $01
-script "P1 Allow special moves during jump"  
+script "P1 Allow special moves during jump"
 run:
     poke $FF854F $00
 script "P1 Hadouken motion Cancel" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF83EC $01
 script "P1 No limit next shot" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF85A2 $00
     poke $FF85A3 $00
@@ -97,13 +97,13 @@ script "P1 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if peek($FF83CE+$391)==$0A
       dpoke ($FF83CE+$B6) param
       dpoke ($FF83CE+$B8) param
     endif
-script "P1 Easy button tap moves"  
+script "P1 Easy button tap moves"
 run:
     temp0=peek($FF83CE+$391)
     if peek($FF83CE)==$0
@@ -127,143 +127,143 @@ run:
     if ((temp0==$2)or(temp0==$5))and(peek(FF83CE+$9E)<$3)
       poke ($FF83CE+$9E) $3
     endif
-script "P1 Easy Tatsumaki (Ryu / Ken)"  
+script "P1 Easy Tatsumaki (Ryu / Ken)"
 run:
     poke $FF845E $04
-script "P1 Easy Hadouken (Ryu / Ken)"  
+script "P1 Easy Hadouken (Ryu / Ken)"
 run:
     poke $FF8462 $04
-script "P1 Easy Syouryuuken (Ryu / Ken)"  
+script "P1 Easy Syouryuuken (Ryu / Ken)"
 run:
     poke $FF8466 $04
-script "P1 Easy Fire hadouken (Ryu)"  
+script "P1 Easy Fire hadouken (Ryu)"
 run:
     poke $FF84AE $08
-script "P1 Easy Super zutsuki (E.Honda)"  
+script "P1 Easy Super zutsuki (E.Honda)"
 run:
     poke $FF844E $06
-script "P1 Easy Hyakkan otoshi (E.Honda)"  
+script "P1 Easy Hyakkan otoshi (E.Honda)"
 run:
     poke $FF8478 $06
-script "P1 Easy Rolling Attack (Blanka)"  
+script "P1 Easy Rolling Attack (Blanka)"
 run:
     poke $FF844E $06
-script "P1 Easy Vertical rolling (Blanka)"  
+script "P1 Easy Vertical rolling (Blanka)"
 run:
     poke $FF847E $06
-script "P1 Easy Backstep rolling (Blanka)"  
+script "P1 Easy Backstep rolling (Blanka)"
 run:
     poke $FF8487 $06
-script "P1 Easy Sonic boom (Guile)"  
+script "P1 Easy Sonic boom (Guile)"
 run:
     poke $FF844E $06
-script "P1 Easy Somersault kick (Guile)"  
+script "P1 Easy Somersault kick (Guile)"
 run:
     poke $FF8454 $06
-script "P1 Easy Spinning bird kick (ChunLi)"  
+script "P1 Easy Spinning bird kick (ChunLi)"
 run:
     poke $FF844E $06
-script "P1 Easy Kikouken (ChunLi)"  
+script "P1 Easy Kikouken (ChunLi)"
 run:
     poke $FF847E $06
-script "P1 Easy Screw pile driver (Zangief)"  
+script "P1 Easy Screw pile driver (Zangief)"
 run:
     poke $FF844E $06
     poke $FF844F $02
-script "P1 Easy atomic Suplex (Zangief)"  
+script "P1 Easy atomic Suplex (Zangief)"
 run:
     poke $FF8469 $06
     poke $FF846A $02
-script "P1 Easy Yoga fire (Dhalsim)"  
+script "P1 Easy Yoga fire (Dhalsim)"
 run:
     poke $FF844E $04
-script "P1 Easy Yoga flame (Dhalsim)"  
+script "P1 Easy Yoga flame (Dhalsim)"
 run:
     poke $FF8452 $08
 script "P1 Easy Yoga teleport left (Dhalsim)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8456 $04
     poke $FF845B $05
 script "P1 Easy Yoga teleport right (Dhalsim)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8456 $04
     poke $FF845B $06
-script "P1 Easy Dash straight (M.Bison)"  
+script "P1 Easy Dash straight (M.Bison)"
 run:
     poke $FF844E $06
-script "P1 Easy Dash upper (M.Bison)"  
+script "P1 Easy Dash upper (M.Bison)"
 run:
     poke $FF8456 $06
-script "P1 Easy Buffalo headbutt (M.Bison)"  
+script "P1 Easy Buffalo headbutt (M.Bison)"
 run:
     poke $FF848E $06
-script "P1 Easy Tiger uppercut (Sagat)"  
+script "P1 Easy Tiger uppercut (Sagat)"
 run:
     poke $FF844E $04
-script "P1 Easy Tiger knee crush (Sagat)"  
+script "P1 Easy Tiger knee crush (Sagat)"
 run:
     poke $FF8452 $04
-script "P1 Easy Tiger shot (Sagat)"  
+script "P1 Easy Tiger shot (Sagat)"
 run:
     poke $FF8456 $04
-script "P1 Easy Ground tiger shot (Sagat)"  
+script "P1 Easy Ground tiger shot (Sagat)"
 run:
     poke $FF845A $04
-script "P1 Easy Rolling crystal flash (Balrog)"  
+script "P1 Easy Rolling crystal flash (Balrog)"
 run:
     poke $FF8456 $06
-script "P1 Easy Flying barcelona attack (Balrog)"  
+script "P1 Easy Flying barcelona attack (Balrog)"
 run:
     poke $FF845A $06
-script "P1 Easy Sky high claw (Balrog)"  
+script "P1 Easy Sky high claw (Balrog)"
 run:
     poke $FF845E $06
-script "P1 Easy Double knee press (Vega)"  
+script "P1 Easy Double knee press (Vega)"
 run:
     poke $FF8456 $06
-script "P1 Easy Head press (Vega)"  
+script "P1 Easy Head press (Vega)"
 run:
     poke $FF845F $06
-script "P1 Easy Devil reverse (Vega)"  
+script "P1 Easy Devil reverse (Vega)"
 run:
     poke $FF847A $06
-script "P1 Easy Canon spike (Cammy)"  
+script "P1 Easy Canon spike (Cammy)"
 run:
     poke $FF8460 $04
-script "P1 Easy Spiral arrow (Cammy)"  
+script "P1 Easy Spiral arrow (Cammy)"
 run:
     poke $FF8464 $04
-script "P1 Easy Axel spin knackle (Cammy)"  
+script "P1 Easy Axel spin knackle (Cammy)"
 run:
     poke $FF8470 $04
-script "P1 Easy Tomahawk buster (T.Hawk)"  
+script "P1 Easy Tomahawk buster (T.Hawk)"
 run:
     poke $FF8460 $04
 script "P1 Easy Mexican typhoon (T.Hawk)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8468 $06
     poke $FF8469 $02
-script "P1 Easy sien kyaku (FeiLong)"  
+script "P1 Easy sien kyaku (FeiLong)"
 run:
     poke $FF8462 $04
-script "P1 Easy Rekkaken (FeiLong)"  
+script "P1 Easy Rekkaken (FeiLong)"
 run:
     poke $FF845E $04
     poke $FF846E $04
-script "P1 Easy Double rolling (DeeJay)"  
+script "P1 Easy Double rolling (DeeJay)"
 run:
     poke $FF8460 $06
-script "P1 Easy Machinegun upper (DeeJay)"  
+script "P1 Easy Machinegun upper (DeeJay)"
 run:
     poke $FF8464 $06
-script "P1 Easy Air slasher (DeeJay)"  
+script "P1 Easy Air slasher (DeeJay)"
 run:
     poke $FF8474 $06
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     if (dpeek($FF87F8)<$60)and((peek($FF87D1)&$10)==$00)and(peek($FF8BE4)==$0)
       dpoke $FF87F8 $90
@@ -271,34 +271,34 @@ run:
     endif
 script "P2 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF882A param
     dpoke $FF882C param
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF87F9 $00
-script "P2 Finish round to win match"  
+script "P2 Finish round to win match"
 run:
     poke $FF8B5E $02
-script "P2 Rounds won always set = 0"  
+script "P2 Rounds won always set = 0"
 run:
     poke $FF8B5E $00
-script "P2 Rounds won set = 0 Now!"  
+script "P2 Rounds won set = 0 Now!"
 on:
     poke $FF8B5E $00
-script "P2 Invincibility"  
+script "P2 Invincibility"
 run:
     poke $FF898D $01
-script "P2 Allow special moves during jump"  
+script "P2 Allow special moves during jump"
 run:
     poke $FF894F $00
 script "P2 Hadouken motion Cancel" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF87EC $01
 script "P2 No limit next shot" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF89A2 $00
     poke $FF89A3 $00
@@ -310,13 +310,13 @@ script "P2 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if peek($FF87CE+$391)==$0A
       dpoke ($FF87CE+$B6) param
       dpoke ($FF87CE+$B8) param
     endif
-script "P2 Easy button tap moves"  
+script "P2 Easy button tap moves"
 run:
     temp0=peek($FF87CE+$391)
     if peek($FF87CE)==$0
@@ -340,153 +340,144 @@ run:
     if ((temp0==$2)or(temp0==$5))and(peek(FF87CE+$9E)<$3)
       poke ($FF87CE+$9E) $3
     endif
-script "P2 Easy Tatsumaki (Ryu / Ken)"  
+script "P2 Easy Tatsumaki (Ryu / Ken)"
 run:
     poke $FF885E $04
-script "P2 Easy Hadouken (Ryu / Ken)"  
+script "P2 Easy Hadouken (Ryu / Ken)"
 run:
     poke $FF8862 $04
-script "P2 Easy Syouryuuken (Ryu / Ken)"  
+script "P2 Easy Syouryuuken (Ryu / Ken)"
 run:
     poke $FF8866 $04
-script "P2 Easy Fire hadouken (Ryu)"  
+script "P2 Easy Fire hadouken (Ryu)"
 run:
     poke $FF88AE $08
-script "P2 Easy Super zutsuki (E.Honda)"  
+script "P2 Easy Super zutsuki (E.Honda)"
 run:
     poke $FF884E $06
-script "P2 Easy Hyakkan otoshi (E.Honda)"  
+script "P2 Easy Hyakkan otoshi (E.Honda)"
 run:
     poke $FF8878 $06
-script "P2 Easy Rolling Attack (Blanka)"  
+script "P2 Easy Rolling Attack (Blanka)"
 run:
     poke $FF884E $06
-script "P2 Easy Vertical rolling (Blanka)"  
+script "P2 Easy Vertical rolling (Blanka)"
 run:
     poke $FF887E $06
-script "P2 Easy Backstep rolling (Blanka)"  
+script "P2 Easy Backstep rolling (Blanka)"
 run:
     poke $FF8887 $06
-script "P2 Easy Sonic boom (Guile)"  
+script "P2 Easy Sonic boom (Guile)"
 run:
     poke $FF884E $06
-script "P2 Easy Somersault kick (Guile)"  
+script "P2 Easy Somersault kick (Guile)"
 run:
     poke $FF8854 $06
-script "P2 Easy Spinning bird kick (ChunLi)"  
+script "P2 Easy Spinning bird kick (ChunLi)"
 run:
     poke $FF884E $06
-script "P2 Easy Kikouken (ChunLi)"  
+script "P2 Easy Kikouken (ChunLi)"
 run:
     poke $FF887E $06
-script "P2 Easy Screw pile driver (Zangief)"  
+script "P2 Easy Screw pile driver (Zangief)"
 run:
     poke $FF884E $06
     poke $FF884F $02
-script "P2 Easy atomic Suplex (Zangief)"  
+script "P2 Easy atomic Suplex (Zangief)"
 run:
     poke $FF8869 $06
     poke $FF886A $02
-script "P2 Easy Yoga fire (Dhalsim)"  
+script "P2 Easy Yoga fire (Dhalsim)"
 run:
     poke $FF884E $04
-script "P2 Easy Yoga flame (Dhalsim)"  
+script "P2 Easy Yoga flame (Dhalsim)"
 run:
     poke $FF8852 $08
 script "P2 Easy Yoga teleport left (Dhalsim)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8856 $04
     poke $FF885B $05
 script "P2 Easy Yoga teleport right (Dhalsim)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8856 $04
     poke $FF885B $06
-script "P2 Easy Dash straight (M.Bison)"  
+script "P2 Easy Dash straight (M.Bison)"
 run:
     poke $FF884E $06
-script "P2 Easy Dash upper (M.Bison)"  
+script "P2 Easy Dash upper (M.Bison)"
 run:
     poke $FF8856 $06
-script "P2 Easy Buffalo headbutt (M.Bison)"  
+script "P2 Easy Buffalo headbutt (M.Bison)"
 run:
     poke $FF888E $06
-script "P2 Easy Tiger uppercut (Sagat)"  
+script "P2 Easy Tiger uppercut (Sagat)"
 run:
     poke $FF884E $04
-script "P2 Easy Tiger knee crush (Sagat)"  
+script "P2 Easy Tiger knee crush (Sagat)"
 run:
     poke $FF8852 $04
-script "P2 Easy Tiger shot (Sagat)"  
+script "P2 Easy Tiger shot (Sagat)"
 run:
     poke $FF8856 $04
-script "P2 Easy Ground tiger shot (Sagat)"  
+script "P2 Easy Ground tiger shot (Sagat)"
 run:
     poke $FF885A $04
-script "P2 Easy Rolling crystal flash (Balrog)"  
+script "P2 Easy Rolling crystal flash (Balrog)"
 run:
     poke $FF8856 $06
-script "P2 Easy Flying barcelona attack (Balrog)"  
+script "P2 Easy Flying barcelona attack (Balrog)"
 run:
     poke $FF885A $06
-script "P2 Easy Sky high claw (Balrog)"  
+script "P2 Easy Sky high claw (Balrog)"
 run:
     poke $FF885E $06
-script "P2 Easy Double knee press (Vega)"  
+script "P2 Easy Double knee press (Vega)"
 run:
     poke $FF8856 $06
-script "P2 Easy Head press (Vega)"  
+script "P2 Easy Head press (Vega)"
 run:
     poke $FF885F $06
-script "P2 Easy Devil reverse (Vega)"  
+script "P2 Easy Devil reverse (Vega)"
 run:
     poke $FF887A $06
-script "P2 Easy Canon spike (Cammy)"  
+script "P2 Easy Canon spike (Cammy)"
 run:
     poke $FF8860 $04
-script "P2 Easy Spiral arrow (Cammy)"  
+script "P2 Easy Spiral arrow (Cammy)"
 run:
     poke $FF8864 $04
-script "P2 Easy Axel spin knackle (Cammy)"  
+script "P2 Easy Axel spin knackle (Cammy)"
 run:
     poke $FF8870 $04
-script "P2 Easy Tomahawk buster (T.Hawk)"  
+script "P2 Easy Tomahawk buster (T.Hawk)"
 run:
     poke $FF8860 $04
 script "P2 Easy Mexican typhoon (T.Hawk)" \
- "comm:Buggy"  
+ "comm:Buggy"
 run:
     poke $FF8868 $06
     poke $FF8869 $02
-script "P2 Easy sien kyaku (FeiLong)"  
+script "P2 Easy sien kyaku (FeiLong)"
 run:
     poke $FF8862 $04
-script "P2 Easy Rekkaken (FeiLong)"  
+script "P2 Easy Rekkaken (FeiLong)"
 run:
     poke $FF885E $04
     poke $FF886E $04
-script "P2 Easy Double rolling (DeeJay)"  
+script "P2 Easy Double rolling (DeeJay)"
 run:
     poke $FF8860 $06
-script "P2 Easy Machinegun upper (DeeJay)"  
+script "P2 Easy Machinegun upper (DeeJay)"
 run:
     poke $FF8864 $06
-script "P2 Easy Air slasher (DeeJay)"  
+script "P2 Easy Air slasher (DeeJay)"
 run:
     poke $FF8874 $06
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON the ROM check screen!" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/ETC"\
- "0x08/Asia"\
- "0x0A/Asia TW" 
-run:
-    poke $FF82CF param
