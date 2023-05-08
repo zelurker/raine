@@ -535,7 +535,7 @@ script "Green Player Select Screen" \
 "comm:Activiate and then close it. The effect will be lasting until the emulator is closed.
 This work on the modes that originally have yellow Player Select Screen.
 Effect can be overrided by 'Blue Player Select Screen' or 'Special Player Select Screen'."
-run:
+on:
 if (peek($2A3CC6)!=$02)
     lpoke $2A3CC6 $02C304D2
     lpoke $2A3CCA $06E108F0
