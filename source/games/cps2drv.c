@@ -955,30 +955,6 @@ static struct ROM_INFO rom_gigawingj[] = // clone of gigawing
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_gigawinga[] = // clone of gigawing
-{
-  LOAD_SW16( CPU1, "ggwa.03a", 0x000000, 0x80000, 0x116f8837),
-  LOAD_SW16( CPU1, "ggwa.04a", 0x080000, 0x80000, 0xe6e3f0c4),
-  LOAD_SW16( CPU1, "ggwa.05a", 0x100000, 0x80000, 0x465e8ac9),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_gigawingh[] = // clone of gigawing
-{
-  LOAD_SW16( CPU1, "ggwh.03a", 0x000000, 0x80000, 0xb9ee36eb),
-  LOAD_SW16( CPU1, "ggwh.04a", 0x080000, 0x80000, 0x72e548fe),
-  LOAD_SW16( CPU1, "ggw.05", 0x100000, 0x80000, 0x3239d642),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_gigawingb[] = // clone of gigawing
-{
-  LOAD_SW16( CPU1, "ggwb.03", 0x000000, 0x80000, 0xa1f8a448),
-  LOAD_SW16( CPU1, "ggwb.04", 0x080000, 0x80000, 0x6a423e76),
-  LOAD_SW16( CPU1, "ggw.05", 0x100000, 0x80000, 0x3239d642),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_hsf2[] =
 {
   LOAD_SW16( CPU1, "hs2u.03", 0x000000, 0x80000, 0xb308151e),
@@ -4405,12 +4381,6 @@ CLNEI( hsf2j, hsf2, "Hyper Street Fighter 2: The Anniversary Edition (Japan 0312
 GMEI( gigawing, "Giga Wing (USA 990222)", TAKUMI, 1999, GAME_SHOOT,
   .input = input_p2b2, .romsw = romsw_gigawing);
 CLNEI( gigawingj, gigawing, "Giga Wing (Japan 990223)", TAKUMI, 1999, GAME_SHOOT,
-  .input = input_p2b2);
-CLNEI( gigawinga, gigawing, "Giga Wing (Asia 990222)", TAKUMI, 1999, GAME_SHOOT,
-  .input = input_p2b2);
-CLNEI( gigawingh, gigawing, "Giga Wing (Hispanic 990222)", TAKUMI, 1999, GAME_SHOOT,
-  .input = input_p2b2);
-CLNEI( gigawingb, gigawing, "Giga Wing (Brazil 990222)", TAKUMI, 1999, GAME_SHOOT,
   .input = input_p2b2);
 GMEI( mmatrix, "Mars Matrix: Hyper Solid Shooting (USA 000412)", TAKUMI, 2000, GAME_SHOOT,
   .input = input_p2b1);
