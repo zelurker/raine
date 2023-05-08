@@ -536,63 +536,63 @@ script "Green Player Select Screen" \
 This work on the modes that originally have yellow Player Select Screen.
 Effect can be overrided by 'Blue Player Select Screen' or 'Special Player Select Screen'."
 on:
-if (peek($2A3CC6)!=$02)
-    lpoke $2A3CC6 $02C304D2
-    lpoke $2A3CCA $06E108F0
-    lpoke $2A3CCE $0AF00CF0
-    lpoke $2A3CD2 $0DF002C3
-    lpoke $2A3CD6 $04D206E1
-    lpoke $2A3CDA $08F00AF0
-    lpoke $2A3CDE $0CF00DF0
-    lpoke $2A3CE6 $02B402C3
-    lpoke $2A3CEA $04D206E1
-    lpoke $2A3CEE $08F00AF0
-    lpoke $2A3CF2 $0CF002C3
-    lpoke $2A3CF6 $04D206E1
-    lpoke $2A3CFA $08F00FF0
-    lpoke $2A3CFE $0CF00DF0
-    lpoke $2A3D06 $02A502B4
-    lpoke $2A3D0A $02C304D2
-    lpoke $2A3D0E $06E108F0
-    lpoke $2A3D12 $0AF002B4
-    lpoke $2A3D16 $02C304D2
-    lpoke $2A3D1A $06E108F0
-    lpoke $2A3D1E $0AF00CF0
-    lpoke $2A3D26 $029602A5
-    lpoke $2A3D2A $02B402C3
-    lpoke $2A3D2E $04D206E1
-    lpoke $2A3D32 $08F002A5
-    lpoke $2A3D36 $02B402C3
-    lpoke $2A3D3A $04D206E1
-    lpoke $2A3D3E $08F00AF0
-    lpoke $2A3D46 $02870296
-    lpoke $2A3D4A $02A502B4
-    lpoke $2A3D4E $02C304D2
-    lpoke $2A3D52 $06E10296
-    lpoke $2A3D56 $02A502B4
-    lpoke $2A3D5A $02C304D2
-    lpoke $2A3D5E $06E108F0
-    lpoke $2A3D66 $02780287
-    lpoke $2A3D6A $029602A5
-    lpoke $2A3D6E $02B402C3
-    lpoke $2A3D72 $04D20287
-    lpoke $2A3D76 $029602A5
-    lpoke $2A3D7A $02B402C3
-    lpoke $2A3D7E $04D206E1
-    lpoke $2A3D86 $02790278
-    lpoke $2A3D8A $02870296
-    lpoke $2A3D8E $02A502B4
-    lpoke $2A3D92 $02C30278
-    lpoke $2A3D96 $02870296
-    lpoke $2A3D9A $02A502B4
-    lpoke $2A3D9E $02C304D2
-    lpoke $2A3DA6 $027A0279
-    lpoke $2A3DAA $02780287
-    lpoke $2A3DAE $029602A5
-    lpoke $2A3DB2 $02B40279
-    lpoke $2A3DB6 $02780287
-    lpoke $2A3DBA $029602A5
-    lpoke $2A3DBE $02B402C3
+if (peek($2A6112)!=$02)
+    lpoke $2A6112 $02C304D2
+    lpoke $2A6116 $06E108F0
+    lpoke $2A611A $0AF00CF0
+    lpoke $2A611E $0DF002C3
+    lpoke $2A6122 $04D206E1
+    lpoke $2A6126 $08F00AF0
+    lpoke $2A612A $0CF00DF0
+    lpoke $2A6132 $02B402C3
+    lpoke $2A6136 $04D206E1
+    lpoke $2A613A $08F00AF0
+    lpoke $2A613E $0CF002C3
+    lpoke $2A6142 $04D206E1
+    lpoke $2A6146 $08F00FF0
+    lpoke $2A614A $0CF00DF0
+    lpoke $2A6152 $02A502B4
+    lpoke $2A6156 $02C304D2
+    lpoke $2A615A $06E108F0
+    lpoke $2A615E $0AF002B4
+    lpoke $2A6162 $02C304D2
+    lpoke $2A6166 $06E108F0
+    lpoke $2A616A $0AF00CF0
+    lpoke $2A6172 $029602A5
+    lpoke $2A6176 $02B402C3
+    lpoke $2A617A $04D206E1
+    lpoke $2A617E $08F002A5
+    lpoke $2A6182 $02B402C3
+    lpoke $2A6186 $04D206E1
+    lpoke $2A618A $08F00AF0
+    lpoke $2A6192 $02870296
+    lpoke $2A6196 $02A502B4
+    lpoke $2A619A $02C304D2
+    lpoke $2A619E $06E10296
+    lpoke $2A61A2 $02A502B4
+    lpoke $2A61A6 $02C304D2
+    lpoke $2A61AA $06E108F0
+    lpoke $2A61B2 $02780287
+    lpoke $2A61B6 $029602A5
+    lpoke $2A61BA $02B402C3
+    lpoke $2A61BE $04D20287
+    lpoke $2A61C2 $029602A5
+    lpoke $2A61C6 $02B402C3
+    lpoke $2A61CA $04D206E1
+    lpoke $2A61D2 $02790278
+    lpoke $2A61D6 $02870296
+    lpoke $2A61DA $02A502B4
+    lpoke $2A61DE $02C30278
+    lpoke $2A61E2 $02870296
+    lpoke $2A61E6 $02A502B4
+    lpoke $2A61EA $02C304D2
+    lpoke $2A61F2 $027A0279
+    lpoke $2A61F6 $02780287
+    lpoke $2A61FA $029602A5
+    lpoke $2A61FE $02B40279
+    lpoke $2A6202 $02780287
+    lpoke $2A6206 $029602A5
+    lpoke $2A620A $02B402C3
 endif
 
 script "Blue Player Select Screen" \
@@ -612,30 +612,30 @@ run:
 script "Brown Title Screen" \
 "comm:Activiate before Title screen and then close it. The effect will be lasting until the emulator is closed."
 on:
-if (peek($28BFA4)!=$02)
-    lpoke $28BFA4 $02100210
-    lpoke $28BFA8 $02100210
-    lpoke $28BFAC $02100420
-    lpoke $28BFB0 $06310853
-    lpoke $28BFB4 $09740CA7
-    lpoke $28BFB8 $02100210
+if (peek($28E3F0)!=$02)
+    lpoke $28E3F0 $02100210
+    lpoke $28E3F4 $02100210
+    lpoke $28E3F8 $02100420
+    lpoke $28E3FC $06310853
+    lpoke $28E400 $09740CA7
+    lpoke $28E404 $02100210
 endif
 
 script "Light Blue Title Screen" \
 "comm:Activiate before Title screen and then close it. The effect will be lasting until the emulator is closed."
 on:
-if (peek($28BFA4)!=$04)
-    lpoke $28BFA4 $048D048D
-    lpoke $28BFA8 $048D048D
-    lpoke $28BFAC $048D03AB
-    lpoke $28BFB0 $03BA03C9
-    lpoke $28BFB4 $03D804F6
-    lpoke $28BFB8 $048D048D
+if (peek($28E3F0)!=$04)
+    lpoke $28E3F0 $048D048D
+    lpoke $28E3F4 $048D048D
+    lpoke $28E3F8 $048D03AB
+    lpoke $28E3FC $03BA03C9
+    lpoke $28E400 $03D804F6
+    lpoke $28E404 $048D048D
 endif
 
 script "Stop Flashing on Title Screen"
 run:
-    if (peek($FFB31E)==$9E)
+    if (peek($FFB31E)==$9A)
     dpoke $FF8012 $0000
     endif
 
