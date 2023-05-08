@@ -7,8 +7,8 @@ if (peek(0xFF8076)==0x00) then
    if (peek(0xFF0000)~=0x06) then -- Restore original values at start in case of reset --
        poke(0x18766,0x04)
        poke(0x18774,0x08)
-       p1win=peek(0xFF84B0)
-       p2win=peek(0xFF88B0)
+       p1win=0X00
+       p2win=0X00
        lpoke(0x1426,0x2B400060)
        lpoke(0x143C,0x1B410060)
        lpoke(0x1430,0x2B400064)
@@ -16,6 +16,8 @@ if (peek(0xFF8076)==0x00) then
        dpoke(0x13B1E,0x13FC)
        lpoke(0x13B22,0x0061801F)
        dpoke(0x925C8,0x3B40)
+       lpoke(0x7FCF6,0x1D6C0082)
+       dpoke(0x7FCFA,0x0003)
    end
    if (peek(0xFF8001)>=0x0C) then -- Start button start --
        if (peek(0x804020)<0xFF) then
@@ -526,6 +528,9 @@ off:
     dpoke(0x13B1E,0x13FC)
     lpoke(0x13B22,0x0061801F)
     dpoke(0x925C8,0x3B40)
+    lpoke(0x7FCF6,0x1D6C0082)
+    dpoke(0x7FCFA,0x0003)
+
 script "Free Play Mode 'ON'"
 run:
     poke $FF809C $01
