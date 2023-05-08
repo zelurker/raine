@@ -779,24 +779,6 @@ static struct ROM_INFO rom_dimahoo[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_dimahoou[] = // clone of dimahoo
-{
-  LOAD_SW16( CPU1, "gmdu.03", 0x000000, 0x80000, 0x43bcb15f),
-  LOAD_SW16( CPU1, "gmd.04", 0x080000, 0x80000, 0x37485567),
-  LOAD_SW16( CPU1, "gmd.05", 0x100000, 0x80000, 0xda269ffb),
-  LOAD_SW16( CPU1, "gmd.06", 0x180000, 0x80000, 0x55b483c9),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_gmahou[] = // clone of dimahoo
-{
-  LOAD_SW16( CPU1, "gmdj.03", 0x000000, 0x80000, 0xcd6979e3),
-  LOAD_SW16( CPU1, "gmd.04", 0x080000, 0x80000, 0x37485567),
-  LOAD_SW16( CPU1, "gmd.05", 0x100000, 0x80000, 0xda269ffb),
-  LOAD_SW16( CPU1, "gmd.06", 0x180000, 0x80000, 0x55b483c9),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_dstlk[] =
 {
   LOAD_SW16( CPU1, "vame.03a", 0x000000, 0x80000, 0x004c9cff),
@@ -4055,6 +4037,12 @@ static struct ROMSW_INFO romsw_msh[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_dimahoo[] =
+{
+   { 0x7f8b, 0x08, romswd_msh },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_INFO romsw_1944[] =
 {
    { 0xc3, 0x02, romswd_1944 },
@@ -4624,13 +4612,7 @@ GMEI( choko, "Janpai Puzzle Choukou (Japan 010820)", MITCHELL, 2001, GAME_PUZZLE
   .input = input_p1b3);
 GMEI( dimahoo, "Dimahoo (Euro 000121)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b3,
-  .video = &video_cps1_270);
-CLNEI( dimahoou, dimahoo, "Dimahoo (USA 000121)", RAIZING, 2000, GAME_SHOOT,
-  .input = input_p2b3,
-  .video = &video_cps1_270);
-CLNEI( gmahou, dimahoo, "Great Mahou Daisakusen (Japan 000121)", RAIZING, 2000, GAME_SHOOT,
-  .video = &video_cps1_270,
-  .input = input_p2b3);
+  .video = &video_cps1_270, .romsw = romsw_dimahoo);
 GMEI( 1944, "1944: The Loop Master (USA 000620)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b2,
   .romsw = romsw_1944);

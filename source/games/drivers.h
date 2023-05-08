@@ -516,8 +516,6 @@
   DRV(pzloop2jr1)
   DRV(choko)
   DRV(dimahoo)
-  DRV(dimahoou)
-  DRV(gmahou)
   DRV(1944)
   DRV(1944j)
   DRV(progear)
