@@ -1,8 +1,8 @@
-script "Infinite Time"  
+script "Infinite Time"
 run:
     poke $FF8109 $63
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $FF8109 $00
 script "Select Backdrop" \
@@ -25,39 +25,39 @@ script "Select Backdrop" \
  "0x20/USSR"\
  "0x22/China (Alley)"\
  "0x24/#Australia"\
- "0x26/#Venezuela" 
+ "0x26/#Venezuela"
 run:
     poke $FF8101 param
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $FF8451 $90
     poke $FF8453 $90
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF8451 $00
     poke $FF8453 $00
-script "P1 Infinite Power"  
+script "P1 Infinite Power"
 run:
     poke $FF849F $90
-script "P1 Drain All Power Now!"  
+script "P1 Drain All Power Now!"
 on:
     poke $FF849F $00
-script "P1 Infinite Taunts"  
+script "P1 Infinite Taunts"
 run:
     poke $FF854F $01
-script "P1 Never Get Dizzied"  
+script "P1 Never Get Dizzied"
 run:
     dpoke $FF8684 $0000
-script "P1 Infinite Custom Combo"  
+script "P1 Infinite Custom Combo"
 run:
     dpoke $FF8699 $B000
 script "P1 Fight Mid-Boss Next" \
- "comm:Can only be done once per play"  
+ "comm:Can only be done once per play"
 run:
     poke $FF84C6 $05
 script "P1 Fight Shin-Akuma" \
- "comm:Can only be done once per play"  
+ "comm:Can only be done once per play"
 run:
     poke $FF84C8 $03
 script "P1 Select Character" \
@@ -85,39 +85,39 @@ script "P1 Select Character" \
  "0x14/#Shin-Akuma"\
  "0x15/#SF2-style Zangief"\
  "0x16/#SF2-style Dhalsim"\
- "0x17/#Satsui no Hadou ni Mezameta Ryu" 
+ "0x17/#Satsui no Hadou ni Mezameta Ryu"
 run:
     poke $FF8482 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $FF8851 $90
     poke $FF8853 $90
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF8851 $00
     poke $FF8853 $00
-script "P2 Infinite Power"  
+script "P2 Infinite Power"
 run:
     poke $FF889F $90
-script "P2 Drain All Power Now!"  
+script "P2 Drain All Power Now!"
 on:
     poke $FF889F $00
-script "P2 Infinite Taunts"  
+script "P2 Infinite Taunts"
 run:
     poke $FF894F $01
-script "P2 Never Get Dizzied"  
+script "P2 Never Get Dizzied"
 run:
     dpoke $FF8A84 $0000
-script "P2 Infinite Custom Combo"  
+script "P2 Infinite Custom Combo"
 run:
     dpoke $FF8A99 $B000
 script "P2 Fight Mid-Boss Next" \
- "comm:Can only be done once per play"  
+ "comm:Can only be done once per play"
 run:
     poke $FF88C6 $05
 script "P2 Fight Shin-Akuma" \
- "comm:Can only be done once per play"  
+ "comm:Can only be done once per play"
 run:
     poke $FF88C8 $03
 script "P2 Select Character" \
@@ -145,16 +145,16 @@ script "P2 Select Character" \
  "0x14/#Shin-Akuma"\
  "0x15/#SF2-style Zangief"\
  "0x16/#SF2-style Dhalsim"\
- "0x17/#Satsui no Hadou ni Mezameta Ryu" 
+ "0x17/#Satsui no Hadou ni Mezameta Ryu"
 run:
     poke $FF8882 param
-script "No Background Music"  
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
 script "Hide Background" \
- "comm:set to Venezuela stage for no BG sprites"  
+ "comm:set to Venezuela stage for no BG sprites"
 on:
     temp0=peek($FF8033)
     temp1=dpeek($005646)
@@ -176,15 +176,4 @@ off:
     poke $FF8033 temp0
     dpoke $005646 temp1
     lpoke $005648 temp2
-script " "  
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/Hispanic"\
- "0x06/Oceania"\
- "0x08/Asia"\
- "0x0A/Euro"\
- "0x0C/Brazil" 
-run:
-    poke $FF8091 param
+script " "

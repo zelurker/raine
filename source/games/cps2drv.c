@@ -4130,9 +4130,75 @@ static struct ROMSW_INFO romsw_sfz2ald[] =
     { 0, 0, NULL },
 };
 
+static struct ROMSW_INFO romsw_sfa3ud[] =
+{
+    { 0xff549, 2, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfz2ad[] =
+{
+    { 0xff541, 8, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
 static struct ROMSW_INFO romsw_sfz2alj[] =
 {
     { 0xff9, 0, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa2u[] =
+{
+    { 0xff9, 2, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa2h[] =
+{
+    { 0xff9, 4, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfz2a[] =
+{
+    { 0xffd, 8, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa2b[] =
+{
+    { 0xff9, 12, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa2[] =
+{
+    { 0xffd, 10, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa3b[] =
+{
+    { 0x101f, 12, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa3h[] =
+{
+    { 0x101f, 4, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa3[] =
+{
+    { 0x101f, 10, romsd_sfz2 },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_sfa3u[] =
+{
+    { 0x101f, 2, romsd_sfz2 },
     { 0, 0, NULL },
 };
 
@@ -4192,7 +4258,13 @@ static struct ROMSW_INFO romsw_ssf2[] =
 
 static struct ROMSW_INFO romsw_phoenix[] =
 {
-   { 0xfffffe, 0x02, romswd_phoenix },
+   { 0x17f560, 0x02, romswd_phoenix },
+   { 0,        0,    NULL },
+};
+
+static struct ROMSW_INFO romsw_1944d[] =
+{
+   { 0x5f549, 0x02, romswd_1944 },
    { 0,        0,    NULL },
 };
 
@@ -4392,12 +4464,16 @@ CLNEI( ddsomh, ddsom, "Dungeons & Dragons: Shadow over Mystara (Hispanic 960223)
   .input = input_p4b4);
 CLNEI( ddsomb, ddsom, "Dungeons & Dragons: Shadow over Mystara (Brazil 960223)", CAPCOM, 1996, GAME_BEAT,
   .input = input_p4b4);
-GMEI( sfa2, "Street Fighter Alpha 2 (Euro 960229)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfa2u, sfa2, "Street Fighter Alpha 2 (USA 960430)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfa2ur1, sfa2, "Street Fighter Alpha 2 (USA 960306)", CAPCOM, 1996, GAME_BEAT);
+GMEI( sfa2, "Street Fighter Alpha 2 (Euro 960229)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfa2);
+CLNEI( sfa2u, sfa2, "Street Fighter Alpha 2 (USA 960430)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfa2u);
+CLNEI( sfa2ur1, sfa2, "Street Fighter Alpha 2 (USA 960306)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfa2u);
 CLNEI( sfz2j, sfa2, "Street Fighter Zero 2 (Japan 960430)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2jr1, sfa2, "Street Fighter Zero 2 (Japan 960227)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfz2a, sfa2, "Street Fighter Zero 2 (Asia 960227)", CAPCOM, 1996, GAME_BEAT);
+CLNEI( sfz2a, sfa2, "Street Fighter Zero 2 (Asia 960227)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfz2a);
 CLNEI( sfz2b, sfa2, "Street Fighter Zero 2 (Brazil 960531)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2br1, sfa2, "Street Fighter Zero 2 (Brazil 960304)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2h, sfa2, "Street Fighter Zero 2 (Hispanic 960304)", CAPCOM, 1996, GAME_BEAT);
@@ -4406,8 +4482,10 @@ GMEI( sfz2al, "Street Fighter Zero 2 Alpha (Asia 960826)", CAPCOM, 1996, GAME_BE
 	.romsw = romsw_sfz2alj);
 CLNEI( sfz2alj, sfz2al, "Street Fighter Zero 2 Alpha (Japan 960805)", CAPCOM, 1996, GAME_BEAT,
 	.romsw = romsw_sfz2alj);
-CLNEI( sfz2alh, sfz2al, "Street Fighter Zero 2 Alpha (Hispanic 960813)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfz2alb, sfz2al, "Street Fighter Zero 2 Alpha (Brazil 960813)", CAPCOM, 1996, GAME_BEAT);
+CLNEI( sfz2alh, sfz2al, "Street Fighter Zero 2 Alpha (Hispanic 960813)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfa2h);
+CLNEI( sfz2alb, sfz2al, "Street Fighter Zero 2 Alpha (Brazil 960813)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_sfa2b);
 GMEI( spf2t, "Super Puzzle Fighter II Turbo (USA 960620)", CAPCOM, 1996, GAME_PUZZLE,
   .input = input_p2b2);
 CLNEI( spf2xj, spf2t, "Super Puzzle Fighter II X (Japan 960531)", CAPCOM, 1996, GAME_PUZZLE,
@@ -4492,15 +4570,18 @@ CLNEI( mvsca, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Asia 980123)", CA
 CLNEI( mvscar1, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Asia 980112)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( mvsch, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Hispanic 980123)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( mvscb, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Brazil 980123)", CAPCOM, 1998, GAME_BEAT);
-GMEI( sfa3, "Street Fighter Alpha 3 (Euro 980904)", CAPCOM, 1998, GAME_BEAT);
-CLNEI( sfa3u, sfa3, "Street Fighter Alpha 3 (USA 980904)", CAPCOM, 1998, GAME_BEAT);
-CLNEI( sfa3ur1, sfa3, "Street Fighter Alpha 3 (USA 980629)", CAPCOM, 1998, GAME_BEAT);
+GMEI( sfa3, "Street Fighter Alpha 3 (Euro 980904)", CAPCOM, 1998, GAME_BEAT,
+	.romsw = romsw_sfa3);
+CLNEI( sfa3u, sfa3, "Street Fighter Alpha 3 (USA 980904)", CAPCOM, 1998, GAME_BEAT,
+	.romsw = romsw_sfa3u);
+CLNEI( sfa3ur1, sfa3, "Street Fighter Alpha 3 (USA 980629)", CAPCOM, 1998, GAME_BEAT,
+	.romsw = romsw_sfa3u);
 CLNEI( sfa3h, sfa3, "Street Fighter Alpha 3 (Hispanic 980904)", CAPCOM, 1998, GAME_BEAT,
-  .input = input_p2b6t);
+  .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3hr1, sfa3, "Street Fighter Alpha 3 (Hispanic 980629)", CAPCOM, 1998, GAME_BEAT,
-  .input = input_p2b6t);
+  .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3b, sfa3, "Street Fighter Alpha 3 (Brazil 980629)", CAPCOM, 1998, GAME_BEAT,
-  .input = input_p2b6t);
+  .input = input_p2b6t, .romsw = romsw_sfa3b);
 CLNEI( sfz3j, sfa3, "Street Fighter Zero 3 (Japan 980904)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfz3jr1, sfa3, "Street Fighter Zero 3 (Japan 980727)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfz3jr2, sfa3, "Street Fighter Zero 3 (Japan 980629)", CAPCOM, 1998, GAME_BEAT);
@@ -4580,7 +4661,8 @@ CLNEI( mshud, msh, "Marvel Super Heroes (US 951024 Phoenix Edition) (bootleg)", 
 CLNEI( 19xxd, 19xx, "19XX: The War Against Destiny (USA 951207 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_SHOOT,
   .video = &video_cps1_270,
   .input = input_p2b2);
-CLNEI( sfz2ad, sfa2, "Street Fighter Zero 2 (Asia 960227 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
+CLNEI( sfz2ad, sfa2, "Street Fighter Zero 2 (Asia 960227 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT,
+	.romsw = romsw_sfz2ad);
 CLNEI( sfz2jd, sfa2, "Street Fighter Zero 2 (Japan 960227 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_BEAT);
 CLNEI( spf2td, spf2t, "Super Puzzle Fighter II Turbo (USA 960620 Phoenix Edition) (bootleg)", BOOTLEG, 1996, GAME_PUZZLE,
   .input = input_p2b2);
@@ -4599,13 +4681,14 @@ CLNEI( batcird, batcir, "Battle Circuit (Euro 970319 Phoenix Edition) (bootleg)"
   .input = input_p4b2);
 CLNEI( vsavd, vsav, "Vampire Savior: The Lord of Vampire (Euro 970519 Phoenix Edition) (bootleg)", BOOTLEG, 1997, GAME_BEAT);
 CLNEI( mvscud, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT);
-CLNEI( sfa3ud, sfa3, "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT);
+CLNEI( sfa3ud, sfa3, "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT,
+	.romsw = romsw_sfa3ud);
 CLNEI( gigawingd, gigawing, "Giga Wing (USA 990222 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
   .input = input_p2b2);
 CLNEI( gigawingjd, gigawing, "Giga Wing (Japan 990223 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
   .input = input_p2b2);
 CLNEI( 1944d, 1944, "1944: The Loop Master (USA 000620 Phoenix Edition) (bootleg)", BOOTLEG, 2000, GAME_SHOOT,
-  .input = input_p2b2);
+  .input = input_p2b2, .romsw = romsw_1944d );
 CLNEI( progearud, progear, "Progear (USA 010117 Phoenix Edition) (bootleg)", BOOTLEG, 2001, GAME_SHOOT,
   .input = input_p2b3);
 CLNEI( progearjd, progear, "Progear no Arashi (Japan 010117 Phoenix Edition) (bootleg)", BOOTLEG, 2001, GAME_SHOOT,

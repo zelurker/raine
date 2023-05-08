@@ -2518,6 +2518,14 @@ void load_cps2() {
       WriteLongSc(&ROM[0x23f56a], 0x3c3c0004);
   } else if (is_current_game("sfz2ald")) {
       WriteLongSc(&ROM[0xff55e], 0x3c3c0008);
+  } else if (is_current_game("sfa3ud")) {
+      WriteLongSc(&ROM[0xff546], 0x3c3c0002);
+  } else if (is_current_game("sfz2ad")) {
+      WriteLongSc(&ROM[0xff53e], 0x3c3c0008);
+  } else if (is_current_game("mmatrixd")) {
+      WriteLongSc(&ROM[0x17f55e], 0x3c3c0002);
+  } else if (is_current_game("1944d")) {
+      WriteLongSc(&ROM[0x5f546], 0x3c3c0002);
   }
 
   cps2crpt();
@@ -2649,10 +2657,7 @@ void load_cps2() {
 
   if (xor) AddRWBW(0x400000, 0x40000b, NULL, cps2_output);
   else {
-    AddRWBW(0xfffff0, 0xfffffb, NULL, cps2_output);
-      // the last byte fffffe actually is the region for at least mmatrixd
-      // doesn't work for 1944d, so maybe it's unique
-    AddReadBW(0xfffffc, 0xffffff, NULL, RAM+0x4fffc);
+    AddRWBW(0xfffff0, 0xffffff, NULL, cps2_output);
   }
 
   AddReadWord(0x618000, 0x619fff, qsound_sharedram1_r, NULL); // ram + 0x70000
