@@ -70,7 +70,6 @@ static void skip_if(char *field) {
 static void exec_if(char *field) {
     int nb,line; char *section;
     int argc; char **argv; void (*cmd)(int, char **);
-    int alloc=0;
     if (get_running_script_info(&nb,&line,&section) && !strcmp(section,"run")) {
 	if (is_script_parsing()) {
 	    cons->parse_cmd(field);
@@ -85,9 +84,8 @@ static void exec_if(char *field) {
 	    }
 	}
     } else {
-	alloc = 1;
-	argv = (char**)calloc(10,sizeof(char*));
-	split_command(field,argv,&argc,10);
+	cons->parse_cmd(field);
+	cons->get_parsed_info(&argc,&argv,&cmd);
     }
 
   if (!strcmp(argv[0],"else") || !strcmp(argv[0],"elsif")) {
@@ -105,9 +103,7 @@ static void exec_if(char *field) {
     int other_if = 0;
     if (!strcmp(argv[0],"if")) other_if=1;
     cons->end_interactive();
-    if (alloc)
-	cons->run_cmd(field);
-    else if (!cmd) {
+    if (!cmd) {
 	if (argc == 1) parse(argv[0]);
 	else {
 	    printf("exec_if: no cmd for line %s 1st command %s\n",field,argv[0]);
@@ -122,11 +118,7 @@ static void exec_if(char *field) {
     else
       inner++;
   }
-  if (alloc) {
-      restore_field(field,argc);
-      free(argv);
-  } else
-      cons->finish_parsed_info();
+  cons->finish_parsed_info();
 }
 
 void do_if(int argc, char **argv) {
