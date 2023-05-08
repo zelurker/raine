@@ -31,14 +31,6 @@ static struct ROM_INFO rom_1944[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_1944j[] = // clone of 1944
-{
-  LOAD_SW16( CPU1, "nffj.03", 0x000000, 0x80000, 0x247521ef),
-  LOAD_SW16( CPU1, "nff.04", 0x080000, 0x80000, 0xdba1c66e),
-  LOAD_SW16( CPU1, "nffj.05", 0x100000, 0x80000, 0x7f20c2ef),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_19xx[] =
 {
   LOAD_SW16( CPU1, "19xu.03", 0x000000, 0x80000, 0x05955268),
@@ -66,26 +58,6 @@ static struct ROM_INFO rom_19xxj[] = // clone of 19xx
   LOAD_SW16( CPU1, "19xj.04a", 0x080000, 0x80000, 0xfb8e3f29),
   LOAD_SW16( CPU1, "19xj.05a", 0x100000, 0x80000, 0xaa508ac4),
   LOAD_SW16( CPU1, "19xj.06a", 0x180000, 0x80000, 0xff2d785b),
-  LOAD_SW16( CPU1, "19x.07", 0x200000, 0x80000, 0x61c0296c),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_19xxjr1[] = // clone of 19xx
-{
-  LOAD_SW16( CPU1, "19xj.03", 0x000000, 0x80000, 0x26a381ed),
-  LOAD_SW16( CPU1, "19xj.04", 0x080000, 0x80000, 0x30100cca),
-  LOAD_SW16( CPU1, "19xj.05", 0x100000, 0x80000, 0xde67e938),
-  LOAD_SW16( CPU1, "19xj.06", 0x180000, 0x80000, 0x39f9a409),
-  LOAD_SW16( CPU1, "19x.07", 0x200000, 0x80000, 0x61c0296c),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_19xxa[] = // clone of 19xx
-{
-  LOAD_SW16( CPU1, "19xa.03", 0x000000, 0x80000, 0x0c20fd50),
-  LOAD_SW16( CPU1, "19xa.04", 0x080000, 0x80000, 0x1fc37508),
-  LOAD_SW16( CPU1, "19xa.05", 0x100000, 0x80000, 0x6c9cc4ed),
-  LOAD_SW16( CPU1, "19xa.06", 0x180000, 0x80000, 0xca5b9f76),
   LOAD_SW16( CPU1, "19x.07", 0x200000, 0x80000, 0x61c0296c),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -1196,50 +1168,11 @@ static struct ROM_INFO rom_msh[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_mshu[] = // clone of msh
-{
-  LOAD_SW16( CPU1, "mshu.03", 0x000000, 0x80000, 0xd2805bdd),
-  LOAD_SW16( CPU1, "mshu.04", 0x080000, 0x80000, 0x743f96ff),
-  LOAD_SW16( CPU1, "msh.05", 0x100000, 0x80000, 0x6a091b9e),
-  LOAD_SW16( CPU1, "msh.06b", 0x180000, 0x80000, 0x803e3fa4),
-  LOAD_SW16( CPU1, "msh.07a", 0x200000, 0x80000, 0xc45f8e27),
-  LOAD_SW16( CPU1, "msh.08a", 0x280000, 0x80000, 0x9ca6f12c),
-  LOAD_SW16( CPU1, "msh.09a", 0x300000, 0x80000, 0x82ec27af),
-  LOAD_SW16( CPU1, "msh.10b", 0x380000, 0x80000, 0x8d931196),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_mshj[] = // clone of msh
 {
   LOAD_SW16( CPU1, "mshj.03g", 0x000000, 0x80000, 0x261f4091),
   LOAD_SW16( CPU1, "mshj.04g", 0x080000, 0x80000, 0x61d791c6),
   LOAD_SW16( CPU1, "msh.05a", 0x100000, 0x80000, 0xf37539e6),
-  LOAD_SW16( CPU1, "msh.06b", 0x180000, 0x80000, 0x803e3fa4),
-  LOAD_SW16( CPU1, "msh.07a", 0x200000, 0x80000, 0xc45f8e27),
-  LOAD_SW16( CPU1, "msh.08a", 0x280000, 0x80000, 0x9ca6f12c),
-  LOAD_SW16( CPU1, "msh.09a", 0x300000, 0x80000, 0x82ec27af),
-  LOAD_SW16( CPU1, "msh.10b", 0x380000, 0x80000, 0x8d931196),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_mshjr1[] = // clone of msh
-{
-  LOAD_SW16( CPU1, "mshj.03f", 0x000000, 0x80000, 0xff172fd2),
-  LOAD_SW16( CPU1, "mshj.04f", 0x080000, 0x80000, 0xebbb205a),
-  LOAD_SW16( CPU1, "msh.05", 0x100000, 0x80000, 0x6a091b9e),
-  LOAD_SW16( CPU1, "msh.06b", 0x180000, 0x80000, 0x803e3fa4),
-  LOAD_SW16( CPU1, "msh.07a", 0x200000, 0x80000, 0xc45f8e27),
-  LOAD_SW16( CPU1, "msh.08a", 0x280000, 0x80000, 0x9ca6f12c),
-  LOAD_SW16( CPU1, "msh.09a", 0x300000, 0x80000, 0x82ec27af),
-  LOAD_SW16( CPU1, "msh.10b", 0x380000, 0x80000, 0x8d931196),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_msha[] = // clone of msh
-{
-  LOAD_SW16( CPU1, "msha.03e", 0x000000, 0x80000, 0xec84ec44),
-  LOAD_SW16( CPU1, "msha.04e", 0x080000, 0x80000, 0x098b8503),
-  LOAD_SW16( CPU1, "msh.05", 0x100000, 0x80000, 0x6a091b9e),
   LOAD_SW16( CPU1, "msh.06b", 0x180000, 0x80000, 0x803e3fa4),
   LOAD_SW16( CPU1, "msh.07a", 0x200000, 0x80000, 0xc45f8e27),
   LOAD_SW16( CPU1, "msh.08a", 0x280000, 0x80000, 0x9ca6f12c),
@@ -2172,17 +2105,6 @@ static struct ROM_INFO rom_sfz2j[] = // clone of sfa2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_sfz2jr1[] = // clone of sfa2
-{
-  LOAD_SW16( CPU1, "sz2j.03a", 0x000000, 0x80000, 0x97461e28),
-  LOAD_SW16( CPU1, "sz2j.04a", 0x080000, 0x80000, 0xae4851a9),
-  LOAD_SW16( CPU1, "sz2.05a", 0x100000, 0x80000, 0x98e8e992),
-  LOAD_SW16( CPU1, "sz2.06", 0x180000, 0x80000, 0x5b1d49c0),
-  LOAD_SW16( CPU1, "sz2j.07a", 0x200000, 0x80000, 0xd910b2a2),
-  LOAD_SW16( CPU1, "sz2.08", 0x280000, 0x80000, 0x0fe8585d),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_sfz2a[] = // clone of sfa2
 {
   LOAD_SW16( CPU1, "sz2a.03a", 0x000000, 0x80000, 0x30d2099f),
@@ -2319,19 +2241,6 @@ static struct ROM_INFO rom_sfa3[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_sfa3u[] = // clone of sfa3
-{
-  LOAD_SW16( CPU1, "sz3u.03c", 0x000000, 0x80000, 0xe007da2e),
-  LOAD_SW16( CPU1, "sz3u.04c", 0x080000, 0x80000, 0x5f78f0e7),
-  LOAD_SW16( CPU1, "sz3.05c", 0x100000, 0x80000, 0x57fd0a40),
-  LOAD_SW16( CPU1, "sz3.06c", 0x180000, 0x80000, 0xf6305f8b),
-  LOAD_SW16( CPU1, "sz3.07c", 0x200000, 0x80000, 0x6eab0f6f),
-  LOAD_SW16( CPU1, "sz3.08c", 0x280000, 0x80000, 0x910c4a3b),
-  LOAD_SW16( CPU1, "sz3.09c", 0x300000, 0x80000, 0xb29e5199),
-  LOAD_SW16( CPU1, "sz3.10b", 0x380000, 0x80000, 0xdeb2ff52),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_sfa3ur1[] = // clone of sfa3
 {
   LOAD_SW16( CPU1, "sz3u.03", 0x000000, 0x80000, 0xb5984a19),
@@ -2407,19 +2316,6 @@ static struct ROM_INFO rom_sfz3ar1[] = // clone of sfa3
   LOAD_SW16( CPU1, "sz3.08", 0x280000, 0x80000, 0x5c7e7240),
   LOAD_SW16( CPU1, "sz3.09", 0x300000, 0x80000, 0xc5589553),
   LOAD_SW16( CPU1, "sz3.10", 0x380000, 0x80000, 0xa9717252),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_sfa3h[] = // clone of sfa3
-{
-  LOAD_SW16( CPU1, "sz3h.03c", 0x000000, 0x80000, 0xb3b563a3),
-  LOAD_SW16( CPU1, "sz3h.04c", 0x080000, 0x80000, 0x47891fec),
-  LOAD_SW16( CPU1, "sz3.05c", 0x100000, 0x80000, 0x57fd0a40),
-  LOAD_SW16( CPU1, "sz3.06c", 0x180000, 0x80000, 0xf6305f8b),
-  LOAD_SW16( CPU1, "sz3.07c", 0x200000, 0x80000, 0x6eab0f6f),
-  LOAD_SW16( CPU1, "sz3.08c", 0x280000, 0x80000, 0x910c4a3b),
-  LOAD_SW16( CPU1, "sz3.09c", 0x300000, 0x80000, 0xb29e5199),
-  LOAD_SW16( CPU1, "sz3.10b", 0x380000, 0x80000, 0xdeb2ff52),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2568,16 +2464,6 @@ static struct ROM_INFO rom_ssf2[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_ssf2u[] = // clone of ssf2
-{
-  LOAD_SW16( CPU1, "ssfu.03a", 0x000000, 0x80000, 0x72f29c33),
-  LOAD_SW16( CPU1, "ssfu.04a", 0x080000, 0x80000, 0x935cea44),
-  LOAD_SW16( CPU1, "ssfu.05", 0x100000, 0x80000, 0xa0acb28a),
-  LOAD_SW16( CPU1, "ssfu.06", 0x180000, 0x80000, 0x47413dcf),
-  LOAD_SW16( CPU1, "ssfu.07", 0x200000, 0x80000, 0xe6066077),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_ssf2a[] = // clone of ssf2
 {
   LOAD_SW16( CPU1, "ssfa.03b", 0x000000, 0x80000, 0x83a059bf),
@@ -2608,16 +2494,6 @@ static struct ROM_INFO rom_ssf2j[] = // clone of ssf2
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_ssf2jr1[] = // clone of ssf2
-{
-  LOAD_SW16( CPU1, "ssfj.03a", 0x000000, 0x80000, 0x0bbf1304),
-  LOAD_SW16( CPU1, "ssfj.04a", 0x080000, 0x80000, 0x013bd55c),
-  LOAD_SW16( CPU1, "ssfj.05", 0x100000, 0x80000, 0x0918d19a),
-  LOAD_SW16( CPU1, "ssfj.06", 0x180000, 0x80000, 0xd808a6cd),
-  LOAD_SW16( CPU1, "ssfj.07", 0x200000, 0x80000, 0xeb6a9b1b),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_ssf2jr2[] = // clone of ssf2
 {
   LOAD_SW16( CPU1, "ssfj.03", 0x000000, 0x80000, 0x7eb0efed),
@@ -2625,16 +2501,6 @@ static struct ROM_INFO rom_ssf2jr2[] = // clone of ssf2
   LOAD_SW16( CPU1, "ssfj.05", 0x100000, 0x80000, 0x0918d19a),
   LOAD_SW16( CPU1, "ssfj.06", 0x180000, 0x80000, 0xd808a6cd),
   LOAD_SW16( CPU1, "ssfj.07", 0x200000, 0x80000, 0xeb6a9b1b),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_ssf2h[] = // clone of ssf2
-{
-  LOAD_SW16( CPU1, "ssfh.03", 0x000000, 0x80000, 0xb086b355),
-  LOAD_SW16( CPU1, "ssfh.04", 0x080000, 0x80000, 0x1e629b29),
-  LOAD_SW16( CPU1, "ssfh.05", 0x100000, 0x80000, 0xb5997e10),
-  LOAD_SW16( CPU1, "ssfh.06", 0x180000, 0x80000, 0x793b8fad),
-  LOAD_SW16( CPU1, "ssfh.07", 0x200000, 0x80000, 0xcbb92ac3),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -2714,30 +2580,6 @@ static struct ROM_INFO rom_ssf2tu[] = // clone of ssf2t
   LOAD_SW16( CPU1, "sfxu.06b", 0x180000, 0x80000, 0x83f9382b),
   LOAD_SW16( CPU1, "sfxu.07a", 0x200000, 0x80000, 0x6ab673e8),
   LOAD_SW16( CPU1, "sfxu.08", 0x280000, 0x80000, 0xb3c71810),
-  LOAD_SW16( CPU1, "sfx.09", 0x300000, 0x80000, 0x642fae3f),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_ssf2tur1[] = // clone of ssf2t
-{
-  LOAD_SW16( CPU1, "sfxu.03c", 0x000000, 0x80000, 0x86e4a335),
-  LOAD_SW16( CPU1, "sfxu.04a", 0x080000, 0x80000, 0x532b5ffd),
-  LOAD_SW16( CPU1, "sfxu.05", 0x100000, 0x80000, 0xffa3c6de),
-  LOAD_SW16( CPU1, "sfxu.06a", 0x180000, 0x80000, 0xe4c04c99),
-  LOAD_SW16( CPU1, "sfxu.07", 0x200000, 0x80000, 0xd8199e41),
-  LOAD_SW16( CPU1, "sfxu.08", 0x280000, 0x80000, 0xb3c71810),
-  LOAD_SW16( CPU1, "sfx.09", 0x300000, 0x80000, 0x642fae3f),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_ssf2ta[] = // clone of ssf2t
-{
-  LOAD_SW16( CPU1, "sfxa.03c", 0x000000, 0x80000, 0x04b9ff34),
-  LOAD_SW16( CPU1, "sfxa.04a", 0x080000, 0x80000, 0x16ea5f7a),
-  LOAD_SW16( CPU1, "sfxa.05", 0x100000, 0x80000, 0x53d61f0c),
-  LOAD_SW16( CPU1, "sfxa.06a", 0x180000, 0x80000, 0x066d09b5),
-  LOAD_SW16( CPU1, "sfxa.07", 0x200000, 0x80000, 0xa428257b),
-  LOAD_SW16( CPU1, "sfxa.08", 0x280000, 0x80000, 0x39be596c),
   LOAD_SW16( CPU1, "sfx.09", 0x300000, 0x80000, 0x642fae3f),
   { NULL, 0, 0, 0, 0, 0 }
 };
@@ -4202,12 +4044,6 @@ static struct ROMSW_INFO romsw_ssf2tu[] =
     { 0, 0, NULL },
 };
 
-static struct ROMSW_INFO romsw_ssf2ta[] =
-{
-    { 0x1cd, 8, romsd_ssf2t },
-    { 0, 0, NULL },
-};
-
 static struct ROMSW_INFO romsw_ssf2tj[] =
 {
     { 0x1cd, 0, romsd_ssf2t },
@@ -4258,19 +4094,14 @@ static struct ROMSW_INFO romsw_1944d[] =
 
 GMEI( ssf2, "Super Street Fighter II: The New Challengers (World 930911)", CAPCOM, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2);
-CLNEI( ssf2u, ssf2, "Super Street Fighter II: The New Challengers (USA 930911)", CAPCOM, 1993, GAME_BEAT);
 CLNEI( ssf2a, ssf2, "Super Street Fighter II: The New Challengers (Asia 931005)", CAPCOM, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2a);
 CLNEI( ssf2ar1, ssf2, "Super Street Fighter II: The New Challengers (Asia 930914)", CAPCOM, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2a);
 CLNEI( ssf2j, ssf2, "Super Street Fighter II: The New Challengers (Japan 931005)", CAPCOM, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2j);
-CLNEI( ssf2jr1, ssf2, "Super Street Fighter II: The New Challengers (Japan 930911)", CAPCOM, 1993, GAME_BEAT,
-	.romsw = romsw_ssf2j);
 CLNEI( ssf2jr2, ssf2, "Super Street Fighter II: The New Challengers (Japan 930910)", CAPCOM, 1993, GAME_BEAT,
     .romsw = romsw_ssf2j);
-CLNEI( ssf2h, ssf2, "Super Street Fighter II: The New Challengers (Hispanic 930911)", CAPCOM, 1993, GAME_BEAT,
-	.romsw = romsw_ssf2th);
 CLNEI( ssf2tb, ssf2, "Super Street Fighter II: The Tournament Battle (World 931119)", CAPCOM, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2t);
 CLNEI( ssf2tbr1, ssf2, "Super Street Fighter II: The Tournament Battle (World 930911)", CAPCOM, 1993, GAME_BEAT,
@@ -4315,11 +4146,7 @@ CLNEI( ddtodhr2, ddtod, "Dungeons & Dragons: Tower of Doom (Hispanic 940113)", C
   .input = input_p4b4);
 GMEI( ssf2t, "Super Street Fighter II Turbo (World 940223)", CAPCOM, 1994, GAME_BEAT,
 	.romsw = romsw_ssf2t);
-CLNEI( ssf2ta, ssf2t, "Super Street Fighter II Turbo (Asia 940223)", CAPCOM, 1994, GAME_BEAT,
-	.romsw = romsw_ssf2ta);
 CLNEI( ssf2tu, ssf2t, "Super Street Fighter II Turbo (USA 940323)", CAPCOM, 1994, GAME_BEAT,
-	.romsw = romsw_ssf2tu);
-CLNEI( ssf2tur1, ssf2t, "Super Street Fighter II Turbo (USA 940223)", CAPCOM, 1994, GAME_BEAT,
 	.romsw = romsw_ssf2tu);
 CLNEI( ssf2xj, ssf2t, "Super Street Fighter II X: Grand Master Challenge (Japan 940223)", CAPCOM, 1994, GAME_BEAT,
 	.romsw = romsw_ssf2tj);
@@ -4406,22 +4233,13 @@ CLNEI( rmancp2j, megaman, "Rockman: The Power Battle (CPS2, Japan 950922)", CAPC
   .input = input_p2b3);
 GMEI( msh, "Marvel Super Heroes (Euro 951024)", CAPCOM, 1995, GAME_BEAT,
 	.romsw = romsw_msh);
-CLNEI( mshu, msh, "Marvel Super Heroes (USA 951024)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( mshj, msh, "Marvel Super Heroes (Japan 951117)", CAPCOM, 1995, GAME_BEAT);
-CLNEI( mshjr1, msh, "Marvel Super Heroes (Japan 951024)", CAPCOM, 1995, GAME_BEAT);
-CLNEI( msha, msh, "Marvel Super Heroes (Asia 951024)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( mshh, msh, "Marvel Super Heroes (Hispanic 951117)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( mshb, msh, "Marvel Super Heroes (Brazil 951117)", CAPCOM, 1995, GAME_BEAT);
 GMEI( 19xx, "19XX: The War Against Destiny (USA 951207)", CAPCOM, 1996, GAME_SHOOT,
   .video = &video_cps1_270,
   .input = input_p2b2, .romsw = romsw_19xx);
-CLNEI( 19xxa, 19xx, "19XX: The War Against Destiny (Asia 951207)", CAPCOM, 1996, GAME_SHOOT,
-  .video = &video_cps1_270,
-  .input = input_p2b2);
 CLNEI( 19xxj, 19xx, "19XX: The War Against Destiny (Japan 951225)", CAPCOM, 1996, GAME_SHOOT,
-  .video = &video_cps1_270,
-  .input = input_p2b2);
-CLNEI( 19xxjr1, 19xx, "19XX: The War Against Destiny (Japan 951207)", CAPCOM, 1996, GAME_SHOOT,
   .video = &video_cps1_270,
   .input = input_p2b2);
 CLNEI( 19xxh, 19xx, "19XX: The War Against Destiny (Hispanic 951218)", CAPCOM, 1996, GAME_SHOOT,
@@ -4459,7 +4277,6 @@ CLNEI( sfa2u, sfa2, "Street Fighter Alpha 2 (USA 960430)", CAPCOM, 1996, GAME_BE
 CLNEI( sfa2ur1, sfa2, "Street Fighter Alpha 2 (USA 960306)", CAPCOM, 1996, GAME_BEAT,
 	.romsw = romsw_sfa2u);
 CLNEI( sfz2j, sfa2, "Street Fighter Zero 2 (Japan 960430)", CAPCOM, 1996, GAME_BEAT);
-CLNEI( sfz2jr1, sfa2, "Street Fighter Zero 2 (Japan 960227)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( sfz2a, sfa2, "Street Fighter Zero 2 (Asia 960227)", CAPCOM, 1996, GAME_BEAT,
 	.romsw = romsw_sfz2a);
 CLNEI( sfz2b, sfa2, "Street Fighter Zero 2 (Brazil 960531)", CAPCOM, 1996, GAME_BEAT);
@@ -4560,12 +4377,8 @@ CLNEI( mvsch, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Hispanic 980123)"
 CLNEI( mvscb, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Brazil 980123)", CAPCOM, 1998, GAME_BEAT);
 GMEI( sfa3, "Street Fighter Alpha 3 (Euro 980904)", CAPCOM, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3);
-CLNEI( sfa3u, sfa3, "Street Fighter Alpha 3 (USA 980904)", CAPCOM, 1998, GAME_BEAT,
-	.romsw = romsw_sfa3u);
 CLNEI( sfa3ur1, sfa3, "Street Fighter Alpha 3 (USA 980629)", CAPCOM, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3u);
-CLNEI( sfa3h, sfa3, "Street Fighter Alpha 3 (Hispanic 980904)", CAPCOM, 1998, GAME_BEAT,
-  .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3hr1, sfa3, "Street Fighter Alpha 3 (Hispanic 980629)", CAPCOM, 1998, GAME_BEAT,
   .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3b, sfa3, "Street Fighter Alpha 3 (Brazil 980629)", CAPCOM, 1998, GAME_BEAT,
@@ -4616,8 +4429,6 @@ GMEI( dimahoo, "Dimahoo (Euro 000121)", RAIZING, 2000, GAME_SHOOT,
 GMEI( 1944, "1944: The Loop Master (USA 000620)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b2,
   .romsw = romsw_1944);
-CLNEI( 1944j, 1944, "1944: The Loop Master (Japan 000620)", RAIZING, 2000, GAME_SHOOT,
-  .input = input_p2b2);
 GMEI( progear, "Progear (USA 010117)", CAVE, 2001, GAME_SHOOT,
   .input = input_p2b3);
 CLNEI( progearj, progear, "Progear no Arashi (Japan 010117)", CAVE, 2001, GAME_SHOOT,
