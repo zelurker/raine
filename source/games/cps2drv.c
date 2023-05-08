@@ -1714,20 +1714,6 @@ static struct ROM_INFO rom_progear[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_progearj[] = // clone of progear
-{
-  LOAD_SW16( CPU1, "pgaj.03", 0x000000, 0x80000, 0x06dbba54),
-  LOAD_SW16( CPU1, "pgaj.04", 0x080000, 0x80000, 0xa1f1f1bc),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_progeara[] = // clone of progear
-{
-  LOAD_SW16( CPU1, "pgaa.03", 0x000000, 0x80000, 0x25e6e2ce),
-  LOAD_SW16( CPU1, "pgaa.04", 0x080000, 0x80000, 0x8104307e),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_pzloop2[] =
 {
   LOAD_SW16( CPU1, "pl2e.03", 0x000000, 0x80000, 0x3b1285b2),
@@ -3879,6 +3865,12 @@ static struct ROMSW_INFO romsw_msh[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_choko[] =
+{
+   { 0x1f51, 0x00, romswd_vhunt2 },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_INFO romsw_dimahoo[] =
 {
    { 0x7f8b, 0x08, romswd_msh },
@@ -3888,6 +3880,23 @@ static struct ROMSW_INFO romsw_dimahoo[] =
 static struct ROMSW_INFO romsw_1944[] =
 {
    { 0xc3, 0x02, romswd_1944 },
+   { 0,        0,    NULL },
+};
+
+static struct ROMSW_DATA romsd_gigawing[] =
+{
+  { "Japan", 0x0},
+  { "USA", 2 },
+  { "Euro",0x4},
+  { "Brazil", 0x6},
+  { "Hispanic", 8 },
+  { "Asia", 10 },
+  { NULL,                    0    },
+};
+
+static struct ROMSW_INFO romsw_gigawing[] =
+{
+   { 0xc3, 0x02, romsd_gigawing },
    { 0,        0,    NULL },
 };
 
@@ -4394,7 +4403,7 @@ GMEI( hsf2, "Hyper Street Fighter 2: The Anniversary Edition (USA 040202)", CAPC
 CLNEI( hsf2a, hsf2, "Hyper Street Fighter 2: The Anniversary Edition (Asia 040202)", CAPCOM, 2004, GAME_BEAT);
 CLNEI( hsf2j, hsf2, "Hyper Street Fighter 2: The Anniversary Edition (Japan 031222)", CAPCOM, 2004, GAME_BEAT);
 GMEI( gigawing, "Giga Wing (USA 990222)", TAKUMI, 1999, GAME_SHOOT,
-  .input = input_p2b2);
+  .input = input_p2b2, .romsw = romsw_gigawing);
 CLNEI( gigawingj, gigawing, "Giga Wing (Japan 990223)", TAKUMI, 1999, GAME_SHOOT,
   .input = input_p2b2);
 CLNEI( gigawinga, gigawing, "Giga Wing (Asia 990222)", TAKUMI, 1999, GAME_SHOOT,
@@ -4422,7 +4431,7 @@ CLNEI( pzloop2j, pzloop2, "Puzz Loop 2 (Japan 010226)", MITCHELL, 2001, GAME_PUZ
 CLNEI( pzloop2jr1, pzloop2, "Puzz Loop 2 (Japan 010205)", MITCHELL, 2001, GAME_PUZZLE,
   .input = input_p2b1);
 GMEI( choko, "Janpai Puzzle Choukou (Japan 010820)", MITCHELL, 2001, GAME_PUZZLE,
-  .input = input_p1b3);
+  .input = input_p1b3, .romsw = romsw_choko);
 GMEI( dimahoo, "Dimahoo (Euro 000121)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b3,
   .video = &video_cps1_270, .romsw = romsw_dimahoo);
@@ -4430,11 +4439,10 @@ GMEI( 1944, "1944: The Loop Master (USA 000620)", RAIZING, 2000, GAME_SHOOT,
   .input = input_p2b2,
   .romsw = romsw_1944);
 GMEI( progear, "Progear (USA 010117)", CAVE, 2001, GAME_SHOOT,
-  .input = input_p2b3);
-CLNEI( progearj, progear, "Progear no Arashi (Japan 010117)", CAVE, 2001, GAME_SHOOT,
-  .input = input_p2b3);
-CLNEI( progeara, progear, "Progear (Asia 010117)", CAVE, 2001, GAME_SHOOT,
-  .input = input_p2b3);
+  .input = input_p2b3, .romsw = romsw_msh);
+
+
+// The phoenix editions...
 CLNEI( ssf2ud, ssf2, "Super Street Fighter II: The New Challengers (USA 930911 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT,
 	.romsw = romsw_ssf2ud);
 CLNEI( ddtodd, ddtod, "Dungeons & Dragons: Tower of Doom (Euro 940412 Phoenix Edition) (bootleg)", BOOTLEG, 1993, GAME_BEAT,

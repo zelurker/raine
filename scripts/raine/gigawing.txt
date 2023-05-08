@@ -1,4 +1,4 @@
-script "Infinite Character Selection Time"  
+script "Infinite Character Selection Time"
 run:
     poke $FFD7FD $63
 script "Select Starting Stage Level" \
@@ -9,26 +9,26 @@ script "Select Starting Stage Level" \
  "0x04/5"\
  "0x05/6"\
  "0x06/7"\
- "0x07/Demo Stage" 
+ "0x07/Demo Stage"
 run:
     if (peek($FF7341)==$00)
       poke $FF7341 param
     endif
-script "Finish Current Stage Now!"  
+script "Finish Current Stage Now!"
 on:
     if (peek($908681)==$38)and(peek($FF6ED6)==$00)
       poke $FF6ED6 $80
     endif
-script " "  
-script "P1 Infinite Lives"  
+script " "
+script "P1 Infinite Lives"
 run:
     poke $FF72DD $0A
-script "P1 Infinite Bombs"  
+script "P1 Infinite Bombs"
 run:
     poke $FF72E1 $08
 script "P1 Invincibility" \
  "0x01/Enabled"\
- "0x02/Disabled" 
+ "0x02/Disabled"
 run:
     if (param==$01)
       dpoke $FFAE3A $0003
@@ -54,21 +54,21 @@ script "P1 Select Shot" \
  "0x0C/Type D Level 1"\
  "0x0D/Type D Level 2"\
  "0x0E/Type D Level 3"\
- "0x0F/Type D Level 4" 
+ "0x0F/Type D Level 4"
 run:
     poke $FF730D param
-script "P1 Infinite Reflect Barrier Time"  
+script "P1 Infinite Reflect Barrier Time"
 run:
     if (dpeek($FF9E70)>0x10)and(dpeek($FF9E70)<0x20)
       dpoke $FF9E70 $001F
     endif
-script "P1 Get Maximum multiplier Now!"  
+script "P1 Get Maximum multiplier Now!"
 on:
     lpoke $FF72E4 $49999999
-script "P1 Rapid Fire"  
+script "P1 Rapid Fire"
 run:
     poke $FFAE30 $00|(peek($FFAE30)&~$10)
-script "P1 Quick Charge Shield"  
+script "P1 Quick Charge Shield"
 run:
     if (dpeek($FFAE74)>$0FC0)and(dpeek($FFAE74)<$1000)
       dpoke $FFAE74 $0000
@@ -78,19 +78,19 @@ script "P1 Select Character" \
  "0x01/Ruby"\
  "0x02/Isha"\
  "0x03/Stuck"\
- "0x04/Stranger (Buggy-Incomplete GFX)" 
+ "0x04/Stranger (Buggy-Incomplete GFX)"
 run:
     poke $FF7309 param
-script " "  
-script "P2 Infinite Lives"  
+script " "
+script "P2 Infinite Lives"
 run:
     poke $FF72DF $0A
-script "P2 Infinite Bombs"  
+script "P2 Infinite Bombs"
 run:
     poke $FF72E3 $08
 script "P2 Invincibility" \
  "0x01/Enabled"\
- "0x02/Disabled" 
+ "0x02/Disabled"
 run:
     if (param==$01)
       dpoke $FFAEFB $0003
@@ -116,21 +116,21 @@ script "P2 Select Shot" \
  "0x0C/Type D Level 1"\
  "0x0D/Type D Level 2"\
  "0x0E/Type D Level 3"\
- "0x0F/Type D Level 4" 
+ "0x0F/Type D Level 4"
 run:
     poke $FF7315 param
-script "P2 Infinite Reflect Barrier Time"  
+script "P2 Infinite Reflect Barrier Time"
 run:
     if (dpeek($FF9FF0)>0x10)and(dpeek($FF9FF0)<0x20)
       dpoke $FF9FF0 $001F
     endif
-script "P2 Get Maximum multiplier Now!"  
+script "P2 Get Maximum multiplier Now!"
 on:
     lpoke $FF72E8 $49999999
-script "P2 Rapid Fire"  
+script "P2 Rapid Fire"
 run:
     poke $FFAEF0 $00|(peek($FFAEF0)&~$10)
-script "P2 Quick Charge Shield"  
+script "P2 Quick Charge Shield"
 run:
     if (dpeek($FFAF34)>$0FC0)and(dpeek($FFAF34)<$1000)
       dpoke $FFAF34 $0000
@@ -140,22 +140,12 @@ script "P2 Select Character" \
  "0x01/Ruby"\
  "0x02/Isha"\
  "0x03/Stuck"\
- "0x04/Stranger (Buggy-Incomplete GFX)" 
+ "0x04/Stranger (Buggy-Incomplete GFX)"
 run:
     poke $FF7311 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F026 $0000
     cpu main
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/Euro"\
- "0x06/Brazil"\
- "0x08/Hispanic"\
- "0x0A/Asia" 
-run:
-    poke $FF20B1 param
