@@ -1612,8 +1612,10 @@ void done_console() {
   done_breakpoints();
   nb_watch = 0;
   cpu_id = 0;
-  if (L)
+  if (L) {
       lua_close(L);
+      L = NULL;
+  }
 }
 
 void run_console_command(char *command) {

@@ -150,9 +150,7 @@ static void read_game_stats() {
 	    if (s) {
 		*s = 0;
 		GAME_MAIN *game = find_game(buf);
-		if (!game) {
-		    printf("read_game_stats: game %s not found\n",buf);
-		} else {
+		if (game) {
 		    char *s2 = strchr(s+1,',');
 		    if (!s2) {
 			printf("read_game_stats: game %s, bad format\n",buf);
