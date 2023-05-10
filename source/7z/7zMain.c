@@ -330,8 +330,6 @@ int load_7z(char *zipfile, char *name, unsigned int offs, unsigned int size, int
 	  }
       }
 
-      CrcGenerateTable();
-
       SzArEx_Init(&db);
 
       if (res == SZ_OK)

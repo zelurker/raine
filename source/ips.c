@@ -9,6 +9,7 @@
 #include "memwatch.h"
 #endif
 #include "console/scripts.h" // atoh
+#include "7z/7zCrc.h"
 
 tips_info ips_info;
 
@@ -172,5 +173,150 @@ void add_ips_file(char *file) {
 	return;
     }
     ips_info.nb = nb;
+}
+
+static u64 bps_decode(FILE *f) {
+  u64 data = 0, shift = 1;
+  while(1) {
+    u8 x;
+    fread(&x,1,1,f);
+    data += (x & 0x7f) * shift;
+    if(x & 0x80) break;
+    shift <<= 7;
+    data += shift;
+  }
+  return data;
+}
+
+static void source_read(u8 *src, u8 *dst, int *offset,int len, int max_size) {
+    if (*offset + len > max_size) {
+	printf("source_read: offset=%x + len=%x > max_size %x\n",*offset,len,max_size);
+	exit(1);
+    }
+    memcpy(&dst[*offset],&src[*offset],len);
+    *offset += len;
+}
+
+static void target_read(FILE *f, u8 *dst, int *offset,int len, int max_size) {
+    if (*offset + len > max_size) {
+	printf("target_read len %x offset %x would read past max_size %x\n",len,*offset,max_size);
+	exit(1);
+    }
+    int read = fread(&dst[*offset],1,len,f);
+    if (read < len) {
+	printf("target_read: asked %d, got %d\n",len,read);
+	exit(1);
+    }
+    *offset += len;
+}
+
+static void source_copy(FILE *f, u8 *src, u8 *dst, int *rel_src, int *offset,int len, int max_size) {
+    u64 data = bps_decode(f);
+    *rel_src += (data & 1 ? -1 : +1)* (data >> 1);
+    if (*rel_src < 0) {
+	printf("source_copy: rel_src<0 : %d\n",*rel_src);
+	exit(1);
+    }
+    if (*rel_src + len > max_size) {
+	printf("source_copy: source_offset %x + len %x > max_size %x\n",*rel_src,len,max_size);
+	exit(1);
+    }
+    if (*offset + len > max_size) {
+	printf("source_copy: offset %x + len %x > max_size %x\n",*offset,len,max_size);
+	exit(1);
+    }
+    memcpy(&dst[*offset],&src[*rel_src],len);
+    *offset += len;
+    *rel_src += len;
+}
+
+static void target_copy(FILE *f, u8 *dst, int *rel_dst, int *offset,int len, int max_size) {
+    u64 data = bps_decode(f);
+    *rel_dst += (data & 1 ? -1 : +1)* (data >> 1);
+    if (*rel_dst < 0) {
+	printf("target_copy: rel_dst<0 : %d\n",*rel_dst);
+	exit(1);
+    }
+    if (*rel_dst + len > max_size) {
+	printf("target_copy: rel_dst %x + len %x > max_size %x\n",*rel_dst,len,max_size);
+	exit(1);
+    }
+    if (*offset + len > max_size) {
+	printf("target_copy: offset %x + len %x > max_size %x\n",*offset,len,max_size);
+	exit(1);
+    }
+    while (len--) {
+	// Here I must have a real loop and not a call to memcpy because it's a copy target to target
+	// and of course it can be used to copy a single byte to an any buffer size !
+	dst[*offset] = dst[*rel_dst];
+	*offset += 1;
+	*rel_dst += 1;
+    }
+}
+
+void load_bps(char *res, unsigned char *ROM, int max_size,int index,char *rom_name) {
+    FILE *f = fopen(res,"rb");
+    if (!f) {
+	printf("couldn't load bps %s\n",res);
+	return;
+    }
+    char buf[6];
+    fread(buf,1,4,f);
+    if (strncmp(buf,"BPS1",4)) {
+	fclose(f);
+	MessageBox("Error",_("Bad BPS header"), "Ok");
+	return;
+    }
+    int src_size = bps_decode(f);
+    int dst_size = bps_decode(f);
+    int meta_size = bps_decode(f);
+    if (src_size != max_size) {
+	fclose(f);
+	MessageBox(_("Error"),"BPS : source size != rom size", "OK");
+	return;
+    }
+    if (dst_size != max_size) {
+	fclose(f);
+	MessageBox(_("Error"),"BPS : target size != rom size", "OK");
+	return;
+    }
+    if (meta_size) {
+	char meta[meta_size+1];
+	meta[meta_size] = 0;
+	fread(meta,meta_size,1,f);
+	printf("bps metadata: %s\n",meta);
+    }
+    u8 dst[dst_size];
+    int target_offset = 0,rel_src = 0, rel_dst = 0;
+    memset(dst,255,dst_size);
+    while (target_offset < max_size && !feof(f)) {
+	int action = bps_decode(f);
+	int len = (action >> 2) + 1;
+	action &= 3;
+	switch(action) {
+	case 0: source_read(ROM,dst,&target_offset,len,max_size); break;
+	case 1: target_read(f,dst,&target_offset,len,max_size); break;
+	case 2: source_copy(f,ROM,dst,&rel_src,&target_offset,len,max_size); break;
+	case 3: target_copy(f,dst,&rel_dst,&target_offset,len,max_size); break;
+	}
+    }
+    int crc[3];
+    int read = fread(crc,1,12,f);
+    if (read < 12) {
+	printf("bps: footer: expected read 12 for crc block, got %d\n",read);
+	exit(1);
+    }
+    printf("crc src ");
+    int mycrc = CrcCalc(ROM,max_size);
+    if (mycrc != crc[0]) printf("NOT ");
+    printf("ok\n");
+
+    printf("crc dst ");
+    mycrc = CrcCalc(dst,max_size);
+    if (mycrc != crc[1]) printf("NOT ");
+    printf("ok\n");
+    memcpy(ROM,dst,max_size);
+
+    fclose(f);
 }
 

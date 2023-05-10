@@ -74,6 +74,7 @@
 #if SDL==2
 #include "IMG_png.h"
 #endif
+#include "7z/7zCrc.h"
 
 struct RAINE_CFG raine_cfg;
 UINT8 *ingame_font; 	// Raw data for ingame font
@@ -259,6 +260,7 @@ int main(int argc,char *argv[])
 #endif
 #endif
 
+   CrcGenerateTable();
   /* This just helps some window managers to grab some info from the
    * .desktop file if it exists */
   putenv((char*)"SDL_VIDEO_X11_WMCLASS=raine");
