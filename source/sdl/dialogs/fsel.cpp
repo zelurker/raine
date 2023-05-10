@@ -579,6 +579,8 @@ void TMultiFileSel::disp_menu(int n,int x,int y,int w,int h) {
 	  lineColor(rend,x+wcb,y,x,y+h-1,mymakecol(0,255,0));
 #endif
       }
+      TMenu::disp_menu(n,x+wcb,y,w,h);
+      return;
   }
   TMenu::disp_menu(n,x+HMARGIN,y,w,h);
 }
