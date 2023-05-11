@@ -57,7 +57,7 @@ static void my_draw_alpha(UINT16 *src, int x, int y) {
 struct dxsmpinterface dkong_emudx_interface =
   {
     "dkongm.dx2",
-    YM3012_VOL(255,MIXER_PAN_LEFT,255,MIXER_PAN_RIGHT)
+    YM3012_VOL(220,MIXER_PAN_LEFT,220,MIXER_PAN_RIGHT)
   };
 
 static struct SOUND_INFO sound_dkong[] =
@@ -327,6 +327,7 @@ static int sp,mask_bank,spriteram_size,shift_bits,hammer_playing;
 static int roar_counter,repeat_roar;
 extern UINT32 cpu_frame_count;
 static UINT8 last_level;
+static int last_stomp;
 
 void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 {
@@ -362,12 +363,12 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 
 */
   // if (bVal && bVal != 1 && bVal != 8) printf("%x,%d\n",dwAddr,bVal);
-  if(dwAddr==0x7c00)
+  if(dwAddr==0x7c00 && bVal)
     {
       switch(bVal)
 	{
 	case 1:
-	  raine_play_sample(start,200);
+	  raine_play_sample(start,150);
 	  break;
 
 	case 2:
@@ -410,7 +411,7 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 
 	case 7:
 	  raine_stop_samples();
-	  raine_play_sample(levelend,150);
+	  raine_play_sample(levelend,120);
 	  roar_counter = 2*fps; // roar in 3.1s !
 	  repeat_roar = 1;
 	  break;
@@ -443,30 +444,36 @@ void dkongSoundWrite(UINT32 dwAddr, UINT8 bVal)
 
 	}
     }
-  if(dwAddr==0x7d80 && bVal) {
-    raine_stop_samples();
-    raine_play_sample(dead,200);
+
+  if (bVal) {
+      switch(dwAddr) {
+      case 0x7d00:
+	  raine_play_sample(walk,180);
+	  break;
+      case 0x7d80:
+	  raine_stop_samples();
+	  raine_play_sample(dead,200);
+	  break;
+      case 0x7d01:
+	  raine_play_sample(jump,100);
+	  break;
+      case 0x7d02:
+	  if (cpu_frame_count > last_stomp + 10) {
+	      raine_play_sample(stomp,180);
+	      last_stomp = cpu_frame_count;
+	  }
+	  break;
+      case 0x7d03:
+	  raine_play_sample(coin,60);
+	  break;
+      case 0x7d04:
+	  raine_play_sample(fall,100);
+	  break;
+      case 0x7d05:
+	  raine_play_sample(jump_over,160);
+	  break;
+      }
   }
-
-  if(dwAddr==0x7d00 && bVal) {
-    raine_play_sample(walk,180);
-  }
-
-  if(dwAddr==0x7d01 && bVal)
-    raine_play_sample(jump,100);
-
-  if(dwAddr==0x7d02 && bVal)
-    raine_play_sample(stomp,200);
-
-  if(dwAddr==0x7d03 && bVal)
-    raine_play_sample(coin,60);
-
-  if(dwAddr==0x7d04 && bVal)
-    raine_play_sample(fall,100);
-
-  if(dwAddr==0x7d05 && bVal)
-    raine_play_sample(jump_over,160);
-
 }
 
 static int layer_id_data[2];
@@ -705,6 +712,7 @@ static void reset_roar() {
   roar_counter = 1;
   repeat_roar = 1;
   memset(RAM,0,RAMSize);
+  last_stomp = 0;
   // There is a bit somewhere in these input ports which absolutely needs to be
   // cleared before the game starts, but I didn't try to find which one.
   memset(input_buffer,0,5);
@@ -821,14 +829,14 @@ static void load_dkong() {
   layer_id_data[0] = add_layer_info(gettext("BG"));
   layer_id_data[1] = add_layer_info(gettext("SPRITES"));
 
-  if (!exists_emudx_file("dkongm.dx2") && (is_current_game("dkongjp") || is_current_game("dkong"))) {
+  if (!exists_emudx_file("dkongm.dx2") && (is_current_game("dkongjp") || dkong_us)) {
 #ifndef SDL
     raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Without dkongm.dx2 you will have no sound"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
 #else
     MessageBox(gettext("EmuDX"),gettext("Without dkongm.dx2 you will have no sound"),gettext("Ok"));
 #endif
   }
-  if (exists_emudx_file("dkongg.dx2") && (is_current_game("dkongjp") || is_current_game("dkong"))) {
+  if (exists_emudx_file("dkongg.dx2") && (is_current_game("dkongjp") || dkong_us)) {
 #ifndef SDL
     if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
