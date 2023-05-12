@@ -187,7 +187,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_Maskcps2_alpha_##BPP##_FlipX(ARG_MAP)        
       pline = pbitmap->line[y+yy] + x;                                          \
       for(xx=0; xx<SIZE; xx++){                                                 \
           if (((1 << pline[xx]) & mask) == 0)                                   \
-              blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);            \
+              blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);           \
           pline[xx] = 31;                                                       \
       }                                                                         \
       SPR += SIZE;                                                              \
@@ -205,7 +205,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_Maskcps2_alpha_##BPP##_FlipY(ARG_MAP)        
       pline = pbitmap->line[y+yy] + x;                                          \
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                      \
           if (((1 << pline[xx]) & mask) == 0)                                   \
-              blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ *SPR ]);               \
+              blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ *SPR ]);              \
           pline[xx] = 31;                                                       \
       }                                                                         \
    }                                                                            \
@@ -222,7 +222,7 @@ void pdraw##SIZE##x##SIZE##_Mapped_Maskcps2_alpha_##BPP##_FlipXY(ARG_MAP)       
       pline = pbitmap->line[y+yy] + x;                                          \
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                      \
           if (((1 << pline[xx]) & mask) == 0)                                   \
-              blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ *SPR ]);               \
+              blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ *SPR ]);              \
           pline[xx] = 31;                                                       \
       }                                                                         \
    }                                                                            \
@@ -242,7 +242,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_Maskcps2_alpha_##BPP(ARG_MAP)          
       for(xx=0; xx<SIZE; xx++){                                                 \
         if(SPR[xx]) {                                                           \
             if (((1 << pline[xx]) & mask) == 0)                                 \
-                blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);          \
+                blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);         \
             pline[xx] = 31;                                                     \
         }                                                                       \
       }                                                                         \
@@ -262,7 +262,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_Maskcps2_alpha_##BPP##_FlipX(ARG_MAP)  
       for(xx=0; xx<SIZE; xx++){                                                 \
         if(SPR[xx]) {                                                           \
             if (((1 << pline[xx]) & mask) == 0)                                 \
-                blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);          \
+                blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ SPR[xx] ]);         \
             pline[xx] = 31;                                                     \
         }                                                                       \
       }                                                                         \
@@ -282,7 +282,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_Maskcps2_alpha_##BPP##_FlipY(ARG_MAP)  
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                      \
         if(*SPR) {                                                              \
             if (((1 << pline[xx]) & mask) == 0)                                 \
-                blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ *SPR ]);             \
+                blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ *SPR ]);            \
             pline[xx] = 31;                                                     \
         }                                                                       \
       }                                                                         \
@@ -301,7 +301,7 @@ void pdraw##SIZE##x##SIZE##_Trans_Mapped_Maskcps2_alpha_##BPP##_FlipXY(ARG_MAP) 
       for(xx=(SIZE-1); xx>=0; xx--,SPR++){                                      \
         if(*SPR) {                                                              \
             if (((1 << pline[xx]) & mask) == 0)                                 \
-                blend_##BPP(line[xx], ((UINT##BPP *)cmap)[ *SPR ]);             \
+                blend_##BPP(&line[xx], ((UINT##BPP *)cmap)[ *SPR ]);            \
             pline[xx] = 31;                                                     \
         }                                                                       \
       }                                                                         \
