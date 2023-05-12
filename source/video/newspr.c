@@ -1099,6 +1099,8 @@ MAKE_ROT_JUMP_16( Move8x8,       disp_x_8, disp_y_8 )
 
 MAKE_ROT_JUMP_16( pdraw16x16_Mapped_Maskcps2, disp_x_16, disp_y_16 )
 MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped_Maskcps2, disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( pdraw16x16_Mapped_Maskcps2_alpha, disp_x_16, disp_y_16 )
+MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped_Maskcps2_alpha, disp_x_16, disp_y_16 )
 
 #undef ARGS
 #undef ARGS_1
@@ -1325,6 +1327,8 @@ void init_video_core(void)
 
    pdraw16x16_Mapped_Maskcps2_init_jump_table();
    pdraw16x16_Trans_Mapped_Maskcps2_init_jump_table();
+   pdraw16x16_Mapped_Maskcps2_alpha_init_jump_table();
+   pdraw16x16_Trans_Mapped_Maskcps2_alpha_init_jump_table();
 
    Draw32x32_Trans_Alpha50_16_init_jump_table();
    Draw32x32_Trans_Alpha50_32_init_jump_table();

@@ -3339,6 +3339,11 @@ static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,
 	else
 	    return pdraw16x16_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
     }
+    set_alpha(alpha);
+    if (GFX_SPR_SOLID16[code] == 1)
+	pdraw16x16_Trans_Mapped_Maskcps2_alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
+    else
+	pdraw16x16_Mapped_Maskcps2_alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
 #else
     if (!alpha) {
 	if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
