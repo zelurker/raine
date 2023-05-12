@@ -1,5 +1,6 @@
 typedef void pdraw_mapped_maskcps2_func(UINT8 *SPR, int x, int y, UINT8 *cmap, int mask);
-extern pdraw_mapped_maskcps2_func *pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[4];
+extern pdraw_mapped_maskcps2_func *pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[4],
+       *pdraw16x16_Mapped_Maskcps2_Flip_Rot[4];
 
 #define pdraw16x16_Trans_Mapped_Maskcps2_flip_Rot(a, b, c, d, e, g) (*pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[g])(a, b, c, d, e)
 #define pdraw16x16_Trans_Mapped_Maskcps2_Rot(a, b, c, d, e)        (*pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[0])(a, b, c, d, e)
@@ -7,10 +8,14 @@ extern pdraw_mapped_maskcps2_func *pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[4];
 #define pdraw16x16_Trans_Mapped_Maskcps2_FlipX_Rot(a, b, c, d, e)  (*pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[2])(a, b, c, d, e)
 #define pdraw16x16_Trans_Mapped_Maskcps2_FlipXY_Rot(a, b, c, d, e) (*pdraw16x16_Trans_Mapped_Maskcps2_Flip_Rot[3])(a, b, c, d, e)
 
+#define pdraw16x16_Mapped_Maskcps2_flip_Rot(a, b, c, d, e, g) (*pdraw16x16_Mapped_Maskcps2_Flip_Rot[g])(a, b, c, d, e)
+#define pdraw16x16_Mapped_Maskcps2_Rot(a, b, c, d, e)        (*pdraw16x16_Mapped_Maskcps2_Flip_Rot[0])(a, b, c, d, e)
+#define pdraw16x16_Mapped_Maskcps2_FlipY_Rot(a, b, c, d, e)  (*pdraw16x16_Mapped_Maskcps2_Flip_Rot[1])(a, b, c, d, e)
+#define pdraw16x16_Mapped_Maskcps2_FlipX_Rot(a, b, c, d, e)  (*pdraw16x16_Mapped_Maskcps2_Flip_Rot[2])(a, b, c, d, e)
+#define pdraw16x16_Mapped_Maskcps2_FlipXY_Rot(a, b, c, d, e) (*pdraw16x16_Mapped_Maskcps2_Flip_Rot[3])(a, b, c, d, e)
+
 #undef declare
 #undef ARG_MAP
-// Actually the opaque version is not implemented yet !
-// (because it's all about sprites, and sprites are almost always transparent)
 
 #define ARG_MAP UINT8 *SPR, int x, int y, UINT8 *cmap, int mask
 #define declare(SIZE,BPP)                                                  \

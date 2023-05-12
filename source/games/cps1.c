@@ -3334,7 +3334,10 @@ static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,
     int alpha = get_spr_alpha(code);
 #ifdef MASKS
     if (!alpha) {
-	return pdraw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
+	if (GFX_SPR_SOLID16[code] == 1)
+	    return pdraw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
+	else
+	    return pdraw16x16_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
     }
 #else
     if (!alpha) {
@@ -4098,6 +4101,9 @@ static void draw_cps1_partial(int scanline)
      if (l1 == 0) { l1 = l2; l2 = 0; l1pri = l2pri; }
      if (l2 == 0) { l2 = l3; l3 = 0; l2pri = l3pri; }
 
+     /* These are priority masks from mame.
+      * I guess they found these by just trying because I don't see any other way... must have been quite crazy !
+      * Anyway the idea : if the corresponding mask bit for the sprite color is 1 then this color becomes transparent, but with a twist : no other sprite is allowed over these pixels */
      {
 	 int mask0 = 0xaa;
 	 int mask1 = 0xcc;
