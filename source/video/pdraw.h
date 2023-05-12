@@ -269,6 +269,8 @@ extern draw_mapped_func_pri *pdraw8x8_Trans_Mapped_Flip_Rot[4];
 #define pdraw8x8_Trans_Mapped_FlipX_Rot(a, b, c, d, f)  (*pdraw8x8_Trans_Mapped_Flip_Rot[2])(a, b, c, d, f)
 #define pdraw8x8_Trans_Mapped_FlipXY_Rot(a, b, c, d, f) (*pdraw8x8_Trans_Mapped_Flip_Rot[3])(a, b, c, d, f)
 
+#undef declare
+
 #ifdef __cplusplus
 }
 #endif

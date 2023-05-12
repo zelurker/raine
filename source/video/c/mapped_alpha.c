@@ -5,6 +5,7 @@
 #include "alpha.h"
 #include "mapped_alpha.h"
 
+#define ARG_MAP UINT8 *SPR, int x, int y, UINT8 *cmap
 #undef render
 #define render(SIZE,BPP)                                              \
 void Draw##SIZE##x##SIZE##_Trans_Mapped_Alpha_##BPP(ARG_MAP)          \

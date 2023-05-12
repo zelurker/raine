@@ -16,6 +16,7 @@
 #include "lspr8.h"
 #include "pdraw.h"
 #include "str_opaque.h"
+#include "mask.h"
 
 static int disp_x;
 static int disp_y;
@@ -1084,6 +1085,20 @@ Generate move routines
 
 MAKE_ROT_JUMP_16( Move8x8,       disp_x_8, disp_y_8 )
 
+    // Maskcps2
+
+#undef ARGS
+#undef ARGS_1
+#undef ARGS_2
+#undef CMAP_FUNC
+
+#define ARGS      UINT8 *cmap, int mask
+#define ARGS_1    cmap, mask
+#define ARGS_2    cmap, mask
+#define CMAP_FUNC pdraw_mapped_maskcps2_func
+
+MAKE_ROT_JUMP_16( pdraw16x16_Trans_Mapped_Maskcps2, disp_x_16, disp_y_16 )
+
 #undef ARGS
 #undef ARGS_1
 #undef ARGS_2
@@ -1306,6 +1321,8 @@ void init_video_core(void)
    Draw16x16_Trans_init_jump_table();
    Draw32x32_init_jump_table();
    Draw32x32_Trans_init_jump_table();
+
+   pdraw16x16_Trans_Mapped_Maskcps2_init_jump_table();
 
    Draw32x32_Trans_Alpha50_16_init_jump_table();
    Draw32x32_Trans_Alpha50_32_init_jump_table();

@@ -30,3 +30,6 @@ void Draw16x16_Mapped_Alpha_32(ARG_MAP);
 void Draw16x16_Mapped_Alpha_32_FlipY(ARG_MAP);
 void Draw16x16_Mapped_Alpha_32_FlipX(ARG_MAP);
 void Draw16x16_Mapped_Alpha_32_FlipXY(ARG_MAP);
+
+#undef ARG_MAP
+

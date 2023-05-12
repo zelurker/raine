@@ -895,7 +895,8 @@ VIDEO=	$(OBJDIR)/video/tilemod.o \
 	$(OBJDIR)/video/alpha.o \
 	$(OBJDIR)/video/c/str_opaque.o \
 	$(OBJDIR)/video/c/common.o \
-	$(OBJDIR)/video/c/pdraw.o
+	$(OBJDIR)/video/c/pdraw.o \
+	$(OBJDIR)/video/c/mask.o
 
 ifneq (${SDL},2)
 VIDEO += $(OBJDIR)/video/res.o \

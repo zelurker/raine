@@ -54,8 +54,12 @@
 #include "bld.h"
 #include "alpha.h"
 #include "sound/assoc.h"
+#include "mask.h"
 
 #define EMULATE_RASTERS 1
+
+// Try to emulate cps2 masks, which are 16 bits bitmasks to indicate if a color is transparent !
+#define MASKS
 
 /* Output ports */
 #define CPS1_OBJ_BASE		0x00	/* Base address of objects */
@@ -1164,7 +1168,7 @@ static struct CPS1config cps1_config_table[]=
 	{"captcommu",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
 	{"captcommj",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
 	{"captcommjr1", CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
-	{"captcommb",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34 },
+	{"captcommb",   CPS_B_21_BT3, mapper_CC63B,  0x36, 0x38, 0x34, 3 },
 	{"knights",     CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
 	{"knightsu",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
 	{"knightsj",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },
@@ -1346,7 +1350,7 @@ static int gfxrom_bank_mapper(int type, trange ranges )
   return nb;
 }
 
-static int pbitmap_needed,no_pbitmap = 0;
+static int no_pbitmap = 0;
 
 static void cps1_init_machine(void)
 {
@@ -1780,6 +1784,10 @@ void finish_conf_cps1()
 	 scroll1xoff = -0x0c;
 	 scroll2xoff = -0x10;
 	 scroll3xoff = -0x10;
+     } else if (cps1_game_config->bootleg_kludge == 3) {
+	 scroll1xoff = -0x08;
+	 scroll2xoff = -0x0b;
+	 scroll3xoff = -0x0c;
      } else
        {
 	 scroll1xoff = 0;
@@ -2554,8 +2562,6 @@ void load_cps2() {
       xor = (UINT16*)load_region[REGION_USER1];
       size_user1 = get_region_size(REGION_USER1);
   }
-/*  save_debug("xor",xor,size_user1,1);
-  ByteSwap(xor,size_user1); */
 
   // tmp = AllocateMem(size_user1);
   if (!init_tilequeue()) return;
@@ -3307,7 +3313,6 @@ static void render_scroll1(int mask)
    } // if...
 
    END_SCROLL_SCROLL1_4_8_YX();
-
 }
 
 static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
@@ -3325,8 +3330,13 @@ static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
 	Draw16x16_Mapped_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip);
 }
 
-static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,int pri) {
+static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,int mask) {
     int alpha = get_spr_alpha(code);
+#ifdef MASKS
+    if (!alpha) {
+	return pdraw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
+    }
+#else
     if (!alpha) {
 	if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
 	    return pdraw16x16_Trans_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
@@ -3338,7 +3348,12 @@ static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,
 	pdraw16x16_Trans_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
     else
 	pdraw16x16_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
+#endif
 }
+
+#ifndef MASKS
+static int pbitmap_needed;
+
 // cps2 sprites do not use the ranges array
 static void render_cps2_sprites()
 {
@@ -3474,11 +3489,16 @@ static void render_cps2_sprites()
     }
   }
 }
+#endif // MASKS
 
-#define draw_sprite(code,x,y,map,flip,priority)     \
-      alpha_sprite_pb(code,x,y,map, flip,priority);
+#define draw_sprite(code,x,y,map,flip,mask)     \
+      alpha_sprite_pb(code,x,y,map, flip,mask);
 
-static void render_cps2_sprites_pbitmap()
+#ifdef MASKS
+static void render_cps2_sprites_pbitmap(int *primasks)
+#else
+static void render_cps2_sprites_pbitmap(int *primasks)
+#endif
 {
   if (!check_layer_enabled(layer_id_data[0]))
     return;
@@ -3487,14 +3507,20 @@ static void render_cps2_sprites_pbitmap()
   int xoffs = 64-cps2_port(CPS2_OBJ_XOFFS);
   int yoffs = 16-cps2_port(CPS2_OBJ_YOFFS);
   UINT8 *map;
-  // cps2_find_last_sprite();
+#ifdef MASKS
+  cps2_find_last_sprite();
   // print_ingame(1,gettext("using pbitmap"));
 
-  // for (i=cps2_last_sprite_offset; i>=0; i-=8) {
+  for (i=cps2_last_sprite_offset; i>=0; i-=8) {
+#else
   for (i=0; i<cps2_obj_size; i+=8) {
+#endif
     int x=ReadWord(&base[i+0]);
     int y=ReadWord(&base[i+2]);
-    int priority=(x>>13)&0x07;
+    u32 priority=(x>>13)&0x07;
+#ifdef MASKS
+    priority = primasks[priority] | (1 << 31);
+#endif
     int code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
     int colour= ReadWord(&base[i+6]);
     int col=colour&0x1f;
@@ -3537,8 +3563,8 @@ static void render_cps2_sprites_pbitmap()
 
 	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		if (GFX_SPR_SOLID16[code2])
-		  draw_sprite(code2, sx,   sy,   map, 3, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx, sy, map,3);
+		    draw_sprite(code2, sx,   sy,   map, 3, priority);
+		    // Draw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code2<<8],sx, sy, map,primasks[priority],3);
 	      }
 	    }
 	  }
@@ -3551,8 +3577,8 @@ static void render_cps2_sprites_pbitmap()
 
 	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		if (GFX_SPR_SOLID16[code2])
-		  draw_sprite(code2, sx,   sy,   map, 2, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy,map,2 );
+		    draw_sprite(code2, sx,   sy,   map, 2, priority);
+		    // Draw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code2<<8],sx,sy,map,primasks[priority],2 );
 	      }
 	    }
 	  }
@@ -3567,8 +3593,8 @@ static void render_cps2_sprites_pbitmap()
 
 	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		if (GFX_SPR_SOLID16[code2])
-		  draw_sprite(code2, sx,   sy,   map, 1, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8], sx,sy,map,1);
+		    draw_sprite(code2, sx,   sy,   map, 1, priority);
+		    // Draw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code2<<8], sx,sy,map,primasks[priority],1);
 	      }
 	    }
 	  }
@@ -3581,8 +3607,8 @@ static void render_cps2_sprites_pbitmap()
 
 	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
 		if (GFX_SPR_SOLID16[code2])
-		  draw_sprite(code2, sx,   sy,   map, 0, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy, map,0);
+		    draw_sprite(code2, sx,   sy,   map, 0, priority);
+		    // Draw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code2<<8],sx,sy, map,primasks[priority],0);
 	      }
 	    }
 	  }
@@ -3594,14 +3620,15 @@ static void render_cps2_sprites_pbitmap()
       int sy = (y+yoffs) & 0x3ff;
       if (sx < scrwidth && sy < scrheight && code <= max_sprites16) {
 	if (GFX_SPR_SOLID16[code]) {
-	  draw_sprite(code, sx,   sy,   map, (colour & 0x60)>>5, priority);
+	    draw_sprite(code, sx,   sy,   map, (colour & 0x60)>>5, priority);
+	  // Draw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8], sx, sy, map,primasks[priority],(colour & 0x60)>>5);
 	}
-	// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], sx, sy, map,(colour & 0x60)>>5);
       }
     }
   }
 }
 
+#ifndef MASKS
 static void DrawTileQueue(int pri)
 {
   struct TILE_Q *tile_ptr;
@@ -3614,6 +3641,7 @@ static void DrawTileQueue(int pri)
     tile_ptr = tile_ptr->next;
   }
 }
+#endif
 
 static void render_sprites()
 {
@@ -3970,7 +3998,9 @@ static void render_cps2_layer(int layer, int priority)
   if (cps1_layer_enabled[layer] && check_layer_enabled(layer_id_data[layer])){
 
     switch(layer) {
+#ifndef MASKS
     case 0: render_cps2_sprites(); break;
+#endif
     case 1: render_scroll1(priority);
       break;
     case 2: cps1_render_scroll2(priority);
@@ -4049,14 +4079,53 @@ static void draw_cps1_partial(int scanline)
    update_transmasks();
 
    if (cps_version == 2) {
-     int layer[4],layerpri[4];
-     int nb = 0;
      int l0pri,l1pri,l2pri,l3pri;
+#ifdef MASKS
+     int primasks[8], i;
+#else
+     int nb = 0;
+     int layer[4],layerpri[4];
+#endif
 /*      int primasks[8],i; */
      l0pri = (pri_ctrl >> 4*l0) & 0x0f;
      l1pri = (pri_ctrl >> 4*l1) & 0x0f;
      l2pri = (pri_ctrl >> 4*l2) & 0x0f;
      l3pri = (pri_ctrl >> 4*l3) & 0x0f;
+
+#ifdef MASKS
+     /* take out the CPS1 sprites layer */
+     if (l0 == 0) { l0 = l1; l1 = 0; l0pri = l1pri; }
+     if (l1 == 0) { l1 = l2; l2 = 0; l1pri = l2pri; }
+     if (l2 == 0) { l2 = l3; l3 = 0; l2pri = l3pri; }
+
+     {
+	 int mask0 = 0xaa;
+	 int mask1 = 0xcc;
+	 if (l0pri > l1pri) mask0 &= ~0x88;
+	 if (l0pri > l2pri) mask0 &= ~0xa0;
+	 if (l1pri > l2pri) mask1 &= ~0xc0;
+
+	 primasks[0] = 0xff;
+	 for (i = 1; i < 8; i++)
+	 {
+	     if (i <= l0pri && i <= l1pri && i <= l2pri)
+	     {
+		 primasks[i] = 0xfe;
+		 continue;
+	     }
+	     primasks[i] = 0;
+	     if (i <= l0pri) primasks[i] |= mask0;
+	     if (i <= l1pri) primasks[i] |= mask1;
+	     if (i <= l2pri) primasks[i] |= 0xf0;
+	 }
+     }
+
+     clear_bitmap(pbitmap);
+     render_cps2_layer(l0,1);
+     render_cps2_layer(l1,2);
+     render_cps2_layer(l2,4);
+     render_cps2_sprites_pbitmap(primasks);
+#else
      // printf("%d (%d) %d (%d) %d (%d) %d (%d)\n",l0,l0pri,l1,l1pri,l2,l2pri,l3,l3pri);
 
      /* No priorities handling yet. I have a feeling that I'll have to play again with
@@ -4139,6 +4208,7 @@ static void draw_cps1_partial(int scanline)
 	 }
        }
      }
+#endif // MASKS
 
      if (scanline == 240 || scanline == -1) {
 	 // Confirmed for example in xmvsf, the sprite priorities is updated only during the vbl
