@@ -58,9 +58,6 @@
 
 #define EMULATE_RASTERS 1
 
-// Try to emulate cps2 masks, which are 16 bits bitmasks to indicate if a color is transparent !
-#define MASKS
-
 /* Output ports */
 #define CPS1_OBJ_BASE		0x00	/* Base address of objects */
 #define CPS1_SCROLL1_BASE	0x01	/* Base address of scroll 1 */
@@ -3332,7 +3329,6 @@ static inline void alpha_sprite(UINT32 code, int x,int y,UINT8 *map,int flip) {
 
 static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,int mask) {
     int alpha = get_spr_alpha(code);
-#ifdef MASKS
     if (!alpha) {
 	if (GFX_SPR_SOLID16[code] == 1)
 	    return pdraw16x16_Trans_Mapped_Maskcps2_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
@@ -3344,169 +3340,12 @@ static inline void alpha_sprite_pb(UINT32 code, int x,int y,UINT8 *map,int flip,
 	pdraw16x16_Trans_Mapped_Maskcps2_alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
     else
 	pdraw16x16_Mapped_Maskcps2_alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,mask,flip);
-#else
-    if (!alpha) {
-	if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
-	    return pdraw16x16_Trans_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
-	return pdraw16x16_Mapped_back_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
-    }
-    set_alpha(alpha);
-    // printf("pb %x %d\n",code,alpha);
-    if(GFX_SPR_SOLID16[code]==1)                    // Some pixels; trans
-	pdraw16x16_Trans_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
-    else
-	pdraw16x16_Mapped_back_Alpha_flip_Rot(&GFX_SPR16[code<<8],x,y,map,flip,pri);
-#endif
 }
-
-#ifndef MASKS
-static int pbitmap_needed;
-
-// cps2 sprites do not use the ranges array
-static void render_cps2_sprites()
-{
-  int i;
-  UINT8 *base=cps2_buffered_obj;
-  int xoffs = 64-cps2_port(CPS2_OBJ_XOFFS);
-  int yoffs = 16-cps2_port(CPS2_OBJ_YOFFS);
-  UINT8 *map;
-  int last_prio = 0;
-  pbitmap_needed = 0;
-  // cps2_find_last_sprite();
-
-  for (i=0; i<cps2_obj_size; i+=8) {
-    int x=ReadWord(&base[i+0]);
-    int y=ReadWord(&base[i+2]);
-    int priority=(x>>13)&0x07;
-    // priority = primasks[priority];
-    int code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
-    int colour= ReadWord(&base[i+6]);
-    int col=colour&0x1f;
-    if (y >= 0x8000 || colour >= 0xff00) {
-      return;
-    }
-    // printf("%d,%d %d,%x\n",x,y,priority,code);
-    if (priority < last_prio && !no_pbitmap) {
-	// This pbitmap thing is a pain
-	// csclub is one of the game where the pbitmap is the most needed
-	// in the intro, you don't see the light without this.
-	// but xmcota has a problem with it, so for now I have a no_pbitmap
-	// variable, but I am not sure I understood everything there !
-      if (GFX_SPR_SOLID16[code]) {
-	pbitmap_needed = 1;
-	// printf("pbitmap needed offset %d<%d priority %d last_priority %d\n",i,cps2_obj_size,priority,last_prio);
-	return;
-      }
-    } else
-      last_prio = priority;
-
-    MAP_PALETTE_MAPPED_NEW(
-			   col,
-			   16,
-			   map
-			   );
-
-    x-=0x20; // border
-    y+=0x10;
-
-    if(colour & 0x80) {
-      x += cps2_port(CPS2_OBJ_XOFFS);  /* fix the offset of some games */
-      y += cps2_port(CPS2_OBJ_YOFFS);  /* like Marvel vs. Capcom ending credits */
-    }
-
-    if (colour & 0xff00 ) {
-      /* handle blocked sprites */
-      int nx=(colour & 0x0f00) >> 8;
-      int ny=(colour & 0xf000) >> 12;
-      int nxs,nys,sx,sy;
-      nx++;
-      ny++;
-
-      if (colour & 0x40) {
-	/* Y flip */
-	if (colour &0x20) {
-	  for (nys=0; nys<ny; nys++) {
-	    for (nxs=0; nxs<nx; nxs++) {
-	      int code2 = code+(nx-1)-nxs+0x10*(ny-1-nys);
-	      sx = (x+nxs*16+xoffs) & 0x3ff;
-	      sy = (y+nys*16+yoffs) & 0x3ff;
-
-	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
-		if (GFX_SPR_SOLID16[code2])
-		  QueueTile(code2, sx,   sy,   map, 3, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx, sy, map,3);
-	      }
-	    }
-	  }
-	} else { // flip y
-	  for (nys=0; nys<ny; nys++) {
-	    for (nxs=0; nxs<nx; nxs++) {
-	      int code2 = code+nxs+0x10*(ny-1-nys);
-	      sx = (x+nxs*16+xoffs) & 0x3ff;
-	      sy = (y+nys*16+yoffs) & 0x3ff;
-
-	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
-		if (GFX_SPR_SOLID16[code2])
-		  QueueTile(code2, sx,   sy,   map, 2, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy,map,2 );
-	      }
-	    }
-	  }
-	}
-      } else {
-	if (colour &0x20) {
-	  for (nys=0; nys<ny; nys++) {
-	    for (nxs=0; nxs<nx; nxs++) {
-	      int code2 = code+(nx-1)-nxs+0x10*nys;
-	      sx = (x+nxs*16+xoffs) & 0x3ff;
-	      sy = (y+nys*16+yoffs) & 0x3ff;
-
-	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
-		if (GFX_SPR_SOLID16[code2])
-		  QueueTile(code2, sx,   sy,   map, 1, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8], sx,sy,map,1);
-	      }
-	    }
-	  }
-	} else { // no flip
-	  for (nys=0; nys<ny; nys++) {
-	    for (nxs=0; nxs<nx; nxs++) {
-	      int code2 = (code & ~0xf) + ((code + nxs) & 0xf) + 0x10*nys; /* pgear fix */
-	      sx = (x+nxs*16+xoffs) & 0x3ff;
-	      sy = (y+nys*16+yoffs) & 0x3ff;
-
-	      if (sx < scrwidth && sy < scrheight && code2 <= max_sprites16) {
-		if (GFX_SPR_SOLID16[code2])
-		  QueueTile(code2, sx,   sy,   map, 0, priority);
-		// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code2<<8],sx,sy, map,0);
-	      }
-	    }
-	  }
-	}
-      }
-    } else {
-      /* Simple case... 1 sprite */
-      int sx = (x+xoffs) & 0x3ff;
-      int sy = (y+yoffs) & 0x3ff;
-      if (sx < scrwidth && sy < scrheight && code <= max_sprites16) {
-	if (GFX_SPR_SOLID16[code]) {
-	  QueueTile(code, sx,   sy,   map, (colour & 0x60)>>5, priority);
-	}
-	// Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], sx, sy, map,(colour & 0x60)>>5);
-      }
-    }
-  }
-}
-#endif // MASKS
 
 #define draw_sprite(code,x,y,map,flip,mask)     \
       alpha_sprite_pb(code,x,y,map, flip,mask);
 
-#ifdef MASKS
 static void render_cps2_sprites_pbitmap(int *primasks)
-#else
-static void render_cps2_sprites_pbitmap(int *primasks)
-#endif
 {
   if (!check_layer_enabled(layer_id_data[0]))
     return;
@@ -3515,20 +3354,14 @@ static void render_cps2_sprites_pbitmap(int *primasks)
   int xoffs = 64-cps2_port(CPS2_OBJ_XOFFS);
   int yoffs = 16-cps2_port(CPS2_OBJ_YOFFS);
   UINT8 *map;
-#ifdef MASKS
   cps2_find_last_sprite();
   // print_ingame(1,gettext("using pbitmap"));
 
   for (i=cps2_last_sprite_offset; i>=0; i-=8) {
-#else
-  for (i=0; i<cps2_obj_size; i+=8) {
-#endif
     int x=ReadWord(&base[i+0]);
     int y=ReadWord(&base[i+2]);
     u32 priority=(x>>13)&0x07;
-#ifdef MASKS
     priority = primasks[priority] | (1 << 31);
-#endif
     int code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
     int colour= ReadWord(&base[i+6]);
     int col=colour&0x1f;
@@ -3635,21 +3468,6 @@ static void render_cps2_sprites_pbitmap(int *primasks)
     }
   }
 }
-
-#ifndef MASKS
-static void DrawTileQueue(int pri)
-{
-  struct TILE_Q *tile_ptr;
-  UINT32 ta;
-
-  tile_ptr = first_tile[pri];
-  while(tile_ptr->next){
-    ta = tile_ptr->tile;
-    alpha_sprite(ta,tile_ptr->x,tile_ptr->y,tile_ptr->map, tile_ptr->flip);
-    tile_ptr = tile_ptr->next;
-  }
-}
-#endif
 
 static void render_sprites()
 {
@@ -4006,9 +3824,6 @@ static void render_cps2_layer(int layer, int priority)
   if (cps1_layer_enabled[layer] && check_layer_enabled(layer_id_data[layer])){
 
     switch(layer) {
-#ifndef MASKS
-    case 0: render_cps2_sprites(); break;
-#endif
     case 1: render_scroll1(priority);
       break;
     case 2: cps1_render_scroll2(priority);
@@ -4088,19 +3903,13 @@ static void draw_cps1_partial(int scanline)
 
    if (cps_version == 2) {
      int l0pri,l1pri,l2pri,l3pri;
-#ifdef MASKS
      int primasks[8], i;
-#else
-     int nb = 0;
-     int layer[4],layerpri[4];
-#endif
 /*      int primasks[8],i; */
      l0pri = (pri_ctrl >> 4*l0) & 0x0f;
      l1pri = (pri_ctrl >> 4*l1) & 0x0f;
      l2pri = (pri_ctrl >> 4*l2) & 0x0f;
      l3pri = (pri_ctrl >> 4*l3) & 0x0f;
 
-#ifdef MASKS
      /* take out the CPS1 sprites layer */
      if (l0 == 0) { l0 = l1; l1 = 0; l0pri = l1pri; }
      if (l1 == 0) { l1 = l2; l2 = 0; l1pri = l2pri; }
@@ -4136,90 +3945,6 @@ static void draw_cps1_partial(int scanline)
      render_cps2_layer(l1,2);
      render_cps2_layer(l2,4);
      render_cps2_sprites_pbitmap(primasks);
-#else
-     // printf("%d (%d) %d (%d) %d (%d) %d (%d)\n",l0,l0pri,l1,l1pri,l2,l2pri,l3,l3pri);
-
-     /* No priorities handling yet. I have a feeling that I'll have to play again with
-	the priority bitmap to handle them ! */
-     /* Correction : very basic priority handling : we have l0, l1, l2, l3 which is the
-	base order of the layers, and then the sprite order (from 0 to the end).
-	There must be some problems left but a few games work this way ! */
-
-     /* On this very basic priority emulation, if sprites are drawn first, then this
-	is obviously wrong. They should be fixed using the color masks, but meanwhile
-	I draw them at the end so that they show on screen at least !!! */
-
-     ClearTileQueue();
-     render_cps2_layer(0,0); // sprites
-     TerminateTileQueue();
-
-     int maxpri = 0,maxl = 0,maxi;
-     if (l0) { layer[nb] = l0; layerpri[nb++] = l0pri;
-	 if (l0pri > maxpri) { maxpri = l0pri; maxl = l0; maxi = nb-1; }
-     }
-     if (l1) { layer[nb] = l1; layerpri[nb++] = l1pri;
-	 if (l1pri > maxpri) { maxpri = l1pri; maxl = l1; maxi = nb-1;}
-     }
-     if (l2) { layer[nb] = l2; layerpri[nb++] = l2pri;
-	 if (l2pri > maxpri) { maxpri = l2pri; maxl = l2; maxi = nb-1;}
-     }
-     if (l3) { layer[nb] = l3; layerpri[nb++] = l3pri;
-	 if (l3pri > maxpri) { maxpri = l3pri; maxl = l3; maxi = nb-1;}
-     }
-
-     if (nb) {
-       if (pbitmap_needed) {
-	 clear_bitmap(pbitmap);
-#if 0
-	 render_cps2_layer(layer[2],layerpri[2]);
-	 render_cps2_layer(layer[1],layerpri[1]);
-	 render_cps2_layer(layer[0],layerpri[0]);
-#else
-	 // printf("layers %d pri %d, %d pri %d, %d pri %d, scanlilne %d\n",
-	 //	 layer[0],layerpri[0],layer[1],layerpri[1],layer[2],layerpri[2],scanline);
-	 if (maxl == 3) {
-	     /* This is simply a dirty hack : in xmvsf there is a point where a boss becomes giant, its upper part (shoulders) are drawn on scroll2, and with default priorities, it's overwritten by
-	      * scroll3. Now it's obvious that scroll3 is done for background and not foreground, so even without emulating these broken masks, I can detect if scroll3 would be in the foreground like
-	      * here, and move it forcefully in the background in this case... Yeah I know it's really not very nice, but at least it works for xmvsf, see the thread with a savegame there :
-	      * https://www.1emulation.com/forums/topic/36589-raine-0923-mer-curious-version/page/2/ */
-	     layerpri[maxi] = 0;
-	 }
-	 if (!strncmp(current_game->main_name,"csclu",5) || !strncmp(current_game->main_name,"mvsc",4)) {
-	     // while I don't find a reliable way to emulate these priority masks for cps2, I'll be forced to add hacks like this one
-	     // for csclub in the intro you see only yellow in the projector light with the default draw order
-	     // For mvsc it's the selection square which hides the character below it when selecting a character at the start of the game
-	     // This hack stinks !
-	     render_cps2_sprites_pbitmap();
-	     render_cps2_layer(layer[0],layerpri[0]);
-	     render_cps2_layer(layer[1],layerpri[1]);
-	     render_cps2_layer(layer[2],layerpri[2]);
-	 } else {
-	     // This order seems to be the best for most of the others, that is sprites on top.
-	     render_cps2_layer(layer[0],layerpri[0]);
-	     render_cps2_layer(layer[1],layerpri[1]);
-	     render_cps2_layer(layer[2],layerpri[2]);
-	     render_cps2_sprites_pbitmap();
-	 }
-#endif
-       } else {
-	 for (nb=0; nb<=layerpri[0]; nb++) {
-	   DrawTileQueue(nb);
-	 }
-	 render_cps2_layer(layer[0],0); // prio 1
-	 for (nb=layerpri[0]+1; nb<=layerpri[1]; nb++) {
-	   DrawTileQueue(nb);
-	 }
-	 render_cps2_layer(layer[1],0); // prio 2
-	 for (nb=layerpri[1]+1; nb<=layerpri[2]; nb++) {
-	   DrawTileQueue(nb);
-	 }
-	 render_cps2_layer(layer[2],0); // prio 4
-	 for (nb=layerpri[2]+1; nb<=7; nb++) {
-	   DrawTileQueue(nb);
-	 }
-       }
-     }
-#endif // MASKS
 
      if (scanline == 240 || scanline == -1) {
 	 // Confirmed for example in xmvsf, the sprite priorities is updated only during the vbl
