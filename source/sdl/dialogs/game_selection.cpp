@@ -113,7 +113,7 @@ static int do_recent(int sel) {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->last_played) nb_most++;
 	if (nb_most == 0) {
-	    MessageBox("Error","No recent games yet\nIf you use the init command in Options if you\nhave some old data files in savedata","OK");
+	    MessageBox("Error","No recent games yet","OK");
 	    return 0;
 	}
     }
@@ -196,7 +196,7 @@ static menu_item_t header[] =
     {  _("-- Options --"), &do_options },
     { _("Recent games..."), &do_recent },
     { _("Most played games..."), do_recent },
-    { _("Preload ips dat file"), &do_preload_ips, },
+    { _("Preload IPS *.dat file"), &do_preload_ips, },
     { NULL },
 };
 

@@ -768,7 +768,7 @@ int do_preload_ips(int sel) {
     char *res[10];
     memset(res,0,10*sizeof(char*));
     char *exts[] = { ".dat", NULL };
-    my_multi_fsel(get_shared("ips"),exts,res,10,_("Select IPS .dat file"));
+    my_multi_fsel(get_shared("ips"),exts,res,10,_("Select IPS *.dat file"));
     // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
     // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
     struct stat stbuf;
@@ -800,7 +800,7 @@ static menu_item_t main_items[] =
 {
 { _("Play game"), &play_game, },
 { _("Game options"), &do_game_options },
-{ _("Game command list"), &show_moves },
+{ _("Game commands list"), &show_moves },
 { _("Game cheats"), &do_cheats, },
 { _("Apply IPS to ROM code"), &do_ips, },
 { _("Region"), &set_region, },
