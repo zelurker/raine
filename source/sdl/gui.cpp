@@ -630,6 +630,7 @@ static void save_ips_ini(char **res) {
 	    } else
 		fprintf(g,"%s\n",res[n]); // rather unlikely it ever happens... !
 	    free(res[n]); // must free the results allocated by multi_fsel
+	    res[n] = NULL;
 	}
     }
     fclose(g);
@@ -671,8 +672,13 @@ void TMyMultiFileSel::compute_nb_items()
     snprintf(tpath,FILENAME_MAX,"%sips",dir_cfg.exe_path);
     if (!strcmp(path,tpath)) {
 	snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.share_path,"ips");
+	int old_files = nb_files;
 	add_files();
 	snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.exe_path,"ips");
+	if (old_files != nb_files) {
+	    free(selected);
+	    selected = (int*)calloc(nb_files,sizeof(int));
+	}
     }
 #endif
 #if 0

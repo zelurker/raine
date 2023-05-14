@@ -559,7 +559,6 @@ void TMultiFileSel::compute_nb_items() {
 	nb_sel = 0;
 	sel = 0;
 	selected = (int*)calloc(nb_files,sizeof(int));
-	memset(selected,0,nb_files*sizeof(int));
     }
 }
 
