@@ -57,7 +57,7 @@ USE_CURL = 1
 
 # Disable all asm. This will also disable the asm_video_core of
 # course
-# NO_ASM = 1
+NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
@@ -1757,9 +1757,9 @@ else
 #	$(INSTALL_DATA) blend/* $(bld_dir)
 	$(INSTALL_DATA) index_roms.html $(rainedata)
 endif
-	sh -c "if [ -f hiscore.dat ]; then $(INSTALL_DATA) hiscore.dat $(rainedata); fi"
-	sh -c "if [ -f command.dat ]; then $(INSTALL_DATA) command.dat $(rainedata); fi"
-	sh -c "if [ -f history.dat ]; then $(INSTALL_DATA) history.dat $(rainedata); fi"
+	sh -c "if [ -f hiscore.dat ]; then install -m 644 hiscore.dat $(rainedata); fi"
+	sh -c "if [ -f command.dat ]; then install -m 644 command.dat $(rainedata); fi"
+	sh -c "if [ -f history.dat ]; then install -m 644 history.dat $(rainedata); fi"
 	$(INSTALL_DATA) config/debug_dips.txt $(rainedata)
 ifdef RAINE_DOS
 	$(INSTALL_DATA) config/cheats.cfg $(rainedata)
