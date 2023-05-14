@@ -366,7 +366,7 @@ static void load_game_proc()
 	fps = max_fps;
     if (ips_enabled) {
 	char file[FILENAME_MAX];
-	snprintf(file,1024,"%s" SLASH "%s.ini",get_shared("ips"),current_game->main_name);
+	snprintf(file,1024,"%sips" SLASH "%s.ini",dir_cfg.exe_path,current_game->main_name);
 	file[FILENAME_MAX-1] = 0;
 	FILE *f = fopen(file,"r");
 	file[strlen(file)-4] = 0; // just keep the path, without the .ini extension
@@ -551,9 +551,29 @@ class TMyMultiFileSel : public TMultiFileSel
 	~TMyMultiFileSel();
 	virtual void compute_nb_items();
 	virtual int mychdir(int n);
+#ifdef RAINE_UNIX
+	virtual void set_dir(char *mypath);
+#endif
 	virtual int get_max_bot_frame_dimensions(int &w, int &h);
 	virtual void draw_bot_frame();
 };
+
+#ifdef RAINE_UNIX
+void TMyMultiFileSel::set_dir(char *mypath) {
+    if (chdir(mypath)) {
+	char *slash = strrchr(path, SLASH[0]);
+	if (slash) {
+	    char file[FILENAME_MAX];
+	    strncpy(file,slash+1,FILENAME_MAX);
+	    snprintf(path,FILENAME_MAX,"%sips/%s",dir_cfg.share_path,file);
+	    TMultiFileSel::set_dir(path);
+	    snprintf(path,FILENAME_MAX,"%sips/%s",dir_cfg.exe_path,file);
+	}
+    } else {
+	TMultiFileSel::set_dir(mypath);
+    }
+}
+#endif
 
 TMyMultiFileSel::~TMyMultiFileSel() {
     if (!nb_sel) {
@@ -620,18 +640,11 @@ int TMyMultiFileSel::mychdir(int n) {
 	int x = 0;
 	if (!nb_sel) {
 	    char res[FILENAME_MAX];
-	    strcpy(res,res_file);
-	    int l = strlen(res);
-	    if (res[l-1] == SLASH[0]) {
-		res[l-1] = 0;
-		l--;
+	    char *s = strrchr(path,SLASH[0]);
+	    if (s) { // always the case normally
+		snprintf(res,FILENAME_MAX,"%sips" SLASH "%s.ini",dir_cfg.exe_path,s+1);
+		unlink(res);
 	    }
-	    if (res[l-1] == SLASH[0]) {
-		res[l-1] = 0;
-		l--;
-	    }
-	    strcat(res,".ini");
-	    unlink(res);
 	} else {
 	    for (int n=0; n<nb_files; n++) {
 		if (selected[n]) {
@@ -653,6 +666,15 @@ void TMyMultiFileSel::compute_nb_items()
     snprintf(str,FILENAME_MAX,"%s%s",path,SLASH);
     int path_changed = strcmp(str,res_file);
     TMultiFileSel::compute_nb_items();
+#ifdef RAINE_UNIX
+    char tpath[FILENAME_MAX];
+    snprintf(tpath,FILENAME_MAX,"%sips",dir_cfg.exe_path);
+    if (!strcmp(path,tpath)) {
+	snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.share_path,"ips");
+	add_files();
+	snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.exe_path,"ips");
+    }
+#endif
 #if 0
     char path2[FILENAME_MAX];
     strncpy(path2,path,FILENAME_MAX);
@@ -670,7 +692,10 @@ void TMyMultiFileSel::compute_nb_items()
     if (path_changed) {
 	// compute_nb_items is called also when the window size changes, re-read selection only when the path changes !
 	char file[FILENAME_MAX];
-	snprintf(file,1024,"%s.ini",path);
+	char *fi = strrchr(path,SLASH[0]);
+	if (fi) snprintf(file,1024,"%sips" SLASH "%s.ini",dir_cfg.exe_path,fi+1); // Normally always the case
+	else
+	    snprintf(file,1024,"%s.ini",path);
 	file[1023] = 0;
 	// read the ini to initialize the selected entries
 	FILE *f = fopen(file,"r");

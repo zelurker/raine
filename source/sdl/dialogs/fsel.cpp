@@ -236,6 +236,7 @@ void TFileSel::compute_nb_items() {
 
   menu[0].label = "..";
   menu[0].menu_func = &exec_dir;
+  nb_files = 1;
   add_files();
 }
 
@@ -251,6 +252,7 @@ void TFileSel::add_files() {
   char tmp_path[1024];
   int found_cue = 0, found_iso = 0;
   char *oldsel = strrchr(res_file,SLASH[0]);
+  int check_files = nb_files > 1;
   if (oldsel) oldsel++;
 
   if (!dir) {
@@ -259,7 +261,6 @@ void TFileSel::add_files() {
   } else {
       chdir(path);
     getcwd(cwd,1024);
-    nb_files = 1;
 #ifdef RAINE_WIN32
     struct _wdirent *dent;
     while ((dent = _wreaddir(dir))) {
@@ -311,6 +312,22 @@ void TFileSel::add_files() {
       menu[nb_files].label = strdup(dent->d_name);
       snprintf(tmp_path,1024,"%s%s%s",path,SLASH,dent->d_name);
 #endif
+      if (check_files) {
+	  int found = 0;
+	  for( int n=1; n<nb_files; n++) {
+	      if (!strcmp(menu[n].label,menu[nb_files].label)) {
+		  found = 1;
+		  break;
+	      }
+	  }
+	  if (found) {
+	      if (menu[nb_files].values_list_label[0]) {
+		  free(menu[nb_files].values_list_label[0]);
+		  menu[nb_files].values_list_label[0] = NULL;
+	      }
+	      continue;
+	  }
+      }
       /* The big stupidity of readdir is that it doesn't set d_type (posix
        * compliant !!!).  */
       struct stat buf;
