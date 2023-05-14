@@ -228,6 +228,18 @@ static menu_item_t myheader[] = {
 };
 
 void TFileSel::compute_nb_items() {
+  if (menu)
+    free_files();
+  nb_menu = 10;
+  menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
+  memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
+
+  menu[0].label = "..";
+  menu[0].menu_func = &exec_dir;
+  add_files();
+}
+
+void TFileSel::add_files() {
 #ifdef RAINE_WIN32
     wchar_t wpath[strlen(path)+1];
     mbstowcs(wpath,path,strlen(path)+1);
@@ -235,19 +247,12 @@ void TFileSel::compute_nb_items() {
 #else
   DIR *dir = opendir(path);
 #endif
-  int nb_menu = 10;
   char cwd[1024];
   char tmp_path[1024];
   int found_cue = 0, found_iso = 0;
   char *oldsel = strrchr(res_file,SLASH[0]);
   if (oldsel) oldsel++;
-  if (menu)
-    free_files();
-  menu = (menu_item_t *)malloc(sizeof(menu_item_t)*(nb_menu+1));
-  memset(menu,0,sizeof(menu_item_t)*(nb_menu+1));
 
-  menu[0].label = "..";
-  menu[0].menu_func = &exec_dir;
   if (!dir) {
     perror(path);
     nb_files = 0;

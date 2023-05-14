@@ -12,7 +12,7 @@
 class TFileSel : public TMain_menu
 {
   protected:
-    int nb_files;
+    int nb_files,nb_menu;
     char **ext;
     int options;
     char *title2;
@@ -23,6 +23,7 @@ class TFileSel : public TMain_menu
     virtual char* get_top_string();
     virtual ~TFileSel();
     virtual void compute_nb_items();
+    virtual void add_files();
     virtual int get_fgcolor(int n);
     int can_be_selected(int n) {
       return can_be_displayed(n);

@@ -587,7 +587,7 @@ static void save_ips_ini(char **res) {
     }
     char *slash2 = strrchr(res[0],SLASH[0]);
     if (!slash2 || !slash) {
-	MessageBox("Error","can't find the name of the game in the path","ok");
+	// Not an error it just means the user didn't select anything
 	return;
     }
     char game[1024];
@@ -653,6 +653,11 @@ void TMyMultiFileSel::compute_nb_items()
     snprintf(str,FILENAME_MAX,"%s%s",path,SLASH);
     int path_changed = strcmp(str,res_file);
     TMultiFileSel::compute_nb_items();
+#if 0
+    char path2[FILENAME_MAX];
+    strncpy(path2,path,FILENAME_MAX);
+#endif
+
     if (!strcmp(path,get_shared("ips")) && !strcmp(menu[0].label,"..")) {
 	// remove .. entry if in the root of the ips directory
 	if (nb_files == 1) throw _("ips directory empty !!!");
@@ -768,7 +773,9 @@ int do_preload_ips(int sel) {
     char *res[10];
     memset(res,0,10*sizeof(char*));
     char *exts[] = { ".dat", NULL };
-    my_multi_fsel(get_shared("ips"),exts,res,10,_("Select IPS *.dat file"));
+    char path[FILENAME_MAX];
+    snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.exe_path,"ips");
+    my_multi_fsel(path,exts,res,10,_("Select IPS .dat file"));
     // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
     // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
     struct stat stbuf;
