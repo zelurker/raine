@@ -806,7 +806,7 @@ int do_preload_ips(int sel) {
     char *exts[] = { ".dat", NULL };
     char path[FILENAME_MAX];
     snprintf(path,FILENAME_MAX,"%s%s",dir_cfg.exe_path,"ips");
-    my_multi_fsel(path,exts,res,10,_("Select IPS .dat file"));
+    my_multi_fsel(path,exts,res,10,_("Select IPS *.dat files"));
     // Not very convenient : when the fsel is closed by esc, it just returns its last path in res
     // so the only way to test this is to test if res contains a directory, since directories can be opened as normal files in linux !
     struct stat stbuf;
