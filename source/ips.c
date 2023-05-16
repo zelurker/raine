@@ -114,6 +114,15 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 
 void add_ips_file(char *file) {
     FILE *f = fopen(file,"r");
+#ifdef RAINE_UNIX
+    if (!f) {
+	char *s = strstr(file,"ips");
+	char f2[FILENAME_MAX];
+	snprintf(f2,FILENAME_MAX,"%s%s",dir_cfg.share_path,s);
+	strcpy(file,f2);
+	f = fopen(file,"r");
+    }
+#endif
     if (!f) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't open %s",file);
@@ -151,7 +160,7 @@ void add_ips_file(char *file) {
 	ips_info.ips[nb++] = strdup(&tab[1]);
 	printf("add_ips_file: adding rom %s ips %s crc %x (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],ips_info.crc[nb-1],nb-1);
 	if (nb == MAX_IPS) {
-	    MessageBox("dat error", "Too many roms in this dat !","ok");
+	    MessageBox("dat error", "Too many ips in this dat !","ok");
 	    fclose(f);
 	    for (int n=0; n<nb; n++) {
 		free(ips_info.rom[n]);
