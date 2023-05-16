@@ -57,7 +57,7 @@ USE_CURL = 1
 
 # Disable all asm. This will also disable the asm_video_core of
 # course
-NO_ASM = 1
+# NO_ASM = 1
 
 # Use asm video core ? (comment to use C core)
 ASM_VIDEO_CORE = 1
