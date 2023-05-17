@@ -159,13 +159,19 @@ void add_ips_file(char *file) {
 	    ips_info.crc[nb] = atoh(tab2+5);
 	ips_info.ips[nb++] = strdup(&tab[1]);
 	printf("add_ips_file: adding rom %s ips %s crc %x (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],ips_info.crc[nb-1],nb-1);
-	if (nb == MAX_IPS) {
-	    MessageBox("dat error", "Too many ips in this dat !","ok");
-	    fclose(f);
-	    for (int n=0; n<nb; n++) {
-		free(ips_info.rom[n]);
-		free(ips_info.ips[n]);
+	if (nb >= MAX_IPS) {
+	    static int warned;
+	    if (!warned) {
+		MessageBox("dat error", "Too many ips in this dat !","ok");
+		warned = 1;
 	    }
+	    fclose(f);
+	    nb--;
+	    free(ips_info.ips[nb]);
+	    free(ips_info.rom[nb]);
+	    ips_info.ips[nb] = NULL;
+	    ips_info.rom[nb] = NULL;
+	    ips_info.nb = nb;
 	    return;
 	}
     }
