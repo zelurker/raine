@@ -2,7 +2,7 @@
 extern "C" {
 #endif
 
-#define MAX_IPS 20
+#define MAX_IPS 40
 
 typedef struct {
     char path[1024];
