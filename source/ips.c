@@ -66,7 +66,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
     fread(buf,1,5,f);
     if (strncmp(buf,"PATCH",5)) {
 	fclose(f);
-	MessageBox("Error",_("Bad IPS header"), "Ok");
+	MessageBox("Error",_("Bad IPS header"), "OK");
 	return;
     }
     do {
@@ -94,7 +94,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 	char buf[len];
 	n = fread(buf,1,len,f);
 	if (n < len) {
-	    MessageBox("IPS Error","Preamture eof", "ok");
+	    MessageBox("IPS Error","Premature EOF", "OK");
 	    fclose(f);
 	    return;
 	}
@@ -126,7 +126,7 @@ void add_ips_file(char *file) {
     if (!f) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't open %s",file);
-	MessageBox("error",err,"ok");
+	MessageBox("Error",err,"OK");
 	return;
     }
     printf("add_ips_file %s\n",file);
@@ -135,7 +135,7 @@ void add_ips_file(char *file) {
     if (!s) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't decode path : %s",file);
-	MessageBox("Error",err,"ok");
+	MessageBox("Error",err,"OK");
 	fclose(f);
 	return;
     }
@@ -160,7 +160,7 @@ void add_ips_file(char *file) {
 	ips_info.ips[nb++] = strdup(&tab[1]);
 	printf("add_ips_file: adding rom %s ips %s crc %x (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],ips_info.crc[nb-1],nb-1);
 	if (nb == MAX_IPS) {
-	    MessageBox("dat error", "Too many ips in this dat !","ok");
+	    MessageBox("*.dat file error", "Too many IPS patches in the *.dat files!","OK");
 	    fclose(f);
 	    for (int n=0; n<nb; n++) {
 		free(ips_info.rom[n]);
@@ -174,7 +174,7 @@ void add_ips_file(char *file) {
 	char msg[1024];
 	sprintf(msg,"%s: couldn't find any rom there... !",&s[1]);
 
-	MessageBox("dat error", msg,"ok");
+	MessageBox("*.dat file error", msg,"OK");
 	for (int n=0; n<nb; n++) {
 	    free(ips_info.rom[n]);
 	    free(ips_info.ips[n]);
@@ -281,12 +281,12 @@ void load_bps(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
     int meta_size = bps_decode(f);
     if (src_size != max_size) {
 	fclose(f);
-	MessageBox(_("Error"),"BPS : source size != rom size", "OK");
+	MessageBox(_("Error"),"BPS: source size! = ROM size", "OK");
 	return;
     }
     if (dst_size != max_size) {
 	fclose(f);
-	MessageBox(_("Error"),"BPS : target size != rom size", "OK");
+	MessageBox(_("Error"),"BPS: target size! = ROM size", "OK");
 	return;
     }
     if (meta_size) {
