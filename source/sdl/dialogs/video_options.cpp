@@ -226,7 +226,7 @@ static int bld1,bld2;
 
 static menu_item_t bld_options[] =
 {
-{ _("Use blending files (.bld)"),NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
+{ _("Use blending files (*.bld)"),NULL,&use_bld,2,{0,1},{_("No"),_("Yes")} },
 { _("Reset transparency values to default"), &reset_transp },
     // xgettext: no-c-format
 { _("Transparency for 1 (25\% default)"), NULL, &bld1, ITEM_INTEDIT,
