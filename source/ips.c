@@ -84,8 +84,23 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 	    u16 len = (len_str[0] << 8) | len_str[1];
 	    fread(ofs_str,1,1,f);
 	    if (ofs >= max_size) {
-		printf("ips : ofs overflow %s %x when max is %x\n",res,ofs,max_size);
+		if (remaining_b && ofs - max_size < remaining_size) {
+		    // load_continue handling
+		    ofs -= max_size;
+		    if (ofs + len > remaining_size) {
+			printf("ips : rle len overflow on remaining_size ofs %x len %x rem size %x\n",ofs,len,remaining_size);
+			len = remaining_size - ofs;
+		    }
+		    check_patch(ofs+max_size,len,index,rom_name);
+		    memset(remaining_b+ofs,ofs_str[0],len);
+		    continue;
+		}
+		printf("ips : rle ofs overflow %s %x when max is %x\n",res,ofs,max_size);
 		continue;
+	    }
+	    if (ofs + len > max_size) {
+		printf("ips: rle overflow on len ofs %x len %x max %x\n",ofs,len,max_size);
+		len = max_size - ofs;
 	    }
 	    check_patch(ofs,len,index,rom_name);
 	    memset(&ROM[ofs],ofs_str[0],len);
@@ -99,6 +114,19 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 	    return;
 	}
 	if (ofs >= max_size) {
+	    if (remaining_b && ofs - max_size < remaining_size) {
+		/* Applies on a LOAD_CONTINUE : in this case we get a reamining_b & remaining_size pointing to the rest of the file */
+		ofs -= max_size;
+		if (ofs + len > remaining_size) {
+		    printf("ips : len overflow on remaining_size ofs %x len %x rem size %x\n",ofs,len,remaining_size);
+		    len = remaining_size - ofs;
+		}
+		if (memcpy(remaining_b + ofs, buf, len)) {
+		    check_patch(ofs+max_size,len,index,rom_name);
+		    memcpy(remaining_b + ofs, buf, len);
+		}
+		continue;
+	    }
 	    printf("ips : ofs overflow %s ofs %x when max is %x\n",res,ofs,max_size);
 	    continue;
 	}
@@ -106,8 +134,10 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 	    printf("ips: len too big, ofs %x len %x max_size %x\n",ofs,len,max_size);
 	    len = max_size-ofs-1;
 	}
-	check_patch(ofs,len,index,rom_name);
-	memcpy(&ROM[ofs],buf,len); // no swap...
+	if (memcpy(&ROM[ofs],buf,len)) {
+	    check_patch(ofs,len,index,rom_name);
+	    memcpy(&ROM[ofs],buf,len); // no swap...
+	}
     } while (!feof(f));
     fclose(f);
 }
