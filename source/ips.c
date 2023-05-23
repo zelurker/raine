@@ -180,15 +180,23 @@ void add_ips_file(char *file) {
 	if (!buf[0]) continue; // no empty line at start normally... !
 	if (!strncmp(buf,"#define",7)) // found this in a broken dat, nothing to do there
 	    continue;
+	if (buf[0] == '[') break; // don't go into the description !
 	char *tab = strchr(buf,9);
+	if (!tab) tab = strchr(buf,32);
 	if (!tab) break;
 	*tab = 0;
+	tab++;
+	while (*tab == 9 || *tab == 32) tab++;
 	char *tab2 = strchr(&tab[1],9);
+	if (!tab2) tab2 = strchr(&tab[1],32);
 	if (tab2) *tab2 = 0; // optional crc after that
 	ips_info.rom[nb] = strdup(buf);
-	if (tab2)
-	    ips_info.crc[nb] = atoh(tab2+5);
-	ips_info.ips[nb++] = strdup(&tab[1]);
+	if (tab2) {
+	    tab2++;
+	    while (*tab2 == 9 || *tab2 == 32) tab2++;
+	    ips_info.crc[nb] = atoh(tab2+4);
+	}
+	ips_info.ips[nb++] = strdup(&tab[0]);
 	printf("add_ips_file: adding rom %s ips %s crc %x (%d)\n",ips_info.rom[nb-1],ips_info.ips[nb-1],ips_info.crc[nb-1],nb-1);
 	if (nb >= MAX_IPS) {
 	    static int warned;
