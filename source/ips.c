@@ -28,6 +28,7 @@ void free_ips_patches() {
     if (patch) {
 	free(patch);
 	patch = NULL;
+	nb_patch = alloc_patch = 0;
     }
 }
 
