@@ -13,6 +13,9 @@
 #include "ingame.h" // print_ingame
 #include "savegame.h"
 
+static int is_sfa3;
+int mute_sfa3_speaker;
+
 #ifdef RAINE_DOS
 static void start_music_fadeout(double time) {
     // Does nothing in dos
@@ -56,6 +59,7 @@ int qsound_last_song;
 void init_assoc(int kind) {
     adr2 = 0;
     variant = 0;
+    is_sfa3 = !strcmp(parent_name(),"sfa3");
     if (kind == 1) { // neogeo
 	/* Some roms have a version + an author in them, but apparently
 	 * there are some variants, so they must be recognized on something
@@ -395,6 +399,8 @@ int handle_cps2_cmd(UINT8 *shared, int offset, int cmd) {
     if (type == 0) return 0;
     if (offset == 15) {
 	cmd = ReadWord68k(&shared[0]);
+	if (is_sfa3 && mute_sfa3_speaker && (cmd >= 0x100 && cmd <= 0x13a))
+	    WriteWord(&shared[0],0);
 	if (cmd == 0xff00 || cmd == 0xff05) { // mute all
 	    print_debug("mute song on cmd %x\n",cmd);
 	    if (qsound_playing) {

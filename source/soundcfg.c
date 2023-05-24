@@ -5,6 +5,7 @@
 #if HAS_YM3812
 #include "3812intf.h"
 #endif
+#include "assoc.h"
 
 #ifdef ALLEGRO_SOUND
 int max_mixer_volume;
@@ -74,6 +75,8 @@ void sound_load_cfg() {
    // enh_stereo = raine_get_config_int( "Sound",        "enh_stereo",0 );
 #ifdef ALLEGRO_SOUND
    max_mixer_volume = raine_get_config_int( "Sound",        "max_mixer_volume",0 );
+#else
+   mute_sfa3_speaker = raine_get_config_int( "Sound", "mute_sfa3_speaker", 0);
 #endif
    if (!audio_sample_rate) {
        sdl_init();
@@ -98,5 +101,7 @@ void sound_save_cfg() {
    // raine_set_config_int(	"Sound",        "enh_stereo",         enh_stereo);
 #ifdef ALLEGRO_SOUND
    raine_set_config_int(	"Sound",        "max_mixer_volume",         max_mixer_volume);
+#else
+   raine_set_config_int(        "Sound",        "mute_sfa3_speaker",    mute_sfa3_speaker);
 #endif
 }

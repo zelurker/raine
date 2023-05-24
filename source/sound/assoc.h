@@ -7,6 +7,7 @@ extern "C" {
 #define MAX_ASSOC 1024
 
 extern int disable_assoc,last_song,use_music,qsound_last_song;
+extern int mute_sfa3_speaker;
 
 void init_assoc(int kind);
 void clear_assoc();

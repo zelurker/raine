@@ -83,6 +83,7 @@ menu_item_t sound_menu[] =
   { _("Record to raine_sound.wav"), NULL, &recording, 3, { 0, 1, 2 }, { _("No"), _("Without monitoring"), _("With monitoring") } },
 #if HAS_NEO
 { _("Sound commands..."), &do_sound_cmd },
+{ _("Mute sfa3 speaker"), NULL, &mute_sfa3_speaker, 2, {0, 1}, { _("No"), _("Yes") } },
 #endif
   { NULL },
 };
