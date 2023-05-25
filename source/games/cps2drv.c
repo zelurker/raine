@@ -2216,19 +2216,6 @@ static struct ROM_INFO rom_sfa3ur1[] = // clone of sfa3
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_sfz3j[] = // clone of sfa3
-{
-  LOAD_SW16( CPU1, "sz3j.03c", 0x000000, 0x80000, 0xcadf4a51),
-  LOAD_SW16( CPU1, "sz3j.04c", 0x080000, 0x80000, 0xfcb31228),
-  LOAD_SW16( CPU1, "sz3.05c", 0x100000, 0x80000, 0x57fd0a40),
-  LOAD_SW16( CPU1, "sz3.06c", 0x180000, 0x80000, 0xf6305f8b),
-  LOAD_SW16( CPU1, "sz3.07c", 0x200000, 0x80000, 0x6eab0f6f),
-  LOAD_SW16( CPU1, "sz3.08c", 0x280000, 0x80000, 0x910c4a3b),
-  LOAD_SW16( CPU1, "sz3.09c", 0x300000, 0x80000, 0xb29e5199),
-  LOAD_SW16( CPU1, "sz3.10b", 0x380000, 0x80000, 0xdeb2ff52),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_sfz3jr1[] = // clone of sfa3
 {
   LOAD_SW16( CPU1, "sz3j.03a", 0x000000, 0x80000, 0x6ee0beae),
@@ -2252,19 +2239,6 @@ static struct ROM_INFO rom_sfz3jr2[] = // clone of sfa3
   LOAD_SW16( CPU1, "sz3.08", 0x280000, 0x80000, 0x5c7e7240),
   LOAD_SW16( CPU1, "sz3.09", 0x300000, 0x80000, 0xc5589553),
   LOAD_SW16( CPU1, "sz3.10", 0x380000, 0x80000, 0xa9717252),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_sfz3a[] = // clone of sfa3
-{
-  LOAD_SW16( CPU1, "sz3a.03d", 0x000000, 0x80000, 0xd7e140d6),
-  LOAD_SW16( CPU1, "sz3a.04d", 0x080000, 0x80000, 0xe06869a2),
-  LOAD_SW16( CPU1, "sz3.05c", 0x100000, 0x80000, 0x57fd0a40),
-  LOAD_SW16( CPU1, "sz3.06c", 0x180000, 0x80000, 0xf6305f8b),
-  LOAD_SW16( CPU1, "sz3.07c", 0x200000, 0x80000, 0x6eab0f6f),
-  LOAD_SW16( CPU1, "sz3.08c", 0x280000, 0x80000, 0x910c4a3b),
-  LOAD_SW16( CPU1, "sz3.09c", 0x300000, 0x80000, 0xb29e5199),
-  LOAD_SW16( CPU1, "sz3.10b", 0x380000, 0x80000, 0xdeb2ff52),
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -4368,10 +4342,8 @@ CLNEI( sfa3hr1, sfa3, "Street Fighter Alpha 3 (Hispanic 980629)", CAPCOM, 1998, 
   .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3b, sfa3, "Street Fighter Alpha 3 (Brazil 980629)", CAPCOM, 1998, GAME_BEAT,
   .input = input_p2b6t, .romsw = romsw_sfa3b);
-CLNEI( sfz3j, sfa3, "Street Fighter Zero 3 (Japan 980904)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfz3jr1, sfa3, "Street Fighter Zero 3 (Japan 980727)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfz3jr2, sfa3, "Street Fighter Zero 3 (Japan 980629)", CAPCOM, 1998, GAME_BEAT);
-CLNEI( sfz3a, sfa3, "Street Fighter Zero 3 (Asia 980904)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfz3ar1, sfa3, "Street Fighter Zero 3 (Asia 980701)", CAPCOM, 1998, GAME_BEAT);
 GMEI( jyangoku, "Jyangokushi: Haoh no Saihai (Japan 990527)", CAPCOM, 1999, GAME_PUZZLE,
   .input = input_p1b2);
