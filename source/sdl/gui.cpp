@@ -543,10 +543,22 @@ static int load_neo_game(int sel) {
 
 class TMyMultiFileSel : public TMultiFileSel
 {
+    private:
+	TFont_ttf *fb;
+	int bot_sel,used,wi,hi;
+	menu_item_t *menu_bot;
+	SDL_Texture *tex;
     public:
 	TMyMultiFileSel(char *my_title, char *mypath, char **myext, char **my_res_str,int my_max_res,int opts = 0, char* mytitle2 = NULL) :
 	    TMultiFileSel(my_title, mypath, myext, my_res_str,my_max_res, opts, mytitle2)
-    {}
+    {
+  fb = new TFont_ttf(12,font_name);
+  bot_sel = -1;
+  used = 0;
+  menu_bot = NULL;
+  tex = NULL;
+  wi = 0;
+    }
 
 	~TMyMultiFileSel();
 	virtual void compute_nb_items();
@@ -576,6 +588,13 @@ void TMyMultiFileSel::set_dir(char *mypath) {
 #endif
 
 TMyMultiFileSel::~TMyMultiFileSel() {
+    delete fb;
+    for (int n=0; n<used; n++)
+	free(menu_bot[n].label);
+    if (menu_bot) {
+	free(menu_bot);
+    }
+    if (tex) SDL_DestroyTexture(tex);
     if (!nb_sel) {
 	char res[FILENAME_MAX];
 	char *shared = get_shared("ips");
@@ -637,6 +656,19 @@ static void save_ips_ini(char **res) {
 }
 
 int TMyMultiFileSel::mychdir(int n) {
+    for (int n=0; n<used; n++)
+	free(menu_bot[n].label);
+    if (menu_bot) {
+	free(menu_bot);
+	menu_bot = NULL;
+	wi = 0;
+	used = 0;
+	bot_sel = -1;
+    }
+    if (tex) {
+	SDL_DestroyTexture(tex);
+	tex = NULL;
+    }
     if (n == 0 && !strcmp(menu[n].label,"..")) {
 	int x = 0;
 	if (!nb_sel) {
@@ -737,48 +769,79 @@ int TMyMultiFileSel::get_max_bot_frame_dimensions(int &w, int &h) {
   return 100;
 }
 
+#define MAX_SIZE 10000
+
 void TMyMultiFileSel::draw_bot_frame() {
     int base = work_area.y+work_area.h;
     boxColor(rend,0,base,sdl_screen->w,sdl_screen->h,bg_frame_gfx);
     if (sel >= 0) {
-	char *l = menu[sel].label;
-	int len = strlen(l);
-	if (strcmp(&l[len-4],".dat")) return;
-	// display the what there is in an eventual [en_US] block in the selected .dat...
-	FILE *f = fopen(l,"r");
-	if (!f) return;
 	int y = base;
-	while (!feof(f)) {
-	    char buf[1024];
-	    myfgets(buf,1024,f);
-	    if (!strncmp(buf,"[en_US]",7))
-		break;
+	if (sel != bot_sel) {
+	    char *l = menu[sel].label;
+	    int len0 = strlen(l);
+	    if (strcmp(&l[len0-4],".dat")) return;
+	    // display the what there is in an eventual [en_US] block in the selected .dat...
+	    FILE *f = fopen(l,"r");
+	    if (!f) return;
+	    while (!feof(f)) {
+		char buf[1024];
+		myfgets(buf,1024,f);
+		if (!strncmp(buf,"[en_US]",7))
+		    break;
+	    }
+	    char buf[MAX_SIZE];
+	    char *s = buf;
+	    *s = 0;
+	    int len = 0;
+	    while (!feof(f)) {
+		myfgets(s,MAX_SIZE - len,f);
+		if (s[0] == '[') break;
+		len = strlen(buf);
+		if (len < MAX_SIZE - 1) {
+		    strcat(buf,"\n");
+		    len++;
+		    s = &buf[len];
+		} else
+		    break;
+	    }
+	    fclose(f);
+	    char pic[len0+1];
+	    strcpy(pic,l);
+	    strcpy(&pic[len0-4],".png");
+	    wi = 0;
+	    if (tex) {
+		SDL_DestroyTexture(tex);
+		tex = NULL;
+	    }
+	    if (exists(pic)) {
+		tex = IMG_LoadTexture(rend,pic);
+	    }
+	    for (int n=0; n<used; n++)
+		free(menu_bot[n].label);
+	    if (menu_bot) {
+		free(menu_bot);
+	    }
+	    int access; u32 format;
+	    SDL_QueryTexture(tex,&format,&access,&wi,&hi);
+	    if (hi > 224) hi = 224;
+	    if (wi > 320) wi = 320;
+	    menu_bot = get_menu_from_text(buf,fb,&used,sdl_screen->w-wi-HMARGIN);
+	    bot_sel = sel;
 	}
-	while (!feof(f)) {
-	    char buf[1024];
-	    myfgets(buf,1024,f);
-	    if (buf[0] == '[') break;
+	// Opengl obliges to redraw the thing for every frame, which is a total waste of cycles here
+	// hence all the data I buffered just before this point, but in the end there are still some cycles to waste here... !
+	// Nothing to do about that. Maybe vulkan is less crazy about that ? But using vulkan just to draw an interface would be overkill anyway !
+	if (tex) {
+	    SDL_Rect dest = { sdl_screen->w-wi, base, wi, hi };
+	    SDL_RenderCopy(rend,tex,NULL, &dest);
+	}
+	for (int n=0; n<used; n++) {
 	    int w,h;
-	    font->dimensions(buf,&w,&h);
+	    fb->dimensions(menu_bot[n].label,&w,&h);
 	    if (y + h > sdl_screen->h) break;
-	    font->put_string(HMARGIN,y,buf,fg_frame,bg_frame);
+	    fb->put_string(HMARGIN,y,menu_bot[n].label,fg_frame,bg_frame);
 	    y += h;
 	}
-	fclose(f);
-	char pic[len+1];
-	strcpy(pic,l);
-	strcpy(&pic[len-4],".png");
-	if (!exists(pic)) return;
-	SDL_Texture *tex = IMG_LoadTexture(rend,pic);
-	if (!tex) return;
-	int wi,hi,access; u32 format;
-	SDL_QueryTexture(tex,&format,&access,&wi,&hi);
-	if (hi > 224) hi = 224;
-	if (wi > 320) wi = 320;
-	SDL_Rect dest = { sdl_screen->w-wi, base, wi, hi };
-	SDL_RenderCopy(rend,tex,NULL, &dest);
-	SDL_DestroyTexture(tex);
-
     }
 }
 

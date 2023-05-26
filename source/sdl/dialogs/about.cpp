@@ -727,9 +727,112 @@ static menu_item_t about_items[] =
   { NULL, NULL, NULL },
 };
 
+menu_item_t *get_menu_from_text(char *buff, TFont_ttf *font, int *used,int max_width) {
+    int nb_lines = 10;
+    char *s = buff;
+    char *nl;
+    char previous;
+    menu_item_t *menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
+    while ((nl = strchr(s,'\n'))) {
+	char *q;
+	previous = *nl;
+	*nl = 0;
+	if ((q=strstr(s,"<a href="))) {
+	    /* Basic parsing for urls. We assume everything is lowercase with
+	     * only 1 space and not more, and everything on 1 line of text.
+	     * I don't was a general html parser here, just something to parse
+	     * basic urls */
+	    q+=8;
+	    char *end;
+	    char old;
+	    if (*q == '"') {
+		q++;
+		end = strchr(q,'"');
+	    } else
+		end = strchr(q,' ');
+	    if (end) {
+		old = *end;
+		*end = 0;
+		menu[*used].values_list_label[0] = strdup(q);
+		*end = old;
+		q = end+1;
+	    } else
+		menu[*used].values_list_label[0] = NULL;
+	    q = strchr(q,'>');
+	    if (q) {
+		q++;
+		end = strstr(q,"</a>");
+		if (end) {
+		    old = *end;
+		    *end = 0;
+		    menu[*used].label = strdup(q);
+		    *end = old;
+		    menu[*used].menu_func = &menu_goto_url;
+		    goto end_loop;
+		}
+	    }
+	}
+	int w,h;
+	font->dimensions(s,&w,&h);
+	if (w > max_width) {
+	    char start;
+	    if (s > buff) {
+		start = s[-1];
+		s[-1] = 0;
+	    }
+	    char *old = NULL;
+	    char *sp;
+	    do {
+		sp = strrchr(s,' ');
+		if (sp) {
+		    *sp = 0;
+		    if (old) *old = ' ';
+		    old = sp;
+		} else
+		    break;
+		font->dimensions(s,&w,&h);
+	    } while (w > max_width);
+
+	    int maxlen = strlen(s);
+	    if (old)
+		*old = ' ';
+	    if (s>buff) {
+		s[-1] = start;
+	    }
+	    if (!sp)
+		sp = old;
+	    *nl = previous;
+	    if (sp && sp <= s+maxlen)
+		nl = sp;
+	    else
+		nl = s+maxlen;
+
+	    previous = *nl;
+	    *nl = 0;
+	}
+	while ((q = strchr(s,0x92)))
+	    *q = 0x27; // fix the stupid non standard ' code from krosoft
+
+	menu[*used].label = strdup(s);
+	menu[*used].menu_func = NULL;
+	menu[*used].values_list_label[0] = NULL;
+end_loop:
+	menu[*used].value_int = NULL;
+	(*used)++;
+	if (*used == nb_lines) {
+	    nb_lines += 10;
+	    menu = (menu_item_t *)realloc(menu,sizeof(menu_item_t)*nb_lines);
+	}
+	*nl = previous;
+	if (previous == ' ' || previous == '\n')
+	    s = nl+1;
+	else
+	    s = nl;
+    }
+    return menu;
+}
+
 static int about_game(int sel) {
-  int nb_lines = 10;
-  menu = (menu_item_t *)malloc(sizeof(menu_item_t)*nb_lines);
   int used = 0;
   char *buff;
   if (do_command)
@@ -740,106 +843,8 @@ static int about_game(int sel) {
       buff = driver_info;
 
   if (buff) {
-    char *s = buff;
-    char *nl;
-    char previous;
     TFont_ttf *font = new TFont_ttf(min_font_size);
-    while ((nl = strchr(s,'\n'))) {
-      char *q;
-      previous = *nl;
-      *nl = 0;
-      if ((q=strstr(s,"<a href="))) {
-	  /* Basic parsing for urls. We assume everything is lowercase with
-	   * only 1 space and not more, and everything on 1 line of text.
-	   * I don't was a general html parser here, just something to parse
-	   * basic urls */
-	  q+=8;
-	  char *end;
-	  char old;
-	  if (*q == '"') {
-	      q++;
-	      end = strchr(q,'"');
-	  } else
-	      end = strchr(q,' ');
-	  if (end) {
-	      old = *end;
-	      *end = 0;
-	      menu[used].values_list_label[0] = strdup(q);
-	      *end = old;
-	      q = end+1;
-	  } else
-	      menu[used].values_list_label[0] = NULL;
-	  q = strchr(q,'>');
-	  if (q) {
-	      q++;
-	      end = strstr(q,"</a>");
-	      if (end) {
-		  old = *end;
-		  *end = 0;
-		  menu[used].label = strdup(q);
-		  *end = old;
-		  menu[used].menu_func = &menu_goto_url;
-		  goto end_loop;
-	      }
-	  }
-      }
-      int w,h;
-      font->dimensions(s,&w,&h);
-      if (w > sdl_screen->w-50) {
-	char start;
-	if (s > buff) {
-	  start = s[-1];
-	  s[-1] = 0;
-	}
-	char *old = NULL;
-	char *sp;
-	do {
-	    sp = strrchr(s,' ');
-	    if (sp) {
-		*sp = 0;
-		if (old) *old = ' ';
-		old = sp;
-	    } else
-		break;
-	    font->dimensions(s,&w,&h);
-	} while (w > sdl_screen->w-50);
-
-	int maxlen = strlen(s);
-	if (old)
-	    *old = ' ';
-	if (s>buff) {
-	  s[-1] = start;
-	}
-	if (!sp)
-	  sp = old;
-	*nl = previous;
-	if (sp && sp <= s+maxlen)
-	  nl = sp;
-	else
-	  nl = s+maxlen;
-
-	previous = *nl;
-	*nl = 0;
-      }
-      while ((q = strchr(s,0x92)))
-	*q = 0x27; // fix the stupid non standard ' code from krosoft
-
-      menu[used].label = strdup(s);
-      menu[used].menu_func = NULL;
-      menu[used].values_list_label[0] = NULL;
-end_loop:
-      menu[used].value_int = NULL;
-      used++;
-      if (used == nb_lines) {
-	nb_lines += 10;
-	menu = (menu_item_t *)realloc(menu,sizeof(menu_item_t)*nb_lines);
-      }
-      *nl = previous;
-      if (previous == ' ' || previous == '\n')
-	s = nl+1;
-      else
-	s = nl;
-    }
+    menu = get_menu_from_text(buff,font,&used,sdl_screen->w-50);
     delete font;
   } else {
       char *hist = get_shared("history.dat");

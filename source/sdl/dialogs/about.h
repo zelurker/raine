@@ -11,4 +11,5 @@ class TMoveStatic : public TStatic
 
 int do_about(int);
 int show_moves(int sel);
+menu_item_t *get_menu_from_text(char *buff, TFont_ttf *font, int *used,int max_width);
 
