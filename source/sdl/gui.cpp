@@ -561,6 +561,7 @@ class TMyMultiFileSel : public TMultiFileSel
     }
 
 	~TMyMultiFileSel();
+	void free_bot_info();
 	virtual void compute_nb_items();
 	virtual int mychdir(int n);
 #ifdef RAINE_UNIX
@@ -589,12 +590,7 @@ void TMyMultiFileSel::set_dir(char *mypath) {
 
 TMyMultiFileSel::~TMyMultiFileSel() {
     delete fb;
-    for (int n=0; n<used; n++)
-	free(menu_bot[n].label);
-    if (menu_bot) {
-	free(menu_bot);
-    }
-    if (tex) SDL_DestroyTexture(tex);
+    free_bot_info();
     if (!nb_sel) {
 	char res[FILENAME_MAX];
 	char *shared = get_shared("ips");
@@ -655,7 +651,7 @@ static void save_ips_ini(char **res) {
     fclose(g);
 }
 
-int TMyMultiFileSel::mychdir(int n) {
+void TMyMultiFileSel::free_bot_info() {
     for (int n=0; n<used; n++)
 	free(menu_bot[n].label);
     if (menu_bot) {
@@ -669,6 +665,10 @@ int TMyMultiFileSel::mychdir(int n) {
 	SDL_DestroyTexture(tex);
 	tex = NULL;
     }
+}
+
+int TMyMultiFileSel::mychdir(int n) {
+    free_bot_info();
     if (n == 0 && !strcmp(menu[n].label,"..")) {
 	int x = 0;
 	if (!nb_sel) {
@@ -809,17 +809,9 @@ void TMyMultiFileSel::draw_bot_frame() {
 	    strcpy(pic,l);
 	    strcpy(&pic[len0-4],".png");
 	    wi = 0;
-	    if (tex) {
-		SDL_DestroyTexture(tex);
-		tex = NULL;
-	    }
+	    free_bot_info();
 	    if (exists(pic)) {
 		tex = IMG_LoadTexture(rend,pic);
-	    }
-	    for (int n=0; n<used; n++)
-		free(menu_bot[n].label);
-	    if (menu_bot) {
-		free(menu_bot);
 	    }
 	    int access; u32 format;
 	    SDL_QueryTexture(tex,&format,&access,&wi,&hi);
