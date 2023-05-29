@@ -5120,6 +5120,15 @@ void load_neocd() {
 	AddReadBW(0xe00000,0xffffff, neogeo_unmapped_r, NULL);
 	init_assoc(1);
 	neogeo_read_gamename();
+	if (game->width == 320) {
+	    neocd_video.screen_x = 320;
+	    offx = 16;
+	    maxx = 320;
+	} else {
+	    neocd_video.screen_x = 304;
+	    offx = 16-8;
+	    maxx = 320-8;
+	}
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
 	AddWriteByte(0xe00000,0xefffff, write_upload, NULL);
