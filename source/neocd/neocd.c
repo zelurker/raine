@@ -1295,6 +1295,7 @@ int neocd_id;
 
 // There seems to be a majority of games using 304x224, so the default value
 // for the width is 304 (when left blank).
+// Default is set to 320 for neogeo games (when left blank or not in the table).
 const NEOCD_GAME games[] =
 {
   { "nam1975",    0x0001 },
@@ -5120,14 +5121,17 @@ void load_neocd() {
 	AddReadBW(0xe00000,0xffffff, neogeo_unmapped_r, NULL);
 	init_assoc(1);
 	neogeo_read_gamename();
-	if (game->width == 320) {
-	    neocd_video.screen_x = 320;
-	    offx = 16;
-	    maxx = 320;
-	} else {
+	if (game->width == 304) {
+	    // Actually almost all neogeo games have probably a width of 320
+	    // but a game like tpgolf gets garbage in the borders due to the raster frame
+	    // not sure there is no way to improve that, but in the meantime I'll keep it like that
 	    neocd_video.screen_x = 304;
 	    offx = 16-8;
 	    maxx = 320-8;
+	} else {
+	    neocd_video.screen_x = 320;
+	    offx = 16;
+	    maxx = 320;
 	}
     } else {
 	AddReadBW(0xe00000,0xefffff, read_upload, NULL);
