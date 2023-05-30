@@ -55,6 +55,7 @@
 #include "alpha.h"
 #include "sound/assoc.h"
 #include "mask.h"
+#include "files.h"
 
 #define EMULATE_RASTERS 1
 
@@ -3049,6 +3050,9 @@ void clear_cps2() {
     if (raster_bitmap)
 	destroy_bitmap(raster_bitmap);
     raster_bitmap = NULL;
+    if (xor) {
+	save_debug("encrypted",(u8*)xor,size_user1,1);
+    }
 }
 
 void execute_cps2_frame(void)
