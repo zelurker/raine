@@ -477,6 +477,7 @@
   DRV(sfa3)
   DRV(sfa3ur1)
   DRV(sfa3hr1)
+  DRV(sfz3j)
   DRV(sfa3b)
   DRV(sfz3jr1)
   DRV(sfz3jr2)

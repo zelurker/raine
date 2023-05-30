@@ -2203,6 +2203,19 @@ static struct ROM_INFO rom_sfa3[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_sfz3j[] = // clone of sfa3
+{
+  LOAD_SW16( CPU1, "sz3j.03c", 0x000000, 0x80000, 0xcadf4a51),
+  LOAD_SW16( CPU1, "sz3j.04c", 0x080000, 0x80000, 0xfcb31228),
+  LOAD_SW16( CPU1, "sz3.05c", 0x100000, 0x80000, 0x57fd0a40),
+  LOAD_SW16( CPU1, "sz3.06c", 0x180000, 0x80000, 0xf6305f8b),
+  LOAD_SW16( CPU1, "sz3.07c", 0x200000, 0x80000, 0x6eab0f6f),
+  LOAD_SW16( CPU1, "sz3.08c", 0x280000, 0x80000, 0x910c4a3b),
+  LOAD_SW16( CPU1, "sz3.09c", 0x300000, 0x80000, 0xb29e5199),
+  LOAD_SW16( CPU1, "sz3.10b", 0x380000, 0x80000, 0xdeb2ff52),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static struct ROM_INFO rom_sfa3ur1[] = // clone of sfa3
 {
   LOAD_SW16( CPU1, "sz3u.03", 0x000000, 0x80000, 0xb5984a19),
@@ -3901,6 +3914,17 @@ static struct ROMSW_DATA romsd_sfz2[] = {
     { NULL, 0 },
 };
 
+static struct ROMSW_DATA romsd_sfa2[] = {
+    // Without japan for sfa3 serie
+    { "USA", 0x02 },
+    { "Hispanic", 0x04 },
+    { "Oceania", 0x06 },
+    { "Asia", 0x08 },
+    { "Euro", 0x0A },
+    { "Brazil", 0x0C },
+    { NULL, 0 },
+};
+
 static struct ROMSW_INFO romsw_ssf2t[] =
 {
     { 0x1cd, 4, romsd_ssf2t },
@@ -3921,7 +3945,7 @@ static struct ROMSW_INFO romsw_sfz2ald[] =
 
 static struct ROMSW_INFO romsw_sfa3ud[] =
 {
-    { 0xff549, 2, romsd_sfz2 },
+    { 0xff549, 2, romsd_sfa2 },
     { 0, 0, NULL },
 };
 
@@ -3969,25 +3993,25 @@ static struct ROMSW_INFO romsw_sfa2[] =
 
 static struct ROMSW_INFO romsw_sfa3b[] =
 {
-    { 0x101f, 12, romsd_sfz2 },
+    { 0x101f, 12, romsd_sfa2 },
     { 0, 0, NULL },
 };
 
 static struct ROMSW_INFO romsw_sfa3h[] =
 {
-    { 0x101f, 4, romsd_sfz2 },
+    { 0x101f, 4, romsd_sfa2 },
     { 0, 0, NULL },
 };
 
 static struct ROMSW_INFO romsw_sfa3[] =
 {
-    { 0x101f, 10, romsd_sfz2 },
+    { 0x101f, 10, romsd_sfa2 },
     { 0, 0, NULL },
 };
 
 static struct ROMSW_INFO romsw_sfa3u[] =
 {
-    { 0x101f, 2, romsd_sfz2 },
+    { 0x101f, 2, romsd_sfa2 },
     { 0, 0, NULL },
 };
 
@@ -4338,6 +4362,7 @@ GMEI( sfa3, "Street Fighter Alpha 3 (Euro 980904)", CAPCOM, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3);
 CLNEI( sfa3ur1, sfa3, "Street Fighter Alpha 3 (USA 980629)", CAPCOM, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3u);
+CLNEI( sfz3j, sfa3, "Street Fighter Zero 3 (Japan 980904)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( sfa3hr1, sfa3, "Street Fighter Alpha 3 (Hispanic 980629)", CAPCOM, 1998, GAME_BEAT,
   .input = input_p2b6t, .romsw = romsw_sfa3h);
 CLNEI( sfa3b, sfa3, "Street Fighter Alpha 3 (Brazil 980629)", CAPCOM, 1998, GAME_BEAT,
