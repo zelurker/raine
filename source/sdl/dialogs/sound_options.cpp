@@ -78,13 +78,13 @@ menu_item_t sound_menu[] =
   { _("Raw audio tracks format"), NULL, &neocd_cdda_format, 2, { AUDIO_S16LSB, AUDIO_S16MSB }, { _("Less significant byte"),_("Most significant byte") }},
   { _("Mute sound effects"), NULL, &mute_sfx, 2, { 0, 1 }, { _("No"), _("Yes") } },
   { _("Mute music"), NULL, &mute_music, 2, { 0, 1 }, { _("No"), _("Yes") } },
+  { _("Mute SFA3 announcer"), NULL, &mute_sfa3_speaker, 2, {0, 1}, { _("No"), _("Yes") } },
   { _("Default volumes"), &set_default_volumes },
 #endif
   { _("Record to raine_sound.wav"), NULL, &recording, 3, { 0, 1, 2 }, { _("No"), _("Without monitoring"), _("With monitoring") } },
 #if HAS_NEO
 { _("Sound commands..."), &do_sound_cmd },
 #endif
-{ _("Mute sfa3 announcer"), NULL, &mute_sfa3_speaker, 2, {0, 1}, { _("No"), _("Yes") } },
   { NULL },
 };
 
