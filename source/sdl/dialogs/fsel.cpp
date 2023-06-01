@@ -588,7 +588,7 @@ void TMultiFileSel::disp_menu(int n,int x,int y,int w,int h) {
       rectangleColor(rend,x,y,x+wcb,y+h-1,fg);
       if (selected[n]) {
 	  lineColor(rend,x,y,x+wcb,y+h-1,mymakecol(0,255,0));
-#if 0 // def RAINE_WIN32
+#ifdef RAINE_WIN32
 	  // Totally crazy bug in windows with sdl-2.0.20 at lest :
 	  // the color chosen for the lines here is applied as a filter to the game bitmap when returning to the game
 	  // as if using some kind of blend mode, but even calling SDL_SetBlendMode(BLEND_NONE) doesn't change anything
