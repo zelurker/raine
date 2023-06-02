@@ -2316,36 +2316,6 @@ static struct ROM_INFO rom_sgemf[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-static struct ROM_INFO rom_pfghtj[] = // clone of sgemf
-{
-  LOAD_SW16( CPU1, "pcfj.03", 0x000000, 0x80000, 0x681da43e),
-  LOAD_SW16( CPU1, "pcf.04", 0x080000, 0x80000, 0xf4314c96),
-  LOAD_SW16( CPU1, "pcf.05", 0x100000, 0x80000, 0x215655f6),
-  LOAD_SW16( CPU1, "pcf.06", 0x180000, 0x80000, 0xea6f13ea),
-  LOAD_SW16( CPU1, "pcf.07", 0x200000, 0x80000, 0x5ac6d5ea),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_sgemfa[] = // clone of sgemf
-{
-  LOAD_SW16( CPU1, "pcfa.03", 0x000000, 0x80000, 0xe17c089a),
-  LOAD_SW16( CPU1, "pcf.04", 0x080000, 0x80000, 0xf4314c96),
-  LOAD_SW16( CPU1, "pcf.05", 0x100000, 0x80000, 0x215655f6),
-  LOAD_SW16( CPU1, "pcf.06", 0x180000, 0x80000, 0xea6f13ea),
-  LOAD_SW16( CPU1, "pcf.07", 0x200000, 0x80000, 0x5ac6d5ea),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
-static struct ROM_INFO rom_sgemfh[] = // clone of sgemf
-{
-  LOAD_SW16( CPU1, "pcfh.03", 0x000000, 0x80000, 0xe9103347),
-  LOAD_SW16( CPU1, "pcf.04", 0x080000, 0x80000, 0xf4314c96),
-  LOAD_SW16( CPU1, "pcf.05", 0x100000, 0x80000, 0x215655f6),
-  LOAD_SW16( CPU1, "pcf.06", 0x180000, 0x80000, 0xea6f13ea),
-  LOAD_SW16( CPU1, "pcf.07", 0x200000, 0x80000, 0x5ac6d5ea),
-  { NULL, 0, 0, 0, 0, 0 }
-};
-
 static struct ROM_INFO rom_spf2t[] =
 {
   LOAD_SW16( CPU1, "pzfu.03a", 0x000000, 0x80000, 0x346e62ef),
@@ -3881,6 +3851,12 @@ static struct ROMSW_INFO romsw_mpangj[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_sgemf[] =
+{
+   { 0x1011, 0x02, romswd_vhunt2 },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_DATA romswd_phoenix[] =
 {
   { "Japan", 0x0},
@@ -4337,13 +4313,7 @@ CLNEI( csclubj, csclub, "Capcom Sports Club (Japan 970722)", CAPCOM, 1997, GAME_
 CLNEI( csclubh, csclub, "Capcom Sports Club (Hispanic 970722)", CAPCOM, 1997, GAME_SPORTS,
   .input = input_p2b3);
 GMEI( sgemf, "Super Gem Fighter Mini Mix (USA 970904)", CAPCOM, 1997, GAME_BEAT,
-  .input = input_p2b3);
-CLNEI( pfghtj, sgemf, "Pocket Fighter (Japan 970904)", CAPCOM, 1997, GAME_BEAT,
-  .input = input_p2b3);
-CLNEI( sgemfa, sgemf, "Super Gem Fighter: Mini Mix (Asia 970904)", CAPCOM, 1997, GAME_BEAT,
-  .input = input_p2b3);
-CLNEI( sgemfh, sgemf, "Super Gem Fighter: Mini Mix (Hispanic 970904)", CAPCOM, 1997, GAME_BEAT,
-  .input = input_p2b3);
+  .input = input_p2b3, .romsw = romsw_sgemf);
 GMEI( vhunt2, "Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)", CAPCOM, 1997, GAME_BEAT, .romsw = romsw_vhunt2);
 CLNEI( vhunt2r1, vhunt2, "Vampire Hunter 2: Darkstalkers Revenge (Japan 970913)", CAPCOM, 1997, GAME_BEAT);
 GMEI( vsav2, "Vampire Savior 2: The Lord of Vampire (Japan 970913)", CAPCOM, 1997, GAME_BEAT);
