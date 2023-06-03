@@ -540,6 +540,7 @@ void load_sample(char *filename) {
     cdda.playing = CDDA_LOAD;
     cdda.pos = 0;
     strcpy(track_to_read,filename);
+    print_debug("load_sample %s\n",filename);
 }
 #endif
 
@@ -551,7 +552,7 @@ void init_samples() {
 #if HAS_NEO
 void set_sample_pos(int pos) {
   cdda.pos = pos;
-  if (start_index && !fbin) {
+  if (start_index && !fbin && !nb_tracks) {
     // in case we restore a savegame before an audio track was started...
     fbin = fopen(neocd_path,"rb");
   }

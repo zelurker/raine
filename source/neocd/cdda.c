@@ -181,7 +181,7 @@ static int cdda_play(int track,int loop)
 #endif
 
   if (str3) {
-    print_debug("cdda play - mp3 found str:%s.\n",str);
+    print_debug("cdda play - mp3 found str:%s.\n",str3);
     if (str[0] && str[strlen(str)-1] != SLASH[0])
       strcat(str,SLASH);
     strcat(str,str3);
@@ -192,7 +192,8 @@ static int cdda_play(int track,int loop)
       cdda.loop = 0;
     get_track_index(track,&start_index, &end_index);
     if (start_index) {
-      set_sample_pos(start_index);
+      cdda.pos = start_index; // don't call set_sample_pos here
+			      // the sample is loaded in the callback, not here !
       start_index = end_index = 0;
     }
     print_debug("playing %s\n",str);
