@@ -240,7 +240,7 @@ static void handle_iso(char *start,char *cue) {
 	strcpy(&neocd_path[strlen(neocd_path)-3],ext);
     }
     if (!exists(neocd_path)) {
-	ErrorMsg(gettext("can't find ISO file"));
+	ErrorMsg(gettext("Cannot find disc image file"));
 	load_type = -1;
 	return;
     }
@@ -300,7 +300,7 @@ void init_load_type() {
 	      end = strrchr(buff,' ');
 	      if (!end) {
 		  char msg[1024];
-		  sprintf(msg,_("Serious cue format error on line %s"),orig);
+		  sprintf(msg,_("Serious CUE format error on line %s"),orig);
 		  ErrorMsg(msg);
 		  break;
 	      }
