@@ -5534,12 +5534,12 @@ msgid "Sound associations"
 msgstr "Associations sonores"
 
 #: source/sdl/dialogs/sound_commands.cpp:370
-msgid "Sound commands"
-msgstr "Commandes sonores"
+msgid "Sound associations"
+msgstr "Associations sonores"
 
 #: source/sdl/dialogs/sound_options.cpp:85
-msgid "Sound commands..."
-msgstr "Commandes sonores..."
+msgid "Sound associations..."
+msgstr "Associations sonores..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
 msgid "Sound device"

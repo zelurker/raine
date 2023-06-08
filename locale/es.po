@@ -5589,12 +5589,12 @@ msgid "Sound associations"
 msgstr "Asociacion de sonidos"
 
 #: source/sdl/dialogs/sound_commands.cpp:370
-msgid "Sound commands"
-msgstr "Comandos de sonido"
+msgid "Sound associations"
+msgstr "Asociaciones de sonido"
 
 #: source/sdl/dialogs/sound_options.cpp:85
-msgid "Sound commands..."
-msgstr "Comandos de sonido..."
+msgid "Sound associations..."
+msgstr "Asociaciones de sonido..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
 #, fuzzy

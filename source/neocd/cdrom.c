@@ -431,7 +431,7 @@ void init_load_type() {
       } // feof
       fclose(f);
       if (!iso_sector_size) {
-	ErrorMsg(gettext("Could not determine sector size from\nthe CUE file"));
+	ErrorMsg(gettext("Could not determine sector size from\nthe cue file"));
       } else {
 	if (nb_tracks) { // we MUST chdir to the cue directory in this case !
 	  char *path = strrchr(neocd_path,SLASH[0]);

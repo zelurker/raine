@@ -2464,10 +2464,10 @@ msgstr "Copyright"
 #: source/neocd/cdrom.c:434
 msgid ""
 "Could not determine sector size from\n"
-"the CUE file"
+"the cue file"
 msgstr ""
 "Não pôde determinar o tamanho do setor do\n"
-"arquivo CUE"
+"arquivo cue"
 
 #: source/sdl/dialogs/sound_options.cpp:48
 msgid ""
@@ -5754,12 +5754,12 @@ msgid "Sound associations"
 msgstr "Associações de som"
 
 #: source/sdl/dialogs/sound_commands.cpp:370
-msgid "Sound commands"
-msgstr "Comandos de som"
+msgid "Sound associatons"
+msgstr "associações sonoras"
 
 #: source/sdl/dialogs/sound_options.cpp:85
-msgid "Sound commands..."
-msgstr "Comandos de som..."
+msgid "Sound associations..."
+msgstr "Associações sonoras..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
 msgid "Sound device"

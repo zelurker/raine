@@ -367,7 +367,7 @@ int do_sound_cmd(int sel) {
     execute_z80_audio_frame(); // start the z80 if it was not already done !
     stop(0);
     command = last_song;
-    menu = new TSoundCmd(_("Sound commands"), sound_menu);
+    menu = new TSoundCmd(_("Sound associations"), sound_menu);
     menu->execute();
     delete menu;
     stop(0);
