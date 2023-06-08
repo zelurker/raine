@@ -2331,7 +2331,8 @@ void postprocess_ipl() {
      * time */
       print_debug("neocd reset params\n");
     if (neocd_video.screen_x+2*neocd_video.border_size != GameBitmap->w)
-	ScreenChange();
+	SetupScreenBitmap(); // sdl2 version difference, we must call explicitely setupscreenbitmap to regenerate GameBitmaop here instead of just ScreenChange
+
     hs_close();
     hs_open();
     hs_init();
