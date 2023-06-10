@@ -1236,6 +1236,8 @@ beg:
 		   !strcmp(dir,"sstrikerk") || !strcmp(dir,"batsugun") || !strcmp(dir,"galaga") || !strcmp(dir,"kof2000ps2"))
 	       // they have the romset for 0.91.4, so there are a few exceptions...
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
+	   else if (!strcmp(dir,"samsh5sp") || !strcmp(dir,"samsh5fe")) // these 2 are in fbneo directory
+	       snprintf(url,512,"https://archive.org/download/fbnarcade-fullnonmerged/arcade/%s.zip",dir);
 	   else
 	       // There is a raine all roms directory for 0.91.4 !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
