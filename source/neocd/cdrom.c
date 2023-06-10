@@ -240,7 +240,7 @@ static void handle_iso(char *start,char *cue) {
 	strcpy(&neocd_path[strlen(neocd_path)-3],ext);
     }
     if (!exists(neocd_path)) {
-	ErrorMsg(gettext("can't find ISO file"));
+	ErrorMsg(gettext("Cannot find disc image file"));
 	load_type = -1;
 	return;
     }

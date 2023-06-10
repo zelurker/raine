@@ -5755,11 +5755,11 @@ msgstr "Associações de som"
 
 #: source/sdl/dialogs/sound_commands.cpp:370
 msgid "Sound associatons"
-msgstr "associações sonoras"
+msgstr "Associações de som"
 
 #: source/sdl/dialogs/sound_options.cpp:85
 msgid "Sound associations..."
-msgstr "Associações sonoras..."
+msgstr "Associações de som..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
 msgid "Sound device"
@@ -6501,8 +6501,8 @@ msgid "Upright Controls"
 msgstr "Controles Verticais"
 
 #: source/sdl/dialogs/video_options.cpp:226
-msgid "Use blending files (.bld)"
-msgstr "Usar arquivos de mistura (.bld)"
+msgid "Use blending files (*.bld)"
+msgstr "Usar arquivos de mistura (*.bld)"
 
 #: source/sdl/gui/menu.cpp:156
 msgid "Use custom mouse cursor"
@@ -6867,8 +6867,8 @@ msgid "blue"
 msgstr "Azul"
 
 #: source/neocd/cdrom.c:243
-msgid "can't find ISO file"
-msgstr "Não pôde achar o arquivo iso"
+msgid "Cannot find disc image file"
+msgstr "Não pôde achar o arquivo de imagem do disco"
 
 #: source/sdl/dialogs/colors.cpp:41
 msgid "color"

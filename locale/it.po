@@ -6669,8 +6669,8 @@ msgid "Upright Controls"
 msgstr "Controlli verticali"
 
 #: source/sdl/dialogs/video_options.cpp:226
-msgid "Use blending files (.bld)"
-msgstr "Usa file per la trasparenza (Blend/.bld)"
+msgid "Use blending files (*.bld)"
+msgstr "Usa file per la trasparenza (Blend/*.bld)"
 
 #: source/sdl/gui/menu.cpp:156
 msgid "Use custom mouse cursor"
@@ -7060,8 +7060,8 @@ msgstr "blu"
 
 #: source/neocd/cdrom.c:243
 #, fuzzy
-msgid "can't find ISO file"
-msgstr "Non riesco a trovare il file ISO"
+msgid "Cannot find disc image file"
+msgstr "Non riesco a trovare il file immagine del disco"
 
 #: source/sdl/dialogs/colors.cpp:41
 msgid "color"
