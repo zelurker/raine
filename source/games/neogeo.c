@@ -3255,6 +3255,29 @@ static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
 
 CLNEI( samsh5sp, neogeo, "Samurai Shodown V Special / Samurai Spirits Zero Special (NGM-2720)", SNK_PLAYMORE, 2004, GAME_BEAT);
 
+static struct ROM_INFO rom_samsh5fe[] =
+{
+  LOAD_SW16( CPU1, "272-p1.p1", 0x000000, 0x400000, 0x9e72cc83),
+  LOAD_SW16( CPU1, "272-p2.sp2", 0x400000, 0x400000, 0x1f5469bc),
+  LOAD( FIXED, "272-s1.bin", 0, 0x020000, 0xc297f973 ),
+
+  LOAD( CPU2, "272-m1d.bin", 0x00000, 0x80000, 0x203d744e),
+  LOAD( SMP1, "272-v1d.bin", 0x000000, 0x800000, 0x28d57d10),
+  LOAD( SMP1, "272-v2d.bin", 0x800000, 0x800000, 0x95fe7646),
+
+  LOAD_16_8( SPRITES, "272-c1d.bin", 0x0000000, 0x800000, 0xec9fda8d),
+  LOAD_16_8( SPRITES, "272-c2d.bin", 0x0000001, 0x800000, 0xd2fc888d),
+  LOAD_16_8( SPRITES, "272-c3d.bin", 0x1000000, 0x800000, 0xb0ea781b),
+  LOAD_16_8( SPRITES, "272-c4d.bin", 0x1000001, 0x800000, 0xd34ac591),
+  LOAD_16_8( SPRITES, "272-c5d.bin", 0x2000000, 0x800000, 0x1b5c1ea2),
+  LOAD_16_8( SPRITES, "272-c6d.bin", 0x2000001, 0x800000, 0xdeeaad58),
+  LOAD_16_8( SPRITES, "272-c7d.bin", 0x3000000, 0x800000, 0xdce0119f),
+  LOAD_16_8( SPRITES, "272-c8d.bin", 0x3000001, 0x800000, 0x3bf256c5),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsh5fe, neogeo, "Samurai Shodown V Special Final Edition (NGM-2720 ?)", SNK_PLAYMORE, 2004, GAME_BEAT);
+
 static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
  /* AES VERSION, 2nd bugfix release */{
   LOAD_SW16( CPU1, "272-p1ca.p1", 0x000000, 0x400000, 0xc30a08dd),
