@@ -5362,13 +5362,6 @@ void execute_neocd() {
    * the idea is to detect when the hblank interrupt is needed (raster_frame)
    * and to change the handling accordingly to save cycles.
    * Not sure this thing is 100% correct */
-  // 7db0(a5) test� par futsal ???
-  // WriteWord(&RAM[0x10fe80],0xffff);
-
-  // lab_0432 = cd_test ???
-  // printf("765 %x 7656 %x\n",RAM[0x10f765^1],RAM[0x10f656^1]);
-  // printf("cd loaded %x 76b9 %x\n",RAM[0x10fec4^1],RAM[0x76b9]);
-  // RAM[0x10fd97^1] = 15;
 
     int pc;
 

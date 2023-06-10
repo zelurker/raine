@@ -5860,10 +5860,6 @@ msgid "Sound associations"
 msgstr "[ Associazioni dei suoni ]"
 
 # ----------------------------- SOUND COMMANDS -----------------------------
-#: source/sdl/dialogs/sound_commands.cpp:370
-msgid "Sound associations"
-msgstr "[ Associazioni dei suoni ]"
-
 #: source/sdl/dialogs/sound_options.cpp:85
 msgid "Sound associations..."
 msgstr "Associazioni dei suoni..."

@@ -5533,10 +5533,6 @@ msgstr "Test du son"
 msgid "Sound associations"
 msgstr "Associations sonores"
 
-#: source/sdl/dialogs/sound_commands.cpp:370
-msgid "Sound associations"
-msgstr "Associations sonores"
-
 #: source/sdl/dialogs/sound_options.cpp:85
 msgid "Sound associations..."
 msgstr "Associations sonores..."
