@@ -2425,8 +2425,8 @@ msgstr "Sin poder encontrar pista de audio %d"
 #: source/neocd/iso.c:94
 #, c-format
 #, fuzzy
-msgid "Couldn't open ISO file:|%s"
-msgstr "Sin poder abrir archivo iso:|%s"
+msgid "Couldn't open disc image file:|%s"
+msgstr "Sin poder abrir archivo de imagen de disco:|%s"
 
 #: source/games/hyperpcb.c:539 source/games/seta.c:1802
 #: source/games/seta.c:2758

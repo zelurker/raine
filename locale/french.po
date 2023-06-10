@@ -2405,8 +2405,8 @@ msgstr ""
 #: source/neocd/iso.c:94
 #, c-format
 #, fuzzy
-msgid "Couldn't open ISO file:|%s"
-msgstr ""
+msgid "Couldn't open disc image file:|%s"
+msgstr "N'a pas pu trouver le fichier image du disque:|%s"
 
 #: source/games/hyperpcb.c:539 source/games/seta.c:1802
 #: source/games/seta.c:2758

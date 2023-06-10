@@ -2534,8 +2534,8 @@ msgstr "Non riesco a trovare la traccia audio %d"
 #: source/neocd/iso.c:94
 #, c-format
 #, fuzzy
-msgid "Couldn't open ISO file:|%s"
-msgstr "Non riesco ad aprire il file ISO:|%s"
+msgid "Couldn't open disc image file:|%s"
+msgstr "Non riesco ad aprire il file immagine del disco:|%s"
 
 # Daioh, Snow Bros, Winter Bobble
 #: source/games/hyperpcb.c:539 source/games/seta.c:1802

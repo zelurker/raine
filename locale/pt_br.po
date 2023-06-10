@@ -2484,8 +2484,8 @@ msgstr "Não pôde achar a faixa de áudio %d"
 
 #: source/neocd/iso.c:94
 #, c-format
-msgid "Couldn't open ISO file:|%s"
-msgstr "Não pôde abrir o arquivo ISO:|%s"
+msgid "Couldn't open disc image file:|%s"
+msgstr "Não pôde abrir o arquivo de imagem do disco:|%s"
 
 #: source/games/seta.c:1802 source/games/seta.c:2758
 #: source/games/hyperpcb.c:539
