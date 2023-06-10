@@ -1516,7 +1516,7 @@ static struct ROMSW_DATA romsw_data_neocd[] =
   // regions with the neocdz bios, but they are read by almost all the games
   // from the neo soft dips. The only game which is an exception afaik is
   // kof95.
-  { "Portuguese (kof95, others ?)", 3 },
+  { "Brazil (KOF'95, others..?)", 3 },
   { NULL,                    0    },
 };
 
@@ -5362,7 +5362,7 @@ void execute_neocd() {
    * the idea is to detect when the hblank interrupt is needed (raster_frame)
    * and to change the handling accordingly to save cycles.
    * Not sure this thing is 100% correct */
-  // 7db0(a5) testé par futsal ???
+  // 7db0(a5) testï¿½ par futsal ???
   // WriteWord(&RAM[0x10fe80],0xffff);
 
   // lab_0432 = cd_test ???

@@ -2484,8 +2484,8 @@ msgstr "Não pôde achar a faixa de áudio %d"
 
 #: source/neocd/iso.c:94
 #, c-format
-msgid "Couldn't open ISO file:|%s"
-msgstr "Não pôde abrir o arquivo ISO:|%s"
+msgid "Couldn't open disc image file:|%s"
+msgstr "Não pôde abrir o arquivo de imagem do disco:|%s"
 
 #: source/games/seta.c:1802 source/games/seta.c:2758
 #: source/games/hyperpcb.c:539
@@ -5755,11 +5755,11 @@ msgstr "Associações de som"
 
 #: source/sdl/dialogs/sound_commands.cpp:370
 msgid "Sound associatons"
-msgstr "associações sonoras"
+msgstr "Associações de som"
 
 #: source/sdl/dialogs/sound_options.cpp:85
 msgid "Sound associations..."
-msgstr "Associações sonoras..."
+msgstr "Associações de som..."
 
 #: source/sdl/dialogs/sound_options.cpp:68
 msgid "Sound device"
@@ -6501,8 +6501,8 @@ msgid "Upright Controls"
 msgstr "Controles Verticais"
 
 #: source/sdl/dialogs/video_options.cpp:226
-msgid "Use blending files (.bld)"
-msgstr "Usar arquivos de mistura (.bld)"
+msgid "Use blending files (*.bld)"
+msgstr "Usar arquivos de mistura (*.bld)"
 
 #: source/sdl/gui/menu.cpp:156
 msgid "Use custom mouse cursor"
@@ -6867,8 +6867,8 @@ msgid "blue"
 msgstr "Azul"
 
 #: source/neocd/cdrom.c:243
-msgid "can't find ISO file"
-msgstr "Não pôde achar o arquivo iso"
+msgid "Cannot find disc image file"
+msgstr "Não pôde achar o arquivo de imagem do disco"
 
 #: source/sdl/dialogs/colors.cpp:41
 msgid "color"

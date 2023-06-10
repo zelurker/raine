@@ -2405,8 +2405,8 @@ msgstr ""
 #: source/neocd/iso.c:94
 #, c-format
 #, fuzzy
-msgid "Couldn't open ISO file:|%s"
-msgstr ""
+msgid "Couldn't open disc image file:|%s"
+msgstr "N'a pas pu trouver le fichier image du disque:|%s"
 
 #: source/games/hyperpcb.c:539 source/games/seta.c:1802
 #: source/games/seta.c:2758
@@ -6264,8 +6264,8 @@ msgid "Upright Controls"
 msgstr "Contrôles verticaux"
 
 #: source/sdl/dialogs/video_options.cpp:226
-msgid "Use blending files (.bld)"
-msgstr "Utiliser les fichiers de transparence (.bld)"
+msgid "Use blending files (*.bld)"
+msgstr "Utiliser les fichiers de transparence (*.bld)"
 
 #: source/sdl/gui/menu.cpp:156
 msgid "Use custom mouse cursor"
@@ -6629,8 +6629,8 @@ msgid "blue"
 msgstr "bleu"
 
 #: source/neocd/cdrom.c:243
-msgid "can't find ISO file"
-msgstr "Ne peut pas trouver le fichier ISO"
+msgid "Cannot find disc image file"
+msgstr "Ne peut pas trouver le fichier image du disque"
 
 #: source/sdl/dialogs/colors.cpp:41
 msgid "color"
