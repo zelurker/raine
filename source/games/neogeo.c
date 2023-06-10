@@ -3276,7 +3276,27 @@ static struct ROM_INFO rom_samsh5fe[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsh5fe, neogeo, "Samurai Shodown V Special Final Edition (NGM-2720 ?)", SNK_PLAYMORE, 2004, GAME_BEAT);
+CLNEI( samsh5fe, neogeo, "Samurai Shodown V Special Final Edition (NGM-2720)", SNK_PLAYMORE, 2004, GAME_BEAT);
+
+static struct ROM_INFO rom_samsh5pf[] =
+{
+  LOAD_SW16( CPU1, "273-p1.bin", 0x000000, 0x800000, 0xe3d18d3a),
+  LOAD( FIXED, "273-s1.bin", 0, 0x020000, 0xabb3baf9 ),
+
+  LOAD( CPU2, "273-m1d.bin", 0x00000, 0x20000, 0x654e9236),
+
+  LOAD_16_8( SPRITES, "273-c1d.bin", 0x0000000, 0x800000, 0xec9fda8d),
+  LOAD_16_8( SPRITES, "273-c2d.bin", 0x0000001, 0x800000, 0xd2fc888d),
+  LOAD_16_8( SPRITES, "273-c3d.bin", 0x1000000, 0x800000, 0xb0ea781b),
+  LOAD_16_8( SPRITES, "273-c4d.bin", 0x1000001, 0x800000, 0xd34ac591),
+  LOAD_16_8( SPRITES, "273-c5d.bin", 0x2000000, 0x800000, 0x1b5c1ea2),
+  LOAD_16_8( SPRITES, "273-c6d.bin", 0x2000001, 0x800000, 0xdeeaad58),
+  LOAD_16_8( SPRITES, "273-c7d.bin", 0x3000000, 0x800000, 0xaf90afc8),
+  LOAD_16_8( SPRITES, "273-c8d.bin", 0x3000001, 0x800000, 0xb14872da),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( samsh5pf, samsh5fe, "Samurai Shodown V Perfect (NGM-2730)", BOOTLEG, 2020, GAME_BEAT);
 
 static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
  /* AES VERSION, 2nd bugfix release */{

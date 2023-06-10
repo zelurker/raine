@@ -968,6 +968,7 @@
   DRV(kof2003h)
   DRV(samsh5sp)
   DRV(samsh5fe)
+  DRV(samsh5pf)
   DRV(samsh5sph)
   DRV(lans2004)
   DRV(diggerma)
