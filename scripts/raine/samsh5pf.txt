@@ -1,0 +1,220 @@
+script "Cheats from special edition, should be compatible"
+script "Infinite Time"
+run:
+    poke $10836B $3C
+script "Finish this Round Now!" \
+ "comm:Disable Infinite Time before activating this cheat"
+on:
+    poke $10836B $00
+script "Select Starting Stage" \
+ "comm:Only by killing Mizuki will you see the true ending. 06 = Amakusa, 07 = Zankuro, 08 = Gaoh, 09 = Mizuki" \
+ inter=1,10,1
+run:
+    if (peek($10836C)==$00)
+      poke $10836C (param-$1)
+    endif
+script "Select Background" \
+ "0x00000000/Dock (Late Evening)"\
+ "0x00010001/Dock (Night)"\
+ "0x00020002/Bridge (With People)"\
+ "0x00030003/Bridge (With a Dog)"\
+ "0x00040004/In the Temple"\
+ "0x00050005/In the Temple (Night)"\
+ "0x00080008/Obama"\
+ "0x00090009/#Dohsaki (Zankuro)"\
+ "0x000A000A/#Kusenbutake (Amakusa)"\
+ "0x000B000B/Yoshitora House"\
+ "0x000C000C/Mountains"\
+ "0x000D000D/Mina Temple (Night)"\
+ "0x000E000E/The Graveyard"\
+ "0x00120012/#After the War (Gaoh)"\
+ "0x00130013/#Evil Mizuki Temple"
+run:
+    lpoke $108B4C param
+script " "
+script "P1 Infinite Energy"
+run:
+    poke $108445 $7D
+script "P1 Drain All Energy Now!"
+on:
+    poke $108445 $00
+script "P1 Always have Maximum Power"
+run:
+    poke $10844E $40
+script "P1 Always have Minimum Power"
+run:
+    poke $10844E $00
+script "P1 Always have Maximum Sword Power"
+run:
+    poke $1085F8 $78
+script "P1 Always have Minimum Sword Power"
+run:
+    poke $1085F8 $00
+script "P1 Blue Energy Gauge Length"
+run:
+    poke $1085FE $7C
+script "P1 Longer Sword Power Gauge"
+run:
+    poke $108554 $82
+script "P1 Select Character" \
+ "comm:Character Names will need checking/correcting...anybody?" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo"\
+ "0x04/Galford"\
+ "0x05/Senryu Kyoshiro"\
+ "0x06/Ukyo"\
+ "0x07/Genjuro"\
+ "0x08/Basara"\
+ "0x09/Shizumaru"\
+ "0x0A/Gaira"\
+ "0x0B/Amakusa Shirou *"\
+ "0x0C/Jubei"\
+ "0x0D/Sankuro *"\
+ "0x0E/Charlotte"\
+ "0x0F/Tam Tam"\
+ "0x10/Kazuki"\
+ "0x11/Sogetsu"\
+ "0x12/Rasetsumaru"\
+ "0x13/Rera"\
+ "0x14/Enja"\
+ "0x15/Suija"\
+ "0x16/Yoshitora"\
+ "0x17/Yunfei"\
+ "0x18/Mina"\
+ "0x19/Kusare-Gedou"\
+ "0x1A/Gaoh Kyougoku *"\
+ "0x1B/Mizuki *"
+run:
+    poke $108322 param
+script " "
+script "P2 Infinite Energy"
+run:
+    poke $108655 $7D
+script "P2 Drain All Energy Now!"
+on:
+    poke $108655 $00
+script "P2 Always have Maximum Power"
+run:
+    poke $10865E $40
+script "P2 Always have Minimum Power"
+run:
+    poke $10865E $00
+script "P2 Always have Maximum Sword Power"
+run:
+    poke $108808 $78
+script "P2 Always have Minimum Sword Power"
+run:
+    poke $108808 $00
+script "P2 Blue Energy Gauge Length"
+run:
+    poke $10880E $7C
+script "P2 Longer Sword Power Gauge"
+run:
+    poke $108764 $82
+script "P2 Select Character" \
+ "comm:Character Names will need checking/correcting...anybody?" \
+ "0x00/Haohmaru"\
+ "0x01/Nakoruru"\
+ "0x02/Rimururu"\
+ "0x03/Hanzo"\
+ "0x04/Galford"\
+ "0x05/Senryu Kyoshiro"\
+ "0x06/Ukyo"\
+ "0x07/Genjuro"\
+ "0x08/Basara"\
+ "0x09/Shizumaru"\
+ "0x0A/Gaira"\
+ "0x0B/Amakusa Shirou *"\
+ "0x0C/Jubei"\
+ "0x0D/Sankuro *"\
+ "0x0E/Charlotte"\
+ "0x0F/Tam Tam"\
+ "0x10/Kazuki"\
+ "0x11/Sogetsu"\
+ "0x12/Rasetsumaru"\
+ "0x13/Rera"\
+ "0x14/Enja"\
+ "0x15/Suija"\
+ "0x16/Yoshitora"\
+ "0x17/Yunfei"\
+ "0x18/Mina"\
+ "0x19/Kusare-Gedou"\
+ "0x1A/Gaoh Kyougoku *"\
+ "0x1B/Mizuki *"
+run:
+    poke $108323 param
+script " "
+script "Hide Background" \
+ "comm:Activate before match start"
+on:
+    temp0=dpeek($004896)
+    dpoke $004896 $4E71
+    temp1=dpeek($0048A2)
+    dpoke $0048A2 $4E71
+    temp2=lpeek($0048A8)
+    lpoke $0048A8 $4E714E71
+    temp3=lpeek($028A3A)
+    lpoke $028A3A $60464E71
+run:
+    if dpeek($1080C4)==$B
+      dpoke $108314 $0000
+      poke $10921B $02
+      lpoke $109222 $8F8F8F8F
+    endif
+off:
+    dpoke $004896 temp0
+    dpoke $0048A2 temp1
+    lpoke $0048A8 temp2
+    lpoke $028A3A temp3
+script "No Background Music"
+run:
+    cpu audio
+    poke $FD89 $00
+    cpu main
+script "Select Cartridge/NeoGeo Type" \
+ "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
+ "0x80/Arcade (MVS)"\
+ "0x00/Home (NEOGEO)"
+run:
+    poke $10FD82 param
+script "Skip RAM/ROM Checks" \
+ "comm:Also allows a quicker start-up without the green screens."
+on:
+    temp0=lpeek($C1315C)
+    temp1=lpeek($C1314E)
+    temp2=lpeek($C131E8)
+    temp3=lpeek($C13184)
+    temp4=lpeek($C1212E)
+    temp5=lpeek($C134FA)
+run:
+    if (lpeek($C1315C)==$51CFFFF2)
+      lpoke $C1315C $6000EB08
+    endif
+    if (lpeek($C1314E)==$51CFFFF2)
+      lpoke $C1314E $6000EB16
+    endif
+    if (lpeek($C131E8)==$51CFFFF2)
+      lpoke $C131E8 $6000EA52
+    endif
+    if (lpeek($C13184)==$51CFFFF2)
+      lpoke $C13184 $6000EAB6
+    endif
+    if (lpeek($C1212E)==$51CFFFF2)
+      lpoke $C1212E $6000EB36
+    endif
+    if (lpeek($C134FA)==$51CFFFF2)
+      lpoke $C134FA $6000E892
+    endif
+off:
+    lpoke $C1315C temp0
+    lpoke $C1314E temp1
+    lpoke $C131E8 temp2
+    lpoke $C13184 temp3
+    lpoke $C1212E temp4
+    lpoke $C134FA temp5
+script "Infinite Credits" \
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
+run:
+    poke $D00034 $99
