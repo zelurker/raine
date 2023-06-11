@@ -3426,8 +3426,8 @@ msgid "Game Type"
 msgstr ""
 
 #: source/sdl/gui.cpp:516
-msgid "Game command list"
-msgstr "Montrer les infos command.dat"
+msgid "Game commands list"
+msgstr "Liste des commandes de jeu"
 
 #: source/demos.c:316
 msgid "Game does not support Loading."

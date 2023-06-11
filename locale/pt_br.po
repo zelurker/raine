@@ -3537,7 +3537,7 @@ msgid "Game cheats"
 msgstr "Trapaças do jogo"
 
 #: source/sdl/gui.cpp:525
-msgid "Game command list"
+msgid "Game commands list"
 msgstr "Lista de comandos do jogo"
 
 #: source/demos.c:316
