@@ -5180,7 +5180,7 @@ msgstr "Remettre les FPS à la valeur par défaut"
 msgid "Reset game"
 msgstr "Reset du jeu"
 
-#: source/sdl/dialogs/game_options.cpp:233
+#: source/sdl/dialogs/game_options.cpp:235
 msgid "Reset game hardware"
 msgstr "Reset matériel"
 
@@ -5337,7 +5337,7 @@ msgid "Save per game screen settings"
 msgstr "Chaque jeu a ses paramètres vidéo"
 
 #: source/sdl/dialogs/game_options.cpp:193
-#: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:681
+#: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
 msgid "Save state"
 msgstr "Sauver le jeu"
 

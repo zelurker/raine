@@ -5391,7 +5391,7 @@ msgstr "Resetar os FPS pro valor padrão do driver"
 msgid "Reset game"
 msgstr "Resetar jogo"
 
-#: source/sdl/dialogs/game_options.cpp:233
+#: source/sdl/dialogs/game_options.cpp:235
 msgid "Reset game hardware"
 msgstr "Resetar o hardware do jogo"
 
@@ -5548,7 +5548,7 @@ msgid "Save per game screen settings"
 msgstr "Salvar as configurações da tela por jogo"
 
 #: source/sdl/dialogs/game_options.cpp:193
-#: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:681
+#: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
 msgid "Save state"
 msgstr "Save state"
 
