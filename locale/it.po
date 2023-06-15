@@ -5476,7 +5476,7 @@ msgid "Reset game"
 msgstr "Riavvia gioco"
 
 # ------------------------------ GAME OPTIONS ------------------------------
-#: source/sdl/dialogs/game_options.cpp:233
+#: source/sdl/dialogs/game_options.cpp:235
 msgid "Reset game hardware"
 msgstr "Riavvia l'hardware del gioco"
 
@@ -5646,7 +5646,7 @@ msgid "Save per game screen settings"
 msgstr "Salva impostaz. video per ogni gioco"
 
 #: source/sdl/dialogs/game_options.cpp:193
-#: source/sdl/dialogs/game_options.cpp:235 source/sdl/control.c:681
+#: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
 msgid "Save state"
 msgstr "Salva gioco"
 
