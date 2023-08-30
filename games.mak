@@ -158,6 +158,7 @@ OBJS += \
 	$(OBJDIR)/games/tc101scn.o \
 	$(OBJDIR)/games/tc004vcu.o \
 	$(OBJDIR)/games/gun.o \
+	$(OBJDIR)/games/psikyosh.o
 
 OBJS += \
 	$(SC000) \

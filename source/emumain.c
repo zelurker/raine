@@ -609,6 +609,7 @@ void reset_game_hardware(void)
 #ifdef GENS_SH2
    if (sh2Engine) {
        SH2_Reset(&M_SH2,0);
+       print_ingame(120,gettext("CPU SH2 Reset"));
    }
 #endif
 

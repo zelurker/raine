@@ -43,6 +43,9 @@
 #include "history.h"
 #include "leds.h"
 #include "ips.h"
+#if GENS_SH2
+#include "sh2.h"
+#endif
 
 void LoadDefault(void)
 {

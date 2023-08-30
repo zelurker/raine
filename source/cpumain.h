@@ -43,6 +43,10 @@ high nibble is for cpu type
 #define CPU_M6502_1          (0x41)
 #define CPU_M6502_2          (0x42)
 
+#if GENS_SH2
+#define CPU_SH2		     (0x50)
+#endif
+
 /*
 
 initialize - call before using anything else in this file

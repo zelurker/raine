@@ -17,7 +17,7 @@
 VERSION = "0.95.5e"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -47,7 +47,7 @@ USE_CURL = 1
 # MAME_6502 = 1
 
 # use gens sh2
-# GENS_SH2 = 1
+GENS_SH2 = 1
 
 # For osx : use frameworks or brew shared libs ?
 # Actually frameworks are a convenience for end users, to build them use

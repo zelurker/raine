@@ -21,6 +21,9 @@
 #include "curl.h"
 #endif
 #include "ips.h"
+#if GENS_SH2
+#include "sh2.h"
+#endif
 
 #undef _
 #define _(string) gettext(string)

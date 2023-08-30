@@ -769,3 +769,56 @@ WRITE_HANDLER( YMF278B_data_port_1_C_w )
 {
 	ymf278b_data_port_C_w(1, data);
 }
+
+READ_HANDLER( ymf278b_0_r )
+{
+	YMF278BChip *chip = &YMF278B[0];
+
+	switch (offset)
+	{
+		case 0:
+			return chip->current_irq | (chip->irq_line == ASSERT_LINE ? 0x80 : 0x00);
+
+		default:
+			logerror("unexpected write at offset %X to ymf278b\n", offset);
+			break;
+	}
+	return 0xff;
+}
+
+WRITE_HANDLER( ymf278b_0_w )
+{
+	YMF278BChip *chip = &YMF278B[0];
+
+	switch (offset)
+	{
+		case 0:
+			chip->port_A = data;
+			break;
+
+		case 1:
+			ymf278b_A_w(0, chip->port_A, data);
+			break;
+
+		case 2:
+			chip->port_B = data;
+			break;
+
+		case 3:
+			ymf278b_B_w(0, chip->port_B, data);
+			break;
+
+		case 4:
+			chip->port_C = data;
+			break;
+
+		case 5:
+			ymf278b_C_w(0, chip->port_C, data);
+			break;
+
+		default:
+			logerror("unexpected write at offset %X to ymf278b = %02X\n", offset, data);
+			break;
+	}
+}
+

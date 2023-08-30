@@ -38,6 +38,9 @@ WRITE_HANDLER( YMF278B_data_port_1_B_w );
 WRITE_HANDLER( YMF278B_control_port_1_C_w );
 WRITE_HANDLER( YMF278B_data_port_1_C_w );
 
+READ_HANDLER( ymf278b_0_r );
+WRITE_HANDLER( ymf278b_0_w );
+
 #endif
 
 #ifdef __cplusplus
