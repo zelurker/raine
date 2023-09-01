@@ -4179,3 +4179,12 @@ wgp:
 zerozone:
 @:maincpu,program,c17cd,77,53,00
 @:maincpu,program,c23da,6,00,00
+
+;@s:psikyosh.cpp
+
+;(gunbird 2) (by Paul Priest)
+gunbird2:
+gunbird2a:
+@:maincpu,program,604c758,28,00,70
+@:maincpu,program,604c780,3c,1e,00
+
