@@ -53,7 +53,7 @@ static struct ROMSW_DATA romsw_data_gunbird2_1[] =
 
 static struct ROMSW_INFO romsw_gunbird2[] =
 {
-  { 0x4, 0x2, romsw_data_gunbird2_1 },
+  { 0x7, 0x2, romsw_data_gunbird2_1 },
   { 0, 0, NULL }
 };
 
@@ -99,7 +99,7 @@ static struct INPUT_INFO input_gunbird2[] =
 
 static void irq_handler(int irq) {
     if (irq)
-	cpu_interrupt(CPU_SH2,12);
+	cpu_interrupt(CPU_SH2_0,12);
     printf("irq_handler %d\n",irq);
 }
 
@@ -207,11 +207,11 @@ static u8 FASTCALL read_videob(u32 offset) {
         return ram_spr[offset];
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	return ram_pal[offset & 0xffff];
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	return ram_zoom[offset & 0x1ff];
-    else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
+    else if (offset >= 0x5ffdc && offset <= 0x5ffdf)
 	return 0; // irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ram_video[offset & 0x1f];
 
     return 0xff;
@@ -223,11 +223,11 @@ static u16 FASTCALL read_videow(u32 offset) {
         return ReadWord68k(&ram_spr[offset]);
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	return ReadWord68k(&ram_pal[offset & 0xffff]);
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	return ReadWord68k(&ram_zoom[offset & 0x1ff]);
-    else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
+    else if (offset >= 0x5ffdc && offset <= 0x5ffdf)
 	return 0; // irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ReadWord68k(&ram_video[offset & 0x1f]);
 
     return 0xffff;
@@ -239,11 +239,11 @@ static u32 FASTCALL read_videol(u32 offset) {
         return ReadLong68k(&ram_spr[offset]);
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	return ReadLong68k(&ram_pal[offset & 0xffff]);
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	return ReadLong68k(&ram_zoom[offset & 0x1ff]);
-    else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
+    else if (offset >= 0x5ffdc && offset <= 0x5ffdf)
 	return 0; // irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ReadLong68k(&ram_video[offset & 0x1f]);
 
     return 0xffffffff;
@@ -255,11 +255,11 @@ static void FASTCALL write_videob(u32 offset,u8 data) {
         ram_spr[offset] = data;
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	ram_pal[offset & 0xffff] = data;
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	ram_zoom[offset & 0x1ff] = data;
 //    else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
 	// irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	ram_video[offset & 0x1f] = data;
 }
 
@@ -269,11 +269,11 @@ static void FASTCALL write_videow(u32 offset,u16 data) {
         WriteWord68k(&ram_spr[offset],data);
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	WriteWord68k(&ram_pal[offset & 0xffff],data);
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteWord68k(&ram_zoom[offset & 0x1ff],data);
     // else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
 	// irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	WriteWord68k(&ram_video[offset & 0x1f],data);
 }
 
@@ -283,29 +283,32 @@ static void FASTCALL write_videol(u32 offset,u32 data) {
         WriteLong68k(&ram_spr[offset],data);
     else if (offset >= 0x40000 && offset <= 0x44fff)
 	WriteLong68k(&ram_pal[offset & 0xffff],data);
-    else if (offset >= 0x4050000 && offset <= 0x40501ff)
+    else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteLong68k(&ram_zoom[offset & 0x1ff],data);
     // else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
 	// irq related
-    else if (offset >= 0x405ffe0 && offset <= 0x405ffff)
+    else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	WriteLong68k(&ram_video[offset & 0x1f],data);
 }
 
-FASTCALL static u8 read_inputs_soundb(u32 offset) {
+static u8 FASTCALL read_inputs_soundb(u32 offset) {
     offset &= 0xffffff;
     if (offset == 4) // special case here, 2 lowest bits = region, 0x10 = eeprom bit
 	return (input_buffer[7] & 3) | ((EEPROM_read_bit() & 0x01) << 4);
-    else if (offset < 7)
+    else if (offset < 7) {
+	printf("read port %d\n",offset);
 	return input_buffer[offset];
-    else if (offset == 0x100000) {
+    } else if (offset == 0x100000) {
 	int status = YMF278B_status_port_0_r(0);
 	printf("sound status %x\n",status);
 	return status;
-    } else
+    } else {
+	printf("read unknown port %x\n",offset);
 	return 0xff;
+    }
 }
 
-FASTCALL static void write_sound(u32 offset,u8 data) {
+static void FASTCALL write_sound(u32 offset,u8 data) {
     offset &= 0x7ffffff;
     printf("write_sound %x,%x\n",offset,data);
     if (offset >= 0x3100000 && offset <= 0x3100007)
@@ -331,6 +334,7 @@ static void load_gunbird2() {
 	0x5000 + // palette 0x4040000
 	0xc000 + // bg rama   0x4004000
 	0x4000; // sprite ram 0x4000000
+    // ROM & RAM are supposed to be dword aligned, that is aligned on 4 bytes boundaries then, but it's been like that with malloc for ages, it's even 64 bits aligned for x64... !
     if (!(RAM = AllocateMem(RAMSize))) return;
     ram_video = &RAM[0x100000];
     ram_zoom = &ram_video[0x20];
@@ -346,6 +350,7 @@ static void load_gunbird2() {
 								//
     SH2_Add_Fetch(&M_SH2, 0x00000000, 0x00000000, (UINT16 *) -1);
 
+    // All the memory maps addresses except Fetch are >>24, so only the high byte here, which a big potential source of errors !
     SH2_Add_ReadB(&M_SH2,0, 0, read_romb);
     SH2_Add_ReadW(&M_SH2,0, 0, read_romw);
     SH2_Add_ReadL(&M_SH2,0, 0, read_roml);
@@ -375,8 +380,8 @@ static void load_gunbird2() {
 }
 
 static void execute_gunbird2() {
-    cpu_execute_cycles(CPU_SH2,MASTER_CLOCK/2/60);
-    cpu_interrupt(CPU_SH2,4); // vbl
+    cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
+    cpu_interrupt(CPU_SH2_0,4); // vbl
 }
 
 static void draw_gunbird2() {

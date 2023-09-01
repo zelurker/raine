@@ -96,6 +96,9 @@
 #ifdef HAVE_6502
 #include "m6502hlp.h"
 #endif
+#if GENS_SH2
+#include "sh2.h"
+#endif
 
 /*
 
@@ -774,6 +777,10 @@ UINT8 gen_cpu_read_byte(UINT32 address)
    if (M6502Engine>=1)
      return M6502ReadByte(address);
 #endif
+#if GENS_SH2
+   if (sh2Engine)
+       return SH2_Read_Byte(&M_SH2,address);
+#endif
   return 0; // stupid warning
 }
 
@@ -806,6 +813,10 @@ void gen_cpu_write_byte(UINT32 address, UINT8 data)
 #ifdef HAVE_6502
   else if (M6502Engine >= 1)
     M6502WriteByte(address,data);
+#endif
+#if GENS_SH2
+  else if (sh2Engine)
+       SH2_Write_Byte(&M_SH2,address,data);
 #endif
 }
 

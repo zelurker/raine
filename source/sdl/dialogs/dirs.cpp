@@ -20,6 +20,13 @@ static int do_m68kdis(int sel) {
   return 0;
 }
 
+static int do_sh2d(int sel) {
+  char *exts[] = { "sh2d", NULL };
+  fsel(dir_cfg.share_path,exts,dir_cfg.sh2d,"Find sh2d command");
+  strcpy(menu[sel].values_list_label[0], dir_cfg.sh2d);
+  return 0;
+}
+
 static int do_dz80(int sel) {
   char *exts[] = { "dz80", NULL };
   fsel(dir_cfg.share_path,exts,dir_cfg.dz80,"Find dz80 command");
@@ -35,7 +42,7 @@ static int do_d6502(int sel) {
 }
 
 int do_dirs(int sel) {
-  int nb = 6;
+  int nb = 7;
   int bidon = 1;
   int n;
   menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+2));
@@ -58,6 +65,9 @@ int do_dirs(int sel) {
   menu[5].label = _("d6502 (console)");
   menu[5].values_list_label[0] = dir_cfg.d6502;
 
+  menu[6].label = _("sh2d (console)");
+  menu[6].values_list_label[0] = dir_cfg.sh2d;
+
   for (n=0; n< nb; n++) {
     menu[n].value_int = &bidon;
     menu[n].values_list_size = 1;
@@ -67,6 +77,7 @@ int do_dirs(int sel) {
   menu[3].menu_func = &do_m68kdis;
   menu[4].menu_func = &do_dz80;
   menu[5].menu_func = &do_d6502;
+  menu[6].menu_func = &do_sh2d;
 
   TMenu *mbox = new TMenu("",menu);
   mbox->execute();

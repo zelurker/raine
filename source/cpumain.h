@@ -26,7 +26,9 @@ high nibble is for cpu type
 	    CPU_68000 = 1,
 	    CPU_Z80,
 	    CPU_68020,
-	    CPU_6502};
+	    CPU_6502,
+	    CPU_SH2
+    };
 
 #define CPU_68K_0            (0x10)
 #define CPU_68K_1            (0x11)
@@ -44,7 +46,7 @@ high nibble is for cpu type
 #define CPU_M6502_2          (0x42)
 
 #if GENS_SH2
-#define CPU_SH2		     (0x50)
+#define CPU_SH2_0	     (0x50)
 #endif
 
 /*

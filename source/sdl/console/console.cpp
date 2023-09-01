@@ -18,6 +18,11 @@
 #include "68020/u020help.h"
 #include "neocd/cache.h"
 #include "arpro.h"
+#if GENS_SH2
+extern "C" {
+#include "sh2.h"
+}
+#endif
 
 extern "C" int get_console_key(); // control.c
 static int cpu_id;
@@ -59,6 +64,10 @@ static void init_cpuid() {
        if (!Z80_context[0].z80Base)
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
    }
+#endif
+#if GENS_SH2
+       else if (sh2Engine)
+	   cpu_id = CPU_SH2_0;
 #endif
   switch_cpu(cpu_id);
 }
@@ -599,6 +608,16 @@ void do_regs(int argc, char **argv) {
       }
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000_sr,
 	      s68000_pc);
+      break;
+  case CPU_SH2:
+      for (int n=0; n<16; n++) {
+	  sprintf(buf+strlen(buf),"\E[36mR%d:\E[0m%08x ",n,M_SH2.R[n]);
+	  if (n==3 || n==7 || n==11 || n==15) {
+	      cons->print(buf);
+	      *buf = 0;
+	  }
+      }
+      cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",SH2_Get_SR(&M_SH2),SH2_Get_PC(&M_SH2));
       break;
   case CPU_Z80:
       cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"
@@ -1321,7 +1340,7 @@ static void do_search(int argc, char **argv) {
 static void do_cpu(int argc, char **argv) {
     char buff[80];
     sprintf(buff,"active cpu : ");
-    int has_68020=0, has_68k=0,has_z80=0,has_6502=0;
+    int has_68020=0, has_68k=0,has_z80=0,has_6502=0,has_sh2=0;
 #ifndef NO020
   if (MC68020) {
       strcat(buff,"68020 ");
@@ -1356,6 +1375,12 @@ static void do_cpu(int argc, char **argv) {
        }
    }
 #endif
+#if GENS_SH2
+   if (sh2Engine) {
+       strcat(buff,"sh2 ");
+       has_sh2 = 1;
+   }
+#endif
    cons->print(buff);
    if (argc > 1) {
        int old = cpu_id,nb;
@@ -1372,9 +1397,12 @@ static void do_cpu(int argc, char **argv) {
        else if (!strncmp(argv[1],"6502",4) &&
 	       (has_6502 & (1<<(nb = argv[1][4] - 'a'))))
 	   cpu_id = CPU_M6502_0 + nb;
+       else if (!strcmp(argv[1],"sh2") && has_sh2)
+	   cpu_id = CPU_SH2;
        else if (!strcmp(argv[1],"main")) {
 	   // try to guess the main cpu then...
 	   if (has_68020) cpu_id = CPU_M68020_0;
+	   else if (has_sh2) cpu_id = CPU_SH2;
 	   else if (has_68k) cpu_id = CPU_68K_0;
 	   else if (has_z80 & 1) cpu_id = CPU_Z80_0;
 	   else if (has_z80 & 2) cpu_id = CPU_Z80_1;
@@ -1500,10 +1528,11 @@ static int lastw,lasth;
 char *get_cpu_name_from_cpu_id(int cpu_id) {
     static char buff[10];
     switch (cpu_id >> 4) {
-    case 1:
+    case CPU_68000:
 	sprintf(buff,"68000"); break;
-    case 2: sprintf(buff,"Z80"); break;
-    case 3: sprintf(buff,"68020"); break;
+    case CPU_Z80: sprintf(buff,"Z80"); break;
+    case CPU_68020: sprintf(buff,"68020"); break;
+    case CPU_SH2: sprintf(buff,"sh2"); break;
     default:
 	    cons->print("unknown cpu");
 	    cpu_id = 0;

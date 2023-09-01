@@ -774,7 +774,7 @@ READ_HANDLER( ymf278b_0_r )
 {
 	YMF278BChip *chip = &YMF278B[0];
 
-	switch (offset)
+	switch (offset & 7)
 	{
 		case 0:
 			return chip->current_irq | (chip->irq_line == ASSERT_LINE ? 0x80 : 0x00);
@@ -790,7 +790,7 @@ WRITE_HANDLER( ymf278b_0_w )
 {
 	YMF278BChip *chip = &YMF278B[0];
 
-	switch (offset)
+	switch (offset&7)
 	{
 		case 0:
 			chip->port_A = data;

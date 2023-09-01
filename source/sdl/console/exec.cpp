@@ -486,6 +486,9 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   case CPU_6502:
       snprintf(cmd,1024,"%s \"%s\" > prg.6502",dir_cfg.d6502,name);
       break;
+  case CPU_SH2:
+      snprintf(cmd,1024,"%s -o %x  \"%s\" > \"%s\"",dir_cfg.sh2d,start,name,name2);
+      break;
   }
   save_file(name,&ptr[start],end-start);
   if (cpu_id == 1)
@@ -521,6 +524,12 @@ static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
   while (!feof(g)) {
     char buf[256];
     myfgets(buf,256,g);
+    if (cpu_id == CPU_SH2) {
+	if (!strncmp(buf,"0x",2))
+	    memmove(buf,&buf[2],strlen(buf)-1);
+	if (buf[8] == ':')
+	    memmove(&buf[8],&buf[9],strlen(buf)-8);
+    }
     fprintf(f,"%s\n",buf);
   }
   fclose(f);
@@ -545,6 +554,9 @@ static void get_asm_file(char *str, UINT32 target = cpu_get_pc(get_cpu_id())) {
   case CPU_68020:
       sprintf(str,"%s/prg020_%02x.s",get_shared("debug"),target/0x10000);
       break;
+  case CPU_SH2:
+      sprintf(str,"%s/prgsh2_%02x.s",get_shared("debug"),target/0x10000);
+      break;
   }
 }
 
@@ -557,14 +569,16 @@ static FILE *open_asm(UINT32 target) {
   UINT8 *ptr = get_code_range(cpu_id,target,&start,&end);
   if (!ptr)
     throw "no code for this address";
-  int min = target/0x10000*0x10000-0x100;
-  if (min < 0) min = 0;
-  UINT32 max = target/0x10000*0x10000+0x10000+0x100;
-  if (max > 0xffffff) max = 0xffffff;
-  if (start < (UINT32)min)
-    start = min;
-  if (end > max)
-    end = max;
+  if ((cpu_id>>4) != CPU_SH2) {
+      int min = target/0x10000*0x10000-0x100;
+      if (min < 0) min = 0;
+      UINT32 max = target/0x10000*0x10000+0x10000+0x100;
+      if (max > 0xffffff && (cpu_id>>4) == CPU_68000) max = 0xffffff;
+      if (start < (UINT32)min)
+	  start = min;
+      if (end > max)
+	  end = max;
+  }
   int crc = 0;
   UINT32 n;
   char checksum[80];

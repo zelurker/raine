@@ -14,6 +14,11 @@
 #include <openssl/rand.h>
 #include "scripts.h"
 #include "profile.h"
+#if GENS_SH2
+extern "C" {
+#include "sh2.h"
+}
+#endif
 
 using namespace mu;
 static value_type mod(value_type v1, value_type v2) { return v1%v2; }
@@ -26,7 +31,7 @@ static value_type land(value_type v1, value_type v2) { return (v1) && (v2); }
 static value_type Not(value_type v1) { return ~v1; }
 static value_type LogNot(value_type v1) { return !v1; }
 
-MUP_BASETYPE sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff;
+MUP_BASETYPE sr, pc, a[8], d[8],za,zb,zc,zde,zf,zhl,iff,r[16];
 MUP_BASETYPE script_param;
 static std::vector<MUP_BASETYPE> vec;
 
@@ -105,7 +110,7 @@ value_type lpeek(value_type fadr) {
 void get_regs(int cpu) {
     int num;
     switch (cpu >> 4) {
-    case 1: // 68k
+    case CPU_68000:
 	for (int n=0; n<8; n++) {
 	    a[n] = (long)s68000_areg[n];
 	    d[n] = (long)s68000_dreg[n];
@@ -113,7 +118,7 @@ void get_regs(int cpu) {
 	sr = s68000_sr;
 	pc = s68000_pc;
 	break;
-    case 2:
+    case CPU_Z80:
 	num = cpu & 0xf;
 	switch_cpu(cpu+1);
 	switch_cpu(cpu);
@@ -132,7 +137,7 @@ void get_regs(int cpu) {
 #endif
 	break;
 #ifndef NO020
-    case 3: // 68020
+    case CPU_68020: // 68020
 #ifdef USE_MUSASHI
 	for (int n=0; n<8; n++) {
 	    a[n] = m68k_get_reg(NULL,(m68k_register_t)(M68K_REG_A0+n));
@@ -150,13 +155,19 @@ void get_regs(int cpu) {
 #endif
 	break;
 #endif
+    case CPU_SH2:
+	for (int n=0; n<16; n++)
+	    r[n] = SH2_Get_R(&M_SH2,n);
+	sr = SH2_Get_SR(&M_SH2);
+	pc = SH2_Get_PC(&M_SH2);
+	break;
     }
 }
 
 void set_regs(int cpu) {
     int num = cpu & 0xf;
     switch (cpu >> 4) {
-    case 1:
+    case CPU_68000:
 	for (int n=0; n<8; n++) {
 	    s68000_areg[n] = a[n];
 	    s68000_dreg[n] = d[n];
@@ -169,7 +180,7 @@ void set_regs(int cpu) {
 	s68000_pc = pc;
 	s68000GetContext(&M68000_context[num]);
 	break;
-    case 2:
+    case CPU_Z80:
 	Z80_context[num].z80af = (int(za)<<8)|int(zf);
 	Z80_context[num].z80bc = (int(zb)<<8)|int(zc);
 	Z80_context[num].z80de = int(zde);
@@ -185,7 +196,7 @@ void set_regs(int cpu) {
 	mz80SetContext(&Z80_context[num]);
 	break;
 #ifndef NO020
-    case 3:
+    case CPU_68020:
 #ifdef USE_MUSASHI
 	for (int n=0; n<8; n++) {
 	    m68k_set_reg((m68k_register_t)(M68K_REG_A0+n), a[n]);
@@ -201,6 +212,14 @@ void set_regs(int cpu) {
 	regs.sr = sr;
 	regs.pc = pc;
 #endif
+	break;
+#endif
+#if GENS_SH2
+    case CPU_SH2:
+	for (int n=0; n<16; n++)
+	    M_SH2.R[n] = r[n]; // no SH2_Set_R ??!
+	SH2_Set_SR(&M_SH2,sr);
+	SH2_Set_PC(&M_SH2,pc);
 	break;
 #endif
     }

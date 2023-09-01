@@ -234,7 +234,7 @@ void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 	break;
 #endif
 #if GENS_SH2
-      case CPU_SH2:
+      case CPU_SH2_0:
 	SH2_Interrupt(&M_SH2,vector);
 	break;
 #endif
@@ -364,7 +364,7 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #endif
 #endif
 #if GENS_SH2
-      case CPU_SH2:
+      case CPU_SH2_0:
 	SH2_Clear_Odo(&M_SH2);
 	ret = SH2_Exec(&M_SH2,cycles);
 	if (ret == -1)
@@ -447,7 +447,7 @@ void cpu_reset(UINT32 cpu_id)
 	break;
 #endif
 #if GENS_SH2
-      case CPU_SH2:
+      case CPU_SH2_0:
 	SH2_Reset(&M_SH2,0);
 	break;
 #endif
@@ -498,7 +498,7 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
      break;
 #endif
 #if GENS_SH2
-   case CPU_SH2:
+   case CPU_SH2_0:
      return SH2_Get_PC(&M_SH2);
 #endif
    default:
@@ -588,6 +588,10 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	    }
 	return base;
 #endif
+#if GENS_SH2
+    case CPU_SH2:
+	return get_sh2_code_range(&M_SH2,adr,start,end);
+#endif
     }
     return NULL;
 }
@@ -595,13 +599,16 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
     switch(cpu >> 4) {
 #if HAVE_68000
-    case 1: return s68k_get_userdata(cpu & 0xf,adr);
+    case CPU_68000: return s68k_get_userdata(cpu & 0xf,adr);
 #endif
 #if HAVE_Z80
-    case 2: return z80_get_userdata(cpu & 0xf,adr);
+    case CPU_Z80: return z80_get_userdata(cpu & 0xf,adr);
 #endif
 #ifndef NO020
-    case 3: return R24[adr >> 16]-adr;
+    case CPU_68020: return R24[adr >> 16]-adr;
+#endif
+#if GENS_SH2
+    case CPU_SH2_0: return get_sh2_userdata(&M_SH2,adr);
 #endif
     }
     return NULL;
