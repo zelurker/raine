@@ -2368,16 +2368,16 @@ void NAME(UINT32 bank, UINT32 cols)        \
   UINT32 yy,*ta;                           \
   TYPE *ct,res;                            \
                                            \
-    bank_status[bank] = cols--;            \
-    ct = (TYPE *) coltab[bank]+1;          \
-    ta = (UINT32 *) (RAM_PAL+(bank<<6)+4); \
+    bank_status[bank] = cols;              \
+    ct = (TYPE *) coltab[bank];            \
+    ta = (UINT32 *) (RAM_PAL+(bank<<6));   \
    do{                                     \
-      yy = *ta++;                          \
+      yy = ReadLong68k(ta++);              \
                                            \
       PEN_FUNC(                            \
-               (yy&0xFf)>>0,               \
-               (yy&0x00Ff00)>>8,           \
-               (yy&0xFf0000)>>16,          \
+               (yy&0xFf000000)>>24,        \
+               (yy&0x00Ff0000)>>16,        \
+               (yy&0x0000Ff00)>>8,         \
                res                         \
                );                          \
                                            \
@@ -2386,33 +2386,7 @@ void NAME(UINT32 bank, UINT32 cols)        \
    }while(--cols);                         \
 }
 
-void Map_24bit_RGB_8(UINT32 bank, UINT32 cols)
-{
-  UINT32 yy,*ta;
-  UINT8 *ct,res;
-  UINT8 yr,yg,yb;
-
-    bank_status[bank] = cols--;
-    ct = (UINT8 *) coltab[bank]+1;
-    ta = (UINT32 *) (RAM_PAL+(bank<<6)+4);
-   do{
-      yy = *ta++;
-      yr = (yy&0xF8)>>3; // 5 bits
-      yg = (yy&0x00Fc00)>>10; // 6 bits
-      yb = (yy&0xF80000)>>19; // 5 bits
-
-      GET_PEN_FOR_COLOUR_8(
-			   yr<<3,
-			   yg<<2,
-			   yb<<3,
-	       res
-	       );
-
-      *ct++ = res;
-
-   }while(--cols);
-}
-
+BUILD_MAPPER(Map_24bit_RGB_8,UINT16,GET_PEN_FOR_COLOUR_8)
 BUILD_MAPPER(Map_24bit_RGB_15,UINT16,GET_PEN_FOR_COLOUR_15)
 BUILD_MAPPER(Map_24bit_RGB_16,UINT16,GET_PEN_FOR_COLOUR_16)
 BUILD_MAPPER(Map_24bit_RGB_24,UINT32,GET_PEN_FOR_COLOUR_24)
@@ -2420,7 +2394,7 @@ BUILD_MAPPER(Map_24bit_RGB_32,UINT32,GET_PEN_FOR_COLOUR_32)
 
 struct COLOUR_MAPPER col_map_24bit_rgb =
 {
-   "12bit xxxx bbbb gggg rrrr",
+   "24bit rgbx",
    Map_24bit_RGB_8,
    Map_24bit_RGB_15,
    Map_24bit_RGB_16,
