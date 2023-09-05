@@ -8,7 +8,13 @@ extern "C" {
 #include "deftypes.h"
     // There is a way to test endianness with sdl, but including SDL.h slows noticeably down the compilation
     // and it's not the case with endian.h... now I hope it's windows compatible... !
+#ifdef RAINE_UNIX
 #include <endian.h>
+#else
+#ifdef RAINE_WIN32
+#include <sys/param.h>
+#endif
+#endif
 
 /* memory.h */
 

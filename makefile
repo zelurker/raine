@@ -71,7 +71,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
-# target=i686-w64-mingw32
+target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
@@ -99,11 +99,13 @@ endif
 endif
 ifeq ("${target}","x86_64-w64-mingw32")
 	NO_ASM = 1
+	undefine GENS_SH2
 endif
 endif
 
 ifeq ("${MSYSTEM}","MINGW64")
 	NO_ASM = 1
+	undefine GENS_SH2
 	MINGDIR = 1
 	RAINE32 = 1
 	OSTYPE = mingw64

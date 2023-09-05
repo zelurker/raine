@@ -157,8 +157,11 @@ OBJS += \
 	$(OBJDIR)/games/tc006vcu.o \
 	$(OBJDIR)/games/tc101scn.o \
 	$(OBJDIR)/games/tc004vcu.o \
-	$(OBJDIR)/games/gun.o \
-	$(OBJDIR)/games/psikyosh.o
+	$(OBJDIR)/games/gun.o
+
+ifdef GENS_SH2
+	OBJS += $(OBJDIR)/games/psikyosh.o
+endif
 
 OBJS += \
 	$(SC000) \

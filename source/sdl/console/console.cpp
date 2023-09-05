@@ -609,6 +609,7 @@ void do_regs(int argc, char **argv) {
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000_sr,
 	      s68000_pc);
       break;
+#ifdef GENS_SH2
   case CPU_SH2:
       for (int n=0; n<16; n++) {
 	  sprintf(buf+strlen(buf),"\E[36mR%d:\E[0m%08x ",n,M_SH2.R[n]);
@@ -619,6 +620,7 @@ void do_regs(int argc, char **argv) {
       }
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",SH2_Get_SR(&M_SH2),SH2_Get_PC(&M_SH2));
       break;
+#endif
   case CPU_Z80:
       cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"
 	      " \E[36mDE:\E[0m%04x \E[36mHL:\E[0m%04x\n",

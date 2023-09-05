@@ -155,12 +155,14 @@ void get_regs(int cpu) {
 #endif
 	break;
 #endif
+#ifdef GENS_SH2
     case CPU_SH2:
 	for (int n=0; n<16; n++)
 	    r[n] = SH2_Get_R(&M_SH2,n);
 	sr = SH2_Get_SR(&M_SH2);
 	pc = SH2_Get_PC(&M_SH2);
 	break;
+#endif
     }
 }
 
