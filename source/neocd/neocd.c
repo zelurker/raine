@@ -51,22 +51,9 @@
 #include "version.h"
 #include "compat_sdl.h"
 #include "iso.h"
+#include "memory.h"
 
 // #define NEOGEO_MCARD_16BITS 1
-
-#ifdef RAINE_DOS
-#ifdef ALLEGRO_LITTLE_ENDIAN
-#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (leval)
-#else
-#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (beval)
-#endif
-#else
-#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  \
-    (SDL_BYTEORDER == SDL_LIL_ENDIAN ?  leval : beval)
-#endif
-
-#define BYTE_XOR_BE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0))
-#define BYTE_XOR_LE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(0,1))
 
 #define DBG_RASTER 1
 #define DBG_IRQ    2

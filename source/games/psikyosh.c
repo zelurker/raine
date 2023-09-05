@@ -7,6 +7,8 @@
 #include "savegame.h"
 #include "zoom/16x16.h"
 #include "alpha.h"
+// #include "memory.h"
+#include "blit.h"
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
 
@@ -24,6 +26,13 @@ static struct EEPROM_interface eeprom_interface_93C56 =
 };
 
 static UINT8 factory_eeprom[16]  = { 0x00,0x02,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x00,0x00 };
+static al_bitmap *zoom_bitmap;
+static UINT8 alphatable[256];
+static int layer_id_data[4];
+static char *layer_id_name[4] =
+{
+   "BG0", "BG1", "BG2", "sprites",
+};
 
 static u8 *ram_video, *ram_zoom, *bank,
     *ram_pal, *ram_spr,*ram_bg;
@@ -273,11 +282,13 @@ static void FASTCALL write_videob(u32 offset,u8 data) {
 
 static void FASTCALL write_videow(u32 offset,u16 data) {
     offset &= 0xffffff;
-    if (offset <= 0xffff)
+    if (offset <= 0xffff) {
+	// printf("ram_sprw %x = %x\n",offset,data);
         WriteWord68k(&ram_spr[offset],data); // bg + sprites
-    else if (offset >= 0x40000 && offset <= 0x44fff)
+    } else if (offset >= 0x40000 && offset <= 0x44fff) {
 	WriteWord68k(&ram_pal[offset & 0xffff],data);
-    else if (offset >= 0x50000 && offset <= 0x501ff)
+	bank_status[(offset >> 6) & 0xff] = 0;
+    } else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteWord68k(&ram_zoom[offset & 0x1ff],data);
     // else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
 	// irq related
@@ -287,11 +298,13 @@ static void FASTCALL write_videow(u32 offset,u16 data) {
 
 static void FASTCALL write_videol(u32 offset,u32 data) {
     offset &= 0xffffff;
-    if (offset <= 0xffff)
+    if (offset <= 0xffff) {
+	// printf("ram_sprl %x = %x\n",offset,data);
         WriteLong68k(&ram_spr[offset],data); // bg + sprites
-    else if (offset >= 0x40000 && offset <= 0x44fff)
+    } else if (offset >= 0x40000 && offset <= 0x44fff) {
+	bank_status[(offset >> 6) & 0xff] = 0;
 	WriteLong68k(&ram_pal[offset & 0xffff],data);
-    else if (offset >= 0x50000 && offset <= 0x501ff)
+    } else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteLong68k(&ram_zoom[offset & 0x1ff],data);
     // else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
 	// irq related
@@ -316,11 +329,11 @@ static u8 FASTCALL read_inputs_soundb(u32 offset) {
 
 static void FASTCALL write_sound(u32 offset,u8 data) {
     offset &= 0x7ffffff;
-    printf("write_sound %x,%x\n",offset,data);
+    // printf("write_sound %x,%x\n",offset,data);
     if (offset >= 0x3100000 && offset <= 0x3100007)
 	ymf278b_0_w(offset,data);
     else if (offset == 0x3000004) {
-	printf("eeprom write\n");
+	// printf("eeprom write\n");
 	EEPROM_write_bit((data & 0x20) ? 1 : 0);
 	EEPROM_set_cs_line((data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
 	EEPROM_set_clock_line((data & 0x40) ? ASSERT_LINE : CLEAR_LINE);
@@ -356,6 +369,7 @@ static void load_gunbird2() {
     ram_pal = &ram_zoom[0x200];
     ram_spr = &ram_pal[0x5000];
     ram_bg = &ram_spr[0x4000];
+    if (!(zoom_bitmap = create_bitmap_ex(8,256,256))) return;
 
     set_colour_mapper(&col_map_24bit_rgb);
     // the text layer has 16 colours, the other layers seem to have 256 colors...
@@ -398,11 +412,424 @@ static void load_gunbird2() {
     SH2_Add_WriteB(&M_SH2,3, 3, &write_sound);
 
     SH2_Map_Cache_Trough(&M_SH2);
+    // alphatable initialized from color index...
+    for (int i=0; i<0xc0; i++)
+	alphatable[i] = 0xff;
+    for (int i=0; i<0x40; i++) {
+	int alpha = ((0x3f-i)*0xff)/0x3f;
+	alphatable[i+0xc0] = alpha;
+    }
+    for (int i=0; i<4; i++)
+	layer_id_data[i] = add_layer_info(layer_id_name[i]);
 }
 
 static void execute_gunbird2() {
     cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
     cpu_interrupt(CPU_SH2_0,4); // vbl
+}
+
+/* zoomx/y are pixel slopes in 6.10 floating point, not scale. 0x400 is 1:1 */
+/* high/wide are number of tiles wide/high up to max size of zoom_bitmap in either direction */
+/* code is index of first tile and incremented across rows then down columns (adjusting for flip obviously) */
+/* sx and sy is top-left of entire sprite regardless of flip */
+/* Note that Level 5-4 of sbomberb boss is perfect! (Alpha blended zoomed) as well as S1945II logo */
+/* pixel is only plotted if z is >= priority_buffer[y][x] */
+static void psikyosh_drawgfxzoom(
+		int region,
+		UINT32 code,u8 *map,int flipx,int flipy,int offsx,int offsy,
+		int alpha,
+		int zoomx, int zoomy, int wide, int high )
+{
+    // A version without the z parameter, that is without inter sprites priorities
+    // I am annoyed by the idea of a 16 bits priority bitmap just to be able to store the sequence number of each sprite in it, I'd like to avoid it but I need to see more examples of this thing
+    // in action. For now gunbird2 doesn't seem to use inter sprites priorities so I'll start with a version without this stuff.
+    int code_offset = 0;
+    int xtile, ytile,xpixel, ypixel;
+
+    if (!zoomx || !zoomy) return;
+    // printf("region %d code %x zoomx %x zoomy %x\n",region,code,zoomx,zoomy);
+
+
+    /* Temporary fallback for non-zoomed, needs z-buffer. Note that this is probably a lot slower than drawgfx.c, especially if there was seperate code for flipped cases */
+    if (zoomx == 0x400 && zoomy == 0x400)
+    {
+	int xstart, ystart, xend, yend, xinc, yinc;
+
+	if (flipx)	{ xstart = wide-1; xend = -1;   xinc = -1; }
+	else		{ xstart = 0;      xend = wide; xinc = +1; }
+
+	if (flipy)	{ ystart = high-1; yend = -1;   yinc = -1; }
+	else		{ ystart = 0;      yend = high; yinc = +1; }
+
+	/* Start drawing */
+	for (ytile = ystart; ytile != yend; ytile += yinc )
+	{
+	    for (xtile = xstart; xtile != xend; xtile += xinc )
+	    {
+		const u32 code_base = (code + code_offset++) % max_sprites[region];
+
+		/* start coordinates */
+		int sx = offsx + xtile*16 + 16;
+		int sy = offsy + ytile*16 + 16;
+
+		if (!gfx_solid[region][code_base] ||
+			sx <= 0 || sx >= current_game->video->screen_x + current_game->video->border_size ||
+			sy <= 0 || sy >= current_game->video->screen_y + current_game->video->border_size) // all transp
+		    continue;
+
+		/* case 1: TRANSPARENCY_PEN */
+		if (alpha == 0xff)
+		{
+
+		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
+			Draw16x16_Trans_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+		    else
+			Draw16x16_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+		}
+
+		/* case 6: alpha-blended */
+		else if (alpha >= 0)
+		{
+		    {
+
+			set_alpha(alpha);
+			if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
+			    Draw16x16_Trans_Mapped_Alpha_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			else
+			    Draw16x16_Mapped_Alpha_flip_Rot(&gfx[region][code<<8],sx,sy,map,flipx | (flipy<<1));
+		    }
+		}
+
+		/* pjp 31/5/02 */
+		/* case 7: TRANSPARENCY_ALPHARANGE */
+		else
+		{
+		    // printf("sprite alphatable not supported (not zoomed)\n");
+		    // temp workaround : just ignore the alphatable for now
+		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
+			Draw16x16_Trans_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+		    else
+			Draw16x16_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+		}
+
+	    }
+	}
+    }
+    else /* Zoomed */
+    {
+	// The very 1st screen of gunbird2 is already asking for a zzom of 128 !!!
+	// so the idea from mame to use an intermediate bitmap and zoom from this bitmap is really excellent here
+	// another approach would be to use real opengl zooming functions, but I'd like to keep this for later...
+	for(ytile=0; ytile<high; ytile++)
+	{
+	    for(xtile=0; xtile<wide; xtile++)
+	    {
+		const UINT8 *source = &gfx[region][((code + code_offset++) % max_sprites[region])<<8];
+		for( ypixel=0; ypixel<16; ypixel++ )
+		{
+		    UINT8 *dest = zoom_bitmap->line[ypixel + ytile*16];
+
+		    for( xpixel=0; xpixel<16; xpixel++ )
+		    {
+			dest[xpixel + xtile*16] = *source++;
+		    }
+		}
+	    }
+	}
+	const VIDEO_INFO *vid = current_game->video;
+	int rotate = vid->flags ^ display_cfg.user_rotate;
+	int disp_x_16 = vid->screen_x + 2*vid->border_size - 16;
+
+	/* Start drawing */
+	int sprite_screen_height = ((high*16*(0x400*0x400))/zoomy + 0x200)>>10; /* Round up to nearest pixel */
+	int sprite_screen_width = ((wide*16*(0x400*0x400))/zoomx + 0x200)>>10;
+
+	if (sprite_screen_width && sprite_screen_height)
+	{
+	    /* start coordinates */
+	    int sx = offsx + 16;
+	    int sy = offsy + 16;
+
+	    /* end coordinates */
+	    int ex = sx + sprite_screen_width;
+	    int ey = sy + sprite_screen_height;
+	    ex = MIN(ex, current_game->video->screen_x + current_game->video->border_size);
+	    ey = MIN(ey, current_game->video->screen_y + current_game->video->border_size);
+	    if (sx < 0) sx = 0;
+	    if (sy < 0) sy = 0;
+
+	    int x_index_base;
+	    int y_index;
+
+	    int dx, dy;
+
+	    if( flipx )	{ x_index_base = (sprite_screen_width-1)*zoomx; dx = -zoomx; }
+	    else		{ x_index_base = 0; dx = zoomx; }
+
+	    if( flipy )	{ y_index = (sprite_screen_height-1)*zoomy; dy = -zoomy; }
+	    else		{ y_index = 0; dy = zoomy; }
+
+	    if( ex>sx )
+	    { /* skip if inner loop doesn't draw anything */
+		int y;
+
+		/* case 1: TRANSPARENCY_PEN */
+		/* Note: adjusted to >>10 and draws from zoom_bitmap not gfx */
+		if (alpha == 0xff)
+		{
+		    if (rotate == 0) {
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+			    UINT32 *dest = (u32*)GameBitmap->line[y];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				int c = source[x_index>>10];
+				if( c != 0 ) dest[x] = map[c];
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
+		    } else if (rotate == 3) { // 270
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				UINT32 *dest = (u32*)GameBitmap->line[disp_x_16-x];
+				int c = source[x_index>>10];
+				if( c != 0 ) dest[y] = map[c];
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
+		    }
+		}
+
+		/* case 6: alpha-blended */
+		else if (alpha >= 0)
+		{
+		    set_alpha(alpha);
+		    if (rotate == 0) {
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+			    UINT32 *dest = (u32*)GameBitmap->line[y];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				int c = source[x_index>>10];
+				if( c != 0 ) blend_32(&dest[x], map[c]);
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
+		    } else if (rotate == 3) { // 270
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
+				int c = source[x_index>>10];
+				if( c != 0 ) blend_32(&dest[y], map[c]);
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
+		    }
+		}
+
+		/* case 7: TRANSPARENCY_ALPHARANGE */
+		else
+		{
+		    if (rotate == 0) {
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+			    UINT32 *dest = (u32*)GameBitmap->line[y];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				int c = source[x_index>>10];
+				if( c != 0 )
+				{
+				    if( alphatable[c] == 0xff )
+					dest[x] = map[c];
+				    else {
+					set_alpha(alphatable[c]);
+					blend_32(&dest[x], map[c]);
+				    }
+				}
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
+		    } else {
+			printf("spr trans map not supported\n");
+		    }
+		}
+	    }
+	}
+    }
+}
+
+#define SPRITE_PRI(n) (((ReadLong68k(&ram_video[2*4]) << (4*n)) & 0xf0000000 ) >> 28)
+
+#undef BYTE_XOR_BE
+#undef BYTE4_XOR_BE
+#define BYTE_XOR_BE(x) x
+#define BYTE4_XOR_BE(x) x
+
+static void draw_sprites( UINT8 req_pri )
+{
+	/*- Sprite Format 0x0000 - 0x37ff -**
+
+    0 ---- --yy yyyy yyyy | ---- --xx xxxx xxxx  1  F--- hhhh ZZZZ ZZZZ | fPPP wwww zzzz zzzz
+    2 pppp pppp -aaa -nnn | nnnn nnnn nnnn nnnn  3  ---- ---- ---- ---- | ---- ---- ---- ----
+
+    y = ypos
+    x = xpos
+
+    h = height
+    w = width
+
+    F = flip (y)
+    f = flip (x)
+
+    Z = zoom (y)
+    z = zoom (x)
+
+    n = tile number
+
+    p = palette
+
+    a = alpha blending, selects which of the 8 alpha values in vid_regs[0-1] to use
+
+    P = priority
+    Points to a 4-bit entry in vid_regs[2] which provides a priority comparable with the bg layer's priorities.
+    However, sprite-sprite priority needs to be preserved.
+    daraku and soldivid only use the lsb
+
+    **- End Sprite Format -*/
+
+	int spr;
+	UINT32 *src = (u32*)ram_spr; /* Use buffered spriteram */
+	UINT16 *list = (UINT16 *)src + 0x3800/2;
+	UINT16 listlen=0x800/2, listcntr=0;
+	UINT16 *zoom_table = (UINT16 *)ram_zoom;
+	UINT8  *alpha_table = ram_video;
+
+	while( listcntr < listlen )
+	{
+		UINT32 listdat, sprnum, xpos, ypos, high, wide, flpx, flpy, zoomx, zoomy, tnum, colr, dpth;
+		UINT32 pri, alphamap;
+		int alpha;
+
+		listdat = ReadWord68k(&list[BYTE_XOR_BE(listcntr)]);
+		sprnum = (listdat & 0x03ff) * 4;
+
+		pri  = (ReadLong68k(&src[sprnum+1]) & 0x00003000) >> 12; // & 0x00007000/0x00003000 ?
+		pri = SPRITE_PRI(pri);
+
+		if( pri == req_pri)
+		{
+		    u8 *map;
+			ypos = (ReadLong68k(&src[sprnum+0]) & 0x03ff0000) >> 16;
+			xpos = (ReadLong68k(&src[sprnum+0]) & 0x000003ff) >> 00;
+
+			if(ypos & 0x200) ypos -= 0x400;
+			if(xpos & 0x200) xpos -= 0x400;
+
+			high  = ((ReadLong68k(&src[sprnum+1]) & 0x0f000000) >> 24) + 1;
+			wide  = ((ReadLong68k(&src[sprnum+1]) & 0x00000f00) >> 8) + 1;
+			dpth  = (ReadLong68k(&src[sprnum+2]) & 0x00800000) >> 23;
+			spr = (dpth ? 1 : 0);
+			tnum  = (ReadLong68k(&src[sprnum+2]) & 0x0007ffff);
+			if (high == 1 && wide == 1 && !gfx_solid[spr][tnum % max_sprites[spr]]) {
+			    listcntr++;
+			    if (listdat & 0x4000) break;
+			    continue;
+			}
+
+			flpy  = (ReadLong68k(&src[sprnum+1]) & 0x80000000) >> 31;
+			flpx  = (ReadLong68k(&src[sprnum+1]) & 0x00008000) >> 15;
+
+			zoomy = (ReadLong68k(&src[sprnum+1]) & 0x00ff0000) >> 16;
+			zoomx = (ReadLong68k(&src[sprnum+1]) & 0x000000ff);
+
+			colr  = (ReadLong68k(&src[sprnum+2]) & 0xff000000) >> 24;
+
+			alpha = (ReadLong68k(&src[sprnum+2]) & 0x00700000) >> 20;
+
+			alphamap = (alpha_table[BYTE4_XOR_BE(alpha)] & 0x80)? 1:0;
+			alpha = alpha_table[BYTE4_XOR_BE(alpha)] & 0x3f;
+
+			if (dpth) {
+			    MAP_PALETTE_MULTI_MAPPED_NEW(
+				    colr,
+				    256,
+				    map
+				    );
+			} else {
+			    MAP_PALETTE_MAPPED_NEW(
+				    colr,
+				    16, // ?
+				    map
+				    );
+			}
+
+			if(alphamap) { /* alpha values are per-pen */
+				alpha = -1;
+			} else {
+				alpha = ((0x3f-alpha)*0xff)/0x3f; /* 0x3f-0x00 maps to 0x00-0xff */
+			}
+
+			/* start drawing */
+			if( ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomy)]) && ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomx)]) ) /* Avoid division-by-zero when table contains 0 (Uninitialised/Bug) */
+			{
+				psikyosh_drawgfxzoom(spr,tnum,map,flpx,flpy,xpos,ypos,alpha,
+					(UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomx)]), (UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomy)]), wide, high); // , listcntr);
+
+#if 0
+#ifdef MAME_DEBUG
+				if (input_code_pressed(KEYCODE_Z))	/* Display some info on each sprite */
+				{
+					char buf[10];
+					int x, y;
+
+					sprintf(buf, "%X",xdim/16); /* Display Zoom in 16.16 */
+					if (machine->gamedrv->flags & ORIENTATION_SWAP_XY) {
+						x = ypos;
+						y = video_screen_get_visible_area(machine->primary_screen)->max_x - xpos; /* ORIENTATION_FLIP_Y */
+					}
+					else {
+						x = xpos;
+						y = ypos;
+					}
+					ui_draw_text(buf, x, y);
+				}
+#endif
+#endif
+			}
+			/* end drawing */
+		}
+		listcntr++;
+		if (listdat & 0x4000) break;
+	}
 }
 
 static void drawgfx_alphatable(int region,
@@ -412,8 +839,8 @@ static void drawgfx_alphatable(int region,
     code %= max_sprites[region];
     destx += 16; desty += 16;
     if (!gfx_solid[region][code] ||
-	    destx < 0 || destx > current_game->video->screen_x + current_game->video->border_size ||
-	    desty < 0 || desty > current_game->video->screen_y + current_game->video->border_size) // all transp
+	    destx <= 0 || destx >= current_game->video->screen_x + current_game->video->border_size ||
+	    desty <= 0 || desty >= current_game->video->screen_y + current_game->video->border_size) // all transp
 	return;
     u8 *map;
     if (region == 1) { // 8bpp
@@ -515,8 +942,7 @@ static void draw_bg(int req_pri) {
     int i;
     for(i=0; i<3; i++)
     {
-	if ( !BG_LAYER_ENABLE(i) ) {
-	    print_ingame(1,"bg%d disabled\n",i);
+	if ( !BG_LAYER_ENABLE(i) || !check_layer_enabled(layer_id_data[i]) ) {
 	    continue;
 	}
 
@@ -541,8 +967,12 @@ static void draw_gunbird2() {
 	printf("gfx1 %p gfx2 %p\n",load_region[REGION_GFX1],load_region[REGION_GFX2]);
     }
     clear_game_screen(0);
-    for (int i=0; i<7; i++)
+    // ClearPaletteMap();
+    for (int i=0; i<7; i++) {
+	if (check_layer_enabled(layer_id_data[3]))
+	    draw_sprites(i);
 	draw_bg(i);
+    }
 }
 
 static gfx_layout layout_16x16x4 =

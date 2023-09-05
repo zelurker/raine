@@ -253,7 +253,6 @@ static DEF_INLINE void WriteF3SystemLong(UINT32 i, UINT32 data)
 #define CPU_FRAME_MHz(speed,slice) ((speed*1000000)/slice)
 #define MHz(speed) ((speed*1000000.0)/fps)
 
-
 #ifndef SDL
 extern DATAFILE *RaineData;		// Resource datafile
 #endif

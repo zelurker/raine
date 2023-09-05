@@ -6,6 +6,10 @@ extern "C" {
 #define MEMORY_H
 
 #include "deftypes.h"
+    // There is a way to test endianness with sdl, but including SDL.h slows noticeably down the compilation
+    // and it's not the case with endian.h... now I hope it's windows compatible... !
+#include <endian.h>
+
 /* memory.h */
 
 #ifdef __GNU__
@@ -17,7 +21,7 @@ extern "C" {
 /***************************************************************************
 
 	Basic type definitions
-	
+
 	These types are used for memory handlers.
 
 ***************************************************************************/
@@ -46,7 +50,7 @@ struct MemoryReadAddress
 /***************************************************************************
 
 	Memory/port array constants
-	
+
 	These apply to values in the array of read/write handlers that is
 	declared within each driver.
 
@@ -181,6 +185,23 @@ struct IO_WritePort32
 #define MEMORY_ADDRESS_BITS(bits)	MEMPORT_SET_BITS(bits)
 #define MEMORY_END					MEMPORT_ARRAY_END
 
+#ifdef RAINE_DOS
+#ifdef ALLEGRO_LITTLE_ENDIAN
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (leval)
+#else
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  (beval)
+#endif
+#else
+#define NATIVE_ENDIAN_VALUE_LE_BE(leval,beval)  \
+    (BYTE_ORDER == LITTLE_ENDIAN ?  leval : beval)
+#endif
+
+#define BYTE_XOR_BE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(1,0))
+#define BYTE_XOR_LE(a)                  ((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(0,1))
+
+/* read/write a byte to a 32-bit space */
+#define BYTE4_XOR_BE(a) 				((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(3,0))
+#define BYTE4_XOR_LE(a) 				((a) ^ NATIVE_ENDIAN_VALUE_LE_BE(0,3))
 // Fonctions RAINE
 
 void mame_addportsa(struct IO_ReadPort *rp,struct IO_WritePort *wp);
