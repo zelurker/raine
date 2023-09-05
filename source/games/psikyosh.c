@@ -7,8 +7,9 @@
 #include "savegame.h"
 #include "zoom/16x16.h"
 #include "alpha.h"
-// #include "memory.h"
 #include "blit.h"
+#include "priorities.h"
+#include "pdraw.h"
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
 
@@ -350,6 +351,7 @@ static void FASTCALL write_sound(u32 offset,u8 data) {
 #define BG_LAYER_ENABLE(n) (((ReadLong68k(&ram_video[7*4]) << (4*n)) & 0x00008000 ) ? 1:0)
 
 static void load_gunbird2() {
+    init_pbitmap();
     EEPROM_init(&eeprom_interface_93C56);
     default_eeprom = factory_eeprom;
     default_eeprom_size = sizeof(factory_eeprom);
@@ -438,7 +440,7 @@ static void psikyosh_drawgfxzoom(
 		int region,
 		UINT32 code,u8 *map,int flipx,int flipy,int offsx,int offsy,
 		int alpha,
-		int zoomx, int zoomy, int wide, int high )
+		int zoomx, int zoomy, int wide, int high,int pri )
 {
     // A version without the z parameter, that is without inter sprites priorities
     // I am annoyed by the idea of a 16 bits priority bitmap just to be able to store the sequence number of each sprite in it, I'd like to avoid it but I need to see more examples of this thing
@@ -482,9 +484,9 @@ static void psikyosh_drawgfxzoom(
 		{
 
 		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
-			Draw16x16_Trans_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			pdraw16x16_Trans_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		    else
-			Draw16x16_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			pdraw16x16_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		}
 
 		/* case 6: alpha-blended */
@@ -494,9 +496,9 @@ static void psikyosh_drawgfxzoom(
 
 			set_alpha(alpha);
 			if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
-			    Draw16x16_Trans_Mapped_Alpha_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			    pdraw16x16_Trans_Mapped_back_Alpha_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 			else
-			    Draw16x16_Mapped_Alpha_flip_Rot(&gfx[region][code<<8],sx,sy,map,flipx | (flipy<<1));
+			    pdraw16x16_Mapped_back_Alpha_flip_Rot(&gfx[region][code<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		    }
 		}
 
@@ -507,9 +509,9 @@ static void psikyosh_drawgfxzoom(
 		    // printf("sprite alphatable not supported (not zoomed)\n");
 		    // temp workaround : just ignore the alphatable for now
 		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
-			Draw16x16_Trans_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			pdraw16x16_Trans_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		    else
-			Draw16x16_Mapped_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1));
+			pdraw16x16_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		}
 
 	    }
@@ -694,7 +696,7 @@ static void psikyosh_drawgfxzoom(
 #define BYTE_XOR_BE(x) x
 #define BYTE4_XOR_BE(x) x
 
-static void draw_sprites( UINT8 req_pri )
+static void draw_sprites( )
 {
 	/*- Sprite Format 0x0000 - 0x37ff -**
 
@@ -745,7 +747,6 @@ static void draw_sprites( UINT8 req_pri )
 		pri  = (ReadLong68k(&src[sprnum+1]) & 0x00003000) >> 12; // & 0x00007000/0x00003000 ?
 		pri = SPRITE_PRI(pri);
 
-		if( pri == req_pri)
 		{
 		    u8 *map;
 			ypos = (ReadLong68k(&src[sprnum+0]) & 0x03ff0000) >> 16;
@@ -802,7 +803,7 @@ static void draw_sprites( UINT8 req_pri )
 			if( ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomy)]) && ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomx)]) ) /* Avoid division-by-zero when table contains 0 (Uninitialised/Bug) */
 			{
 				psikyosh_drawgfxzoom(spr,tnum,map,flpx,flpy,xpos,ypos,alpha,
-					(UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomx)]), (UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomy)]), wide, high); // , listcntr);
+					(UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomx)]), (UINT32)ReadWord68k(&zoom_table[BYTE_XOR_BE(zoomy)]), wide, high,pri); // , listcntr);
 
 #if 0
 #ifdef MAME_DEBUG
@@ -834,7 +835,7 @@ static void draw_sprites( UINT8 req_pri )
 
 static void drawgfx_alphatable(int region,
 		UINT32 code, UINT32 color, INT32 destx, INT32 desty,
-		int fixedalpha)
+		int fixedalpha, int pri)
 {
     code %= max_sprites[region];
     destx += 16; desty += 16;
@@ -859,28 +860,28 @@ static void drawgfx_alphatable(int region,
     /* if we have a fixed alpha, call the standard drawgfx_alpha */
     if (fixedalpha == 255) { // all opaque
 	if(gfx_solid[region][code]==1)                    // Some pixels; trans
-	    Draw16x16_Trans_Mapped_Rot(&gfx[region][code<<8],destx,desty,map);
+	    pdraw16x16_Test_Trans_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
 	else
-	    Draw16x16_Mapped_Rot(&gfx[region][code<<8],destx,desty,map);
+	    pdraw16x16_Test_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
     } else if (fixedalpha >= 0)
     {
 	set_alpha(fixedalpha);
 	if(gfx_solid[region][code]==1)                    // Some pixels; trans
-	    Draw16x16_Trans_Mapped_Alpha_flip_Rot(&gfx[region][code<<8],destx,desty,map,0);
+	    pdraw16x16_Test_Trans_Mapped_Alpha_Rot(&gfx[region][code<<8],destx,desty,map,pri);
 	else
-	    Draw16x16_Mapped_Alpha_flip_Rot(&gfx[region][code<<8],destx,desty,map,0);
+	    pdraw16x16_Test_Mapped_Alpha_Rot(&gfx[region][code<<8],destx,desty,map,pri);
     } else {
 
 	// No alpha table here for now, just display the sprite normally
 	if(gfx_solid[region][code]==1)                    // Some pixels; trans
-	    Draw16x16_Trans_Mapped_Rot(&gfx[region][code<<8],destx,desty,map);
+	    pdraw16x16_Test_Trans_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
 	else
-	    Draw16x16_Mapped_Rot(&gfx[region][code<<8],destx,desty,map);
+	    pdraw16x16_Test_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
     }
 }
 
 /* 'Normal' layers, no line/columnscroll. No per-line effects */
-static void draw_bglayer(int layer )
+static void draw_bglayer(int layer, int pri )
 {
 	int offs=0, sx, sy, gfx;
 	int scrollx, scrolly, bank, alpha, alphamap, size, width;
@@ -924,13 +925,13 @@ static void draw_bglayer(int layer )
 				colour = (tileno & 0xff000000) >> 24;
 				tileno &= 0x0007ffff;
 
-				drawgfx_alphatable(gfx,tileno,colour,(16*sx+scrollx)&0x1ff,((16*sy+scrolly)&(width-1)),alpha); /* normal */
+				drawgfx_alphatable(gfx,tileno,colour,(16*sx+scrollx)&0x1ff,((16*sy+scrolly)&(width-1)),alpha,pri); /* normal */
 				if(scrollx)
-					drawgfx_alphatable(gfx,tileno,colour,((16*sx+scrollx)&0x1ff)-0x200,((16*sy+scrolly)&(width-1)),alpha); /* wrap x */
+					drawgfx_alphatable(gfx,tileno,colour,((16*sx+scrollx)&0x1ff)-0x200,((16*sy+scrolly)&(width-1)),alpha,pri); /* wrap x */
 				if(scrolly)
-					drawgfx_alphatable(gfx,tileno,colour,(16*sx+scrollx)&0x1ff,((16*sy+scrolly)&(width-1))-width,alpha); /* wrap y */
+					drawgfx_alphatable(gfx,tileno,colour,(16*sx+scrollx)&0x1ff,((16*sy+scrolly)&(width-1))-width,alpha,pri); /* wrap y */
 				if(scrollx && scrolly)
-					drawgfx_alphatable(gfx,tileno,colour,((16*sx+scrollx)&0x1ff)-0x200,((16*sy+scrolly)&(width-1))-width,alpha); /* wrap xy */
+					drawgfx_alphatable(gfx,tileno,colour,((16*sx+scrollx)&0x1ff)-0x200,((16*sy+scrolly)&(width-1))-width,alpha,pri); /* wrap xy */
 
 				offs++;
 			}
@@ -938,7 +939,7 @@ static void draw_bglayer(int layer )
 	}
 }
 
-static void draw_bg(int req_pri) {
+static void draw_bg() {
     int i;
     for(i=0; i<3; i++)
     {
@@ -949,12 +950,10 @@ static void draw_bg(int req_pri) {
 	switch(BG_TYPE(i))
 	{
 	case BG_NORMAL:
-	    if(ram_bg[0x17f0 + i*4]== req_pri)
-		draw_bglayer( i);
+	    draw_bglayer( i,ram_bg[0x17f0 + i*4]);
 	    break;
 	case BG_NORMAL_ALT:
-	    if(ram_bg[0x1ff0 + i*4] == req_pri)
-		draw_bglayer( i);
+	    draw_bglayer( i,ram_bg[0x1ff0 + i*4]);
 	    break;
 	default:
 	    printf("layer %d bg type %x\n",i,BG_TYPE(i));
@@ -967,12 +966,11 @@ static void draw_gunbird2() {
 	printf("gfx1 %p gfx2 %p\n",load_region[REGION_GFX1],load_region[REGION_GFX2]);
     }
     clear_game_screen(0);
+    clear_bitmap(pbitmap);
     // ClearPaletteMap();
-    for (int i=0; i<7; i++) {
-	if (check_layer_enabled(layer_id_data[3]))
-	    draw_sprites(i);
-	draw_bg(i);
-    }
+    if (check_layer_enabled(layer_id_data[3]))
+	draw_sprites();
+    draw_bg();
 }
 
 static gfx_layout layout_16x16x4 =

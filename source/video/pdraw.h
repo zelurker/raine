@@ -9,17 +9,50 @@ extern "C" {
 #define ARG_PRI UINT8 *SPR, int x, int y, UINT8 *cmap, UINT8 pri
 #undef declare
 #define declare(BPP)                                  \
-void pdraw16x16_Mapped_##BPP(ARG_PRI);              \
+void pdraw16x16_Mapped_##BPP(ARG_PRI);                \
 void pdraw16x16_Mapped_##BPP##_FlipX(ARG_PRI);        \
 void pdraw16x16_Mapped_##BPP##_FlipY(ARG_PRI);        \
 void pdraw16x16_Mapped_##BPP##_FlipXY(ARG_PRI);       \
                                                       \
 /* 16x16 mapped transparent sprites */                \
                                                       \
-void pdraw16x16_Trans_Mapped_##BPP(ARG_PRI);        \
+void pdraw16x16_Trans_Mapped_##BPP(ARG_PRI);          \
 void pdraw16x16_Trans_Mapped_##BPP##_FlipX(ARG_PRI);  \
 void pdraw16x16_Trans_Mapped_##BPP##_FlipY(ARG_PRI);  \
-void pdraw16x16_Trans_Mapped_##BPP##_FlipXY(ARG_PRI); \
+void pdraw16x16_Trans_Mapped_##BPP##_FlipXY(ARG_PRI);
+
+    declare(8);
+    declare(16);
+    declare(32);
+
+    // test version
+#undef declare
+#define declare(BPP)                                             \
+void pdraw16x16_Test_Mapped_##BPP(ARG_PRI);                      \
+void pdraw16x16_Test_Mapped_##BPP##_FlipX(ARG_PRI);              \
+void pdraw16x16_Test_Mapped_##BPP##_FlipY(ARG_PRI);              \
+void pdraw16x16_Test_Mapped_##BPP##_FlipXY(ARG_PRI);             \
+                                                                 \
+/* 16x16 mapped transparent sprites */                           \
+                                                                 \
+void pdraw16x16_Test_Trans_Mapped_##BPP(ARG_PRI);                \
+void pdraw16x16_Test_Trans_Mapped_##BPP##_FlipX(ARG_PRI);        \
+void pdraw16x16_Test_Trans_Mapped_##BPP##_FlipY(ARG_PRI);        \
+void pdraw16x16_Test_Trans_Mapped_##BPP##_FlipXY(ARG_PRI);       \
+                                                                 \
+    /* Alpha blended */                                          \
+                                                                 \
+void pdraw16x16_Test_Mapped_Alpha_##BPP(ARG_PRI);                \
+void pdraw16x16_Test_Mapped_Alpha_##BPP##_FlipX(ARG_PRI);        \
+void pdraw16x16_Test_Mapped_Alpha_##BPP##_FlipY(ARG_PRI);        \
+void pdraw16x16_Test_Mapped_Alpha_##BPP##_FlipXY(ARG_PRI);       \
+                                                                 \
+/* 16x16 mapped transparent sprites */                           \
+                                                                 \
+void pdraw16x16_Test_Trans_Mapped_Alpha_##BPP(ARG_PRI);          \
+void pdraw16x16_Test_Trans_Mapped_Alpha_##BPP##_FlipX(ARG_PRI);  \
+void pdraw16x16_Test_Trans_Mapped_Alpha_##BPP##_FlipY(ARG_PRI);  \
+void pdraw16x16_Test_Trans_Mapped_Alpha_##BPP##_FlipXY(ARG_PRI);
 
     declare(8);
     declare(16);
@@ -89,6 +122,24 @@ extern draw_mapped_func_pri *pdraw16x16_Mapped_Flip_Rot[4];
 #define pdraw16x16_Mapped_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Mapped_Flip_Rot[2])(a, b, c, d, f)
 #define pdraw16x16_Mapped_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Mapped_Flip_Rot[3])(a, b, c, d, f)
 
+extern draw_mapped_func_pri *pdraw16x16_Test_Mapped_Flip_Rot[4];
+
+#define pdraw16x16_Test_Mapped_flip_Rot(a, b, c, d, e, f) (*pdraw16x16_Test_Mapped_Flip_Rot[e])(a, b, c, d, f)
+
+#define pdraw16x16_Test_Mapped_Rot(a, b, c, d, f)        (*pdraw16x16_Test_Mapped_Flip_Rot[0])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_FlipY_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Mapped_Flip_Rot[1])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Mapped_Flip_Rot[2])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Test_Mapped_Flip_Rot[3])(a, b, c, d, f)
+
+extern draw_mapped_func_pri *pdraw16x16_Test_Mapped_Alpha_Flip_Rot[4];
+
+#define pdraw16x16_Test_Mapped_Alpha_flip_Rot(a, b, c, d, e, f) (*pdraw16x16_Test_Mapped_Alpha_Flip_Rot[e])(a, b, c, d, f)
+
+#define pdraw16x16_Test_Mapped_Alpha_Rot(a, b, c, d, f)        (*pdraw16x16_Test_Mapped_Alpha_Flip_Rot[0])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_Alpha_FlipY_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Mapped_Alpha_Flip_Rot[1])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_Alpha_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Mapped_Alpha_Flip_Rot[2])(a, b, c, d, f)
+#define pdraw16x16_Test_Mapped_Alpha_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Test_Mapped_Alpha_Flip_Rot[3])(a, b, c, d, f)
+
 extern draw_mapped_func_pri *pdraw16x16_Trans_Mapped_Flip_Rot[4];
 
 #define pdraw16x16_Trans_Mapped_flip_Rot(a, b, c, d, e, f) (*pdraw16x16_Trans_Mapped_Flip_Rot[e])(a, b, c, d, f)
@@ -97,6 +148,24 @@ extern draw_mapped_func_pri *pdraw16x16_Trans_Mapped_Flip_Rot[4];
 #define pdraw16x16_Trans_Mapped_FlipY_Rot(a, b, c, d, f)  (*pdraw16x16_Trans_Mapped_Flip_Rot[1])(a, b, c, d, f)
 #define pdraw16x16_Trans_Mapped_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Trans_Mapped_Flip_Rot[2])(a, b, c, d, f)
 #define pdraw16x16_Trans_Mapped_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Trans_Mapped_Flip_Rot[3])(a, b, c, d, f)
+
+extern draw_mapped_func_pri *pdraw16x16_Test_Trans_Mapped_Flip_Rot[4];
+
+#define pdraw16x16_Test_Trans_Mapped_flip_Rot(a, b, c, d, e, f) (*pdraw16x16_Test_Trans_Mapped_Flip_Rot[e])(a, b, c, d, f)
+
+#define pdraw16x16_Test_Trans_Mapped_Rot(a, b, c, d, f)        (*pdraw16x16_Test_Trans_Mapped_Flip_Rot[0])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_FlipY_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Trans_Mapped_Flip_Rot[1])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Trans_Mapped_Flip_Rot[2])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Test_Trans_Mapped_Flip_Rot[3])(a, b, c, d, f)
+
+extern draw_mapped_func_pri *pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[4];
+
+#define pdraw16x16_Test_Trans_Mapped_Alpha_flip_Rot(a, b, c, d, e, f) (*pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[e])(a, b, c, d, f)
+
+#define pdraw16x16_Test_Trans_Mapped_Alpha_Rot(a, b, c, d, f)        (*pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[0])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_Alpha_FlipY_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[1])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_Alpha_FlipX_Rot(a, b, c, d, f)  (*pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[2])(a, b, c, d, f)
+#define pdraw16x16_Test_Trans_Mapped_Alpha_FlipXY_Rot(a, b, c, d, f) (*pdraw16x16_Test_Trans_Mapped_Alpha_Flip_Rot[3])(a, b, c, d, f)
 
 extern draw_mapped_func_pri *pdraw16x16_Mapped_back_Flip_Rot[4];
 
