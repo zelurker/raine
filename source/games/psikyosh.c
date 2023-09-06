@@ -78,7 +78,8 @@ static struct INPUT_INFO input_gunbird2[] =
   INP0( UNKNOWN, 0x03, 0x08),
   // there is a unique dip for service on 0x10, toggleable
   INP0( UNKNOWN, 0x03, 0x18),
-  INP0( SERVICE, 0x03, 0x20),
+  INP0( TEST, 0x03, 0x20),
+  INP0( UNKNOWN, 0x03, 0x40), // debug stuff, resets eeprom
   INP0( UNKNOWN, 0x03, 0x80),
 
   INP0( UNKNOWN, 0x02, 0x01),
@@ -1012,5 +1013,10 @@ static struct VIDEO_INFO video_gunbird2 =
    psikyosh_gfx
 };
 
+static void clear_gunbird2() {
+    destroy_bitmap(zoom_bitmap);
+    zoom_bitmap = NULL;
+}
+
 GMEI( gunbird2,"Gunbird 2",PSIKYO,1998, GAME_SHOOT,
-	.dsw = dsw_gunbird2);
+	.dsw = dsw_gunbird2, .clear = clear_gunbird2);
