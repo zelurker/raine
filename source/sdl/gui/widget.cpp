@@ -142,6 +142,8 @@ int TStatic::get_list_index() {
 int TStatic::get_height(TFont *font) {
   int w,h;
   ansi_font_dim(font,(char*)menu->label,&w,&h);
+  if (!h)
+      ansi_font_dim(font," ",&w,&h);
   return h;
 }
 

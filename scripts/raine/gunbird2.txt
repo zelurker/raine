@@ -1,0 +1,79 @@
+script "Select Starting Stage" \
+ inter=1,8,1 
+change:
+    poke $604C8C0 (param-$1)
+script "First Stage always =" \
+ "0x00/Desert"\
+ "0x01/Water"\
+ "0x02/Forest"\
+ "0x03/Snow" 
+run:
+    poke $604C8B2 param
+script "Second Stage always =" \
+ "0x00/Desert"\
+ "0x01/Water"\
+ "0x02/Forest"\
+ "0x03/Snow" 
+run:
+    poke $604C8B3 param
+script "Third Stage always =" \
+ "0x00/Desert"\
+ "0x01/Water"\
+ "0x02/Forest"\
+ "0x03/Snow" 
+run:
+    poke $604C8B4 param
+script "Finish Current Stage Now!"  
+on:
+    if (peek($604C740)==$FF)
+      poke $604C751 $01
+    endif
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $605502D $08
+script "P1 Infinite Bombs"  
+run:
+    poke $605502F $09
+script "P1 Invincibility" \
+ "comm:Sprite Flickers"  
+run:
+    poke $6055063 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $605505B $03
+script "P1 Maximum Extra Weapon Power"  
+run:
+    poke $6055074 $56
+    poke $6055075 $AE
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $60550DD $08
+script "P2 Infinite Bombs"  
+run:
+    poke $60550DF $09
+script "P2 Invincibility" \
+ "comm:Sprite Flickers"  
+run:
+    poke $6055113 $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $605510B $03
+script "P2 Maximum Extra Weapon Power"  
+run:
+    poke $6055124 $56
+    poke $6055125 $AE
+script " "  
+script "Unlock Maintenance Mode" \
+ "comm:Use in test mode, see the history.dat file for what the codes are. If you have any other questions email Tourniquet ;-)"  
+run:
+    if (peek($605CB5E)==$02)
+      poke $605CB5E $01
+    endif
+    if (peek($607FF89)==$06)
+      poke $607FF89 $09
+    endif
+script "Language = English"  
+run:
+    poke $6040004 $01

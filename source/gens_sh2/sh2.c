@@ -525,21 +525,65 @@ SH2_Add_WriteL (SH2_CONTEXT * SH2, UINT32 low_adr, UINT32 high_adr,
     SH2->Write_Long[i] = Func;
 }
 
+// Can't include directly savegame.h here, annoying conflict with deftypes
+void AddSaveData(UINT32 id, UINT8 *src, UINT32 size); // savegame.c
+void AddLoadCallback_ptr(void *callback,void *arg);
+#ifndef ASCII_ID
+#define ASCII_ID(a,b,c,d)	  ((a<<24) | (b<<16) | (c<<8) | (d<<0))
+#endif
+
+static SH2_CONTEXT mcopy, scopy;
+
+static void postload_sh2(void *aSH2) {
+    SH2_CONTEXT *SH2 = (SH2_CONTEXT *)aSH2;
+    int slave = (SH2 != &M_SH2);
+    if (!slave) {
+	memcpy(SH2->Read_Byte, mcopy.Read_Byte, sizeof(SH2_RB*)*0x100);
+	memcpy(SH2->Read_Word, mcopy.Read_Word, sizeof(SH2_RB*)*0x100);
+	memcpy(SH2->Read_Long, mcopy.Read_Long, sizeof(SH2_RB*)*0x100);
+
+	memcpy(SH2->Write_Byte, mcopy.Write_Byte, sizeof(SH2_RB*)*0x100);
+	memcpy(SH2->Write_Word, mcopy.Write_Word, sizeof(SH2_RB*)*0x100);
+	memcpy(SH2->Write_Long, mcopy.Write_Long, sizeof(SH2_RB*)*0x100);
+
+	memcpy(SH2->Fetch_Region, mcopy.Fetch_Region, sizeof(FETCHREG)*0x100);
+    }
+    UINT32 pc = SH2->PC - SH2->Base_PC;
+    int i=0;
+    while (SH2->Fetch_Region[i].Fetch_Reg != NULL)
+    {
+	if (SH2->Fetch_Region[i].Low_Adr == SH2->Fetch_Start &&
+		SH2->Fetch_Region[i].High_Adr == SH2->Fetch_End) {
+	    SH2->Base_PC = (UINT32)SH2->Fetch_Region[i].Fetch_Reg;
+	    SH2->PC = SH2->Base_PC + pc;
+	    return;
+	}
+	i++;
+    }
+    printf("postload_sh2: couldn't find sh2 Base_PC, expect trouble...\n");
+}
 
 void
 SH2_Map_Cache_Trough (SH2_CONTEXT * SH2)
 {
-  UINT32 i;
+    UINT32 i;
 
-  for (i = 0; i < 0x10; i++)
+    for (i = 0; i < 0x10; i++)
     {
-      SH2->Read_Byte[i + 0x20] = SH2->Read_Byte[i];
-      SH2->Read_Word[i + 0x20] = SH2->Read_Word[i];
-      SH2->Read_Long[i + 0x20] = SH2->Read_Long[i];
-      SH2->Write_Byte[i + 0x20] = SH2->Write_Byte[i];
-      SH2->Write_Word[i + 0x20] = SH2->Write_Word[i];
-      SH2->Write_Long[i + 0x20] = SH2->Write_Long[i];
+	SH2->Read_Byte[i + 0x20] = SH2->Read_Byte[i];
+	SH2->Read_Word[i + 0x20] = SH2->Read_Word[i];
+	SH2->Read_Long[i + 0x20] = SH2->Read_Long[i];
+	SH2->Write_Byte[i + 0x20] = SH2->Write_Byte[i];
+	SH2->Write_Word[i + 0x20] = SH2->Write_Word[i];
+	SH2->Write_Long[i + 0x20] = SH2->Write_Long[i];
     }
+    int slave = (SH2 != &M_SH2);
+    AddSaveData(ASCII_ID('S','H','2',slave),(UINT8*)SH2, sizeof(SH2_CONTEXT));
+    if (!slave)
+	memcpy(&mcopy,&M_SH2,sizeof(SH2_CONTEXT));
+    else
+	memcpy(&scopy,&S_SH2,sizeof(SH2_CONTEXT));
+    AddLoadCallback_ptr(postload_sh2,SH2);
 }
 
 int sh2Engine;
