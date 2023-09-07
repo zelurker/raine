@@ -4188,3 +4188,8 @@ gunbird2a:
 @:maincpu,program,604c758,28,00,70
 @:maincpu,program,604c780,3c,1e,00
 
+;strikers 1945 III (by tamphax)
+s1945iii:
+@:maincpu,program,6083c84,c4,00,00
+@:maincpu,program,6083d80,46,00,02
+

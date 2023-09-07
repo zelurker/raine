@@ -1,0 +1,71 @@
+script "Select Starting Stage" \
+ "comm:Use on Plane select screen" \
+ inter=1,16,1 
+change:
+    poke $6067B2E (param-$1)
+script "First Stage always =" \
+ "comm:Use on Plane select screen" \
+ "0x00/Sky (Grand Canyon)"\
+ "0x01/Ocean (Japan)"\
+ "0x02/Armoury (Russia)"\
+ "0x03/City (Australia)" 
+change:
+    poke $6067B1E param
+script "Second Stage always =" \
+ "comm:Use on Plane select screen" \
+ "0x00/Sky (Grand Canyon)"\
+ "0x01/Ocean (Japan)"\
+ "0x02/Armoury (Russia)"\
+ "0x03/City (Australia)" 
+change:
+    poke $6067B1F param
+script "Third Stage always =" \
+ "comm:Use on Plane select screen" \
+ "0x00/Sky (Grand Canyon)"\
+ "0x01/Ocean (Japan)"\
+ "0x02/Armoury (Russia)"\
+ "0x03/City (Australia)" 
+change:
+    poke $6067B20 param
+script "Fourth Stage always =" \
+ "comm:Use on Plane select screen" \
+ "0x00/Sky (Grand Canyon)"\
+ "0x01/Ocean (Japan)"\
+ "0x02/Armoury (Russia)"\
+ "0x03/City (Australia)" 
+change:
+    poke $6067B21 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $607271D $05
+script "P1 Infinite Bombs"  
+run:
+    poke $607271F $09
+script "P1 Invincibility"  
+run:
+    poke $6072761 $02
+script "P1 Maximum Fire Power"  
+run:
+    poke $6072755 $03
+script "P1 Maximum Extra weapon"  
+run:
+    poke $6072774 $62
+    poke $6072775 $44
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $6072A09 $05
+script "P2 Infinite Bombs"  
+run:
+    poke $6072A0B $09
+script "P2 Invincibility"  
+run:
+    poke $6072A4D $02
+script "P2 Maximum Fire Power"  
+run:
+    poke $6072A41 $03
+script "P2 Maximum Extra weapon"  
+run:
+    poke $6072A60 $62
+    poke $6072A61 $44

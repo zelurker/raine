@@ -87,6 +87,7 @@ enum region_type
    REGION_SPRITES,
    REGION_MAINBIOS,
    REGION_AUDIOCRYPT,
+   REGION_EEPROM,
    REGION_MAX,
 };
 

@@ -1,3 +1,9 @@
+#define DRV_DEF_SOUND sound_gunbird2
+#define DRV_DEF_EXEC execute_gunbird2
+#define DRV_DEF_INPUT input_gunbird2
+#define DRV_DEF_CLEAR clear_gunbird2
+#define DRV_DEF_LOAD load_gunbird2
+#define DRV_DEF_VIDEO &video_gunbird2
 #include "gameinc.h"
 #include "sh2.h"
 #include "mame/handlers.h"
@@ -26,7 +32,6 @@ static struct EEPROM_interface eeprom_interface_93C56 =
 //  "*10010xxxx"    // erase all    1 00 10xxxx
 };
 
-static UINT8 factory_eeprom[16]  = { 0x00,0x02,0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x00,0x00 };
 static al_bitmap *zoom_bitmap;
 static UINT8 alphatable[256];
 static int layer_id_data[4];
@@ -52,6 +57,25 @@ static struct ROM_INFO rom_gunbird2[] =
   LOAD16_32( GFX1, "3l.u6", 0x3000000, 0x400000, 0x0229d37f),
   LOAD16_32( GFX1, "3h.u13", 0x3000002, 0x400000, 0xf41bbf2b),
   LOAD( SMP1, "sound.u9", 0x000000, 0x400000, 0xf19796ab),
+  { "eeprom-gunbird2.bin", 0x0100, 0x7ac38846, REGION_EEPROM, 0x0000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_s1945iii[] =
+{
+  { "2_progl.u16", 0x080000, 0x5d5d385f, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+  { "1_progh.u17", 0x080000, 0x1b8a5a18, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "3_data.u1", 0x080000, 0x8ff5f7d3, REGION_CPU1, 0x100000, LOAD_SWAP_16 },
+  { "0l.u3", 0x800000, 0x70a0d52c, REGION_GFX1, 0x0000000, LOAD_16_32 },
+  { "0h.u10", 0x800000, 0x4dcd22b4, REGION_GFX1, 0x0000002, LOAD_16_32 },
+  { "1l.u4", 0x800000, 0xde1042ff, REGION_GFX1, 0x1000000, LOAD_16_32 },
+  { "1h.u11", 0x800000, 0xb51a4430, REGION_GFX1, 0x1000002, LOAD_16_32 },
+  { "2l.u5", 0x800000, 0x23b02dca, REGION_GFX1, 0x2000000, LOAD_16_32 },
+  { "2h.u12", 0x800000, 0x9933ab04, REGION_GFX1, 0x2000002, LOAD_16_32 },
+  { "3l.u6", 0x400000, 0xf693438c, REGION_GFX1, 0x3000000, LOAD_16_32 },
+  { "3h.u13", 0x400000, 0x2d0c334f, REGION_GFX1, 0x3000002, LOAD_16_32 },
+  { "sound.u9", 0x400000, 0xc5374beb, REGION_SMP1, 0x000000, LOAD_NORMAL },
+  { "eeprom-s1945iii.bin", 0x0100, 0xb39f3604, REGION_EEPROM, 0x0000, LOAD_NORMAL },
   { NULL, 0, 0, 0, 0, 0 }
 };
 
@@ -70,6 +94,20 @@ static struct DSW_INFO dsw_gunbird2[] =
   { 0, 0, NULL }
 };
 
+static struct DSW_DATA dsw_data_s1945iii_0[] =
+{
+    { "Region",2,3 },
+  { "Japan", 0x0 },
+  { "International Ver A.", 0x2 },
+  { "International Ver B.", 0x1 },
+  { NULL, 0}
+};
+
+static struct DSW_INFO dsw_s1945iii[] =
+{
+  { 0x7, 0x1, dsw_data_s1945iii_0 },
+  { 0, 0, NULL }
+};
 static struct INPUT_INFO input_gunbird2[] =
 {
   INP0( COIN1, 0x03, 0x01),
@@ -187,7 +225,7 @@ static u16 FASTCALL read_ramw(u32 offset) {
     return 0xffff;
 }
 
-static u32 FASTCALL read_raml(u32 offset) {
+static u32 FASTCALL read_raml_gunbird2(u32 offset) {
     offset &= 0xffffff;
     if (offset <= 0xfffff) {
 	int ret = ReadLong68k(&RAM[offset]);
@@ -197,6 +235,30 @@ static u32 FASTCALL read_raml(u32 offset) {
 		M_SH2.Cycle_IO = 3;
 	    }
 	}
+        return ret;
+    }
+    return 0xffffffff;
+}
+
+static u32 FASTCALL read_raml_s1945iii(u32 offset) {
+    offset &= 0xffffff;
+    if (offset <= 0xfffff) {
+	int ret = ReadLong68k(&RAM[offset]);
+	if (offset == 0x60030) {
+	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
+	    if (!ret) {
+		M_SH2.Cycle_IO = 3;
+	    }
+	}
+        return ret;
+    }
+    return 0xffffffff;
+}
+
+static u32 FASTCALL read_raml(u32 offset) {
+    offset &= 0xffffff;
+    if (offset <= 0xfffff) {
+	int ret = ReadLong68k(&RAM[offset]);
         return ret;
     }
     return 0xffffffff;
@@ -354,8 +416,10 @@ static void FASTCALL write_sound(u32 offset,u8 data) {
 static void load_gunbird2() {
     init_pbitmap();
     EEPROM_init(&eeprom_interface_93C56);
-    default_eeprom = factory_eeprom;
-    default_eeprom_size = sizeof(factory_eeprom);
+    if (load_region[REGION_EEPROM]) {
+	default_eeprom = load_region[REGION_EEPROM];
+	default_eeprom_size = get_region_size(REGION_EEPROM);
+    }
     load_eeprom();
     SH2_Init(&M_SH2,0);
     bank = &ROM[0x100000];
@@ -399,7 +463,12 @@ static void load_gunbird2() {
 
     SH2_Add_ReadB(&M_SH2,6, 6, read_ramb);
     SH2_Add_ReadW(&M_SH2,6, 6, read_ramw);
-    SH2_Add_ReadL(&M_SH2,6, 6, read_raml);
+    if (is_current_game("gunbird2"))
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_gunbird2);
+    else if (is_current_game("s1945iii"))
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_s1945iii);
+    else
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml);
     SH2_Add_WriteB(&M_SH2,6, 6, write_ramb);
     SH2_Add_WriteW(&M_SH2,6, 6, write_ramw);
     SH2_Add_WriteL(&M_SH2,6, 6, write_raml);
@@ -1077,4 +1146,6 @@ static void clear_gunbird2() {
 }
 
 GMEI( gunbird2,"Gunbird 2",PSIKYO,1998, GAME_SHOOT,
-	.dsw = dsw_gunbird2, .clear = clear_gunbird2);
+	.dsw = dsw_gunbird2);
+GMEI( s1945iii,"Strikers 1945 III (World) / Strikers 1999 (Japan)",PSIKYO,1999, GAME_SHOOT,
+	.dsw = dsw_s1945iii);
