@@ -686,6 +686,7 @@ endif
 # see comment in TConsole::TConsole
 ifdef RAINE_DEBUG
 CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG
+AFLAGS += -DRAINE_DEBUG
 CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -fno-stack-protector
 ifndef USE_CLANG
 	CFLAGS_MCU += -Wno-format-truncation
