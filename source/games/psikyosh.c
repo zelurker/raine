@@ -523,6 +523,9 @@ static void psikyosh_drawgfxzoom(
 	// The very 1st screen of gunbird2 is already asking for a zzom of 128 !!!
 	// so the idea from mame to use an intermediate bitmap and zoom from this bitmap is really excellent here
 	// another approach would be to use real opengl zooming functions, but I'd like to keep this for later...
+	const VIDEO_INFO *vid = current_game->video;
+	int rotate = (vid->flags ^ display_cfg.user_rotate) & 3;
+	int disp_x_16 = vid->screen_x + 2*vid->border_size - 16;
 	for(ytile=0; ytile<high; ytile++)
 	{
 	    for(xtile=0; xtile<wide; xtile++)
@@ -532,16 +535,21 @@ static void psikyosh_drawgfxzoom(
 		{
 		    UINT8 *dest = zoom_bitmap->line[ypixel + ytile*16];
 
-		    for( xpixel=0; xpixel<16; xpixel++ )
-		    {
-			dest[xpixel + xtile*16] = *source++;
+		    if (rotate == 3) {
+			for( xpixel=0; xpixel<16; xpixel++ )
+			{
+			    dest[xpixel + xtile*16] = source[(15-xpixel)*16+ypixel];
+			}
+		    } else {
+			for( xpixel=0; xpixel<16; xpixel++ )
+			{
+			    // untested so far, but should be ok
+			    dest[xpixel + xtile*16] = *source++;
+			}
 		    }
 		}
 	    }
 	}
-	const VIDEO_INFO *vid = current_game->video;
-	int rotate = vid->flags ^ display_cfg.user_rotate;
-	int disp_x_16 = vid->screen_x + 2*vid->border_size - 16;
 
 	/* Start drawing */
 	int sprite_screen_height = ((high*16*(0x400*0x400))/zoomy + 0x200)>>10; /* Round up to nearest pixel */
@@ -558,8 +566,6 @@ static void psikyosh_drawgfxzoom(
 	    int ey = sy + sprite_screen_height;
 	    ex = MIN(ex, current_game->video->screen_x + current_game->video->border_size);
 	    ey = MIN(ey, current_game->video->screen_y + current_game->video->border_size);
-	    if (sx < 0) sx = 0;
-	    if (sy < 0) sy = 0;
 
 	    int x_index_base;
 	    int y_index;
@@ -585,12 +591,18 @@ static void psikyosh_drawgfxzoom(
 			{
 			    UINT8 *source = zoom_bitmap->line[y_index>>10];
 			    UINT32 *dest = (u32*)GameBitmap->line[y];
+			    u8 *pline = pbitmap->line[y];
 
 			    int x, x_index = x_index_base;
 			    for( x=sx; x<ex; x++ )
 			    {
-				int c = source[x_index>>10];
-				if( c != 0 ) dest[x] = map[c];
+				if (x >= 0 && y >= 0) {
+				    int c = source[x_index>>10];
+				    if( c != 0 ) {
+					dest[x] = ((UINT32 *)map)[c];
+					pline[x] = pri;
+				    }
+				}
 				x_index += dx;
 			    }
 
@@ -604,9 +616,15 @@ static void psikyosh_drawgfxzoom(
 			    int x, x_index = x_index_base;
 			    for( x=sx; x<ex; x++ )
 			    {
-				UINT32 *dest = (u32*)GameBitmap->line[disp_x_16-x];
-				int c = source[x_index>>10];
-				if( c != 0 ) dest[y] = map[c];
+				if (x >= 0 && y >= 0) {
+				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16-x];
+				    u8 *pline = pbitmap->line[disp_x_16-x];
+				    int c = source[x_index>>10];
+				    if( c != 0 ) {
+					dest[y] = ((UINT32*)map)[c];
+					pline[y] = pri;
+				    }
+				}
 				x_index += dx;
 			    }
 
@@ -624,12 +642,18 @@ static void psikyosh_drawgfxzoom(
 			{
 			    UINT8 *source = zoom_bitmap->line[y_index>>10];
 			    UINT32 *dest = (u32*)GameBitmap->line[y];
+			    u8 *pline = pbitmap->line[y];
 
 			    int x, x_index = x_index_base;
 			    for( x=sx; x<ex; x++ )
 			    {
-				int c = source[x_index>>10];
-				if( c != 0 ) blend_32(&dest[x], map[c]);
+				if (x >= 0 && y >= 0) {
+				    int c = source[x_index>>10];
+				    if( c != 0 ) {
+					blend_32(&dest[x], ((UINT32 *)map)[c]);
+					pline[x] = pri;
+				    }
+				}
 				x_index += dx;
 			    }
 
@@ -643,9 +667,16 @@ static void psikyosh_drawgfxzoom(
 			    int x, x_index = x_index_base;
 			    for( x=sx; x<ex; x++ )
 			    {
-				UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
-				int c = source[x_index>>10];
-				if( c != 0 ) blend_32(&dest[y], map[c]);
+				if (x >= 0 && y >= 0) {
+				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
+				    u8 *pline = pbitmap->line[disp_x_16-x];
+
+				    int c = source[x_index>>10];
+				    if( c != 0 ) {
+					blend_32(&dest[y], ((UINT32 *)map)[c]);
+					pline[y] = pri;
+				    }
+				}
 				x_index += dx;
 			    }
 
@@ -662,18 +693,22 @@ static void psikyosh_drawgfxzoom(
 			{
 			    UINT8 *source = zoom_bitmap->line[y_index>>10];
 			    UINT32 *dest = (u32*)GameBitmap->line[y];
+			    u8 *pline = pbitmap->line[y];
 
 			    int x, x_index = x_index_base;
 			    for( x=sx; x<ex; x++ )
 			    {
-				int c = source[x_index>>10];
-				if( c != 0 )
-				{
-				    if( alphatable[c] == 0xff )
-					dest[x] = map[c];
-				    else {
-					set_alpha(alphatable[c]);
-					blend_32(&dest[x], map[c]);
+				if (x >= 0 && y >= 0) {
+				    int c = source[x_index>>10];
+				    if( c != 0 )
+				    {
+					if( alphatable[c] == 0xff )
+					    dest[x] = ((UINT32 *)map)[c];
+					else {
+					    set_alpha(alphatable[c]);
+					    blend_32(&dest[x], ((UINT32 *)map)[c]);
+					}
+					pline[x] = pri;
 				    }
 				}
 				x_index += dx;
@@ -681,8 +716,34 @@ static void psikyosh_drawgfxzoom(
 
 			    y_index += dy;
 			}
-		    } else {
-			printf("spr trans map not supported\n");
+		    } else if (rotate == 3) { // 270
+			for( y=sy; y<ey; y++ )
+			{
+			    UINT8 *source = zoom_bitmap->line[y_index>>10];
+
+			    int x, x_index = x_index_base;
+			    for( x=sx; x<ex; x++ )
+			    {
+				if (x >= 0 && y >= 0) {
+				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
+				    u8 *pline = pbitmap->line[disp_x_16-x];
+				    int c = source[x_index>>10];
+				    if( c != 0 )
+				    {
+					if( alphatable[c] == 0xff )
+					    dest[y] = ((UINT32 *)map)[c];
+					else {
+					    set_alpha(alphatable[c]);
+					    blend_32(&dest[y], ((UINT32 *)map)[c]);
+					}
+					pline[y] = pri;
+				    }
+				}
+				x_index += dx;
+			    }
+
+			    y_index += dy;
+			}
 		    }
 		}
 	    }
@@ -963,12 +1024,9 @@ static void draw_bg() {
 }
 
 static void draw_gunbird2() {
-    if (RefreshBuffers) {
-	printf("gfx1 %p gfx2 %p\n",load_region[REGION_GFX1],load_region[REGION_GFX2]);
-    }
     clear_game_screen(0);
     clear_bitmap(pbitmap);
-    // ClearPaletteMap();
+    // ClearPaletteMap(); - not needed anymore, handled by writes to the palette
     if (check_layer_enabled(layer_id_data[3]))
 	draw_sprites();
     draw_bg();
