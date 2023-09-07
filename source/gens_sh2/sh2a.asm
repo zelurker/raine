@@ -609,6 +609,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Read_Byte + ecx * 4]
@@ -644,6 +647,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Read_Word + ecx * 4]
@@ -679,6 +685,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Read_Long + ecx * 4]
@@ -715,6 +724,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Write_Byte + ecx * 4]
@@ -751,6 +763,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Write_Word + ecx * 4]
@@ -787,6 +802,9 @@ bits 32
 %ifdef __GCC
 	mov ecx, eax
 	mov [ebp + SH2.Cycle_IO], edi
+%ifdef RAINE_DEBUG
+	mov [ebp + SH2.PC],esi
+%endif
 	shr ecx, 24
 	push ebp
 	call [ebp + SH2.Write_Long + ecx * 4]
