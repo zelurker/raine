@@ -21,7 +21,7 @@
 #endif
 
 UINT32 current_cpu_num[0x10];
-UINT32 cycles_68k[2],cycles_6502[3];
+UINT32 cycles_68k[2],cycles_6502[3],cycles_sh2;
 static char active[4];
 
 /*
@@ -371,6 +371,7 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 	    printf("sh2: no cycles\n");
 	else if (ret)
 	    printf("SH2_Exec: %d\n",ret);
+	cycles_sh2 += SH2_Read_Odo(&M_SH2);
 	break;
 #endif
    }
@@ -390,6 +391,9 @@ UINT32 cpu_get_cycles_done(UINT32 cpu) {
 		  else
 		      return cycles_68k[cpu & 0xf];
 #endif
+#ifdef GENS_SH2
+   case CPU_SH2: return cycles_sh2;
+#endif
    }
    return 0;
 }
@@ -400,6 +404,9 @@ void cpu_set_cycles_done(UINT32 cpu, int cycles) {
     case CPU_Z80: mz80AddCyclesDone(cycles); break;
     case CPU_6502: cycles_6502[cpu & 0xf] += cycles; break;
     case CPU_68000: cycles_68k[cpu & 0xf] += cycles; break;
+#ifdef GENS_SH2
+    case CPU_SH2: cycles_sh2 += cycles; break;
+#endif
     }
 }
 
@@ -449,6 +456,7 @@ void cpu_reset(UINT32 cpu_id)
 #if GENS_SH2
       case CPU_SH2_0:
 	SH2_Reset(&M_SH2,0);
+	cycles_sh2 = 0;
 	break;
 #endif
    }
