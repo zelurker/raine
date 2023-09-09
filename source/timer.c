@@ -125,6 +125,8 @@ extern void timer_callback_b (int n);
 extern void timer_callback_b (int n);
 extern void ymf278b_timer_a_tick(int num);
 extern void ymf278b_timer_b_tick(int num);
+extern void ymf278b_timer_busy_clear(int num);
+extern void ymf278b_timer_ld_clear(int num);
 extern void timer_callback_3812(int param);
 
 void *timer_adjust(double duration, int param, double period, void (*callback)(int))
@@ -152,6 +154,8 @@ void *timer_adjust(double duration, int param, double period, void (*callback)(i
     else if (callback == &timer_callback_b) strcpy(timer[free_timer].name, "2151b");
     else if (callback == &ymf278b_timer_a_tick) strcpy(timer[free_timer].name, "ymf278b1");
     else if (callback == &ymf278b_timer_b_tick) strcpy(timer[free_timer].name, "ymf278b2");
+    else if (callback == &ymf278b_timer_busy_clear) strcpy(timer[free_timer].name, "ymf278b3");
+    else if (callback == &ymf278b_timer_ld_clear) strcpy(timer[free_timer].name, "ymf278b4");
     else if (callback == &timer_callback_3812) strcpy(timer[free_timer].name,"3812");
     else if (callback == &galaxian_noise_timer_cb) strcpy(timer[free_timer].name,"galax_n");
     else if (callback == &galaxian_lfo_timer_cb) strcpy(timer[free_timer].name,"galax_lfo");

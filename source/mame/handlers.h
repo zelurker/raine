@@ -102,6 +102,8 @@ enum
 ***************************************************************************/
 
 /* ----- macros for declaring the various common memory/port handlers ----- */
+#define READ8_HANDLER READ_HANDLER
+#define WRITE8_HANDLER WRITE_HANDLER
 #define READ_HANDLER(name) 		data8_t  name(UNUSEDARG offs_t offset)
 #define WRITE_HANDLER(name) 	void     name(UNUSEDARG offs_t offset, UNUSEDARG data8_t data)
 #define READ16_HANDLER(name)	data16_t name(UNUSEDARG offs_t offset)

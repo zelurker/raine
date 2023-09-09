@@ -17,6 +17,9 @@ extern UINT32 audio_cpu;
 void setup_z80_frame(UINT32 cpu,UINT32 cycles);
 void execute_z80_audio_frame();
 void *timer_adjust(double duration, int param, double period, void (*callback)(int));
+#define timer_readjust(timer,period,cb) \
+if (timer) timer_remove(timer); \
+if (period > -0.1) timer = timer_adjust(period,chip->index,period,cb)
 
 #define timer_set(duration, param, callback) \
   timer_adjust(duration, param, 0, callback)
