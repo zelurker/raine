@@ -538,17 +538,6 @@ void reset_game_hardware(void)
 
    clear_ingame_message_list();
 
-   // Must be restarted here in case we are called from a game hardware
-   // if(GameSound && RaineSoundCard){
-     if (audio_sample_rate) {
-	 // audio_sample_rate can now be 0 on initialization to get
-	 // the best value from the driver, but in this case it's better not
-	 // to call these !
-	 init_sound_emulators();
-	 sa_unpause_sound();
-     }
-   // }
-
    start_cpu_main();
 
    restore_ingame_timer(0);
@@ -634,5 +623,15 @@ void reset_game_hardware(void)
 #if HAS_CONSOLE
    stop_scripts();
 #endif
+   // Must be restarted here in case we are called from a game hardware
+   // if(GameSound && RaineSoundCard){
+     if (audio_sample_rate) {
+	 // audio_sample_rate can now be 0 on initialization to get
+	 // the best value from the driver, but in this case it's better not
+	 // to call these !
+	 init_sound_emulators();
+	 sa_unpause_sound();
+     }
+   // }
    print_debug("reset_game_hardware(): OK\n");
 }
