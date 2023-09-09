@@ -49,7 +49,7 @@
 ; In case you're using GCC, uncomment the __GCC definition.
 
 %define __GCC
-%define __GCC2
+; %define __GCC2
 
 %macro DECLV 1
 

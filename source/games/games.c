@@ -110,6 +110,7 @@ char *company_name[] =
    "Kyle Hodgetts",
    "F2 System",
    "Atari",
+   "Arika",
 };
 
 const int nb_companies = sizeof(company_name)/4;

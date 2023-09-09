@@ -16,6 +16,7 @@
 #include "blit.h"
 #include "priorities.h"
 #include "pdraw.h"
+#include "timer.h"
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
 
@@ -79,6 +80,90 @@ static struct ROM_INFO rom_s1945iii[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_tgm2[] =
+{
+  LOAD_32_SWAP_16( CPU1, "2.u21", 0x000000, 0x080000, 0xb19f6c31),
+  LOAD_32_SWAP_16( CPU1, "1.u22", 0x000002, 0x080000, 0xc521bf24),
+	// Lower positions not populated
+  LOAD16_32( GFX1, "81ts_3l.u6", 0x0c00000, 0x200000, 0xd77cff9c),
+  LOAD16_32( GFX1, "82ts_3h.u14", 0x0c00002, 0x200000, 0xf012b583),
+  LOAD16_32( GFX1, "83ts_4l.u7", 0x1000000, 0x200000, 0x078cafc3),
+  LOAD16_32( GFX1, "84ts_4h.u15", 0x1000002, 0x200000, 0x1f91446b),
+  LOAD16_32( GFX1, "85ts_5l.u8", 0x1400000, 0x200000, 0x40fbd259),
+  LOAD16_32( GFX1, "86ts_5h.u16", 0x1400002, 0x200000, 0x186c935f),
+  LOAD16_32( GFX1, "87ts_6l.u1", 0x1800000, 0x200000, 0xc17dc48a),
+  LOAD16_32( GFX1, "88ts_6h.u2", 0x1800002, 0x200000, 0xe4dba5da),
+  LOAD16_32( GFX1, "89ts_7l.u19", 0x1c00000, 0x200000, 0xdab1b2c5),
+  LOAD16_32( GFX1, "90ts_7h.u20", 0x1c00002, 0x200000, 0xaae696b3),
+  LOAD16_32( GFX1, "91ts_8l.u28", 0x2000000, 0x200000, 0xe953ace1),
+  LOAD16_32( GFX1, "92ts_8h.u29", 0x2000002, 0x200000, 0x9da3b976),
+  LOAD16_32( GFX1, "93ts_9l.u41", 0x2400000, 0x200000, 0x233087fe),
+  LOAD16_32( GFX1, "94ts_9h.u42", 0x2400002, 0x200000, 0x9da831c7),
+  LOAD16_32( GFX1, "95ts_10l.u58", 0x2800000, 0x200000, 0x303a5240),
+  LOAD16_32( GFX1, "96ts_10h.u59", 0x2800002, 0x200000, 0x2240ebf6),
+  LOAD( SOUND1, "97ts_snd.u52", 0x000000, 0x400000, 0x9155eca6),
+  FILL( SOUND1, 0x400000, 0x400000, 0 ),
+	// might need byteswapping to reprogram actual chip
+  LOAD( EEPROM, "tgm2.default.nv", 0x000, 0x100, 0x50e2348c),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_tgm2p[] = // clone of tgm2
+{
+  { "2b.u21", 0x080000, 0x38bc626c, REGION_CPU1, 0x000000, LOAD32_SWAP_16 },
+  { "1b.u22", 0x080000, 0x7599fb19, REGION_CPU1, 0x000002, LOAD32_SWAP_16 },
+	// Lower positions not populated
+  { "tgm2p.default.nv", 0x100, 0xb2328b40, REGION_EEPROM, 0x000, LOAD_NORMAL },
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_soldivid[] =
+{
+  LOAD_32_SWAP_16( CPU1, "2-prog_l.u18", 0x000002, 0x080000, 0xcf179b04),
+  LOAD_32_SWAP_16( CPU1, "1-prog_h.u17", 0x000000, 0x080000, 0xf467d1c4),
+	/* This Space Empty! */
+  LOAD_32_SWAP_16( GFX1, "4l.u10", 0x2000000, 0x400000, 0x9eb9f269),
+  LOAD_32_SWAP_16( GFX1, "4h.u31", 0x2000002, 0x400000, 0x7c76cfe7),
+  LOAD_32_SWAP_16( GFX1, "5l.u9", 0x2800000, 0x400000, 0xc59c6858),
+  LOAD_32_SWAP_16( GFX1, "5h.u30", 0x2800002, 0x400000, 0x73bc66d0),
+  LOAD_32_SWAP_16( GFX1, "6l.u8", 0x3000000, 0x400000, 0xf01b816e),
+  LOAD_32_SWAP_16( GFX1, "6h.u37", 0x3000002, 0x400000, 0xfdd57361),
+  LOAD( SOUND1, "sound.bin", 0x000000, 0x400000, 0xe98f8d45),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+#define dsw_tgm2 NULL
+
+static struct ROM_INFO rom_dragnblz[] =
+{
+  LOAD_32_SWAP_16( CPU1, "2prog_h.u21", 0x000000, 0x080000, 0xfc5eade8),
+  LOAD_32_SWAP_16( CPU1, "1prog_l.u22", 0x000002, 0x080000, 0x95d6fd02),
+  LOAD16_32( GFX1, "1l.u4", 0x0400000, 0x200000, 0xc2eb565c),
+  LOAD16_32( GFX1, "1h.u12", 0x0400002, 0x200000, 0x23cb46b7),
+  LOAD16_32( GFX1, "2l.u5", 0x0800000, 0x200000, 0xbc256aea),
+  LOAD16_32( GFX1, "2h.u13", 0x0800002, 0x200000, 0xb75f59ec),
+  LOAD16_32( GFX1, "3l.u6", 0x0c00000, 0x200000, 0x4284f008),
+  LOAD16_32( GFX1, "3h.u14", 0x0c00002, 0x200000, 0xabe5cbbf),
+  LOAD16_32( GFX1, "4l.u7", 0x1000000, 0x200000, 0xc9fcf2e5),
+  LOAD16_32( GFX1, "4h.u15", 0x1000002, 0x200000, 0x0ab0a12a),
+  LOAD16_32( GFX1, "5l.u8", 0x1400000, 0x200000, 0x68d03ccf),
+  LOAD16_32( GFX1, "5h.u16", 0x1400002, 0x200000, 0x5450fbca),
+  LOAD16_32( GFX1, "6l.u1", 0x1800000, 0x200000, 0x8b52c90b),
+  LOAD16_32( GFX1, "6h.u2", 0x1800002, 0x200000, 0x7362f929),
+  LOAD16_32( GFX1, "7l.u19", 0x1c00000, 0x200000, 0xb4f4d86e),
+  LOAD16_32( GFX1, "7h.u20", 0x1c00002, 0x200000, 0x44b7b9cc),
+  LOAD16_32( GFX1, "8l.u28", 0x2000000, 0x200000, 0xcd079f89),
+  LOAD16_32( GFX1, "8h.u29", 0x2000002, 0x200000, 0x3edb508a),
+  LOAD16_32( GFX1, "9l.u41", 0x2400000, 0x200000, 0x0b53cd78),
+  LOAD16_32( GFX1, "9h.u42", 0x2400002, 0x200000, 0xbc61998a),
+  LOAD16_32( GFX1, "10l.u58", 0x2800000, 0x200000, 0xa3f5c7f8),
+  LOAD16_32( GFX1, "10h.u59", 0x2800002, 0x200000, 0x30e304c4),
+  LOAD( SOUND1, "snd0.u52", 0x000000, 0x200000, 0x7fd1b225),
+  FILL( SOUND1, 0x200000, 0x600000, 0 ),
+  LOAD_SW16( EEPROM, "eeprom-dragnblz.u44", 0x0000, 0x0100, 0x46e85da9),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static struct DSW_DATA dsw_data_gunbird2_0[] =
 {
     { "Region",2,3 },
@@ -108,6 +193,21 @@ static struct DSW_INFO dsw_s1945iii[] =
   { 0x7, 0x1, dsw_data_s1945iii_0 },
   { 0, 0, NULL }
 };
+
+static struct DSW_DATA dsw_data_soldivid_0[] =
+{
+    { "Region",1,2 },
+  { "Japan", 0x0 },
+  { "World", 0x1 },
+  { NULL, 0}
+};
+
+static struct DSW_INFO dsw_soldivid[] =
+{
+  { 0x7, 0x1, dsw_data_soldivid_0 },
+  { 0, 0, NULL }
+};
+
 static struct INPUT_INFO input_gunbird2[] =
 {
   INP0( COIN1, 0x03, 0x01),
@@ -149,6 +249,13 @@ static struct INPUT_INFO input_gunbird2[] =
   END_INPUT
 };
 
+static struct INPUT_INFO input_dragnblz[] =
+{
+    INCL_INP( gunbird2 ),
+    INP1( UNKNOWN, 0x03, 0x40), // active HIGH here
+    END_INPUT
+};
+
 static void irq_handler(int irq) {
     if (irq)
 	cpu_interrupt(CPU_SH2_0,12);
@@ -158,7 +265,7 @@ static void irq_handler(int irq) {
 static struct YMF278B_interface ymf278b_interface =
 {
 	1,
-	{ MASTER_CLOCK/2 },       /* 33.8688 MHz */
+	{ MASTER_CLOCK/2 },
 	{ REGION_SMP1 },
 	{ YM3012_VOL(255, MIXER_PAN_CENTER, 255, MIXER_PAN_CENTER) },
 	{ irq_handler }
@@ -240,6 +347,21 @@ static u32 FASTCALL read_raml_gunbird2(u32 offset) {
     return 0xffffffff;
 }
 
+static u32 FASTCALL read_raml_soldivid(u32 offset) {
+    offset &= 0xffffff;
+    if (offset <= 0xfffff) {
+	int ret = ReadLong68k(&RAM[offset]);
+	if (offset == 0x18) {
+	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
+	    if (!ret) {
+		M_SH2.Cycle_IO = 3;
+	    }
+	}
+        return ret;
+    }
+    return 0xffffffff;
+}
+
 static u32 FASTCALL read_raml_s1945iii(u32 offset) {
     offset &= 0xffffff;
     if (offset <= 0xfffff) {
@@ -294,6 +416,7 @@ static u8 FASTCALL read_videob(u32 offset) {
 	return 0; // irq related
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ram_video[offset & 0x1f];
+    printf("unknwon read video region byte %x\n",offset);
 
     return 0xff;
 }
@@ -311,6 +434,7 @@ static u16 FASTCALL read_videow(u32 offset) {
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ReadWord68k(&ram_video[offset & 0x1f]);
 
+    printf("unknwon read video region word %x\n",offset);
     return 0xffff;
 }
 
@@ -327,6 +451,7 @@ static u32 FASTCALL read_videol(u32 offset) {
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	return ReadLong68k(&ram_video[offset & 0x1f]);
 
+    printf("unknwon read video region long %x\n",offset);
     return 0xffffffff;
 }
 
@@ -342,6 +467,10 @@ static void FASTCALL write_videob(u32 offset,u8 data) {
 	// irq related
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	ram_video[offset & 0x1f] = data;
+    else if (offset >= 0x5ffdc && offset <= 0x5ffdf) {
+	// irq ack
+    } else
+	printf("write byte video unknown %x\n",offset);
 }
 
 static void FASTCALL write_videow(u32 offset,u16 data) {
@@ -358,6 +487,8 @@ static void FASTCALL write_videow(u32 offset,u16 data) {
 	// irq related
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	WriteWord68k(&ram_video[offset & 0x1f],data);
+    else
+	printf("write word video unknown %x\n",offset);
 }
 
 static void FASTCALL write_videol(u32 offset,u32 data) {
@@ -374,6 +505,8 @@ static void FASTCALL write_videol(u32 offset,u32 data) {
 	// irq related
     else if (offset >= 0x5ffe0 && offset <= 0x5ffff)
 	WriteLong68k(&ram_video[offset & 0x1f],data);
+    else
+	printf("write long video unknown %x\n",offset);
 }
 
 static u8 FASTCALL read_inputs_soundb(u32 offset) {
@@ -381,10 +514,28 @@ static u8 FASTCALL read_inputs_soundb(u32 offset) {
     if (offset == 4) // special case here, 2 lowest bits = region, 0x10 = eeprom bit
 	return (input_buffer[7] & 3) | ((EEPROM_read_bit() & 0x01) << 4);
     else if (offset < 7) {
+	// printf("read input %x = %x\n",offset,input_buffer[offset]);
 	return input_buffer[offset];
-    } else if (offset == 0x100000) {
-	int status = YMF278B_status_port_0_r(0);
-	return status;
+    } else if (offset >= 0x100000 && offset <= 0x100003) {
+	// printf("read_sound %x from %x\n",offset,M_SH2.PC - M_SH2.Base_PC);
+	return ymf278b_r(0,offset & 3);
+    } else {
+	printf("read unknown port %x\n",offset);
+	return 0xff;
+    }
+}
+
+static u8 FASTCALL read_inputs_soundb_ps3v1(u32 offset) {
+    offset &= 0xffffff;
+    if (offset == 0x800004) { // special case here, 2 lowest bits = region, 0x10 = eeprom bit
+	printf("read port %x\n",offset);
+	return (input_buffer[7] & 3) | ((EEPROM_read_bit() & 0x01) << 4);
+    } else if (offset >= 0x800000 && offset < 0x800007) {
+	// printf("read input %x = %x\n",offset,input_buffer[offset]);
+	return input_buffer[offset & 7];
+    } else if (offset <= 0x3) {
+	// printf("read_sound %x\n",offset);
+	return ymf278b_r(0,offset & 3);
     } else {
 	printf("read unknown port %x\n",offset);
 	return 0xff;
@@ -394,14 +545,30 @@ static u8 FASTCALL read_inputs_soundb(u32 offset) {
 static void FASTCALL write_sound(u32 offset,u8 data) {
     offset &= 0x7ffffff;
     // printf("write_sound %x,%x\n",offset,data);
-    if (offset >= 0x3100000 && offset <= 0x3100007)
-	ymf278b_0_w(offset,data);
-    else if (offset == 0x3000004) {
+    if (offset >= 0x3100000 && offset <= 0x3100007) {
+	// printf("sound %x,%x from %x\n",offset,data,M_SH2.PC - M_SH2.Base_PC);
+	ymf278b_w(0,offset,data);
+    } else if (offset == 0x3000004) {
 	// printf("eeprom write\n");
 	EEPROM_write_bit((data & 0x20) ? 1 : 0);
 	EEPROM_set_cs_line((data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
 	EEPROM_set_clock_line((data & 0x40) ? ASSERT_LINE : CLEAR_LINE);
-    }
+    } else
+	printf("write sound area unknown %x,%x\n",offset,data);
+}
+
+static void FASTCALL write_sound_ps3v1(u32 offset,u8 data) {
+    offset &= 0x7ffffff;
+    // printf("write_sound %x,%x\n",offset,data);
+    if (offset >= 0x5000000 && offset <= 0x5000007)
+	ymf278b_w(0,offset,data);
+    else if (offset == 0x5800004) {
+	// printf("eeprom write\n");
+	EEPROM_write_bit((data & 0x20) ? 1 : 0);
+	EEPROM_set_cs_line((data & 0x80) ? CLEAR_LINE : ASSERT_LINE);
+	EEPROM_set_clock_line((data & 0x40) ? ASSERT_LINE : CLEAR_LINE);
+    } else
+	printf("write_sound_ps3v1 unknown %x,%x\n",offset,data);
 }
 
 #define BG_TYPE(n) (ram_video[6*4+n] & 0x7f )
@@ -421,8 +588,12 @@ static void load_gunbird2() {
 	default_eeprom_size = get_region_size(REGION_EEPROM);
     }
     load_eeprom();
+    setup_z80_frame(CPU_SH2_0,MASTER_CLOCK/2/60);
     SH2_Init(&M_SH2,0);
-    bank = &ROM[0x100000];
+    if (get_region_size(REGION_CPU1) > 0x100000)
+	bank = &ROM[0x100000];
+    else
+	bank = NULL;
     RAMSize = 0x100000 + // main ram 0x6000000
 	0x20 + // video registers
 	0x200 + // zoom ram 0x4050000
@@ -457,31 +628,46 @@ static void load_gunbird2() {
     SH2_Add_ReadW(&M_SH2,0, 0, read_romw);
     SH2_Add_ReadL(&M_SH2,0, 0, read_roml);
 
-    SH2_Add_ReadB(&M_SH2,5, 5, read_bankb);
-    SH2_Add_ReadW(&M_SH2,5, 5, read_bankw);
-    SH2_Add_ReadL(&M_SH2,5, 5, read_bankl);
+    if (bank) {
+	SH2_Add_ReadB(&M_SH2,5, 5, read_bankb);
+	SH2_Add_ReadW(&M_SH2,5, 5, read_bankw);
+	SH2_Add_ReadL(&M_SH2,5, 5, read_bankl);
+    }
 
     SH2_Add_ReadB(&M_SH2,6, 6, read_ramb);
     SH2_Add_ReadW(&M_SH2,6, 6, read_ramw);
     if (is_current_game("gunbird2"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_gunbird2);
-    else if (is_current_game("s1945iii"))
+    else if (is_current_game("s1945iii") || is_current_game("tgm2"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_s1945iii);
+    else if (is_current_game("soldivid"))
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_soldivid);
     else
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml);
     SH2_Add_WriteB(&M_SH2,6, 6, write_ramb);
     SH2_Add_WriteW(&M_SH2,6, 6, write_ramw);
     SH2_Add_WriteL(&M_SH2,6, 6, write_raml);
+    if (is_current_game("soldivid")) {
+	SH2_Add_ReadB(&M_SH2,3, 3, read_videob);
+	SH2_Add_ReadW(&M_SH2,3, 3, read_videow);
+	SH2_Add_ReadL(&M_SH2,3, 3, read_videol);
+	SH2_Add_WriteB(&M_SH2,3, 3, write_videob);
+	SH2_Add_WriteW(&M_SH2,3, 3, write_videow);
+	SH2_Add_WriteL(&M_SH2,3, 3, write_videol);
 
-    SH2_Add_ReadB(&M_SH2,4, 4, read_videob);
-    SH2_Add_ReadW(&M_SH2,4, 4, read_videow);
-    SH2_Add_ReadL(&M_SH2,4, 4, read_videol);
-    SH2_Add_WriteB(&M_SH2,4, 4, write_videob);
-    SH2_Add_WriteW(&M_SH2,4, 4, write_videow);
-    SH2_Add_WriteL(&M_SH2,4, 4, write_videol);
+	SH2_Add_ReadB(&M_SH2,5, 5, &read_inputs_soundb_ps3v1);
+	SH2_Add_WriteB(&M_SH2,5, 5, &write_sound_ps3v1);
+    } else {
+	SH2_Add_ReadB(&M_SH2,4, 4, read_videob);
+	SH2_Add_ReadW(&M_SH2,4, 4, read_videow);
+	SH2_Add_ReadL(&M_SH2,4, 4, read_videol);
+	SH2_Add_WriteB(&M_SH2,4, 4, write_videob);
+	SH2_Add_WriteW(&M_SH2,4, 4, write_videow);
+	SH2_Add_WriteL(&M_SH2,4, 4, write_videol);
 
-    SH2_Add_ReadB(&M_SH2,3, 3, &read_inputs_soundb);
-    SH2_Add_WriteB(&M_SH2,3, 3, &write_sound);
+	SH2_Add_ReadB(&M_SH2,3, 3, &read_inputs_soundb);
+	SH2_Add_WriteB(&M_SH2,3, 3, &write_sound);
+    }
 
     SH2_Map_Cache_Trough(&M_SH2);
     // alphatable initialized from color index...
@@ -496,7 +682,8 @@ static void load_gunbird2() {
 }
 
 static void execute_gunbird2() {
-    cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
+    execute_z80_audio_frame();
+    // cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
     cpu_interrupt(CPU_SH2_0,4); // vbl
 }
 
@@ -1140,6 +1327,25 @@ static struct VIDEO_INFO video_gunbird2 =
    psikyosh_gfx
 };
 
+static struct VIDEO_INFO video_horiz =
+{
+   draw_gunbird2,
+   320,
+   240,
+   16,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   psikyosh_gfx
+};
+
+static struct VIDEO_INFO video_horiz224 =
+{
+   draw_gunbird2,
+   320,
+   224,
+   16,
+   VIDEO_ROTATE_NORMAL | VIDEO_ROTATABLE,
+   psikyosh_gfx
+};
 static void clear_gunbird2() {
     destroy_bitmap(zoom_bitmap);
     zoom_bitmap = NULL;
@@ -1149,3 +1355,12 @@ GMEI( gunbird2,"Gunbird 2",PSIKYO,1998, GAME_SHOOT,
 	.dsw = dsw_gunbird2);
 GMEI( s1945iii,"Strikers 1945 III (World) / Strikers 1999 (Japan)",PSIKYO,1999, GAME_SHOOT,
 	.dsw = dsw_s1945iii);
+#define dsw_dragnblz dsw_s1945iii
+GMEI( dragnblz,"Dragon Blaze",PSIKYO,2000, GAME_SHOOT,
+	.input = input_dragnblz);
+GMEI( tgm2,"Tetris the Absolute The Grand Master 2",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
+	.video = &video_horiz);
+CLNEI( tgm2p,tgm2,"Tetris the Absolute The Grand Master 2 Plus",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
+	.video = &video_horiz);
+GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC,
+	.video = &video_horiz224);

@@ -92,6 +92,7 @@ enum company_num
    COMPANY_ID_KYLE_HODGETTS,
    COMPANY_ID_F2,
    COMPANY_ID_ATARI,
+   COMPANY_ID_ARIKA
 };
 
 extern const int nb_companies;

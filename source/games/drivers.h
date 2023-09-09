@@ -1324,5 +1324,9 @@ DRV(gaunt2)
 #ifdef GENS_SH2
     DRV(gunbird2)
     DRV(s1945iii)
+    DRV(dragnblz)
+    DRV(tgm2)
+    DRV(tgm2p)
+    DRV(soldivid)
 #endif
 
