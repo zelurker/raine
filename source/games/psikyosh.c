@@ -1356,11 +1356,13 @@ GMEI( gunbird2,"Gunbird 2",PSIKYO,1998, GAME_SHOOT,
 GMEI( s1945iii,"Strikers 1945 III (World) / Strikers 1999 (Japan)",PSIKYO,1999, GAME_SHOOT,
 	.dsw = dsw_s1945iii);
 #define dsw_dragnblz dsw_s1945iii
-GMEI( dragnblz,"Dragon Blaze",PSIKYO,2000, GAME_SHOOT,
+// All the following games are not working, problem related to sound apparently, no sound effect during init and hang when music starts
+// I highly suspect an sh2 emulation bug here...
+GMEI( dragnblz,"Dragon Blaze",PSIKYO,2000, GAME_SHOOT|GAME_NOT_WORKING,
 	.input = input_dragnblz);
 GMEI( tgm2,"Tetris the Absolute The Grand Master 2",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
 	.video = &video_horiz);
 CLNEI( tgm2p,tgm2,"Tetris the Absolute The Grand Master 2 Plus",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
 	.video = &video_horiz);
-GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC,
+GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC|GAME_NOT_WORKING,
 	.video = &video_horiz224);

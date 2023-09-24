@@ -144,11 +144,11 @@
 ;
 ;*************************
 
-;%define SH2_SPEED       OPTIMIST
-%define SH2_SPEED       REALIST
+%define SH2_SPEED       OPTIMIST
+;%define SH2_SPEED       REALIST
 ;%define SH2_SPEED       PESSIMIST
 
-%define FRT_SUPPORT
+;%define FRT_SUPPORT
 
 %define OPTIMIST        0
 %define REALIST         1
