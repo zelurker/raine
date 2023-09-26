@@ -1,3 +1,5 @@
+extern UINT8 alphatable[256];
+
 void init_alpha(UINT32 my_alpha);
 // set_alpha : sets only the variables, does not setup the mmx code
 void set_alpha(UINT32 my_alpha);

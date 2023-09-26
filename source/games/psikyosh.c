@@ -34,7 +34,6 @@ static struct EEPROM_interface eeprom_interface_93C56 =
 };
 
 static al_bitmap *zoom_bitmap;
-static UINT8 alphatable[256];
 static int layer_id_data[4];
 static char *layer_id_name[4] =
 {
@@ -679,7 +678,7 @@ static void load_gunbird2() {
     for (int i=0; i<0xc0; i++)
 	alphatable[i] = 0xff;
     for (int i=0; i<0x40; i++) {
-	int alpha = ((0x3f-i)*0xff)/0x3f;
+	int alpha = (0x3f-i)<<2;
 	alphatable[i+0xc0] = alpha;
     }
     for (int i=0; i<4; i++)
@@ -768,12 +767,18 @@ static void psikyosh_drawgfxzoom(
 		/* case 7: TRANSPARENCY_ALPHARANGE */
 		else
 		{
-		    // printf("sprite alphatable not supported (not zoomed)\n");
-		    // temp workaround : just ignore the alphatable for now
+		    // The alphamap is super slow, + the sprites can't be rendered this way since they are drawn 1st... !!!
+#if 1
 		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
 			pdraw16x16_Trans_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
 		    else
 			pdraw16x16_Mapped_back_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
+#else
+		    if(gfx_solid[region][code_base]==1)                    // Some pixels; trans
+			pdraw16x16_Trans_Mapped_back_AlphaMap_flip_Rot(&gfx[region][code_base<<8],sx,sy,map,flipx | (flipy<<1),pri);
+		    else
+			pdraw16x16_Mapped_back_AlphaMap_flip_Rot(&gfx[region][code<<8],sx,sy,map,flipx | (flipy<<1),pri);
+#endif
 		}
 
 	    }
@@ -1195,11 +1200,10 @@ static void drawgfx_alphatable(int region,
 	    pdraw16x16_Test_Mapped_Alpha_Rot(&gfx[region][code<<8],destx,desty,map,pri);
     } else {
 
-	// No alpha table here for now, just display the sprite normally
 	if(gfx_solid[region][code]==1)                    // Some pixels; trans
-	    pdraw16x16_Test_Trans_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
+	    pdraw16x16_Test_Trans_Mapped_AlphaMap_Rot(&gfx[region][code<<8],destx,desty,map,pri);
 	else
-	    pdraw16x16_Test_Mapped_Rot(&gfx[region][code<<8],destx,desty,map,pri);
+	    pdraw16x16_Test_Mapped_AlphaMap_Rot(&gfx[region][code<<8],destx,desty,map,pri);
     }
 }
 
@@ -1287,7 +1291,11 @@ static void draw_bg() {
 static void draw_gunbird2() {
     clear_game_screen(0);
     clear_bitmap(pbitmap);
-    // ClearPaletteMap(); - not needed anymore, handled by writes to the palette
+    // The layers have priority over the sprites, so the idea is to draw 1st the sprites, initializing the priority bitmap, then draw the layers still visible on top
+    // it allows to use an 8bpp priority bitmap only
+    // the only problem is when drawing and transparent sprite on top of that, since sprites are drawn 1st it just doesn't work !
+    // For now an alt drawing function could do it at least for tgm2 which obviously doesn't use priorities, but which use transparent sprites !
+    // Yeah except it's annoying to have such slow alpha blending functions so for now I just disable them, I should redo all these alpha blending functions differently...
     if (check_layer_enabled(layer_id_data[3]))
 	draw_sprites();
     draw_bg();

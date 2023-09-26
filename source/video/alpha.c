@@ -6,6 +6,7 @@
 /* This module just handles global variables required by the mmx functions */
 
 static UINT32 alpha,dalpha;
+UINT8 alphatable[256];
 
 /* The CAPITALS for the global variables are kept because they were like that
    in the original code and I'd like to change it as little as possible */
@@ -24,7 +25,7 @@ UINT64 ADD64 = 0x0040004000400040ll;
 
 void set_alpha(UINT32 my_alpha) {
   alpha = my_alpha;
-  dalpha = 256-alpha;
+  dalpha = 255-alpha;
 }
 
 /* May Microsoft be cursed for the eternity with its stupid _ everywhere !!! */
