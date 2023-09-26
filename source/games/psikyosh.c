@@ -524,7 +524,7 @@ static u8 FASTCALL read_inputs_soundb(u32 offset) {
 	return input_buffer[offset];
     } else if (offset >= 0x100000 && offset <= 0x100003) {
 	// printf("read_sound %x from %x\n",offset,M_SH2.PC - M_SH2.Base_PC);
-	return ymf278b_r(0,offset & 3);
+	return ymf278b_0_r(offset & 3);
     } else {
 	printf("read unknown port %x\n",offset);
 	return 0xff;
@@ -540,7 +540,7 @@ static u8 FASTCALL read_inputs_soundb_ps3v1(u32 offset) {
 	return input_buffer[offset & 7];
     } else if (offset <= 0x3) {
 	// printf("read_sound %x\n",offset);
-	return ymf278b_r(0,offset & 3);
+	return ymf278b_0_r(offset & 3);
     } else {
 	printf("read unknown port %x\n",offset);
 	return 0xff;
@@ -552,7 +552,7 @@ static void FASTCALL write_sound(u32 offset,u8 data) {
     // printf("write_sound %x,%x\n",offset,data);
     if (offset >= 0x3100000 && offset <= 0x3100007) {
 	// printf("sound %x,%x from %x\n",offset,data,M_SH2.PC - M_SH2.Base_PC);
-	ymf278b_w(0,offset,data);
+	ymf278b_0_w(offset,data);
     } else if (offset == 0x3000004) {
 	// printf("eeprom write\n");
 	EEPROM_write_bit((data & 0x20) ? 1 : 0);
@@ -566,7 +566,7 @@ static void FASTCALL write_sound_ps3v1(u32 offset,u8 data) {
     offset &= 0x7ffffff;
     // printf("write_sound %x,%x\n",offset,data);
     if (offset >= 0x5000000 && offset <= 0x5000007)
-	ymf278b_w(0,offset,data);
+	ymf278b_0_w(offset,data);
     else if (offset == 0x5800004) {
 	// printf("eeprom write\n");
 	EEPROM_write_bit((data & 0x20) ? 1 : 0);
