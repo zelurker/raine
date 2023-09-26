@@ -717,7 +717,7 @@ static menu_item_t about_items[] =
 #endif
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
 #ifdef GENS_SH2
-  { _("Gens SH2 by Stéphane Dallongeville") },
+  { "Gens SH2 by Stéphane Dallongeville" },
 #endif
 #ifdef __i386__
   { _("32 bits i386 binary with plenty of ASM inside") },
