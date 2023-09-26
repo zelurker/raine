@@ -4193,3 +4193,25 @@ s1945iii:
 @:maincpu,program,6083c84,c4,00,00
 @:maincpu,program,6083d80,46,00,02
 
+;tgm2: saves todays scores (rest are saved in nvram i think)
+tgm2:
+@:maincpu,program,60793f4,68,54,00
+@delay=5
+
+
+;tgm2p: saves todays scores (rest are saved in nvram i think)
+tgm2p:
+@:maincpu,program,6079454,68,54,00
+@delay=5
+
+;(sol divide) (by Paul Priest)
+soldivid:
+soldividk:
+@:maincpu,program,600bb50,18,00,50
+@:maincpu,program,600bb68,1e,24,02
+
+;dragon blaze (by tamphax)
+dragnblz:
+@:maincpu,program,60824b4,dd,00,00
+@:maincpu,program,60825d4,4d,00,03
+

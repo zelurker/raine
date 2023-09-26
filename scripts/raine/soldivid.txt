@@ -1,0 +1,51 @@
+script "Select Score Display Now!" \
+ "0x01/'ON'"\
+ "0x00/'OFF'" 
+change:
+    poke $600BB43 param
+script " "  
+script "P1 Infinite Energy"  
+run:
+    dpoke $600B908 $0800
+    dpoke $600B90C $0800
+script "P1 Get Max Energy Now!"  
+on:
+    dpoke $600B908 $0800
+    dpoke $600B90C $0800
+script "P1 Invincibility"  
+run:
+    poke $600B957 $03
+script "P1 Infinite Magic"  
+run:
+    poke $600B91D $30
+script "P1 Always have Max Power"  
+run:
+    poke $600B943 $02
+script "P1 Always have All magic"  
+run:
+    dpoke $600B960 $01FF
+    lpoke $600B964 $06060606
+    lpoke $600B968 $06060606
+script " "  
+script "P2 Infinite Energy"  
+run:
+    dpoke $600B9BC $0800
+    dpoke $600B9C0 $0800
+script "P2 Get Max Energy Now!"  
+on:
+    dpoke $600B9BC $0800
+    dpoke $600B9C0 $0800
+script "P2 Invincibility"  
+run:
+    poke $600BA0B $03
+script "P2 Infinite Magic"  
+run:
+    poke $600B9D1 $30
+script "P2 Always have Max Power"  
+run:
+    poke $600B9F7 $02
+script "P2 Always have All magic"  
+run:
+    dpoke $600BA14 $01FF
+    lpoke $600BA18 $06060606
+    lpoke $600BA1C $06060606
