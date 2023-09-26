@@ -278,21 +278,27 @@ static struct SOUND_INFO sound_gunbird2[] =
 };
 
 static u8 FASTCALL read_romb(u32 addr) {
+    addr &= 0xfffff;
     if (addr <= 0xfffff)
 	return ROM[addr];
+    printf("*** read_romb %x\n",addr);
     return 0xff;
 }
 
 FASTCALL static u16 read_romw(u32 addr) {
+    addr &= 0xfffff;
     if (addr <= 0xffffe)
 	return ReadWord68k(&ROM[addr]);
+    printf("*** read_romw %x\n",addr);
     return 0xffff;
 }
 
 static u32 FASTCALL read_roml(u32 addr) {
+    addr &= 0xfffff;
     if (addr <= 0xffffc) {
 	return ReadLong68k(&ROM[addr]);
     }
+    printf("*** read_roml %x\n",addr);
     return 0xffffffff;
 }
 
@@ -528,7 +534,6 @@ static u8 FASTCALL read_inputs_soundb(u32 offset) {
 static u8 FASTCALL read_inputs_soundb_ps3v1(u32 offset) {
     offset &= 0xffffff;
     if (offset == 0x800004) { // special case here, 2 lowest bits = region, 0x10 = eeprom bit
-	printf("read port %x\n",offset);
 	return (input_buffer[7] & 3) | ((EEPROM_read_bit() & 0x01) << 4);
     } else if (offset >= 0x800000 && offset < 0x800007) {
 	// printf("read input %x = %x\n",offset,input_buffer[offset]);
@@ -638,7 +643,7 @@ static void load_gunbird2() {
     SH2_Add_ReadW(&M_SH2,6, 6, read_ramw);
     if (is_current_game("gunbird2"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_gunbird2);
-    else if (is_current_game("s1945iii") || is_current_game("tgm2"))
+    else if (is_current_game("s1945iii") || is_current_game("tgm2") || is_current_game("tgm2p"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_s1945iii);
     else if (is_current_game("soldivid"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_soldivid);
@@ -1356,13 +1361,11 @@ GMEI( gunbird2,"Gunbird 2",PSIKYO,1998, GAME_SHOOT,
 GMEI( s1945iii,"Strikers 1945 III (World) / Strikers 1999 (Japan)",PSIKYO,1999, GAME_SHOOT,
 	.dsw = dsw_s1945iii);
 #define dsw_dragnblz dsw_s1945iii
-// All the following games are not working, problem related to sound apparently, no sound effect during init and hang when music starts
-// I highly suspect an sh2 emulation bug here...
-GMEI( dragnblz,"Dragon Blaze",PSIKYO,2000, GAME_SHOOT|GAME_NOT_WORKING,
+GMEI( dragnblz,"Dragon Blaze",PSIKYO,2000, GAME_SHOOT|GAME_PARTIALLY_WORKING, // graphical glitches
 	.input = input_dragnblz);
-GMEI( tgm2,"Tetris the Absolute The Grand Master 2",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
+GMEI( tgm2,"Tetris the Absolute The Grand Master 2",ARIKA,2000, GAME_MISC,
 	.video = &video_horiz);
-CLNEI( tgm2p,tgm2,"Tetris the Absolute The Grand Master 2 Plus",ARIKA,2000, GAME_MISC|GAME_NOT_WORKING,
+CLNEI( tgm2p,tgm2,"Tetris the Absolute The Grand Master 2 Plus",ARIKA,2000, GAME_MISC,
 	.video = &video_horiz);
-GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC|GAME_NOT_WORKING,
+GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC,
 	.video = &video_horiz224);
