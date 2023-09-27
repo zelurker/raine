@@ -4215,3 +4215,7 @@ dragnblz:
 @:maincpu,program,60824b4,dd,00,00
 @:maincpu,program,60825d4,4d,00,03
 
+;(strikers 1945 ii) (by Paul Priest)
+s1945ii:
+@:maincpu,program,600c4ec,28,00,70
+@:maincpu,program,600c514,3c,1e,00

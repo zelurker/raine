@@ -79,6 +79,23 @@ static struct ROM_INFO rom_s1945iii[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_s1945ii[] =
+{
+  LOAD_32_SWAP_16( CPU1, "2_prog_l.u18", 0x000002, 0x080000, 0x20a911b8),
+  LOAD_32_SWAP_16( CPU1, "1_prog_h.u17", 0x000000, 0x080000, 0x4c0fe85e),
+  LOAD16_32( GFX1, "0l.u4", 0x0000000, 0x400000, 0xbfacf98d),
+  LOAD16_32( GFX1, "0h.u13", 0x0000002, 0x400000, 0x1266f67c),
+  LOAD16_32( GFX1, "1l.u3", 0x0800000, 0x400000, 0x2d3332c9),
+  LOAD16_32( GFX1, "1h.u12", 0x0800002, 0x400000, 0x27b32c3e),
+  LOAD16_32( GFX1, "2l.u2", 0x1000000, 0x400000, 0x91ba6d23),
+  LOAD16_32( GFX1, "2h.u20", 0x1000002, 0x400000, 0xfabf4334),
+  LOAD16_32( GFX1, "3l.u1", 0x1800000, 0x400000, 0xa6c3704e),
+  LOAD16_32( GFX1, "3h.u19", 0x1800002, 0x400000, 0x4cd3ca70),
+  LOAD( SOUND1, "sound.u32", 0x000000, 0x400000, 0xba680ca7),
+  LOAD( EEPROM, "eeprom-s1945ii.bin", 0x0000, 0x0100, 0x7ac38846),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
 static struct ROM_INFO rom_tgm2[] =
 {
   LOAD_32_SWAP_16( CPU1, "2.u21", 0x000000, 0x080000, 0xb19f6c31),
@@ -255,6 +272,14 @@ static struct INPUT_INFO input_dragnblz[] =
     END_INPUT
 };
 
+static struct INPUT_INFO input_s1945ii[] =
+{
+    INCL_INP( gunbird2 ),
+    INP0( UNKNOWN, 0x00, 0x2), // no button 3
+    INP0( UNKNOWN, 0x01, 0x2),
+    END_INPUT
+};
+
 static void irq_handler(int irq) {
     if (irq)
 	cpu_interrupt(CPU_SH2_0,12);
@@ -382,6 +407,21 @@ static u32 FASTCALL read_raml_s1945iii(u32 offset) {
     return 0xffffffff;
 }
 
+static u32 FASTCALL read_raml_s1945ii(u32 offset) {
+    offset &= 0xffffff;
+    if (offset <= 0xfffff) {
+	int ret = ReadLong68k(&RAM[offset]);
+	if (offset == 0x30) {
+	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
+	    if (!ret) {
+		M_SH2.Cycle_IO = 3;
+	    }
+	}
+        return ret;
+    }
+    return 0xffffffff;
+}
+
 static u32 FASTCALL read_raml(u32 offset) {
     offset &= 0xffffff;
     if (offset <= 0xfffff) {
@@ -464,8 +504,10 @@ static void FASTCALL write_videob(u32 offset,u8 data) {
     offset &= 0xffffff;
     if (offset <= 0xffff)
         ram_spr[offset] = data; // bg + sprites
-    else if (offset >= 0x40000 && offset <= 0x44fff)
+    else if (offset >= 0x40000 && offset <= 0x44fff) {
 	ram_pal[offset & 0xffff] = data;
+	bank_status[(offset >> 6) & 0xff] = 0;
+    }
     else if (offset >= 0x50000 && offset <= 0x501ff)
 	ram_zoom[offset & 0x1ff] = data;
 //    else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
@@ -644,6 +686,8 @@ static void load_gunbird2() {
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_gunbird2);
     else if (is_current_game("s1945iii") || is_current_game("tgm2") || is_current_game("tgm2p"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_s1945iii);
+    else if (is_current_game("s1945ii"))
+	SH2_Add_ReadL(&M_SH2,6,6,read_raml_s1945ii);
     else if (is_current_game("soldivid"))
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_soldivid);
     else
@@ -651,7 +695,7 @@ static void load_gunbird2() {
     SH2_Add_WriteB(&M_SH2,6, 6, write_ramb);
     SH2_Add_WriteW(&M_SH2,6, 6, write_ramw);
     SH2_Add_WriteL(&M_SH2,6, 6, write_raml);
-    if (is_current_game("soldivid")) {
+    if (is_current_game("soldivid") || is_current_game("s1945ii")) { // ps3v1
 	SH2_Add_ReadB(&M_SH2,3, 3, read_videob);
 	SH2_Add_ReadW(&M_SH2,3, 3, read_videow);
 	SH2_Add_ReadL(&M_SH2,3, 3, read_videol);
@@ -686,8 +730,8 @@ static void load_gunbird2() {
 }
 
 static void execute_gunbird2() {
-    execute_z80_audio_frame();
-    // cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
+    // execute_z80_audio_frame();
+    cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
     cpu_interrupt(CPU_SH2_0,4); // vbl
 }
 
@@ -1377,3 +1421,6 @@ CLNEI( tgm2p,tgm2,"Tetris the Absolute The Grand Master 2 Plus",ARIKA,2000, GAME
 	.video = &video_horiz);
 GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC,
 	.video = &video_horiz224);
+#define dsw_s1945ii dsw_soldivid
+GMEI( s1945ii,"Strikers 1945 II",PSIKYO,1997, GAME_SHOOT,
+	.input = input_s1945ii);

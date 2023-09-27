@@ -1,0 +1,72 @@
+script "Infinite Credits"  
+run:
+    poke $600C3BE $09
+script "Select Starting Stage" \
+ inter=1,8,1 
+change:
+    poke $600C674 (param-$1)
+script "Select 1st Stage" \
+ "0x00/Huge Flying Boat"\
+ "0x01/Super Carrier"\
+ "0x02/Armored Train"\
+ "0x03/Battle Air Ship" 
+change:
+    poke $600C664 param
+script "Select 2nd Stage" \
+ "0x00/Huge Flying Boat"\
+ "0x01/Super Carrier"\
+ "0x02/Armored Train" 
+change:
+    poke $600C665 param
+script "Select 3rd Stage" \
+ "0x00/Huge Flying Boat"\
+ "0x01/Super Carrier"\
+ "0x02/Armored Train"\
+ "0x03/Battle Air Ship" 
+change:
+    poke $600C666 param
+script "Select 4th Stage" \
+ "0x00/Huge Flying Boat"\
+ "0x01/Super Carrier"\
+ "0x02/Armored Train"\
+ "0x03/Battle Air Ship" 
+change:
+    poke $600C667 param
+script " "  
+script "P1 Infinite Lives"  
+run:
+    poke $60103C1 $03
+script "P1 Infinite Bombs"  
+run:
+    poke $60103C3 $09
+script "P1 Maximum Fire Power"  
+run:
+    poke $60103E7 $04
+script "P1 Invincibility"  
+run:
+    dpoke $60103FA $013F
+off:
+    dpoke $60103FA $0001
+script "P1 Always Max Extra weapon"  
+run:
+    poke $6010414 $65
+    poke $6010415 $90
+script " "  
+script "P2 Infinite Lives"  
+run:
+    poke $601045D $03
+script "P2 Infinite Bombs"  
+run:
+    poke $601045F $09
+script "P2 Maximum Fire Power"  
+run:
+    poke $6010483 $04
+script "P2 Invincibility"  
+run:
+    dpoke $6010496 $013F
+off:
+    dpoke $6010496 $0001
+script "P2 Always Max Extra weapon"  
+run:
+    poke $60104B0 $65
+    poke $60104B1 $90

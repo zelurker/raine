@@ -291,8 +291,15 @@ typedef struct {
 } toffset;
 
 #define MAX_OFFS 100
+#ifdef GENS_SH2
+// Workaround for the big offsets of the sh2, such big arrays are not really convenient, I should find something else
+static toffset *offs[0x10000];
+static int used_offs[0x10000];
+#else
 static toffset *offs[0x100];
 static int used_offs[0x100];
+#endif
+
 
 void restore_breakpoints() {
   int n;
