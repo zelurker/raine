@@ -148,7 +148,7 @@ static int is_mem_range (const char *pBuf)
 {
 	char c;
 	if (*pBuf == '@') {// new format
-	    char *quote = pBuf;
+	    const char *quote = pBuf;
 	    for (int n=1; n<=5 && quote; n++) // at least 5 , on the line...
 		quote = strchr(quote+1,',');
 	    return quote != NULL;
