@@ -33,6 +33,7 @@
 #include "gui.h" // load_progress
 #include "files.h"
 #include "version.h"
+#include "compat.h"
 
 static unsigned long total_size;
 
@@ -112,6 +113,9 @@ int get_url(char *file, char *url)
 	  }
       }
       fclose(f);
+  }
+  if (total_size == 0) {
+      fatal_error("can't get size for %s or %s",fname,fname2);
   }
 
   ret = curl_easy_perform(curl_handle);
