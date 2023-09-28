@@ -1812,7 +1812,7 @@ static void load_macross(void)
 {
   //int ta;
 
-  setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+  setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=8;
 
    if(!(RAM=AllocateMem(0x200000))) return;
@@ -1881,7 +1881,7 @@ static void load_blkheart(void)
 {
   //int ta;
 
-  setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+  setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
   romset=8;
 
   if(!(RAM=AllocateMem(0x200000))) return;
@@ -2399,7 +2399,7 @@ static void tdragon_mcu_shared_w(UINT32 offset, UINT16 data)
 
 static void load_hachamf(void)
 {
-  setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+  setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
 
    romset=1;
 
@@ -2470,7 +2470,7 @@ static void load_bioship(void)
 {
    int ta;
 
-   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+   setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=2;
 
    if(!(ROM=AllocateMem(0xA0000))) return;
@@ -2552,7 +2552,7 @@ static void test_continue(UINT32 offset, UINT16 data) {
 
 static void load_mustang(void)
 {
-   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+   setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=8;
 
    if(!(ROM=AllocateMem(0x100000))) return;
@@ -2816,7 +2816,7 @@ static void load_tforceh(void)
 
 static void load_tdragon(void)
 {
-   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+   setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=5;
 
    if(!(ROM=AllocateMem(0x100000))) return;
@@ -3007,7 +3007,7 @@ static void load_strahl(void)
 {
    int ta;
 
-   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+   setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=7;
 
    if(!(ROM=AllocateMem(0x180000))) return;
@@ -3086,7 +3086,7 @@ static void load_strahl(void)
 
 static void load_acrobatm(void)
 {
-   setup_z80_frame(0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
+   setup_z80_frame(CPU_68K_0,CPU_FRAME_MHz(16,60)); // no z80, but we will simulate it for the timers
    romset=8;
 
    if(!(ROM=AllocateMem(0x200000))) return;
