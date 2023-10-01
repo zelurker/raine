@@ -360,8 +360,8 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #else
 	ret = m6502exec(cycles);
 	cycles_6502[cpu_id & 0xf] += ret;
-	break;
 #endif
+	break;
 #endif
 #if GENS_SH2
       case CPU_SH2_0:
