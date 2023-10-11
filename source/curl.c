@@ -115,7 +115,8 @@ int get_url(char *file, char *url)
       fclose(f);
   }
   if (total_size == 0) {
-      fatal_error("can't get size for %s or %s",fname,fname2);
+      // printf("couldn't find zie for %s or %s\n",fname,fname2);
+      return 0; // can't put a fatal error here because of all the possible names for the same rom
   }
 
   ret = curl_easy_perform(curl_handle);
