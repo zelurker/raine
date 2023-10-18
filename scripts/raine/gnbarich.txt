@@ -1,0 +1,125 @@
+script "Infinite Time"  
+run:
+    poke $60668BA $8C
+    poke $60668BB $9F
+script "Infinite Lives"  
+run:
+    poke $6070429 $03
+script "Finish this Level Now!" \
+ "comm:Only for levels x-1 and x-2"  
+on:
+    poke $6070AF3 $00
+script "Never Get Stunned" \
+ "comm:Might stick flippers up if hit too many times in a row"  
+run:
+    poke $6070491 $00
+script "Select First Stage" \
+ "comm:Use on Player select screen" \
+ inter=1,22,1 
+change:
+    poke $6066B0A (param-$1)
+script "First Stage = Black Hole" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF4 $00
+    poke $6066AF5 $01
+    poke $6066AF6 $02
+script "First Stage = Snow" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF4 $03
+    poke $6066AF5 $04
+    poke $6066AF6 $05
+script "First Stage = Pumpkin" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF4 $06
+    poke $6066AF5 $07
+    poke $6066AF6 $08
+script "First Stage = Cogs" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF4 $09
+    poke $6066AF5 $0A
+    poke $6066AF6 $B
+script "Second Stage = Black Hole" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF7 $00
+    poke $6066AF8 $01
+    poke $6066AF9 $02
+script "Second Stage = Snow" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF7 $03
+    poke $6066AF8 $04
+    poke $6066AF9 $05
+script "Second Stage = Pumpkin" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF7 $06
+    poke $6066AF8 $07
+    poke $6066AF9 $08
+script "Second Stage = Cogs" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AF7 $09
+    poke $6066AF8 $0A
+    poke $6066AF9 $B
+script "Third Stage = Black Hole" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFA $00
+    poke $6066AFB $01
+    poke $6066AFC $02
+script "Third Stage = Snow" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFA $03
+    poke $6066AFB $04
+    poke $6066AFC $05
+script "Third Stage = Pumpkin" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFA $06
+    poke $6066AFB $07
+    poke $6066AFC $08
+script "Third Stage = Cogs" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFA $09
+    poke $6066AFB $0A
+    poke $6066AFC $B
+script "Fourth Stage = Black Hole" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFD $00
+    poke $6066AFE $01
+    poke $6066AFF $02
+script "Fourth Stage = Snow" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFD $03
+    poke $6066AFE $04
+    poke $6066AFF $05
+script "Fourth Stage = Pumpkin" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFD $06
+    poke $6066AFE $07
+    poke $6066AFF $08
+script "Fourth Stage = Cogs" \
+ "comm:Select First Stage"  
+on:
+    poke $6066AFD $09
+    poke $6066AFE $0A
+    poke $6066AFF $B
+script "Unlock Maintenance Mode" \
+ "comm:Use in test mode"  
+run:
+    if (peek($6070B20)==$02)
+      poke $6070B20 $01
+    endif
+    if (peek($60CFFA1)==$06)
+      poke $60CFFA1 $B
+    endif

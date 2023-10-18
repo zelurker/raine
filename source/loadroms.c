@@ -1238,7 +1238,7 @@ beg:
 		   !strcmp(dir,"bgaregganv") || !strcmp(dir,"bgareggat2") || !strcmp(dir,"bbakraidja") || !strcmp(dir,"kingdmgp") ||
 		   !strcmp(dir,"sstrikerk") || !strcmp(dir,"batsugun") || !strcmp(dir,"galaga") || !strcmp(dir,"kof2000ps2") ||
 		   !strcmp(dir,"gunbird2") || !strcmp(dir,"s1945ii") || !strcmp(dir,"s1945iii") || !strcmp(dir,"dragnblz") ||
-		   !strcmp(dir,"tgm2") || !strcmp(dir,"tgm2p") || !strcmp(dir,"soldivid"))
+		   !strcmp(dir,"tgm2") || !strcmp(dir,"tgm2p") || !strcmp(dir,"soldivid") || !strcmp(dir,"gnbarich") || !strcmp(dir,"daraku"))
 	       // they have the romset for 0.91.4, so there are a few exceptions...
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	   else if (!strcmp(dir,"samsh5pf") || !strcmp(dir,"samsh5fe")) // these 2 are in fbneo directory

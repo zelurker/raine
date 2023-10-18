@@ -4210,6 +4210,10 @@ soldividk:
 @:maincpu,program,600bb50,18,00,50
 @:maincpu,program,600bb68,1e,24,02
 
+;gunbarich (by tamphax)
+gnbarich:
+@:maincpu,program,6076864,a5,00,01
+
 ;dragon blaze (by tamphax)
 dragnblz:
 @:maincpu,program,60824b4,dd,00,00

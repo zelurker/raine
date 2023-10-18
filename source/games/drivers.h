@@ -1329,5 +1329,7 @@ DRV(gaunt2)
     DRV(tgm2)
     DRV(tgm2p)
     DRV(soldivid)
+    DRV(daraku)
+    DRV(gnbarich)
 #endif
 

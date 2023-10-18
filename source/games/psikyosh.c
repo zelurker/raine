@@ -148,7 +148,7 @@ static struct ROM_INFO rom_soldivid[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-#define dsw_tgm2 NULL
+#define dsw_tgm2 NULL // just ignored in tgm2
 
 static struct ROM_INFO rom_dragnblz[] =
 {
@@ -178,6 +178,80 @@ static struct ROM_INFO rom_dragnblz[] =
   FILL( SOUND1, 0x200000, 0x600000, 0 ),
   LOAD_SW16( EEPROM, "eeprom-dragnblz.u44", 0x0000, 0x0100, 0x46e85da9),
   { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct ROM_INFO rom_daraku[] =
+{
+  LOAD_32_SWAP_16( CPU1, "4_prog_l.u18", 0x000002, 0x080000, 0x660b4609),
+  LOAD_32_SWAP_16( CPU1, "3_prog_h.u17", 0x000000, 0x080000, 0x7a9cf601),
+  LOAD_SW16( CPU1, "prog.u16", 0x100000, 0x100000, 0x3742e990),
+  LOAD16_32( GFX1, "0l.u4", 0x0000000, 0x400000, 0x565d8427),
+  LOAD16_32( GFX1, "0h.u13", 0x0000002, 0x400000, 0x9a602630),
+  LOAD16_32( GFX1, "1l.u3", 0x0800000, 0x400000, 0xac5ce8e1),
+  LOAD16_32( GFX1, "1h.u12", 0x0800002, 0x400000, 0xb0a59f7b),
+  LOAD16_32( GFX1, "2l.u2", 0x1000000, 0x400000, 0x2daa03b2),
+  LOAD16_32( GFX1, "2h.u20", 0x1000002, 0x400000, 0xe98e185a),
+  LOAD16_32( GFX1, "3l.u1", 0x1800000, 0x400000, 0x1d372aa1),
+  LOAD16_32( GFX1, "3h.u19", 0x1800002, 0x400000, 0x597f3f15),
+  LOAD16_32( GFX1, "4l.u10", 0x2000000, 0x400000, 0xe3d58cd8),
+  LOAD16_32( GFX1, "4h.u31", 0x2000002, 0x400000, 0xaebc9cd0),
+  LOAD16_32( GFX1, "5l.u9", 0x2800000, 0x400000, 0xeab5a50b),
+  LOAD16_32( GFX1, "5h.u30", 0x2800002, 0x400000, 0xf157474f),
+  LOAD16_32( GFX1, "6l.u8", 0x3000000, 0x200000, 0x9f008d1b),
+  LOAD16_32( GFX1, "6h.u37", 0x3000002, 0x200000, 0xacd2d0e3),
+  LOAD( SOUND1, "sound.u32", 0x000000, 0x400000, 0xef2c781d),
+  LOAD( EEPROM, "eeprom-daraku.bin", 0x0000, 0x0100, 0xa9715297),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+/*
+Starting with Gunbarich and including Mahjong G-Taste, Psikyo started to "recycle" left over Dragon Blaze PCBs.
+  Psikyo would replace some of the Dragon Blaze roms with the new game roms leaving many of the surface mounted
+  roms intact.  The new games don't use or access the left over roms, but the PCB needs the roms filled to function.
+
+  The hidden rom tests in Gunbarich and Mahjong G-Teste shows the games only uses the new game roms.
+*/
+static struct ROM_INFO rom_gnbarich[] =
+{
+  LOAD_32_SWAP_16( CPU1, "2-prog_l.u21", 0x000000, 0x080000, 0xc136cd9c),
+  LOAD_32_SWAP_16( CPU1, "1-prog_h.u22", 0x000002, 0x080000, 0x6588fc96),
+//  ROM_LOAD32_WORD( "1l.u4",  0x0400000, 0x200000, CRC(c2eb565c) SHA1(07e41b36cc03a87f28d091754fdb0d1a7316a532) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "1h.u12", 0x0400002, 0x200000, CRC(23cb46b7) SHA1(005b7cc40eea103688a64a72c219c7535970dbfb) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "2l.u5",  0x0800000, 0x200000, CRC(bc256aea) SHA1(1f1d678e8a63513a95f296b8a07d2ea485d1e53f) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "2h.u13", 0x0800002, 0x200000, CRC(b75f59ec) SHA1(a6cde94bc972e46e54c962fde49fc2174b312882) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "3l.u6",  0x0c00000, 0x200000, CRC(4284f008) SHA1(610b13304043411b3088fd4299b3cb0a4d8b0cc2) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "3h.u14", 0x0c00002, 0x200000, CRC(abe5cbbf) SHA1(c2fb1d8ea8772572c08b36496cf9fc5b91cf848b) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "4l.u7",  0x1000000, 0x200000, CRC(c9fcf2e5) SHA1(7cecdf3406da11289b54aaf58d12883ddfdc5e6b) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "4h.u15", 0x1000002, 0x200000, CRC(0ab0a12a) SHA1(1b29b6dc79e69edb56634517365d0ee8e6ea78ae) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "5l.u8",  0x1400000, 0x200000, CRC(68d03ccf) SHA1(d2bf6da5fa6e346b05872ed9616ffe51c3768f50) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "5h.u16", 0x1400002, 0x200000, CRC(5450fbca) SHA1(7a804263549cea951782a67855e69cb8cb417e98) ) /* From Dragon Blaze */
+  LOAD16_32( GFX1, "6l.u1", 0x1800000, 0x200000, 0x0432e1a8),
+  LOAD16_32( GFX1, "6h.u2", 0x1800002, 0x200000, 0xf90fa3ea),
+  LOAD16_32( GFX1, "7l.u19", 0x1c00000, 0x200000, 0x36bf9a58),
+  LOAD16_32( GFX1, "7h.u20", 0x1c00002, 0x200000, 0x4b3eafd8),
+  LOAD16_32( GFX1, "8l.u28", 0x2000000, 0x200000, 0x026754da),
+  LOAD16_32( GFX1, "8h.u29", 0x2000002, 0x200000, 0x8cd7aaa0),
+  LOAD16_32( GFX1, "9l.u41", 0x2400000, 0x200000, 0x02c066fe),
+//  ROM_LOAD32_WORD( "10l.u58",0x2800000, 0x200000, CRC(a3f5c7f8) SHA1(d17478ca3e7ef46270f350ffa35d43acb05b1185) ) /* From Dragon Blaze */
+//  ROM_LOAD32_WORD( "10h.u59",0x2800002, 0x200000, CRC(30e304c4) SHA1(1d866276bfe7f7524306a880d225aaf11ac2e5dd) ) /* From Dragon Blaze */
+  LOAD16_32( GFX1, "9h.u42", 0x2400002, 0x200000, 0x5433385a),
+  LOAD( SOUND1, "snd0.u52", 0x000000, 0x200000, 0x7b10436b),
+  LOAD( EEPROM, "eeprom-gnbarich.bin", 0x0000, 0x0100, 0x0f5bf42f),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+static struct DSW_DATA dsw_data_daraku_0[] =
+{
+    { "Region",1,2 },
+  { "Japan", 0x0 },
+  { "World", 0x1 },
+  { NULL, 0}
+};
+
+static struct DSW_INFO dsw_daraku[] =
+{
+  { 0x7, 0x1, dsw_data_daraku_0 },
+  { 0, 0, NULL }
 };
 
 static struct DSW_DATA dsw_data_gunbird2_0[] =
@@ -272,6 +346,18 @@ static struct INPUT_INFO input_dragnblz[] =
     END_INPUT
 };
 
+static struct INPUT_INFO input_daraku[] =
+{
+    INCL_INP( gunbird2 ),
+    INP0( UNKNOWN, 0x01, 0x2),
+    INP0( UNKNOWN, 0x00, 0x2),
+    INP0( P1_B4, 0x02, 0x04),
+    INP0( P1_B3, 0x02, 0x08),
+    INP0( P2_B4, 0x02, 0x40),
+    INP0( P2_B3, 0x02, 0x80),
+    END_INPUT
+};
+
 static struct INPUT_INFO input_s1945ii[] =
 {
     INCL_INP( gunbird2 ),
@@ -362,56 +448,13 @@ static u16 FASTCALL read_ramw(u32 offset) {
     return 0xffff;
 }
 
-static u32 FASTCALL read_raml_gunbird2(u32 offset) {
-    offset &= 0xffffff;
-    if (offset <= 0xfffff) {
-	int ret = ReadLong68k(&RAM[offset]);
-	if (offset == 0x40030) {
-	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
-	    if (!ret) {
-		M_SH2.Cycle_IO = 3;
-	    }
-	}
-        return ret;
-    }
-    return 0xffffffff;
-}
+static u32 offset_vbl;
 
-static u32 FASTCALL read_raml_soldivid(u32 offset) {
+static u32 FASTCALL read_raml_hack(u32 offset) {
     offset &= 0xffffff;
     if (offset <= 0xfffff) {
 	int ret = ReadLong68k(&RAM[offset]);
-	if (offset == 0x18) {
-	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
-	    if (!ret) {
-		M_SH2.Cycle_IO = 3;
-	    }
-	}
-        return ret;
-    }
-    return 0xffffffff;
-}
-
-static u32 FASTCALL read_raml_s1945iii(u32 offset) {
-    offset &= 0xffffff;
-    if (offset <= 0xfffff) {
-	int ret = ReadLong68k(&RAM[offset]);
-	if (offset == 0x60030) {
-	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
-	    if (!ret) {
-		M_SH2.Cycle_IO = 3;
-	    }
-	}
-        return ret;
-    }
-    return 0xffffffff;
-}
-
-static u32 FASTCALL read_raml_s1945ii(u32 offset) {
-    offset &= 0xffffff;
-    if (offset <= 0xfffff) {
-	int ret = ReadLong68k(&RAM[offset]);
-	if (offset == 0x30) {
+	if (offset == offset_vbl) {
 	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
 	    if (!ret) {
 		M_SH2.Cycle_IO = 3;
@@ -618,6 +661,7 @@ static void FASTCALL write_sound_ps3v1(u32 offset,u8 data) {
 }
 
 #define BG_TYPE(n) (ram_video[6*4+n] & 0x7f )
+#define BG_LINE(n) (ram_video[6*4+n] & 0x80 )
 #define BG_NORMAL      0x0a
 #define BG_NORMAL_ALT  0x0b /* Same as above but with different location for scroll/priority reg */
 #define DISPLAY_DISABLE (((ram_video[2*4+3] & 0xf) == 0x6) ? 1:0)
@@ -682,20 +726,30 @@ static void load_gunbird2() {
 
     SH2_Add_ReadB(&M_SH2,6, 6, read_ramb);
     SH2_Add_ReadW(&M_SH2,6, 6, read_ramw);
-    if (is_current_game("gunbird2"))
-	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_gunbird2);
-    else if (is_current_game("s1945iii") || is_current_game("tgm2") || is_current_game("tgm2p"))
-	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_s1945iii);
-    else if (is_current_game("s1945ii"))
-	SH2_Add_ReadL(&M_SH2,6,6,read_raml_s1945ii);
-    else if (is_current_game("soldivid"))
-	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_soldivid);
-    else
+    if (is_current_game("gunbird2")) {
+	offset_vbl = 0x40030;
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
+    } else if (is_current_game("s1945iii") || is_current_game("tgm2") || is_current_game("tgm2p")) {
+	offset_vbl = 0x60030;
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
+    } else if (is_current_game("s1945ii")) {
+	offset_vbl = 0x30;
+	SH2_Add_ReadL(&M_SH2,6,6,read_raml_hack);
+    } else if (is_current_game("soldivid")) {
+	offset_vbl = 0x18;
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
+    } else if (is_current_game("daraku")) {
+	offset_vbl = 0x1c;
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
+    } else if (is_current_game("gnbarich")) {
+	offset_vbl = 0x60028;
+	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
+    } else
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml);
     SH2_Add_WriteB(&M_SH2,6, 6, write_ramb);
     SH2_Add_WriteW(&M_SH2,6, 6, write_ramw);
     SH2_Add_WriteL(&M_SH2,6, 6, write_raml);
-    if (is_current_game("soldivid") || is_current_game("s1945ii")) { // ps3v1
+    if (is_current_game("soldivid") || is_current_game("s1945ii") || is_current_game("daraku")) { // ps3v1
 	SH2_Add_ReadB(&M_SH2,3, 3, read_videob);
 	SH2_Add_ReadW(&M_SH2,3, 3, read_videow);
 	SH2_Add_ReadL(&M_SH2,3, 3, read_videol);
@@ -1424,3 +1478,7 @@ GMEI( soldivid,"Sol Divide - The Sword Of Darkness",PSIKYO,1997, GAME_MISC,
 #define dsw_s1945ii dsw_soldivid
 GMEI( s1945ii,"Strikers 1945 II",PSIKYO,1997, GAME_SHOOT,
 	.input = input_s1945ii);
+GMEI( daraku,"Daraku Tenshi - The Fallen Angels",PSIKYO,1998, GAME_BEAT | GAME_NOT_WORKING, // use special layers, type c & d for text layers, & line & row scroll
+	.video = &video_horiz, .input = input_daraku);
+#define dsw_gnbarich dsw_s1945iii
+GMEI( gnbarich,"Gunbarich",PSIKYO,2001, GAME_BREAKOUT );
