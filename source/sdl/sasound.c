@@ -582,6 +582,7 @@ static void close_sample() {
   if (cvt.needed) {
       if (cvt.buf) free(cvt.buf);
       memset(&cvt,0,sizeof(cvt));
+      buf_len = 0;
   }
 
   // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
