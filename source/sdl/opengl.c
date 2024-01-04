@@ -142,6 +142,9 @@ void opengl_reshape(int w, int h) {
 #endif
     desk_w = w; desk_h = h;
     reset_shaders();
+    // glColor affects the glDrawPixels operations in windows, but not in linux !!!
+    // It's easy to work around it though, just set it here to avoid a setcolor from sdl
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
     // Reset the coordinate system before modifying
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -381,7 +384,7 @@ void opengl_text(char *msg, int x, int y) {
 	glDrawPixels(10*strlen(msg) ,20, GL_COLOR_INDEX,GL_UNSIGNED_BYTE, opaque_bmp);
     }
 
-    glColor3f(1.0f,1.0f,1.0f);
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
     // glBindBuffer(GL_PIXEL_UNPACK_BUFFER,gl_font);
     // GLubyte *zero = 0;
     while (*msg) {
