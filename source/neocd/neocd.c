@@ -4996,6 +4996,15 @@ void load_neocd() {
 	    AddMemFetch(0x200000, 0x2fffff, ROM+0x100000-0x200000);
 	    AddReadBW(0x200000, 0x2fffff, NULL, ROM+0x100000);
 	    bank_68k = 0;
+
+	    // special mapping for samsho2pe...
+	    // I'll put this as a general case when rom size is > 0x200000
+	    // because this region at 0x900000 is unused otherwise. Should be safe afaik
+	    // but needs some testing
+	    if (get_region_size(REGION_CPU1) > 0x200000) {
+		AddMemFetch(0x900000,0x9fffff, ROM + 0x200000-0x900000);
+		AddReadBW(0x900000,0x9fffff, NULL, ROM + 0x200000);
+	    }
 	} else {
 	    int size = get_region_size(REGION_ROM1);
 	    if (!size) size = get_region_size(REGION_MAINBIOS);

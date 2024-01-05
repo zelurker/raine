@@ -165,6 +165,8 @@ enum region_flags
 #define FILL(region, offset, size, content) \
 { "", size, content, REGION_##region, offset, LOAD_FILL }
 
+#define ROM_END { NULL, 0, 0, 0, 0, 0 }
+
 typedef struct ROM_INFO
 {
    char *name;                 // file name

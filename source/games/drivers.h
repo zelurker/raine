@@ -856,6 +856,7 @@
   DRV(ssideki2)
   DRV(spinmast)
   DRV(samsho2)
+  DRV(samsho2pe)
   DRV(samsho2k)
   DRV(wjammers)
   DRV(karnovr)
