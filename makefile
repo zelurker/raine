@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.96.4"
+VERSION = "0.96.5"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -1759,7 +1759,6 @@ else
 	$(INSTALL_DATA) gamecontrollerdb.txt $(rainedata)
 	$(INSTALL_DATA) command.dat $(rainedata)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
-	$(INSTALL_DATA) index_roms.html $(rainedata)
 endif
 	sh -c "if [ -f hiscore.dat ]; then install -m 644 hiscore.dat $(rainedata); fi"
 	sh -c "if [ -f command.dat ]; then install -m 644 command.dat $(rainedata); fi"
