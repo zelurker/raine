@@ -35,7 +35,7 @@
 #include "version.h"
 #include "compat.h"
 
-static unsigned long total_size;
+static curl_off_t total_size;
 
 static int progress_callback(void *clientp,
                              curl_off_t dltotal,
@@ -99,34 +99,21 @@ int get_url(char *file, char *url)
   strncat(fname,s,20);
   snprintf(fname2,30,"Roms.zip/%s",s);
   total_size = 0;
-  FILE *f = fopen(get_shared("index_roms.html"),"r");
-  if (f) {
-      char buff[256];
-      while (!feof(f)) {
-	  myfgets(buff,256,f);
-	  char *s2 = strstr(buff,fname);
-	  if (!s2) s2 = strstr(buff,fname2);
-	  if (s2) {
-	      s2 = strstr(s2+1,"size");
-	      total_size = atol(s2+6);
-	      break;
-	  }
-      }
-      fclose(f);
-  }
-  if (total_size == 0) {
-      printf("couldn't find zie for %s or %s\n",fname,fname2);
-      return 0; // can't put a fatal error here because of all the possible names for the same rom
-  }
 
   ret = curl_easy_perform(curl_handle);
-  char *ct = "";
+  char *ct = NULL;
   if (ret == CURLE_OK)
       curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
   if (strcmp(ct,"application/zip")) {
       printf("curl: didn't get application/zip, aborting... (%s) ret=%x\n",ct,ret);
       return 1;
   }
+  curl_easy_getinfo(curl_handle, CURLINFO_CONTENT_LENGTH_DOWNLOAD_T, &total_size);
+  if (total_size == 0) {
+      printf("curl: got size 0\n");
+      return 1;
+  }
+  printf("curl: size %d\n",total_size);
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 0);
 
   pagefile = fopen(file, "wb");
