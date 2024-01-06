@@ -334,8 +334,7 @@ void curl_progress_f(int count) {
     if (!loading_dialog) return;
     if (curl_progress != count) {
 	curl_progress = count;
-	if (loading_dialog)
-	    loading_dialog->redraw_fg_layer();
+	loading_dialog->redraw_fg_layer();
     }
 }
 

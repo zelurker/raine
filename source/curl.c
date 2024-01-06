@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "raine.h"
 #include <curl/curl.h>
 #include <curl/curlver.h>
 #include <string.h>
@@ -85,7 +86,8 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
   curl_easy_setopt(curl_handle, CURLOPT_XFERINFODATA, NULL);
   curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 0L);
-  curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
+  if (url[strlen(url)-1] != '/')
+      curl_easy_setopt(curl_handle, CURLOPT_XFERINFOFUNCTION, progress_callback);
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
   curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, agent);
@@ -104,14 +106,60 @@ int get_url(char *file, char *url)
   char *ct = NULL;
   if (ret == CURLE_OK)
       curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
-  if (strcmp(ct,"application/zip")) {
+  if (strcmp(ct,"application/zip") && url[strlen(url)-1] != '/') {
       printf("curl: didn't get application/zip, aborting... (%s) ret=%x\n",ct,ret);
       return 1;
   }
   curl_easy_getinfo(curl_handle, CURLINFO_CONTENT_LENGTH_DOWNLOAD_T, &total_size);
-  if (total_size == 0) {
-      printf("curl: got size 0\n");
-      return 1;
+  if (total_size <= 0 && url[strlen(url)-1] != '/') {
+      char path[FILENAME_MAX];
+      char url2[FILENAME_MAX];
+      if (strstr(url,"Raine")) {
+	  snprintf(path,FILENAME_MAX,"%sraine.html",dir_cfg.exe_path);
+	  strcpy(url2,"https://archive.org/download/efarcadeversionroms/Arcade%20Version%20Roms/Raine%20v0.91.4%20Fullroms.zip/");
+      } else if (strstr(url,"FinalBurn")) {
+	  snprintf(path,FILENAME_MAX,"%sfb.html",dir_cfg.exe_path);
+	  strcpy(url2,"https://archive.org/download/efarcadeversionroms/Arcade%20Version%20Roms/FinalBurn%20v0.2.97.43%20FullRoms.zip/");
+      } else {
+	  printf("??? couldn't get size for fbneo ? url %s\n",url);
+	  path[0] = 0;
+      }
+      if (path[0]) {
+	  FILE *f = fopen(path,"r");
+	  if (!f) {
+	      printf("curl: getting %s\n",url2);
+	      int ret = get_url(path,url2);
+	      printf("curl result : %d\n",ret);
+	      curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+	      f = fopen(path,"r");
+	  }
+	  char fname[30],fname2[30];
+	  strcpy(fname,"roms/");
+	  strncat(fname,s,20);
+	  snprintf(fname2,30,"Roms.zip/%s",s);
+	  total_size = 0;
+	  if (f) {
+	      char buff[256];
+	      while (!feof(f)) {
+		  myfgets(buff,256,f);
+		  char *s2 = strstr(buff,fname);
+		  if (!s2) s2 = strstr(buff,fname2);
+		  if (s2) {
+		      s2 = strstr(s2+1,"size");
+		      total_size = atol(s2+6);
+#ifdef __x86_64__
+		      printf("curl: got size %zd from html\n",total_size);
+#else
+		      printf("curl: size %lld from html\n",total_size);
+#endif
+		      break;
+		  }
+	      }
+	      fclose(f);
+	  }
+      }
+      if (total_size <= 0)
+	  return 1; // it's possible the file is just not here !
   }
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 0);
 
