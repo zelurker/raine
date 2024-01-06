@@ -113,7 +113,6 @@ int get_url(char *file, char *url)
       printf("curl: got size 0\n");
       return 1;
   }
-  printf("curl: size %d\n",total_size);
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 0);
 
   pagefile = fopen(file, "wb");
