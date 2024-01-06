@@ -75,11 +75,13 @@ static menu_item_t *get_savegames(int for_saving) {
 
   if (dir) {
     struct dirent *entry;
-    int len = strlen(current_game->main_name);
+    char game[30];
+    sprintf(game,"%s.",current_game->main_name);
+    int len = strlen(game);
     int n;
     // 1st look for height
     while ((entry = readdir(dir))) {
-      if (!strnicmp(entry->d_name,current_game->main_name,len)) {
+      if (!strnicmp(entry->d_name,game,len)) {
 	char fpath[1024];
 	int version = 0;
 	snprintf(fpath,1024,"%s%s%s",fdir,SLASH,entry->d_name);
