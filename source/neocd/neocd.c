@@ -114,7 +114,7 @@ static struct {
 static int capture_mode = 0,start_line,screen_cleared,load_sdips,fix_mask,
 	   fix_banked,aes;
 static int capture_block; // block to be shown...
-int allowed_speed_hacks = 1,disable_irq1 = 0;
+int allowed_speed_hacks = 1,disable_irq1 = 0,shared_saveram;
 static int one_palette,sprites_mask,nb_sprites;
 static int assigned_banks, current_bank;
 static UINT32 zbank[4];
@@ -155,6 +155,7 @@ void restore_neocd_config() {
   disable_irq1 = raine_get_config_int("neocd","disable_irq1",0);
   capture_new_pictures = raine_get_config_int("neocd","capture_new_pictures",0);
   neogeo_bios = raine_get_config_int("neogeo","bios",0);
+  shared_saveram = raine_get_config_int("neogeo","shared_saveram", 1);
   set_neogeo_bios(neogeo_bios);
 }
 
@@ -163,6 +164,7 @@ void save_neocd_config() {
   raine_set_config_int("neocd","disable_irq1",disable_irq1);
   raine_set_config_int("neocd","capture_new_pictures",capture_new_pictures);
   raine_set_config_int("neogeo","bios",neogeo_bios);
+  raine_set_config_int("neogeo","shared_saveram",shared_saveram);
 }
 
 #ifndef RAINE_DOS
@@ -1227,8 +1229,17 @@ static void restore_memcard() {
   }
 
   if (saveram.ram) {
-      snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+      if (shared_saveram)
+	  snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+      else
+	  snprintf(path,1024,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path,current_game->main_name);
+
       f = fopen(path,"rb");
+      if (!f && !shared_saveram) {
+	  // the game saveram doesn't exist yet, try to read from neogeo.saveram then...
+	  snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+	  f = fopen(path,"rb");
+      }
       if (f) {
 	  fread(saveram.ram, 0x10000, 1, f);
 	  if (saveram.ram[0x10] == 66)
@@ -1263,7 +1274,10 @@ static void save_memcard() {
 	    // Quick check the backup ram was really used
 	    // the bios is supposed to write this after testing it
 	    // see http://wiki.neogeodev.org/index.php?title=Backup_RAM
-	    snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+	    if (shared_saveram)
+		snprintf(path,1024,"%ssavedata" SLASH "neogeo.saveram", dir_cfg.exe_path);
+	    else
+		snprintf(path,1024,"%ssavedata" SLASH "%s.saveram", dir_cfg.exe_path,current_game->main_name);
 	    FILE *f = fopen(path,"wb");
 	    if (f) {
 		ByteSwap(saveram.ram,0x10000);
