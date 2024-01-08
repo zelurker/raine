@@ -119,7 +119,9 @@ void TRaineDesktop::end_preinit() {
 
 }
 
-void TRaineDesktop::draw() {
+void TRaineDesktop::draw(TMenu *from) {
+    if (from && from->is_dialog() && from->get_parent() && from->get_parent() != from)
+	return from->get_parent()->draw();
     // tgame values :
     // 0 : the normal desktop
     // 1 : run the game until we play
@@ -327,6 +329,7 @@ void setup_curl_dlg(char *name) {
 	return;
     delete loading_dialog;
     loading_dialog = new TDialog(_("Loading Game"),load_items);
+    loading_dialog->pseudo_execute();
     loading_dialog->draw();
 }
 
@@ -409,6 +412,7 @@ static void load_game_proc()
 	adjust_gui_resolution();
 #endif
 	loading_dialog = new TDialog(_("Loading game"),load_items);
+	loading_dialog->pseudo_execute();
 	loading_dialog->draw();
     }
 
@@ -484,6 +488,7 @@ static void do_load_game(void)
      load_game_config();
 
      if (loading_dialog) {
+	 loading_dialog->end_pseudo_execute();
 	 delete loading_dialog;
 	 load_items[3].label = NULL;
 	 loading_dialog = NULL;

@@ -203,7 +203,7 @@ int renderer_options(int sel) {
 	    MessageBox(_("Error"),_("No options for this renderer."),_("OK"));
 	    return 0;
     }
-    menu->set_transparency(0);
+    // menu->set_transparency(0);
     menu->execute();
     delete menu;
     menu = NULL;

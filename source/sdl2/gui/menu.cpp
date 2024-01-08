@@ -137,7 +137,7 @@ menu_item_t menu_options[] =
 };
 
 int fg_color = mymakecol(255,255,255),
-    bg_color = makecol_alpha(0x11,0x07,0x78,128),
+    bg_color = makecol_alpha(0x11,0x07,0x78,0xc0),
     fgframe_color = mymakecol(255,255,255),
     bgframe_color = mymakecol(0,0,128),
     cslider_border = mymakecol(0,0,0),
@@ -179,6 +179,7 @@ void sort_menu(menu_item_t *menu) {
 }
 
 static SDL_Surface screen_info;
+static TMenu *caller;
 
 TDesktop::TDesktop() {
     SDL_GetRendererOutputSize(rend,&screen_info.w,&screen_info.h);
@@ -191,7 +192,9 @@ TDesktop::TDesktop() {
     work_area.w = work_area.h = 0; // TDesktop is independant, need to init this here
 }
 
-void TDesktop::draw() {
+void TDesktop::draw(TMenu *from) {
+    if (from && from->is_dialog() && from->get_parent() && from->get_parent() != from)
+	return from->get_parent()->draw();
     SDL_SetRenderDrawColor(rend, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(rend);
     if (pic) {
@@ -258,7 +261,6 @@ int TDesktop::set_picture(const char *name) {
     return 0;
 }
 
-static TMenu *caller;
 void (*event_hook)(SDL_Event *event);
 static char* my_get_shared(char *s) {
     return s;
@@ -942,14 +944,14 @@ void TMenu::do_update(SDL_Rect *region) {
 
 void TMenu::draw() {
 
-  desktop->draw();
+  desktop->draw(this);
   draw_frame();
 
   if (!fg_layer)
       setup_fg_layer();
   update_fg_layer();
   SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
-  do_update(NULL);
+  if (caller == this) do_update(NULL);
 }
 
 void TMenu::redraw_fg_layer() {
@@ -959,11 +961,11 @@ void TMenu::redraw_fg_layer() {
   }
   update_fg_layer(-1);
   if (use_transparency)
-    desktop->draw();
+    desktop->draw(this);
   else
     printf("skip update bg\n");
   SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
-  do_update(&fgdst);
+  if (caller == this) do_update(&fgdst);
 }
 
 static int axis_x,axis_y;
@@ -1389,11 +1391,11 @@ void TMenu::handle_key(SDL_Event *event) {
 }
 
 void TMenu::redraw(SDL_Rect *r) {
-  desktop->draw();
+  desktop->draw(this);
   draw_frame(r);
   if (!r) {
       SDL_RenderCopy(rend,fg_layer,NULL,&fgdst);
-      do_update(NULL);
+      if (caller == this) do_update(NULL);
       return;
   }
   SDL_Rect oldr = *r;
@@ -1417,7 +1419,7 @@ void TMenu::redraw(SDL_Rect *r) {
       from.y = 0;
     }
     SDL_RenderCopy(rend,fg_layer,&from,r);
-    do_update(NULL);
+    if (caller == this) do_update(NULL);
     *r = oldr; // preserve region
   }
 }
@@ -1749,6 +1751,17 @@ void TMenu::draw_top_frame() {
     }
 }
 
+void TMenu::pseudo_execute() {
+  if (caller != this) {
+    parent = caller; // update parent for persistant dialogs
+  }
+  caller = this; // init after calling draw
+}
+
+void TMenu::end_pseudo_execute() {
+    caller = parent;
+}
+
 void TMenu::execute() {
 
     if (gui_start_hook && !gui_level)
@@ -1905,7 +1918,7 @@ void TMenu::execute() {
     parent->draw();
     caller = parent;
   } else {
-      desktop->draw();
+      desktop->draw(this);
     caller = NULL;
   }
   gui_level--;

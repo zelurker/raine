@@ -28,7 +28,7 @@ class TRaineDesktop : public TDesktop
     public:
 	TRaineDesktop();
 	void preinit();
-	virtual void draw();
+	virtual void draw(TMenu *from = NULL);
 	void end_preinit();
 };
 

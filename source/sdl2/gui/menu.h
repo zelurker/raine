@@ -27,30 +27,6 @@ void disp_cursor(SDL_Surface *s,int x,int y, int w, int h);
 // size of the key buffer to choose a menu entry by its label
 #define MAX_KEYBUF 20
 
-class TDesktop {
-    protected:
-	SDL_Texture *pic;
-	int picw,pich;
-	SDL_Rect work_area;
-    public:
-	int w,h;
-	TDesktop();
-	// Set a picture as the background, returns 1 if the picture was correctly loaded
-	int set_picture(const char *name);
-	virtual void draw();
-	void set_work_area(SDL_Rect *r) {
-	    if (r)
-		work_area = *r;
-	    else {
-		work_area = {0,0,0,0};
-	    }
-	}
-};
-
-// This desktop replaces the bg_layer there was for sdl-1.2
-// the idea is to allow something more complex than a rectill or the blit of a bitmap...
-extern TDesktop *desktop;
-
 extern int repeat_interval, repeat_delay;
 extern int return_mandatory, use_transparency,bg_anim;
 // All windows event are passed to this hook, returns 1 only if
@@ -105,6 +81,8 @@ class TMenu {
     TMenu(char *my_title, menu_item_t *mymenu,char *myfont = NULL,
       int myfg=-1, int mybg=-1,int myfg_frame=-1,int mybg_frame=-1,
       int to_translate=1);
+    virtual int is_dialog() { return 0; }
+    TMenu *get_parent() { return parent; }
     void free_hchild();
     void set_header(menu_item_t *myheader);
     void toggle_header();
@@ -147,6 +125,8 @@ class TMenu {
     virtual void produce_joystick_event();
     virtual void handle_joystick(SDL_Event *event);
     virtual void exec_menu_item();
+    virtual void pseudo_execute();
+    virtual void end_pseudo_execute();
     virtual void  execute();
     virtual void do_update(SDL_Rect *region);
     virtual void create_child(int n);
@@ -181,6 +161,30 @@ class TMenu {
     virtual char *get_top_string();
 };
 
+class TDesktop {
+    protected:
+	SDL_Texture *pic;
+	int picw,pich;
+	SDL_Rect work_area;
+    public:
+	int w,h;
+	TDesktop();
+	// Set a picture as the background, returns 1 if the picture was correctly loaded
+	int set_picture(const char *name);
+	virtual void draw(TMenu *from = NULL);
+	void set_work_area(SDL_Rect *r) {
+	    if (r)
+		work_area = *r;
+	    else {
+		work_area = {0,0,0,0};
+	    }
+	}
+};
+
+// This desktop replaces the bg_layer there was for sdl-1.2
+// the idea is to allow something more complex than a rectill or the blit of a bitmap...
+extern TDesktop *desktop;
+
 class TBitmap_menu : public TMenu {
   protected:
     SDL_Surface *bmp;
@@ -197,8 +201,8 @@ class TDialog : public TMenu {
     int htitle;
   public:
     TDialog(char *my_title, menu_item_t *mymenu);
+    virtual int is_dialog() { return 1; }
     virtual void compute_width_from_font();
-    void clear_screen() {}
     virtual void display_fglayer_header(int &y);
     virtual void skip_fglayer_header(int &y);
     virtual void draw_frame(SDL_Rect *r);

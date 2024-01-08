@@ -49,7 +49,7 @@ static menu_item_t colors_dlg[] =
 static char color_label[25];
 
 static int set_gui_color(int sel) {
-  int color = a | (b<<8) | (g<<16) | (r<<24);
+  int color = makecol_alpha(r,g,b,a);
   sprintf(color_label,"color #%02x%02x%02x alpha %02x",r,g,b,a);
   switch (cindex) {
     case 0: fg_color = color;
@@ -65,6 +65,7 @@ static int set_gui_color(int sel) {
     case 4: bg_dialog_bar = color;
       break;
   }
+  dlg->draw();
   return 0;
 }
 
@@ -84,11 +85,11 @@ static int theme;
 static int set_theme(int sel) {
   switch(theme) {
     case 0: // blue
-      bg_color =  makecol_alpha(0x11,0x07,0x78,128);
+      bg_color =  makecol_alpha(0x11,0x07,0x78,0xc0);
       bgframe_color = mymakecol(0,0,128);
       break;
     case 1: // green
-      bg_color =  makecol_alpha(0x28,0x78,0x28,128);
+      bg_color =  makecol_alpha(0x28,0x78,0x28,0xc0);
       bgframe_color = mymakecol(0,128,0);
       break;
   }
@@ -117,10 +118,17 @@ static menu_item_t colors_menu[] =
 static int change_color(int sel) {
   cindex = sel;
   int color = get_color_from_index();
+#if SDL == 2
+  a = (color >> 24) & 0xff;
+  b = (color >> 16) & 0xff;
+  g = (color >> 8) & 0xff;
+  r = color & 0xff;
+#else
   a = color & 0xff;
   b = (color >> 8) & 0xff;
   g = (color >> 16) & 0xff;
   r = (color >> 24) & 0xff;
+#endif
   for (int n=0; n<=3; n++) {
     colors_dlg[n+1].values_list[3] = cslider_border;
     colors_dlg[n+1].values_list[5] = cslider_lift;

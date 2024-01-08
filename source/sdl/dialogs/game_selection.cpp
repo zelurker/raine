@@ -258,6 +258,7 @@ class TGame_sel : public TMenu
 	free(menu);
 #if SDL == 2
 	desktop->set_picture(NULL);
+	desktop->set_work_area(NULL);
 #endif
     }
     virtual void compute_nb_items();
@@ -522,6 +523,9 @@ void TGame_sel::draw_frame(SDL_Rect *r) {
   work_area.y = h_title;
   work_area.w = sdl_screen->w;
   work_area.h = (base - (h_title));
+#if SDL == 2
+  desktop->set_work_area(&work_area);
+#endif
 }
 
 void TGame_sel::regen_menu(int free_labels) {
