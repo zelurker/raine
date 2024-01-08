@@ -7,7 +7,6 @@
 /*                                                        */
 /**********************************************************/
 
-#define SH2_VERSION "1.60"
 #define SH2_DEBUG   0
 
 #include <stdio.h>

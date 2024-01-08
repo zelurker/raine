@@ -11,6 +11,7 @@
 #ifndef _SH2_H_
 #define _SH2_H_
 
+#define SH2_VERSION "1.60"
 
 /******************************/
 /* Compiler dependant defines */

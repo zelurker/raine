@@ -20,6 +20,9 @@
 #ifdef USE_CURL
 #include <curl/curlver.h>
 #endif
+#ifdef GENS_SH2
+#include "sh2.h"
+#endif
 
 #if SDL == 2
 #define filledPolygonColor(sf,tabx,taby,nb,col) filledPolygonColor(rend,tabx,taby,nb,col)
@@ -717,7 +720,7 @@ static menu_item_t about_items[] =
 #endif
   {    _("MCU 68705: statically recompiled code by Richard Mitton") },
 #ifdef GENS_SH2
-  { "Gens SH2 by Stéphane Dallongeville" },
+  { "Gens SH2 " SH2_VERSION " by Stéphane Dallongeville" },
 #endif
 #ifdef __i386__
   { _("32 bits i386 binary with plenty of ASM inside") },
