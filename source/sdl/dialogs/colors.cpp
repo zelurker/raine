@@ -20,6 +20,7 @@ class TColorDlg : public TDialog
   }
   void set_bgcolor(int col) {
     bg = col;
+    bgsdl = gfx_to_sdlcolor(fg_format,bg);
   }
   void update_fg_layer(int nb_to_update) {
     TDialog::update_fg_layer(nb_to_update);
