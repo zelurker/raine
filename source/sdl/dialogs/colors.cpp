@@ -90,8 +90,8 @@ static int set_theme(int sel) {
       bgframe_color = mymakecol(0,0,128);
       break;
     case 1: // green
-      bg_color =  makecol_alpha(0x28,0x78,0x28,0xc0);
-      bgframe_color = mymakecol(0,128,0);
+      bg_color =  makecol_alpha(0x11,0x58,0x07,0xc0);
+      bgframe_color = mymakecol(0,0x58,0);
       break;
   }
   fg_color = mymakecol(255,255,255);
