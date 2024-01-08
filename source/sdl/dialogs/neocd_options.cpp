@@ -190,7 +190,7 @@ static menu_item_t neocd_menu[] =
   { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},
   { _("Capture mode"), NULL, &capture_new_pictures, 2, { 0, 1 }, { _("Overwrite"), _("New pictures") }},
-  { _("Neo-Geo saveram"), NULL, &shared_saveram, 2, { 0, 1 }, { _("Per game"), _("shared") } },
+  { _("Neo-Geo saveram"), NULL, &shared_saveram, 2, { 0, 1 }, { _("Per game"), _("Shared") } },
   { NULL },
 };
 
