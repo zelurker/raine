@@ -1787,3 +1787,14 @@ void build_mode_list() {
 
 /******************************************************************************/
 
+void alleg_fatal_error(const char *file, const char *func, int line, char *format, ...) {
+    char msg[512];
+    va_list ap;
+    va_start(ap,format);
+    snprintf(msg,512,"function %s file %s line %d\n",func,file,line);
+    vsnprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
+    va_end(ap);
+    MessageBox("Fatal error",msg,"ok");
+    if (current_game->clear) (*current_game->clear)();
+    exit(1);
+}

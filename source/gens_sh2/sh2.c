@@ -363,31 +363,31 @@ PACKED_OP_TAB InitOpDS[] = {
 UINT8 FASTCALL
 Def_READB (UINT32 adr)
 {
-  print_debug ("SH2 read byte at %.8X\n", adr); return 0;
+  print_debug ("SH2 read byte at %.8lx\n", adr); return 0;
 }
 
 UINT16 FASTCALL
 Def_READW (UINT32 adr)
 {
-  print_debug ("SH2 read word at %.8X\n", adr); return 0;
+  print_debug ("SH2 read word at %.8lX\n", adr); return 0;
 }
 
 UINT32 FASTCALL
 Def_READL (UINT32 adr)
 {
-  print_debug ("SH2 read long at %.8X\n", adr); return 0;
+  print_debug ("SH2 read long at %.8lX\n", adr); return 0;
 }
 
 void FASTCALL
 Def_WRITEB (UINT32 adr, UINT8 data)
 {
-    print_debug ("SH2 write byte %.2X at %.8X\n", data, adr);
+    print_debug ("SH2 write byte %.2X at %.8lX\n", data, adr);
 }
 
 void FASTCALL
 Def_WRITEW (UINT32 adr, UINT16 data)
 {
-    print_debug ("SH2 write word %.4X at %.8X\n", data, adr);
+    print_debug ("SH2 write word %.4X at %.8lX\n", data, adr);
 }
 
 void FASTCALL

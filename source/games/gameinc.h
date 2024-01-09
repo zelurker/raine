@@ -11,7 +11,6 @@ extern "C" {
 #include "newspr.h"		// sprite drawing routines
 #include "spr64.h"		// 64x64 sprite routines
 #include "tilemod.h"		// sprite flipping/rotating/masking
-#include "newmem.h"		// memory handling routines
 #include "../control.h"		// control/input handling routines (../ is due to conflict with another control.h in direct-x)
 #include "dsw.h"		// dipswitch handling routines
 #include "ingame.h"		// screen handling routines

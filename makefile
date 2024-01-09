@@ -383,6 +383,7 @@ else
 ifeq ("${target}","i686-pc-msdosdjgpp")
    RAINE_EXE = Raine.exe
    RAINE_DOS = 1
+   undefine SDL
 
 ifdef CROSSCOMPILE
 	ASM = @nasm
@@ -1133,8 +1134,11 @@ CORE=	$(OBJDIR)/raine.o \
 	$(OBJDIR)/soundcfg.o \
 	$(OBJDIR)/speed_hack.o \
 	$(OBJDIR)/savepng.o \
- 	$(OBJDIR)/loadroms.o \
-	$(OBJDIR)/ips.o
+ 	$(OBJDIR)/loadroms.o
+
+ifndef RAINE_DOS
+CORE +=	$(OBJDIR)/ips.o
+endif
 
 ifdef USE_MEMWATCH
 	CORE += $(OBJDIR)/memwatch.o
@@ -1227,6 +1231,11 @@ ifdef RAINE_UNIX
 OBJS += $(OBJDIR)/leds.o
 endif
 
+ifdef GENS_SH2
+	OBJS += $(SH2)
+	AFLAGS += -Isource/gens_sh2
+endif
+
 ifdef SDL
 OBJS +=	 \
 	$(OBJDIR)/sdl/control.o \
@@ -1251,11 +1260,6 @@ endif
 
 ifdef USE_CURL
 OBJS += $(OBJDIR)/curl.o
-endif
-
-ifdef GENS_SH2
-	OBJS += $(SH2)
-	AFLAGS += -Isource/gens_sh2
 endif
 
 ifndef NO_ASM
@@ -1561,6 +1565,10 @@ $(OBJDIR)/68000/s68000.o: $(OBJDIR)/68000/s68000.asm
 
 ifdef CROSSCOMPILE
 $(OBJDIR)/68000/s68000.asm:
+ifeq ("${target}","i686-pc-msdosdjgpp")
+	# multiple lines not allowed here...
+	cp -fv `find $(NATIVE) -name star.exe|head -n 1` $(OBJDIR)/68000
+else
 	sh -c "if [ -f $(NATIVE)/object/68000/star.exe ]; then
 	  cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
 	elif [ -f $(NATIVE)/objectd/68000/star.exe ]; then
@@ -1569,6 +1577,7 @@ $(OBJDIR)/68000/s68000.asm:
 	  @echo -n you will need to generate star.exe from a native build, not cross compilation
 	  exit 1
 	fi"
+endif
 else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
@@ -1592,6 +1601,9 @@ $(OBJDIR)/z80/mz80.o: $(OBJDIR)/z80/mz80.asm
 
 ifdef CROSSCOMPILE
 $(OBJDIR)/z80/mz80.asm:
+ifeq ("${target}","i686-pc-msdosdjgpp")
+	cp `find $(NATIVE) -name makez80.exe|head -n 1` $(OBJDIR)/z80
+else
 	sh -c "if [ -f $(NATIVE)/object/z80/makez80.exe ]; then
 	  cp -fv $(NATIVE)/object/z80/makez80.exe $(OBJDIR)/z80/
 	elif [ -f $(NATIVE)/objectd/z80/makez80.exe ]; then
@@ -1600,6 +1612,7 @@ $(OBJDIR)/z80/mz80.asm:
 	  @echo you will need to generate makez80.exe from a native build, not cross compilation
 	  exit 1
 	fi"
+endif
 else
 $(OBJDIR)/z80/mz80.asm: $(OBJDIR)/z80/makez80.o
 	$(CCV) $(LFLAGS) -s -o $(OBJDIR)/z80/makez80.exe $<

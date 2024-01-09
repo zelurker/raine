@@ -54,6 +54,10 @@ extern "C" {
 
 #endif
 
+#ifndef SDL
+// SDL gets a slightly different palette from compat_sdl.h
+extern PALETTE pal;			// 256 Colour palette for the game
+#endif
 extern UINT8 *RAM_PAL;
 
 typedef void CMAP_FUNC(UINT32 bank, UINT32 cols);

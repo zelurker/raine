@@ -10,6 +10,7 @@
 #include "dissz80.h"
 #include "deftypes.h"
 #include "dz80.h"
+#include "rgui.h"
 
 static DISZ80	*pDis = NULL;	/* Pointer to the Disassembly structure */
 

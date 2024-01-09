@@ -117,6 +117,7 @@ const int nb_companies = sizeof(company_name)/4;
 
 #include "driver.c"
 
+#ifndef RAINE_DOS
 #ifndef RAINE_WIN32
 // st_atime is to say the least unreliable in windows, it's really a bad idea to initialize this based on that
 static void init_recent() {
@@ -184,6 +185,7 @@ static void read_game_stats() {
 #endif
 
 }
+#endif
 
 void init_game_list(void)
 {
@@ -228,7 +230,9 @@ void init_game_list(void)
 
    current_game = NULL;
 
+#ifndef RAINE_DOS
    read_game_stats();
+#endif
 }
 
 char *game_company_name(UINT8 company_id)

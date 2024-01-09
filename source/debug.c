@@ -14,6 +14,7 @@
 
 #include "raine.h"
 #include "files.h"
+#include "compat.h"
 
 #ifdef RAINE_DEBUG
 

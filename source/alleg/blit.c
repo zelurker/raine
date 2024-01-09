@@ -848,7 +848,9 @@ void SetupScreenBitmap(void)
    GameViewBitmap = create_sub_bitmap(GameBitmap, GameScreen.xtop, GameScreen.ytop, GameScreen.xview, GameScreen.yview);
    InitLUTs();
 
+#ifdef USE_BEZELS
    display_bezel();
+#endif
    clear_bitmap(GameViewBitmap);
 
    BlitSource = GameBitmap;

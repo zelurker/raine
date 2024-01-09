@@ -56,6 +56,7 @@ int GameMouse,use_leds,JoystickType,direction_stick[4];
 UINT8 input_buffer[0x100];
 int use_custom_keys;
 int joy_use_custom_keys;
+float mouse_scale = 0.33;
 
 typedef struct DEF_INPUT
 {

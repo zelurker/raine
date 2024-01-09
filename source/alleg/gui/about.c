@@ -441,10 +441,6 @@ int about_game_proc(int msg, DIALOG *d, int c)
 
       */
 
-      if(game_info->board)
-
-         add_text(text_data,"Board:\n   %s\n\n", game_info->board);
-
       /*
 
       video %d x %d

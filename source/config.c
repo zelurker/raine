@@ -268,7 +268,9 @@ int actual_load_neo_game(void)
 #endif
       init_display();
       setup_font(); // Usefull even without gui for the messages on screen
+#ifdef SDL
     }
+#endif
     SetupScreenBitmap();
 
     print_debug("Init Video Core...\n");
@@ -2175,8 +2177,9 @@ void save_game_config(void)
    save_arpro_cheats(current_game->main_name);
 
    raine_pop_config_state();
-#endif
+#else
    done_scripts();
+#endif
 
 }
 

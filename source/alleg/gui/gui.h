@@ -12,6 +12,7 @@ extern "C" {
 
 #include <allegro.h>
 #include "deftypes.h"
+#include "raine.h" // al_bitmap
 
 extern PALETTE gui_pal;
 

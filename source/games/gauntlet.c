@@ -575,7 +575,9 @@ static void execute_gauntlet()
 {
     stopped_68k = 0;
     input_buffer[8] |= 0x40;
+#ifndef RAINE_DOS
     if (goto_debuger) return;
+#endif
     for (int n=0; n<32; n++) {
 #if USE_MUSASHI == 2
 	int frame = ATARI_CLOCK_14MHz/8/fps/4/8,diff;

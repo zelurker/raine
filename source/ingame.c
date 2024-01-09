@@ -23,8 +23,10 @@
 #ifdef HAS_CONSOLE
 #include "console/scripts.h"
 #endif
+#ifdef SDL
 #include "opengl.h"
 #include "video/str_opaque.h"
+#endif
 
 char fps_buff[32];		// fps() message string
 
@@ -60,7 +62,9 @@ void BlitScreen(void)
 
 void print_ingame(int showtime, const char *format, ...)
 {
+#ifdef SDL
     if (silent_hud) return;
+#endif
    va_list ap;
    va_start(ap,format);
    vsprintf(MsgList[mbase].message,format,ap);
@@ -102,7 +106,9 @@ void overlay_ingame_interface(int ogl)
 
    */
 
+#ifdef SDL
    if (!silent_hud)
+#endif
        for(tb=0;tb<MSG_LIST_SIZE;tb++){
 
 	   ta=tb+mbase;

@@ -441,12 +441,12 @@ void SetLanguageSwitch(int number)
   if(romsw_src){
 
       if (write_region_byte)
-	  (*write_region_byte)(LanguageSw.Data[number]);
+	  (*write_region_byte)(LanguageSw.data[number].Data);
       else {
 	  while(romsw_src[ta].data){
 
 	      LanguageSw.Address      = romsw_src[ta++].offset;
-	      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.Data[number]);
+	      gen_cpu_write_byte_rom(LanguageSw.Address,LanguageSw.data[number].Data);
 	  }
       }
   }
@@ -465,7 +465,7 @@ int GetLanguageSwitch(void)
 	   tb = gen_cpu_read_byte_rom(LanguageSw.Address);
 
       for(ta=0;ta<LanguageSw.Count;ta++){
-          if(LanguageSw.Data[ta]==tb)
+          if(LanguageSw.data[ta].Data==tb)
              return ta;
       }
 

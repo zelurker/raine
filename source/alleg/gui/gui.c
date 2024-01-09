@@ -2303,7 +2303,7 @@ void MakeGUIBack(void)
        }
 
        if(!bmp){
-	 if (RaineData[Backdrop].type == DAT_al_bitmap) {
+	 if (RaineData[Backdrop].type == DAT_BITMAP) {
 	   bmp = ((al_bitmap *)RaineData[Backdrop].dat);
 	   loaded = 0;
 	   memcpy(&backdrop_pal, RaineData[Backdrop_pal].dat, 256*4);

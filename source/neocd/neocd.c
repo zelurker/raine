@@ -10,7 +10,9 @@
  */
 
 #include "gameinc.h"
+#ifdef SDL
 #include "dialogs/messagebox.h"
+#endif
 #include "pd4990a.h"
 #include "files.h"
 #include "2610intf.h"

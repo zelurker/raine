@@ -6,6 +6,11 @@
 #include <string.h>
 #include "streams.h"
 
+#ifdef RAINE_DOS
+#define play_sample(n1,n2,n3,n4,n5,n6);
+#define create_sample(n1,n2,n3,n4,n5) 0;
+#endif
+
 #define VERBOSE 0
 
 #define NEW_LFO 0

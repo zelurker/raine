@@ -34,6 +34,8 @@ int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, i
 #define MessageBox(title,msg,button) raine_alert(title,msg,"","",button,"",0,0)
 #define ErrorMsg(msg) MessageBox("Error",msg,"OK")
 int raine_edit_int(char *title, char *s1, char *b1, char *b2, int c1, int c2, int inf, int supp, int def);
+#define fatal_error(format, ...) alleg_fatal_error(__FILE__,__func__,__LINE__, format, ## __VA_ARGS__)
+void alleg_fatal_error(const char *file, const char*func, int line, char *format, ...);
 
 char *gfx_card_name(UINT32 index);
 

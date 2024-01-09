@@ -233,11 +233,13 @@ void ClearDefault(void)
     for (int n=0; n<MAX_LEDS; n++)
 	switch_led(n,0);
 #endif
+#ifndef RAINE_DOS
     for (int n=0; n<ips_info.nb; n++) {
 	free(ips_info.rom[n]);
 	free(ips_info.ips[n]);
     }
     ips_info.nb = 0;
     free_ips_patches();
+#endif
 }
 

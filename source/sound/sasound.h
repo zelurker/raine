@@ -229,6 +229,15 @@ void del_sample(int n);
 void set_sample_frequency(int n, int freq);
 void set_sample_volume(int n, int vol);
 void play_sample(int chan, INT16 *src, int len, int rate, int loop,int vol);
+#else
+// It's probably not too hard to add these sample functions to allegro, most of the functions are already there
+// but I haven't used allegro for ages, so for now I'll start with empty definitions... !
+#define init_samples();
+#define set_sample_pos(pos);
+
+#define del_sample(n);
+#define set_sample_frequency(n,freq);
+#define set_sample_volume(n,vol);
 #endif
 
 void end_recording();

@@ -24,6 +24,7 @@
 #include <allegro/internal/aintern.h>
 #include <stdio.h>
 #include <math.h>
+#include "raine.h" // al_bitmap
 
 
 #define FIX_0_298631336  ((long)  2446)

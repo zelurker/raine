@@ -111,7 +111,9 @@ char raine_cpu_model[80]; // declared in gui/about.c, not available with sdl...
 #endif
 
 char language[6];
+#ifndef RAINE_DOS
 static char *game_type0[NB_GAME_TYPE];
+#endif
 
 void init_lang() {
     if (!language[0]) {

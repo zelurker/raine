@@ -29,13 +29,13 @@ extern "C" {
 #ifdef GFX_DRIVER_MODEX
 #define GFX_ARCMON				 AL_ID('A','R','C','M')
 #endif
+#include "gui.h" // load_message
+#include "rgui.h" // fatal error
 #else
 #include "compat.h"
 #endif
 
-#ifdef MEMORY_DEBUG
 #include "newmem.h"     // This must be placed before other includes
-#endif
 
 #include "deftypes.h"       // Raine data types
 #include "confile.h"

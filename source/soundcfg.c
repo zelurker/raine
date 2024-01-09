@@ -79,7 +79,9 @@ void sound_load_cfg() {
    mute_sfa3_speaker = raine_get_config_int( "Sound", "mute_sfa3_speaker", 0);
 #endif
    if (!audio_sample_rate) {
+#ifdef SDL
        sdl_init();
+#endif
        saInitSoundCard(RaineSoundCard,audio_sample_rate);
    }
 
