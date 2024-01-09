@@ -33,7 +33,7 @@ class TColorDlg : public TDialog
   }
 };
 
-static TColorDlg *dlg;
+static TColorDlg *dlg,*dlg2;
 
 static int set_gui_color(int sel);
 
@@ -93,6 +93,9 @@ static int set_theme(int sel) {
       bg_color =  makecol_alpha(0x11,0x58,0x07,0xc0);
       bgframe_color = mymakecol(0,0x58,0);
       break;
+    case 2: // red (actually these color switches were done using simply a rvb rotation in dos !)
+      bg_color = makecol_alpha(0x78,0x7, 0x11, 0xc0);
+      bgframe_color = mymakecol(0x50,0,0);
   }
   fg_color = mymakecol(255,255,255);
   fgframe_color = mymakecol(255,255,255);
@@ -100,6 +103,9 @@ static int set_theme(int sel) {
   cslider_bar = mymakecol(0xc0,0xc0,0xc0);
   cslider_lift = mymakecol(0xff,0xff,0xff);
   bg_dialog_bar = mymakecol(0,0,0);
+  dlg2->set_fgcolor(fg_color);
+  dlg2->set_bgcolor(bg_color);
+  dlg2->draw();
   return 0;
 }
 
@@ -112,7 +118,7 @@ static menu_item_t colors_menu[] =
 {  _("Foreground frame color"), &change_color, },
 {  _("Background frame color"), &change_color, },
 {  _("Background dialog bar color"), &change_color, },
-{ _("Revert to..."), &set_theme, &theme, 2, { 0, 1 }, { _("Blue"), _("Green") } },
+{ _("Revert to..."), &set_theme, &theme, 3, { 0, 1, 2 }, { _("Blue"), _("Green"), _("Red") } },
 { NULL, NULL, NULL }
 };
 
@@ -144,14 +150,16 @@ static int change_color(int sel) {
   dlg = new TColorDlg((char*)colors_menu[cindex].label, colors_dlg);
   dlg->execute();
   delete dlg;
+  dlg = NULL;
   return 1;
 }
 
 
 int do_colors(int sel) {
-  TMenu *tmenu = new TMenu("",colors_menu);
-  tmenu->execute();
-  delete tmenu;
+  dlg2 = (TColorDlg*)new TMenu("",colors_menu);
+  dlg2->execute();
+  delete dlg2;
+  dlg2 = NULL;
   return 0;
 }
 
