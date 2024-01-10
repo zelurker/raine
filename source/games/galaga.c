@@ -1081,6 +1081,9 @@ static void load_galaga() {
 	current_game->sound = sound_galaga_dx;
     } else
 	sample = none;
+    if (sample == none) {
+	MessageBox("Info", "No sample detected for the explosion.\nYou can use the emudx galdxm.dx2 file\nor a galaga_explode sample in wav, ogg or mp3","Ok");
+    }
 }
 
 static gfx_layout spritelayout_galaga =
