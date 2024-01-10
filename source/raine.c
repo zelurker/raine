@@ -688,6 +688,10 @@ int main(int argc,char *argv[])
 	" - sh2 emulation works, but requires an insane amount of ram. Slow\n"
 	"   video emulation, which is not even noticeable in windows or linux\n"
 	" - To sum up : this version can be compiled, but is not maintained anymore\n"
+	" - new to the dos version : ips support ! There is no gui though, so when\n"
+	"   loading a rom with short name a, it finds ips/a.ini containing a list of\n"
+	"   dat files to load from the directory ips/a, it will do so. See the forum\n"
+	"   for more details on ips files.\n"
 	"\n"
 #ifdef RAINE_WIN32
 	"If you have bad colors in 8bpp fullscreen modes, try setting\n"

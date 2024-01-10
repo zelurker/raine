@@ -2,13 +2,17 @@
 #include <stdio.h>
 #include "ips.h"
 #include "raine.h"
-#include "sdl/dialogs/messagebox.h"
 #include "translate.h"
 #include "files.h"
 #ifdef MEMWATCH
 #include "memwatch.h"
 #endif
+#ifdef RAINE_DOS
+#include "rgui.h"
+#else
 #include "console/scripts.h" // atoh
+#include "sdl/dialogs/messagebox.h"
+#endif
 #include "7z/7zCrc.h"
 
 tips_info ips_info;

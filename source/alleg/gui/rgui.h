@@ -63,6 +63,7 @@ void fsel(char *path, char **exts,char *res, char *msg);
 
 #define raine_window_dialog	raine_do_dialog
 void build_mode_list();
+int atoh(char *s);
 
 #endif
 

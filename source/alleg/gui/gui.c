@@ -44,6 +44,7 @@
 #include "neocd/neocd.h"
 #endif
 #include "res.h"
+#include "ips.h"
 
 extern void update_stretch(); // stretch.c
 struct RGUI_CFG rgui_cfg;
@@ -1160,6 +1161,26 @@ int load_game_proc(int msg, DIALOG *d, int c)
 	fps = 60.0; // 60 fps (default)
     if (fps > max_fps)
 	fps = max_fps;
+    if (1) { // ips_enabled) {
+	char file[FILENAME_MAX];
+	snprintf(file,1024,"%sips" SLASH "%s.ini",dir_cfg.exe_path,current_game->main_name);
+	file[FILENAME_MAX-1] = 0;
+	FILE *f = fopen(file,"r");
+	file[strlen(file)-4] = 0; // just keep the path, without the .ini extension
+	int l = strlen(file);
+	if (f) {
+	    char buf[1024];
+	    while (!feof(f)) {
+		if (myfgets(buf,1024,f)) {
+		    if (!buf[0] || !strncmp(buf,"//",2))
+			continue;
+		    snprintf(&file[l],FILENAME_MAX-l,SLASH "%s",buf);
+		    add_ips_file(file);
+		}
+	    }
+	    fclose(f);
+	}
+    }
 
     // I have to change the depth BEFORE loading.
     // Probably because of the set_color_mapper in the loading function
@@ -2613,3 +2634,4 @@ void init_joys() {
       }
    }
 }
+

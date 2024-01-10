@@ -1813,3 +1813,23 @@ void alleg_fatal_error(const char *file, const char *func, int line, char *forma
     if (current_game->clear) (*current_game->clear)();
     exit(1);
 }
+
+int atoh(char *s) {
+    int val = 0;
+    int plus;
+    while (*s) {
+	if (*s >= '0' && *s <= '9')
+	    plus = (*s-'0');
+	else if (*s >= 'A' && *s <= 'F')
+	    plus = (*s-'A'+10);
+	else if (*s >= 'a' && *s <= 'f')
+	    plus = (*s-'a'+10);
+	else
+	    break;
+	val *= 16;
+	val += plus;
+	s++;
+    }
+    return val;
+}
+

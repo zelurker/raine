@@ -284,7 +284,6 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		    }
 		}
 		if (ret) {
-#ifndef RAINE_DOS
 		    for (int n=0; n<ips_info.nb; n++) {
 			if (!strcmp(rec_rom_info.name,ips_info.rom[n]) || (ips_info.crc[n] && ips_info.crc[n] == rec_rom_info.crc32)) {
 			    printf("rom found for ips %s size %x crc %x\n",rec_rom_info.name,rec_rom_info.size,rec_rom_info.crc32);
@@ -303,7 +302,6 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 			    }
 			}
 		    }
-#endif
 		    return ret;
 		}
             }
