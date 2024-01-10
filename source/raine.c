@@ -681,6 +681,13 @@ int main(int argc,char *argv[])
 	"\n"
 #ifndef SDL
 	"ISSUES:\n"
+	" - EmuDX samples don't seem to sound right, tested only in dosbox...\n"
+	" - Muted most of the galaxian samples for now.\n"
+	" - No console, and very far behind the other versions for the gui\n"
+	"   which means no scripts (including cheat scripts)\n"
+	" - sh2 emulation works, but requires an insane amount of ram. Slow\n"
+	"   video emulation, which is not even noticeable in windows or linux\n"
+	" - To sum up : this version can be compiled, but is not maintained anymore\n"
 	"\n"
 #ifdef RAINE_WIN32
 	"If you have bad colors in 8bpp fullscreen modes, try setting\n"
