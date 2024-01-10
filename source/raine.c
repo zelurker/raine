@@ -909,7 +909,8 @@ int main(int argc,char *argv[])
    if (ingame_font)
        free(ingame_font);
 #ifndef SDL
-   unload_datafile(RaineData);
+   // The unload_datafile creates a crash, there is probably some memory leak somewhere... !
+   // unload_datafile(RaineData);
 #if 0
    set_gfx_mode(GFX_MODEX,320,240,8,0);
    /* For some unknown reason in virtualbox raine doesn't correctly restore text mode
