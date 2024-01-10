@@ -1435,23 +1435,24 @@ static void draw_stars(  )
 	{
 
 	    x = (star_seed_tab[star_cntr].x + stars_scrollx) % 256;
-	    y = (112 + star_seed_tab[star_cntr].y ) % 256 + 16;
+	    y = (112 + star_seed_tab[star_cntr].y ) % 256;
 	    if (x < 0) x+= 256;
-	    x += 32;
+	    x += 16;
 	    /* 112 is a tweak to get alignment about perfect */
 
 
 
-	    if (x >= 0 && x <= 36*8)
-	    {
+	    if (x >= 0 && x < GameViewBitmap->h && y >= 0 && y < GameViewBitmap->w)
+	    { // test on x only if screen rotation is activated !
+	      // This code doesn't handle any rotation, but at least it won't crash with this test
 		switch(display_cfg.bpp) {
 		case 8:
-		    *(GameBitmap->line[x]+y) = map_stars[star_seed_tab[ star_cntr ].col]; break;
+		    *(GameViewBitmap->line[x]+y) = map_stars[star_seed_tab[ star_cntr ].col]; break;
 		case 15:
 		case 16:
-		    WriteWord(GameBitmap->line[x]+y*2,ReadWord(&map_stars[star_seed_tab[ star_cntr ].col*2])); break;
+		    WriteWord(GameViewBitmap->line[x]+y*2,ReadWord(&map_stars[star_seed_tab[ star_cntr ].col*2])); break;
 		case 32:
-		    WriteLong(GameBitmap->line[x]+y*4,ReadLong(&map_stars[star_seed_tab[ star_cntr ].col*4])); break;
+		    WriteLong(GameViewBitmap->line[x]+y*4,ReadLong(&map_stars[star_seed_tab[ star_cntr ].col*4])); break;
 		}
 	    }
 	}
