@@ -1787,6 +1787,21 @@ void build_mode_list() {
 
 /******************************************************************************/
 
+void MessageBox(char *title, char *msg, char *btn) {
+    char *s1 = msg;
+    char *s2 = strstr(s1,"\n");
+    char *s3;
+    if (s2) {
+	*s2 = 0; s2++;
+	s3 = strstr(s2,"\n");
+	if (s3) {
+	    *s3 = 0;
+	    s3++;
+	}
+    }
+    raine_alert(title,s1,s2,s3,btn,NULL,0,0);
+}
+
 void alleg_fatal_error(const char *file, const char *func, int line, char *format, ...) {
     char msg[512];
     va_list ap;
