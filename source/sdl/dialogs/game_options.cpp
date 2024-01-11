@@ -91,7 +91,7 @@ static menu_item_t *get_savegames(int for_saving) {
 	}
 	if (version == SAVE_FILE_TYPE_2 || version == SAVE_FILE_TYPE_1) {
 	  struct stat buf;
-	  char *s = entry->d_name+len+3;
+	  char *s = entry->d_name+len+2;
 	  if (allocated == used) {
 	    allocated += 10;
 	    saves = (saves_t*)realloc(saves,sizeof(saves_t)*allocated);
