@@ -136,15 +136,15 @@ menu_item_t menu_options[] =
   { _("Profiler mode"), NULL, &profiler_mode,2, {0, 1}, { "RDTSC", "SDL performance counter" } },
 };
 
-int fg_color = mymakecol(255,255,255),
-    bg_color = makecol_alpha(0x11,0x07,0x78,0xc0),
-    fgframe_color = mymakecol(255,255,255),
-    bgframe_color = mymakecol(0,0,128),
-    cslider_border = mymakecol(0,0,0),
-    cslider_bar = mymakecol(0xc0,0xc0,0xc0),
-    cslider_lift = mymakecol(0xff,0xff,0xff),
-    bg_dialog_bar = mymakecol(0,0,0),
-    bg_dialog_bar_gfx = makecol_alpha(0,0,0,255);
+int fg_color,
+    bg_color,
+    fgframe_color,
+    bgframe_color,
+    cslider_border,
+    cslider_bar,
+    cslider_lift,
+    bg_dialog_bar,
+    bg_dialog_bar_gfx; // all this initialized in gui.cpp: read_menu_config
 
 int add_menu_options(menu_item_t *menu) {
   menu[0] = menu_options[0];
