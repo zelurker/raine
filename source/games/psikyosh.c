@@ -789,6 +789,79 @@ static void execute_gunbird2() {
     cpu_interrupt(CPU_SH2_0,4); // vbl
 }
 
+/* I would have loved to find a way to avoid the alpha test inside the 2 loops, but I can't pass the action there as a parameter because macro parameters are always expanded so I don't see any short
+ * way to do it. It would require to make a super big block duplicating most of it based on the alpha value which would miss the point of making a macro here... so let's try that here and see if it's
+ * that bad... */
+
+#define draw_sprite_map( bpp )                                                \
+    if (rotate == 0) {                                                        \
+        for( y=sy; y<ey; y++ )                                                \
+        {                                                                     \
+            UINT8 *source = zoom_bitmap->line[y_index>>10];                   \
+            UINT##bpp *dest = (u##bpp*)GameBitmap->line[y];                   \
+            u8 *pline = pbitmap->line[y];                                     \
+                                                                              \
+            int x, x_index = x_index_base;                                    \
+            for( x=sx; x<ex; x++ )                                            \
+            {                                                                 \
+                if (x >= 0 && y >= 0) {                                       \
+                    int c = source[x_index>>10];                              \
+                    if( c != 0 ) {                                            \
+                        if ( alpha == 255 || bpp == 8) {                      \
+                            dest[x] = ((UINT##bpp *)map)[c];                  \
+                        } else if (alpha >= 0) {                              \
+                            blend_##bpp(&dest[x], ((UINT##bpp *) map)[c]);    \
+                        } else { /* alpha < 0 */                              \
+                            if( alphatable[c] == 0xff )                       \
+                                dest[x] = ((UINT##bpp *)map)[c];              \
+                            else {                                            \
+                                set_alpha(alphatable[c]);                     \
+                                blend_##bpp(&dest[x], ((UINT##bpp *)map)[c]); \
+                            }                                                 \
+                        }                                                     \
+                        pline[x] = pri;                                       \
+                    }                                                         \
+                }                                                             \
+                x_index += dx;                                                \
+            }                                                                 \
+                                                                              \
+            y_index += dy;                                                    \
+        }                                                                     \
+    } else if (rotate == 3) { /* 270 */                                       \
+        for( y=sy; y<ey; y++ )                                                \
+        {                                                                     \
+            UINT8 *source = zoom_bitmap->line[y_index>>10];                   \
+                                                                              \
+            int x, x_index = x_index_base;                                    \
+            for( x=sx; x<ex; x++ )                                            \
+            {                                                                 \
+                if (x >= 0 && y >= 0) {                                       \
+                    UINT##bpp *dest = (u##bpp*)GameBitmap->line[disp_x_16-x]; \
+                    u8 *pline = pbitmap->line[disp_x_16-x];                   \
+                    int c = source[x_index>>10];                              \
+                    if( c != 0 ) {                                            \
+                        if (alpha == 255 || bpp == 8) {                                   \
+                            dest[y] = ((UINT##bpp*)map)[c];                   \
+                        } else if (alpha >= 0) {                              \
+                            blend_##bpp(&dest[y], ((UINT##bpp *)map)[c]);     \
+                        } else { /* alpha < 0 */                              \
+                            if( alphatable[c] == 0xff )                       \
+                                dest[y] = ((UINT##bpp *)map)[c];              \
+                            else {                                            \
+                                set_alpha(alphatable[c]);                     \
+                                blend_##bpp(&dest[y], ((UINT##bpp *)map)[c]); \
+                            }                                                 \
+                        }                                                     \
+                        pline[y] = pri;                                       \
+                    }                                                         \
+                }                                                             \
+                x_index += dx;                                                \
+            }                                                                 \
+                                                                              \
+            y_index += dy;                                                    \
+        }                                                                     \
+    }
+
 /* zoomx/y are pixel slopes in 6.10 floating point, not scale. 0x400 is 1:1 */
 /* high/wide are number of tiles wide/high up to max size of zoom_bitmap in either direction */
 /* code is index of first tile and incremented across rows then down columns (adjusting for flip obviously) */
@@ -948,167 +1021,19 @@ static void psikyosh_drawgfxzoom(
 
 		/* case 1: TRANSPARENCY_PEN */
 		/* Note: adjusted to >>10 and draws from zoom_bitmap not gfx */
-		if (alpha == 0xff)
-		{
-		    if (rotate == 0) {
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-			    UINT32 *dest = (u32*)GameBitmap->line[y];
-			    u8 *pline = pbitmap->line[y];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    int c = source[x_index>>10];
-				    if( c != 0 ) {
-					dest[x] = ((UINT32 *)map)[c];
-					pline[x] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    } else if (rotate == 3) { // 270
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16-x];
-				    u8 *pline = pbitmap->line[disp_x_16-x];
-				    int c = source[x_index>>10];
-				    if( c != 0 ) {
-					dest[y] = ((UINT32*)map)[c];
-					pline[y] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    }
-		}
-
-		/* case 6: alpha-blended */
-		else if (alpha >= 0)
-		{
+		if (alpha >= 0 && alpha < 255)
 		    set_alpha(alpha);
-		    if (rotate == 0) {
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-			    UINT32 *dest = (u32*)GameBitmap->line[y];
-			    u8 *pline = pbitmap->line[y];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    int c = source[x_index>>10];
-				    if( c != 0 ) {
-					blend_32(&dest[x], ((UINT32 *)map)[c]);
-					pline[x] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    } else if (rotate == 3) { // 270
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
-				    u8 *pline = pbitmap->line[disp_x_16-x];
-
-				    int c = source[x_index>>10];
-				    if( c != 0 ) {
-					blend_32(&dest[y], ((UINT32 *)map)[c]);
-					pline[y] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    }
-		}
-
-		/* case 7: TRANSPARENCY_ALPHARANGE */
-		else
-		{
-		    if (rotate == 0) {
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-			    UINT32 *dest = (u32*)GameBitmap->line[y];
-			    u8 *pline = pbitmap->line[y];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    int c = source[x_index>>10];
-				    if( c != 0 )
-				    {
-					if( alphatable[c] == 0xff )
-					    dest[x] = ((UINT32 *)map)[c];
-					else {
-					    set_alpha(alphatable[c]);
-					    blend_32(&dest[x], ((UINT32 *)map)[c]);
-					}
-					pline[x] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    } else if (rotate == 3) { // 270
-			for( y=sy; y<ey; y++ )
-			{
-			    UINT8 *source = zoom_bitmap->line[y_index>>10];
-
-			    int x, x_index = x_index_base;
-			    for( x=sx; x<ex; x++ )
-			    {
-				if (x >= 0 && y >= 0) {
-				    UINT32 *dest = (u32*)GameBitmap->line[disp_x_16 - x];
-				    u8 *pline = pbitmap->line[disp_x_16-x];
-				    int c = source[x_index>>10];
-				    if( c != 0 )
-				    {
-					if( alphatable[c] == 0xff )
-					    dest[y] = ((UINT32 *)map)[c];
-					else {
-					    set_alpha(alphatable[c]);
-					    blend_32(&dest[y], ((UINT32 *)map)[c]);
-					}
-					pline[y] = pri;
-				    }
-				}
-				x_index += dx;
-			    }
-
-			    y_index += dy;
-			}
-		    }
+		switch(display_cfg.bpp) {
+		case 8:
+		    draw_sprite_map( 8 );
+		    break;
+		case 15:
+		case 16:
+		    draw_sprite_map( 16 );
+		    break;
+		case 32:
+		    draw_sprite_map( 32 );
+		    break;
 		}
 	    }
 	}

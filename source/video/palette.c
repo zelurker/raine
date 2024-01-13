@@ -2363,7 +2363,7 @@ struct COLOUR_MAPPER col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC) \
-void NAME(UINT32 bank, UINT32 cols)        \
+static void NAME(UINT32 bank, UINT32 cols)        \
 {                                          \
   UINT32 yy,*ta;                           \
   TYPE *ct,res;                            \
@@ -2386,7 +2386,36 @@ void NAME(UINT32 bank, UINT32 cols)        \
    }while(--cols);                         \
 }
 
-BUILD_MAPPER(Map_24bit_RGB_8,UINT8,GET_PEN_FOR_COLOUR_8)
+static void Map_24bit_RGB_8(UINT32 bank, UINT32 cols)
+{
+  UINT32 yy,*ta;
+  UINT8 *ct,res,r,g,b;
+
+    bank_status[bank] = cols;
+    ct = (UINT8 *) coltab[bank];
+    ta = (UINT32 *) (RAM_PAL+(bank<<6));
+   do{
+      yy = ReadLong68k(ta++);
+      r = (yy&0xFf000000)>>24;
+      g = (yy&0x00Ff0000)>>16;
+      b = (yy&0x0000Ff00)>>8;
+      // The 8 bits mapper is supposed to use a map based on yy, but if yy is 24 bits then the map is way too big !!!
+      // so I'll reduce the colors here to 5bpp
+      yy = (b >> 3) | ((g >> 3) << 5) | ((r >> 3) << 10);
+
+      GET_PEN_FOR_COLOUR_8(
+               r,
+               g,
+               b,
+               res
+               );
+
+      *ct++ = res;
+
+   }while(--cols);
+}
+
+// BUILD_MAPPER(Map_24bit_RGB_8,UINT8,GET_PEN_FOR_COLOUR_8)
 BUILD_MAPPER(Map_24bit_RGB_15,UINT16,GET_PEN_FOR_COLOUR_15)
 BUILD_MAPPER(Map_24bit_RGB_16,UINT16,GET_PEN_FOR_COLOUR_16)
 BUILD_MAPPER(Map_24bit_RGB_24,UINT32,GET_PEN_FOR_COLOUR_24)
