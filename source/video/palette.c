@@ -507,7 +507,7 @@ struct COLOUR_MAPPER col_map_xxxx_rrrr_gggg_bbbb =
 };
 
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy, bright;				\
    UINT16 *ta;					\
@@ -556,7 +556,7 @@ struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_cps1 =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)			\
-void NAME(UINT32 bank, UINT32 cols)				\
+static void NAME(UINT32 bank, UINT32 cols)			\
 {								\
    UINT16 yy, bright;						\
    UINT16 *ta;							\
@@ -603,7 +603,7 @@ struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_cps2 =
 // and this one is for atari games, gauntlet...
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)                                                  \
-void NAME(UINT32 bank, UINT32 cols)                                                         \
+static void NAME(UINT32 bank, UINT32 cols)                                                  \
 {                                                                                           \
    UINT16 yy;                                                                       \
    UINT16 *ta;                                                                              \
@@ -653,7 +653,7 @@ struct COLOUR_MAPPER col_map_nnnn_rrrr_gggg_bbbb_atari =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy;					\
    UINT16 *ta;					\
@@ -696,7 +696,7 @@ struct COLOUR_MAPPER col_map_12bit_xxxxRRRRGGGGBBBB_Rev =
 // map rrr_ggg_bbb (9 bits -> 512 couleurs) (pengo)
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)		\
-void NAME(UINT32 bank, UINT32 cols)			\
+static void NAME(UINT32 bank, UINT32 cols)		\
 {							\
    UINT16 yy;						\
    UINT16 *ta;						\
@@ -742,7 +742,7 @@ struct COLOUR_MAPPER col_map_xxxxRrrgggbbb =
 
 // Map_12bit_xBGR
 #define BUILD_MAPPER3(NAME, TYPE, PEN_FUNC) \
-void NAME(UINT32 bank, UINT32 cols)	\
+static void NAME(UINT32 bank, UINT32 cols)  \
 {					\
    UINT16 yy;				\
    UINT16 *ta;				\
@@ -1407,7 +1407,7 @@ struct COLOUR_MAPPER col_map_xxxx_bbbb_gggg_rrrr_rev =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME,TYPE,PEN_FUNC,size)        \
-void NAME(UINT32 bank, UINT32 cols)                  \
+static void NAME(UINT32 bank, UINT32 cols)           \
 {                                                    \
    UINT16 yy;                                        \
    UINT16 *ta;                                       \
@@ -1616,7 +1616,7 @@ void Map_15bit_xRGB(int bank, int cols)
 /******************************************************************************/
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy;					\
    UINT16 *ta;					\
@@ -1663,7 +1663,7 @@ struct COLOUR_MAPPER col_map_xrrr_rrgg_gggb_bbbb_rev_68k =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy;					\
    UINT16 *ta;					\
@@ -1707,7 +1707,7 @@ struct COLOUR_MAPPER col_map_xrrr_rrgg_gggb_bbbb_68k =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy;					\
    UINT16 *ta;					\
@@ -2438,7 +2438,7 @@ struct COLOUR_MAPPER col_map_24bit_rgb =
 // this one is for cleofort, it uses 2 color mappers.
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)		\
 {						\
    UINT8 yr,yg,yb;				\
    UINT16 yy;					\
@@ -2470,7 +2470,7 @@ void NAME(UINT32 bank, UINT32 cols)		\
 
 // version without 8bpp conversion...
 #define BUILD_MAPPER2(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT8 yr,yg,yb;				\
    UINT8 *ta;					\
@@ -2521,7 +2521,7 @@ struct COLOUR_MAPPER col_map_21bit_xRGB =
 //Map_12bit_RGBxxxxx
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC) \
-void NAME(UINT32 bank, UINT32 cols)        \
+static void NAME(UINT32 bank, UINT32 cols) \
 {                                    \
    UINT16 yy;                        \
    UINT8 *ta;                        \
@@ -2564,7 +2564,7 @@ struct COLOUR_MAPPER col_map_12bit_rgbxxxx =
 
 #undef BUILD_MAPPER
 #define BUILD_MAPPER(NAME, TYPE, PEN_FUNC)	\
-void NAME(UINT32 bank, UINT32 cols)		\
+static void NAME(UINT32 bank, UINT32 cols)	\
 {						\
    UINT16 yy;					\
    UINT16 *ta;					\
