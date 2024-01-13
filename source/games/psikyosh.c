@@ -543,13 +543,18 @@ static u32 FASTCALL read_videol(u32 offset) {
     return 0xffffffff;
 }
 
+static int colchange;
+
 static void FASTCALL write_videob(u32 offset,u8 data) {
     offset &= 0xffffff;
     if (offset <= 0xffff)
         ram_spr[offset] = data; // bg + sprites
     else if (offset >= 0x40000 && offset <= 0x44fff) {
 	ram_pal[offset & 0xffff] = data;
-	bank_status[(offset >> 6) & 0xff] = 0;
+	if (display_cfg.bpp == 8)
+	    colchange = 1;
+	else
+	    bank_status[(offset >> 6) & 0xff] = 0;
     }
     else if (offset >= 0x50000 && offset <= 0x501ff)
 	ram_zoom[offset & 0x1ff] = data;
@@ -570,7 +575,10 @@ static void FASTCALL write_videow(u32 offset,u16 data) {
         WriteWord68k(&ram_spr[offset],data); // bg + sprites
     } else if (offset >= 0x40000 && offset <= 0x44fff) {
 	WriteWord68k(&ram_pal[offset & 0xffff],data);
-	bank_status[(offset >> 6) & 0xff] = 0;
+	if (display_cfg.bpp == 8)
+	    colchange = 1;
+	else
+	    bank_status[(offset >> 6) & 0xff] = 0;
     } else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteWord68k(&ram_zoom[offset & 0x1ff],data);
     // else if (offset >= 0x405ffdc && offset <= 0x405ffdf)
@@ -587,7 +595,10 @@ static void FASTCALL write_videol(u32 offset,u32 data) {
 	// printf("ram_sprl %x = %x\n",offset,data);
         WriteLong68k(&ram_spr[offset],data); // bg + sprites
     } else if (offset >= 0x40000 && offset <= 0x44fff) {
-	bank_status[(offset >> 6) & 0xff] = 0;
+	if (display_cfg.bpp == 8)
+	    colchange = 1;
+	else
+	    bank_status[(offset >> 6) & 0xff] = 0;
 	WriteLong68k(&ram_pal[offset & 0xffff],data);
     } else if (offset >= 0x50000 && offset <= 0x501ff)
 	WriteLong68k(&ram_zoom[offset & 0x1ff],data);
@@ -701,7 +712,7 @@ static void load_gunbird2() {
 
     set_colour_mapper(&col_map_24bit_rgb);
     // the text layer has 16 colours, the other layers seem to have 256 colors...
-    InitPaletteMap(ram_pal, 0x100, 0x100, 0x10000);
+    InitPaletteMap(ram_pal, 0x100, 0x100, 0x8000); // colors converted to 15bpp when in 8bpp, so map size = 0x8000 (15 bits).
     init_16x16_zoom_64(); // Should have zoom...
 
     SH2_Add_Fetch(&M_SH2,0, 0x17ffff, (UINT16*)ROM);
@@ -1314,6 +1325,11 @@ static void draw_bg() {
 static void draw_gunbird2() {
     clear_game_screen(0);
     clear_bitmap(pbitmap);
+    if (colchange) {
+	colchange = 0;
+	// It's useful only in 8bpp, because any color change can change the balance of colors
+	ClearPaletteMap();
+    }
     // The layers have priority over the sprites, so the idea is to draw 1st the sprites, initializing the priority bitmap, then draw the layers still visible on top
     // it allows to use an 8bpp priority bitmap only
     // the only problem is when drawing and transparent sprite on top of that, since sprites are drawn 1st it just doesn't work !
