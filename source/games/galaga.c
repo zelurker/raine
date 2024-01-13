@@ -17,6 +17,9 @@
 #include "sasound.h"
 #include "dxsmp.h"
 #include "emudx.h"
+#ifdef SDL
+#include "sdl/dialogs/messagebox.h"
+#endif
 
 extern UINT32 cpu_frame_count;
 
