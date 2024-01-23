@@ -1585,7 +1585,7 @@ void unpack_region_lsb(UINT32 region) {
 }
 
 void set_region_size(UINT32 region, UINT32 size) {
-  // made for custom regions, for now only used by cps2 decryption
+  // made for custom regions, for now only used by cps2 decryption (and pengo too)
   region_size[region] = size;
 }
 

@@ -499,6 +499,9 @@ static void load_pengo() {
   load_region[REGION_GFX3] = load_region[REGION_GFX2];
   load_region[REGION_GFX2] = copy_sprites(load_region[REGION_GFX1]);
   load_region[REGION_GFX4] = copy_sprites(load_region[REGION_GFX3]);
+  // without the set_region_size calls, the size stays at 0 and both regions are silently ignored for the layouts !
+  set_region_size(REGION_GFX3, get_region_size(REGION_GFX1));
+  set_region_size(REGION_GFX4, get_region_size(REGION_GFX2));
 
   // Z80 init, finally
 
