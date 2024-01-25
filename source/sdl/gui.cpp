@@ -463,7 +463,7 @@ static void do_load_game(void)
    switch(load_error&3){
    case LOAD_WARNING:			// WARNING - IT MIGHT RUN OK
 
-     strcat(load_debug,"\n\nThe game might not run correctly.");
+     strcat(load_debug,_("\nThe game might not run correctly."));
      MessageBox(_("Loading problem"), load_debug);
 
    case 0x00:				// SUCCESS

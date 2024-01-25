@@ -18,6 +18,28 @@ msgstr ""
 "X-Generator: Notepad++ 7.3.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: source/sdl/gui.cpp:466
+msgid ""
+"\n"
+"The game might not run correctly."
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Shared"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Neo-Geo saveram"
+msgstr ""
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Per game"
+msgstr ""
+
+#: source/sdl/dialogs/colors.cpp:121
+msgid "Red"
+msgstr ""
+
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"

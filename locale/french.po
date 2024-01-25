@@ -18,6 +18,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.5.5\n"
 
+#: source/sdl/gui.cpp:466
+msgid ""
+"\n"
+"The game might not run correctly."
+msgstr "\nLe jeu pourrait ne pas fonctionner correctement."
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Shared"
+msgstr "Partagée"
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Neo-Geo saveram"
+msgstr "Mémoire volatile Neo-Geo"
+
+#: source/sdl/dialogs/neocd_options.cpp:193
+msgid "Per game"
+msgstr "Par jeu"
+
+#: source/sdl/dialogs/colors.cpp:121
+msgid "Red"
+msgstr "Rouge"
+
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
 msgid "%d - Free save state slot"
