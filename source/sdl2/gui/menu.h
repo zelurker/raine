@@ -198,7 +198,7 @@ class TBitmap_menu : public TMenu {
 
 class TDialog : public TMenu {
   protected:
-    int htitle;
+    int htitle,moving;
   public:
     TDialog(char *my_title, menu_item_t *mymenu);
     virtual int is_dialog() { return 1; }
@@ -206,6 +206,7 @@ class TDialog : public TMenu {
     virtual void display_fglayer_header(int &y);
     virtual void skip_fglayer_header(int &y);
     virtual void draw_frame(SDL_Rect *r);
+    virtual void handle_mouse(SDL_Event *event);
 };
 
 class TMenuMultiCol : public TMenu {

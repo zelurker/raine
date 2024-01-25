@@ -1991,7 +1991,7 @@ void TBitmap_menu::skip_fglayer_header(int &y) {
 
 TDialog::TDialog(char *my_title, menu_item_t *mymenu) :
   TMenu(my_title,mymenu)
-{ htitle = 0;
+{ htitle = 0; moving = 0;
 }
 
 void TDialog::compute_width_from_font() {
@@ -2034,6 +2034,32 @@ void TDialog::draw_frame(SDL_Rect *r) {
   work_area.w = sdl_screen->w;
   work_area.h = sdl_screen->h-40;
   desktop->set_work_area(&work_area);
+}
+
+void TDialog::handle_mouse(SDL_Event *event) {
+  int mx,my;
+  if (event->type == SDL_MOUSEMOTION) {
+    mx = event->motion.x;
+    my = event->motion.y;
+  } else if (event->type != SDL_MOUSEWHEEL) {
+    mx = event->button.x;
+    my = event->button.y;
+  }
+  switch (event->type) {
+    case SDL_MOUSEBUTTONDOWN:
+	moving = (my >= fgdst.y && my < fgdst.y+htitle && mx >= fgdst.x && mx < fgdst.x+fgdst.w);
+	break;
+    case SDL_MOUSEBUTTONUP:
+	moving = 0;
+	break;
+    case SDL_MOUSEMOTION:
+	if (moving) {
+	    fgdst.x += event->motion.xrel;
+	    fgdst.y += event->motion.yrel;
+	}
+	break;
+  }
+  TMenu::handle_mouse(event);
 }
 
 // TMenuMultiCol : a multi colomn version of TMenu
