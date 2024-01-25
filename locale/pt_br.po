@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Raine 0.94.08\n"
+"Project-Id-Version: Raine 0.96.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-29 12:00+0200\n"
-"PO-Revision-Date: 2023-01-06 12:48-0300\n"
+"PO-Revision-Date: 2024-01-25 10:14-0300\n"
 "Last-Translator: Felipe <felipefplzx@gmail.com>\n"
 "Language-Team: Felipe\n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: source/sdl/gui.cpp:466
@@ -24,22 +24,24 @@ msgid ""
 "\n"
 "The game might not run correctly."
 msgstr ""
+"\n"
+"O jogo pode não executar corretamente."
 
 #: source/sdl/dialogs/neocd_options.cpp:193
 msgid "Shared"
-msgstr ""
+msgstr "Compartilhado"
 
 #: source/sdl/dialogs/neocd_options.cpp:193
 msgid "Neo-Geo saveram"
-msgstr ""
+msgstr "Saveram do Neo-Geo"
 
 #: source/sdl/dialogs/neocd_options.cpp:193
 msgid "Per game"
-msgstr ""
+msgstr "Por jogo"
 
 #: source/sdl/dialogs/colors.cpp:121
 msgid "Red"
-msgstr ""
+msgstr "Vermelho"
 
 #: source/sdl/dialogs/game_options.cpp:153
 #, c-format
@@ -54,11 +56,11 @@ msgstr "O %s não é reconhecido"
 #: source/demos.c:283
 #, c-format
 msgid "%s is too ancient!"
-msgstr "%s é muito antigo!"
+msgstr "O %s é muito antigo!"
 
 #: source/games/cadash.c:110
 msgid "+1 Min"
-msgstr "+1 Mínuto"
+msgstr "+1 Minuto"
 
 #: source/games/seta.c:3107
 msgid "+10 Yards"
@@ -1367,7 +1369,7 @@ msgstr "60k e 200k"
 
 #: source/sdl/dialogs/about.cpp:723
 msgid "64 bits x86 binary, no ASM at all, a Raine anomaly!"
-msgstr "64 bits binário x86, sem ASM em tudo, uma anomalia do raine!"
+msgstr "64 bits binário x86, nenhum ASM algum, uma anomalia do raine!"
 
 #: source/sdl/dialogs/about.cpp:714
 msgid "6502/65c02: MAME 125 version"
@@ -2489,7 +2491,7 @@ msgid ""
 "the cue file"
 msgstr ""
 "Não pôde determinar o tamanho do setor do\n"
-"arquivo cue"
+"arquivo CUE"
 
 #: source/sdl/dialogs/sound_options.cpp:48
 msgid ""
@@ -6144,7 +6146,7 @@ msgstr "O jogo não inicializou nenhuma CPU, este jogo não pode funcionar!\n"
 
 #: source/sdl/dialogs/neocd_options.cpp:96
 msgid "This picture isn't 8bpp"
-msgstr "Esta imagem não tem 8bpp"
+msgstr "Esta imagem não tem 8 bpp"
 
 #: source/games/cps1drv.c:3512
 msgid "Throttle Game Speed"
@@ -7162,7 +7164,7 @@ msgstr "u8 não suportado"
 #: source/neocd/cdrom.c:637 source/neocd/cdrom.c:650
 #, c-format
 msgid "used override for %s"
-msgstr "Usada a substituição pra %s"
+msgstr "Usada a substituição pro %s"
 
 #: source/sdl/dialogs/video_info.cpp:83
 msgid "window manager available"
@@ -7455,3 +7457,9 @@ msgstr "com llvm/clang %d.%d.%d"
 
 #~ msgid "rom dirs"
 #~ msgstr "diretórios das roms"
+
+#~ msgid "Sound commands"
+#~ msgstr "Comandos de som"
+
+#~ msgid "Sound commands..."
+#~ msgstr "Comandos de som..."
