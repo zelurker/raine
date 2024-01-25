@@ -398,7 +398,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
 	if (load_debug)
 	  sprintf(load_debug+strlen(load_debug),
-		  _("Bad CRC for ROM %s (%x)\n"),name,crc32);
+		  gettext("Bad CRC for ROM %s (%x)\n"),name,crc32);
       }
    }
 
@@ -410,7 +410,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
        if (load_debug)
 	 sprintf(load_debug+strlen(load_debug),
-	     _("Bad ROM size for %s: tried to read %xh bytes, got %lxh\n"),name,size,info.uncompressed_size);
+	     gettext("Bad ROM size for %s: tried to read %xh bytes, got %lxh\n"),name,size,info.uncompressed_size);
      }
      unzClose(uf);
      return -1;
@@ -437,7 +437,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
      if (load_debug)
        sprintf(load_debug+strlen(load_debug),
-	       _("Bad ROM size for %s: tried to read %xh bytes, got %xh\n"),name,size,err);
+	       gettext("Bad ROM size for %s: tried to read %xh bytes, got %xh\n"),name,size,err);
    }
 
    if (size < info.uncompressed_size && err == size) {
@@ -462,7 +462,7 @@ int load_zipped(char *zipfile, char *name, unsigned int size, int crc32, UINT8 *
 
       if (load_debug)
 	sprintf(load_debug+strlen(load_debug),
-		_("ZIP file damaged for ROM %s\n"),name);
+		gettext("ZIP file damaged for ROM %s\n"),name);
       return -1;		// Clean up Failed: Something internal
    }
 
@@ -524,7 +524,7 @@ int load_zipped_part(char *zipfile, char *name, unsigned int offset, unsigned in
 
       if (load_debug)
 	sprintf(load_debug+strlen(load_debug),
-	    _("ZIP file damaged for ROM %s\n"),name);
+	    gettext("ZIP file damaged for ROM %s\n"),name);
       return -1;		// Clean up Failed: Something internal
     }
 
