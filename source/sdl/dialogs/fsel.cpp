@@ -347,13 +347,13 @@ void TFileSel::add_files() {
 	}
 	if (ext) {
 	    for (s=ext[0], idx=1; s; s=ext[idx++]) {
-		int l = strlen(s);
+		size_t l = strlen(s);
 		if (strchr(s,'*') || strchr(s,'?')) { // pattern search
 		    if (!fnmatch(s,menu[nb_files].label,FNM_CASEFOLD)) {
 			found = 1;
 			break;
 		    }
-		} else if (!stricmp(&menu[nb_files].label[strlen(menu[nb_files].label)-l],s)) {
+		} else if (strlen(menu[nb_files].label) >= l && !stricmp(&menu[nb_files].label[strlen(menu[nb_files].label)-l],s)) {
 		    // extension only
 		    found = 1;
 		    break;

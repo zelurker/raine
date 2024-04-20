@@ -959,7 +959,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		stream_buffer_pos[channel] = 0;
 	    } else {
 		// printf("after callback pos = %d instead of %d\n",stream_buffer_pos[channel],len/2);
-		memcpy(stream_buffer[channel],stream_buffer[channel]+len,stream_buffer_pos[channel]*2-len);
+		memmove(stream_buffer[channel],stream_buffer[channel]+len,stream_buffer_pos[channel]*2-len);
 		stream_buffer_pos[channel] -= len/2;
 	    }
 	    SDL_SemPost(sem[num_sem]);

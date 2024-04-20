@@ -134,7 +134,10 @@ SDL_Window *win;
 SDL_Renderer *rend;
 SDL_Surface *sdl_screen;
 
-void sdl_init() {
+/* About -fsanitize=address here : it creates an error in SDL_Init, and seems to ignore the __attribute__((no_sanitize_address))
+ * Workaround for now : set ASAN_OPTIONS=detect_stack_use_after_return=0
+ * It's a little extreme, but works fine for this at least, there might be a better workaround though. */
+void  sdl_init() {
   /* Initialize the SDL library */
     static int init;
     if (!init) {
