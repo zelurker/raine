@@ -270,7 +270,7 @@ endif
 ifdef RAINE_DEBUG
 	# I don't see any reason why not to use this for all debug builds from
 	# now on...
-	USE_MEMWATCH = 1
+#	USE_MEMWATCH = 1
 endif
 
 GCC_MAJOR := $(shell echo $(CC) -dumpversion|sed 's/\..*//')
@@ -692,10 +692,12 @@ AFLAGS += -DRAINE_DEBUG
 CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -fno-stack-protector
 ifndef USE_CLANG
 	CFLAGS_MCU += -Wno-format-truncation
-	CFLAGS += -Wno-format-truncation
+	CFLAGS += -Wno-format-truncation -fsanitize=address
+	LFLAGS = -fsanitize=address
 else
 	CFLAGS_MCU += -Wno-initializer-overrides -Wno-invalid-source-encoding
-	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding
+	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address
+	LFLAGS = -fsanitize=address
 endif
 else
 # All the flags are optimisations except -fomit-frame-pointer necessary for
