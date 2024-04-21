@@ -79,7 +79,7 @@ static void save_callback()
   }
 }
 
-static INT8 old_bank[2];
+static INT8 old_bank[2*MAX_OKIM6295_VOICES];
 
 static void load_callback()
 {

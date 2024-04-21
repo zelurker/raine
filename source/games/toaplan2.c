@@ -4834,12 +4834,16 @@ static void br_init_z80_bank(UINT8 *src)
 {
    UINT32 i;
 
+   int max = (get_region_size(REGION_ROM2) / 0x4000)-1;
    for(i = 0; i < 0x10; i++){
 
       BR_Z80_BANK[i] = BR_Z80_ROM + (i * 0xC000);
 
       memcpy(BR_Z80_BANK[i]+0x0000, src,              0x8000);
-      memcpy(BR_Z80_BANK[i]+0x8000, src+(i * 0x4000), 0x4000);
+      if (i <= max)
+	  memcpy(BR_Z80_BANK[i]+0x8000, src+(i * 0x4000), 0x4000);
+      else
+	  memcpy(BR_Z80_BANK[i]+0x8000, src+(max * 0x4000), 0x4000);
 
    }
 
