@@ -783,7 +783,7 @@ void TMyMultiFileSel::draw_bot_frame() {
 	if (sel != bot_sel) {
 	    char *l = menu[sel].label;
 	    int len0 = strlen(l);
-	    if (strcmp(&l[len0-4],".dat")) return;
+	    if (len0 < 4 || strcmp(&l[len0-4],".dat")) return;
 	    // display the what there is in an eventual [en_US] block in the selected .dat...
 	    FILE *f = fopen(l,"r");
 	    if (!f) return;
