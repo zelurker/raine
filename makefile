@@ -270,7 +270,11 @@ endif
 ifdef RAINE_DEBUG
 	# I don't see any reason why not to use this for all debug builds from
 	# now on...
-#	USE_MEMWATCH = 1
+ifdef RAINE_DOS
+	# -fsanitize=address doesn't work with djgpp because there is no libasan, so you can't link a program using these options
+	#  so I keep memwatch for dos at least
+	USE_MEMWATCH = 1
+endif
 endif
 
 GCC_MAJOR := $(shell echo $(CC) -dumpversion|sed 's/\..*//')
@@ -691,12 +695,17 @@ CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_D
 AFLAGS += -DRAINE_DEBUG
 CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -fno-stack-protector
 ifndef USE_CLANG
+ifdef RAINE_DOS
 	CFLAGS_MCU += -Wno-format-truncation
-	CFLAGS += -Wno-format-truncation -fsanitize=address
-	LFLAGS = -fsanitize=address
+	CFLAGS += -Wno-format-truncation
 else
-	CFLAGS_MCU += -Wno-initializer-overrides -Wno-invalid-source-encoding
-	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address
+	CFLAGS_MCU += -Wno-format-truncation -fsanitize=address # -fno-omit-frame-pointer -fno-common
+	CFLAGS += -Wno-format-truncation -fsanitize=address # -fno-omit-frame-pointer -fno-common
+	LFLAGS = -fsanitize=address
+endif # RAINE_DOS
+else
+	CFLAGS_MCU += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address
+	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address # -fno-omit-frame-pointer -fno-common
 	LFLAGS = -fsanitize=address
 endif
 else
@@ -1640,7 +1649,7 @@ $(OBJDIR)/6502/m6502.o: $(OBJDIR)/6502/m6502.asm
 $(OBJDIR)/6502/m6502.asm: $(OBJDIR)/6502/make6502.o
 	@echo Building M6502 $(OBJDIR)...
 ifdef CROSSCOMPILE
-	cp -fv $(NATIVE)/object/6502/make6502.exe $(OBJDIR)/6502/
+	cp `find $(NATIVE) -name make6502.exe` $(OBJDIR)/6502
 else
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/6502/make6502.exe $(OBJDIR)/6502/make6502.o
 endif
