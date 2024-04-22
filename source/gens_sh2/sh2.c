@@ -393,7 +393,11 @@ Def_WRITEW (UINT32 adr, UINT16 data)
 void FASTCALL
 Def_WRITEL (UINT32 adr, UINT32 data)
 {
+#ifdef __i386__
+    print_debug ("SH2 write long %.8lX at %.8lX\n", data, adr);
+#else
     print_debug ("SH2 write long %.8X at %.8X\n", data, adr);
+#endif
 }
 
 
