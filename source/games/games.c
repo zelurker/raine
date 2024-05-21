@@ -382,6 +382,7 @@ static struct TNode *dir2cache(char *dirname) {
     qsort(names,nb,sizeof(char*),cmpstringp);
     struct TNode *root = sortedArrayToBST(names, 0, nb-1);
     free(names);
+    closedir(dir);
     return root;
 }
 

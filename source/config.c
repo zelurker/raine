@@ -908,6 +908,7 @@ static void CLI_game_list(void)
 
    printf("\n");
    printf("%d Games Supported %s\n\n", count,(rot ? "(with rotation)" : ""));
+   free_cache();
 
    exit(0);
 }
@@ -1867,17 +1868,17 @@ void parse_command_line(int argc, char *argv[])
 
        if(*ArgList[ArgPosition] == '-'){
 
-       ta=0;
-       while((cli_options[ta].Process) && (ta!=255)){
-          if(!(stricmp(cli_options[ta].Name, ArgList[ArgPosition]))){
-             ArgList[ArgPosition] = NULL;
-             cli_options[ta].Process();
-             ta=255;
-          }
-          else{
-             ta++;
-          }
-       }
+	   ta=0;
+	   while((cli_options[ta].Process) && (ta<ArgCount)){
+	       if(!(stricmp(cli_options[ta].Name, ArgList[ArgPosition]))){
+		   ArgList[ArgPosition] = NULL;
+		   cli_options[ta].Process();
+		   break;
+	       }
+	       else{
+		   ta++;
+	       }
+	   }
 
        }
 
