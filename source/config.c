@@ -1869,7 +1869,8 @@ void parse_command_line(int argc, char *argv[])
        if(*ArgList[ArgPosition] == '-'){
 
 	   ta=0;
-	   while((cli_options[ta].Process) && (ta<ArgCount)){
+	   int max = sizeof(cli_commands)/sizeof(CLI_OPTION);
+	   while((cli_options[ta].Process) && (ta<max)){
 	       if(!(stricmp(cli_options[ta].Name, ArgList[ArgPosition]))){
 		   ArgList[ArgPosition] = NULL;
 		   cli_options[ta].Process();
@@ -1895,16 +1896,19 @@ void parse_command_line(int argc, char *argv[])
        if(*ArgList[ArgPosition] == '-'){
 
        ta=0;
-       while((cli_commands[ta].Process) && (ta!=255)){
+       int max = sizeof(cli_commands)/sizeof(CLI_OPTION);
+       int ok = 0;
+       while((cli_commands[ta].Process) && (ta<max)){
           if(!(stricmp(cli_commands[ta].Name, ArgList[ArgPosition]))){
              cli_commands[ta].Process();
-             ta=255;
+	     ok = 1;
+	     break;
           }
           else{
              ta++;
           }
        }
-       if(ta!=255){
+       if(!ok) {
           printf(
 		"Unsupported command line option: %s\n"
 		"Type 'Raine -help' for a list of available options.\n"
