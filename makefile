@@ -1649,7 +1649,7 @@ $(OBJDIR)/6502/m6502.o: $(OBJDIR)/6502/m6502.asm
 $(OBJDIR)/6502/m6502.asm: $(OBJDIR)/6502/make6502.o
 	@echo Building M6502 $(OBJDIR)...
 ifdef CROSSCOMPILE
-	cp `find $(NATIVE) -name make6502.exe` $(OBJDIR)/6502
+	cp `find $(NATIVE) -name make6502.exe|head -n 1` $(OBJDIR)/6502
 else
 	$(CCV) $(LFLAGS) -o $(OBJDIR)/6502/make6502.exe $(OBJDIR)/6502/make6502.o
 endif
