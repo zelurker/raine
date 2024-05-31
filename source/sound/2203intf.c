@@ -93,7 +93,8 @@ int YM2203_sh_start(const struct YM2203interface *msound)
 	{
 		int volume;
 		char name[20];
-		sprintf(name,"%s #%d FM","YM220",i);
+		snprintf(name,20,"YM220 #%d FM",i);
+		name[19] = 0;
 		volume = intf->mixing_level[i]>>16; /* high 16 bit */
 		stream[i] = stream_init(name,audio_sample_rate,16,i,YM2203UpdateOne/*YM2203UpdateCallback*/);
 		/* volume setup */
