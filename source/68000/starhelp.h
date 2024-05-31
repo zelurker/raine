@@ -75,6 +75,7 @@ void M68000B_save_update(void);
 
 void WriteStarScreamByte(UINT32 address, UINT8 data);
 UINT8 ReadStarScreamByte(UINT32 address);
+void WriteStarScreamWord(UINT32 address, UINT16 data);
 
 void Clear68000List(void);
 

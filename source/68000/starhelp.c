@@ -758,6 +758,57 @@ void WriteStarScreamByte(UINT32 address, UINT8 data)
    }
 }
 
+void WriteStarScreamWord(UINT32 address, UINT16 data)
+{
+   int ta;
+
+   for(ta=0;ta<data_count_ww[0];ta++){
+      if((M68000_dataregion_ww[0][ta].lowaddr)==-1 || M68000_dataregion_ww[0][ta].memorycall == &DefBadWriteByte){
+	  break;
+      }
+      else{
+         if((address>=M68000_dataregion_ww[0][ta].lowaddr)&&(M68000_dataregion_ww[0][ta].highaddr>=address)){
+	     // Notice : the function uses the memoryall array here and not the usual memory array
+	     // so the offset must indeed be corrected by substracting the low addr
+            if(M68000_dataregion_ww[0][ta].memorycall==NULL && M68000_dataregion_ww[0][ta].userdata){
+               WriteWord( ((UINT8 *) M68000_dataregion_ww[0][ta].userdata) + address,data);
+	       return;
+            }
+            else{
+               ((write_func)M68000_dataregion_ww[0][ta].memorycall)(address,data);
+	       return;
+            }
+         }
+      }
+   }
+   // Now if it was not found, look in the _rw array even if it's a write
+   // it's mainly for the region switch when it's located in rom
+   for(ta=0;ta<data_count_rw[0];ta++){
+      if((M68000_dataregion_rw[0][ta].lowaddr)==-1){
+	  return;
+      }
+      else{
+         if((address>=M68000_dataregion_rw[0][ta].lowaddr)&&(M68000_dataregion_rw[0][ta].highaddr>=address)){
+	     // Notice : the function uses the memoryall array here and not the usual memory array
+	     // so the offset must indeed be corrected by substracting the low addr
+            if(M68000_dataregion_rw[0][ta].memorycall==NULL && M68000_dataregion_rw[0][ta].userdata){
+               WriteWord( ((UINT8 *) M68000_dataregion_rw[0][ta].userdata) + address,data);
+	       // This part is essentially for cps2 encrypted roms : if the region switch in rom, that is the very 1st memfetch region
+	       // then also update this area
+	       if (address >= M68000_programregion[0][0].lowaddr && M68000_programregion[0][0].highaddr >= address)
+#if USE_MUSASHI == 2
+		   WriteWord(M68000_programregion[0][0].offset + address, data);
+#else
+	       WriteWord(((UINT8*)M68000_programregion[0][0].offset)+address, data);
+#endif
+	       return;
+            }
+	    // there can't be any function called here, it's a write, not a read !
+         }
+      }
+   }
+}
+
 UINT8 ReadStarScreamByte(UINT32 address)
 {
    int ta;

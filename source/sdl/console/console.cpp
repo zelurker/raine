@@ -734,9 +734,12 @@ static void do_poke(int argc, char **argv) {
   UINT8 *ptr = get_ptr(adr);
   UINT8 *ptr2 = ptr;
 
+  int cpu = cpu_id >> 4;
   if (!ptr) {
-      if (strcmp(argv[0],"poke"))
-	  throw(ConsExcept("%s: %x not in ram (allowed only for poke)",argv[0],adr));
+      if (!strcmp(argv[0],"dpoke") && cpu == CPU_68000)
+	  WriteStarScreamWord(adr,parse(argv[2]));
+      else if (strcmp(argv[0],"poke"))
+	  throw(ConsExcept("%s: %x not in ram (allowed only for poke, and dpoke for 68000)",argv[0],adr));
       if (param_str) {
 	  for (unsigned int n=1; n<strlen(argv[2])-1; n++)
 	      gen_cpu_write_byte(adr+n-1,argv[2][n]);
@@ -747,7 +750,6 @@ static void do_poke(int argc, char **argv) {
       return;
   }
 
-  int cpu = cpu_id >> 4;
   if (cpu == CPU_Z80)
       ptr2 = Z80_context[cpu_id & 0xf].z80Base;
   UINT32 val;
