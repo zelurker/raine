@@ -25,8 +25,6 @@
 #include "2203intf.h"
 #include "savegame.h"
 #include "nmk004.h"
-#include "gui.h" // goto_debuger
-#include "profile.h" // fps
 
 static void (*ExecuteSoundFrame)();	// Pointer to ExecuteSoundFrame rountine (sound cpu work for 1 frame), used for pausegame + playsound
 
@@ -360,13 +358,13 @@ static struct SOUND_INFO sound_bjtwin[] =
 
 static struct ROM_INFO rom_bjtwin[] =
 {
+  { "93087-1.bin", 0x20000, 0x93c84e2d, REGION_CPU1, 0x00000, LOAD_8_16 },
+  { "93087-2.bin", 0x20000, 0x30ff678a, REGION_CPU1, 0x00001, LOAD_8_16 },
    {      "93087-5.bin", 0x00100000, 0xbb06245d, 0, 0, 0, },
    LOAD( SOUND1, "93087-6.bin", 0x00000, 0x00100000, 0x372d46dd),
    LOAD( SOUND2, "93087-7.bin", 0x00000, 0x00100000, 0x8da67808),
    {       "93087-4.bin", 0x00100000, 0x8a4f26d0, 0, 0, 0, },
    {       "93087-3.bin", 0x00010000, 0xaa13df7c, 0, 0, 0, },
-   {       "93087-2.bin", 0x00020000, 0x30ff678a, 0, 0, 0, },
-   {       "93087-1.bin", 0x00020000, 0x93c84e2d, 0, 0, 0, },
    {           NULL,          0,          0, 0, 0, 0, },
 };
 
@@ -1683,33 +1681,24 @@ static void AddNMKMainCPU(UINT32 ram, UINT32 vram)
 
 static void load_bjtwin(void)
 {
-   int ta;
-
    romset=0;
 
-   if(!(ROM=AllocateMem(0x100000))) return;
+   UINT8 *tmp;
+   if(!(tmp=AllocateMem(0x100000))) return;
    if(!(RAM=AllocateMem(0x60000))) return;
 
-   if(!load_rom("93087-3.bin", ROM, 0x10000)) return;   // 8x8 FG0 TILES (OK)
-   if(!NMKDecodeFG0(ROM,0x10000))return;
+   if(!load_rom("93087-3.bin", tmp, 0x10000)) return;   // 8x8 FG0 TILES (OK)
+   if(!NMKDecodeFG0(tmp,0x10000))return;
 
-   if(!load_rom("93087-5.bin", ROM, 0x100000)) return; // 16x16 SPRITES (OK)
-   DecodeBombJackTwin_OBJ(ROM,0x100000);
-//   DecodeBombJackTwin_OBJ(ROM); kath
-   if(!NMKDecodeSPR(ROM,0x100000))return;
+   if(!load_rom("93087-5.bin", tmp, 0x100000)) return; // 16x16 SPRITES (OK)
+   DecodeBombJackTwin_OBJ(tmp,0x100000);
+//   DecodeBombJackTwin_OBJ(tmp); kath
+   if(!NMKDecodeSPR(tmp,0x100000))return;
 
-   if(!load_rom("93087-4.bin", ROM, 0x100000)) return;  // 16x16 TILES (OK)
-   DecodeBombJackTwin_BG0(ROM,0x100000);
-   if(!NMKDecodeBG0_BJT(ROM,0x100000))return;
-
-   if(!load_rom("93087-1.bin", RAM+0x00000, 0x20000)) return;   // MAIN 68000
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta]=RAM[ta];
-   }
-   if(!load_rom("93087-2.bin", RAM+0x00000, 0x20000)) return;
-   for(ta=0;ta<0x20000;ta++){
-      ROM[ta+ta+1]=RAM[ta];
-   }
+   if(!load_rom("93087-4.bin", tmp, 0x100000)) return;  // 16x16 TILES (OK)
+   DecodeBombJackTwin_BG0(tmp,0x100000);
+   if(!NMKDecodeBG0_BJT(tmp,0x100000))return;
+   FreeMem(tmp);
 
    RAMSize=0x40000;
 
@@ -1737,7 +1726,7 @@ static void load_bjtwin(void)
  *  StarScream Stuff follows
  */
 
-   ByteSwap(ROM,0x80000);
+   ByteSwap(ROM,0x40000);
 
    AddNMKMainCPU(0x0F0000, 0x080000);
 
