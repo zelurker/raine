@@ -1,5 +1,5 @@
 script "Console Mode Plus" \
-"comm:On the level select screen, press left or right to select modes.
+"comm:On the mode select screen, press left or right to select modes.
 In training mode, pause the game then press start to change character."
 run:
 #Menu Screen Script#
