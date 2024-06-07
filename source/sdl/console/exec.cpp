@@ -84,7 +84,7 @@ void do_print_ingame(int argc, char **argv) {
 	arg[nb] = parse(argv[3+nb]);
 	nb++;
     }
-    if (argv[2][0] == '"') argv[2]++;
+    if (argv[2][0] == '"') memmove(&argv[2][0],&argv[2][1],strlen(&argv[2][1]));
     if (argv[2][strlen(argv[2])-1] == '"') argv[2][strlen(argv[2])-1] = 0;
     if (nb == 0) print_ingame(nbf,argv[2]);
     else if (nb == 1) print_ingame(nbf,argv[2],arg[0]);
