@@ -131,6 +131,11 @@ void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
 		}
 	}
 
+   if (program_count[cpu] == MAX_PROGRAM) {
+       printf("add_68000_program_region: reached MAX_PROGRAM limit : %d\n",MAX_PROGRAM);
+       exit(1);
+   }
+
    M68000_programregion[cpu][program_count[cpu]].lowaddr  = d0;
    M68000_programregion[cpu][program_count[cpu]].highaddr = d1;
 #if USE_MUSASHI == 2
