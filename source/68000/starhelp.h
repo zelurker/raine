@@ -13,7 +13,7 @@ extern "C" {
 #include "starcpu.h"
 
 #define MAX_68000	(2)
-#define MAX_PROGRAM	(4)
+#define MAX_PROGRAM	(6)
 #define MAX_DATA	(32)
 
 // A ReadLong for StarScream (a mix of intel and motorola ways...)
