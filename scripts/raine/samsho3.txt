@@ -1,8 +1,249 @@
-script "Infinite Time"  
+script "Console Mode Plus" \
+"comm:On the level select screen, press left or right to select modes.
+In training mode, pause the game then press start to change character."
+run:
+#Menu Screen Script#
+if (dpeek($108102)==$6FBA)and(peek($108753)!=$00)
+  poke $C1852F $34 #Restore original control# (swaps reading from $340000 and $300000)
+  poke $C18537 $30
+  poke $C1854B $34
+  poke $C18553 $30
+  if (peek($100041)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+    poke $100041 $00
+  endif
+  if (dpeek($100040)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $100040 $01FF
+    poke $320000 $62
+  endif
+  if (dpeek($100040)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $100040 $02FF
+    poke $320000 $62
+  endif
+  if (dpeek($100040)==$0200)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $100040 $00FF
+    poke $320000 $62
+  endif
+  if (dpeek($100040)==$0000)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $100040 $02FF
+    poke $320000 $62
+  endif
+  if (dpeek($100040)==$0200)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $100040 $01FF
+    poke $320000 $62
+  endif
+  if (dpeek($100040)==$0100)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $100040 $00FF
+    poke $320000 $62
+  endif
+endif
+if (dpeek($108102)==$6FBA)
+  if (peek($100040)==$00) #Normal#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $7320 # value
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+  endif
+  if (peek($100040)==$01) #VS#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $7320 # value
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7356
+    dpoke $3C0002 $7353
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+  endif
+  if (peek($100040)==$02) #Training#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $7354 # value
+    dpoke $3C0002 $7352
+    dpoke $3C0002 $7341
+    dpoke $3C0002 $7349
+    dpoke $3C0002 $734E
+    dpoke $3C0002 $7349
+    dpoke $3C0002 $734E
+    dpoke $3C0002 $7347
+  endif
+endif
+#Activiate players at how to play screen#
+if (dpeek($108102)==$7058)
+   if (peek($100040)>$00)
+      poke $10846E $FF
+      poke $10846F $FF
+      poke $10FDB6 $01
+      poke $10FDB7 $01
+   endif
+endif
+#VS Mode Script#
+if (peek($100040)==$01)
+ if (dpeek($108102)==$70C0)
+   if (dpeek($108E54)!=$FFFF)and(dpeek($108E54)!=$0000)
+      poke $100050 peek($108E54)
+   endif
+   if (dpeek($108E52)!=$FFFF)and(dpeek($108E54)==$FFFF)
+      if (peek($108E52)==peek($100050)) #P1 as main player#
+         poke $100051 peek($108471)
+      endif
+      if (peek($108E52)!=peek($100050)) #P2 as main player#
+         poke $100051 peek($108470)
+      endif
+   endif
+   poke $109069 peek($100051) #Stage select#
+   if (peek($10FDB6)==$02)or(peek($10FDB7)==$02) #Return#
+      dpoke $1081B0 $0200
+      dpoke $1081C0 $0000
+      lpoke $108100 $00006DAE
+      poke $10846E $FF
+      poke $10846F $FF
+      poke $10FDB6 $01
+      poke $10FDB7 $01
+   endif
+ endif
+endif
+#Training Mode Script#
+if (peek($100040)==$02)
+ if (dpeek($108102)==$70C0)
+   if (peek($100060)==$00) #Restore control#
+     if (dpeek($C1852C)==$1A39) #For Unibios#
+      poke $C1852F $34
+      poke $C18537 $30
+      poke $C1854B $34
+      poke $C18553 $30
+     endif
+     if (dpeek($C16F46)==$1A39) #For Japan AES#
+      poke $C16F49 $34
+      poke $C16F51 $30
+      poke $C16F65 $34
+      poke $C16F6D $30
+     endif
+     if (dpeek($C16BFA)==$1A39) #For Asia AES#
+      poke $C16BFD $34
+      poke $C16C05 $30
+      poke $C16C19 $34
+      poke $C16C21 $30
+     endif
+      if (peek($10FD96)==$00)and(peek($10FD9C)==$00)
+       poke $100071 $00 #No switch control anymore, except the case when holding the button#
+      endif
+   endif
+   if (peek($100060)==$01) #Switching control possible#
+      if (peek($10FD96)>=$10)or(peek($10FD9C)>=$10)and(peek($100070)==$00)
+         poke $100070 $FF
+         poke $100071 $01
+      endif
+      if (peek($10FD96)==$00)and(peek($10FD9C)==$00)
+         poke $100070 $00
+      endif
+   endif
+      if (peek($100071)==$01)and(peek($100070)==$00) #Switch control#
+        if (dpeek($C1852C)==$1A39) #For Unibios#
+         poke $C1852F $30
+         poke $C18537 $34
+         poke $C1854B $30
+         poke $C18553 $34
+        endif
+        if (dpeek($C16F46)==$1A39) #For Japan AES#
+         poke $C16F49 $30
+         poke $C16F51 $34
+         poke $C16F65 $30
+         poke $C16F6D $34
+        endif
+        if (dpeek($C16BFA)==$1A39) #For Asia AES#
+         poke $C16BFD $30
+         poke $C16C05 $34
+         poke $C16C19 $30
+         poke $C16C21 $34
+        endif
+        poke $100071 $00
+      endif
+   if (dpeek($108E54)!=$FFFF)and(dpeek($108E54)!=$0000) #Selection 1 start#
+      poke $100050 peek($108E54)
+      poke $100060 $01
+   endif
+   if (dpeek($108E52)!=$FFFF)and(dpeek($108E54)==$FFFF) #Selection 1 cont.#
+      if (peek($108E52)==peek($100050)) #P1 as main player#
+         poke $100051 peek($108471)
+      endif
+      if (peek($108E52)!=peek($100050)) #P2 as main player#
+         poke $100051 peek($108470)
+      endif
+   endif
+   if (lpeek($108E52)==$FFFFFFFF)and(dpeek($108CF8)!=$FFFF)and(peek($100080)==$00) #Selection 1 restore#
+      dpoke $108006 $0000
+      poke $100080 $FF
+      poke $100090 $01
+   endif
+   if (peek($100090)==$01)and(dpeek($108006)<=$0028) #Selection 1  restore cont.#
+      poke $100060 $00
+   endif
+   if (peek($100090)==$01)and(dpeek($108006)>$0028) #Selection 2#
+      poke $100060 $01
+   endif
+   if (dpeek($108FC0)==$FFFF)and(dpeek($108FDA)!=$FFFF)and(dpeek($108FDC)!=$FFFF)and(peek($100081)==$00) #Selection 2 restore#
+      dpoke $108006 $0000
+      poke $100081 $FF
+      poke $100090 $02
+   endif
+   if (peek($100090)==$02)and(dpeek($108006)<=$0018) #Selection 2  restore cont.#
+      poke $100060 $00
+   endif
+   if (peek($100090)==$02)and(dpeek($108006)>$0018) #Selection 3#
+      poke $100060 $01
+   endif
+ endif
+ if (dpeek($108102)==$14AC) #Selection 3 restore#
+    poke $100060 $00
+    dpoke $100070 $00
+    dpoke $100080 $0000
+    poke $100090 $00
+   if (dpeek($C1852C)==$1A39) #For Unibios#
+    poke $C1852F $34
+    poke $C18537 $30
+    poke $C1854B $34
+    poke $C18553 $30
+   endif
+   if (dpeek($C16F46)==$1A39) #For Japan AES#
+    poke $C16F49 $34
+    poke $C16F51 $30
+    poke $C16F65 $34
+    poke $C16F6D $30
+   endif
+   if (dpeek($C16BFA)==$1A39) #For Asia AES#
+    poke $C16BFD $34
+    poke $C16C05 $30
+    poke $C16C19 $34
+    poke $C16C21 $30
+   endif
+ endif
+   poke $109069 peek($100051) #Stage select#
+   dpoke $10849E $991E #Timer#
+   poke $108573 $80 #Full HP#
+   poke $108673 $80
+   poke $10857C $40 #Full Power#
+   poke $10867C $40
+   if (peek($10840A)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to Char. Screen#
+      poke $10840A $00
+      dpoke $1081B0 $0200
+      dpoke $1081C0 $0000
+      lpoke $108100 $00006DAE
+      dpoke $108FC0 $0000
+   endif
+endif
+
+script "Infinite Time"
 run:
     poke $10849E $99
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $10849E $00
 script "Select Backdrop" \
@@ -20,31 +261,31 @@ script "Select Backdrop" \
  "0x0B/Amakusa Shirou Tokisada"\
  "0x0C/Kuroko"\
  "0x0D/Zankuro Minazuki"\
- "0x0E/Zankuro Minazuki (Final Battle)" 
+ "0x0E/Zankuro Minazuki (Final Battle)"
 run:
     poke $109069 param
-script "Hit Anywhere (Both Players)"  
+script "Hit Anywhere (Both Players)"
 on:
     temp0=dpeek($01773E)
 run:
     dpoke $01773E $05CC
 off:
     dpoke $01773E temp0
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $108573 $80
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $108573 $00
-script "P1 Infinite Power"  
+script "P1 Infinite Power"
 run:
     poke $10857C $40
-script "P1 Drain All Power Now!"  
+script "P1 Drain All Power Now!"
 on:
     poke $10857C $00
 script "P1 Select Rounds Won" \
- inter=0,2,1 
+ inter=0,2,1
 run:
     poke $108592 (param)
 script "P1 Select Character" \
@@ -62,40 +303,40 @@ script "P1 Select Character" \
  "0x0A/Gaira Kafuin"\
  "0x0B/Amakusa Shirou Tokisada"\
  "0x0C/#Kuroko"\
- "0x0D/#Zankuro Minazuki" 
+ "0x0D/#Zankuro Minazuki"
 run:
     poke $108470 param|(peek($108470)&~$0F)
 script "P1 Select Playing Style" \
  "0x00/Slash"\
- "0x50/Bust" 
+ "0x50/Bust"
 run:
     poke $108470 param|(peek($108470)&~$50)
 script "P1 Select Character Colour" \
  "0x00/A colour"\
- "0x80/B colour" 
+ "0x80/B colour"
 run:
     poke $108470 param|(peek($108470)&~$80)
 script "P1 Select Character Difficulty" \
  "0x00/Beginners Class"\
  "0x01/Medium Grade"\
- "0x02/Upper Grade" 
+ "0x02/Upper Grade"
 run:
     poke $108472 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $108673 $80
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $108673 $00
-script "P2 Infinite Power"  
+script "P2 Infinite Power"
 run:
     poke $10867C $40
-script "P2 Drain All Power Now!"  
+script "P2 Drain All Power Now!"
 on:
     poke $10867C $00
 script "P2 Select Rounds Won" \
- inter=0,2,1 
+ inter=0,2,1
 run:
     poke $108692 (param)
 script "P2 Select Character" \
@@ -113,28 +354,28 @@ script "P2 Select Character" \
  "0x0A/Gaira Kafuin"\
  "0x0B/Amakusa Shirou Tokisada"\
  "0x0C/#Kuroko"\
- "0x0D/#Zankuro Minazuki" 
+ "0x0D/#Zankuro Minazuki"
 run:
     poke $108471 param|(peek($108471)&~$0F)
 script "P2 Select Playing Style" \
  "0x00/Slash"\
- "0x50/Bust" 
+ "0x50/Bust"
 run:
     poke $108471 param|(peek($108471)&~$50)
 script "P2 Select Character Colour" \
  "0x00/A colour"\
- "0x80/B colour" 
+ "0x80/B colour"
 run:
     poke $108471 param|(peek($108471)&~$80)
 script "P2 Select Character Difficulty" \
  "0x00/Beginners Class"\
  "0x01/Medium Grade"\
- "0x02/Upper Grade" 
+ "0x02/Upper Grade"
 run:
     poke $108473 param
-script " "  
+script " "
 script "Hide Background" \
- "comm:Activate before match start"  
+ "comm:Activate before match start"
 on:
     temp0=dpeek($013E8A)
     dpoke $013E8A $4E71
@@ -155,7 +396,7 @@ off:
     dpoke $013E96 temp1
     lpoke $013E9C temp2
     lpoke $01A0E6 temp3
-script "No Background Music"  
+script "No Background Music"
 run:
     cpu audio
     poke $FE1A $00
@@ -163,11 +404,11 @@ run:
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -202,6 +443,6 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99
