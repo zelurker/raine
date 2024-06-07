@@ -722,7 +722,7 @@ static void update_interrupts(void)
     } else {
 	debug(DBG_IRQ,"irq %d on line %d sr %x\n",level,scanline,s68000_sr);
 	cpu_interrupt(CPU_68K_0,level);
-	if (level == vbl)
+	if (level == vbl && !goto_debuger)
 	    irq.wait_for_vbl_ack = 1;
     }
 #if 0
