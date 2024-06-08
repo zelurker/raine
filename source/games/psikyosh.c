@@ -1014,8 +1014,6 @@ static void psikyosh_drawgfxzoom(
 	    int ey = sy + sprite_screen_height;
 	    ex = MIN(ex, current_game->video->screen_x + current_game->video->border_size);
 	    ey = MIN(ey, current_game->video->screen_y + current_game->video->border_size);
-	    if (sy < vid->border_size) sy = vid->border_size;
-	    if (ey >= GameScreen.yfull-vid->border_size) ey = GameScreen.yfull-vid->border_size;
 
 	    int x_index_base;
 	    int y_index;
@@ -1027,6 +1025,16 @@ static void psikyosh_drawgfxzoom(
 
 	    if( flipy )	{ y_index = (sprite_screen_height-1)*zoomy; dy = -zoomy; }
 	    else		{ y_index = 0; dy = zoomy; }
+	    if (sx < vid->border_size) {
+		int osx = sx;
+		sx = vid->border_size;
+		x_index_base += dx * (sx-osx);
+	    }
+	    if (sy < vid->border_size) {
+		int osy = sy;
+		sy = vid->border_size;
+		y_index += dy * (sy-osy);
+	    }
 
 	    if( ex>sx )
 	    { /* skip if inner loop doesn't draw anything */
