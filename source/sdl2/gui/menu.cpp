@@ -1940,6 +1940,7 @@ TBitmap_menu::TBitmap_menu(char *my_title, menu_item_t *mymenu, char *bitmap_pat
 	// special case for png since sdl2_image uses stb to load png from 2.6.0 and it returns only rgb surfaces, no palette !
 	SDL_RWops *src = SDL_RWFromFile(bitmap_path, "rb");
 	bmp = raine_LoadPNG_RW(src);
+	SDL_RWclose(src);
     } else
 	bmp = IMG_Load(bitmap_path);
   if (!bmp) {
