@@ -1014,6 +1014,8 @@ static void psikyosh_drawgfxzoom(
 	    int ey = sy + sprite_screen_height;
 	    ex = MIN(ex, current_game->video->screen_x + current_game->video->border_size);
 	    ey = MIN(ey, current_game->video->screen_y + current_game->video->border_size);
+	    if (sy < 0) sy = 0;
+	    if (ey >= GameScreen.yfull) ey = GameScreen.yfull-1;
 
 	    int x_index_base;
 	    int y_index;
