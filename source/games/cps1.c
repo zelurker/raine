@@ -1845,7 +1845,7 @@ static void qsound_set_z80()
   if (is_current_game("gigaman2")) {
       return;
   }
-  z80_init_data_banks(0,REGION_ROM2,0x0,get_region_size(REGION_CPU2)/16); // The rom seems to be counted as banks !
+  z80_init_data_banks(0,REGION_ROM2,0x0,0x4000); // The rom seems to be counted as banks !
 
   if (cps_version==2) {
     AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
@@ -1864,7 +1864,6 @@ static void qsound_set_z80()
    AddZ80AWriteByte(0xc000, 0xcfFf, NULL, Z80RAM);
    AddZ80AWriteByte(0xd000, 0xd000, qsound_data_h_w,   NULL);
    AddZ80AWriteByte(0xd001, 0xd001, qsound_data_l_w,   NULL);
-//   AddZ80AWriteByte(0xd002, 0xd002, qsound_cmd_w,   NULL);
 
    if ((!strncmp(current_game->main_name,"punish",6)) ||
        (!strncmp(current_game->main_name,"mbombrd",7)))
