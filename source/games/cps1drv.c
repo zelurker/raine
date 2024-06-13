@@ -5167,6 +5167,18 @@ struct VIDEO_INFO video_cps1 =
    59.64 // Verified by mame team...
 };
 
+struct VIDEO_INFO video_sfz3mix =
+{
+   draw_cps1,
+   416,
+   234,
+   32,
+   VIDEO_ROTATE_NORMAL |
+   VIDEO_ROTATABLE,
+   cps1_gfx,
+   59.64 // Verified by mame team...
+};
+
 struct VIDEO_INFO video_cps1_270 =
 {
    draw_cps1,

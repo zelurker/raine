@@ -1356,7 +1356,7 @@ static void cps1_init_machine(void)
    struct CPS1config *pCFG=&cps1_config_table[0];
    int n;
    int size = get_region_size(REGION_GFX1); // size of packed region
-   int max_sprites16 = size*2 / 0x100;
+   max_sprites16 = size*2 / 0x100;
    int sf2ee;
    // memset(&input_buffer[0x1a],0xff,0x20);
    input_buffer[5] = 0xff; // for cawing, freezes after loading weapon otherwise
@@ -1845,7 +1845,7 @@ static void qsound_set_z80()
   if (is_current_game("gigaman2")) {
       return;
   }
-  z80_init_data_banks(0,REGION_ROM2,0x0,0x4000); // The rom seems to be counted as banks !
+  z80_init_data_banks(0,REGION_ROM2,0x0,get_region_size(REGION_CPU2)/16); // The rom seems to be counted as banks !
 
   if (cps_version==2) {
     AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
@@ -3366,7 +3366,7 @@ static void render_cps2_sprites_pbitmap(int *primasks)
     int y=ReadWord(&base[i+2]);
     u32 priority=(x>>13)&0x07;
     priority = primasks[priority] | (1 << 31);
-    int code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
+    UINT32 code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
     int colour= ReadWord(&base[i+6]);
     int col=colour&0x1f;
     if (y >= 0x8000 || colour >= 0xff00) {
@@ -3402,7 +3402,7 @@ static void render_cps2_sprites_pbitmap(int *primasks)
 	if (colour &0x20) {
 	  for (nys=0; nys<ny; nys++) {
 	    for (nxs=0; nxs<nx; nxs++) {
-	      int code2 = code+(nx-1)-nxs+0x10*(ny-1-nys);
+	      UINT32 code2 = code+(nx-1)-nxs+0x10*(ny-1-nys);
 	      sx = (x+nxs*16+xoffs) & 0x3ff;
 	      sy = (y+nys*16+yoffs) & 0x3ff;
 

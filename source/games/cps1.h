@@ -5,7 +5,7 @@ extern "C" {
 #include "mame/eeprom.h"
 
 extern struct SOUND_INFO sound_qsound[2];
-extern struct VIDEO_INFO video_cps1;
+extern struct VIDEO_INFO video_cps1,video_sfz3mix;
 extern struct VIDEO_INFO video_cps1_270;
 
 extern struct EEPROM_interface pang3_eeprom_interface;
