@@ -92,7 +92,7 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data);
 static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
     int n;
     for (n=0; n<nb_watch; n++) {
-	if (offset == watch[n].adr ) {
+	if (offset == watch[n].adr && watch[n].size == 1) {
 	    cpu_id = watch[n].cpu;
 	    cpu_get_ram(cpu_id,ram,&nb_ram);
 	    if (watch[n].cond) get_regs();
@@ -113,7 +113,7 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 		    (watch[n].read && ptr && watch[n].value == ptr[getadr(offset)])) {
 		if (!watch[n].cond || parse(watch[n].cond)) {
 		    if (((cpu_id >> 4) == CPU_68000 || (cpu_id >> 4) == CPU_68020)) {
-			watch[n].pc = s68000_pc;
+			watch[n].pc = s68000_read_pc;
 			Stop68000(0,0);
 			goto_debuger = n+100;
 		    } else if ((cpu_id >> 4) == CPU_Z80) {
@@ -124,11 +124,9 @@ static UINT8 exec_watchb(UINT32 offset, UINT8 data) {
 		}
 	    }
 	    if (ptr) {
-		printf("watchb: changing offset %x,%x\n",getadr(offset),data);
 		if (!watch[n].read)
 		    ptr[getadr(offset)] = data;
 		else {
-		    printf("exec_watchb offset %x returning %x\n",offset,ptr[getadr(offset)]);
 		    return ptr[getadr(offset)];
 		}
 	    } else if (func) {
@@ -170,7 +168,7 @@ static UINT16 exec_watchw(UINT32 offset, UINT16 data) {
 		    (!watch[n].read && watch[n].value == data) ||
 		    (watch[n].read && ptr && watch[n].value == ReadWord(&ptr[offset]))) {
 		if (!watch[n].cond || parse(watch[n].cond)) {
-		    watch[n].pc = s68000_pc;
+		    watch[n].pc = s68000_read_pc;
 		    Stop68000(0,0);
 		    goto_debuger = n+100;
 		}
@@ -1372,7 +1370,7 @@ static void do_cpu(int argc, char **argv) {
    }
 #endif
 #if HAVE_6502
-   for (int n=0; n<4; n++) {
+   for (int n=0; n<MAX_6502; n++) {
        if (M6502_context[n].m6502Base) {
 	   sprintf(buff+strlen(buff)," 6502%c",'a'+n);
 	   has_6502 |= (1<<n);
