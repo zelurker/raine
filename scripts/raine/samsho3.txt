@@ -4,10 +4,25 @@ In training mode, pause the game then press start to change character."
 run:
 #Menu Screen Script#
 if (dpeek($108102)==$6FBA)and(peek($108753)!=$00)
-  poke $C1852F $34 #Restore original control# (swaps reading from $340000 and $300000)
-  poke $C18537 $30
-  poke $C1854B $34
-  poke $C18553 $30
+   #Restore control#
+   if (dpeek($C1852C)==$1A39) #For Unibios#
+      poke $C1852F $34
+      poke $C18537 $30
+      poke $C1854B $34
+      poke $C18553 $30
+   endif
+   if (dpeek($C16F46)==$1A39) #For Japan AES#
+      poke $C16F49 $34
+      poke $C16F51 $30
+      poke $C16F65 $34
+      poke $C16F6D $30
+   endif
+   if (dpeek($C16BFA)==$1A39) #For Asia AES#
+      poke $C16BFD $34
+      poke $C16C05 $30
+      poke $C16C19 $34
+      poke $C16C21 $30
+   endif
   if (peek($100041)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
     poke $100041 $00
   endif
