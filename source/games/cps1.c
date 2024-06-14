@@ -1845,7 +1845,9 @@ static void qsound_set_z80()
   if (is_current_game("gigaman2")) {
       return;
   }
-  z80_init_data_banks(0,REGION_ROM2,0x0,0x4000); // The rom seems to be counted as banks !
+
+  z80_init_data_banks_area(0,load_region[REGION_CPU2],get_region_size(REGION_CPU2),
+			   0,0x4000);
 
   if (cps_version==2) {
     AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
@@ -1901,6 +1903,7 @@ static void cps2_reset() {
 }
 
 static int stopped_68k;
+static int sfz3mix; // hack required for sprites
 
 static void myStop68000(UINT32 adr, UINT8 data) {
   if (hack_counter++ >= max_hack_counter) {
@@ -2476,6 +2479,11 @@ void cps2_find_last_sprite(void)    /* Find the offset of last sprite */
 	    cps2_last_sprite_offset=offset-8;
 	    return;
 	  }
+	  if (sfz3mix && (ReadWord(&base[offset + 2]) & 0x1000)) //Zero800 uses an unused bit to access an extra gfx bank
+	  {
+	      WriteWord(&base[offset + 2], ReadWord(&base[offset + 2]) + 0x8000);
+	  }
+
 
 	  offset+=8;
 	}
@@ -2515,6 +2523,7 @@ void load_cps2() {
   ByteSwap(ROM, size_code );
   /* Phoenix games seem to get the region from the eeprom ! and changing the eeprom is a nightmare, so the easiest workaround is to change their code to get it from the rom in the end
    * then assign a region switch to this address */
+  sfz3mix = 0;
   if (is_current_game("ssf2ud")) {
       WriteLongSc(&ROM[0x23f55e],0x3c3c0000);
   } else if (is_current_game("ssf2xjd")) {
@@ -2536,6 +2545,7 @@ void load_cps2() {
        * so they included the gap at 0x8000 that mame has in its memory map ! What a waste of space... !!! */
       memmove(&Z80ROM[0x8000],&Z80ROM[0x10000],get_region_size(REGION_CPU2)-0x10000);
       set_region_size(REGION_CPU2,get_region_size(REGION_CPU2) - 0x8000);
+      sfz3mix = 1;
   }
 
   cps2crpt();
@@ -2664,7 +2674,10 @@ void load_cps2() {
   AddRWBW(0x900000, 0x92FFFF, NULL, cps1_gfxram); // ram + 0x10000
 
   if (xor) AddRWBW(0x400000, 0x40000b, NULL, cps2_output);
-  else {
+  else if (is_current_game("sfz3mix")) {
+      AddRWBW(0x665000, 0x66500b, NULL, cps2_output);
+      AddRWBW(0xfffff0, 0xffffff, NULL, cps2_output);
+  } else {
     AddRWBW(0xfffff0, 0xffffff, NULL, cps2_output);
   }
 
@@ -3370,10 +3383,14 @@ static void render_cps2_sprites_pbitmap(int *primasks)
     int y=ReadWord(&base[i+2]);
     u32 priority=(x>>13)&0x07;
     priority = primasks[priority] | (1 << 31);
-    UINT32 code  = ReadWord(&base[i+4])+((y & 0x6000) <<3);
+    UINT32 code;
+    if (sfz3mix)
+	code = ReadWord(&base[i+4])+((y & 0xe000) <<3);
+    else
+	code = ReadWord(&base[i+4])+((y & 0x6000) <<3);
     int colour= ReadWord(&base[i+6]);
     int col=colour&0x1f;
-    if (y >= 0x8000 || colour >= 0xff00) {
+    if (/* y >= 0x8000 ||*/ colour >= 0xff00) {
       return;
     }
     // printf("%d,%d %d,%x\n",x,y,priority,code);

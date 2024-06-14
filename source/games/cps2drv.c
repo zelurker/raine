@@ -12,22 +12,6 @@
 #include "sound/adpcm.h"
 #include "sound/sasound.h"
 
-static struct DSW_DATA dsw_data_sfz3mix[] =
-{
-  DSW_UNUSED( 0x00, 0xfc),
-  { _("Apsect Ratio"),    0, 3 },
-  { "16:9", 0},
-  { "4:3", 1},
-  { "112:81", 2},
-  { NULL, 0}
-};
-
-static struct DSW_INFO dsw_sfz3mix[] =
-{
-  { 0x1c, 0xfc, dsw_data_sfz3mix }, // not sure about the offset !
-  { 0, 0, NULL }
-};
-
 static struct ROM_INFO rom_1944[] =
 {
   LOAD_SW16( CPU1, "nffu.03", 0x000000, 0x80000, 0x9693cf8f),
@@ -4451,7 +4435,7 @@ CLNEI( mvscud, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoen
 CLNEI( sfa3ud, sfa3, "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3ud);
 CLNEI( sfz3mix, sfa3, "Street Fighter Zero 3 Mix v0.30", BOOTLEG, 2024, GAME_BEAT,
-	.dsw = dsw_sfz3mix, .video = &video_sfz3mix);
+	.video = &video_sfz3mix);
 CLNEI( gigawingd, gigawing, "Giga Wing (USA 990222 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
   .input = input_p2b2);
 CLNEI( gigawingjd, gigawing, "Giga Wing (Japan 990223 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
