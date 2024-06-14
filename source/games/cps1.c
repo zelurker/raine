@@ -3279,7 +3279,7 @@ static void render_scroll1(int mask)
 
    MAKE_SCROLL_SCROLL1_4_8_YX(scroll1x,scroll1y);
 
-   START_SCROLL_SCROLL1_4_8_YX(24,16,384+8,224+16);
+   START_SCROLL_SCROLL1_4_8_YX(24,16,current_game->video->screen_x+8,current_game->video->screen_y+16);
 
    code  =ReadWord(&RAM_SCROLL1[zz]) /* + base1 */;
    colour=ReadWord(&RAM_SCROLL1[(zz+2)]);
@@ -3600,7 +3600,7 @@ static void render_sprites()
   } // for i
 }
 
-static INT16 offsets[256];
+static INT16 offsets[266]; // 266 for sfz3mix with its height of 234 !
 
 // cps1_render_scroll2_bitmap : a real mess, mostly inspired from an old
 // mame version. It has one advantage though : it allows to have the line
@@ -3762,7 +3762,7 @@ static void render_scroll3(int mask)
 
   MAKE_SCROLL_SCROLL3_4_32_YX(scroll3x,scroll3y);
 
-  START_SCROLL_SCROLL3_4_32_YX(32,32,384,224);
+  START_SCROLL_SCROLL3_4_32_YX(current_game->video->border_size,current_game->video->border_size,current_game->video->screen_x,current_game->video->screen_y);
 
   if (y >= 0) {
     code = (ReadWord(&RAM_SCROLL3[zz]) & 0x3fff) <<3;
