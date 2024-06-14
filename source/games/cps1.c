@@ -2531,6 +2531,11 @@ void load_cps2() {
       WriteLongSc(&ROM[0x17f55e], 0x3c3c0002);
   } else if (is_current_game("1944d")) {
       WriteLongSc(&ROM[0x5f546], 0x3c3c0002);
+  } else if (is_current_game("sfz3mix")) {
+      /* This romset was created with mame compatibility in mind, but with only 1 rom for the whole Z80 region
+       * so they included the gap at 0x8000 that mame has in its memory map ! What a waste of space... !!! */
+      memmove(&Z80ROM[0x8000],&Z80ROM[0x10000],get_region_size(REGION_CPU2)-0x10000);
+      set_region_size(REGION_CPU2,get_region_size(REGION_CPU2) - 0x8000);
   }
 
   cps2crpt();

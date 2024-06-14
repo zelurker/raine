@@ -541,6 +541,7 @@
   DRV(cybotsud)
   DRV(mshvsfu1d)
   DRV(sfz3jr2d)
+  DRV(sfz3mix)
 
 // crimec.c
   DRV(crimec)
