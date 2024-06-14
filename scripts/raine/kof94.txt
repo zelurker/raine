@@ -1,20 +1,323 @@
-script "Infinite Time"  
+script "Console Mode Plus" \
+"comm:On the Game Select screen, press left or right to select modes.
+In practice mode, pause the game then press start to change character."
+run:
+#Menu part#
+if (dpeek($108586)==$B0BA)
+   poke $32C8D $30
+   poke $32C93 $34
+   poke $37137 $00
+   poke $37155 $07
+   if (dpeek($C1852C)==$1A39) #For Unibios#
+      poke $C1852F $34
+      poke $C18537 $30
+      poke $C1854B $34
+      poke $C18553 $30
+   endif
+   if (dpeek($C16F46)==$1A39) #For Japan AES#
+      poke $C16F49 $34
+      poke $C16F51 $30
+      poke $C16F65 $34
+      poke $C16F6D $30
+   endif
+   if (dpeek($C16BFA)==$1A39) #For Asia AES#
+      poke $C16BFD $34
+      poke $C16C05 $30
+      poke $C16C19 $34
+      poke $C16C21 $30
+   endif
+  if (peek($1000A1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+    poke $1000A1 $00
+  endif
+   if (dpeek($1000A0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $1000A0 $01FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $1000A0 $02FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$0200)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $1000A0 $00FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$0200)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $1000A0 $01FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$0100)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $1000A0 $00FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$0000)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $1000A0 $02FF
+    poke $320000 $60
+   endif
+   if (dpeek($1000A0)==$00FF)
+    poke $541C6 "TEAM PLAY"
+    poke $541D3 "SINGLE PLAY"
+    poke $3B1AB $02 #Cursor back#
+    dpoke $108586 $B06E
+   endif
+   if (dpeek($1000A0)==$01FF)
+    poke $541C6 " TEAM VS "
+    poke $541D3 " SINGLE VS "
+    poke $3B1AB $02 #Cursor back#
+    dpoke $108586 $B06E
+   endif
+   if (dpeek($1000A0)==$02FF)
+    poke $541C6 "PRACTICE "
+    poke $541D3 "           "
+    poke $3B1AB $FF #Cursor hidden#
+    dpoke $108586 $B06E
+   endif
+endif
+if (dpeek($108586)==$B15E)and((peek($1000A0)==$01)or(peek($1000A0)==$02)) #Skip level select & Restore rom#
+   poke $3B1AB $02
+   poke $541C6 "TEAM PLAY"
+   poke $541D3 "SINGLE PLAY"
+   if (peek($1000A0)>=$01) #Activate players#
+      poke $108230 $81
+      poke $108430 $82
+      dpoke $1087EC $B9CA
+      dpoke $1087F0 $B9E0
+      poke $1087E5 $03
+      dpoke $10FDB6 $0101
+   endif
+   if (peek($1000A0)==$02)
+      poke $108837 $00 #Single mode#
+   endif
+   dpoke $108586 $B46C
+endif
+#VS Mode Script for normal rom#
+if (peek($1000A0)==$01)and(dpeek($2B90BC)==$0000)
+   if (peek($1087E6)==$0C) #Save characters#
+      poke $1000B0 peek($1081C0)
+      poke $1000B1 peek($1083C0)
+   endif
+    if (dpeek($108586)==$42D8)
+      poke $1087E6 $03 #Deselect characters#
+      poke $37137 peek($1000B0) #Load previous characters#
+      poke $37155 peek($1000B1)
+    endif
+    if (peek($10FDB6)==$02)or(peek($10FDB7)==$02) #No continue text and activate players#
+       poke $108230 $81
+       poke $108430 $82
+       dpoke $1087EC $B9CA
+       dpoke $1087F0 $B9E0
+       poke $1087E5 $03
+       poke $10881C $00
+       poke $10880C $00
+    endif
+   if (dpeek($108586)==$7046)and(peek($1087E6)==$03)
+      poke $37137 $00 #Restore rom#
+      poke $37155 $07
+   endif
+   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
+      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
+         poke $320000 $2B
+      endif
+   endif
+endif
+#Practice Mode Script for normal rom#
+if (peek($1000A0)==$02)and(dpeek($2B90BC)==$0000)
+   if ((peek($1087E6)==$06)or(peek($1087E6)==$1E))and(peek($10FD96)==$00) #1P controls 2P#
+     poke $32C93 $30
+     poke $1000C0 $00 #P1 as main player#
+   endif
+   if ((peek($1087E6)==$09)or(peek($1087E6)==$2D))and(peek($10FD9C)==$00) #2P controls 1P#
+     poke $32C8D $34
+     poke $1000C0 $01 #P2 as main player#
+   endif
+   if (peek($1087E6)==$0C)
+     poke $32C8D $30 #Restore control#
+     poke $32C93 $34
+     poke $1000B0 peek($1081C0) #Save characters#
+     poke $1000B1 peek($1083C0)
+   endif
+   if (peek($1087E6)==$3C) #Restore control#
+     poke $32C8D $30
+     poke $32C93 $34
+   endif
+   poke $10882E $60 #Timer#
+   if (peek($1000C0)==$00) #1P red blood#
+    poke $108221 $3F
+    poke $108421 $CF
+   endif
+   if (peek($1000C0)==$01) #2P red blood#
+    poke $108221 $CF
+    poke $108421 $3F
+   endif
+   if (peek($108786)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to char. screen#
+      poke $108786 $00 #Resume from pause#
+      poke $1087E6 $03 #Deselect characters#
+      poke $37137 peek($1000B0) #Load previous characters#
+      poke $37155 peek($1000B1)
+      dpoke $108586 $6E66
+   endif
+   if (dpeek($108586)==$7046)and(peek($1087E6)==$03)
+      poke $37137 $00 #Restore rom#
+      poke $37155 $07
+   endif
+   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
+      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
+         poke $320000 $2B
+      endif
+   endif
+endif
+#VS Mode Script for Team Edit Hack#
+if (peek($1000A0)==$01)and(dpeek($2B90BC)==$4EB9)
+    if (dpeek($108586)==$42D8)
+      poke $1087E6 $03 #Deselect characters#
+    endif
+    if (peek($10FDB6)==$02)or(peek($10FDB7)==$02) #No continue text and activate players#
+       poke $108230 $81
+       poke $108430 $82
+       dpoke $1087EC $B9CA
+       dpoke $1087F0 $B9E0
+       poke $1087E5 $03
+       dpoke $10FDB6 $0101
+       poke $10881C $00
+       poke $10880C $00
+    endif
+endif
+#Practice Mode Script for Team Edit Hack#
+if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
+   #Switch control in part 1#
+   if (dpeek($108586)==$7046)
+      if (peek($10E832)==$01)and(peek($10E8D2)==$00) #P1 as main players#
+         poke $1000C0 $00
+         poke $1000D0 $01 #Go to switch control routine#
+      endif
+      if (peek($10E832)==$00)and(peek($10E8D2)==$01) #P2 as main players#
+         poke $1000C0 $01
+         poke $1000D0 $01 #Go to switch control routine#
+      endif
+      if (peek($1000D0)==$01)and(peek($10FD96)==$00)and(peek($10FD9C)==$00)
+        if (dpeek($C1852C)==$1A39) #For Unibios#
+           poke $C1852F $30
+           poke $C18537 $34
+           poke $C1854B $30
+           poke $C18553 $34
+        endif
+        if (dpeek($C16F46)==$1A39) #For Japan AES#
+           poke $C16F49 $30
+           poke $C16F51 $34
+           poke $C16F65 $30
+           poke $C16F6D $34
+        endif
+        if (dpeek($C16BFA)==$1A39) #For Asia AES#
+           poke $C16BFD $30
+           poke $C16C05 $34
+           poke $C16C19 $30
+           poke $C16C21 $34
+        endif
+      endif
+   endif
+   if (peek($1087E6)==$0C) #Restore#
+        poke $1000D0 $00
+        if (dpeek($C1852C)==$1A39) #For Unibios#
+           poke $C1852F $34
+           poke $C18537 $30
+           poke $C1854B $34
+           poke $C18553 $30
+        endif
+        if (dpeek($C16F46)==$1A39) #For Japan AES#
+           poke $C16F49 $34
+           poke $C16F51 $30
+           poke $C16F65 $34
+           poke $C16F6D $30
+        endif
+        if (dpeek($C16BFA)==$1A39) #For Asia AES#
+           poke $C16BFD $34
+           poke $C16C05 $30
+           poke $C16C19 $34
+           poke $C16C21 $30
+        endif
+   endif
+   #Switch control in part 2#
+   if ((peek($1087E6)==$1E)or(peek($1087E6)==$2D))and(peek($10FD96)==$00)and(peek($10FD9C)==$00)
+      poke $32C93 $30
+      poke $32C8D $34
+   endif
+   if (peek($1087E6)==$3C) #Restore#
+      poke $32C93 $34
+      poke $32C8D $30
+   endif
+   poke $10882E $60 #Timer#
+   if (peek($1000C0)==$00) #1P red blood#
+    poke $108221 $3F
+    poke $108421 $CF
+   endif
+   if (peek($1000C0)==$01) #2P red blood#
+    poke $108221 $CF
+    poke $108421 $3F
+   endif
+   if (peek($108786)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to char. screen#
+      poke $108786 $00 #Resume from pause#
+      poke $1087E6 $03 #Deselect characters#
+      dpoke $108586 $6E66
+   endif
+   #Stage/Music select script#
+   if (dpeek($108586)==$7EDC)
+      if (peek($1000C0)==$00)
+         poke $1000E0 peek($10E8A6) #Get value of palyer 2 1st char.#
+      endif
+      if (peek($1000C0)==$01)
+         poke $1000E0 peek($10E806) #Get value of palyer 2 1st char.#
+      endif
+      if (peek($1000E0)>=$00)and(peek($1000E0)<=$02)
+         poke $1087DE $00 #Brazil#
+      endif
+      if (peek($1000E0)>=$03)and(peek($1000E0)<=$05)
+         poke $1087DE $01 #China#
+      endif
+      if (peek($1000E0)>=$06)and(peek($1000E0)<=$08)
+         poke $1087DE $02 #Japan#
+      endif
+      if (peek($1000E0)>=$09)and(peek($1000E0)<=$0B)
+         poke $1087DE $03 #USA#
+      endif
+      if (peek($1000E0)>=$0C)and(peek($1000E0)<=$0E)
+         poke $1087DE $04 #Korea#
+      endif
+      if (peek($1000E0)>=$0F)and(peek($1000E0)<=$11)
+         poke $1087DE $05 #Italy#
+      endif
+      if (peek($1000E0)>=$12)and(peek($1000E0)<=$14)
+         poke $1087DE $06 #Mexico#
+      endif
+      if (peek($1000E0)>=$15)and(peek($1000E0)<=$17)
+         poke $1087DE $07 #England#
+      endif
+      if (peek($1000E0)>=$18)
+         poke $1087DE $08 #Rugal#
+      endif
+   endif
+   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
+      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
+         poke $320000 $2B
+      endif
+   endif
+endif
+
+script "Infinite Time"
 on:
     temp0=peek($10882E)
 run:
     if (frame%120==$0)and(peek($10882E)!=temp0)
       poke $10882E $60
     endif
-script "Finish Round Now!"  
+script "Finish Round Now!"
 on:
     poke $10882E $00
 script "Select Mai's Boobs" \
  "0x00/Always Bounce"\
- "0x01/Never Bounce" 
+ "0x01/Never Bounce"
 run:
     poke $10C6E2 param
 script "Always Enable Special Move" \
- "comm:It is enabled even with maximum energy and no power."  
+ "comm:It is enabled even with maximum energy and no power."
 on:
     temp0=peek($004C24)
     temp1=peek($00B1BE)
@@ -30,7 +333,7 @@ off:
     poke $00B1BE temp1
     poke $00B1EA temp2
     poke $00B22E temp3
-script "Invincibility [Master Code]"  
+script "Invincibility [Master Code]"
 on:
     temp0=lpeek($002B5E)
     temp1=dpeek($002B62)
@@ -175,28 +478,28 @@ off:
     lpoke $0FF088 temp44
     dpoke $0FF08C temp45
     lpoke $0FF08E temp46
-script "Hit Anywhere (Both Players)"  
+script "Hit Anywhere (Both Players)"
 on:
     temp0=dpeek($002B5E)
 run:
     dpoke $002B5E $4E71
 off:
     dpoke $002B5E temp0
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $108221 $CF
-script "P1 Drain all Energy Now!"  
+script "P1 Drain all Energy Now!"
 on:
     poke $108221 $00
-script "P1 Always have Max POW"  
+script "P1 Always have Max POW"
 run:
     poke $108219 $7F
-script "P1 Get Max POW Now!"  
+script "P1 Get Max POW Now!"
 on:
     poke $108219 $7F
 script "P1 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($1082F0)
 run:
@@ -204,24 +507,24 @@ run:
 off:
     poke $1082F0 temp0
 script "P1 Play with Rugal" \
- "comm:Use these on the character selection screen"  
+ "comm:Use these on the character selection screen"
 on:
     poke $108231 $08
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $108421 $CF
-script "P2 Drain all Energy Now!"  
+script "P2 Drain all Energy Now!"
 on:
     poke $108421 $00
-script "P2 Always have Max POW"  
+script "P2 Always have Max POW"
 run:
     poke $108419 $7F
-script "P2 Get Max POW Now!"  
+script "P2 Get Max POW Now!"
 on:
     poke $108419 $7F
 script "P2 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($1084F0)
 run:
@@ -229,17 +532,17 @@ run:
 off:
     poke $1084F0 temp0
 script "P2 Play with Rugal" \
- "comm:Use these on the character selection screen"  
+ "comm:Use these on the character selection screen"
 on:
     poke $108431 $08
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     poke $FE2D $00
     cpu main
 script "Hide Background" \
- "comm:Activate before match start"  
+ "comm:Activate before match start"
 on:
     temp0=peek($108785)
     temp1=lpeek($0009B6)
@@ -269,11 +572,11 @@ off:
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -308,6 +611,6 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99
