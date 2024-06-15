@@ -3670,13 +3670,28 @@ static void cps1_render_scroll2_bitmap(int mask)
     int otheroffs = cps1_port[CPS1_ROWSCROLL_OFFS],worthit=0;
     // RAM_LSCROLL must be computed here.
     RAM_LSCROLL = (INT16*)cps1_base(CPS1_OTHER_BASE,cps1_other_size);
+    int min=5000, max=-5000;
     for (sx=0; sx<256; sx++) {
       offsets[sx] = -(RAM_LSCROLL[(sx+otheroffs)&0x3ff]);
+      if (offsets[sx] < min) min = offsets[sx];
+      if (offsets[sx] > max) max = offsets[sx];
       if (offsets[sx]) {
 	worthit = offsets[sx];
       }
     }
     distort_scroll2 = worthit;
+    if (min == max) {
+	/* Detect those games which use the line scroll registers as a layer scroll register */
+	/* sfz3mix is in this case, sfa3 also probably */
+	/* Notice that for now it's working only for those games, some game which would change only a part of the screen here wouldn't be fixed for now...
+	 * Todo later ! */
+	distort_scroll2 = 0;
+	// Must recompute scrlx from scroll2x because of the partial draws !
+	scrlx=-(scroll2x+0x40-0x20);
+
+	if (scrlx < 0) scrlx = (-scrlx) % srcwidth;
+	scrlx -= min;
+    }
 // #ifdef RAINE_DEBUG
 //     if (worthit) {
 //       print_ingame(1,gettext("row scroll %d"),worthit);
@@ -3713,62 +3728,62 @@ static void cps1_render_scroll2_bitmap(int mask)
 	      if (myy < 0) myy += srcheight;
 
 	    if (myy> 16 && myy <= scrheight && myx >16 && myx < scrwidth) {
-	      colour=ReadWord(&RAM_SCROLL2[offs+2]);
-	      INT16 *dx = &offsets[myy-16];
-	      MAP_PALETTE_MAPPED_NEW(
-				     (colour&0x1F) | 0x40,
-				     16,
-				     map
-				     );
-	      if (mask) {
-		if (cps_version == 2) {
-		  if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
-		    if (distort_scroll2) {
+		colour=ReadWord(&RAM_SCROLL2[offs+2]);
+		INT16 *dx = &offsets[myy-16];
+		MAP_PALETTE_MAPPED_NEW(
+			(colour&0x1F) | 0x40,
+			16,
+			map
+			);
+		if (mask) {
+		    if (cps_version == 2) {
+			if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
+			    if (distort_scroll2) {
 #if DEBUG
-			mypldraw16x16_Mask_Trans_Mapped_16(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
+				mypldraw16x16_Mask_Trans_Mapped_16(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
 #else
-		      pldraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
+				pldraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
 #endif
-		    } else
-		      pdraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
-		  } else { // all solid
-		    if (distort_scroll2) {
-		      pldraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
-		    } else
-		      pdraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
-		  }
-		} else { // cps_version == 1 then...
-		  dest = mask_sprite(16*16-1,&GFX_SPR16[code<<8],(colour & 0x180)>>7);
+			    } else
+				pdraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
+			} else { // all solid
+			    if (distort_scroll2) {
+				pldraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
+			    } else
+				pdraw16x16_Mask_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
+			}
+		    } else { // cps_version == 1 then...
+			dest = mask_sprite(16*16-1,&GFX_SPR16[code<<8],(colour & 0x180)>>7);
 
-		  if (dest) {// We got something...
-		    // line scrolls work correctly with priorities. Tested
-		    // in 2nd stage of dino.
-		    if (distort_scroll2)
-		      ldraw16x16_Trans_Mapped_flip_Rot(dest, myx, myy, map,dx,(colour & 0x60)>>5);
-		    else
-		      Draw16x16_Trans_Mapped_flip_Rot(dest,myx,myy,map,(colour & 0x60)>>5);
-		  }
+			if (dest) {// We got something...
+				   // line scrolls work correctly with priorities. Tested
+				   // in 2nd stage of dino.
+			    if (distort_scroll2)
+				ldraw16x16_Trans_Mapped_flip_Rot(dest, myx, myy, map,dx,(colour & 0x60)>>5);
+			    else
+				Draw16x16_Trans_Mapped_flip_Rot(dest,myx,myy,map,(colour & 0x60)>>5);
+			}
 #if VERBOSE
-		  {
-		    char buff[2];
-		    sprintf(buff,"%x",(colour & 0x180)>>7);
-		    textout_fast(buff,myx,myy,get_white_pen());
-		  }
+			{
+			    char buff[2];
+			    sprintf(buff,"%x",(colour & 0x180)>>7);
+			    textout_fast(buff,myx,myy,get_white_pen());
+			}
 #endif
+		    }
+		} else {
+		    if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
+			if (distort_scroll2)
+			    ldraw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
+			else
+			    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
+		    } else { // all solid
+			if (distort_scroll2)
+			    ldraw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
+			else
+			    Draw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
+		    }
 		}
-	      } else {
-		if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
-		  if (distort_scroll2)
-		    ldraw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
-		  else
-		    Draw16x16_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
-		} else { // all solid
-		  if (distort_scroll2)
-		    ldraw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
-		  else
-		    Draw16x16_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5);
-		}
-	      }
 	    }
 	} // range ok
 	n++;
