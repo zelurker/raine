@@ -602,18 +602,20 @@ static void DrawArmedF(void)
    // BG0
 
    if (check_layer_enabled(layer_id_data[0])) {
-     if(ReadWord(&RAM[io_w]) & 0x0200){
+       if(ReadWord(&RAM[io_w]) & 0x0200){
 
-     scrolly = ReadWord(&RAM[io_w+2])+112-16;
-     scrollx = ReadWord(&RAM[io_w+4])+16;
+	   scrolly = ReadWord(&RAM[io_w+2])+112-16;
+	   scrollx = ReadWord(&RAM[io_w+4])+16;
 
-     DRAW_LAYER16_YX(512,1024,2,scrollx,scrolly,(RAM[bg_videoram+1+zz]>>3)|0x60,&GFX_BG0[(ReadWord(&RAM[bg_videoram+zz])&0x03FF)<<8]);
-   }
-   else{
-      clear_game_screen(0);
-   }
+	   DRAW_LAYER16_YX(512,1024,2,scrollx,scrolly,
+		   (RAM[bg_videoram+1+zz]>>3)|0x60, // color
+		   &GFX_BG0[(ReadWord(&RAM[bg_videoram+zz])&0x03FF)<<8]); // sprite
+       }
+       else{
+	   clear_game_screen(0);
+       }
    } else
-     clear_game_screen(0);
+       clear_game_screen(0);
 
 
    // OBJECT
