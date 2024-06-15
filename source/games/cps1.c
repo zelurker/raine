@@ -31,6 +31,8 @@
  * update for this driver.
  */
 
+#define DEBUG 0
+
 #include "gameinc.h"
 #include "compat_sdl.h"
 #include "cps1.h"
@@ -3627,6 +3629,35 @@ static INT16 offsets[266]; // 266 for sfz3mix with its height of 234 !
 // be used for line scroll too, but it's horribly unefficiant.
 // If one day I feel extremely bored, I'll convert it to a shorter version
 // for the normal drawing (no line scroll).
+#if DEBUG
+extern int disp_x_16;
+
+static void mypldraw16x16_Mask_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,INT16 *dy, UINT8 pri)
+{
+   UINT16 *line;
+   UINT8 *pline;
+   INT16 xx,yy,dx;
+
+   for(yy=0; yy<(16); yy++){
+     dx = x+dy[yy];
+     if (dx < (16) || dx > disp_x_16) {
+       SPR += (16);
+       continue;
+     }
+     pline = pbitmap->line[y+yy] + dx;
+     line = ((UINT16 *)(GameBitmap->line[y+yy])) + dx;
+     for(xx=0; xx<(16); xx++, SPR++){
+       if(*SPR) {
+	 if (pline[xx] <= pri) {
+	   pline[xx] = pri;
+	   line[xx] = ((UINT16 *)cmap)[ *SPR ];
+	 }
+       }
+     }
+   }
+}
+#endif
+
 static void cps1_render_scroll2_bitmap(int mask)
 {
   int sx, sy;
@@ -3681,7 +3712,7 @@ static void cps1_render_scroll2_bitmap(int mask)
 	      // We must warp around the bitmap... What a mess...
 	      if (myy < 0) myy += srcheight;
 
-	    if (myy> 0 && myy <= scrheight) {
+	    if (myy> 16 && myy <= scrheight && myx >16 && myx < scrwidth) {
 	      colour=ReadWord(&RAM_SCROLL2[offs+2]);
 	      INT16 *dx = &offsets[myy-16];
 	      MAP_PALETTE_MAPPED_NEW(
@@ -3693,7 +3724,11 @@ static void cps1_render_scroll2_bitmap(int mask)
 		if (cps_version == 2) {
 		  if (GFX_SPR_SOLID16[code]==1) {// Some pixels transp
 		    if (distort_scroll2) {
+#if DEBUG
+			mypldraw16x16_Mask_Trans_Mapped_16(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5);
+#else
 		      pldraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8], myx, myy, map,dx,(colour & 0x60)>>5,mask);
+#endif
 		    } else
 		      pdraw16x16_Mask_Trans_Mapped_flip_Rot(&GFX_SPR16[code<<8],myx,myy,map,(colour & 0x60)>>5,mask);
 		  } else { // all solid
