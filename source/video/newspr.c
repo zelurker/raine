@@ -1526,6 +1526,8 @@ void init_video_core(void)
    init_newspr2asm_16();
    init_newspr2asm_32();
 
+   init_pldraw(); // all the line scroll code from c/lscroll.c
+
    switch(internal_bpp(display_cfg.bpp)){
       case 8:
 	  if (opaque_hud)

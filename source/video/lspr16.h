@@ -227,6 +227,8 @@ extern ldraw_mapped_func_pri *pcdraw16x16_Mask_Trans_Mapped_Flip_Rot[4];
 
 #endif
 
+void init_pldraw();
+
 #ifdef __cplusplus
 }
 #endif

@@ -61,11 +61,6 @@ extern "C" {
    for(y=(start_y-y16);(UINT32)y<(view_y+start_y);y+=16){      \
    for(x=(start_x-x16);(UINT32)x<(view_x+start_x);x+=16){      \
 
-#define START_SCROLL_16_YX(start_x,start_y,view_x,view_y) \
-   zz=zzzz;                                            \
-   for(x=(start_x-x16);(UINT32)x<(view_x+start_x);x+=16){      \
-   for(y=(start_y-y16);(UINT32)y<(view_y+start_y);y+=16){      \
-
 #define START_SCROLL_16_R180(start_x,start_y,view_x,view_y) \
    zz=zzzz;                                                 \
    for(y=(view_y+start_y+y16-16);(UINT32)y>(start_y-16);y-=16){     \
@@ -256,6 +251,14 @@ extern "C" {
    zzz=(scr_y);						\
    zzzz|=(zzz&(height-16))*(width/16*n)/16;		\
    y16=zzz&15;
+
+#define MAKE_SCROLL_n_16_YX(width,height,n,scr_x,scr_y)	\
+   zzz=(scr_x);						\
+   zzzz=(zzz&(width-16))/16*n;				\
+   y16=zzz&15;						\
+   zzz=(scr_y);						\
+   zzzz|=(zzz&(height-16))*(width/16*n)/16;		\
+   x16=zzz&15;
 
 #define MAKE_SCROLL_n_8(width,height,n,scr_x,scr_y)	\
    zzz=(scr_x);						\

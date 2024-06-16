@@ -108,7 +108,7 @@ static int cps1_last_sprite_offset;	/* Offset of the last sprite */
 static int cps1_layer_enabled[4];	/* Layer enabled [Y/N] */
 static int cps1_stars_enabled;		/* Layer enabled [Y/N] */
 //static int cps1_flip_screen;	/* Flip screen on / off unused in raine */
-static int base1,base3,scrwidth,scrheight;
+static int base1,base3,scrwidth,scrheight,border;
 static int scrlx,scrly,size_code2,distort_scroll2;
 static UINT32 max_sprites16,max_sprites32,max_sprites8;
 static UINT32 frame_68k,default_frame; // 68k frame (in Hz)
@@ -1473,8 +1473,9 @@ static void cps1_init_machine(void)
    max_sprites32 = MIN(max_sprites32,(max_sprites16/4 - base3));
    nb_sprites = gfxrom_bank_mapper(GFXTYPE_SPRITES,sprites_ranges);
 
-   scrwidth = current_game->video->screen_x+32;
-   scrheight= current_game->video->screen_y+32;
+   border = current_game->video->border_size;
+   scrwidth = current_game->video->screen_x+border;
+   scrheight= current_game->video->screen_y+border;
    /* Put in some defaults */
    /* Apparently some games do not initialise completely and need these */
    /* defaults (captcomm)  */
@@ -3630,8 +3631,6 @@ static INT16 offsets[266]; // 266 for sfz3mix with its height of 234 !
 // If one day I feel extremely bored, I'll convert it to a shorter version
 // for the normal drawing (no line scroll).
 #if DEBUG
-extern int disp_x_16;
-
 static void mypldraw16x16_Mask_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *cmap,INT16 *dy, UINT8 pri)
 {
    UINT16 *line;
@@ -3639,8 +3638,12 @@ static void mypldraw16x16_Mask_Trans_Mapped_16(UINT8 *SPR, int x, int y, UINT8 *
    INT16 xx,yy,dx;
 
    for(yy=0; yy<(16); yy++){
+       if (y+yy < 16 || y+yy > scrheight) {
+	   SPR += 16;
+	   continue;
+       }
      dx = x+dy[yy];
-     if (dx < (16) || dx > disp_x_16) {
+     if (dx < (16) || dx > scrwidth) {                                                             \
        SPR += (16);
        continue;
      }
@@ -3727,7 +3730,7 @@ static void cps1_render_scroll2_bitmap(int mask)
 	      // We must warp around the bitmap... What a mess...
 	      if (myy < 0) myy += srcheight;
 
-	    if (myy> 16 && myy <= scrheight && myx >16 && myx < scrwidth) {
+	    if (distort_scroll2 || (myy> 16 && myy <= scrheight && myx >16 && myx < scrwidth)) {
 		colour=ReadWord(&RAM_SCROLL2[offs+2]);
 		INT16 *dx = &offsets[myy-16];
 		MAP_PALETTE_MAPPED_NEW(
