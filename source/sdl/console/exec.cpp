@@ -266,6 +266,7 @@ static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
     cpu_execute_cycles(cpu,cycles);
     cycles++;
   } while (cpu_get_pc(cpu) == oldpc && cycles < 1000);
+  if (cycles >= 1000) cons->print("%d cycles executed !",cycles);
   get_regs();
   if (can_be_stopped) {
     SDL_Event event;
