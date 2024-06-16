@@ -76,7 +76,10 @@ static menu_item_t *get_savegames(int for_saving) {
   if (dir) {
     struct dirent *entry;
     char game[30];
-    sprintf(game,"%s.",current_game->main_name);
+    if (is_neocd())
+	sprintf(game,"ncd_%s.",current_game->main_name);
+    else
+	sprintf(game,"%s.",current_game->main_name);
     int len = strlen(game);
     int n;
     // 1st look for height
