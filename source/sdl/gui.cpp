@@ -46,6 +46,7 @@
 #include "arpro.h" // CheatCount
 
 #include "neocd/neocd.h"
+#include "neocd/cdda.h"
 #include "blit.h"
 #include "newspr.h"
 #include "neocd/cdrom.h"
@@ -1022,6 +1023,8 @@ static void my_event(SDL_Event *event) {
     }
 }
 
+static int old_cd;
+
 static void gui_end() {
     // Actually a simple call to reset_shaders might be enough here
     // the problem is that calling glsl functions is messy and doing it from the gui wouldn't be nice
@@ -1035,13 +1038,19 @@ static void gui_end() {
     }
     if (!main_menu)
 	sa_unpause_sound();
+    if (old_cd) {
+	cdda.playing = old_cd;
+	old_cd = 0;
+    }
     invalidate_inputs();
     SDL_ShowCursor(0);
 }
 
 static void gui_start() {
-    if (!main_menu)
+    if (!main_menu) {
+	old_cd = cdda.playing;
 	sa_pause_sound();
+    }
     SDL_ShowCursor(1);
 }
 #endif
