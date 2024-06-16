@@ -234,7 +234,7 @@ void init_assoc(int kind) {
 			qsound_base = ReadWord(&Z80ROM[adr])+6;
 			qsound_playing = 0;
 			qsound_last_song = ReadWord68k(&Z80ROM[qsound_base-6]);
-			print_debug("found alt method qsound_base %x last song %x\n",qsound_base,qsound_last_song);
+			print_debug("assoc: found alt method qsound_base %x last song %x\n",qsound_base,qsound_last_song);
 			return;
 		    }
 		}
