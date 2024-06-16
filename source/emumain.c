@@ -72,6 +72,7 @@
 /* Including emumain.h makes yet another collision in windows, this time for the type
    returned by a function. 2nd sigh */
 
+static int old_cd;
 extern int GameMouse;
 #ifndef SDL
 extern void init_gui_inputs();
@@ -111,10 +112,15 @@ void key_pause_game(void)
 	 * the screen is updated as often as possible while in pause mode,
 	 * which is not a good idea... */
 	if (raine_cfg.req_pause_game) {
+	    old_cd = cdda.playing;
 	    sa_pause_sound();
 	    pause_frame = cpu_frame_count;
 	} else {
 	    sa_unpause_sound();
+	    if (old_cd) {
+		cdda.playing = old_cd;
+		old_cd = 0;
+	    }
 	    cpu_frame_count = pause_frame; // for the demos eventually
 	    reset_ingame_timer();
 	}
@@ -225,8 +231,14 @@ UINT32 run_game_emulation(void)
 	   // Call saInitSoundCard, and thus init_sound_emulators even if sound is disabled
 	   // this fixes the rare game drivers which can't work without sound, like acrobat mission
 	       saInitSoundCard( RaineSoundCard, audio_sample_rate );
-	       if (is_neocd())
+	       if (is_neocd()) {
 		   sa_unpause_sound();
+		   if (old_cd) {
+		       cdda.playing = old_cd;
+		       old_cd = 0;
+		   }
+	       }
+
 	       // restore_cdda();
 	   // }
        }
@@ -468,8 +480,10 @@ UINT32 run_game_emulation(void)
 #endif
 
    if (!raine_cfg.req_pause_game) {
-       if (is_neocd())
+       if (is_neocd()) {
+	   old_cd = cdda.playing;
 	   sa_pause_sound();
+       }
        else
 	   saDestroySound(0);
    }
