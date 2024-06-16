@@ -3,7 +3,7 @@ script "Console Mode Plus" \
 In practice mode, pause the game then press start to change character."
 run:
 #Menu Screen Script#
-if (dpeek($100002)==$3FEA)
+if (dpeek($100002)==$3FEA)and(peek($101203)==$48)
   poke $153B $96 #Restore original control#
   poke $154B $9C
   if (peek($100041)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))

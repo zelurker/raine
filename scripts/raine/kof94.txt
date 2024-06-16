@@ -54,18 +54,21 @@ if (dpeek($108586)==$B0BA)
     poke $320000 $60
    endif
    if (dpeek($1000A0)==$00FF)
+    poke $541C4 $6C
     poke $541C6 "TEAM PLAY"
     poke $541D3 "SINGLE PLAY"
     poke $3B1AB $02 #Cursor back#
     dpoke $108586 $B06E
    endif
    if (dpeek($1000A0)==$01FF)
+    poke $541C4 $6C
     poke $541C6 " TEAM VS "
     poke $541D3 " SINGLE VS "
     poke $3B1AB $02 #Cursor back#
     dpoke $108586 $B06E
    endif
    if (dpeek($1000A0)==$02FF)
+    poke $541C4 $8C
     poke $541C6 "PRACTICE "
     poke $541D3 "           "
     poke $3B1AB $FF #Cursor hidden#
@@ -74,6 +77,7 @@ if (dpeek($108586)==$B0BA)
 endif
 if (dpeek($108586)==$B15E)and((peek($1000A0)==$01)or(peek($1000A0)==$02)) #Skip level select & Restore rom#
    poke $3B1AB $02
+   poke $541C4 $6C
    poke $541C6 "TEAM PLAY"
    poke $541D3 "SINGLE PLAY"
    if (peek($1000A0)>=$01) #Activate players#
@@ -259,12 +263,12 @@ if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
       dpoke $108586 $6E66
    endif
    #Stage/Music select script#
-   if (dpeek($108586)==$7EDC)
+   if (dpeek($108586)==$7F38)
       if (peek($1000C0)==$00)
-         poke $1000E0 peek($10E8A6) #Get value of palyer 2 1st char.#
+         poke $1000E0 peek($108432) #Get value of palyer 2 1st char.#
       endif
       if (peek($1000C0)==$01)
-         poke $1000E0 peek($10E806) #Get value of palyer 2 1st char.#
+         poke $1000E0 peek($108232) #Get value of palyer 1 1st char.#
       endif
       if (peek($1000E0)>=$00)and(peek($1000E0)<=$02)
          poke $1087DE $00 #Brazil#
@@ -300,6 +304,15 @@ if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
       endif
    endif
 endif
+
+script "Enable Rugal"
+run:
+   if (dpeek($108586)==$7046)
+      poke $100000 $08
+   endif
+   if (dpeek($108586)==$7EDC)
+      poke $100000 $00
+   endif
 
 script "Infinite Time"
 on:

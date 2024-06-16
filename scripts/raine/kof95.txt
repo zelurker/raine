@@ -1,21 +1,104 @@
-script "Infinite Time"  
+script "Console Mode Plus" \
+"comm:On the mode select screen, press left or right to select practice mode.
+In practice mode, pause the game then press start to change character."
+run:
+#Menu Screen Script#
+if (dpeek($108502)==$DE5A) #Restore control to prevent problem when reset#
+   poke $3948F $30
+   poke $39497 $34
+endif
+if (dpeek($108502)==$DF14)
+   if (peek($1000A1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+     poke $1000A1 $00
+   endif
+   if (dpeek($1000A0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08)or(peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $1000A0 $01FF
+    poke $320000 $60
+    lpoke $3DF46 $103C00FF #Hide arrow#
+    poke $5BA86 $4A
+    poke $5BA88  " PRACTICE  "
+    poke $5BA95 $1F
+    poke $5BAA3 $1F
+    poke $5BAB1 $1F
+    poke $5BABE $1F
+    dpoke $108502 $DEC6
+   endif
+   if (dpeek($1000A0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08)or(peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $1000A0 $00FF
+    poke $320000 $60
+    lpoke $3DF46 $102C00D0 #Arrow restore#
+    poke $5BA86 $2A
+    poke $5BA88  "SINGLE PLAY"
+    poke $5BA95 $2D
+    poke $5BAA3 $30
+    poke $5BAB1 $33
+    poke $5BABE $56
+    dpoke $108502 $DEC6
+   endif
+endif
+if (dpeek($108502)==$EF12) #At how to play select screen#
+   if (peek($1000A0)==$01) #Go to Single VS#
+      poke $10A7EF $03
+      poke $10A83F $02
+   endif
+   lpoke $3DF46 $102C00D0 #Restore rom image#
+   poke $5BA88  "SINGLE PLAY"
+   poke $5BA95 $2D
+   poke $5BAA3 $30
+   poke $5BAB1 $33
+   poke $5BABE $56
+endif
+#Pracice Mode script#
+if (peek($1000A0)==$01)
+   if (dpeek($108502)==$E830)
+      if (peek($10A78F)==$07)and(peek($10FD96)==$00) #1P control 2P#
+         poke $39497 $30
+        poke $10E799 $00 #Choose stage of P2#
+      endif
+      if (peek($10A78F)==$0B)and(peek($10FD9B)==$00) #2P control 1P#
+        poke $3948F $34
+        poke $10E799 $01 #Choose stage of P1#
+      endif
+      if (peek($10A78F)==$0F)
+        poke $3948F $30 #Restore control#
+        poke $39497 $34
+      endif
+   endif
+   if (dpeek($108502)==$9C04)
+     poke $10A836 $60 #Timer#
+     if (peek($10E799)==$00) #1P red blood#
+       poke $108221 $3F
+       poke $108421 $CF
+     endif
+     if (peek($10E799)==$01) #2P red blood#
+       poke $108221 $CF
+       poke $108421 $3F
+     endif
+    if (peek($10A782)==$82)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to Char. Screen#
+      poke $10A782 $1A
+      dpoke $108502 $E3F6
+    endif
+   endif
+endif
+
+script "Infinite Time"
 on:
     temp0=peek($10A836)
 run:
     if (frame%300==$0)and(peek($10A836)!=temp0)
       poke $10A836 $60
     endif
-script "Finish Round Now!"  
+script "Finish Round Now!"
 on:
     poke $10A836 $00
-script "Boss code + Timer stop"  
+script "Boss code + Timer stop"
 run:
     poke $100000 $04
 script "Enable hidden characters" \
- "comm:Adds the extra two hidden characters to the selection screen"  
+ "comm:Adds the extra two hidden characters to the selection screen"
 run:
     poke $10E79A $01
-script "Always Ready Special Move"  
+script "Always Ready Special Move"
 on:
     temp0=peek($00492E)
     temp1=peek($00B5A8)
@@ -31,7 +114,7 @@ off:
     poke $00B5A8 temp1
     poke $00B5D4 temp2
     poke $00B618 temp3
-script "Invincibility [Master Code]"  
+script "Invincibility [Master Code]"
 on:
     temp0=lpeek($0023BE)
     temp1=lpeek($0023C2)
@@ -200,32 +283,32 @@ off:
     lpoke $0801A4 temp52
     lpoke $0801A8 temp53
     lpoke $0801AC temp54
-script "Hit Anywhere (Both Players)"  
+script "Hit Anywhere (Both Players)"
 on:
     temp0=dpeek($002430)
 run:
     dpoke $002430 $4E71
 off:
     dpoke $002430 temp0
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $108221 $CF
-script "P1 Drain all Energy Now!"  
+script "P1 Drain all Energy Now!"
 on:
     poke $108221 $00
 script "P1 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($1082F0)
 run:
     poke $1082F0 $01
 off:
     poke $1082F0 temp0
-script "P1 Always have Max POW"  
+script "P1 Always have Max POW"
 run:
     poke $108219 $7F
-script "P1 Get Max POW Now!"  
+script "P1 Get Max POW Now!"
 on:
     poke $108219 $7F
 script "P1 Select 1st Character" \
@@ -255,7 +338,7 @@ script "P1 Select 1st Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A843 param
 script "P1 Select 2nd Character" \
@@ -285,7 +368,7 @@ script "P1 Select 2nd Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A844 param
 script "P1 Select 3rd Character" \
@@ -315,28 +398,28 @@ script "P1 Select 3rd Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A845 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $108421 $CF
-script "P2 Drain all Energy Now!"  
+script "P2 Drain all Energy Now!"
 on:
     poke $108421 $00
 script "P2 Invincibility" \
- "comm:Works after you've enabled 'Invincibility [Master Code]'"  
+ "comm:Works after you've enabled 'Invincibility [Master Code]'"
 on:
     temp0=peek($1084F0)
 run:
     poke $1084F0 $01
 off:
     poke $1084F0 temp0
-script "P2 Always have Max POW"  
+script "P2 Always have Max POW"
 run:
     poke $108419 $7F
-script "P2 Get Max POW Now!"  
+script "P2 Get Max POW Now!"
 on:
     poke $108419 $7F
 script "P2 Select 1st Character" \
@@ -366,7 +449,7 @@ script "P2 Select 1st Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A853 param
 script "P2 Select 2nd Character" \
@@ -396,7 +479,7 @@ script "P2 Select 2nd Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A854 param
 script "P2 Select 3rd Character" \
@@ -426,17 +509,17 @@ script "P2 Select 3rd Character" \
  "0x16/Mai"\
  "0x17/King"\
  "0x18/Saisyu Kusanagi"\
- "0x19/Omega Rugal" 
+ "0x19/Omega Rugal"
 run:
     poke $10A855 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     poke $FE1A $00
     cpu main
 script "Hide Background" \
- "comm:Activate before match start; makes match uncompletable"  
+ "comm:Activate before match start; makes match uncompletable"
 on:
     temp0=peek($10A785)
     temp1=lpeek($0009C6)
@@ -458,11 +541,11 @@ off:
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -497,6 +580,6 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99
