@@ -46,7 +46,7 @@ static void DAC_update(int num,INT16 *buffer,int length)
 	  out = my_buff[my_output_len-1];
 	  while (buffer < buffend) *(buffer++) = out; // normally useless now
 	  if (my_output_len-1 > max) {
-	      memcpy(&my_buff[0],&my_buff[max],(my_output_len-max)*sizeof(INT16));
+	      memmove(&my_buff[0],&my_buff[max],(my_output_len-max)*sizeof(INT16));
 	      my_output_len -= max;
 	  } else {
 	      my_output_len = 0;
