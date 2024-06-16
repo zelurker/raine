@@ -254,7 +254,7 @@ void qsound_set_command(int data, int value, int factor)
 	{
 		case 0: /* Bank */
 			ch=(ch+1)&0x0f;	/* strange ... */
-			qsound_channel[ch].bank=(value&0x7f)<<16;
+			qsound_channel[ch].bank=(value&0xff)<<16; // sfz3mix requires ff here instead of the default 7f
 #ifdef MAME_DEBUG
 			if (!value & 0x8000)
 			{
