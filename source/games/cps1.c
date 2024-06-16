@@ -2520,7 +2520,6 @@ static uint32 cps2_read32(uint32 adr) {
 void load_cps2() {
   // UINT16 *rom = load_region[REGION_ROM1];
 /*   int size = get_region_size(REGION_USER1)/2,i,size_code; */
-    init_assoc(4);
     default_frame = CPU_FRAME_MHz(16,60);
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
@@ -2550,6 +2549,7 @@ void load_cps2() {
       set_region_size(REGION_CPU2,get_region_size(REGION_CPU2) - 0x8000);
       sfz3mix = 1;
   }
+  init_assoc(4);
 
   cps2crpt();
   if (is_current_game("gigaman2")) {
