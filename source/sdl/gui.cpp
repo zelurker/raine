@@ -877,6 +877,8 @@ int do_preload_ips(int sel) {
     return 0;
 }
 
+#if 0
+// This code is probably useless now, .dat files are way more convenient + the ips files applied here can only be applied to 68k code
 static int do_ips(int sel) {
     char res[1024];
     char *exts[] = { ".ips", NULL };
@@ -890,6 +892,7 @@ static int do_ips(int sel) {
     load_ips(res,ROM,get_region_size(REGION_CPU1),0,"");
     return 0;
 }
+#endif
 
 extern int do_sound_options(int sel);
 static TMain_menu *main_menu;
@@ -900,7 +903,7 @@ static menu_item_t main_items[] =
 { _("Game options"), &do_game_options },
 { _("Game commands list"), &show_moves },
 { _("Game cheats"), &do_cheats, },
-{ _("Apply IPS to ROM code"), &do_ips, },
+{ _("Preload IPS *.dat files"), &do_preload_ips, },
 { _("Region"), &set_region, },
 { _("Dipswitches"), &do_dlg_dsw, },
 { _("Change/Load game"), &do_game_sel },
@@ -924,8 +927,6 @@ int TMain_menu::can_be_displayed(int n) {
     switch(n) {
     case 0: // Play Game
     case 1: // game options
-    case 4: // ips
-	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
     case 5: // Region
