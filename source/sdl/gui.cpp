@@ -927,6 +927,7 @@ int TMain_menu::can_be_displayed(int n) {
     switch(n) {
     case 0: // Play Game
     case 1: // game options
+	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
     case 5: // Region
