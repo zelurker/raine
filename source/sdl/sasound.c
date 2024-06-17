@@ -72,7 +72,6 @@ static int fadeout,fade_nb,fade_frame;
 
 static char driver_name[40];
 #ifdef HAS_NEO
-static char track_to_read[FILENAME_MAX];
 static int fade_vol;
 #endif
 
@@ -536,11 +535,71 @@ static void memcpy_with_volume( UINT8 *dst, UINT8 *src, int len, int format,int 
   }
 }
 
+static void close_sample() {
+#if HAS_NEO
+  if (sample) {
+    Sound_FreeSample(sample);
+    print_debug("free sample (close_sample)\n");
+  }
+  sample = NULL;
+#endif
+  if (cvt.needed) {
+      if (cvt.buf) free(cvt.buf);
+      memset(&cvt,0,sizeof(cvt));
+      buf_len = 0;
+  }
+
+  // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
+  global_state.decoded_bytes = 0;
+  global_state.decoded_ptr = NULL;
+  if (fbin) {
+    fclose(fbin);
+    fbin = NULL;
+  }
+}
+
 void load_sample(char *filename) {
-    cdda.playing = CDDA_LOAD;
+    sa_pause_sound();
+
+    // cdda.playing = CDDA_LOAD;
+    // load a sample
+    cdda.playing = CDDA_PLAY;
+    fadeout = 0;
+    close_sample();
+    Sound_AudioInfo info;
+    info.format = gotspec.format;
+    info.channels = gotspec.channels;
+    info.rate = gotspec.freq;
+    char *ext = strrchr(filename,'.');
+    if (!ext || (strcasecmp(ext+1,"wav") &&
+		strcasecmp(ext+1,"ogg") &&
+		strcasecmp(ext+1,"flac") &&
+		strcasecmp(ext+1,"mp3"))) {
+	print_debug("unknown extension for track to read, switching to raw...\n");
+	SDL_RWops *rw = SDL_RWFromFile(filename,"rb");
+	sample = Sound_NewSample(rw,"raw",&info,16384);
+	if (audio_sample_rate != 44100) {
+	    if (SDL_BuildAudioCVT(&cvt, gotspec.format, gotspec.channels, 44100,
+			gotspec.format, gotspec.channels, gotspec.freq) == -1) {
+		fatal_error("SDL_BuildAudioCVT: %s",SDL_GetError());
+	    }
+	}
+    } else
+	sample = Sound_NewSampleFromFile(filename,
+		&info,
+		16384);
+    if (!sample) {
+	print_ingame(183, gettext("Audio track unreadable"));
+	char cwd[512];
+	getcwd(cwd,512);
+	print_debug("Audio track unreadable : %s cwd %s\n",filename,cwd);
+    } else {
+	print_debug("load_sample %s ok\n",filename);
+    }
+    done_flag = 0;
     cdda.pos = 0;
-    strcpy(track_to_read,filename);
-    print_debug("load_sample %s\n",filename);
+    // strcpy(track_to_read,filename);
+    sa_unpause_sound();
 }
 #endif
 
@@ -569,29 +628,6 @@ void start_music_fadeout(double time) {
     fadeout = 1;
     fade_nb = audio_sample_rate/gotspec.samples*time;
     fade_frame = 0;
-}
-
-static void close_sample() {
-#if HAS_NEO
-  if (sample) {
-    Sound_FreeSample(sample);
-    print_debug("free sample (close_sample)\n");
-  }
-  sample = NULL;
-#endif
-  if (cvt.needed) {
-      if (cvt.buf) free(cvt.buf);
-      memset(&cvt,0,sizeof(cvt));
-      buf_len = 0;
-  }
-
-  // cdda.pos = 0; (cleared by load_sample, set by set_sample_pos
-  global_state.decoded_bytes = 0;
-  global_state.decoded_ptr = NULL;
-  if (fbin) {
-    fclose(fbin);
-    fbin = NULL;
-  }
 }
 
 void saDestroySound( int remove_all_resources )
@@ -750,56 +786,13 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 	fade_vol = music_volume-music_volume*fade_frame++/fade_nb;
 	if (fade_vol <= 0) {
 	    fadeout = 0;
-	    if (cdda.playing != CDDA_LOAD) cdda.playing = CDDA_STOP;
-	}
-    }
-    if (cdda.playing == CDDA_LOAD) {
-	// load a sample
-	cdda.playing = CDDA_PLAY;
-	fadeout = 0;
-	close_sample();
-	Sound_AudioInfo info;
-	info.format = gotspec.format;
-	info.channels = gotspec.channels;
-	info.rate = gotspec.freq;
-	char *ext = strrchr(track_to_read,'.');
-	if (!ext || (strcasecmp(ext+1,"wav") &&
-		    strcasecmp(ext+1,"ogg") &&
-		    strcasecmp(ext+1,"flac") &&
-		    strcasecmp(ext+1,"mp3"))) {
-	    print_debug("unknown extension for track to read, switching to raw...\n");
-	    SDL_RWops *rw = SDL_RWFromFile(track_to_read,"rb");
-	    sample = Sound_NewSample(rw,"raw",&info,16384);
-	    if (audio_sample_rate != 44100) {
-		if (SDL_BuildAudioCVT(&cvt, gotspec.format, gotspec.channels, 44100,
-			gotspec.format, gotspec.channels, gotspec.freq) == -1) {
-		    fatal_error("SDL_BuildAudioCVT: %s",SDL_GetError());
-		}
+	    if (cdda.playing != CDDA_LOAD) {
+		cdda.playing = CDDA_STOP;
+		sa_pause_sound();
+		close_sample();
+		sa_unpause_sound();
 	    }
-	} else
-	    sample = Sound_NewSampleFromFile(track_to_read,
-		    &info,
-		    16384);
-	if (!sample) {
-	    print_ingame(183, gettext("Audio track unreadable"));
-	    char cwd[512];
-	    getcwd(cwd,512);
-	    print_debug("Audio track unreadable : %s cwd %s\n",track_to_read,cwd);
-	} else {
-	    print_debug("load_sample %s ok\n",track_to_read);
 	}
-	done_flag = 0;
-	if (cdda.pos && sample) {
-	    Sound_Seek(sample,cdda.pos*10/(441*4));
-	} else
-	    skip_silence = cdda.skip_silence;
-    } else if (cdda.playing == CDDA_STOP && sample) {
-	// Not absolutely sure it's a good idea, some games might want
-	// to restart the track later, but we'll see...
-	// actually close_sample from the callback can be dangerous, there can be
-	// a race condition when leaving the program, another call coming from saDestroySound
-	// and both racing, so I comment this out for now, shouldn't harm anything anyway...
-	// close_sample();
     }
 
     if (sample && cdda.playing == CDDA_PLAY && !done_flag && !mute_music) {
