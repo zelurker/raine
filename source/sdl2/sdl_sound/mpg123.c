@@ -43,7 +43,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int MPG123_init(void);
+static SDL_bool MPG123_init(void);
 static void MPG123_quit(void);
 static int MPG123_open(Sound_Sample *sample, const char *ext);
 static void MPG123_close(Sound_Sample *sample);
@@ -74,7 +74,7 @@ const Sound_DecoderFunctions __Sound_DecoderFunctions_MPG123 =
 
 static int mpg123_inited = 0;
 
-static int MPG123_init(void)
+static SDL_bool MPG123_init(void)
 {
     // SDL_assert(mpg123_inited == 0);
     mpg123_inited = (mpg123_init() == MPG123_OK);
