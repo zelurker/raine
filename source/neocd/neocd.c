@@ -5094,6 +5094,11 @@ void load_neocd() {
 	    AddWriteWord(0x2fffc0, 0x2fffc1, garou_bankswitch_w, NULL);
 	else if (is_current_game("garouh"))
 	    AddWriteWord(0x2fffc0, 0x2fffc1, garouh_bankswitch_w, NULL);
+	else if (is_current_game("kof94")) {
+	    if (ReadWord(&ROM[0x1bd8ea]) == 0x4eb9) { // jsr, search for the mark of the kof94lt patch...
+		WriteWord(&ROM[0x1bd8ea],0x4e75); // replace by rts, this call enables a column of sprites which should stay disabled
+	    }
+	}
     }
     // I should probably put all these variables in a struct to be cleaner...
     AddSaveData(SAVE_USER_4, (UINT8*)&irq, sizeof(irq));
