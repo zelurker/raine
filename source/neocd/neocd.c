@@ -5095,11 +5095,11 @@ void load_neocd() {
 	else if (is_current_game("garouh"))
 	    AddWriteWord(0x2fffc0, 0x2fffc1, garouh_bankswitch_w, NULL);
 	else if (is_current_game("kof94")) {
-	    if (ReadWord(&ROM[0x1bd8ea]) == 0x4eb9) { // jsr, search for the mark of the kof94lt patch... (a94 version)
-		WriteWord(&ROM[0x1bd8ea],0x4e75); // replace by rts, this call enables a column of sprites which should stay disabled
+	    if (ReadWord(&ROM[0x1be018]) == 0x103c) { // jsr, search for the mark of the kof94lt patch... (a94 version)
+		WriteWord(&ROM[0x1be018],0x303c); // replace by rts, this call enables a column of sprites which should stay disabled
 		printf("kof94lt patched a94 version\n");
-	    } else if (ReadWord(&ROM[0x1bd8ca]) == 0x4eb9) { // a95 version
-		WriteWord(&ROM[0x1bd8ca],0x4e75); // replace by rts, this call enables a column of sprites which should stay disabled
+	    } else if (ReadWord(&ROM[0x1be018-0x20]) == 0x103c) { // a95 version
+		WriteWord(&ROM[0x1be018-0x20],0x303c); // replace by rts, this call enables a column of sprites which should stay disabled
 		printf("kof94lt patched a95 version\n");
 	    }
 	}
