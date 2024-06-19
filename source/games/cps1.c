@@ -3291,6 +3291,10 @@ static void render_scroll1(int mask)
    UINT32 zzz,zzzz,zz,x16,y16;
    UINT16 scroll1x = cps1_port[CPS1_SCROLL1_SCROLLX]+56+scroll1xoff,
 	  scroll1y = cps1_port[CPS1_SCROLL1_SCROLLY], colour;
+   if (sfz3mix) {
+       scroll1x -= 16;
+       scroll1y -= 4;
+   }
    UINT8 *map,*dest;
 
    MAKE_SCROLL_SCROLL1_4_8_YX(scroll1x,scroll1y);
@@ -3377,7 +3381,10 @@ static void render_cps2_sprites_pbitmap(int *primasks)
   UINT8 *base=cps2_buffered_obj;
   int xoffs = 64-cps2_port(CPS2_OBJ_XOFFS);
   int yoffs = 16-cps2_port(CPS2_OBJ_YOFFS);
-  if (sfz3mix) xoffs += 16;
+  if (sfz3mix) {
+      xoffs += 16;
+      yoffs += 4;
+  }
   UINT8 *map;
   cps2_find_last_sprite();
   // print_ingame(1,gettext("using pbitmap"));
@@ -3799,7 +3806,10 @@ static void cps1_render_scroll2(int mask)
 {
   scroll2x=cps1_port[CPS1_SCROLL2_SCROLLX] + scroll2xoff;
   scroll2y=cps1_port[CPS1_SCROLL2_SCROLLY];
-  if (sfz3mix) scroll2x -= 16;
+  if (sfz3mix) {
+      scroll2x -= 16;
+      scroll2y -= 4;
+  }
   if (scroll2x != oldx2 || scroll2y != oldy2) {
     oldx2 = scroll2x;
     oldy2 = scroll2y;
@@ -3829,7 +3839,10 @@ static void render_scroll3(int mask)
   UINT32 zzz,zzzz,zz,x16,y16;
   UINT16 scroll3x=cps1_port[CPS1_SCROLL3_SCROLLX]+scroll3xoff+64;
   UINT16 scroll3y=cps1_port[CPS1_SCROLL3_SCROLLY], colour;
-  if (sfz3mix) scroll3x -= 16;
+  if (sfz3mix) {
+      scroll3x -= 16;
+      scroll3y -= 4;
+  }
   UINT8 *map,*dest;
   int n;
 
