@@ -470,6 +470,15 @@ WatchJoystick(SDL_Joystick * joystick)
 
         while (SDL_PollEvent(&event) > 0) {
             switch (event.type) {
+	    case SDL_WINDOWEVENT:
+		if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+		    SDL_free(s_arrAxisState);
+		    s_arrAxisState = NULL;
+
+		    SDL_DestroyRenderer(screen);
+		    return "";
+		}
+		break;
             case SDL_JOYDEVICEREMOVED:
                 if (event.jaxis.which == nJoystickID) {
                     done = SDL_TRUE;
