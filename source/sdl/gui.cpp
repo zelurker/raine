@@ -1004,13 +1004,13 @@ static void my_event(SDL_Event *event) {
 	break;
     case SDL_WINDOWEVENT:
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	    if (!display_cfg.maximized && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
+	    if (!display_cfg.maximized && !display_cfg.fullscreen && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
 		display_cfg.prev_sx = display_cfg.screen_x;
 		display_cfg.prev_sy = display_cfg.screen_y;
 		resize(1,event->window.data1,event->window.data2);
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	    if (!display_cfg.maximized) {
+	    if (!display_cfg.maximized && !display_cfg.fullscreen) {
 		display_cfg.prev_posx = display_cfg.posx;
 		display_cfg.prev_posy = display_cfg.posy;
 		display_cfg.posx = event->window.data1;

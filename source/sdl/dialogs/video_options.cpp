@@ -52,13 +52,6 @@ static int my_toggle_fullscreen(int sel) {
 static int prev_fullscreen;
 
 static int my_toggle_fullscreen(int sel) {
-    if (display_cfg.fullscreen == 0) {
-	display_cfg.screen_x = display_cfg.winx;
-	display_cfg.screen_y = display_cfg.winy;
-    } else if (!prev_fullscreen) {
-	display_cfg.winx = display_cfg.screen_x;
-	display_cfg.winy = display_cfg.screen_y;
-    }
     prev_fullscreen = display_cfg.fullscreen;
     toggle_fullscreen();
     return 0;
@@ -80,8 +73,6 @@ static int my_toggle_border(int sel) {
 	char env[80];
 	sprintf(env,"SDL_VIDEO_WINDOW_POS=%s",oldenv);
 	putenv(env);
-	display_cfg.screen_x = display_cfg.winx;
-	display_cfg.screen_y = display_cfg.winy;
     }
 
     ScreenChange();

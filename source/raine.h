@@ -319,7 +319,6 @@ typedef struct DISPLAY_CFG
    int posx,posy; // window position for sdl2
    // Now video_mode : 0 = opengl, 1 = yuv overlays, 2 = normal blits
    // video_driver is for windows only, which windows driver to use.
-   UINT32 winx,winy; // size of window (used when toggling fullscreen)
 #endif
    INT32 screen_x; 		// pc screen display width
    INT32 screen_y; 		// pc screen display height

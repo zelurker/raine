@@ -456,8 +456,8 @@ void toggle_fullscreen() {
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
-      SDL_SetWindowPosition(win,display_cfg.posx ,display_cfg.posy );
-      SDL_SetWindowSize(win,display_cfg.winx,display_cfg.winy);
+      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // posx & posy are not updated when switching to fullscreen
   }
   ScreenChange();
 #endif
@@ -466,12 +466,8 @@ void toggle_fullscreen() {
 static void toggle_fullscreen_keyboard() {
   if (display_cfg.fullscreen) {
     display_cfg.fullscreen = 0;
-    display_cfg.screen_x = display_cfg.winx;
-    display_cfg.screen_y = display_cfg.winy;
   } else {
     display_cfg.fullscreen = 1;
-    display_cfg.winx = display_cfg.screen_x;
-    display_cfg.winy = display_cfg.screen_y;
   }
   toggle_fullscreen();
 }

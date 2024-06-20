@@ -49,8 +49,6 @@ void display_read_config() {
 
    display_cfg.screen_x = raine_get_config_int( "Display", "screen_x", display_cfg.screen_x);
    display_cfg.screen_y = raine_get_config_int( "Display", "screen_y", display_cfg.screen_y);
-   display_cfg.winx = raine_get_config_int( "Display", "winx", 640);
-   display_cfg.winy = raine_get_config_int( "Display", "winy", 480);
    video_fps = raine_get_config_int( "Display", "video_fps", 15); // when recording video
    char *s = raine_get_config_string("Display", "max_fps", "60");
    if (*s)
@@ -98,8 +96,6 @@ void display_write_config() {
        SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
    raine_set_config_int("Display", "posx", display_cfg.posx);
    raine_set_config_int("Display", "posy", display_cfg.posy);
-   raine_set_config_int("Display", "winx", display_cfg.winx);
-   raine_set_config_int("Display", "winy", display_cfg.winy);
    raine_set_config_int("Display", "video_fps", video_fps);
    char s[20];
    snprintf(s,20,"%g",max_fps);
