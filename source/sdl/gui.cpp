@@ -1004,24 +1004,37 @@ static void my_event(SDL_Event *event) {
 	break;
     case SDL_WINDOWEVENT:
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	    resize(1,event->window.data1,event->window.data2);
-	}
-#ifndef RAINE_WIN32
-	else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	    if (event->common.timestamp < 2000 && display_cfg.posy) { // probably some fancy window manager event
-		// Specific to some window managers which seem to correct window placement after adding decorations in linux
-		// well we don't want this correction
-		// Notice the timestamp is sadly some moving target, I got it at more than 1000 with 2 gamepads and 1 joystick adding events...
-		// which makes this thing rather unprecise...
-		if (display_cfg.fullscreen) {
-		    // See comments about broken toggle fullscreen in control.c
-		    SDL_SetWindowPosition(win,0,0);
-		    return;
-		}
-		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+	    if (!display_cfg.maximized && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
+		display_cfg.prev_sx = display_cfg.screen_x;
+		display_cfg.prev_sy = display_cfg.screen_y;
+		resize(1,event->window.data1,event->window.data2);
+	    }
+	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	    if (!display_cfg.maximized) {
+		display_cfg.prev_posx = display_cfg.posx;
+		display_cfg.prev_posy = display_cfg.posy;
+		display_cfg.posx = event->window.data1;
+		display_cfg.posy = event->window.data2;
+	    }
+	} else if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
+	    display_cfg.maximized = 1;
+	} else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+	    // the focus events are not directly useful for the gui, but it's still useful on window creation, I get a window restored event even if window is created with maximized flag
+	    // luckily this is sent before the window gains focus, so I ignore this of event if it has lost focus
+	    display_cfg.lost_focus = 0;
+	else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+	    display_cfg.lost_focus = 1;
+	else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
+	    if (!display_cfg.lost_focus) {
+		SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
+		SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+		display_cfg.posx = display_cfg.prev_posx;
+		display_cfg.posy = display_cfg.prev_posy;
+		display_cfg.screen_x = display_cfg.prev_sx;
+		display_cfg.screen_y = display_cfg.prev_sy;
+		display_cfg.maximized = 0;
 	    }
 	}
-#endif
     }
 }
 

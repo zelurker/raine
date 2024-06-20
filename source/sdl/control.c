@@ -87,7 +87,6 @@ tjoy joy[MAX_JOY];
 
 char analog_name[80]; // analog device saved by name because its index
 // can change if it's pluged differently
-static int lost_focus;
 
 int analog_num,analog_stick,analog_minx,analog_maxx,analog_miny,
   analog_maxy,analog_normx,analog_normy,
@@ -473,9 +472,6 @@ static void toggle_fullscreen_keyboard() {
     display_cfg.fullscreen = 1;
     display_cfg.winx = display_cfg.screen_x;
     display_cfg.winy = display_cfg.screen_y;
-#if SDL==2
-    SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
-#endif
   }
   toggle_fullscreen();
 }
@@ -1856,11 +1852,33 @@ void control_handle_event(SDL_Event *event) {
 #else
     case SDL_WINDOWEVENT:
       if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	  display_cfg.prev_sx = display_cfg.screen_x;
+	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
+      } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	  if (!display_cfg.maximized) {
+	      display_cfg.prev_posx = display_cfg.posx;
+	      display_cfg.prev_posy = display_cfg.posy;
+	      display_cfg.posx = event->window.data1;
+	      display_cfg.posy = event->window.data2;
+	  }
       } else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-	  lost_focus = 0;
+	  display_cfg.lost_focus = 0;
       else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-	  lost_focus = 1;
+	  display_cfg.lost_focus = 1;
+      if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
+	  display_cfg.maximized = 1;
+      } else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
+	  if (!display_cfg.lost_focus) {
+	      SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
+	      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+	      display_cfg.posx = display_cfg.prev_posx;
+	      display_cfg.posy = display_cfg.prev_posy;
+	      display_cfg.screen_x = display_cfg.prev_sx;
+	      display_cfg.screen_y = display_cfg.prev_sy;
+	      display_cfg.maximized = 0;
+	  }
+      }
 #endif
       break;
 #ifdef USE_BEZELS
@@ -1961,7 +1979,7 @@ void control_handle_event(SDL_Event *event) {
       exit(0);
 #if SDL==1
     case SDL_ACTIVEEVENT:
-      lost_focus = 0;
+      display_cfg.lost_focus = 0;
       break;
 #endif
   }
@@ -2007,7 +2025,7 @@ void update_inputs(void)
   while (SDL_PollEvent(&event)) {
     control_handle_event(&event);
   }
-  if (! raine_cfg.req_pause_game && pause_on_focus && lost_focus) {
+  if (! raine_cfg.req_pause_game && pause_on_focus && display_cfg.lost_focus) {
       // lost input -> go to pause
       raine_cfg.req_pause_game = 1;
   }

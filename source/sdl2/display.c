@@ -60,6 +60,12 @@ void display_read_config() {
    display_cfg.user_flip = raine_get_config_int( "Display", "flip", 0);
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
+   display_cfg.lost_focus = 1;
+   display_cfg.maximized = raine_get_config_int("display", "maximized", 0);
+   display_cfg.prev_sx = raine_get_config_int("display","prev_sx",0);
+   display_cfg.prev_sy = raine_get_config_int("display","prev_sy",0);
+   display_cfg.prev_posx = raine_get_config_int("display","prev_posx",0);
+   display_cfg.prev_posy = raine_get_config_int("display","prev_posy",0);
    use_bld = raine_get_config_int("display","use_bld",1);
    ogl.dbuf = raine_get_config_int("display","ogl_dbuf",2);
    integer_scaling = raine_get_config_int("display","integer_scaling",0);
@@ -110,6 +116,11 @@ void display_write_config() {
    raine_set_config_int("display", "ogl_filter", ogl.filter);
    raine_set_config_string("display", "ogl_shader", ogl.shader);
    raine_set_config_int("display", "fullscreen", display_cfg.fullscreen);
+   raine_set_config_int("display", "prev_sx", display_cfg.prev_sx);
+   raine_set_config_int("display", "prev_sy", display_cfg.prev_sy);
+   raine_set_config_int("display", "prev_posx", display_cfg.prev_posx);
+   raine_set_config_int("display", "prev_posy", display_cfg.prev_posy);
+   raine_set_config_int("display", "maximized", display_cfg.maximized);
    raine_set_config_int("display", "use_bld", use_bld);
 
    raine_set_config_int("Display", "keep_ratio", display_cfg.keep_ratio);

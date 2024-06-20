@@ -316,7 +316,7 @@ typedef struct DISPLAY_CFG
 #if SDL==1
    UINT32 video_driver;
 #endif
-   int posx,posy; // window position for sdl2, not updated constantly
+   int posx,posy; // window position for sdl2
    // Now video_mode : 0 = opengl, 1 = yuv overlays, 2 = normal blits
    // video_driver is for windows only, which windows driver to use.
    UINT32 winx,winy; // size of window (used when toggling fullscreen)
@@ -356,7 +356,9 @@ typedef struct DISPLAY_CFG
    UINT32 bpp;							// colour depth {8,15,16,24,32}
 #ifdef SDL
    UINT32 fix_aspect_ratio; // fix aspect for YUV overlays
-   int fullscreen,double_buffer,noborder,keep_ratio;
+   int fullscreen,double_buffer,noborder,keep_ratio,maximized;
+   int prev_posx, prev_posy, prev_sx,prev_sy;
+   int lost_focus;
 #endif
 } DISPLAY_CFG;
 

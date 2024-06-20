@@ -58,9 +58,6 @@ static int my_toggle_fullscreen(int sel) {
     } else if (!prev_fullscreen) {
 	display_cfg.winx = display_cfg.screen_x;
 	display_cfg.winy = display_cfg.screen_y;
-#if SDL==2
-	SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
-#endif
     }
     prev_fullscreen = display_cfg.fullscreen;
     toggle_fullscreen();

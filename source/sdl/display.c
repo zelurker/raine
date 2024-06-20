@@ -159,6 +159,10 @@ void display_read_config() {
        display_cfg.auto_mode_change = raine_get_config_int( "Display", "auto_mode_change", 0);
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
+   display_cfg.prev_sx = raine_get_config_int("display","prev_sx",0);
+   display_cfg.prev_sy = raine_get_config_int("display","prev_sy",0);
+   display_cfg.prev_posx = raine_get_config_int("display","prev_posx",0);
+   display_cfg.prev_posy = raine_get_config_int("display","prev_posy",0);
    display_cfg.double_buffer = raine_get_config_int("display", "double_buffer", 1);
    use_bld = raine_get_config_int("display","use_bld",1);
    prefered_yuv_format = raine_get_config_int("display","prefered_yuv_format",0);
