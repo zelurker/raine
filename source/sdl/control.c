@@ -1852,11 +1852,13 @@ void control_handle_event(SDL_Event *event) {
 	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
       } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	  if (!display_cfg.maximized) {
+	  if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus) {
 	      display_cfg.prev_posx = display_cfg.posx;
 	      display_cfg.prev_posy = display_cfg.posy;
 	      display_cfg.posx = event->window.data1;
 	      display_cfg.posy = event->window.data2;
+	    } else if (display_cfg.lost_focus)
+		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // compensate
 	  }
       } else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 	  display_cfg.lost_focus = 0;

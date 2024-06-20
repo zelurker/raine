@@ -1010,11 +1010,15 @@ static void my_event(SDL_Event *event) {
 		resize(1,event->window.data1,event->window.data2);
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	    if (!display_cfg.maximized && !display_cfg.fullscreen) {
+	    if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus) {
 		display_cfg.prev_posx = display_cfg.posx;
 		display_cfg.prev_posy = display_cfg.posy;
 		display_cfg.posx = event->window.data1;
 		display_cfg.posy = event->window.data2;
+	    } else if (display_cfg.lost_focus) {
+		// some clever window managers try to change the position of the window at creation
+		// lucily it's sent while the focus has not been gained so we can compensate here
+		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
 	    display_cfg.maximized = 1;
