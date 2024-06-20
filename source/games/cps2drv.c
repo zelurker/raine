@@ -4434,7 +4434,7 @@ CLNEI( vsavd, vsav, "Vampire Savior: The Lord of Vampire (Euro 970519 Phoenix Ed
 CLNEI( mvscud, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT);
 CLNEI( sfa3ud, sfa3, "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3ud);
-CLNEI( sfz3mix, sfa3, "Street Fighter Zero 3 Mix v0.30", BOOTLEG, 2024, GAME_BEAT,
+GMEI( sfz3mix, "Street Fighter Zero 3 Mix v0.30", BOOTLEG, 2024, GAME_BEAT,
 	.video = &video_sfz3mix);
 CLNEI( gigawingd, gigawing, "Giga Wing (USA 990222 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
   .input = input_p2b2);
