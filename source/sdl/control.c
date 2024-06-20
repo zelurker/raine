@@ -2007,11 +2007,9 @@ void update_inputs(void)
   while (SDL_PollEvent(&event)) {
     control_handle_event(&event);
   }
-  if (! raine_cfg.req_pause_game && pause_on_focus ) {
-      lost_focus++;
+  if (! raine_cfg.req_pause_game && pause_on_focus && lost_focus) {
       // lost input -> go to pause
-      if (lost_focus >= 2)
-	  raine_cfg.req_pause_game = 1;
+      raine_cfg.req_pause_game = 1;
   }
   if (recording_demo)
     save_demo_inputs();
