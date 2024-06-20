@@ -26,7 +26,7 @@ void sound_load_cfg() {
    char *driver = raine_get_config_string("Sound","driver",NULL);
 #endif
    if (driver) {
-       char buf[80];
+       static char buf[80]; // better use a static variable with putenv
        snprintf(buf,80,"SDL_AUDIODRIVER=%s",driver);
        putenv(buf);
    }

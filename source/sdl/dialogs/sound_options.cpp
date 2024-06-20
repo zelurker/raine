@@ -53,6 +53,9 @@ static int choose_driver(int sel) {
 		fatal_error("We lost the audio subsystem, bye!");
 	    }
 	}
+	const char *driver2 = SDL_GetCurrentAudioDriver();
+	if (strcmp(driver,driver2))
+	    MessageBox("Error","couldn't change the sound driver !\nTry before starting any game","ok");
     }
     init_sound_driver(1);
     return 0;
@@ -149,7 +152,7 @@ int do_sound_options(int sel) {
 	saDestroySound(0);
     }
 #if SDL == 2
-    init_sound_driver(0);
+    init_sound_driver(1); // 1st call must tell it's changed or we don't get any initialization !
 #endif
 
   menu = new TSoundDlg("", sound_menu);
