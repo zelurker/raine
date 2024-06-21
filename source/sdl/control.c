@@ -1859,7 +1859,6 @@ void control_handle_event(SDL_Event *event) {
 	      display_cfg.posy = event->window.data2;
 	    } else if (display_cfg.lost_focus)
 		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // compensate
-	  }
       } else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 	  display_cfg.lost_focus = 0;
       else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
