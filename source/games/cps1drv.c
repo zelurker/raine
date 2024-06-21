@@ -1846,6 +1846,29 @@ static struct ROM_INFO rom_sf2ce[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
+static struct ROM_INFO rom_sf2mix[] =
+{
+  LOAD_SW16( CPU1, "smxe_23b.8f", 0x000000, 0x80000, 0x478d09c6),
+  LOAD_SW16( CPU1, "smx_22b.7f", 0x080000, 0x80000, 0x23212fb2),
+  LOAD_SW16( CPU1, "smx_21a.6f", 0x100000, 0x80000, 0xd3d77d12),
+  { "smx-1m.3a", 0x80000, 0xa8f70643, REGION_GFX1, 0x000000, LOAD_16_64 },
+  { "smx-3m.5a", 0x80000, 0xf73f1913, REGION_GFX1, 0x000002, LOAD_16_64 },
+  { "smx-2m.4a", 0x80000, 0xa80234b4, REGION_GFX1, 0x000004, LOAD_16_64 },
+  { "smx-4m.6a", 0x80000, 0x4d910b53, REGION_GFX1, 0x000006, LOAD_16_64 },
+  { "smx-5m.7a", 0x80000, 0x01ae6240, REGION_GFX1, 0x200000, LOAD_16_64 },
+  { "smx-7m.9a", 0x80000, 0x88dea20a, REGION_GFX1, 0x200002, LOAD_16_64 },
+  { "smx-6m.8a", 0x80000, 0x7ea140b2, REGION_GFX1, 0x200004, LOAD_16_64 },
+  { "smx-8m.10a", 0x80000, 0xfbc81a7e, REGION_GFX1, 0x200006, LOAD_16_64 },
+  { "smx-10m.3c", 0x80000, 0x78e86cf4, REGION_GFX1, 0x400000, LOAD_16_64 },
+  { "smx-12m.5c", 0x80000, 0x2f8e6dc9, REGION_GFX1, 0x400002, LOAD_16_64 },
+  { "smx-11m.4c", 0x80000, 0x70095fdc, REGION_GFX1, 0x400004, LOAD_16_64 },
+  { "smx-13m.6c", 0x80000, 0xd14d18e5, REGION_GFX1, 0x400006, LOAD_16_64 },
+  LOAD( ROM2, "smx_09.11a", 0x00000, 0x10000, 0xa379fdc5),
+  LOAD( SMP1, "smx_18.11c", 0x00000, 0x20000, 0x6aa5d7fa),
+  LOAD( SMP1, "smx_19.12c", 0x20000, 0x20000, 0xf92f5a4f),
+  ROM_END
+};
+
 static struct ROM_INFO rom_sf2ceea[] = // clone of sf2ce
 {
   LOAD_SW16( CPU1, "s92e_23a.8f", 0x000000, 0x80000, 0x3f846b74),
@@ -3431,6 +3454,18 @@ static struct DSW_DATA dsw_data_ffight_1[] =
   { NULL, 0}
 };
 
+static struct DSW_DATA dsw_data_sf2mix_1[] =
+{
+	CPS1_COINAGE_1
+  { _("2 Coins to Start,1 to Continue"), 0x40, 2 },
+  { MSG_OFF, 0x40},
+  { MSG_ON, 0x00},
+  { _("Portuguese Win Quotes"), 0x80, 2 },
+  { MSG_OFF, 0x80 },
+  { MSG_ON, 0x40 },
+  { NULL, 0}
+};
+
 static struct DSW_DATA dsw_data_ffight_2[] =
 {
   { _("Difficulty Level 1"), 0x07, 8 },
@@ -3764,6 +3799,21 @@ static struct DSW_DATA dsw_data_sf2_2[] =
   { NULL, 0}
 };
 
+static struct DSW_DATA dsw_data_sf2mix_2[] =
+{
+	CPS1_DIFFICULTY_1
+  { _("Complete Mode"), 8, 2},
+	{ MSG_OFF, 8 },
+	{ MSG_ON, 0 },
+  { _("Classic Mode"), 0x10, 2},
+	{ MSG_OFF, 0x10 },
+	{ MSG_ON, 0 },
+  DSW_UNUSED( 0x00, 0x20),
+  DSW_UNUSED( 0x00, 0x40),
+  DSW_UNUSED( 0x00, 0x80),
+  { NULL, 0}
+};
+
 static struct DSW_DATA dsw_data_sf2m2_2[] =
 {
 	CPS1_DIFFICULTY_1
@@ -3778,6 +3828,14 @@ static struct DSW_INFO dsw_sf2[] =
 {
   { 0x1a, 0xff, dsw_data_ffight_1 },
   { 0x1c, 0xff, dsw_data_sf2_2 },
+  { 0x1e, 0x9f, dsw_data_unsquad_3 },
+  { 0, 0, NULL }
+};
+
+static struct DSW_INFO dsw_sf2mix[] =
+{
+  { 0x1a, 0xff, dsw_data_sf2mix_1 },
+  { 0x1c, 0xff, dsw_data_sf2mix_2 },
   { 0x1e, 0x9f, dsw_data_unsquad_3 },
   { 0, 0, NULL }
 };
@@ -5379,8 +5437,12 @@ CLNEI( knightsj, knights, "Knights of the Round (Japan 911127, B-Board 91634B-2)
 CLNEI( knightsja, knights, "Knights of the Round (Japan 911127, B-Board 89625B-1)", CAPCOM, 1991, GAME_BEAT);
 
 #define input_sf2ce NULL
+#define input_sf2mix NULL
 GMEI( sf2ce, "Street Fighter II': Champion Edition (World 920513)", CAPCOM, 1992, GAME_BEAT,
   .input = input_sf2, .dsw = dsw_sf2,
+  .load_game = load_cps1_12);
+GMEI( sf2mix, "Street Fighter II Mix from Zero800 v1.3", CAPCOM, 2023, GAME_BEAT,
+  .input = input_sf2,
   .load_game = load_cps1_12);
 CLNEI( sf2ceea, sf2ce, "Street Fighter II': Champion Edition (World 920313)", CAPCOM, 1992, GAME_BEAT,
   .input = input_sf2, .dsw = dsw_sf2,

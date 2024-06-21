@@ -214,6 +214,7 @@
   DRV(knightsj)
   DRV(knightsja)
   DRV(sf2ce)
+  DRV(sf2mix)
   DRV(sf2ceea)
   DRV(sf2ceua)
   DRV(sf2ceub)

@@ -1175,6 +1175,7 @@ static struct CPS1config cps1_config_table[]=
 	{"knightsja",   CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, this set uses KR22B, still not dumped
 	//{"knightsb",    CPS_B_21_BT4, mapper_KR63B,  0x36, 0, 0x34 },   // wrong, knightsb bootleg doesn't use the KR63B PAL
 	{"sf2ce",       CPS_B_21_DEF, mapper_S9263B, 0x36 },
+	{ "sf2mix",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2ceea",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2ceua",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
 	{"sf2ceub",     CPS_B_21_DEF, mapper_S9263B, 0x36 },
