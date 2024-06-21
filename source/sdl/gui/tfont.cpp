@@ -52,7 +52,7 @@ static menu_item_t font_options[] =
 {
   { _("Minimum font size"), NULL, &min_font_size, 3, {8, 20, 1} },
   { _("Maximum font size"), NULL, &max_font_size, 3, {20, 40, 1} },
-  { _("Japanese font"), &do_font, &bidon, 1, {0}, { jap_font } },
+  { _("Japanese font..."), &do_font, &bidon, 1, {0}, { jap_font } },
 };
 
 int add_fonts_gui_options(menu_item_t *menu) {

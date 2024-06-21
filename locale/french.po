@@ -2394,8 +2394,8 @@ msgid "Control Panel"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1191
-msgid "Controller mapping"
-msgstr "Gestion du controleur"
+msgid "Controller mapping..."
+msgstr "Gestion du controleur..."
 
 #: source/games/seta.c:2524 source/games/taito_f2.c:901
 #: source/games/megasys1.c:685 source/games/megasys1.c:739
@@ -2609,8 +2609,8 @@ msgid "Damage"
 msgstr ""
 
 #: source/sdl/dialogs/neocd_options.cpp:183
-msgid "Debug dipswitches"
-msgstr "Dips de débugage"
+msgid "Debug dipswitches..."
+msgstr "Dips de débugage..."
 
 #: source/games/cps1.c:2027
 #, fuzzy
@@ -2916,12 +2916,12 @@ msgid "Easy"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1211 source/sdl/dialogs/controls.cpp:1215
-msgid "Edit custom game inputs"
-msgstr "Editer les contrôles personnalisés"
+msgid "Edit custom game inputs..."
+msgstr "Editer les contrôles personnalisés..."
 
 #: source/sdl/dialogs/controls.cpp:1198 source/sdl/dialogs/controls.cpp:1202
-msgid "Edit default game inputs"
-msgstr "Editer les contrôles par défaut"
+msgid "Edit default game inputs..."
+msgstr "Editer les contrôles par défaut..."
 
 #: source/sdl/dialogs/translator.cpp:836
 #: source/sdl/dialogs/game_options.cpp:242
@@ -3821,8 +3821,8 @@ msgid "Joysticks"
 msgstr ""
 
 #: source/sdl/dialogs/controls.cpp:1186
-msgid "Joysticks indexes"
-msgstr "Index des joysticks"
+msgid "Joysticks indexes..."
+msgstr "Index des joysticks..."
 
 #: source/sdl/dialogs/video_options.cpp:111
 #: source/sdl/dialogs/video_options.cpp:176
@@ -4028,8 +4028,8 @@ msgstr "Charger les contrôles de..."
 
 #: source/sdl/dialogs/game_options.cpp:183
 #: source/sdl/dialogs/game_options.cpp:234 source/sdl/control.c:683
-msgid "Load state"
-msgstr "Charger un jeu"
+msgid "Load state..."
+msgstr "Charger un jeu..."
 
 #: source/sdl/control.c:695
 msgid "Load state with name"
@@ -4121,8 +4121,8 @@ msgid "Main menu"
 msgstr "Menu principal"
 
 #: source/sdl/dialogs/sound_commands.cpp:272
-msgid "Manage associations"
-msgstr "Gérer les associations"
+msgid "Manage associations..."
+msgstr "Gérer les associations..."
 
 #: source/games/cadash.c:117
 msgid "Master"
@@ -5129,8 +5129,8 @@ msgid "Rack Test (Cheat)"
 msgstr "Rack Test (triche)"
 
 #: source/sdl/dialogs/controls.cpp:1179
-msgid "Raine controls"
-msgstr "Contrôles de Raine"
+msgid "Raine controls..."
+msgstr "Contrôles de Raine..."
 
 #: source/sdl/dialogs/neocd_options.cpp:191
 msgid "Raster effects"
@@ -5360,8 +5360,8 @@ msgstr "Chaque jeu a ses paramètres vidéo"
 
 #: source/sdl/dialogs/game_options.cpp:193
 #: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
-msgid "Save state"
-msgstr "Sauver le jeu"
+msgid "Save state..."
+msgstr "Sauver le jeu..."
 
 #: source/sdl/control.c:694
 msgid "Save state with name"
@@ -6244,8 +6244,8 @@ msgid "Up to Level 3"
 msgstr "Jusqu'au niveau 3"
 
 #: source/sdl/dialogs/neocd_options.cpp:189
-msgid "Update Neo-Geo CD sprite block"
-msgstr "Met à jour le block de sprites"
+msgid "Update Neo-Geo CD sprite block..."
+msgstr "Met à jour le block de sprites..."
 
 #: source/games/chasehq2.c:69 source/games/volfied.c:62
 #: source/games/taito_f2.c:559 source/games/taito_f2.c:958
@@ -6352,8 +6352,8 @@ msgid "Renderer options..."
 msgstr "Options de rendu.."
 
 #: source/sdl/dialogs/controls.cpp:1182
-msgid "Video layers"
-msgstr "Couches vidéo"
+msgid "Video layers..."
+msgstr "Couches vidéo..."
 
 #: source/sdl/gui.cpp:525
 msgid "Video options"
@@ -7144,8 +7144,8 @@ msgid "Faster"
 msgstr "+ rapide"
 
 #: source/sdl/gui/tfont.cpp:52
-msgid "Japanese font"
-msgstr "Fonte japonnaise"
+msgid "Japanese font..."
+msgstr "Fonte japonnaise..."
 
 #: source/sdl/gui/tfont.cpp:36
 msgid "Select true type font"

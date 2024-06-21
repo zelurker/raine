@@ -1192,30 +1192,30 @@ static int do_mapping(int sel) {
 
 static menu_item_t controls_menu[] =
 {
-  { _("Raine controls"), &do_emu_controls },
+  { _("Raine controls..."), &do_emu_controls },
   { "", &do_ingame_controls },
   { _("Revert to default game controls"), &revert_to_default },
-  { _("Video layers"), &do_layers_controls },
+  { _("Video layers..."), &do_layers_controls },
   { _("Autofire..."), &setup_autofire },
   { _("Autofire controls"), &autofire_controls },
   { _("Mouse Sensitivity"), &set_mouse_sens, &mouse_sens, ITEM_SLIDER, {100, 10, 300, 0, 0, 0} },
-  { _("Joysticks indexes"), &do_joy_index },
+  { _("Joysticks indexes..."), &do_joy_index },
   { _("D-pads for movement"), NULL, &hat_for_moves, 2, { 0, 1 }, { _("No"), _("d-pad + main stick") } },
   { _("Load inputs from..."), &do_load },
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
-  { _("Controller mapping"), &do_mapping },
+  { _("Controller mapping..."), &do_mapping },
   { NULL },
 };
 
 static int revert_to_default(int sel) {
   reset_game_keys();
   use_custom_keys = 0;
-  controls_menu[1].label = _("Edit default game inputs");
+  controls_menu[1].label = _("Edit default game inputs...");
   controls_menu[2].label = _("Switch to custom game controls");
   controls_menu[2].menu_func = &switch_to_custom;
   if (ctrl) {
-      ctrl->update_label(1,_("Edit default game inputs"));
+      ctrl->update_label(1,_("Edit default game inputs..."));
       ctrl->update_label(2,_("Switch to custom game controls"),&switch_to_custom);
       ctrl->draw();
   }
@@ -1224,11 +1224,11 @@ static int revert_to_default(int sel) {
 
 static int switch_to_custom(int sel) {
   use_custom_keys = 1;
-  controls_menu[1].label = _("Edit custom game inputs");
+  controls_menu[1].label = _("Edit custom game inputs...");
   controls_menu[2].label = _("Revert to default game controls");
   controls_menu[2].menu_func = &revert_to_default;
   if (ctrl) {
-      ctrl->update_label(1,_("Edit custom game inputs"));
+      ctrl->update_label(1,_("Edit custom game inputs..."));
       ctrl->update_label(2,_("Revert to default game controls"),&revert_to_default);
       ctrl->draw();
   }

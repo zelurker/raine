@@ -235,8 +235,8 @@ static int reset_fps(int sel) {
 
 static menu_item_t game_options[] =
 {
-  { _("Save state"), &my_save },
-  { _("Load state"), &my_load },
+  { _("Save state..."), &my_save },
+  { _("Load state..."), &my_load },
   { _("Reset game hardware"), &my_reset },
   { _("Graphical layers..."), &graphical_layers },
 #if SDL==1

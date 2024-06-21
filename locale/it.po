@@ -2519,8 +2519,8 @@ msgstr "Pannello di controllo"
 
 #: source/sdl/dialogs/controls.cpp:1191
 #, fuzzy
-msgid "Controller mapping"
-msgstr "Pannello di controllo"
+msgid "Controller mapping..."
+msgstr "Pannello di controllo..."
 
 # --------------------------------- INPUTS ---------------------------------
 #: source/games/seta.c:2524 source/games/taito_f2.c:901
@@ -3082,12 +3082,12 @@ msgid "Easy"
 msgstr "Facile"
 
 #: source/sdl/dialogs/controls.cpp:1211 source/sdl/dialogs/controls.cpp:1215
-msgid "Edit custom game inputs"
-msgstr "Controlli in ingresso personalizzati"
+msgid "Edit custom game inputs..."
+msgstr "Controlli in ingresso personalizzati..."
 
 #: source/sdl/dialogs/controls.cpp:1198 source/sdl/dialogs/controls.cpp:1202
-msgid "Edit default game inputs"
-msgstr "Modifica i controlli in ingresso predefiniti"
+msgid "Edit default game inputs..."
+msgstr "Modifica i controlli in ingresso predefiniti..."
 
 #: source/sdl/dialogs/translator.cpp:836
 #: source/sdl/dialogs/game_options.cpp:242
@@ -4047,8 +4047,8 @@ msgstr "Num.Joystick"
 # Toki
 #: source/sdl/dialogs/controls.cpp:1186
 #, fuzzy
-msgid "Joysticks indexes"
-msgstr "Num.Joystick"
+msgid "Joysticks indexes..."
+msgstr "Num.Joystick..."
 
 #: source/sdl/dialogs/video_options.cpp:111
 #: source/sdl/dialogs/video_options.cpp:176
@@ -4266,8 +4266,8 @@ msgstr "Carica controlli personalizzati da..."
 
 #: source/sdl/dialogs/game_options.cpp:183
 #: source/sdl/dialogs/game_options.cpp:234 source/sdl/control.c:683
-msgid "Load state"
-msgstr "Carica gioco"
+msgid "Load state..."
+msgstr "Carica gioco..."
 
 #: source/sdl/control.c:695
 msgid "Load state with name"
@@ -4367,7 +4367,7 @@ msgid "Main menu"
 msgstr "[ MENU PRINCIPALE ]"
 
 #: source/sdl/dialogs/sound_commands.cpp:272
-msgid "Manage associations"
+msgid "Manage associations..."
 msgstr "Gestisci associazioni..."
 
 #: source/games/cadash.c:117
@@ -5421,8 +5421,8 @@ msgid "Rack Test (Cheat)"
 msgstr "Testa rack (trucco)"
 
 #: source/sdl/dialogs/controls.cpp:1179
-msgid "Raine controls"
-msgstr "Controlli dell'emulatore Raine"
+msgid "Raine controls..."
+msgstr "Controlli dell'emulatore Raine..."
 
 #: source/sdl/dialogs/neocd_options.cpp:191
 msgid "Raster effects"
@@ -5669,8 +5669,8 @@ msgstr "Salva impostaz. video per ogni gioco"
 
 #: source/sdl/dialogs/game_options.cpp:193
 #: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
-msgid "Save state"
-msgstr "Salva gioco"
+msgid "Save state..."
+msgstr "Salva gioco..."
 
 #: source/sdl/control.c:694
 msgid "Save state with name"
@@ -6648,8 +6648,8 @@ msgid "Up to Level 3"
 msgstr "Fino al livello 3"
 
 #: source/sdl/dialogs/neocd_options.cpp:189
-msgid "Update Neo-Geo CD sprite block"
-msgstr "Aggiorna il blocco di Sprite del NeoCD"
+msgid "Update Neo-Geo CD sprite block..."
+msgstr "Aggiorna il blocco di Sprite del NeoCD..."
 
 #: source/games/chasehq2.c:69 source/games/volfied.c:62
 #: source/games/taito_f2.c:559 source/games/taito_f2.c:958
@@ -6761,8 +6761,8 @@ msgid "Renderer options..."
 msgstr "Opzioni sulla resa grafica..."
 
 #: source/sdl/dialogs/controls.cpp:1182
-msgid "Video layers"
-msgstr "Controlli sui livelli grafici"
+msgid "Video layers..."
+msgstr "Controlli sui livelli grafici..."
 
 #: source/sdl/gui.cpp:525
 msgid "Video options"
@@ -7652,8 +7652,8 @@ msgstr "Italiano"
 #~ msgstr "[ Percorsi delle cartelle ]"
 
 # .................................... RAINE CONTROLS
-#~ msgid "Raine Controls"
-#~ msgstr "[ Controlli di Raine ] "
+#~ msgid "Raine Controls..."
+#~ msgstr "[ Controlli di Raine... ] "
 
 # .................................... USER INPUT DIALOG
 #~ msgid "Input"

@@ -269,7 +269,7 @@ static menu_item_t sound_menu[] =
        	{ "",(char*)&command,"0","0"} },
     { _("Stop"), &stop },
     { _("Associate..."), &associate },
-    { _("Manage associations"), &associations },
+    { _("Manage associations..."), &associations },
     { _("Disable associations"), NULL, &disable_assoc, 2, {0, 1}, {_("No"),_("Yes")}},
   { NULL },
 };
