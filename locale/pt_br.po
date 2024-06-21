@@ -2472,8 +2472,8 @@ msgid "Control Panel"
 msgstr "Painel de Controle"
 
 #: source/sdl/dialogs/controls.cpp:1195
-msgid "Controller mapping"
-msgstr "Mapeamento dos Controles"
+msgid "Controller mapping..."
+msgstr "Mapeamento dos Controles..."
 
 #: source/games/megasys1.c:685 source/games/megasys1.c:739
 #: source/games/megasys1.c:927 source/games/seta.c:2524
@@ -2690,8 +2690,8 @@ msgid "Damage"
 msgstr "Dano"
 
 #: source/sdl/dialogs/neocd_options.cpp:183
-msgid "Debug dipswitches"
-msgstr "Dipswitches do debug"
+msgid "Debug dipswitches..."
+msgstr "Dipswitches do debug..."
 
 #: source/games/cps1.c:2027
 msgid "Decoding graphics layer"
@@ -3009,12 +3009,12 @@ msgid "Easy"
 msgstr "Fácil"
 
 #: source/sdl/dialogs/controls.cpp:1215 source/sdl/dialogs/controls.cpp:1219
-msgid "Edit custom game inputs"
-msgstr "Editar as entradas personalizadas do jogo"
+msgid "Edit custom game inputs..."
+msgstr "Editar as entradas personalizadas do jogo..."
 
 #: source/sdl/dialogs/controls.cpp:1202 source/sdl/dialogs/controls.cpp:1206
-msgid "Edit default game inputs"
-msgstr "Editar as entradas padrão do jogo"
+msgid "Edit default game inputs..."
+msgstr "Editar as entradas padrão do jogo..."
 
 #: source/sdl/dialogs/game_options.cpp:242
 #: source/sdl/dialogs/translator.cpp:836
@@ -3929,8 +3929,8 @@ msgid "Japanese (Toaplan)"
 msgstr "Japonês (Toaplan)"
 
 #: source/sdl/gui/tfont.cpp:52
-msgid "Japanese font"
-msgstr "Fonte japonesa"
+msgid "Japanese font..."
+msgstr "Fonte japonesa..."
 
 #: source/games/seta.c:2237
 msgid "Jordan"
@@ -3945,8 +3945,8 @@ msgid "Joysticks"
 msgstr "Joysticks"
 
 #: source/sdl/dialogs/controls.cpp:1190
-msgid "Joysticks indexes"
-msgstr "Índices dos joysticks"
+msgid "Joysticks indexes..."
+msgstr "Índices dos joysticks..."
 
 #: source/sdl/dialogs/video_options.cpp:111
 #: source/sdl/dialogs/video_options.cpp:176
@@ -4160,8 +4160,8 @@ msgstr "Carregar entradas de..."
 
 #: source/sdl/dialogs/game_options.cpp:183
 #: source/sdl/dialogs/game_options.cpp:234 source/sdl/control.c:683
-msgid "Load state"
-msgstr "Carregar state"
+msgid "Load state..."
+msgstr "Carregar state..."
 
 #: source/sdl/control.c:695
 msgid "Load state with name"
@@ -4257,8 +4257,8 @@ msgid "Main menu"
 msgstr "Menu principal"
 
 #: source/sdl/dialogs/sound_commands.cpp:272
-msgid "Manage associations"
-msgstr "Gerenciar associações"
+msgid "Manage associations..."
+msgstr "Gerenciar associações..."
 
 #: source/games/cadash.c:117
 msgid "Master"
@@ -5346,8 +5346,8 @@ msgid "Rack Test (Cheat)"
 msgstr "Teste do Rack (Trapaça)"
 
 #: source/sdl/dialogs/controls.cpp:1183
-msgid "Raine controls"
-msgstr "Controles do Raine"
+msgid "Raine controls..."
+msgstr "Controles do Raine..."
 
 #: source/sdl/dialogs/neocd_options.cpp:191
 msgid "Raster effects"
@@ -5573,8 +5573,8 @@ msgstr "Salvar as configurações da tela por jogo"
 
 #: source/sdl/dialogs/game_options.cpp:193
 #: source/sdl/dialogs/game_options.cpp:233 source/sdl/control.c:681
-msgid "Save state"
-msgstr "Save state"
+msgid "Save state..."
+msgstr "Save state..."
 
 #: source/sdl/control.c:694
 msgid "Save state with name"
@@ -6487,8 +6487,8 @@ msgid "Up to Level 3"
 msgstr "Até o Nível 3"
 
 #: source/sdl/dialogs/neocd_options.cpp:189
-msgid "Update Neo-Geo CD sprite block"
-msgstr "Atualizar o bloqueio das imagens móveis do Neo-Geo CD"
+msgid "Update Neo-Geo CD sprite block..."
+msgstr "Atualizar o bloqueio das imagens móveis do Neo-Geo CD..."
 
 #: source/games/chasehq2.c:69 source/games/rainbow.c:70
 #: source/games/rainbow.c:185 source/games/taito_f2.c:559
@@ -6596,8 +6596,8 @@ msgid "Video information..."
 msgstr "Informações do vídeo..."
 
 #: source/sdl/dialogs/controls.cpp:1186
-msgid "Video layers"
-msgstr "Camadas do vídeo"
+msgid "Video layers..."
+msgstr "Camadas do vídeo..."
 
 #: source/sdl/gui.cpp:534
 msgid "Video options"
@@ -7407,8 +7407,8 @@ msgstr "com llvm/clang %d.%d.%d"
 #~ msgid "Path selection"
 #~ msgstr "Seleção do caminho"
 
-#~ msgid "Raine Controls"
-#~ msgstr "Controles do Raine"
+#~ msgid "Raine Controls..."
+#~ msgstr "Controles do Raine..."
 
 #~ msgid "Select analog device"
 #~ msgstr "Selecionar dispositivo analógico"
