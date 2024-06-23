@@ -381,6 +381,10 @@ void TMenu::free_hchild() {
 }
 
 TMenu::~TMenu() {
+    if (caller == this) {
+	/* Actually the only known case for this is loading_dialog for now ! */
+	caller = NULL;
+    }
     if (translated)
 	free(menu);
   if (child) {
