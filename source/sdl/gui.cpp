@@ -324,11 +324,25 @@ void load_progress(char *rom,int count)
   last_tick = SDL_GetTicks();
 }
 
-void setup_curl_dlg(char *name) {
+void setup_curl_dlg(char *name,char *url) {
+    // I have to declare this as static because otherwise the gcc sanitizer yells at me for using something on the stack...
+    // I thought the labels were copied because of the translations, but maybe not after all... !
+    static char final[30];
     load_items[3].label = name;
     if (raine_cfg.no_gui)
 	return;
     delete loading_dialog;
+    if (!strstr(url,"/archive.org")) {
+	char *s = strstr(url,"://") + 3;
+	char *e = strchr(s,'/');
+	char name[20];
+	strncpy(name,s,e-s);
+	name[e-s] = 0;
+	snprintf(final,30,"from %s",name);
+	load_items[5].label = final;
+    } else
+	load_items[5].label = _("from internet archive");
+
     loading_dialog = new TDialog(_("Loading Game"),load_items);
     loading_dialog->pseudo_execute();
     loading_dialog->draw();

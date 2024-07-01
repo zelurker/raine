@@ -1242,15 +1242,17 @@ beg:
 	       // they have the romset for 0.91.4, so there are a few exceptions...
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	   else if (!strcmp(dir,"samsh5pf") || !strcmp(dir,"samsh5fe") || !strcmp(dir,"samsho2pe") ||
-		   !strcmp(dir,"sf2mix") || !strcmp(dir,"sfz3mix")) // fbneo directory
+		   !strcmp(dir,"sf2mix")) // fbneo directory
 	       snprintf(url,512,"https://archive.org/download/fbnarcade-fullnonmerged/arcade/%s.zip",dir);
+	   else if (!strcmp(dir,"sfz3mix"))
+	       snprintf(url,512,"https://sfz3mix.github.io/download/sfz3mix.zip");
 	   else
 	       // There is a raine all roms directory for 0.91.4 !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
 	   printf("would try %s rom %s\n",url,dir);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
-	   setup_curl_dlg(name);
+	   setup_curl_dlg(name,url);
 	   int ret = get_url(path,url);
 	   if (ret && !strstr(url,"FinalBurn")) {
 	       // Other url : finalburn. Start by this one because the neogeo roms for fbneo include all the neogeo bioses which makes the roms larger !
@@ -1262,7 +1264,7 @@ beg:
 	       snprintf(url,512,"https://archive.org/download/fbnarcade-fullnonmerged/arcade/%s.zip",dir);
 	       ret = get_url(path,url);
 	   }
-	   setup_curl_dlg(NULL);
+	   setup_curl_dlg(NULL, url);
 	   if (!exists(path)) {
 	       dlist++;
 	       continue;
