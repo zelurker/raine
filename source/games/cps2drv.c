@@ -3257,14 +3257,14 @@ static struct ROM_INFO rom_sfa3ud[] = // clone of sfa3
 
 static struct ROM_INFO rom_sfz3mix[] = // close of sfa3ud
 {
-  LOAD( CPU1, "sz3mx.03",  0x000000, 0x600000, 0xeb635d04),
+  LOAD( CPU1, "sz3mx.03",  0x000000, 0x600000, 0x94c8f969),
 
-  LOAD( GFX1, "sz3mx.13m", 0, 0x2000000, 0xaf3980f7), // crazy size !!!
-  LOAD( GFX1, "sz3mx.21m", 0x2000000, 0x2000000, 0x1d9ae703),
+  LOAD( GFX1, "sz3mx.13m", 0, 0x2000000, 0x59025f91), // crazy size !!!
+  LOAD( GFX1, "sz3mx.21m", 0x2000000, 0x2000000, 0x914c7031),
 
-  LOAD( ROM2, "sz3mx.01", 0, 0x80000, 0x727fd776), // double original z80 rom
+  LOAD( ROM2, "sz3mx.01", 0, 0x80000, 0x52f98a5c), // double original z80 rom
 
-  LOAD( SOUND1, "sz3mx.11m",0, 0x1000000, 0x5d4fe046),
+  LOAD( SOUND1, "sz3mx.11m",0, 0x1000000, 0x395edce2),
   ROM_END
 };
 
@@ -4434,7 +4434,7 @@ CLNEI( vsavd, vsav, "Vampire Savior: The Lord of Vampire (Euro 970519 Phoenix Ed
 CLNEI( mvscud, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT);
 CLNEI( sfa3ud, sfa3, "Street Fighter Alpha 3 (USA 980904 Phoenix Edition) (bootleg)", BOOTLEG, 1998, GAME_BEAT,
 	.romsw = romsw_sfa3ud);
-GMEI( sfz3mix, "Street Fighter Zero 3 Mix v0.30", BOOTLEG, 2024, GAME_BEAT,
+GMEI( sfz3mix, "Street Fighter Zero 3 Mix v0.31", BOOTLEG, 2024, GAME_BEAT,
 	.video = &video_sfz3mix);
 CLNEI( gigawingd, gigawing, "Giga Wing (USA 990222 Phoenix Edition) (bootleg)", BOOTLEG, 1999, GAME_SHOOT,
   .input = input_p2b2);
