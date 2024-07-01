@@ -2192,7 +2192,6 @@ void load_cps1()
    }
 
   load_common(0);
-  if (load_error) return;
 
   cps1_set_z80();
 
@@ -2331,7 +2330,6 @@ void load_qsound()
   const char *name = parent_name();
     init_assoc(4);
   load_common(0);
-  if (load_error) return;
   default_frame = CPU_FRAME_MHz(12,60);
 
   if (!strncmp(name,"wof",3))
@@ -2600,7 +2598,6 @@ void load_cps2() {
   // save_file("xor",xor,size_user1);
 
   load_common(1);
-  if (load_error) return;
 
   // ByteSwap((UINT8*)xor, size_user1 );
 
