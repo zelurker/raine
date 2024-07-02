@@ -2203,6 +2203,7 @@ static void neogeo_hreset(void)
 	save_game_config(); // to save the region when it has just changed !
     // Setting these 2 to 255 emulates standard inputs, it's not really required, but it makes a cleaner test mode for inputs
     mx = my = 255;
+    if (GameMouse == 3) mx = 0;
   frame_count = 0;
   fix_cur = -1;
   fix_write = 0;
@@ -4776,7 +4777,9 @@ void load_neocd() {
 	    GameMouse = 1;
 	else if (is_current_game("popbounc"))
 	    GameMouse = 2; // mouse type 2
-	else if (is_current_game("kof98"))
+	else if (is_current_game("pbobblen") && ReadLong68k(&ROM[0x7ffe8]) == 0x526f7461) { // search for Rota
+	    GameMouse = 3; // !
+	} else if (is_current_game("kof98"))
 	    kof98_decrypt_68k();
 	else if (is_current_game("kof99") || is_current_game("kof99h")) {
 	    fixed_layer_bank_type = 1;
@@ -5349,22 +5352,50 @@ void loading_progress_function() {
 
 void execute_neocd() {
     start_frame = s68000readOdometer();
-    if (GameMouse == 1) {
-	init1 = input_buffer[1];
-	// if (controller & 0x10) input_buffer[1] = mx;
-	if (controller == 1) input_buffer[1] = my;
-	int dx,dy;
-	GetMouseMickeys(&dx,&dy);
-	mx -= dx; my -= dy;
-    } else if (GameMouse == 2) {
-	int dx,dy;
-	GetMouseMickeys(&dx,&dy);
-	mx += dx;
-	if (!(input_buffer[2] & 4)) mx--;
-	if (!(input_buffer[2] & 8)) mx++;
-	// Here, my is mouse x for player 2
-	if (!(input_buffer[4] & 4)) my--;
-	if (!(input_buffer[4] & 8)) my++;
+    switch(GameMouse) {
+    case 1: {
+		init1 = input_buffer[1];
+		// if (controller & 0x10) input_buffer[1] = mx;
+		if (controller == 1) input_buffer[1] = my;
+		int dx,dy;
+		GetMouseMickeys(&dx,&dy);
+		mx -= dx; my -= dy;
+	    }
+	    break;
+    case 2: {
+		int dx,dy;
+		GetMouseMickeys(&dx,&dy);
+		mx += dx;
+		if (!(input_buffer[2] & 4)) mx--;
+		if (!(input_buffer[2] & 8)) mx++;
+		// Here, my is mouse x for player 2
+		if (!(input_buffer[4] & 4)) my--;
+		if (!(input_buffer[4] & 8)) my++;
+	    }
+	    break;
+    case 3: {
+		// pbobblen rotary
+		int dx,dy;
+		GetMouseMickeys(&dx,&dy);
+		mx += dx; my -= dy;
+		// See https://rotary-bobble.mattgreer.dev/
+		// Very weird moves which don't correspond to what's on the site actually !
+		// Apparently the controller is not signed, where our mickeys here are
+		// and it goes from -63 to +63, so I must do a conversion here...
+		// It's advised to play this in arcade mode, not in console mode because in console mode it will ask if you want to load from the memory card
+		// and expects a reply using the normal joystick control, this part is probably in rom so can't be converted.
+		// So to avoid this awkward situation where you can't select your answer, avoid console mode if you use this hack !
+		if (mx < -63) mx = -63;
+		else if (mx > 63) mx = 63;
+		int cx = (mx >= 0 ? mx : -64 - mx);
+		input_buffer[1] = (((cx & 0xf) |
+		    ((cx & 0x10) << 1) |
+		    ((cx & 0x20) << 1) |
+		    ((cx & 0x40) << 1)) & 0xef) | ((input_buffer[1] & 0x10) ^ 0x10);
+		// print_ingame(1,"mx %d cx %d -> %x",mx,cx,input_buffer[1]);
+		input_buffer[1] = ~input_buffer[1];
+	    }
+	    break;
     }
 
     if (!is_neocd()) {
