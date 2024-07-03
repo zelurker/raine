@@ -419,7 +419,7 @@ static void toggle_limit_speed() {
 	} else {
 	    double t = timer_get_time();
 	    if (t > my_time) {
-		print_ingame(120,gettext("%d frames in %gs -> %g fps"),cpu_frame_count-my_frame,t-my_time,(cpu_frame_count-my_time)/(t-my_time));
+		print_ingame(180,gettext("%d frames in %gs -> %g fps"),cpu_frame_count-my_frame,t-my_time,(cpu_frame_count-my_frame)/(t-my_time));
 	    }
 	    print_ingame(120,gettext("Speed limit %g FPS"),fps);
 	    display_cfg.limit_speed = 1;
