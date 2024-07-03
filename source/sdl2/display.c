@@ -205,7 +205,7 @@ int resize(int call,int sx,int sy) {
 void set_default_video_mode() {
   display_cfg.screen_x = 640;
   display_cfg.screen_y = 480;
-  display_cfg.bpp = 32;
+  display_cfg.bpp = 16;
 }
 
 void setup_gfx_modes() {

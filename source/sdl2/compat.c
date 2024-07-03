@@ -56,14 +56,17 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  // The format here is just one I chose, 32 bits is almost mandatory in 3d, but for GameBitmap we don't need alpha
 	  // so rgbx becomes the 1st choice
 	  sdl2_color_format = SDL_PIXELFORMAT_RGB565;
+	  display_cfg.bpp = 16;
 	  if (current_colour_mapper == &col_map_24bit_rgb || // macrossp
-		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) // f3 games
+		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) {// f3 games
 	      sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
+	      display_cfg.bpp = 32;
+	  }
+	  print_debug("bpp initialized from color_mapper : %d\n",display_cfg.bpp);
 	  if (!SDL_PixelFormatEnumToMasks(sdl2_color_format,&bpp,&r,&g,&b,&a))
 	  {
 	      fatal_error("masks pas ok");
 	  }
-	  display_cfg.bpp = bpp;
 	  // Notice that here display_cfg.bpp is 16 or 32, and the default video mode sets it at 32
 	  // so update_pal_banks will eventually reduce the banks which is ok
 	  update_pal_banks();
@@ -216,7 +219,7 @@ void  sdl_init() {
 	    printf("Couldn't create window, error: %s\n",SDL_GetError());
 	    exit(1);
 	}
-	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	rend = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 	if (display_cfg.fullscreen == 2)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
 	SDL_Surface *sf = IMG_Load(get_shared("bitmaps" SLASH "bub2.png"));
@@ -339,9 +342,6 @@ struct al_bitmap *sdl_create_sub_bitmap(struct al_bitmap *src, int x, int y, int
      * screen to speed up blits */
     if (current_game->video->flags & VIDEO_NEEDS_8BPP)
       display_cfg.bpp = 8;
-    else {
-      display_cfg.bpp = 32;
-    }
     /*
        if (display_cfg.video_mode == 0)
        display_cfg.bpp = 16;
