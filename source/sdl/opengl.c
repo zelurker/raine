@@ -337,7 +337,7 @@ void opengl_text(char *msg, int x, int y) {
 	font = malloc(size);
 	load_file(name,font,size);
 	opaque_bmp = malloc(20*2*80);
-	memset(opaque_bmp,0xff,20*2*80);
+	memset(opaque_bmp,0,20*2*80);
 	/*
 	glGenBuffers(1,&opaque_buff);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER,opaque_buff);
@@ -378,16 +378,13 @@ void opengl_text(char *msg, int x, int y) {
     glPixelStorei(GL_UNPACK_LSB_FIRST,0);
     if (ogl.render == 1)
 	glDisable(GL_TEXTURE_2D);
-    if (opaque_hud) {
-	// glColor3f(0.0f,1.0f,0.0f);
-	// glBindBuffer(GL_PIXEL_UNPACK_BUFFER,opaque_buff);
-	glDrawPixels(10*strlen(msg) ,20, GL_COLOR_INDEX,GL_UNSIGNED_BYTE, opaque_bmp);
-    }
 
     glColor4f(1.0f,1.0f,1.0f,1.0f);
     // glBindBuffer(GL_PIXEL_UNPACK_BUFFER,gl_font);
     // GLubyte *zero = 0;
     while (*msg) {
+	// Don't mis glBitmap with glDrawPixels as I did previously, glDrawPixels is very slow in this context !
+	if (opaque_hud) glBitmap(10,20,0.0,0.0, 0.0,0.0,opaque_bmp);
 	glBitmap(10, 20, 0.0, 0.0, 10.0, 0.0, font+*msg*20*2);
 	msg++;
     }
@@ -426,6 +423,7 @@ void opengl_done() {
     font = NULL;
     if (opaque_bmp)
 	free(opaque_bmp);
+    opaque_bmp = NULL;
     delete_shaders();
     if (ogl.vendor) {
 	free(ogl.vendor);
