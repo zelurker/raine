@@ -228,6 +228,11 @@ void  sdl_init() {
 	} else {
 	    SDL_SetWindowIcon(win,sf);
 	}
+	if (!display_cfg.posx && !display_cfg.posy) {
+	    // Init at start...
+	    SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+	    SDL_GetWindowSize(win,&display_cfg.screen_x,&display_cfg.screen_y);
+	}
 
 	// if(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1)< 0 || SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3) < 0)
 	//    printf("pb setting opengl version\n");

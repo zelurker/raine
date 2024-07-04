@@ -1029,13 +1029,13 @@ static void my_event(SDL_Event *event) {
 		display_cfg.prev_posy = display_cfg.posy;
 		display_cfg.posx = event->window.data1;
 		display_cfg.posy = event->window.data2;
-	    } else if (display_cfg.lost_focus) {
+	    } else if (display_cfg.lost_focus)
 		// some clever window managers try to change the position of the window at creation
 		// lucily it's sent while the focus has not been gained so we can compensate here
 		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
-	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
 	    display_cfg.maximized = 1;
+	    // prev size is initialized by a resize message received before that
 	} else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
 	    // the focus events are not directly useful for the gui, but it's still useful on window creation, I get a window restored event even if window is created with maximized flag
 	    // luckily this is sent before the window gains focus, so I ignore this of event if it has lost focus

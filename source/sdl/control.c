@@ -449,6 +449,12 @@ void toggle_fullscreen() {
   // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
   // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
   // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
+  if (display_cfg.fullscreen == 1 || display_cfg.fullscreen == 2 && (display_cfg.screen_x != desktop_w || display_cfg.screen_y != desktop_h)) {
+      display_cfg.prev_sx = display_cfg.screen_x;
+      display_cfg.prev_sy = display_cfg.screen_y;
+      display_cfg.screen_x = desktop_w;
+      display_cfg.screen_y = desktop_h;
+  }
   if (display_cfg.fullscreen == 1) {
       if (hack_fs) {
 	  SDL_SetWindowPosition(win,0,0);
@@ -1851,7 +1857,8 @@ void control_handle_event(SDL_Event *event) {
       reset_ingame_timer();
 #else
     case SDL_WINDOWEVENT:
-      if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+      if ((event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) &&
+	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
 	  display_cfg.prev_sx = display_cfg.screen_x;
 	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
