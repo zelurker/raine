@@ -416,6 +416,8 @@ static void toggle_limit_speed() {
 		my_time = timer_get_time();
 		if (display_cfg.video_mode == 0) // opengl
 		    update_ogl_dbuf(0);
+		else
+		    SDL_RenderSetVSync(rend,0);
 	} else {
 	    double t = timer_get_time();
 	    if (t > my_time) {
@@ -425,6 +427,8 @@ static void toggle_limit_speed() {
 	    display_cfg.limit_speed = 1;
 	    if (display_cfg.video_mode == 0) // opengl
 		update_ogl_dbuf(ogl.dbuf);
+	    else
+		SDL_RenderSetVSync(rend,ogl.dbuf);
 	}
 }
 
