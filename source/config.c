@@ -409,13 +409,13 @@ static void CLI_geometry(void) {
 	char buf[80];
 	sprintf(buf,"%d,%d",x,y);
 	raine_set_config_string("Display","position",buf);
+	display_cfg.noborder = 1;
 #else
 	raine_set_config_int("Display","posx",x);
 	raine_set_config_int("Display","posy",y);
 #endif
 #ifndef RAINE_DOS
 	display_cfg.fullscreen = 0;
-	display_cfg.noborder = 1;
 #endif
 #if SDL == 1
 	// I would have used setenv here, but windows doesn't know setenv... !!!
@@ -1627,7 +1627,7 @@ static void CLI_dsw_info(void)
 
 }
 
-#ifndef RAINE_DOS
+#if SDL == 1
 static void CLI_nb(void)
 {
     display_cfg.noborder = 1;
@@ -1770,7 +1770,7 @@ static CLI_OPTION cli_commands[] =
    { "-lsf",            CLI_lsf },
    { "-rp",		CLI_rp },
    { "-source_file",    CLI_lsf },
-#ifndef RAINE_DOS
+#if SDL == 1
    { "-nb",		CLI_nb },
    { "-wb",		CLI_wb },
 #endif

@@ -355,9 +355,12 @@ typedef struct DISPLAY_CFG
    UINT32 bpp;							// colour depth {8,15,16,24,32}
 #ifdef SDL
    UINT32 fix_aspect_ratio; // fix aspect for YUV overlays
-   int fullscreen,double_buffer,noborder,keep_ratio,maximized;
+   int fullscreen,double_buffer,keep_ratio,maximized;
    int prev_posx, prev_posy, prev_sx,prev_sy;
    int lost_focus;
+#if SDL == 1
+   int noborder;
+#endif
 #endif
 } DISPLAY_CFG;
 

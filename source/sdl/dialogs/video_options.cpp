@@ -58,6 +58,7 @@ static int my_toggle_fullscreen(int sel) {
 }
 #endif
 
+#if SDL == 1
 static char oldenv[10];
 
 static int my_toggle_border(int sel) {
@@ -79,7 +80,6 @@ static int my_toggle_border(int sel) {
     return 1;
 }
 
-#if SDL==1
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
     MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("OK"));
@@ -264,8 +264,8 @@ static menu_item_t video_items[] =
 #ifdef RAINE_UNIX
 { _("Fullscreen hack for Intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
 #endif
-{ _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
 #if SDL < 2
+{ _("Borderless"), &my_toggle_border, &display_cfg.noborder, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("Use double buffer (ignored by OpenGL)"), NULL, &display_cfg.double_buffer, 3, {0, 1, 2}, {_("Never"), _("When possible"), _("Even with overlays") } },
 #endif
 { _("Blend file options..."), &do_bld },
