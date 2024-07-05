@@ -270,17 +270,19 @@ static UINT32 recursive_rom_load(const DIR_INFO *head, int actual_load)
 		sprintf(path, "%s%s.zip", dir_cfg.rom_dir[ta], dir);
 		int ret = 0;
 		if((load_zipped(path, rec_rom_info.name, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-		    // printf("loaded %s from %s\n",rec_rom_info.name,path);
+		    print_debug("loaded %s from %s\n",rec_rom_info.name,path);
 		    ret = 1;
 		} else {
 		    sprintf(path, "%s%s.7z", dir_cfg.rom_dir[ta], dir);
 		    if((load_7z(path, rec_rom_info.name, 0, rec_rom_info.size, rec_rom_info.crc32, rec_dest, actual_load))){
-			// printf("loaded %s from %s\n",rec_rom_info.name,path);
+			print_debug("loaded %s from %s\n",rec_rom_info.name,path);
 			ret = 1;
 		    } else {
 			sprintf(path, "%s%s/%s", dir_cfg.rom_dir[ta], dir, rec_rom_info.name);
-			if((load_file(path, rec_dest, rec_rom_info.size)))
+			if((load_file(path, rec_dest, rec_rom_info.size))) {
+			    print_debug("loaded %s\n",path);
 			    ret = 1;
+			}
 		    }
 		}
 		if (ret) {
@@ -1254,6 +1256,13 @@ beg:
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
 	   setup_curl_dlg(name,url);
 	   int ret = get_url(path,url);
+	   if (ret == CURLE_ABORTED_BY_CALLBACK) {
+	       sprintf(load_debug+strlen(load_debug),_("curl transfer aborted by user"));
+	       load_error |= LOAD_FATAL_ERROR;
+	       unlink(path);
+	       return 0;
+	   }
+
 	   if (ret && !strstr(url,"FinalBurn")) {
 	       // Other url : finalburn. Start by this one because the neogeo roms for fbneo include all the neogeo bioses which makes the roms larger !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);

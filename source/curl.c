@@ -34,6 +34,7 @@
 #include "files.h"
 #include "version.h"
 #include "compat.h"
+#include "curl.h"
 
 // It's impossible to include raine.h here in windows, because windows is too dumb !!!
 typedef struct DIR_CFG
@@ -64,8 +65,7 @@ static int progress_callback(void *clientp,
                              curl_off_t ulnow) {
     if (dltotal == 0 && total_size == 0) return 0;
     if (!dltotal) dltotal = total_size;
-    curl_progress_f(dlnow*100/dltotal);
-    return 0; // non 0 to abort transfer
+    return curl_progress_f(dlnow*100/dltotal); // non 0 to abort transfer
 }
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
@@ -73,8 +73,6 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
     size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
     return written;
 }
-
-extern CURL *curl_handle;
 
 int get_url(char *file, char *url)
 {

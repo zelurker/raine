@@ -277,6 +277,7 @@ TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int m
     h_child = NULL;
     focus = 0;
   top = 0;
+  exit_menu = 0;
   sel = -1; // compute first selection later (compute_nb_items)
   child = NULL;
   title = my_title;
@@ -1766,6 +1767,63 @@ void TMenu::end_pseudo_execute() {
     caller = parent;
 }
 
+void TMenu::event_loop() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+	if (*event_hook)
+	    (*event_hook)(&event);
+	switch(event.type) {
+	case SDL_KEYDOWN:
+	case SDL_KEYUP:
+	case SDL_TEXTINPUT:
+	    handle_key(&event);
+	    break;
+	case SDL_MOUSEMOTION:
+	case SDL_MOUSEBUTTONUP:
+	case SDL_MOUSEBUTTONDOWN:
+	case SDL_MOUSEWHEEL:
+	    handle_mouse(&event);
+	    break;
+	case SDL_JOYAXISMOTION:
+	case SDL_JOYBALLMOTION:
+	case SDL_JOYHATMOTION:
+	case SDL_JOYBUTTONDOWN:
+	case SDL_JOYBUTTONUP:
+	case SDL_CONTROLLERBUTTONUP:
+	case SDL_CONTROLLERBUTTONDOWN:
+	case SDL_CONTROLLERAXISMOTION:
+	case SDL_CONTROLLERDEVICEADDED:
+	case SDL_CONTROLLERDEVICEREMOVED:
+	    handle_joystick(&event);
+	    break;
+	case SDL_WINDOWEVENT:
+	    if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+		if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
+		    SDL_SetWindowSize(win,640,480);
+		    break;
+		}
+
+		if (font) {
+		    delete font;
+		    font = NULL;
+		}
+		top = 0;
+		SDL_DestroyTexture(fg_layer);
+		fg_layer = NULL;
+		sdl_screen->w = event.window.data1;
+		sdl_screen->h = event.window.data2;
+		SDL_Rect r = { 0, 0, sdl_screen->w, sdl_screen->h };
+		desktop->set_work_area(&r);
+		draw();
+	    }
+	    break;
+	case SDL_QUIT:
+	    exit(0);
+	}
+	if (exit_menu) break;
+    }
+}
+
 void TMenu::execute() {
 
     if (gui_start_hook && !gui_level)
@@ -1774,7 +1832,6 @@ void TMenu::execute() {
     SDL_RenderSetLogicalSize(rend, 0,0);
     update_count = 0;
     gui_level++;
-  SDL_Event event;
   SDL_StartTextInput();
   exit_menu = 0;
 
@@ -1797,59 +1854,7 @@ void TMenu::execute() {
     int oldsel = sel;
     if (focus) oldsel = hsel;
     int oldtop = top;
-    while (SDL_PollEvent(&event)) {
-	if (*event_hook)
-	    (*event_hook)(&event);
-      switch(event.type) {
-      case SDL_KEYDOWN:
-      case SDL_KEYUP:
-      case SDL_TEXTINPUT:
-	handle_key(&event);
-	break;
-      case SDL_MOUSEMOTION:
-      case SDL_MOUSEBUTTONUP:
-      case SDL_MOUSEBUTTONDOWN:
-      case SDL_MOUSEWHEEL:
-        handle_mouse(&event);
-	break;
-      case SDL_JOYAXISMOTION:
-      case SDL_JOYBALLMOTION:
-      case SDL_JOYHATMOTION:
-      case SDL_JOYBUTTONDOWN:
-      case SDL_JOYBUTTONUP:
-      case SDL_CONTROLLERBUTTONUP:
-      case SDL_CONTROLLERBUTTONDOWN:
-      case SDL_CONTROLLERAXISMOTION:
-      case SDL_CONTROLLERDEVICEADDED:
-      case SDL_CONTROLLERDEVICEREMOVED:
-        handle_joystick(&event);
-	break;
-      case SDL_WINDOWEVENT:
-	if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-	    if (keep_vga && (event.window.data1 < 640 || event.window.data2 < 480)) {
-		SDL_SetWindowSize(win,640,480);
-		break;
-	    }
-
-	    if (font) {
-		delete font;
-		font = NULL;
-	    }
-	    top = 0;
-	    SDL_DestroyTexture(fg_layer);
-	    fg_layer = NULL;
-	    sdl_screen->w = event.window.data1;
-	    sdl_screen->h = event.window.data2;
-	    SDL_Rect r = { 0, 0, sdl_screen->w, sdl_screen->h };
-	    desktop->set_work_area(&r);
-	    draw();
-	}
-	break;
-      case SDL_QUIT:
-	exit(0);
-      }
-      if (exit_menu) break;
-    }
+    event_loop();
     if ((w != sdl_screen->w || h != sdl_screen->h) && fg_layer) {
 	if (font) {
 	    delete font;

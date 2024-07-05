@@ -127,6 +127,8 @@ class TMenu {
     virtual void exec_menu_item();
     virtual void pseudo_execute();
     virtual void end_pseudo_execute();
+    int want_exit() { return exit_menu; }
+    virtual void event_loop();
     virtual void  execute();
     virtual void do_update(SDL_Rect *region);
     virtual void create_child(int n);
