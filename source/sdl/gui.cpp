@@ -350,18 +350,18 @@ void setup_curl_dlg(char *name,char *url) {
 }
 
 int curl_progress_f(int count) {
-    if (!loading_dialog) return 0;
+    if (!loading_dialog) return 1;
     if (curl_progress != count) {
 	curl_progress = count;
 	loading_dialog->redraw_fg_layer();
-	loading_dialog->event_loop();
-	if (loading_dialog->want_exit()) {
-	    loading_dialog->end_pseudo_execute();
-	    delete loading_dialog;
-	    load_items[3].label = NULL;
-	    loading_dialog = NULL;
-	    return 1;
-	}
+    }
+    loading_dialog->event_loop();
+    if (loading_dialog->want_exit()) {
+	loading_dialog->end_pseudo_execute();
+	delete loading_dialog;
+	load_items[3].label = NULL;
+	loading_dialog = NULL;
+	return 1;
     }
     return 0;
 }

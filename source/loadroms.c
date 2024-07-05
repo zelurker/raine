@@ -1101,6 +1101,12 @@ static int load_rom_from_rominfo(char *rom, UINT8 *dest, UINT32 size, const ROM_
    return found;
 }
 
+static void abort_curl(char *path) {
+    sprintf(load_debug+strlen(load_debug),_("curl transfer aborted by user"));
+    load_error |= LOAD_FATAL_ERROR;
+    unlink(path);
+}
+
 int load_rom(char *rom, UINT8 *dest, UINT32 size)
 {
    const DIR_INFO *dir_list;
@@ -1257,9 +1263,7 @@ beg:
 	   setup_curl_dlg(name,url);
 	   int ret = get_url(path,url);
 	   if (ret == CURLE_ABORTED_BY_CALLBACK) {
-	       sprintf(load_debug+strlen(load_debug),_("curl transfer aborted by user"));
-	       load_error |= LOAD_FATAL_ERROR;
-	       unlink(path);
+	       abort_curl(path);
 	       return 0;
 	   }
 
@@ -1267,11 +1271,19 @@ beg:
 	       // Other url : finalburn. Start by this one because the neogeo roms for fbneo include all the neogeo bioses which makes the roms larger !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
 	       ret = get_url(path,url);
+	       if (ret == CURLE_ABORTED_BY_CALLBACK) {
+		   abort_curl(path);
+		   return 0;
+	       }
 	   }
 	   if (ret && !strstr(url,"fbnarca")) {
 	       // Last option : fbneo, the big archives...
 	       snprintf(url,512,"https://archive.org/download/fbnarcade-fullnonmerged/arcade/%s.zip",dir);
 	       ret = get_url(path,url);
+	       if (ret == CURLE_ABORTED_BY_CALLBACK) {
+		   abort_curl(path);
+		   return 0;
+	       }
 	   }
 	   setup_curl_dlg(NULL, url);
 	   if (!exists(path)) {

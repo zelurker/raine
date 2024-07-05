@@ -121,6 +121,8 @@ int get_url(char *file, char *url)
 
   ret = curl_easy_perform(curl_handle);
   char *ct = NULL;
+  if (ret == CURLE_ABORTED_BY_CALLBACK)
+      return ret;
   if (ret == CURLE_OK)
       curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
   if (strcmp(ct,"application/zip") && url[strlen(url)-1] != '/') {
