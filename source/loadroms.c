@@ -4,6 +4,9 @@
 /*                                                                            */
 /******************************************************************************/
 
+#if defined(SDL) && defined(USE_CURL)
+#include "curl.h"
+#endif
 #include "loadroms.h"
 #include "files.h"
 #include "gameinc.h"
@@ -17,9 +20,6 @@
 #include "6502/m6502hlp.h"
 #endif
 #include "7z.h"
-#if defined(SDL) && defined(USE_CURL)
-#include "curl.h"
-#endif
 #include "ips.h"
 #if GENS_SH2
 #include "sh2.h"
