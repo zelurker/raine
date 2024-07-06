@@ -356,7 +356,7 @@ static int do_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do?"),
+      int ret = raine_mbox(_("Question"),_("What do you want to do?"),
         _("Delete the key|"
 	"Delete the joystick control|"
 	"Really use ESC here"));
@@ -400,7 +400,7 @@ static int do_kb_input(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do?"),
+      int ret = raine_mbox(_("Question"),_("What do you want to do?"),
         _("Delete the key"));
       switch(ret) {
 	case 1:
@@ -428,7 +428,7 @@ static int do_input_ingame(int sel) {
   delete input;
   if (inp_key) {
     if (inp_key == SDL_SCANCODE_ESCAPE) {
-      int ret = MessageBox(_("Question"),_("What do you want to do?"),
+      int ret = raine_mbox(_("Question"),_("What do you want to do?"),
         _("Delete the key|"
 	"Delete the joystick control|"
 	"Delete the mouse button"));
@@ -731,7 +731,7 @@ static int setup_autofire(int sel) {
     }
   }
   if (mynb == 0) {
-    MessageBox(_("Error"),_("No buttons mapped by this game for autofire yet"));
+    raine_mbox(_("Error"),_("No buttons mapped by this game for autofire yet"));
     free(menu);
     return 0;
   }
@@ -747,7 +747,7 @@ static int setup_autofire(int sel) {
 	  if (InputList[x].link > n)
 	    InputList[x].link--;
 	}
-	memcpy(&InputList[n],&InputList[n+1],(InputCount-1-n)*sizeof(INPUT));
+	memcpy(&InputList[n],&InputList[n+1],(InputCount-1-n)*sizeof(traine_input));
       }
       InputCount--;
     }
@@ -773,7 +773,7 @@ static int autofire_controls(int sel) {
   for (n=0; n<InputCount; n++) {
     if (InputList[n].auto_rate && InputList[n].link == 0) {
       if (InputCount >= MAX_INPUTS-1) {
-	MessageBox(_("Error"),_("Too many controls have been defined for this game already."));
+	raine_mbox(_("Error"),_("Too many controls have been defined for this game already."));
 	return 0;
       }
       InputList[InputCount] = InputList[n];
@@ -932,7 +932,7 @@ static int do_load(int sel) {
     }
     if (f) fclose(f);
     if (!nb_used) {
-	MessageBox(_("Error"),_("Save 1st some custom inputs using\nSave inputs as"));
+	raine_mbox(_("Error"),_("Save 1st some custom inputs using\nSave inputs as"));
 	return 0;
     }
     selected = -1;
@@ -1016,7 +1016,7 @@ static int get_inputs(int sel) {
     }
     if (f) fclose(f);
     if (!nb_used) {
-	MessageBox(_("Error"),_("No game uses custom inputs in your config file yet"));
+	raine_mbox(_("Error"),_("No game uses custom inputs in your config file yet"));
 	return 0;
     }
     selected = -1;
@@ -1066,7 +1066,7 @@ class TJoy : public TMenu {
 static int do_joy_index(int sel) {
     int nb_joy = SDL_NumJoysticks(),n;
     if (nb_joy <= 1) {
-	MessageBox("Info","You need at least 2 joysticks for that","OK");
+	raine_mbox("Info","You need at least 2 joysticks for that","OK");
 	return 0;
     }
     menu_item_t *my_menu = (menu_item_t*)calloc(nb_joy+1,sizeof(menu_item_t));
@@ -1102,7 +1102,7 @@ extern "C" char *my_map(SDL_Joystick *joy);
 static int do_mapping(int sel) {
     int nb = SDL_NumJoysticks();
     if (nb <= 0) {
-	MessageBox("Error", "This command is to map the controls of a\njoystick, and none is detected","Ok");
+	raine_mbox("Error", "This command is to map the controls of a\njoystick, and none is detected","Ok");
 	return 0;
     }
     if (nb > 1) {
@@ -1123,7 +1123,7 @@ static int do_mapping(int sel) {
 	selected = get_joy_playerindex(selected);
     } else
 	selected = 0;
-    MessageBox("Info",_("When you click OK, a new window will appear\nIf you don't see it, use Alt+Tab\n"
+    raine_mbox("Info",_("When you click OK, a new window will appear\nIf you don't see it, use Alt+Tab\n"
 	    "Press the buttons on your controller when indicated\n"
     "(Your controller may look different than the picture)\n"
     "If you want to correct a mistake, press backspace or the back button on your device\n"
@@ -1170,13 +1170,13 @@ static int do_mapping(int sel) {
 	    if (unlink(userdb)) {
 		char err[FILENAME_MAX];
 		snprintf(err,FILENAME_MAX,"could not delete old mapping file\n%s",userdb);
-		MessageBox("Error",err,"ok");
+		raine_mbox("Error",err,"ok");
 		return 0;
 	    }
 	    if (rename(get_shared("config" SLASH "userdb2.txt"),get_shared("config" SLASH "userdb.txt"))) {
 		char err[FILENAME_MAX];
 		snprintf(err,FILENAME_MAX,"could not rename mapping file to\n%s",get_shared("config" SLASH "userdb.txt"));
-		MessageBox("Error",err,"ok");
+		raine_mbox("Error",err,"ok");
 		return 0;
 	    }
 	} else {

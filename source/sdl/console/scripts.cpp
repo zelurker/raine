@@ -360,7 +360,7 @@ void init_scripts() {
 			continue;
 		    }
 		    if (!file) {
-			MessageBox("alert","cheats file in the wrong format, please update ! (luascript)","ok");
+			raine_mbox("alert","cheats file in the wrong format, please update ! (luascript)","ok");
 			fclose(f);
 			return;
 		    }
@@ -385,7 +385,7 @@ void init_scripts() {
 			continue;
 		    }
 		    if (!lines) {
-			MessageBox("alert","cheats file in the wrong format, please update !","ok");
+			raine_mbox("alert","cheats file in the wrong format, please update !","ok");
 			fclose(f);
 			return;
 		    }
@@ -509,9 +509,9 @@ static void run_script(int n) {
 		strncat(msg, e.what(),240-strlen(msg));
 		stop_script(nb);
 		strncat(msg,"\n(script stopped)",240-strlen(msg));
-		MessageBox("script error",msg,"ok");
+		raine_mbox("script error",msg,"ok");
 	    } else
-		MessageBox("script error",e.what(),"ok");
+		raine_mbox("script error",e.what(),"ok");
 	    reset_ingame_timer();
 	}
 	script[n].status = 0;
@@ -519,7 +519,7 @@ static void run_script(int n) {
     catch(const char *msg) {
 	if (cons && cons->is_visible()) cons->print(msg);
 	else {
-	    MessageBox("script error",(char *)msg,"ok");
+	    raine_mbox("script error",(char *)msg,"ok");
 	}
 	script[n].status = 0;
     }
@@ -558,7 +558,7 @@ static int activate_cheat(int n) {
 		snprintf(&btn[strlen(btn)],10240-strlen(btn),"%s|",script[n].value_list_label[x]);
 	    }
 	    btn[strlen(btn)-1] = 0; // remove last |
-	    int ret = MessageBox("script parameter",script[n].title,btn);
+	    int ret = raine_mbox("script parameter",script[n].title,btn);
 	    if (ret)
 		set_script_param(n,script[n].value_list[ret-1]);
 	    else
@@ -704,16 +704,16 @@ void update_scripts() {
 		strncat(msg, e.what(),240-strlen(msg));
 		stop_script(nb);
 		strncat(msg,"\n(script stopped)",240-strlen(msg));
-		MessageBox("script error",msg,"ok");
+		raine_mbox("script error",msg,"ok");
 	    } else
-		MessageBox("script error",e.what(),"ok");
+		raine_mbox("script error",e.what(),"ok");
 	    reset_ingame_timer();
 	}
     }
     catch(const char *msg) {
 	if (cons && cons->is_visible()) cons->print(msg);
 	else {
-	    MessageBox("script error",(char *)msg,"ok");
+	    raine_mbox("script error",(char *)msg,"ok");
 	}
     }
 }

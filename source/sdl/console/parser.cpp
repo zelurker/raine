@@ -236,10 +236,10 @@ static value_type alert(const char_type *msg_and_btns) {
   char *btn = strchr(cmsg,'|');
   if (btn) {
     *btn++ = 0;
-    return MessageBox("alert",cmsg,btn);
+    return raine_mbox("alert",cmsg,btn);
   }
   // otherwise it's just a message
-  return MessageBox("alert",cmsg);
+  return raine_mbox("alert",cmsg);
 }
 
 static int initialised = 0;

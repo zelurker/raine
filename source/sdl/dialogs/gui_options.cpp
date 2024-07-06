@@ -90,7 +90,7 @@ static int do_led_paths(int sel) {
 	}
     }
     if (nb_files == 0) {
-	MessageBox("Error","No write permission to any brightness file\nin /sys/class/leds","ok");
+	raine_mbox("Error","No write permission to any brightness file\nin /sys/class/leds","ok");
 	return 0;
     }
     qsort(&menu[0],nb_files,sizeof(menu_item_t),&qsort_menu);

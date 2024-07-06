@@ -24,8 +24,8 @@
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
 #include "glsl.h"
-#ifdef MessageBox
-#undef MessageBox
+#ifdef raine_mbox
+#undef raine_mbox
 #endif
 #include "dialogs/messagebox.h"
 #include "str_opaque.h"
@@ -233,7 +233,7 @@ void get_ogl_infos() {
 				sdl_screen->format->Rshift,
 				sdl_screen->format->Gshift,
 				sdl_screen->format->Bshift);
-		MessageBox(gettext("OpenGL error"),buff,gettext("ok"));
+		raine_mbox(gettext("OpenGL error"),buff,gettext("ok"));
 	}
 
 	ogl.info = 1;

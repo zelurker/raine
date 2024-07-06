@@ -43,7 +43,7 @@ class TCheatDlg : public TMenu
 	    if (font) font->dimensions(cheat_info,&w,&h);
 	    if (w > sdl_screen->w || h > sdl_screen->h-base) {
 		if (event->button.y > base)
-		    MessageBox("info",cheat_info,"OK");
+		    raine_mbox("info",cheat_info,"OK");
 	    }
 	}
     }

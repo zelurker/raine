@@ -297,7 +297,7 @@ void sdl_create_overlay( int w, int h) {
     static int warned_hw;
     if (!warned_hw) {
 	warned_hw = 1;
-	MessageBox(gettext("Warning"),gettext("No hardware support for overlays"),gettext("ok"));
+	raine_mbox(gettext("Warning"),gettext("No hardware support for overlays"),gettext("ok"));
     }
      if ( display_cfg.video_mode != 1) {
 	 SDL_FreeYUVOverlay(sdl_overlay);

@@ -1864,7 +1864,7 @@ static void load_puckman()
 #ifndef SDL
       if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-      if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
+      if(raine_mbox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
 	{
 	if (mspacman)

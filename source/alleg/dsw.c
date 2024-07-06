@@ -434,7 +434,7 @@ void SetLanguageSwitch(int number)
       int n;
       for (n=0; n<LanguageSw.Count; n++)
 	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.data[n].Mode);
-      MessageBox("Warning",buf,"Ok");
+      raine_mbox("Warning",buf,"Ok");
       return;
   }
 

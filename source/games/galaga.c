@@ -1085,7 +1085,7 @@ static void load_galaga() {
     } else
 	sample = none;
     if (sample == none) {
-	MessageBox("Info", "No sample detected for the explosion.\nYou can use the emudx galdxm.dx2 file\nor a galaga_explode sample in wav, ogg or mp3","Ok");
+	raine_mbox("Info", "No sample detected for the explosion.\nYou can use the emudx galdxm.dx2 file\nor a galaga_explode sample in wav, ogg or mp3","Ok");
     }
 }
 

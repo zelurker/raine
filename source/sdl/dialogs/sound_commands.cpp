@@ -155,7 +155,7 @@ int menu_asso(int sel) {
     char *t;
     int old;
     TSoundCmd *menu;
-    int nb = MessageBox(_("Choice"),_("Track options"),
+    int nb = raine_mbox(_("Choice"),_("Track options"),
 	    _("Play track|Test command|Silence track|Change track|Remove association"));
     switch (nb) {
     case 4: // change track
@@ -234,7 +234,7 @@ static int associations(int sel) {
 	asso = (menu_item_t*)realloc(asso,sizeof(menu_item_t)*(nb+1));
 	asso[nb].label = NULL;
 	if (!nb) {
-	    MessageBox(_("Error"),_("No associations yet"),_("OK"));
+	    raine_mbox(_("Error"),_("No associations yet"),_("OK"));
 	    return 0;
 	}
 	TMenuPostCb *dlg = new TMenuPostCb(_("Sound associations"),asso,

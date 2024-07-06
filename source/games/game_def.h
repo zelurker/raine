@@ -27,13 +27,13 @@
 #endif
 
 #undef DINPUT
-#undef PINPUT
+#undef PLINPUT
 #ifndef DRV_DEF_INPUT
 #define DINPUT(x) input_##x
-#define PINPUT NULL
+#define PLINPUT NULL
 #else
 #define DINPUT(x) DRV_DEF_INPUT
-#define PINPUT DRV_DEF_INPUT
+#define PLINPUT DRV_DEF_INPUT
 #endif
 
 #undef DDSW
@@ -100,7 +100,7 @@ struct GAME_MAIN game_##name =         \
     .company_id = COMPANY_ID_##company,      \
     .year = yr,                              \
     .flags = flg,                            \
-    .input = PINPUT,                         \
+    .input = PLINPUT,                         \
     .dsw = PDSW,                             \
     .exec = PEXEC,                           \
     .sound = PSOUND,                         \
@@ -154,7 +154,7 @@ struct GAME_MAIN game_##name =                 \
     .company_id = COMPANY_ID_##company,              \
     .year = yr,                                      \
     .flags = flg,                                    \
-    .input = PINPUT,                                 \
+    .input = PLINPUT,                                 \
     .dsw = PDSW,                                     \
     .exec = PEXEC,                                   \
     .sound = PSOUND,                                 \

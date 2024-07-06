@@ -147,7 +147,7 @@ TTransBitmap::~TTransBitmap() {
 	    printf("Could not save map\n");
     }
     if (sprites_changed &&
-	    MessageBox("Confirmation","Save the changes?","Yes|No")==1) {
+	    raine_mbox("Confirmation","Save the changes?","Yes|No")==1) {
 	char path[1024];
 	printf("Saving the changes...\n");
 	snprintf(path,1024,"%soverride",dir_cfg.exe_path);
@@ -252,7 +252,7 @@ static UINT32 get_msg_size(UINT32 base) {
 static void insert_char() {
     int last_entry = (ReadWord(&RAM[base])-4)/2;
     if (base < 0x80000 && base != 0x71d82) {
-	MessageBox("Error","Insertion in this area not handled yet","OK");
+	raine_mbox("Error","Insertion in this area not handled yet","OK");
 	return;
     }
     UINT32 last_offset;
@@ -264,7 +264,7 @@ static void insert_char() {
 	last_offset = size_msg - 2;
     }
     if (base < 0x80000 && base + size_msg + 2 >= END_PROG_MSG) {
-	MessageBox("Error","Can't insert, reaching the end of the zone",
+	raine_mbox("Error","Can't insert, reaching the end of the zone",
 		"OK");
 	return;
     }
@@ -366,7 +366,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 		}
 		int diff = last_offset - offs;
 		if (base < 0x80000 && base != 0x71d82) {
-		    MessageBox("Error","Can't reduce this area for now","OK");
+		    raine_mbox("Error","Can't reduce this area for now","OK");
 		    break;
 		}
 		if (diff) {
@@ -393,7 +393,7 @@ int TTransBitmap::handle_key(SDL_Event *event) {
 	    if (screens || !size_msg) break;
 	    offs = offset+(cursorx+20*cursory)*2;
 	    if (base < 0x80000 && base != 0x71d82) {
-		MessageBox("Error","Can't reduce this area for now","OK");
+		raine_mbox("Error","Can't reduce this area for now","OK");
 		break;
 	    }
 	    sprites_changed = 1;
@@ -651,7 +651,7 @@ int set_entry(int sel) {
 }
 
 static int insert_code(int sel) {
-    int ret = MessageBox("Insertion",
+    int ret = raine_mbox("Insertion",
 	    "Which portrait do you want to insert?",
 	    "Haohmaru|"
 	    "Haohmaru's master|Angry master"
@@ -715,7 +715,7 @@ int do_screen(int sel) {
     }
     buff[strlen(buff)-1] = 0; // remove last |
     selected = -1;
-    selected = MessageBox("Selection","File to edit?",buff);
+    selected = raine_mbox("Selection","File to edit?",buff);
 
     if (selected < 0) return 0;
     selected--;

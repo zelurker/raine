@@ -15,8 +15,8 @@
 // #include "control_internal.h"
 #include "display.h"
 #include "display_sdl.h"
-#ifdef MessageBox
-#undef MessageBox
+#ifdef raine_mbox
+#undef raine_mbox
 #endif
 #include "dialogs/messagebox.h"
 #include "dialogs/fsel.h"
@@ -82,7 +82,7 @@ static int my_toggle_border(int sel) {
 
 static int update_scaler(int sel) {
   if (display_cfg.scanlines && display_cfg.stretch) { // scaling options
-    MessageBox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("OK"));
+    raine_mbox(_("Warning"),_("You can't have at the same time a scaler + scanlines,\nChoose one."),_("OK"));
     display_cfg.stretch = 0; // no scaling if scanlines
     video_options->draw();
   }
@@ -138,7 +138,7 @@ static int choose_shader(int sel) {
     fsel(dir,exts,ogl.shader,"Select shader");
     if (ogl.shader[strlen(ogl.shader)-1] == SLASH[0] &&
 	    strcmp(old,"None")) { // cancelled ?
-	if (MessageBox(_("Confirmation"),_("Disable shaders?"),_("Yes|No")) == 1) {
+	if (raine_mbox(_("Confirmation"),_("Disable shaders?"),_("Yes|No")) == 1) {
 	    strcpy(ogl.shader,"None");
 	    delete_shaders();
 	} else
@@ -188,7 +188,7 @@ int renderer_options(int sel) {
     case 2: menu = new TDialog(_("Blits options"), blits_options); break;
 #endif
     default:
-	    MessageBox(_("Error"),_("No options for this renderer."),_("OK"));
+	    raine_mbox(_("Error"),_("No options for this renderer."),_("OK"));
 	    return 0;
     }
     // menu->set_transparency(0);

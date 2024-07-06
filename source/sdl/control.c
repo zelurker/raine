@@ -736,13 +736,13 @@ struct DEF_INPUT_EMU def_input_emu[] =
  { SDL_SCANCODE_F4,       0x00,           _("Quit without saving"), KMOD_ALT, key_quit     },
 };
 
-struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
+struct traine_input InputList[MAX_INPUTS];	// Max 64 control inputs in a game
 
 int InputCount;			// Number of Inputs in InputList
 
 int hat_for_moves;
 
-static void set_key_from_default(INPUT *inp)
+static void set_key_from_default(traine_input *inp)
 {
 
     inp->Key = def_input[inp->default_key & 0xFF].scancode;
@@ -813,7 +813,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 		    // overwritten by unused/unknown -> the old input simply disappears in this case...
 		    // printf("Erase input %s, InputCount %d offset %x mask %x from %s off %x mask %x\n",InputList[n].InputName,InputCount,InputList[n].Address,InputList[n].Bit,
 			//    input_src[srcCount].name,input_src[srcCount].offset,input_src[srcCount].bit_mask);
-		    memmove(&InputList[n],&InputList[n+1],(InputCount-n)*sizeof(struct INPUT));
+		    memmove(&InputList[n],&InputList[n+1],(InputCount-n)*sizeof(struct traine_input));
 		    InputCount--;
 		    n--; continue;
 		}
@@ -851,7 +851,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 	    // input overwritten by a hidden input, we must move the list...
 	    if (old > InputCount+1)
 		memmove(&InputList[InputCount],&InputList[InputCount+1],
-			(old-(InputCount+1))*sizeof(struct INPUT));
+			(old-(InputCount+1))*sizeof(struct traine_input));
 	    old--;
 	}
 	if (old > -1) {
@@ -864,7 +864,7 @@ static void merge_inputs(const INPUT_INFO *input_src) {
 			 InputList[n].default_key == KB_DEF_UNUSED)))) {
 		    if (old > n+1)
 			memmove(&InputList[n],&InputList[n+1],
-				(old-(n+1))*sizeof(struct INPUT));
+				(old-(n+1))*sizeof(struct traine_input));
 		    old--;
 		    n--;
 		}

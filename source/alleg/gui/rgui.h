@@ -31,8 +31,8 @@ void done_gui_screen();
 int raine_gfx_mode_select(void);
 
 int raine_alert(char *title, char *s1, char *s2, char *s3, char *b1, char *b2, int c1, int c2);
-void MessageBox(char *title,char *msg,char *button);
-#define ErrorMsg(msg) MessageBox("Error",msg,"OK")
+void raine_mbox(char *title,char *msg,char *button);
+#define ErrorMsg(msg) raine_mbox("Error",msg,"OK")
 int raine_edit_int(char *title, char *s1, char *b1, char *b2, int c1, int c2, int inf, int supp, int def);
 #define fatal_error(format, ...) alleg_fatal_error(__FILE__,__func__,__LINE__, format, ## __VA_ARGS__)
 void alleg_fatal_error(const char *file, const char*func, int line, char *format, ...);

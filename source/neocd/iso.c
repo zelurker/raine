@@ -92,7 +92,7 @@ static int find_file(char *iso, char *filename, int *size, int *start) {
   if (!f) {
     char msg[256];
     sprintf(msg,_("Couldn't open disc image file:|%s"),iso);
-    MessageBox(gettext("Error"),msg,gettext("Ok"));
+    raine_mbox(gettext("Error"),msg,gettext("Ok"));
     return 0;
   }
   if (!dir) {

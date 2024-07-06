@@ -36,8 +36,6 @@
 #include "compat.h"
 #include "curl.h"
 
-extern CURL *curl_handle;
-
 // It's impossible to include raine.h here in windows, because windows is too dumb !!!
 typedef struct DIR_CFG
 {

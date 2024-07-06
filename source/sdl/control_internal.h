@@ -79,7 +79,7 @@ char *get_joy_name(int n);
 int get_joy_naxes(int n);
 
 /* Active inputs (allows to switch from default to custom inputs/game) */
-typedef struct INPUT
+typedef struct traine_input
 {
    UINT32 Key;			// keyboard code for this input
    UINT32 Joy;			// joystick code for this input
@@ -92,7 +92,7 @@ typedef struct INPUT
    int auto_rate;		// autofire frame rate
    UINT32 active_time;		// frames since the input became active (used for coin time)
    int link; // linked input : allows to create another input for autofire
-} INPUT;
+} traine_input;
 
 enum { // categories of inputs
     P1S = 0x10, // start
@@ -116,7 +116,7 @@ enum { // categories of inputs
 
 #define MAX_INPUTS 64
 
-extern struct INPUT InputList[MAX_INPUTS];	// Max 64 control inputs in a game
+extern struct traine_input InputList[MAX_INPUTS];	// Max 64 control inputs in a game
 
 extern int InputCount;			// Number of Inputs in InputList
 

@@ -1787,7 +1787,7 @@ void build_mode_list() {
 
 /******************************************************************************/
 
-void MessageBox(char *title, char *msg, char *btn) {
+void raine_mbox(char *title, char *msg, char *btn) {
     char *s1 = msg;
     char *s2 = strstr(s1,"\n");
     char *s3;
@@ -1809,7 +1809,7 @@ void alleg_fatal_error(const char *file, const char *func, int line, char *forma
     snprintf(msg,512,"function %s file %s line %d\n",func,file,line);
     vsnprintf(&msg[strlen(msg)],512-strlen(msg),format,ap);
     va_end(ap);
-    MessageBox("Fatal error",msg,"ok");
+    raine_mbox("Fatal error",msg,"ok");
     if (current_game->clear) (*current_game->clear)();
     exit(1);
 }

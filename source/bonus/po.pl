@@ -28,7 +28,7 @@ while ($file = shift @ARGV) {
 			}
 		}
 	   	if (!$func) {
-			if (/(print_ingame|print_menu_string|MessageBox|print_tf_state|add_layer_info|load_progress|load_message) *\(/) { # specific function
+			if (/(print_ingame|print_menu_string|raine_mbox|print_tf_state|add_layer_info|load_progress|load_message) *\(/) { # specific function
 				$func = 1;
 			}
 		}

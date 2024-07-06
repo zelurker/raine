@@ -182,7 +182,7 @@ static int my_load(int sel) {
   exit_options = 0;
   menu_item_t *menu = get_savegames(0);
   if (!used) {
-    MessageBox(_("Error"),_("No save states loadable for this game"));
+    raine_mbox(_("Error"),_("No save states loadable for this game"));
     return 0;
   }
   TMenu *load = new TMenu(_("Load state"),menu);

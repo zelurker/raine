@@ -311,7 +311,7 @@ int main(int argc,char *argv[])
      current_year = strrchr(current_year,' ');
      if (current_year) current_year++;
      else current_year = "?";
-    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-%s(!) " HANDLE,current_year);
+    printf(" (680x0 Arcade Emulation) " VERSION " (c)1998-%s(!) " AUTHOR,current_year);
 
    printf("\n\n");
 

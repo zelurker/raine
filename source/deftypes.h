@@ -23,23 +23,24 @@ extern "C" {
 
 #if (!defined( RAINE_WIN32 )) || defined(__MINGW32__)
 
-#define UINT8	unsigned char	   //  8-bit unsigned
-#define UINT16	unsigned short	   // 16-bit unsigned
+    // Using typdefs here because windows use typedefs and the last typedef wins
+    // it's to avoid too many name collisions for the files which must include windows.h (poor them !)
+    // problem is if using a package which defines one of these types using a define, in this case remove the definition from the package and use these !
+typedef unsigned char UINT8;		   //  8-bit unsigned
+typedef unsigned short UINT16;		   // 16-bit unsigned
 
-#define INT8	signed char 	   //  8-bit signed
-#define INT16	short			   // 16-bit signed
+typedef signed char INT8;	   //  8-bit signed
+typedef short INT16;			   // 16-bit signed
 
-#ifndef __int3264 // collision with windows api !!!
-#define UINT32	unsigned int	   // 32-bit unsigned
-#define UINT64	unsigned long long // 64-bit unsigned
+typedef unsigned int UINT32;	   // 32-bit unsigned
+typedef unsigned long long UINT64; // 64-bit unsigned
 
-#define INT32	int 			   // 32-bit signed
-#define INT64	long long		   // 64-bit signed
-#endif
+typedef int INT32;			   // 32-bit signed
+typedef long long INT64;		   // 64-bit signed
 
-#define CPTR	unsigned int	   // 32-bit pointer
+typedef unsigned int CPTR;	   // 32-bit pointer
 
-#define BOOL	int
+typedef int BOOL;
 
 #else
 
@@ -86,10 +87,10 @@ typedef int BOOL;
 #endif
 
 #ifndef u8
-#define u8 UINT8
-#define u16 UINT16
-#define u32 UINT32
-#define u64 UINT64
+typedef  UINT8 u8;
+typedef UINT16 u16;
+typedef UINT32 u32;
+typedef  UINT64 u64;
 #endif
 
 #ifndef TRUE

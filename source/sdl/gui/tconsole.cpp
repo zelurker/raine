@@ -511,15 +511,15 @@ int TConsole::run_cmd(char *string,int myinteractive) {
 		strncat(msg, e.what(),240-strlen(msg));
 		stop_script(nb);
 		strncat(msg,"\n(script stopped)",240-strlen(msg));
-		MessageBox("script error",msg,"ok");
+		raine_mbox("script error",msg,"ok");
 	    } else
-		MessageBox("script error",e.what(),"ok");
+		raine_mbox("script error",e.what(),"ok");
 	}
     }
     catch(const char *msg) {
 	if (visible) print(msg);
 	else {
-	    MessageBox("script error",(char *)msg,"ok");
+	    raine_mbox("script error",(char *)msg,"ok");
 	}
     }
     oldfield = *field;

@@ -115,7 +115,7 @@ void AddSaveData(UINT32 id, UINT8 *src, UINT32 size)
   if (size <= 0) {
       char msg[80];
       snprintf(msg,80,"AddSaveData section %c%c%c%c size %d",ASC((id>>24)),ASC((id>>16)&0xff),ASC((id>>8)&0xff),ASC(id & 0xff),size);
-      MessageBox("Error",msg,"Ok");
+      raine_mbox("Error",msg,"Ok");
       return;
   }
   if (SaveDataCount == alloc_save_list) {
@@ -141,7 +141,7 @@ void AddSaveData_ext(char *name, UINT8 *src, UINT32 size)
   if (size <= 0) {
       char msg[80];
       snprintf(msg,80,"AddSaveData_ext name %s size %d",name,size);
-      MessageBox("Error",msg,"Ok");
+      raine_mbox("Error",msg,"Ok");
       return;
   }
   if (SaveDataCount == alloc_save_list) {
@@ -630,7 +630,7 @@ void NewLoad(gzFile fin)
 	   snprintf(&dbuf[l],LEN_DUMP-l,"Maybe this save was created with a 64 bits version ?\n");
 #endif
        }
-       MessageBox("Alert",dbuf,"Ok");
+       raine_mbox("Alert",dbuf,"Ok");
    }
 }
 

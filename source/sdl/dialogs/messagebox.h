@@ -1,20 +1,20 @@
 #ifndef __MESSAGEBOX_H
 #define __MESSAGEBOX_H
 
-#define ErrorMsg(msg) MessageBox("Error",msg,"OK")
+#define ErrorMsg(msg) raine_mbox("Error",msg,"OK")
 
 #ifdef __cplusplus
 extern "C" {
 
-#if defined(MessageBox)
-#undef MessageBox
+#if defined(raine_mbox)
+#undef raine_mbox
 #endif
 
-int MessageBox(char *title, char *content, char *buttons = NULL);
+int raine_mbox(char *title, char *content, char *buttons = NULL);
 
 }
 #else
-int MessageBox(char *title, char *content, char *buttons);
+int raine_mbox(char *title, char *content, char *buttons);
 #endif
 
 #endif

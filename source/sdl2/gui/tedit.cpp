@@ -342,7 +342,7 @@ int TFloatEdit::can_exit() {
   if (min != max && (*the_float < min || *the_float > max)) {
       char content[80];
       sprintf(content,_("The field %g must have a value between %g and %g"),*the_float,min,max);
-      MessageBox(_("Error"),content);
+      raine_mbox(_("Error"),content);
       return 0;
   }
   return 1;
@@ -401,7 +401,7 @@ int THexEdit::can_exit() {
     if ((*the_hex < min || *the_hex > max) && min != max) {
 	char content[80];
 	sprintf(content,_("The field %x must have a value between %x and %x"),*the_hex,min,max);
-	MessageBox(_("Error"),content);
+	raine_mbox(_("Error"),content);
 	return 0;
     }
     return 1;
@@ -444,7 +444,7 @@ int TIntEdit::can_exit() {
     if ((*menu->value_int < menu->values_list[3] || *menu->value_int > menu->values_list[4]) && menu->values_list[3] != menu->values_list[4]) {
 	char content[80];
 	sprintf(content,_("The field %d must have a value between %d and %d"),*menu->value_int,menu->values_list[3],menu->values_list[4]);
-	MessageBox(_("Error"),content);
+	raine_mbox(_("Error"),content);
 	return 0;
     }
     return 1;

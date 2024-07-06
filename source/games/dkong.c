@@ -833,14 +833,14 @@ static void load_dkong() {
 #ifndef SDL
     raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("Without dkongm.dx2 you will have no sound"),NULL,raine_translate_text("&Ok"),NULL,'O',0);
 #else
-    MessageBox(gettext("EmuDX"),gettext("Without dkongm.dx2 you will have no sound"),gettext("Ok"));
+    raine_mbox(gettext("EmuDX"),gettext("Without dkongm.dx2 you will have no sound"),gettext("Ok"));
 #endif
   }
   if (exists_emudx_file("dkongg.dx2") && (is_current_game("dkongjp") || dkong_us)) {
 #ifndef SDL
     if((raine_alert(raine_translate_text("EmuDX"),NULL,raine_translate_text("EmuDX support?"),NULL,raine_translate_text("&Yes"),raine_translate_text("&No"),'Y','N'))==1)
 #else
-      if(MessageBox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
+      if(raine_mbox(gettext("EmuDX"),gettext("EmuDX support ?"),gettext("Yes|No")) == 1)
 #endif
       {
 	load_emudx("dkongg.dx2",4,262-5,262,419,

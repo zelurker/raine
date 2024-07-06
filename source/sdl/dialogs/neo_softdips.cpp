@@ -228,7 +228,7 @@ int do_soft_dips(int sel) {
 	    }
 	}
     }
-    catch(...) { MessageBox(_("Warning"),_("Bad soft dipswitches"),_("OK")); }
+    catch(...) { raine_mbox(_("Warning"),_("Bad soft dipswitches"),_("OK")); }
 
     // Free everything !
     nb = 0;

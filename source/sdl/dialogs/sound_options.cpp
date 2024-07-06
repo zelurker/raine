@@ -35,7 +35,7 @@ static int choose_driver(int sel) {
         snprintf(&buf[strlen(buf)],512-strlen(buf),"%s|", SDL_GetAudioDriver(i));
     }
     buf[strlen(buf)-1] = 0; // remove last |
-    int ret = MessageBox("Sound driver",_("Choose one of the available drivers:"),buf);
+    int ret = raine_mbox("Sound driver",_("Choose one of the available drivers:"),buf);
     if (ret > 0 && strcmp(SDL_GetAudioDriver(ret-1),current)) {
 	const char *driver = SDL_GetAudioDriver(ret-1);
 	snprintf(buf,512,"SDL_AUDIODRIVER=%s",driver);
@@ -45,7 +45,7 @@ static int choose_driver(int sel) {
 
 	ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
 	if (ret < 0) {
-	    MessageBox("Error",_("Could not even initialize the audio subsystem with this driver\nForget it"),"Ok");
+	    raine_mbox("Error",_("Could not even initialize the audio subsystem with this driver\nForget it"),"Ok");
 	    snprintf(buf,512,"SDL_AUDIODRIVER=%s",current);
 	    putenv(buf);
 	    ret = SDL_InitSubSystem(SDL_INIT_AUDIO);
@@ -55,7 +55,7 @@ static int choose_driver(int sel) {
 	}
 	const char *driver2 = SDL_GetCurrentAudioDriver();
 	if (strcmp(driver,driver2))
-	    MessageBox("Error","couldn't change the sound driver !\nTry before starting any game","ok");
+	    raine_mbox("Error","couldn't change the sound driver !\nTry before starting any game","ok");
     }
     init_sound_driver(1);
     return 0;

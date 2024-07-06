@@ -370,7 +370,7 @@ void setup_neocd_bios() {
   } while (1);
 
   if (!ret) {
-      MessageBox(gettext("Fatal error"), gettext("Find the Neo-Geo CD BIOS (neocd.bin).\nAsk Google if you can't find it!"),gettext("OK"));
+      raine_mbox(gettext("Fatal error"), gettext("Find the Neo-Geo CD BIOS (neocd.bin).\nAsk Google if you can't find it!"),gettext("OK"));
       exit(1);
   }
 
@@ -1264,7 +1264,7 @@ static void save_memcard() {
     }
     if (!is_neocd() && saveram.ram) {
 	if (saveram.unlock) {
-	    MessageBox(gettext("Warning"), gettext("Can't save the backup RAM, it's unlocked"),gettext("OK"));
+	    raine_mbox(gettext("Warning"), gettext("Can't save the backup RAM, it's unlocked"),gettext("OK"));
 	    return;
 	}
 

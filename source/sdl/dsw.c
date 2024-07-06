@@ -143,7 +143,7 @@ static void my_make_dipswitch_statlist(int reset) {
 	      } else {
 		  char buff[80];
 		  snprintf(buff,80,"Unknown dsw command : %s",&dsw_data[tb].name[1]);
-		  MessageBox(gettext("Dipswitch"),buff,gettext("ok"));
+		  raine_mbox(gettext("Dipswitch"),buff,gettext("ok"));
 	      }
 	      tb++;
 	      continue;
@@ -414,7 +414,7 @@ void SetLanguageSwitch(int number)
       int n;
       for (n=0; n<LanguageSw.Count; n++)
 	  sprintf(&buf[strlen(buf)],"%d: %s\n",n,LanguageSw.data[n].Mode);
-      MessageBox(gettext("Warning"),buf,gettext("Ok"));
+      raine_mbox(gettext("Warning"),buf,gettext("Ok"));
       return;
   }
 

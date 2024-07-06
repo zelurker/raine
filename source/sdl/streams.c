@@ -443,7 +443,7 @@ void update_monitoring() {
 	    } else {
 		char dir[1024];
 		sprintf(dir,gettext("Can't create %s"),path);
-		MessageBox(gettext("Error"),dir,gettext("OK"));
+		raine_mbox(gettext("Error"),dir,gettext("OK"));
 		recording = 0;
 	    }
 	}

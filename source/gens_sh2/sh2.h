@@ -16,30 +16,7 @@
 /******************************/
 /* Compiler dependant defines */
 /******************************/
-
-#ifndef UINT8
-#define UINT8   unsigned char
-#endif
-
-#ifndef INT8
-#define INT8    signed char
-#endif
-
-#ifndef UINT16
-#define UINT16  unsigned short
-#endif
-
-#ifndef INT16
-#define INT16   signed short
-#endif
-
-#ifndef UINT32
-#define UINT32  unsigned long
-#endif
-
-#ifndef INT32
-#define INT32   signed long
-#endif
+#include "deftypes.h"
 
 // Possible Status for sh2 context (bitmask)
 #define SH2_RUNNING     0x01

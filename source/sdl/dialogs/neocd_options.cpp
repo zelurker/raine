@@ -69,7 +69,7 @@ static int choose_bios(int sel) {
 	load->execute();
 	delete load;
     } else
-	MessageBox("Error","Can't find any Neo-Geo BIOS in your ROMs.\nSetup your ROM directories so that neogeo.zip is loadable","OK");
+	raine_mbox("Error","Can't find any Neo-Geo BIOS in your ROMs.\nSetup your ROM directories so that neogeo.zip is loadable","OK");
     free(menu);
     return 0;
 }
@@ -93,7 +93,7 @@ static int do_update_block(int sel) {
     char *name = strrchr(picture,'/');
     SDL_Surface *img = IMG_Load(picture);
     if (img->format->BitsPerPixel != 8) {
-      MessageBox(_("Error"),_("This picture isn't 8bpp"));
+      raine_mbox(_("Error"),_("This picture isn't 8bpp"));
       SDL_FreeSurface(img);
       return 0;
     }
@@ -105,7 +105,7 @@ static int do_update_block(int sel) {
     if (!fmap) {
       char error[256];
       snprintf(error,256,"no map %s",map);
-      MessageBox(_("Error"),error);
+      raine_mbox(_("Error"),error);
       return 0;
     }
     char last_name[30];
@@ -123,7 +123,7 @@ static int do_update_block(int sel) {
 	if (!fspr) {
 	  char error[128];
 	  sprintf(error,"could not open %s",path);
-	  MessageBox(_("Error"),path);
+	  raine_mbox(_("Error"),path);
 	  break;
 	}
 	printf("%s:\n",spr);

@@ -564,7 +564,7 @@ void TMultiFileSel::compute_nb_items() {
 
 int TMultiFileSel::myexec_file(int sel) {
     if (nb_sel == max_res && !selected[sel]) {
-	MessageBox("Error","Already have max selections","ok");
+	raine_mbox("Error","Already have max selections","ok");
 	return 0;
     }
     selected[sel] ^= 1;

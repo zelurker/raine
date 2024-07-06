@@ -71,7 +71,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
     fread(buf,1,5,f);
     if (strncmp(buf,"PATCH",5)) {
 	fclose(f);
-	MessageBox("Error",_("Bad IPS header"), "OK");
+	raine_mbox("Error",_("Bad IPS header"), "OK");
 	return;
     }
     do {
@@ -114,7 +114,7 @@ void load_ips(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
 	char buf[len];
 	n = fread(buf,1,len,f);
 	if (n < len) {
-	    MessageBox("IPS Error","Premature EOF", "OK");
+	    raine_mbox("IPS Error","Premature EOF", "OK");
 	    fclose(f);
 	    return;
 	}
@@ -161,7 +161,7 @@ void add_ips_file(char *file) {
     if (!f) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't open %s",file);
-	MessageBox("Error",err,"OK");
+	raine_mbox("Error",err,"OK");
 	return;
     }
     printf("add_ips_file %s\n",file);
@@ -170,7 +170,7 @@ void add_ips_file(char *file) {
     if (!s) {
 	char err[1024];
 	sprintf(err,"add_ips_file: Can't decode path : %s",file);
-	MessageBox("Error",err,"OK");
+	raine_mbox("Error",err,"OK");
 	fclose(f);
 	return;
     }
@@ -205,7 +205,7 @@ void add_ips_file(char *file) {
 	if (nb >= MAX_IPS) {
 	    static int warned;
 	    if (!warned) {
-			    MessageBox("*.dat file error", "Too many IPS patches in the *.dat files!","OK");
+			    raine_mbox("*.dat file error", "Too many IPS patches in the *.dat files!","OK");
 		warned = 1;
 	    }
 	    fclose(f);
@@ -223,7 +223,7 @@ void add_ips_file(char *file) {
 	char msg[1024];
 	sprintf(msg,"%s: couldn't find any rom there... !",&s[1]);
 
-	MessageBox("*.dat file error", msg,"OK");
+	raine_mbox("*.dat file error", msg,"OK");
 	for (int n=0; n<nb; n++) {
 	    free(ips_info.rom[n]);
 	    free(ips_info.ips[n]);
@@ -322,7 +322,7 @@ void load_bps(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
     fread(buf,1,4,f);
     if (strncmp(buf,"BPS1",4)) {
 	fclose(f);
-	MessageBox("Error",_("Bad BPS header"), "Ok");
+	raine_mbox("Error",_("Bad BPS header"), "Ok");
 	return;
     }
     int src_size = bps_decode(f);
@@ -330,12 +330,12 @@ void load_bps(char *res, unsigned char *ROM, int max_size,int index,char *rom_na
     int meta_size = bps_decode(f);
     if (src_size != max_size) {
 	fclose(f);
-	MessageBox(_("Error"),"BPS: source size! = ROM size", "OK");
+	raine_mbox(_("Error"),"BPS: source size! = ROM size", "OK");
 	return;
     }
     if (dst_size != max_size) {
 	fclose(f);
-	MessageBox(_("Error"),"BPS: target size! = ROM size", "OK");
+	raine_mbox(_("Error"),"BPS: target size! = ROM size", "OK");
 	return;
     }
     if (meta_size) {

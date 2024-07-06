@@ -391,7 +391,6 @@ static u8 FASTCALL read_romb(u32 addr) {
     addr &= 0xfffff;
     if (addr <= 0xfffff)
 	return ROM[addr];
-    printf("*** read_romb %x\n",addr);
     return 0xff;
 }
 
@@ -399,7 +398,6 @@ FASTCALL static u16 read_romw(u32 addr) {
     addr &= 0xfffff;
     if (addr <= 0xffffe)
 	return ReadWord68k(&ROM[addr]);
-    printf("*** read_romw %x\n",addr);
     return 0xffff;
 }
 

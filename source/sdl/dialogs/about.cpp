@@ -555,7 +555,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
    if (bmp == NULL || bmp->format->palette == NULL) {
      CYC = NULL;
      if (bmp == NULL)
-	 MessageBox(_("Error"),_("No Raine logo"));
+	 raine_mbox(_("Error"),_("No Raine logo"));
    } else {
      palette_size = bmp->format->palette->ncolors;
      SDL_Color *colors = bmp->format->palette->colors;
@@ -572,7 +572,7 @@ TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
 #else
      if (bmp->format->colorkey != 0) {
 #endif
-       MessageBox(_("Error"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
+       raine_mbox(_("Error"),_("raine_logo.png must have the 1st color of the palette\n(color 0) as transparent"));
        CYC = NULL;
      } else {
        CYC = (UINT8 *)malloc(4*palette_size*NB_STEPS*(palette_size-1));
@@ -855,7 +855,7 @@ static int about_game(int sel) {
   } else {
       char *hist = get_shared("history.dat");
       if (!strcmp(hist,"history.dat")) { // No path info added -> no file !
-	  int ret = MessageBox(_("Warning"),_("history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your Raine directory\n"
+	  int ret = raine_mbox(_("Warning"),_("history.dat not found\nDownload it from http://www.arcade-history.com/index.php?page=download\nand install it in your Raine directory\n"
 		  "in linux ~/.raine or /usr/share/games/raine\n")
 		  ,_("Open this page now!|Later maybe..."));
 	  if (ret == 1)
@@ -928,7 +928,7 @@ int do_about(int sel) {
     sprintf(gcc_version,_("with an unknown gcc ???"));
 #endif
     char title[80],date[80];
-    snprintf(title,80, EMUNAME " " VERSION " (c)1998-%s " HANDLE,current_year);
+    snprintf(title,80, EMUNAME " " VERSION " (c)1998-%s " AUTHOR,current_year);
     about_items[0].label = title;
     snprintf(date,80,_("Compiled on %s %s"), __DATE__, __TIME__);
     about_items[1].label = date;

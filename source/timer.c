@@ -37,11 +37,17 @@
 /* cycles to triger a timer are executed. This slows a little down the */
 /* emulation (because the z80 frame is sliced), but it's more acurate */
 
+#ifdef __x86_64__
+#define TYPE UINT64
+#else
+#define TYPE UINT32
+#endif
+
 typedef struct {
   void (*handler)(int);
   int param;
   UINT32 cycles;
-  UINT32 id;
+  TYPE id;
   UINT32 period;
   char name[16];
   int active;
@@ -384,7 +390,7 @@ void execute_z80_audio_frame() {
 
 void timer_enable(void *t, int active) {
     int n;
-    UINT32 id = (UINT32)t;
+    UINT32 id = (TYPE)t;
     for (n=0; n<free_timer; n++) {
 	if (timer[n].id == id) {
 	    timer[n].active = active;

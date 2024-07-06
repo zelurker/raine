@@ -637,7 +637,7 @@ void update_monitoring() {
 		char dir[1024];
 		snprintf(dir,1011,"Can't create %s",path);
 		dir[1010] = 0;
-		MessageBox("Error",dir,"OK");
+		raine_mbox("Error",dir,"OK");
 		recording = 0;
 	    }
 	}

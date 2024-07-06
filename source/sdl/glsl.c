@@ -5,8 +5,8 @@
 #endif
 // Can't define GL_GLEXT_LEGACY here to get rid of the annoying warning about GL_GLEXT_VERSION
 #include <SDL_opengl.h>
-#ifdef MessageBox
-#undef MessageBox
+#ifdef raine_mbox
+#undef raine_mbox
 #endif
 #include "files.h"
 #include "debug.h"
@@ -189,7 +189,7 @@ static int attach(GLuint shader) {
 	gl_error = glGetError( );
 	if( gl_error != GL_NO_ERROR ) {
 	    strcpy(ogl.shader,"None");
-	    MessageBox(gettext("OpenGL error"),gettext("error while attaching vertex shader"),gettext("ok"));
+	    raine_mbox(gettext("OpenGL error"),gettext("error while attaching vertex shader"),gettext("ok"));
 	    return 0;
 	}
     }
@@ -199,7 +199,7 @@ static int attach(GLuint shader) {
     gl_error = glGetError( );
     if( gl_error != GL_NO_ERROR ) {
 	strcpy(ogl.shader,"None");
-	MessageBox(gettext("OpenGL error"),gettext("error while attaching fragment shader"),gettext("ok"));
+	raine_mbox(gettext("OpenGL error"),gettext("error while attaching fragment shader"),gettext("ok"));
 	return 0;
     } else if (vertexshader == shader)
 	pass[nb_pass].vertex = shader;
@@ -224,7 +224,7 @@ static int set_fragment_shader(const char *program) {
 	GLchar *buf = malloc(tmp);
 	glGetShaderInfoLog(fragmentshader, tmp, NULL, buf);
 	strcpy(ogl.shader,"None");
-	MessageBox(gettext("Errors compiling fragment shader"),buf,gettext("ok"));
+	raine_mbox(gettext("Errors compiling fragment shader"),buf,gettext("ok"));
 	free(buf);
 	ret = 0;
     } else
@@ -382,7 +382,7 @@ void read_shader(char *shader) {
 	init_glsl();
     }
     if (no_shader_support) {
-	MessageBox(gettext("Warning"),gettext("No shader support on your hardware"),gettext("ok"));
+	raine_mbox(gettext("Warning"),gettext("No shader support on your hardware"),gettext("ok"));
 	return;
     }
 #else
@@ -559,7 +559,7 @@ shader_end:
 		    glGetProgramInfoLog(pass[n].glprogram, tmp, NULL, buf);
 		    delete_shaders();
 		    strcpy(ogl.shader,"None");
-		    MessageBox(gettext("Error linking shader"),buf,gettext("OK"));
+		    raine_mbox(gettext("Error linking shader"),buf,gettext("OK"));
 		    print_debug("link error : %s\n",buf);
 		    free(buf);
 		    break;

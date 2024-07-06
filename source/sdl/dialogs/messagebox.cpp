@@ -18,7 +18,7 @@ static char *cherche(char *s, int len, char c) {
     return NULL;
 }
 
-int MessageBox(char *title, char *the_content, char *mybtn) {
+int raine_mbox(char *title, char *the_content, char *mybtn) {
   menu_item_t *menu;
   int nb_lines = 0;
   char *content = strdup(the_content);

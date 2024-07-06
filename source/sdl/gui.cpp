@@ -489,7 +489,7 @@ static void do_load_game(void)
    case LOAD_WARNING:			// WARNING - IT MIGHT RUN OK
 
      strcat(load_debug,_("\nThe game might not run correctly."));
-     MessageBox(_("Loading problem"), load_debug);
+     raine_mbox(_("Loading problem"), load_debug);
 
    case 0x00:				// SUCCESS
      memcpy(&prev_display_cfg, &display_cfg, sizeof(DISPLAY_CFG));
@@ -526,7 +526,7 @@ static void do_load_game(void)
    case LOAD_FATAL_ERROR:			// FATAL ERROR - REMOVE GAME
    case LOAD_FATAL_ERROR|LOAD_WARNING:
 
-     MessageBox(_("Loading error"),load_debug);
+     raine_mbox(_("Loading error"),load_debug);
 
      ClearDefault();
 
@@ -536,7 +536,7 @@ static void do_load_game(void)
    }
 
    if (*error)
-       MessageBox(_("IPS error"),error,"OK");
+       raine_mbox(_("IPS error"),error,"OK");
    free(load_debug);
 }
 
@@ -661,7 +661,7 @@ static void save_ips_ini(char **res) {
     printf("save_ips_ini %s\n",game);
     FILE *g = fopen(game,"w");
     if (!g) {
-	MessageBox("Error","Can't create ini file","ok");
+	raine_mbox("Error","Can't create ini file","ok");
 	return;
     }
     ips_info.nb = 0; // just to be sure, but normally already at 0
@@ -879,7 +879,7 @@ static void my_multi_fsel(char *mypath, char **ext, char **res_str, int max_res,
       fsel_dlg->execute();
   }
   catch(const char *msg) {
-      MessageBox(_("Error"),(char*)msg,"Ok");
+      raine_mbox(_("Error"),(char*)msg,"Ok");
   }
   delete fsel_dlg;
 }
