@@ -56,7 +56,7 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  // The format here is just one I chose, 32 bits is almost mandatory in 3d, but for GameBitmap we don't need alpha
 	  // so rgbx becomes the 1st choice
 	  sdl2_color_format = SDL_PIXELFORMAT_RGB565;
-	  display_cfg.bpp = 16;
+	  display_cfg.bpp = 16; // normally this is initialized in InitPaletteMap, assuming the color mapper was defined before that !
 	  if (current_colour_mapper == &col_map_24bit_rgb || // macrossp
 		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) {// f3 games
 	      sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;

@@ -90,6 +90,15 @@ void InitPaletteMap(UINT8 *src, int banks, int bankcols, int mapsize)
 {
    int ta;
    int bmsize;
+   // Very annoying to initialize bpp here because it requires that set_color_mapper was called before that
+   // it seems to be the case for most drivers, hopefully all.
+   // In case of non initialization and the game uses 32bpp bmsize would be badly computed and it would create a big buffer overflow !
+   display_cfg.bpp = 16;
+   if (current_colour_mapper == &col_map_24bit_rgb || // macrossp or psikyosh games
+	   current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) // f3 games
+       display_cfg.bpp = 32;
+   else if (current_colour_mapper == NULL)
+       printf("no color mapper yet !\n");
    map_mode = PMAP_MAPPED;
 
    RAM_PAL = src;
