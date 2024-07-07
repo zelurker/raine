@@ -30,6 +30,11 @@ class TVideo : public TMenu
   TVideo(char *my_title, menu_item_t *mymenu) :
     TMenu(my_title,mymenu)
     {}
+  int can_be_selected(int n) {
+      if (n == 1) // fullscreen
+        return (display_cfg.maximized == 0);
+      return TMenu::can_be_selected(n);
+  }
 };
 
 static TVideo *video_options;

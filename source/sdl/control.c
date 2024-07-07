@@ -436,6 +436,8 @@ extern void key_stop_emulation_esc(void);
 extern void key_stop_emulation_tab(void);
 
 void toggle_fullscreen() {
+    if (display_cfg.maximized) return; // too crazy in windows if window is maximized
+				       // you are almost sure to loose pos, size or both
 #if SDL == 1
   resize(1);
   SetupScreenBitmap();
@@ -466,14 +468,15 @@ void toggle_fullscreen() {
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
-      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
-      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // posx & posy are not updated when switching to fullscreen
+      // SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+      // SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // posx & posy are not updated when switching to fullscreen
   }
   ScreenChange();
 #endif
 }
 
 static void toggle_fullscreen_keyboard() {
+    if (display_cfg.maximized) return;
   if (display_cfg.fullscreen) {
     display_cfg.fullscreen = 0;
   } else {
@@ -1858,12 +1861,13 @@ void control_handle_event(SDL_Event *event) {
 #else
     case SDL_WINDOWEVENT:
       if ((event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) &&
-	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
+	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2) &&
+	      !display_cfg.maximized) {
 	  display_cfg.prev_sx = display_cfg.screen_x;
 	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
-      } else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
-	  if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus) {
+      } else if (event->window.event == SDL_WINDOWEVENT_MOVED && !display_cfg.maximized) {
+	  if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus && (display_cfg.posx != event->window.data1 || display_cfg.posy != event->window.data2)) {
 	      display_cfg.prev_posx = display_cfg.posx;
 	      display_cfg.prev_posy = display_cfg.posy;
 	      display_cfg.posx = event->window.data1;
@@ -1876,16 +1880,17 @@ void control_handle_event(SDL_Event *event) {
 	  display_cfg.lost_focus = 1;
       if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
 	  display_cfg.maximized = 1;
+      } else if (event->window.event == SDL_WINDOWEVENT_MINIMIZED) {
+	  display_cfg.maximized = 2;
       } else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
-	  if (!display_cfg.lost_focus) {
+	  if (!display_cfg.lost_focus && !display_cfg.fullscreen && display_cfg.maximized != 2) {
 	      SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
 	      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
 	      display_cfg.posx = display_cfg.prev_posx;
 	      display_cfg.posy = display_cfg.prev_posy;
-	      display_cfg.screen_x = display_cfg.prev_sx;
-	      display_cfg.screen_y = display_cfg.prev_sy;
-	      display_cfg.maximized = 0;
+	      resize(1,display_cfg.prev_sx,display_cfg.prev_sy);
 	  }
+	  display_cfg.maximized = 0;
       }
 #endif
       break;

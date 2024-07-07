@@ -64,6 +64,8 @@
 #include "ips.h"
 #include "curl.h"
 
+#define DEBUG_WINDOW_EVENTS 1
+
 static time_t played_time;
 #if USE_MUSASHI == 2
 extern "C" m68ki_cpu_core m68020_context;
@@ -1013,6 +1015,12 @@ extern UINT32 videoflags; // display.c
 #endif
 int goto_debuger = 0;
 
+#if DEBUG_WINDOW_EVENTS
+#define debug printf
+#else
+#define debug
+#endif
+
 #if SDL == 2
 static void my_event(SDL_Event *event) {
     switch (event->type) {
@@ -1028,12 +1036,14 @@ static void my_event(SDL_Event *event) {
 	break;
     case SDL_WINDOWEVENT:
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+	    debug("resized\n");
 	    if (!display_cfg.maximized && !display_cfg.fullscreen && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
 		display_cfg.prev_sx = display_cfg.screen_x;
 		display_cfg.prev_sy = display_cfg.screen_y;
 		resize(1,event->window.data1,event->window.data2);
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
+	    debug("moved\n");
 	    if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus) {
 		display_cfg.prev_posx = display_cfg.posx;
 		display_cfg.prev_posy = display_cfg.posy;
@@ -1044,22 +1054,31 @@ static void my_event(SDL_Event *event) {
 		// lucily it's sent while the focus has not been gained so we can compensate here
 		SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 	} else if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
+	    debug("maximized\n");
 	    display_cfg.maximized = 1;
 	    // prev size is initialized by a resize message received before that
-	} else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+	} else if (event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+	    debug("focus gained\n");
 	    // the focus events are not directly useful for the gui, but it's still useful on window creation, I get a window restored event even if window is created with maximized flag
 	    // luckily this is sent before the window gains focus, so I ignore this of event if it has lost focus
 	    display_cfg.lost_focus = 0;
-	else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+	} else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
+	    debug("focus lost\n");
 	    display_cfg.lost_focus = 1;
-	else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
+	} else if (event->window.event == SDL_WINDOWEVENT_MINIMIZED) {
+	    debug("minimized\n");
+	    display_cfg.maximized = 2;
+	} else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
+	    debug("restored\n");
 	    if (!display_cfg.lost_focus) {
-		SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
-		SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
-		display_cfg.posx = display_cfg.prev_posx;
-		display_cfg.posy = display_cfg.prev_posy;
-		display_cfg.screen_x = display_cfg.prev_sx;
-		display_cfg.screen_y = display_cfg.prev_sy;
+		if (display_cfg.maximized != 2) {
+		    SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
+		    SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+		    display_cfg.posx = display_cfg.prev_posx;
+		    display_cfg.posy = display_cfg.prev_posy;
+		    display_cfg.screen_x = display_cfg.prev_sx;
+		    display_cfg.screen_y = display_cfg.prev_sy;
+		}
 		display_cfg.maximized = 0;
 	    }
 	}
