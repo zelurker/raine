@@ -468,8 +468,8 @@ void toggle_fullscreen() {
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
-      // SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
-      // SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy); // posx & posy are not updated when switching to fullscreen
+      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
   }
   ScreenChange();
 #endif

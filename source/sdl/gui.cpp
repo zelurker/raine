@@ -64,7 +64,7 @@
 #include "ips.h"
 #include "curl.h"
 
-#define DEBUG_WINDOW_EVENTS 1
+// #define DEBUG_WINDOW_EVENTS 1
 
 static time_t played_time;
 #if USE_MUSASHI == 2
@@ -1018,7 +1018,7 @@ int goto_debuger = 0;
 #if DEBUG_WINDOW_EVENTS
 #define debug printf
 #else
-#define debug
+#define debug(message)
 #endif
 
 #if SDL == 2
@@ -1044,7 +1044,10 @@ static void my_event(SDL_Event *event) {
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
 	    debug("moved\n");
-	    if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus) {
+	    if (!display_cfg.maximized && !display_cfg.fullscreen) {
+		/* There was a && !display_cfg.lost_focus here, mainly for linux with windowmaker because otherwise if you start with a maximized window, then restores it, you'll loose the position.
+		 * Now in windows you get a lost_focus when launching from the explorer and playing with the maximize button, which is extremely annoying.
+		 * I am not going to test multiple window managers in linux, so I just remove the test on lost_focus for now. Eventually one day improve this if some other window manager is tested */
 		display_cfg.prev_posx = display_cfg.posx;
 		display_cfg.prev_posy = display_cfg.posy;
 		display_cfg.posx = event->window.data1;
@@ -1070,17 +1073,19 @@ static void my_event(SDL_Event *event) {
 	    display_cfg.maximized = 2;
 	} else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
 	    debug("restored\n");
-	    if (!display_cfg.lost_focus) {
-		if (display_cfg.maximized != 2) {
-		    SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
-		    SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
-		    display_cfg.posx = display_cfg.prev_posx;
-		    display_cfg.posy = display_cfg.prev_posy;
-		    display_cfg.screen_x = display_cfg.prev_sx;
-		    display_cfg.screen_y = display_cfg.prev_sy;
-		}
-		display_cfg.maximized = 0;
+	    /* About lost_focus here : when launched from the explorer in windows when restoring from maximzed state, you get a lost_focus just before that.
+	     * But NOT when launched from a msys2 terminal !!!
+	     * I was using lost_focus here mainly to prevent windowmaker from restoring a maximized window on creation but after all it's probably better to avoid lost_focus here
+	     * in all cases */
+	    if (display_cfg.maximized != 2) {
+		SDL_SetWindowPosition(win,display_cfg.prev_posx,display_cfg.prev_posy);
+		SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+		display_cfg.posx = display_cfg.prev_posx;
+		display_cfg.posy = display_cfg.prev_posy;
+		display_cfg.screen_x = display_cfg.prev_sx;
+		display_cfg.screen_y = display_cfg.prev_sy;
 	    }
+	    display_cfg.maximized = 0;
 	}
     }
 }

@@ -175,19 +175,19 @@ void  sdl_init() {
 	if (display_cfg.fullscreen)
 #ifdef RAINE_WIN32
 	    win = SDL_CreateWindow(title,
-		    0,
-		    0,
-		    usable.w,
-		    usable.h,
+		    display_cfg.prev_posx,
+		    display_cfg.prev_posy,
+		    display_cfg.prev_sx,
+		    display_cfg.prev_sy,
 		    status |
 		    SDL_WINDOW_FULLSCREEN_DESKTOP);
 #else
 	    // see comments about broken fullscreen in control.c
 	    win = SDL_CreateWindow(title,
-		    0,
-		    0,
-		    usable.w,
-		    usable.h,
+		    display_cfg.prev_posx,
+		    display_cfg.prev_posy,
+		    display_cfg.prev_sx,
+		    display_cfg.prev_sy,
 		    status);
 #endif
 	else
