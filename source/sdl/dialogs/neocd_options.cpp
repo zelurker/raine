@@ -13,6 +13,7 @@
 #include "neo_softdips.h"
 #include "neo_debug_dips.h"
 #include "dialogs/messagebox.h"
+#include "control.h"
 
 static char *neo_names[] =
 {
@@ -48,6 +49,18 @@ static char *neo_names[] =
 };
 
 static int select_bios(int sel);
+
+static int memcard(int sel) {
+    int inserted = !(input_buffer[5] & 0x70);
+    if (inserted) {
+	if (raine_mbox("Info",_("Memory card is inserted"),_("Eject it|Do nothing")) == 1)
+	    input_buffer[5] |= 0x70;
+    } else {
+	if (raine_mbox("Info",_("Memory card is ejected"),_("insert it|Do nothing")) == 1)
+	    input_buffer[5] &= 0x8f;
+    }
+    return 0;
+}
 
 static int choose_bios(int sel) {
     int size = sizeof(neo_names)/sizeof(char*)+1;
@@ -187,6 +200,7 @@ static menu_item_t neocd_menu[] =
   { _("Loading animations speed"), NULL, &cdrom_speed, 8, { 0, 1, 2, 4, 8, 16, 32, 48 },
     { _("Off"), _("CD 1x (150 Kb/s)"), _("2x"), _("4x"), _("8x (default)"), _("16x"), _("32x"), _("48x") } },
   { _("Update Neo-Geo CD sprite block..."), &do_update_block },
+  { _("Memory card..."), &memcard, },
   { _("Allow speed hacks"), NULL, &allowed_speed_hacks, 2, { 0, 1 }, { _("No"), _("Yes") }},
   { _("Raster effects"), NULL, &disable_irq1, 2, { 0, 1 }, { _("Enabled"), _("Disabled") }},
   { _("Capture mode"), NULL, &capture_new_pictures, 2, { 0, 1 }, { _("Overwrite"), _("New pictures") }},
