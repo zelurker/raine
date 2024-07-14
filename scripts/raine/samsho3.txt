@@ -1,9 +1,9 @@
 script "Console Mode Plus" \
-"comm:On the level select screen, press left or right to select modes.
+"comm:On the mode select screen, press left or right to select modes.
 In training mode, pause the game then press start to change character."
 run:
 #Menu Screen Script#
-if (dpeek($108102)==$6FBA)and(peek($108753)!=$00)
+if (dpeek($108102)==$6FBA)and(peek($100502)==$61)
    #Restore control#
    if (dpeek($C1852C)==$1A39) #For Unibios#
       poke $C1852F $34
@@ -89,14 +89,23 @@ if (dpeek($108102)==$6FBA)
     dpoke $3C0002 $7347
   endif
 endif
-#Activiate players at how to play screen#
+#Just before how to play screen#
+if (dpeek($108102)==$6FBA)and(peek($100502)==$62)
+   if (peek($100040)>$00)
+      poke $380000 peek($380000)|$70 #Disable memory card#
+   endif
+endif
+#At how to play screen#
 if (dpeek($108102)==$7058)
    if (peek($100040)>$00)
-      poke $10846E $FF
+      poke $10846E $FF #Activiate players#
       poke $10846F $FF
       poke $10FDB6 $01
       poke $10FDB7 $01
+      lpoke $108014 $99999999 #Prevent highest score#
+      poke $10801F $99
    endif
+   poke $380000 peek($380000)&$8F #Restore memory card#
 endif
 #VS Mode Script#
 if (peek($100040)==$01)
@@ -112,17 +121,27 @@ if (peek($100040)==$01)
          poke $100051 peek($108470)
       endif
    endif
+ endif
    poke $109069 peek($100051) #Stage select#
-   if (peek($10FDB6)==$02)or(peek($10FDB7)==$02) #Return#
+   if (dpeek($108E38)!=$FFFF)and(dpeek($10846E)!=$FFFF)and(peek($100060)==$00) #Return#
       dpoke $1081B0 $0200
       dpoke $1081C0 $0000
       lpoke $108100 $00006DAE
+      poke $100060 $FF
       poke $10846E $FF
       poke $10846F $FF
       poke $10FDB6 $01
       poke $10FDB7 $01
    endif
- endif
+   if (dpeek($108102)==$14AC) #Restore value#
+      poke $100060 $00
+   endif
+   if (dpeek($108102)==$7058)
+      poke $10846E $FF
+      poke $10846F $FF
+      poke $10FDB6 $01
+      poke $10FDB7 $01
+   endif
 endif
 #Training Mode Script#
 if (peek($100040)==$02)

@@ -87,11 +87,15 @@ if (dpeek($108586)==$B15E)and((peek($1000A0)==$01)or(peek($1000A0)==$02)) #Skip 
       dpoke $1087F0 $B9E0
       poke $1087E5 $03
       dpoke $10FDB6 $0101
+      poke $380000 peek($380000)|$70 #Disable memory card#
    endif
    if (peek($1000A0)==$02)
       poke $108837 $00 #Single mode#
    endif
    dpoke $108586 $B46C
+endif
+if (dpeek($108586)==$1558)
+   poke $380000 peek($380000)&$8F #Restore memory card#
 endif
 #VS Mode Script for normal rom#
 if (peek($1000A0)==$01)and(dpeek($2B90BC)==$0000)
@@ -307,7 +311,7 @@ endif
 
 script "Enable Rugal"
 run:
-   if (dpeek($108586)==$7046)
+   if (dpeek($108586)==$7046)and(peek($100000)!=$08)
       poke $100000 $08
    endif
    if (dpeek($108586)==$7EDC)

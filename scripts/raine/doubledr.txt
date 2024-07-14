@@ -1,27 +1,208 @@
-script "Infinite Continues"  
+script "Console Mode Plus" \
+"comm:On the mode select screen, press up or down to select modes.
+In practice mode, pause the game then press start to change character."
+run:
+#Menu Screen Script#
+if (dpeek($10226C)==$A5A0)
+  if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+    poke $10FFF1 $00
+  endif
+  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+    dpoke $10FFF0 $01FF
+    poke $320000 $DA
+  endif
+  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+    dpoke $10FFF0 $02FF
+    poke $320000 $DA
+  endif
+  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+    dpoke $10FFF0 $00FF
+    poke $320000 $DA
+  endif
+  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+    dpoke $10FFF0 $02FF
+    poke $320000 $DA
+  endif
+  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+    dpoke $10FFF0 $01FF
+    poke $320000 $DA
+  endif
+  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+    dpoke $10FFF0 $00FF
+    poke $320000 $DA
+  endif
+  if (peek($10FFF0)==$00) #Normal#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $7320 # value
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+  endif
+  if (peek($10FFF0)==$01) #VS#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $7320 # value
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $9656
+    dpoke $3C0002 $9653
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+    dpoke $3C0002 $7320
+  endif
+  if (peek($10FFF0)==$02) #Practice#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $9650 # value
+    dpoke $3C0002 $9652
+    dpoke $3C0002 $9641
+    dpoke $3C0002 $9643
+    dpoke $3C0002 $9654
+    dpoke $3C0002 $9649
+    dpoke $3C0002 $9643
+    dpoke $3C0002 $9645
+  endif
+endif
+if (dpeek($10226C)==$8062)and(peek($10FFF0)>=$01)
+   poke $380000 peek($380000)|$70 #Disable memory card#
+endif
+if (dpeek($10226C)==$F0FA)
+   poke $380000 peek($380000)&$8F #Restore memory card#
+endif
+#VS Mode Script#
+if (peek($10FFF0)==$01)
+   if (dpeek($10226C)==$A5CC)
+      dpoke $102282 $8080 #Activates players and deselect#
+      dpoke $102296 $0000 #No push start text#
+   endif
+   if (dpeek($10226C)==$8062)
+      poke $1479D $DA #Disable memory card#
+   endif
+   if (dpeek($10226C)==$F0FA)
+      poke $1479D $68 #Restore memory card#
+   endif
+   if (dpeek($10226C)==$F2AC)
+      poke $12623 $10 #Restore rom#
+      poke $1268F $10
+      if (dpeek($102282)==$C080)
+         poke $10229F $01 #Stage form P2 character#
+      endif
+      if (dpeek($102282)==$80C0)
+         poke $10229F $00 #Stage form P1 character#
+      endif
+   endif
+   if (dpeek($10226C)==$F102)
+      poke $12623 $80 #No lose#
+      poke $1268F $80
+      dpoke $102282 $8080 #Deselect characters#
+   endif
+endif
+#Practice Mode Script#
+if (peek($10FFF0)==$02)
+   if (dpeek($10226C)==$A5CC)
+      dpoke $102282 $8080 #Activates players and deselect#
+      dpoke $102296 $0000 #No push start text#
+   endif
+   if (dpeek($10226C)==$8062)
+      poke $1479D $DA #Disable memory card#
+   endif
+   if (dpeek($10226C)==$F0FA)
+      poke $1479D $68 #Restore memory card#
+   endif
+   if (dpeek($10226C)==$F2AC)
+      if (dpeek($102282)==$C080)
+         poke $10229F $01 #Stage form P2 character#
+      endif
+      if (dpeek($102282)==$80C0)
+         poke $10229F $00 #Stage form P1 character#
+      endif
+      if ((dpeek($102282)==$C080)or(dpeek($102282)==$80C0))and(peek($10FD96)==$00)and(peek($10FD9C)==$00)
+         if (dpeek($C1852C)==$1A39) #For Unibios#
+            poke $C1852F $30
+            poke $C18537 $34
+            poke $C1854B $30
+            poke $C18553 $34
+         endif
+         if (dpeek($C16F46)==$1A39) #For Japan AES#
+            poke $C16F49 $30
+            poke $C16F51 $34
+            poke $C16F65 $30
+            poke $C16F6D $34
+         endif
+         if (dpeek($C16BFA)==$1A39) #For Asia AES#
+            poke $C16BFD $30
+            poke $C16C05 $34
+            poke $C16C19 $30
+            poke $C16C21 $34
+         endif
+      endif
+      if (dpeek($102282)==$C0C0)
+         if (dpeek($C1852C)==$1A39) #For Unibios#
+            poke $C1852F $34
+            poke $C18537 $30
+            poke $C1854B $34
+            poke $C18553 $30
+         endif
+         if (dpeek($C16F46)==$1A39) #For Japan AES#
+            poke $C16F49 $34
+            poke $C16F51 $30
+            poke $C16F65 $34
+            poke $C16F6D $30
+         endif
+         if (dpeek($C16BFA)==$1A39) #For Asia AES#
+            poke $C16BFD $34
+            poke $C16C05 $30
+            poke $C16C19 $34
+            poke $C16C21 $30
+         endif
+      endif
+   endif
+   if (dpeek($10226C)==$1344)
+      poke $102243 $FF #Infinite time#
+      poke $100450 $00 #Infinite HP#
+      poke $100550 $00
+      poke $100510 $68 #Infinite Power#
+      poke $100610 $68
+   endif
+   if (dpeek($10226C)==$427C)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04))
+      dpoke $10226C $2F12 #Return#
+      dpoke $102282 $8080 #Deselect characters#
+   endif
+endif
+
+script "Unlock Secret Characters"
+run:
+    poke $108E84 $01
+
+script "Infinite Continues"
 run:
     poke $10FD89 $64
     poke $1062C6 $00
     poke $1062C7 $00
-script "Infinite Time"  
+script "Infinite Time"
 run:
     poke $102242 $9A
-script "Infinite Character Selection Time"  
+script "Infinite Character Selection Time"
 run:
     poke $105BA3 $78
-script "Unlock Secret Characters Now!"  
+script "Unlock Secret Characters Now!"
 on:
     poke $108E84 $01
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $100450 $00
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $100450 $68
 script "P1 Select Charge" \
  "0x68/Maximum Charge"\
- "0x00/Minimum Charge" 
+ "0x00/Minimum Charge"
 run:
     poke $100510 param
 script "P1 Select Character" \
@@ -39,19 +220,19 @@ script "P1 Select Character" \
  "0x0A/Cheng-Fu"\
  "0x0B/Burnov"\
  "0x0C/Duke"\
- "0x0D/Shuko" 
+ "0x0D/Shuko"
 run:
     poke $100445 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $100550 $00
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $100550 $68
 script "P2 Select Charge" \
  "0x68/Maximum Charge"\
- "0x00/Minimum Charge" 
+ "0x00/Minimum Charge"
 run:
     poke $100610 param
 script "P2 Select Character" \
@@ -69,158 +250,158 @@ script "P2 Select Character" \
  "0x0A/Cheng-Fu"\
  "0x0B/Burnov"\
  "0x0C/Duke"\
- "0x0D/Shuko" 
+ "0x0D/Shuko"
 run:
     poke $100545 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     lpoke $F810 $00
-    lpoke $f814 
+    lpoke $f814
     lpoke $F818 $00
-    lpoke $f81c 
+    lpoke $f81c
     lpoke $F820 $00
-    lpoke $f824 
+    lpoke $f824
     lpoke $F828 $00
-    lpoke $f82c 
+    lpoke $f82c
     lpoke $F830 $00
-    lpoke $f834 
+    lpoke $f834
     lpoke $F838 $00
-    lpoke $f83c 
+    lpoke $f83c
     lpoke $F840 $00
-    lpoke $f844 
+    lpoke $f844
     lpoke $F848 $00
-    lpoke $f84c 
+    lpoke $f84c
     lpoke $F850 $00
-    lpoke $f854 
+    lpoke $f854
     lpoke $F858 $00
-    lpoke $f85c 
+    lpoke $f85c
     lpoke $F860 $00
-    lpoke $f864 
+    lpoke $f864
     lpoke $F868 $00
-    lpoke $f86c 
+    lpoke $f86c
     lpoke $F870 $00
-    lpoke $f874 
+    lpoke $f874
     lpoke $F878 $00
-    lpoke $f87c 
+    lpoke $f87c
     lpoke $F880 $00
-    lpoke $f884 
+    lpoke $f884
     lpoke $F888 $00
-    lpoke $f88c 
+    lpoke $f88c
     lpoke $F890 $00
-    lpoke $f894 
+    lpoke $f894
     lpoke $F898 $00
-    lpoke $f89c 
+    lpoke $f89c
     lpoke $F8A0 $00
-    lpoke $f8a4 
+    lpoke $f8a4
     lpoke $F8A8 $00
-    lpoke $f8ac 
+    lpoke $f8ac
     lpoke $F8B0 $00
-    lpoke $f8b4 
+    lpoke $f8b4
     lpoke $F8B8 $00
-    lpoke $f8bc 
+    lpoke $f8bc
     lpoke $F8C0 $00
-    lpoke $f8c4 
+    lpoke $f8c4
     lpoke $F8C8 $00
-    lpoke $f8cc 
+    lpoke $f8cc
     lpoke $F8D0 $00
-    lpoke $f8d4 
+    lpoke $f8d4
     lpoke $F8D8 $00
-    lpoke $f8dc 
+    lpoke $f8dc
     lpoke $F8E0 $00
-    lpoke $f8e4 
+    lpoke $f8e4
     lpoke $F8E8 $00
-    lpoke $f8ec 
+    lpoke $f8ec
     lpoke $F8F0 $00
-    lpoke $f8f4 
+    lpoke $f8f4
     lpoke $F8F8 $00
-    lpoke $f8fc 
+    lpoke $f8fc
     lpoke $F900 $00
-    lpoke $f904 
+    lpoke $f904
     lpoke $F908 $00
-    lpoke $f90c 
+    lpoke $f90c
     lpoke $F910 $00
-    lpoke $f914 
+    lpoke $f914
     lpoke $F918 $00
-    lpoke $f91c 
+    lpoke $f91c
     lpoke $F920 $00
-    lpoke $f924 
+    lpoke $f924
     lpoke $F928 $00
-    lpoke $f92c 
+    lpoke $f92c
     lpoke $F930 $00
-    lpoke $f934 
+    lpoke $f934
     lpoke $F938 $00
-    lpoke $f93c 
+    lpoke $f93c
     lpoke $F940 $00
-    lpoke $f944 
+    lpoke $f944
     lpoke $F948 $00
-    lpoke $f94c 
+    lpoke $f94c
     lpoke $F950 $00
-    lpoke $f954 
+    lpoke $f954
     lpoke $F958 $00
-    lpoke $f95c 
+    lpoke $f95c
     lpoke $F960 $00
-    lpoke $f964 
+    lpoke $f964
     lpoke $F968 $00
-    lpoke $f96c 
+    lpoke $f96c
     lpoke $F970 $00
-    lpoke $f974 
+    lpoke $f974
     lpoke $F978 $00
-    lpoke $f97c 
+    lpoke $f97c
     lpoke $F980 $00
-    lpoke $f984 
+    lpoke $f984
     lpoke $F988 $00
-    lpoke $f98c 
+    lpoke $f98c
     lpoke $F990 $00
-    lpoke $f994 
+    lpoke $f994
     lpoke $F998 $00
-    lpoke $f99c 
+    lpoke $f99c
     lpoke $F9A0 $00
-    lpoke $f9a4 
+    lpoke $f9a4
     lpoke $F9A8 $00
-    lpoke $f9ac 
+    lpoke $f9ac
     lpoke $F9B0 $00
-    lpoke $f9b4 
+    lpoke $f9b4
     lpoke $F9B8 $00
-    lpoke $f9bc 
+    lpoke $f9bc
     lpoke $F9C0 $00
-    lpoke $f9c4 
+    lpoke $f9c4
     lpoke $F9C8 $00
-    lpoke $f9cc 
+    lpoke $f9cc
     lpoke $F9D0 $00
-    lpoke $f9d4 
+    lpoke $f9d4
     lpoke $F9D8 $00
-    lpoke $f9dc 
+    lpoke $f9dc
     lpoke $F9E0 $00
-    lpoke $f9e4 
+    lpoke $f9e4
     lpoke $F9E8 $00
-    lpoke $f9ec 
+    lpoke $f9ec
     lpoke $F9F0 $00
-    lpoke $f9f4 
+    lpoke $f9f4
     lpoke $F9F8 $00
-    lpoke $f9fc 
+    lpoke $f9fc
     lpoke $FA00 $00
-    lpoke $fa04 
+    lpoke $fa04
     lpoke $FA08 $00
-    lpoke $fa0c 
+    lpoke $fa0c
     lpoke $FA10 $00
-    lpoke $fa14 
+    lpoke $fa14
     lpoke $FA18 $00
-    lpoke $fa1c 
+    lpoke $fa1c
     lpoke $FA20 $00
-    lpoke $fa24 
+    lpoke $fa24
     lpoke $FA28 $00
-    lpoke $fa2c 
+    lpoke $fa2c
     cpu main
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -255,6 +436,6 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99

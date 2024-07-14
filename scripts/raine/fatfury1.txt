@@ -138,11 +138,11 @@ if (dpeek($100002)==$1F0A)and(peek($100602)==$32)
     dpoke $3C0002 $6320
   endif
 endif
-if (dpeek($100002)==$1F34)and((peek($1000A0)==$01)or(peek($1000A0)==$04)) #Disable memory card for vs & practice#
-   poke $1927D $00
+if (dpeek($100002)==$1F34)and((peek($1000A0)==$01)or(peek($1000A0)==$04))
+   poke $380000 peek($380000)|$70 #Disable memory card for vs & practice#
 endif
-if (dpeek($100002)==$2008)and(dpeek($10A008)==$016F) #Restore memory card#
-   poke $1927D $33
+if (dpeek($100002)==$2008)and(dpeek($10A008)==$016F)
+   poke $380000 peek($380000)&$8F #Restore memory card#
 endif
 #VS Mode Script#
 if (peek($1000A0)==$01)
@@ -248,7 +248,7 @@ if (peek($1000A0)==$01)or(peek($1000A0)==$04)
 endif
 #VS, Practice Mode Special Script - RETURN#
    if (dpeek($100002)==$1A94)and(peek($10FDC4)>=$FE)
-      poke $1927D $00 #Disable memory card#
+      poke $380000 peek($380000)|$70 #Disable memory card#
       poke $100030 $01 #To ensure Terry is the starting character for P1 after return#
       dpoke $100034 $0101
       dpoke $100002 $1F34
@@ -261,7 +261,7 @@ endif
       endif
     endif
     if (dpeek($100002)==$2008)and(peek($10A003)==$06)and(peek($100050)==$01)
-      poke $1927D $33 #Restore memory card#
+      poke $380000 peek($380000)&$8F #Restore memory card#
       dpoke $100002 $2022
       poke $100050 $00
     endif

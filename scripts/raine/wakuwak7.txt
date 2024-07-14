@@ -1,38 +1,216 @@
-script "Infinite Time"  
+script "Console Mode Plus" \
+"comm:On the menu screen, press select button to select modes.
+In practice mode, pause the game then press start to change character."
+run:
+#Menu Screen Script#
+if (dpeek($10F2FA)==$9550)
+   poke $49A95 $AD #Restore rom#
+   if (dpeek($C1852C)==$1A39) #For Unibios#
+      poke $C1852F $34
+      poke $C18537 $30
+      poke $C1854B $34
+      poke $C18553 $30
+   endif
+   if (dpeek($C16F46)==$1A39) #For Japan AES#
+      poke $C16F49 $34
+      poke $C16F51 $30
+      poke $C16F65 $34
+      poke $C16F6D $30
+   endif
+   if (dpeek($C16BFA)==$1A39) #For Asia AES#
+      poke $C16BFD $34
+      poke $C16C05 $30
+      poke $C16C19 $34
+      poke $C16C21 $30
+   endif
+  if (peek($10FFF1)==$FF)and(peek($10FDAC)==$00)
+    poke $10FFF1 $00
+  endif
+  if (dpeek($10FFF0)==$0000)and((peek($10FDAC)==$02)or(peek($10FDAC)==$08))
+    dpoke $10FFF0 $01FF
+    poke $320000 $63
+  endif
+  if (dpeek($10FFF0)==$0100)and((peek($10FDAC)==$02)or(peek($10FDAC)==$08))
+    dpoke $10FFF0 $02FF
+    poke $320000 $63
+  endif
+  if (dpeek($10FFF0)==$0200)and((peek($10FDAC)==$02)or(peek($10FDAC)==$08))
+    dpoke $10FFF0 $00FF
+    poke $320000 $63
+  endif
+  if (peek($10FFF0)==$00) #Normal#
+    dpoke $10640C $00FF
+    dpoke $10640E $00FF
+    dpoke $106410 $00FF
+    dpoke $106412 $00FF
+    dpoke $106414 $00FF
+    dpoke $106416 $00FF
+    dpoke $106418 $00FF
+    dpoke $10641A $00FF
+  endif
+  if (peek($10FFF0)==$01) #VS#
+    dpoke $10640C $00FF
+    dpoke $10640E $00FF
+    dpoke $106410 $00FF
+    dpoke $106412 $8356
+    dpoke $106414 $8353
+    dpoke $106416 $00FF
+    dpoke $106418 $00FF
+    dpoke $10641A $00FF
+  endif
+  if (peek($10FFF0)==$02) #Practice#
+    dpoke $10640C $8350
+    dpoke $10640E $8352
+    dpoke $106410 $8341
+    dpoke $106412 $8343
+    dpoke $106414 $8354
+    dpoke $106416 $8349
+    dpoke $106418 $8343
+    dpoke $10641A $8345
+  endif
+endif
+if (dpeek($10F2FA)==$9560)and(peek($10FFF0)>=$01)
+   poke $380000 peek($380000)|$70 #Disable memory card#
+endif
+if (dpeek($10F2F8)==$51EA)
+   poke $380000 peek($380000)&$8F #Restore memory card#
+endif
+#VS, Practice Mode Common#
+if (peek($10FFF0)>=$01)
+   if (dpeek($10F2FA)==$9560)
+      dpoke $100BDA $0707 #Activiate players#
+      lpoke $10FDB4 $02000101
+   endif
+   if (dpeek($10F2FE)==$95EC)
+      if (peek($100BDA)==$01)and(peek($100BDB)==$07)
+         poke $10FFE0 $00 #P1 as main player#
+      endif
+      if (peek($100BDA)==$07)and(peek($100BDB)==$01)
+         poke $10FFE0 $01 #P2 as main player#
+      endif
+   endif
+      if (peek($10FFE0)==$00)
+         if (peek($1069A1)!=$08)
+            poke $10697D peek($1069A1) #P2 stage#
+         endif
+         if (peek($1069A1)==$08)
+            poke $10697D $00 #P2 stage: Bonus Kun#
+         endif
+      endif
+      if (peek($10FFE0)==$01)
+         if (peek($106997)!=$08)
+            poke $10697D peek($106997) #P1 stage#
+         endif
+         if (peek($106997)==$08)
+            poke $10697D $00 #P1 stage: Bonus Kun#
+         endif
+      endif
+endif
+#VS Mode Script#
+if (peek($10FFF0)==$01)
+   if (peek($100BDA)==$02)or(peek($100BDB)==$02)
+      dpoke $100BDA $0707 #Deselect & No continue text#
+      lpoke $10FDB4 $02000101
+   endif
+   if (dpeek($10F2FE)==$9864)
+      poke $380000 peek($380000)|$70 #Disable memory card!!!#
+      dpoke $10F2FE $95A4 #Return#
+   endif
+endif
+#Practice Mode Script#
+if (peek($10FFF0)==$02)
+   if (dpeek($10F2FE)==$95EC)or(dpeek($10F2FA)==$95EC)
+      poke $49A95 $AD #Restore rom#
+      if ((peek($100BDA))!=(peek($100BDB)))and(peek($10FD96)==$00)and(peek($10FD9C)==$00) #Switch control#
+         if (dpeek($C1852C)==$1A39) #For Unibios#
+            poke $C1852F $30
+            poke $C18537 $34
+            poke $C1854B $30
+            poke $C18553 $34
+         endif
+         if (dpeek($C16F46)==$1A39) #For Japan AES#
+            poke $C16F49 $30
+            poke $C16F51 $34
+            poke $C16F65 $30
+            poke $C16F6D $34
+         endif
+         if (dpeek($C16BFA)==$1A39) #For Asia AES#
+            poke $C16BFD $30
+            poke $C16C05 $34
+            poke $C16C19 $30
+            poke $C16C21 $34
+         endif
+      endif
+      if (peek($100BDA)==$01)and(peek($100BDB)==$01) #Restore control#
+         if (dpeek($C1852C)==$1A39) #For Unibios#
+            poke $C1852F $34
+            poke $C18537 $30
+            poke $C1854B $34
+            poke $C18553 $30
+         endif
+         if (dpeek($C16F46)==$1A39) #For Japan AES#
+            poke $C16F49 $34
+            poke $C16F51 $30
+            poke $C16F65 $34
+            poke $C16F6D $30
+         endif
+         if (dpeek($C16BFA)==$1A39) #For Asia AES#
+            poke $C16BFD $34
+            poke $C16C05 $30
+            poke $C16C19 $34
+            poke $C16C21 $30
+         endif
+      endif
+   endif
+   if (dpeek($10F2FA)==$97F4)
+      poke $100B02 $9B #Infinite Time#
+      dpoke $10014A $FFE4 #Infinite HP#
+      dpoke $10028A $FFE4
+      lpoke $100156 $FFFF0007 #Infinite Power#
+      lpoke $100296 $FFFF0007
+   endif
+   if (dpeek($100B18)==$FFFF)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04))
+      dpoke $100BDA $0707 #Deselect characters#
+      poke $49A95 $AE #For resume#
+      dpoke $10F2FA $9560 #Return#
+   endif
+endif
+
+script "Infinite Time"
 run:
     poke $100B02 $9B
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $100B02 $00
 script "Hit Anywhere (Both Players)" \
- "comm:Excludes Projectiles"  
+ "comm:Excludes Projectiles"
 on:
     temp0=dpeek($0B7DA4)
 run:
     dpoke $0B7DA4 $6002
 off:
     dpoke $0B7DA4 temp0
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $10014A $FF
     poke $10014B $E4
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $10014A $00
     poke $10014B $00
-script "P1 Always have Maximum Power"  
+script "P1 Always have Maximum Power"
 run:
     poke $100156 $FF
     poke $100157 $FF
     poke $100159 $07
-script "P1 Always have Minimum Power"  
+script "P1 Always have Minimum Power"
 run:
     poke $100156 $00
     poke $100157 $00
     poke $100159 $00
-script "P1 Drain All Power Now!"  
+script "P1 Drain All Power Now!"
 on:
     poke $100156 $00
     poke $100157 $00
@@ -47,29 +225,29 @@ script "P1 Select Character" \
  "0x05/Mauru"\
  "0x06/Politank-Z"\
  "0x07/Fernandez"\
- "0x08/Bonus Kun" 
+ "0x08/Bonus Kun"
 run:
     poke $106997 param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $10028A $FF
     poke $10028B $E4
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $10028A $00
     poke $10028B $00
-script "P2 Always have Maximum Power"  
+script "P2 Always have Maximum Power"
 run:
     poke $100296 $FF
     poke $100297 $FF
     poke $100299 $07
-script "P2 Always have Minimum Power"  
+script "P2 Always have Minimum Power"
 run:
     poke $100296 $00
     poke $100297 $00
     poke $100299 $00
-script "P2 Drain All Power Now!"  
+script "P2 Drain All Power Now!"
 on:
     poke $100296 $00
     poke $100297 $00
@@ -84,11 +262,11 @@ script "P2 Select Character" \
  "0x05/Mauru"\
  "0x06/Politank-Z"\
  "0x07/Fernandez"\
- "0x08/Bonus Kun" 
+ "0x08/Bonus Kun"
 run:
     poke $1069A1 param
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     poke $FE1A $00
@@ -96,11 +274,11 @@ run:
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -135,6 +313,6 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99

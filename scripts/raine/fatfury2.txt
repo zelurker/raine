@@ -72,6 +72,12 @@ if (dpeek($100002)==$392C)and(peek($101502)==$E7)
     dpoke $3C0002 $7345
   endif
 endif
+if (dpeek($100002)==$3954)and(peek($100040)>=$01)
+   poke $380000 peek($380000)|$70 #Disable memory card#
+endif
+if (dpeek($100002)==$3C28)
+   poke $380000 peek($380000)&$8F #Restore memory card#
+endif
 #VS Mode Script#
 if (peek($100040)==$01)
     if (dpeek($100002)==$3D2E)

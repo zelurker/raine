@@ -1,8 +1,196 @@
-script "Infinite Time"  
+script "Console Mode Plus" \
+"comm:On the level select screen, press left or right to select modes.
+In practice mode, pause the game then press start to change character."
+run:
+#Menu Screen Script#
+if (dpeek($10F2DE)==$9D66)and(dpeek($10F2D8)==$A66A)
+  poke $F0275 $9C #Restore control#
+  poke $F027D $96
+  if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+    poke $10FFF1 $00
+  endif
+  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $10FFF0 $01FF
+  endif
+  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $10FFF0 $02FF
+  endif
+  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
+    dpoke $10FFF0 $00FF
+  endif
+  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $10FFF0 $02FF
+  endif
+  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $10FFF0 $01FF
+  endif
+  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
+    dpoke $10FFF0 $00FF
+  endif
+  if (peek($10FFF0)==$00) #Normal#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $0020 # value
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+  endif
+  if (peek($10FFF0)==$01) #VS#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $0020 # value
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0056
+    dpoke $3C0002 $0053
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+    dpoke $3C0002 $0020
+  endif
+  if (peek($10FFF0)==$02) #Practice#
+    dpoke $3C0000 $721D # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $0050 # value
+    dpoke $3C0002 $0052
+    dpoke $3C0002 $0041
+    dpoke $3C0002 $0043
+    dpoke $3C0002 $0054
+    dpoke $3C0002 $0049
+    dpoke $3C0002 $0043
+    dpoke $3C0002 $0045
+  endif
+  if (peek($10FD96)==$10)or(peek($10FD9C)==$10)
+     if (peek($10FFF0)>=$01)
+        poke $380000 peek($380000)|$70 #Disable memory card#
+     endif
+  endif
+endif
+if (dpeek($10F2DE)==$0098)
+   poke $380000 peek($380000)&$8F #Restore memory card#
+endif
+#VS Practice Mode Common#
+if (peek($10FFF0)>=$01)
+   if (dpeek($10F2DE)==$0098) #Activates players#
+      dpoke $10B408 $0303
+      poke $106002 $01
+      poke $106005 $09
+      poke $106102 $01
+      poke $106105 $09
+      poke $10610D $01
+      dpoke $10FDB6 $0101
+   endif
+   if (dpeek($10F2DE)==$9E3C)
+      #Get stage#
+      if (peek($10FFE0)==$00)
+         poke $10FFE1 $01 #Hazou#
+      endif
+      if (peek($10FFE0)==$01)
+         poke $10FFE1 $07 #Fuuma#
+      endif
+      if (peek($10FFE0)==$02)
+         poke $10FFE1 $02 #Dragon#
+      endif
+      if (peek($10FFE0)==$03)
+         poke $10FFE1 $00 #Janne#
+      endif
+      if (peek($10FFE0)==$04)
+         poke $10FFE1 $04 #J.Carn#
+      endif
+      if (peek($10FFE0)==$05)
+         poke $10FFE1 $03 #Muscle Power#
+      endif
+      if (peek($10FFE0)==$06)
+         poke $10FFE1 $06 #Brocken#
+      endif
+      if (peek($10FFE0)==$07)
+         poke $10FFE1 $05 #Rasputin#
+      endif
+      if (peek($10FFE0)==$08)
+         poke $10FFE1 $08 #Geegus#
+      endif
+   endif
+   if (dpeek($10F2D2)==$1280)
+      if (peek($10C20A)==$80) #Normal battle#
+         poke $10FFE2 $00
+      endif
+      if (peek($10C20A)==$81) #Death battle#
+         poke $10FFE2 $09
+      endif
+   endif
+   if (dpeek($10F2DE)==$9E84)or(dpeek($10F2DE)==$9E8C)
+      poke $10B005 (peek($10FFE1)+peek($10FFE2)) #Load stage#
+   endif
+endif
+#VS Mode Script#
+if (peek($10FFF0)==$01)
+   if (dpeek($10F2DE)==$9C62)
+      dpoke $60DC2 $0000 #No loss#
+      if (peek($10FD96)>=$10)or(peek($10FD9C)>=$10)or(peek($106005)==$01)or(peek($106105)==$01) #Activates players#
+         dpoke $10B408 $0303
+         poke $106002 $01
+         poke $106005 $09
+         poke $106102 $01
+         poke $106105 $09
+         poke $10610D $01
+         dpoke $10FDB6 $0101
+      endif
+   endif
+   if (dpeek($10F2DE)==$9E3C)
+      dpoke $60DC2 $6002 #Restore rom#
+      if (peek($10C200)>=$80)and(peek($10C201)<$80)
+         poke $10FFE0 peek($10C201) #Stage of P2 character#
+      endif
+      if (peek($10C200)<$80)and(peek($10C201)>=80)
+         poke $10FFE0 peek($10C200) #Stage of P1 character#
+      endif
+   endif
+endif
+#Practice Mode Script#
+if (peek($10FFF0)==$02)
+   if (dpeek($10F2DE)==$9E3C)
+      poke $9ECB $80 #Restore rom#
+      if (peek($10C200)>=$80)and(peek($10C201)<$80)
+         poke $10FFE0 peek($10C201) #Stage of P2 character#
+         if (peek($10FD96)==$00)and(peek($10FD9C)==$00)
+            poke $F0275 $96 #Switch control#
+            poke $F027D $9C
+         endif
+      endif
+      if (peek($10C200)<$80)and(peek($10C201)>=80)
+         poke $10FFE0 peek($10C200) #Stage of P1 character#
+         if (peek($10FD96)==$00)and(peek($10FD9C)==$00)
+            poke $F0275 $96 #Switch control#
+            poke $F027D $9C
+         endif
+      endif
+      if (peek($10C200)>=$80)and(peek($10C201)>=80)
+         poke $F0275 $9C #Restore control#
+         poke $F027D $96
+      endif
+   endif
+   if (dpeek($10F2DE)==$9BA4)
+      poke $10B008 $9A #Infinite time#
+      poke $10600A $68 #Infinite HP
+      poke $10602E $68
+      poke $10610A $68
+      poke $10612E $68
+      if (peek($10B40A)==$FF)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04))
+         poke $10B40A $00
+         poke $10B004 $08 #Join in#
+         poke $9ECB $00 #Shorten wait time#
+      endif
+   endif
+endif
+
+script "Infinite Time"
 run:
     poke $10B008 $9A
 script "Finish this Round Now!" \
- "comm:Disable Infinite Time before activating this cheat"  
+ "comm:Disable Infinite Time before activating this cheat"
 on:
     poke $10B008 $01
 script "Select Background [Normal]" \
@@ -16,7 +204,7 @@ script "Select Background [Normal]" \
  "0x07/Fuuma"\
  "0x08/Geegus"\
  "0x12/1st Bonus Stage"\
- "0x13/2nd Bonus Stage" 
+ "0x13/2nd Bonus Stage"
 change:
     poke $10B005 param
 script "Select Background [DeathMatch]" \
@@ -30,25 +218,25 @@ script "Select Background [DeathMatch]" \
  "0x10/Fuuma"\
  "0x11/Geegus"\
  "0x12/1st Bonus Stage"\
- "0x13/2nd Bonus Stage" 
+ "0x13/2nd Bonus Stage"
 change:
     poke $10B005 param
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
     poke $10600A $68
     poke $10602E $68
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $10600A $00
     poke $10602E $00
-script "P1 Never Wins"  
+script "P1 Never Wins"
 run:
     poke $10C12A $00|(peek($10C12A)&~$03)
-script "P1 Rounds Won = 0 Now!"  
+script "P1 Rounds Won = 0 Now!"
 on:
     poke $10C12A $00|(peek($10C12A)&~$03)
-script "P1 Rounds Won = 1 Now!"  
+script "P1 Rounds Won = 1 Now!"
 on:
     poke $10C12A $01|(peek($10C12A)&~$03)
 script "P1 Select Character" \
@@ -61,25 +249,25 @@ script "P1 Select Character" \
  "0x06/Rasputin"\
  "0x07/Fuuma"\
  "0x08/Brocken"\
- "0x09/Geegus" 
+ "0x09/Geegus"
 run:
     poke $10600C param
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
     poke $10610A $68
     poke $10612E $68
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $10610A $00
     poke $10612E $00
-script "P2 Never Wins"  
+script "P2 Never Wins"
 run:
     poke $10C12A $00|(peek($10C12A)&~$0C)
-script "P2 Rounds Won = 0 Now!"  
+script "P2 Rounds Won = 0 Now!"
 on:
     poke $10C12A $00|(peek($10C12A)&~$0C)
-script "P2 Rounds Won = 1 Now!"  
+script "P2 Rounds Won = 1 Now!"
 on:
     poke $10C12A $04|(peek($10C12A)&~$0C)
 script "P2 Select Character" \
@@ -92,18 +280,18 @@ script "P2 Select Character" \
  "0x06/Rasputin"\
  "0x07/Fuuma"\
  "0x08/Brocken"\
- "0x09/Geegus" 
+ "0x09/Geegus"
 run:
     poke $10610C param
-script " "  
+script " "
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \
  "0x80/Arcade (MVS)"\
- "0x00/Home (NEOGEO)" 
+ "0x00/Home (NEOGEO)"
 run:
     poke $10FD82 param
 script "Skip RAM/ROM Checks" \
- "comm:Also allows a quicker start-up without the green screens."  
+ "comm:Also allows a quicker start-up without the green screens."
 on:
     temp0=lpeek($C1315C)
     temp1=lpeek($C1314E)
@@ -138,11 +326,11 @@ off:
     lpoke $C1212E temp4
     lpoke $C134FA temp5
 script "Infinite Credits" \
- "comm:Alternatively just set Free Play to ON in the Dip Switches menu"  
+ "comm:Alternatively just set Free Play to ON in the Dip Switches menu"
 run:
     poke $D00034 $99
 script "Mute All Music" \
- "comm:Fully mutes all music, including BIOS music"  
+ "comm:Fully mutes all music, including BIOS music"
 on:
     if peek($0109)==$03
       temp0=$04AC
