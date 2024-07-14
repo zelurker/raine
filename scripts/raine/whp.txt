@@ -3,7 +3,7 @@ script "Console Mode Plus" \
 In practice mode, pause the game then press start to change character."
 run:
 #Menu Screen Script#
-if (dpeek($10B032)==$145A)and(peek($10B201)==$FF)
+if (dpeek($10B032)==$145A)and(peek($10B00A)==$00)
    #Restore control#
    if (dpeek($C1852C)==$1A39) #For Unibios#
       poke $C1852F $34
