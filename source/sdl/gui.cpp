@@ -929,10 +929,10 @@ static menu_item_t main_items[] =
 { _("Game options"), &do_game_options },
 { _("Game commands list"), &show_moves },
 { _("Game cheats"), &do_cheats, },
-{ _("Preload IPS *.dat files"), &do_preload_ips, },
 { _("Region"), &set_region, },
 { _("Dipswitches"), &do_dlg_dsw, },
 { _("Change/Load game"), &do_game_sel },
+{ _("Preload IPS *.dat files"), &do_preload_ips, },
 #if HAS_NEO
 { _("Load Neo-Geo CD game"), &load_neo_game },
 { _("Neo-Geo/Neo-Geo CD options"), &do_neocd_options },
@@ -956,7 +956,7 @@ int TMain_menu::can_be_displayed(int n) {
 	return current_game != NULL;
     case 2: // game commands
 	return nb_commands > 0;
-    case 5: // Region
+    case 4: // Region
 	return current_game != NULL && current_game->romsw != NULL;
     case 3: // cheats
 	return current_game != NULL && (CheatCount > 0
@@ -964,7 +964,7 @@ int TMain_menu::can_be_displayed(int n) {
 		|| nb_scripts > 0
 #endif
 		);
-    case 6: // dsw
+    case 5: // dsw
 	return current_game != NULL && current_game->dsw != NULL;
     default:
 	return 1;
