@@ -1432,6 +1432,13 @@ static void do_cpu(int argc, char **argv) {
    }
 }
 
+static void do_rom(int argc, char **argv) {
+    if (argc != 3) throw "rom address value";
+    int adr = parse(argv[1]);
+    int val = parse(argv[2]);
+    ROM[adr] = val;
+}
+
 commands_t commands[] =
 {
   { "break", &do_break, "\E[32mbreak\E[0m [adr]|break del nb : without parameter, lists breakpoints. With adr, set breakpoint at adr\nPass del and the breakpoint number to delete a breakpoint","Notice that the breakpoints are implemented using 2 bytes which are written at the address you give :\n"
@@ -1482,6 +1489,7 @@ commands_t commands[] =
   { "regs", &do_regs, "\E[32mregs\E[0m : show registers", "Notice that the registers are directly assigned to some variables. d0-d7 a0-a7 sp, pc for the 68000/68020, a,b,c,de,f,hl, pc and iff for the z80. You can use these variables in expressions, change them, etc..."},
   { "restore", &do_restore, "\E[32mrestore\E[0m name adr1 [adr2] : load file at adr1, until adr2 or end of file" },
   { "rnd", NULL, "rnd() : returns a random byte (between 0 & 255). It's a random number from openssl's RAND_bytes." },
+  { "rom", &do_rom, "rom adr value : super simple function to change a byte at address adr. Useful for sh2" },
   { "save", &do_save, "\E[32msave\E[0m name adr1 adr2 : saves the memory range between adr1 & adr2 to disk" },
   { "save_state", &cons_save_state,"\E[32msave_state\E[0m : do a save state, equivalent to F2 key, see set_save_slot" },
   { "script", &do_script, "\E[32mscript\E[0m ['description' [always]]",

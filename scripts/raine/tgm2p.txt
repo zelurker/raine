@@ -1,8 +1,15 @@
-script "Infinite Credits"  
+script "Infinite Credits"
 run:
     poke $6064762 $09
-script " "  
-script "P1 Infinite Time"  
+script "Music never starts"
+on:
+	rom $2e614 0
+	rom $2e615 9
+off:
+	rom $2e614 $21
+	rom $2e615 $22
+script " "
+script "P1 Infinite Time"
 run:
     dpoke $6064BEA $0000
 script "P1 Select Perm Current Shape" \
@@ -12,7 +19,7 @@ script "P1 Select Perm Current Shape" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 run:
     poke $6064BF7 param
 script "P1 Select Perm Next Shape" \
@@ -22,7 +29,7 @@ script "P1 Select Perm Next Shape" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 run:
     poke $6064BF9 param
 script "P1 Select Current Shape Now!" \
@@ -32,7 +39,7 @@ script "P1 Select Current Shape Now!" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 change:
     poke $6064BF7 param
 script "P1 Select Next Shape Now!" \
@@ -42,11 +49,11 @@ script "P1 Select Next Shape Now!" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 change:
     poke $6064BF9 param
-script " "  
-script "P2 Infinite Time"  
+script " "
+script "P2 Infinite Time"
 run:
     dpoke $6064F82 $0000
 script "P2 Select Perm Current Shape" \
@@ -56,7 +63,7 @@ script "P2 Select Perm Current Shape" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 run:
     poke $6064F8F param
 script "P2 Select Perm Next Shape" \
@@ -66,7 +73,7 @@ script "P2 Select Perm Next Shape" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 run:
     poke $6064F91 param
 script "P2 Select Current Shape Now!" \
@@ -76,7 +83,7 @@ script "P2 Select Current Shape Now!" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 change:
     poke $6064F8F param
 script "P2 Select Next Shape Now!" \
@@ -86,6 +93,6 @@ script "P2 Select Next Shape Now!" \
  "0x05/Dark Blue L"\
  "0x06/Orange L"\
  "0x07/Yellow square"\
- "0x08/Light Blue T" 
+ "0x08/Light Blue T"
 change:
     poke $6064F91 param
