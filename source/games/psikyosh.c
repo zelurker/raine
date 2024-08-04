@@ -750,7 +750,7 @@ static void load_gunbird2() {
     } else if (is_current_game("daraku")) {
 	offset_vbl = 0x1c;
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
-    } else if (is_current_game("gnbarich")) {
+    } else if (is_current_game("gnbarich") || is_current_game("dragnblz")) {
 	offset_vbl = 0x60028;
 	SH2_Add_ReadL(&M_SH2,6, 6, read_raml_hack);
     } else
