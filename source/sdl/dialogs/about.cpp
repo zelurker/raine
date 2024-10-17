@@ -686,6 +686,16 @@ static int menu_goto_url(int sel) {
 static int do_command = 0;
 static int about_game(int sel);
 
+static int strategy_guide(int sel) {
+    if (is_current_game("galaxian"))
+	goto_url("https://gamefaqs.gamespot.com/pc/225937-galaxian/faqs/32227");
+    else if (is_current_game("puckman") || is_current_game("pacman") || is_current_game("pacplus"))
+	goto_url("https://gamefaqs.gamespot.com/arcade/589548-pac-man/faqs/43959");
+    else if (is_current_game("ddonpach"))
+	goto_url("https://gamefaqs.gamespot.com/arcade/566978-dodonpachi/faqs/45969");
+    return 0;
+}
+
 static menu_item_t about_items[] =
 {
   { "", NULL, NULL },
@@ -728,6 +738,7 @@ static menu_item_t about_items[] =
 #ifdef __x86_64__
   { _("64 bits x86 binary, no ASM at all, a Raine anomaly!") },
 #endif
+  { _("Strategy guide"), &strategy_guide },
   { _("History..."), &about_game },
   { _("Driver information"), &about_game },
   { NULL, NULL, NULL },
@@ -985,6 +996,12 @@ int TAbout_menu::can_be_displayed(int index) {
     int max = sizeof(about_items)/sizeof(menu_item_t);
     if (index == max-2 || index == max-3)
 	return current_game != NULL;
+    if (index == max-4) { // Strategy guide
+	if (is_current_game("galaxian") || is_current_game("puckman") || is_current_game("pacman") || is_current_game("pacplus") ||
+		is_current_game("ddonpach"))
+	    return 1;
+	return 0;
+    }
     return 1;
 }
 
