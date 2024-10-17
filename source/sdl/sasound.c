@@ -375,6 +375,7 @@ typedef struct {
     int pos;
     int freq;
     int converted;
+    SDL_sem *sem;
 } tsample;
 
 #define MAX_SAMPLE 10
@@ -415,6 +416,7 @@ int create_sample(INT16 *src, int len, int rate, int loop, int vol) {
     samp[nb_samples].volume = vol;
     samp[nb_samples].pos = 0;
     samp[nb_samples].freq = rate;
+    samp[nb_samples].sem = SDL_CreateSemaphore(1);
     nb_samples++;
     return nb_samples-1;
 }
@@ -425,6 +427,8 @@ void del_sample(int n) {
 	    FreeMem(samp[n].src);
 	samp[n].src = NULL;
 	samp[n].playing = 0;
+	SDL_DestroySemaphore(samp[n].sem);
+	samp[n].sem = NULL;
     }
     while (!samp[nb_samples-1].src && nb_samples > 0)
 	nb_samples--;
@@ -439,6 +443,7 @@ void set_sample_frequency(int n, int freq) {
     if (samp[n].freq == freq) return;
     int len = samp[n].len_orig;
     INT16 *src = samp[n].orig;
+    SDL_SemWait(samp[n].sem);
     if (samp[n].converted)
 	FreeMem(samp[n].src);
     if (SDL_BuildAudioCVT(&cvt, gotspec.format, 1, freq,
@@ -463,6 +468,7 @@ void set_sample_frequency(int n, int freq) {
     }
     if (samp[n].pos >= samp[n].len/2)
 	samp[n].pos = 0;
+    SDL_SemPost(samp[n].sem);
 }
 
 void play_sample(int chan, INT16 *src, int len, int rate, int loop,int vol) {
@@ -927,7 +933,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 #ifdef TEST_OVERFLOW
 		INT32 sample = wstream[i]+left;
 		if (sample > 0x7fff) {
-		    printf("overflow left %x\n",sample);
+		    printf("overflow left %x name %s\n",sample,stream_name[channel]);
 		    sample = 0x7fff;
 		} else if (sample < -0x8000) {
 		    printf("underflow left %x\n",sample);
@@ -936,7 +942,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		wstream[i] = sample;
 		sample = wstream[i+1] + right;
 		if (sample > 0x7fff) {
-		    printf("overflow right %x\n",sample);
+		    printf("overflow right %x name %s\n",sample,stream_name[channel]);
 		    sample = 0x7fff;
 		} else if (sample < -0x8000) {
 		    printf("underflow right %x\n",sample);
@@ -961,6 +967,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 
     for (int n=0; n<nb_samples; n++) {
 	if (samp[n].src && samp[n].playing && samp[n].volume) {
+	    SDL_SemWait(samp[n].sem);
 	    INT16 *src = samp[n].src + samp[n].pos;
 	    for (i=0; i<len; i+=2) {
 #ifdef TEST_OVERFLOW
@@ -998,6 +1005,7 @@ static void my_callback(void *userdata, Uint8 *stream, int len)
 		    }
 		}
 	    }
+	    SDL_SemPost(samp[n].sem);
 	}
     }
 
