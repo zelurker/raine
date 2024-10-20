@@ -1264,13 +1264,13 @@ CLNEI( samsho2, neogeo, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru ji
 
 static struct ROM_INFO rom_samsho2pe[] = /* samsho2pe, from finalburnneo git, clone of samsho2 of course */
 {
-    LOAD_SW16( CPU1, "063-p1pe.p1",	0, 0x100000, 0x03bfaaaf ),
-    LOAD_SW16( CPU1, "063-p2pe.sp2",	0x100000, 0x100000, 0xa3a39ea4 ),
+    LOAD_SW16( CPU1, "063-p1pe.p1",	0, 0x100000, 0x184c3a6c ),
+    LOAD_SW16( CPU1, "063-p2pe.sp2",	0x100000, 0x100000, 0x025ee4ed ),
     LOAD_SW16( CPU1, "063-p3pe.p3",	0x200000, 0x020000, 0x82ce7ad7 ),
     ROM_END
 };
 
-CLNEI( samsho2pe, samsho2, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru Jigokuhen (Perfect V. 2.2, Hack)", HACK, 2024, GAME_BEAT);
+CLNEI( samsho2pe, samsho2, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru Jigokuhen (Perfect V. 2.3, Hack)", HACK, 2024, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho2k[] = /* KOREAN VERSION clone of samsho2 */
 {
