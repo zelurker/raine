@@ -695,14 +695,14 @@ CFLAGS_MCU = $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_D
 AFLAGS += -DRAINE_DEBUG
 CFLAGS += $(INCDIR) $(DEFINE) $(_MARCH) -Wall -Wno-write-strings -g -DRAINE_DEBUG -fno-stack-protector
 ifndef USE_CLANG
-ifdef RAINE_DOS
+ifndef RAINE_UNIX
 	CFLAGS_MCU += -Wno-format-truncation
 	CFLAGS += -Wno-format-truncation
 else
 	CFLAGS_MCU += -Wno-format-truncation -fsanitize=address # -fno-omit-frame-pointer -fno-common
 	CFLAGS += -Wno-format-truncation -fsanitize=address # -fno-omit-frame-pointer -fno-common
 	LFLAGS = -fsanitize=address
-endif # RAINE_DOS
+endif # RAINE_UNIX
 else
 	CFLAGS_MCU += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address
 	CFLAGS += -Wno-initializer-overrides -Wno-invalid-source-encoding -fsanitize=address # -fno-omit-frame-pointer -fno-common
@@ -1822,7 +1822,7 @@ $(OBJDIR)/Musashi/m68kmake.o: source/Musashi/m68kmake.c
 
 $(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
 ifdef CROSSCOMPILE
-	cp -fv $(NATIVE)/object/Musashi/m68kmake $(OBJDIR)/Musashi
+	cp -fv $(NATIVE)/object/Musashi/m68kmake $(OBJDIR)/Musashi || cp -fv $(NATIVE)/objectd/Musashi/m68kmake $(OBJDIR)/Musashi
 else
 	$(LD) -o $@ $<
 endif
