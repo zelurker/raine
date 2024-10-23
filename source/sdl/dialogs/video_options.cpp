@@ -39,6 +39,7 @@ class TVideo : public TMenu
 
 static TVideo *video_options;
 extern "C" void toggle_fullscreen(); // from control_internal.h normally, but windows.h is allergic !
+extern "C" int prev_fullscreen;
 
 #if SDL==1
 static int my_toggle_fullscreen(int sel) {
@@ -54,11 +55,10 @@ static int my_toggle_fullscreen(int sel) {
   return 0; // (oldx < display_cfg.screen_x || oldy < display_cfg.screen_y);
 }
 #else
-static int prev_fullscreen;
 
 static int my_toggle_fullscreen(int sel) {
-    prev_fullscreen = display_cfg.fullscreen;
     toggle_fullscreen();
+    prev_fullscreen = display_cfg.fullscreen;
     return 0;
 }
 #endif
@@ -290,13 +290,12 @@ static menu_item_t video_items[] =
 };
 
 int do_video_options(int sel) {
+    prev_fullscreen = display_cfg.fullscreen;
 #if SDL==1
     int old_stretch = display_cfg.stretch;
 #if defined(RAINE_WIN32) && SDL<2
     UINT32 old_driver = display_cfg.video_driver;
 #endif
-#else
-    prev_fullscreen = display_cfg.fullscreen;
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
     video_options = new TVideo("", video_items);

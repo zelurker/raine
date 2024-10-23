@@ -73,6 +73,8 @@ extern struct DEF_INPUT_EMU def_input_emu[];
 void register_driver_emu_keys(struct DEF_INPUT_EMU *list, int nb);
 void unregister_driver_emu_keys();
 
+extern int prev_fullscreen; // only for windows actually !
+
 void toggle_fullscreen();
 
 char *get_joy_name(int n);

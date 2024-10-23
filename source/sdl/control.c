@@ -434,6 +434,7 @@ static void toggle_limit_speed() {
 
 extern void key_stop_emulation_esc(void);
 extern void key_stop_emulation_tab(void);
+int prev_fullscreen;
 
 void toggle_fullscreen() {
     if (display_cfg.maximized) return; // too crazy in windows if window is maximized
@@ -468,9 +469,18 @@ void toggle_fullscreen() {
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
-#ifndef RAINE_WIN32
-      SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
-      SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+#ifdef RAINE_WIN32
+      if (prev_fullscreen == 2) {
+	  // Yeah pretty incredible : in windows you can't send these 2 commands when exiting
+	  // fullscreen, if you do you get a maximized window in the middle of the screen
+	  // BUT if you don't send them while exiting real fullscreen, then you get this exact same
+	  // maximized window in the middle of the screen !!!
+	  // Just insane !
+#endif
+	  SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
+	  SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
+#ifdef RAINE_WIN32
+      }
 #endif
   }
   ScreenChange();
@@ -479,6 +489,7 @@ void toggle_fullscreen() {
 
 static void toggle_fullscreen_keyboard() {
     if (display_cfg.maximized) return;
+    prev_fullscreen = display_cfg.fullscreen;
   if (display_cfg.fullscreen) {
     display_cfg.fullscreen = 0;
   } else {
