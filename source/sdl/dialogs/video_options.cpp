@@ -39,7 +39,6 @@ class TVideo : public TMenu
 
 static TVideo *video_options;
 extern "C" void toggle_fullscreen(); // from control_internal.h normally, but windows.h is allergic !
-extern "C" int prev_fullscreen;
 
 #if SDL==1
 static int my_toggle_fullscreen(int sel) {
@@ -58,7 +57,6 @@ static int my_toggle_fullscreen(int sel) {
 
 static int my_toggle_fullscreen(int sel) {
     toggle_fullscreen();
-    prev_fullscreen = display_cfg.fullscreen;
     return 0;
 }
 #endif
@@ -265,7 +263,7 @@ static menu_item_t video_items[] =
 #endif
 #endif
     // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
-{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 3, {0, 1, 2}, {_("No"), _("Yes (desktop)"), _("Yes (real)")}},
+{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes (desktop)"), _("Yes (real)")}},
 #ifdef RAINE_UNIX
 { _("Fullscreen hack for Intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
 #endif
@@ -290,7 +288,6 @@ static menu_item_t video_items[] =
 };
 
 int do_video_options(int sel) {
-    prev_fullscreen = display_cfg.fullscreen;
 #if SDL==1
     int old_stretch = display_cfg.stretch;
 #if defined(RAINE_WIN32) && SDL<2

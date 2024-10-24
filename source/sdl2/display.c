@@ -58,6 +58,7 @@ void display_read_config() {
    display_cfg.user_flip = raine_get_config_int( "Display", "flip", 0);
    display_cfg.fix_aspect_ratio = raine_get_config_int("display", "fix_aspect_ratio", 1);
    display_cfg.fullscreen = raine_get_config_int("display", "fullscreen", 0);
+   if (display_cfg.fullscreen > 1) display_cfg.fullscreen = 1;
    display_cfg.lost_focus = 1;
    display_cfg.maximized = raine_get_config_int("display", "maximized", 0);
    display_cfg.prev_sx = raine_get_config_int("display","prev_sx",0);
