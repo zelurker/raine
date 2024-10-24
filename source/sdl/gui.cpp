@@ -1023,7 +1023,14 @@ int goto_debuger = 0;
 
 #if SDL == 2
 static void my_event(SDL_Event *event) {
+    int input,modifier;
     switch (event->type) {
+    case SDL_KEYDOWN:
+      input = event->key.keysym.scancode; // | ((event->key.keysym.mod & 0x4fc0)<<16);
+      modifier = (event->key.keysym.mod & 0xfc3);
+      if (gui_key(input,modifier))
+	  event->type = 0; // clear event if it was handled
+      break;
     case SDL_CONTROLLERDEVICEADDED:
     case SDL_CONTROLLERDEVICEREMOVED:
     case SDL_CONTROLLERBUTTONDOWN:
@@ -1170,6 +1177,7 @@ void StartGUI(void)
     init_display();
 
     setup_font(); // Usefull even without gui for the messages on screen
+    ScreenChange(); // call once ScreenChange to initialize opengl stuff (screenshots...)
 
     WantScreen=0;
     WantQuit=0;

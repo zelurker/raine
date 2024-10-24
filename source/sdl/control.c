@@ -50,6 +50,7 @@
 #include "emumain.h"
 #include "opengl.h"
 #include "files.h"
+#include "dialogs/messagebox.h"
 
 /* The difference in the sdl version :
  * instead of looping for every frame in all the available inputs to the game
@@ -1604,6 +1605,59 @@ static int check_emu_inputs(DEF_INPUT_EMU *emu_input, int nb, int input, int mod
     emu_input++;
   }
   return 0;
+}
+
+static void gui_save_screenshot() {
+    char full_name[PATH_MAX];
+    char file_name[32];
+
+    raine_cfg.req_save_screen = 0;
+
+    /*
+
+       first try gui.png
+
+*/
+
+    sprintf(file_name, "%s.png", "gui");
+
+    snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
+    full_name[255] = 0;
+
+    /*
+
+       otherwise, find the next gui_NNN.png (or guiNNN.pcx)
+
+*/
+
+    while( exists(full_name) ){
+
+	if(dir_cfg.last_screenshot_num > 999)
+
+	    return;
+
+	if(dir_cfg.long_file_names)
+
+	    sprintf(file_name, "%s_%03d.png", "gui", dir_cfg.last_screenshot_num++);
+
+	else
+
+	    sprintf(file_name, "%.5s%03d.png", "gui", dir_cfg.last_screenshot_num++);
+
+	snprintf(full_name,256, "%s%s", dir_cfg.screen_dir, file_name);
+	full_name[255] = 0;
+
+    };
+
+    ogl_save_png(full_name);
+    raine_mbox("Screen saved as...",file_name,"OK");
+}
+
+int gui_key(int input, int modifier) {
+    def_input_emu[0].proc = &gui_save_screenshot;
+    int ret = check_emu_inputs(&def_input_emu[0],2,input,modifier);
+    def_input_emu[0].proc = &key_save_screen;
+    return ret;
 }
 
 static void handle_joy_axis(int which, int axis, int value) {

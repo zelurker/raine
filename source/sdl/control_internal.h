@@ -141,6 +141,7 @@ int get_console_key();
 int has_input(int inp);
 void control_handle_event(SDL_Event *event);
 void invalidate_inputs();
+int gui_key(int input, int modifier);
 
 #ifdef __cplusplus
 }
