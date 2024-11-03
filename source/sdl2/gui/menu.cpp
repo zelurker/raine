@@ -184,9 +184,12 @@ static TMenu *caller;
 TDesktop::TDesktop() {
     SDL_GetRendererOutputSize(rend,&screen_info.w,&screen_info.h);
     sdl_screen = &screen_info;
-    SDL_Rect usable;
+/*  This code here is what we should use in theory.
+ *  Problem is : it's broken in desktop fullscreen in windows, you get h=screen h - windows title bar height
+ *  SDL_Rect usable;
     SDL_GetDisplayUsableBounds(0, &usable);
-    w = usable.w; h = usable.h;
+    w = usable.w; h = usable.h; */
+    w = screen_info.w; h = screen_info.h;
     pic = NULL;
     fg_format = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
     work_area.w = work_area.h = 0; // TDesktop is independant, need to init this here
