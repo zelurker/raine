@@ -1,4 +1,4 @@
-#######################################
+########################################
 ##                                    ##
 ##                RAINE               ##
 ##                                    ##
@@ -1588,7 +1588,7 @@ else
 endif
 else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
-	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o
+	$(CCV) $(LFLAGS) -o $(OBJDIR)/68000/star.exe $(OBJDIR)/68000/star.o `sdl2-config --libs`
 endif
 # Notice : you can pass -addressbits 32 to star.exe to avoid addresses
 # masks and win a few instructions. It works for most games, but not all of
@@ -1623,7 +1623,7 @@ else
 endif
 else
 $(OBJDIR)/z80/mz80.asm: $(OBJDIR)/z80/makez80.o
-	$(CCV) $(LFLAGS) -s -o $(OBJDIR)/z80/makez80.exe $<
+	$(CCV) $(LFLAGS) -s -o $(OBJDIR)/z80/makez80.exe $< `sdl2-config --libs`
 endif
 ifdef DARWIN
 	@$(OBJDIR)/z80/makez80.exe -s -cs -x86 $@
@@ -1651,7 +1651,7 @@ $(OBJDIR)/6502/m6502.asm: $(OBJDIR)/6502/make6502.o
 ifdef CROSSCOMPILE
 	cp `find $(NATIVE) -name make6502.exe|head -n 1` $(OBJDIR)/6502
 else
-	$(CCV) $(LFLAGS) -o $(OBJDIR)/6502/make6502.exe $(OBJDIR)/6502/make6502.o
+	$(CCV) $(LFLAGS) -o $(OBJDIR)/6502/make6502.exe $(OBJDIR)/6502/make6502.o `sdl2-config --libs`
 endif
 ifdef DARWIN
 	$(OBJDIR)/6502/make6502.exe -s -6510 $@
