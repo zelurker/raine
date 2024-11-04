@@ -452,6 +452,10 @@ void toggle_fullscreen() {
   // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
   // SDL_ShowWindow then the screen starts to blink because the window manager keeps on trying to hide it !
   // Calling instead these 2 functions to manually set the position and the size which should be totally equivalent fixes the problem !!!
+  if (!display_cfg.fullscreen && !display_cfg.posx && !display_cfg.posy) {
+      // This is done at sdl initialization but just in case... apparently not needed in windows but I prefer to be cautious !
+      SDL_GetWindowPosition(win,&display_cfg.posx,&display_cfg.posy);
+  }
   if (display_cfg.fullscreen == 1) {
       if (hack_fs) {
 	  SDL_SetWindowPosition(win,0,0);
@@ -474,6 +478,10 @@ void toggle_fullscreen() {
       display_cfg.prev_sy = display_cfg.screen_y;
       display_cfg.screen_x = desktop_w;
       display_cfg.screen_y = desktop_h;
+  }
+  if (display_cfg.fullscreen) {
+      display_cfg.prev_posx = display_cfg.posx;
+      display_cfg.prev_posy = display_cfg.posy;
   }
   ScreenChange();
 #endif
