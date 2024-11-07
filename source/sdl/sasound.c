@@ -156,13 +156,6 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
      // Normally, soundcard =0 means no sound in raine.
      // I will try not to break this to keep compatibility with the other
      // sources...
-   sound_card_id(soundcard);
-
-/*    if ( SDL_Init(SDL_INIT_AUDIO) < 0 ) { */
-/*      fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError()); */
-/*      exit(1); */
-/*    } */
-/*    atexit(SDL_Quit); */
 
    for( i = 0; i < NUMVOICES; i++ ){
 
@@ -186,9 +179,8 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
        int i = soundcard -1;
-       const char *name = SDL_GetAudioDeviceName(i,0);
-       printf("%d: %s\n",i,name);
-       SDL_GetAudioDeviceSpec(i,0,&spec);
+       const char *name = (i <= -2 ? NULL : SDL_GetAudioDeviceName(i,0));
+       SDL_GetAudioDeviceSpec(i >= 0 ? i : 0,0,&spec);
        spec.userdata = NULL;
        spec.callback = my_callback;
        if (sample_rate) {
@@ -198,7 +190,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
        spec.format = AUDIO_S16LSB;
        spec.channels = 2;
-       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) < 0 )
+       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) <= 0 )
 #else
 	   spec.userdata = NULL;
        spec.callback = my_callback;
@@ -215,7 +207,8 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 	   RaineSoundCard = 0;
 	   return 0;
        }
-       printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format);
+       printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x dev %d\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format,dev);
+       RaineSoundCard = dev-1;
        audio_sample_rate = gotspec.freq;
        opened_audio = 1;
 #if HAS_NEO
@@ -1110,7 +1103,7 @@ void saResetPlayChannels( void )
 
 char *sound_card_name( int num )
 {
-   int id = sound_card_id(num);
+   int id = num;
 
    if (id == 0)
      return "Silence";
@@ -1123,6 +1116,7 @@ char *sound_card_name( int num )
 int sound_card_id( int i )
 {
   return i; // for now no id in sdl
+	    // Still here for compatibility with old sound ids from allegro
 }
 
 /******************************* END OF FILE **********************************/
