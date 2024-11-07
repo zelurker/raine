@@ -626,7 +626,7 @@ static int get_joy_index(int n) {
 	    // Function doesn't work for most joysticks, but anyway... !!!
 	    SDL_JoystickSetPlayerIndex(joy[n].joy,index);
 	}
-	printf("no index found, %d assigned\n",index);
+	printf("get_joy_index: no index found, %d assigned\n",index);
     } else {
 	printf("got index %d from config\n",index);
 	if (index >= SDL_NumJoysticks()) {
