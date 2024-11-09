@@ -1324,7 +1324,7 @@ DRV(gauntlet)
 DRV(gauntlets)
 DRV(gaunt2)
 
-#ifdef GENS_SH2
+    // psikyosh
     DRV(gunbird2)
     DRV(s1945ii)
     DRV(s1945iii)
@@ -1334,5 +1334,4 @@ DRV(gaunt2)
     DRV(soldivid)
     DRV(daraku)
     DRV(gnbarich)
-#endif
 

@@ -16,7 +16,6 @@
 #include "blit.h"
 #include "priorities.h"
 #include "pdraw.h"
-#include "timer.h"
 
 #define MASTER_CLOCK 57272700   // main oscillator frequency
 
@@ -455,7 +454,7 @@ static u32 FASTCALL read_raml_hack(u32 offset) {
 	if (offset == offset_vbl) {
 	    // This is equivalent to a speed hack here for gunbird2 but without modifying the rom
 	    if (!ret) {
-		M_SH2.Cycle_IO = 3;
+		SH2_ReleaseTimeSlice(&M_SH2);
 	    }
 	}
         return ret;
@@ -687,7 +686,6 @@ static void load_gunbird2() {
 	default_eeprom_size = get_region_size(REGION_EEPROM);
     }
     load_eeprom();
-    setup_z80_frame(CPU_SH2_0,MASTER_CLOCK/2/60);
     SH2_Init(&M_SH2,0);
     if (get_region_size(REGION_CPU1) > 0x100000)
 	bank = &ROM[0x100000];
@@ -793,7 +791,6 @@ static void load_gunbird2() {
 }
 
 static void execute_gunbird2() {
-    // execute_z80_audio_frame();
     cpu_execute_cycles(CPU_SH2_0,MASTER_CLOCK/2/60);
     cpu_interrupt(CPU_SH2_0,4); // vbl
 }

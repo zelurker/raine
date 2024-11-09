@@ -191,7 +191,6 @@ typedef struct __SH2_context SH2_CONTEXT;
 // 2 SH2 contexts offered :)
 
 extern int sh2Engine;
-extern int sh2Engine;
 extern SH2_CONTEXT M_SH2;
 extern SH2_CONTEXT S_SH2;
 
@@ -586,5 +585,6 @@ void SH2I_XOR_DS();
 void SH2I_XORI_DS();
 void SH2I_XORM_DS();
 void SH2I_XTRCT_DS();
+void SH2_ReleaseTimeSlice(SH2_CONTEXT *M_SH2);
 
 #endif

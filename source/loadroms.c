@@ -21,9 +21,7 @@
 #include "curl.h"
 #endif
 #include "ips.h"
-#if GENS_SH2
 #include "sh2.h"
-#endif
 
 #undef _
 #define _(string) gettext(string)
@@ -1009,9 +1007,7 @@ void load_game_rom_info(void)
 #if HAVE_Z80
    test &= !MZ80Engine;
 #endif
-#if GENS_SH2
    test &= !sh2Engine;
-#endif
 
    if (test) {
      sprintf(load_debug+strlen(load_debug),

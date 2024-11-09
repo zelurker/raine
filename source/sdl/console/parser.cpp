@@ -14,11 +14,9 @@
 #include <openssl/rand.h>
 #include "scripts.h"
 #include "profile.h"
-#if GENS_SH2
 extern "C" {
 #include "sh2.h"
 }
-#endif
 
 using namespace mu;
 static value_type mod(value_type v1, value_type v2) { return v1%v2; }
@@ -155,14 +153,12 @@ void get_regs(int cpu) {
 #endif
 	break;
 #endif
-#ifdef GENS_SH2
     case CPU_SH2:
 	for (int n=0; n<16; n++)
 	    r[n] = SH2_Get_R(&M_SH2,n);
 	sr = SH2_Get_SR(&M_SH2);
 	pc = SH2_Get_PC(&M_SH2);
 	break;
-#endif
     }
 }
 
@@ -216,14 +212,16 @@ void set_regs(int cpu) {
 #endif
 	break;
 #endif
-#if GENS_SH2
     case CPU_SH2:
 	for (int n=0; n<16; n++)
+#ifdef GENS_SH2
 	    M_SH2.R[n] = r[n]; // no SH2_Set_R ??!
+#else
+	    M_SH2.r[n] = r[n]; // no SH2_Set_R ??!
+#endif
 	SH2_Set_SR(&M_SH2,sr);
 	SH2_Set_PC(&M_SH2,pc);
 	break;
-#endif
     }
 }
 

@@ -797,3 +797,7 @@ SH2_Init (SH2_CONTEXT * SH2, UINT32 slave)
   if (slave)
     SH2->BCR1 |= 0x8000;
 }
+
+void SH2_ReleaseTimeSlice(SH2_CONTEXT *M_SH2) {
+    M_SH2->Cycles_IO = 2;
+}

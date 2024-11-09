@@ -18,11 +18,9 @@
 #include "68020/u020help.h"
 #include "neocd/cache.h"
 #include "arpro.h"
-#if GENS_SH2
 extern "C" {
 #include "sh2.h"
 }
-#endif
 
 extern "C" int get_console_key(); // control.c
 static int cpu_id;
@@ -65,10 +63,8 @@ static void init_cpuid() {
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
    }
 #endif
-#if GENS_SH2
        else if (sh2Engine)
 	   cpu_id = CPU_SH2_0;
-#endif
   switch_cpu(cpu_id);
 }
 
@@ -607,10 +603,13 @@ void do_regs(int argc, char **argv) {
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",s68000_sr,
 	      s68000_pc);
       break;
-#ifdef GENS_SH2
   case CPU_SH2:
       for (int n=0; n<16; n++) {
+#ifdef GENS_SH2
 	  sprintf(buf+strlen(buf),"\E[36mR%d:\E[0m%08x ",n,M_SH2.R[n]);
+#else
+	  sprintf(buf+strlen(buf),"\E[36mR%d:\E[0m%08x ",n,M_SH2.r[n]);
+#endif
 	  if (n==3 || n==7 || n==11 || n==15) {
 	      cons->print(buf);
 	      *buf = 0;
@@ -618,7 +617,6 @@ void do_regs(int argc, char **argv) {
       }
       cons->print("\E[36mSR:\E[0m%04x \E[36mPC:\E[0m%08x",SH2_Get_SR(&M_SH2),SH2_Get_PC(&M_SH2));
       break;
-#endif
   case CPU_Z80:
       cons->print("\E[36mAF:\E[0m%04x \E[36mBC:\E[0m%04x"
 	      " \E[36mDE:\E[0m%04x \E[36mHL:\E[0m%04x\n",
@@ -1377,12 +1375,10 @@ static void do_cpu(int argc, char **argv) {
        }
    }
 #endif
-#if GENS_SH2
    if (sh2Engine) {
        strcat(buff,"sh2 ");
        has_sh2 = 1;
    }
-#endif
    cons->print(buff);
    if (argc > 1) {
        int old = cpu_id,nb;

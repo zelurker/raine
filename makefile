@@ -14,7 +14,7 @@
 
 # version (when the version increases, raine shows the issue dialog on
 # startup
-VERSION = "0.96.12a"
+VERSION = "0.97.0"
 
 # Comment out if you don't want the debug features
 # RAINE_DEBUG = 1
@@ -46,7 +46,7 @@ USE_CURL = 1
 # use mame 6502 ?
 # MAME_6502 = 1
 
-# use gens sh2
+# use gens sh2 (32 bits only, asm).
 GENS_SH2 = 1
 
 # For osx : use frameworks or brew shared libs ?
@@ -639,6 +639,8 @@ endif
 
 ifdef GENS_SH2
 	OBJDIRS += $(OBJDIR)/gens_sh2
+else
+	OBJDIRS += $(OBJDIR)/mame/sh2
 endif
 
 OBJDIRS += $(OBJDIR)/68020
@@ -847,6 +849,11 @@ SH2 = $(OBJDIR)/gens_sh2/sh2a.o \
 	  $(OBJDIR)/gens_sh2/sh2.o
 
 CFLAGS += -Isource/gens_sh2 -DGENS_SH2=1
+else
+SH2 = $(OBJDIR)/mame/sh2/sh2.o \
+	  $(OBJDIR)/mame/sh2/sh2comn.o
+
+CFLAGS += -Isource/mame/sh2
 endif
 
 # STARSCREAM 68000 core
@@ -1239,8 +1246,9 @@ ifdef RAINE_UNIX
 OBJS += $(OBJDIR)/leds.o
 endif
 
+OBJS += $(SH2)
+
 ifdef GENS_SH2
-	OBJS += $(SH2)
 	AFLAGS += -Isource/gens_sh2
 endif
 

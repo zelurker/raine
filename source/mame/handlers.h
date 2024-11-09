@@ -1,8 +1,8 @@
+#ifndef READ_HANDLER
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifndef READ_HANDLER
 #include "debug.h"
 
 #ifdef __GNU__
@@ -118,8 +118,7 @@ enum
 #define memory_region_length(x) get_region_size(x)
 #define activecpu_get_pc s68000readPC
 
-#endif
-
 #ifdef __cplusplus
 }
+#endif
 #endif

@@ -16,9 +16,7 @@
 #ifdef MAME_Z80
 #include "mame/handlers.h"
 #endif
-#if GENS_SH2
 #include "sh2.h"
-#endif
 
 UINT32 current_cpu_num[0x10];
 UINT32 cycles_68k[2],cycles_6502[3],cycles_sh2;
@@ -233,11 +231,9 @@ void cpu_interrupt(UINT32 cpu_id, UINT32 vector)
 	m6502int(1);
 	break;
 #endif
-#if GENS_SH2
       case CPU_SH2_0:
 	SH2_Interrupt(&M_SH2,vector);
 	break;
-#endif
    }
 }
 
@@ -363,17 +359,13 @@ void cpu_execute_cycles(UINT32 cpu_id, UINT32 cycles)
 #endif
 	break;
 #endif
-#if GENS_SH2
       case CPU_SH2_0:
 	SH2_Clear_Odo(&M_SH2);
 	ret = SH2_Exec(&M_SH2,cycles);
 	if (ret == -1)
 	    printf("sh2: no cycles\n");
-	else if (ret)
-	    printf("SH2_Exec: %d\n",ret);
 	cycles_sh2 += SH2_Read_Odo(&M_SH2);
 	break;
-#endif
    }
 }
 
@@ -391,9 +383,7 @@ UINT32 cpu_get_cycles_done(UINT32 cpu) {
 		  else
 		      return cycles_68k[cpu & 0xf];
 #endif
-#ifdef GENS_SH2
    case CPU_SH2: return cycles_sh2;
-#endif
    }
    return 0;
 }
@@ -404,9 +394,7 @@ void cpu_set_cycles_done(UINT32 cpu, int cycles) {
     case CPU_Z80: mz80AddCyclesDone(cycles); break;
     case CPU_6502: cycles_6502[cpu & 0xf] += cycles; break;
     case CPU_68000: cycles_68k[cpu & 0xf] += cycles; break;
-#ifdef GENS_SH2
     case CPU_SH2: cycles_sh2 += cycles; break;
-#endif
     }
 }
 
@@ -453,12 +441,10 @@ void cpu_reset(UINT32 cpu_id)
 	cycles_6502[cpu_id & 0xf] = 0;
 	break;
 #endif
-#if GENS_SH2
       case CPU_SH2_0:
 	SH2_Reset(&M_SH2,0);
 	cycles_sh2 = 0;
 	break;
-#endif
    }
 }
 
@@ -505,10 +491,8 @@ UINT32 cpu_get_pc(UINT32 cpu_id)
      ret = m6502pc;
      break;
 #endif
-#if GENS_SH2
    case CPU_SH2_0:
      return SH2_Get_PC(&M_SH2);
-#endif
    default:
      ret = 0;
      break;
@@ -596,10 +580,8 @@ UINT8 *get_code_range(UINT32 cpu, UINT32 adr, UINT32 *start, UINT32 *end) {
 	    }
 	return base;
 #endif
-#if GENS_SH2
     case CPU_SH2:
 	return get_sh2_code_range(&M_SH2,adr,start,end);
-#endif
     }
     return NULL;
 }
@@ -615,9 +597,7 @@ UINT8 *get_userdata(UINT32 cpu, UINT32 adr) {
 #ifndef NO020
     case CPU_68020: return R24[adr >> 16]-adr;
 #endif
-#if GENS_SH2
     case CPU_SH2_0: return get_sh2_userdata(&M_SH2,adr);
-#endif
     }
     return NULL;
 }

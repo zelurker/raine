@@ -43,9 +43,7 @@
 #include "history.h"
 #include "leds.h"
 #include "ips.h"
-#if GENS_SH2
 #include "sh2.h"
-#endif
 
 void LoadDefault(void)
 {
@@ -94,9 +92,7 @@ void LoadDefault(void)
    ClearM6502List();				// Clear M6502 memory lists
    M6502Engine=0;				// No M6502 by default
 #endif
-#ifdef GENS_SH2
    sh2Engine = 0;
-#endif
 
    GameSound=0; 				// No Sound emulation by default
    GameMouse=0; 				// No Mouse driver by default

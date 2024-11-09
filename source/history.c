@@ -13,9 +13,7 @@ menu_item_t *menu_commands;
 #endif
 #include "sasound.h"
 #include "config.h"
-#ifdef GENS_SH2
 #include "sh2.h"
-#endif
 
 int nb_commands;
 char **commands_buff;
@@ -171,10 +169,8 @@ void hist_open(char *name,const char *game) {
 	  if(MC68020)
 	      hist_add("   M68020 x 1");
 #endif
-#ifdef GENS_SH2
 	  if (sh2Engine)
 	      hist_add("  SH2 x %d",sh2Engine);
-#endif
 
 	  if (current_game->sound) {
 	      hist_add("\nAudio:");
