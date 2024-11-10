@@ -379,7 +379,7 @@ unsigned int m68k_disassemble(char* str_buff, unsigned int pc, unsigned int cpu_
 /* Same as above but accepts raw opcode data directly rather than fetching
  * via the read/write interfaces.
  */
-unsigned int m68k_disassemble_raw(char* str_buff, unsigned int pc, const unsigned char* opdata, const unsigned char* argdata, unsigned int cpu_type);
+unsigned int m68k_disassemble_raw(char* str_buff, unsigned int pc, const unsigned char* opdata, unsigned int cpu_type);
 
 
 /* ======================================================================== */

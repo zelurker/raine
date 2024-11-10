@@ -22,6 +22,12 @@ sh2_context M_SH2;
 sh2_context S_SH2;
 
 #define VERBOSE 0
+/* MINGW has adopted the MSVC formatting for 64-bit ints as of gcc 4.4 */
+#if (defined(__MINGW32__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))) || defined(_MSC_VER)
+#define I64FMT   "I64"
+#else
+#define I64FMT   "ll"
+#endif
 
 #define logerror print_debug
 #define LOG(x)  do { if (VERBOSE) logerror x; } while (0)
@@ -304,7 +310,7 @@ static inline void write_internal_l(u32 offset,u32 data) {
 	break;
 
     default:
-	logerror("sh2_internal_w:  Unmapped write %08x, %08x @ %08x\n", 0xfffffe00+offset*4, data, mem_mask);
+	logerror("sh2_internal_w:  Unmapped write %08x, %08x\n", 0xfffffe00+offset*4, data);
 	break;
     }
 }

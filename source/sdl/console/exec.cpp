@@ -12,6 +12,7 @@
 #include "mz80help.h"
 #include "emumain.h"
 #include "savegame.h"
+#include "dasm.h"
 
 #define MAX_BREAK 10
 typedef struct {
@@ -287,15 +288,6 @@ static int do_cycles(int cpu = get_cpu_id(), int can_be_stopped = 1) {
   return cycles-1;
 }
 
-typedef struct {
-  int adr, offset, line;
-} toffset;
-
-#define MAX_OFFS 100
-// Workaround for the big offsets of the sh2, such big arrays are not really convenient, I should find something else
-static toffset *offs[0x10000];
-static int used_offs[0x10000];
-
 void restore_breakpoints() {
   int n;
   for (n=0; n<used_break; n++) {
@@ -320,14 +312,6 @@ void restore_breakpoints() {
 	  WriteWord68k(&ptr[adr],0xd3ab);
       }
   }
-
-  // Also frees the offsets when leaving the console...
-  for (n=0; n<0x100; n++)
-      if (used_offs[n]) {
-	  used_offs[n] = 0;
-	  free(offs[n]);
-	  offs[n] = NULL;
-      }
 }
 
 void do_cond(int argc, char **argv) {
@@ -373,367 +357,134 @@ void done_breakpoints() {
 }
 
 static char buff[256];
-static char instruction[20],args[40];
-static UINT32 cur_pc, opcode,next_pc,next_opcode;
+static char instruction[20];
+static UINT32 cur_pc, next_pc;
 
-static int get_offs(int adr, int *line) {
-  int n;
-  int index = adr/0x10000;
-  toffset *pofs = offs[index];
-  for (n=0; n<used_offs[index]; n++) {
-    if (pofs[n].adr >= adr) break;
-  }
-  if (n < used_offs[index] && pofs[n].adr == adr) {
-    *line = pofs[n].line;
-    return pofs[n].offset;
-  }
-  if (n > 0) {
-    *line = pofs[n-1].line;
-    return pofs[n-1].offset;
-  }
-  *line = 1;
-  return 0;
-}
-
-static void get_line_offset(int *line, int *offset,int index) {
-  int n;
-  toffset *pofs = offs[index];
-  for (n=0; n<used_offs[index]; n++) {
-    if (pofs[n].line >= *line) break;
-  }
-  if (n < used_offs[index] && pofs[n].line == *line) {
-    *offset = pofs[n].offset;
-    return;
-  }
-  if (n > 0) {
-    *line = pofs[n-1].line;
-    *offset = pofs[n-1].offset;
-    return;
-  }
-  *line = 1;
-  *offset = 0;
-}
-
-static void set_offs(int adr, int offset, int line) {
-  /* Store an offset and line number for a given adr */
-  int n;
-  int index = adr/0x10000;
-  int used_of = used_offs[index];
-  toffset *pofs = offs[index];
-  for (n=0; n<used_of && offs[index][n].adr < adr; n++);
-  if (n == used_of) {
-    if (used_of == 0) {
-      offs[index] = (toffset*)malloc(sizeof(toffset)*(MAX_OFFS+1));
-    }
-    if (used_of < MAX_OFFS) {
-      used_offs[index]++;
-    } else {
-      memmove(&pofs[0],&pofs[1],sizeof(toffset)*(used_of-1));
-      n--;
-    }
-  } else {
-    if (offs[index][n].adr == adr) return; // already have it
-    if (n < used_of)
-      memmove(&pofs[n+1],&pofs[n],sizeof(toffset)*(used_of-n));
-    if (used_of < MAX_OFFS) {
-      used_offs[index]++;
-    }
-  }
-  offs[index][n].adr = adr;
-  offs[index][n].offset = offset;
-  offs[index][n].line = line;
-}
-
-static void generate_asm(char *name2,UINT32 start, UINT32 end,UINT8 *ptr,
-   char *header, int target=0)
-{
-  char name[1024];
-  char dir[FILENAME_MAX];
-  getcwd(dir,FILENAME_MAX);
-  // Strip dir: dz80 is totally buggy, if you pass a long filename with dirs
-  // it just can't find it !!!
-  char *pdir = strrchr(name2,'/');
-  strcpy(name,pdir+1);
-  *pdir = 0;
-  chdir(name2);
-  *pdir = '/';
-  sprintf(strrchr(name,'.')+1,"bin"); // new extension, required by dz80
-  char cmd[1024];
-  int cpu_id = get_cpu_id()>>4;
-  int has_pc = 0;
-  if ((pc >= start && pc < end) || target) {
-      FILE *f = fopen("pc","w");
-      if (f) {
-	  has_pc = 1;
-	  if (pc >= start && pc < end) fprintf(f,"%d\n",int(pc));
-	  if (target) fprintf(f,"%d\n",target);
-	  fclose(f);
-      }
-  }
-  switch(cpu_id) {
-  case CPU_68000:
-      snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
-      if (has_pc) strcat(cmd," -i pc ");
-      snprintf(cmd+strlen(cmd),1024-strlen(cmd),"-pc %d -o \"%s\" \"%s\"",start,name2,name);
-      ByteSwap(&ptr[start],end-start);
-      break;
-  case CPU_68020:
-      snprintf(cmd,1024,"%s ",dir_cfg.m68kdis);
-      if (has_pc) strcat(cmd," -i pc ");
-      snprintf(cmd+strlen(cmd),1024-strlen(cmd)," -020 -pc %d -o \"%s\" \"%s\"",start,name2,name);
-      break;
-  case CPU_Z80:
-      snprintf(cmd,1024,"%s \"%s\" prg.z80",dir_cfg.dz80,name);
-      break;
-  case CPU_6502:
-      snprintf(cmd,1024,"%s \"%s\" > prg.6502",dir_cfg.d6502,name);
-      break;
-  case CPU_SH2:
-      snprintf(cmd,1024,"%s -o %x  \"%s\" > \"%s\"",dir_cfg.sh2d,start,name,name2);
-      break;
-  }
-  save_file(name,&ptr[start],end-start);
-  if (cpu_id == 1)
-	  ByteSwap(&ptr[start],end-start);
-  if (used_offs[start/0x10000]) {
-      used_offs[start/0x10000] = 0;
-      free(offs[start/0x10000]);
-      offs[start/0x10000] = NULL;
-  }
-  printf("cmd: %s\n",cmd);
+static int get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
+  int cpu_id = get_cpu_id();
+  u32 start,end;
+  char buf2[256];
   int ret;
-  if ((ret = system(cmd)) < 0) {
-      chdir(dir);
-      throw "can't execute disassembler !";
+  int type;
+  UINT8 *ptr = get_code_range(cpu_id,target,&start,&end);
+  if (!ptr) {
+      sprintf(buff,"sh2: can't get pointer for instruction");
+      return 0;
   }
-  if ((ret >> 8) == 127) { // 127 is command not found from shell...
-      chdir(dir);
-      throw "Can't find disassembler - see Options / Directories for m68kdis or dz80";
-  }
-  sprintf(strrchr(name,'.'),".t");
-  FILE *f = fopen(name,"w");
-  if (!f) {
-      chdir(dir);
-      throw "can't create asm temporary file";
-  }
-  fprintf(f,"%s\n",header);
-  FILE *g = fopen(name2,"r");
-  if (!g) {
-    fclose(f);
-    chdir(dir);
-    throw "couldn't open assembler output !";
-  }
-  while (!feof(g)) {
-    char buf[256];
-    myfgets(buf,256,g);
-    if (cpu_id == CPU_SH2) {
-	if (!strncmp(buf,"0x",2))
-	    memmove(buf,&buf[2],strlen(buf)-1);
-	if (buf[8] == ':')
-	    memmove(&buf[8],&buf[9],strlen(buf)-8);
-    }
-    fprintf(f,"%s\n",buf);
-  }
-  fclose(f);
-  fclose(g);
-  unlink(name2);
-  rename(name,name2);
-  chdir(dir);
-}
-
-static void get_asm_file(char *str, UINT32 target = cpu_get_pc(get_cpu_id())) {
-  int cpu_id = get_cpu_id();
-  switch(cpu_id>>4) {
-  case CPU_68000:
-      sprintf(str,"%s/prg_%02x.s",get_shared("debug"),target/0x10000);
+  switch(cpu_id >> 4) {
+  case CPU_6502:
+      // 65c02 should be good in all cases, games with arbalest as parent really use one, otherwise matmania uses a real 6502 but it should be ok here.
+      ret =  dasm_65c02(buff, target, &ptr[target], &ptr[target], 0);
       break;
   case CPU_Z80:
-      sprintf(str,"%s/prg.z80",get_shared("debug"));
+      ret = z80_dasm(buff, target, &ptr[target], &ptr[target + z80_offdata]); // last argument is to be able to disassemble encrypted roms with separated opcodes and data
       break;
-  case CPU_6502:
-      sprintf(str,"%s/prg.6502",get_shared("debug"));
-      break;
+  case CPU_68000:
   case CPU_68020:
-      sprintf(str,"%s/prg020_%02x.s",get_shared("debug"),target/0x10000);
+#if USE_MUSASHI == 2
+  switch (m68ki_cpu.cpu_type) {
+  case CPU_TYPE_000: type=M68K_CPU_TYPE_68000; break;
+  case CPU_TYPE_010: type=M68K_CPU_TYPE_68010; break;
+  case CPU_TYPE_EC020: type=M68K_CPU_TYPE_68EC020; break;
+  case CPU_TYPE_020: type=M68K_CPU_TYPE_68020; break;
+  }
+#else
+  enum
+  {
+      M68K_CPU_TYPE_INVALID,
+      M68K_CPU_TYPE_68000,
+      M68K_CPU_TYPE_68010,
+      M68K_CPU_TYPE_68EC020,
+      M68K_CPU_TYPE_68020,
+      M68K_CPU_TYPE_68030,	/* Supported by disassembler ONLY */
+      M68K_CPU_TYPE_68040		/* Supported by disassembler ONLY */
+  };
+  if ((cpu_id >> 4) == CPU_68000)
+      type = M68K_CPU_TYPE_68000;
+  else
+      type = M68K_CPU_TYPE_68020;
+#endif
+  ret = m68k_disassemble(buff, target, type);
+     break;
+  case CPU_SH2:
+     ret = DasmSH2(buff, target, ReadWord68k(&ptr[target]));
+      break;
+  default:
+      sprintf(buff,"cpu unknown %x",cpu_id);
+      return 0;
+  }
+  strncpy(instruction,buff,20);
+  char *space = strchr(instruction,' ');
+  if (space)
+      *space = 0;
+  printf("dasm returns %x\n",ret);
+  switch (cpu_id >> 4) {
+  case CPU_Z80:
+  case CPU_6502:
+      switch(ret & 0xff) {
+      case 1: snprintf(buf2,256,"%04x: %02x       %s",target,ptr[target],buff); break;
+      case 2: snprintf(buf2,256,"%04x: %04x     %s",target,ReadWord68k(&ptr[target]),buff); break;
+      case 3: snprintf(buf2,256,"%04x: %04x%02x   %s",target,ReadWord68k(&ptr[target]),ptr[target+2],buff); break;
+      case 4: snprintf(buf2,256,"%04x: %04x%04x %s",target,ReadWord68k(&ptr[target]),ReadWord68k(&ptr[target+2]),buff); break;
+      }
       break;
   case CPU_SH2:
-      sprintf(str,"%s/prgsh2_%02x.s",get_shared("debug"),target/0x10000);
+      snprintf(buf2,256,"%08x: %04x %s",target,ReadWord68k(&ptr[target]),buff); // All instructions on 2 bytes !!!
+      break;
+  case CPU_68020:
+      switch(ret & 0xff) {
+      case 2: snprintf(buf2,256,"%08x: %04x             %s",target,ReadWord68k(&ptr[target]),buff); break;
+      case 4: snprintf(buf2,256,"%08x: %04x%04x         %s",target,ReadWord68k(&ptr[target]),ReadWord68k(&ptr[target+2]),buff); break;
+      case 6: snprintf(buf2,256,"%08x: %04x%04x%04x     %s",target,ReadWord68k(&ptr[target]),ReadWord68k(&ptr[target+2]),ReadWord68k(&ptr[target+4]),buff); break;
+      case 8: snprintf(buf2,256,"%08x: %04x%04x%04x%04x %s",target,ReadWord68k(&ptr[target]),ReadWord68k(&ptr[target+2]),ReadWord68k(&ptr[target+4]),ReadWord68k(&ptr[target+6]),buff); break;
+      default: snprintf(buf2,256,"%08x: %s (len %d)",target,buff,ret & 0xff);;
+      }
+      break;
+  case CPU_68000:
+      switch(ret & 0xff) {
+      case 2: snprintf(buf2,256,"%08x: %04x             %s",target,ReadWord(&ptr[target]),buff); break;
+      case 4: snprintf(buf2,256,"%08x: %04x%04x         %s",target,ReadWord(&ptr[target]),ReadWord(&ptr[target+2]),buff); break;
+      case 6: snprintf(buf2,256,"%08x: %04x%04x%04x     %s",target,ReadWord(&ptr[target]),ReadWord(&ptr[target+2]),ReadWord(&ptr[target+4]),buff); break;
+      case 8: snprintf(buf2,256,"%08x: %04x%04x%04x%04x %s",target,ReadWord(&ptr[target]),ReadWord(&ptr[target+2]),ReadWord(&ptr[target+4]),ReadWord(&ptr[target+6]),buff); break;
+      default: snprintf(buf2,256,"%08x: %s (len %d)",target,buff,ret & 0xff);;
+      }
       break;
   }
+  strcpy(buff,buf2);
+  cur_pc = target;
+  next_pc = target + (ret & 0xff);
+  return ret;
 }
 
-static FILE *open_asm(UINT32 target) {
-  char str[1024];
-  char buf[256];
-  int cpu_id = get_cpu_id();
-  get_asm_file(str,target);
-  UINT32 start,end;
-  UINT8 *ptr = get_code_range(cpu_id,target,&start,&end);
-  if (!ptr)
-    throw "no code for this address";
-  if ((cpu_id>>4) != CPU_SH2) {
-      int min = target/0x10000*0x10000-0x100;
-      if (min < 0) min = 0;
-      UINT32 max = target/0x10000*0x10000+0x10000+0x100;
-      if (max > 0xffffff && (cpu_id>>4) == CPU_68000) max = 0xffffff;
-      if (start < (UINT32)min)
-	  start = min;
-      if (end > max)
-	  end = max;
-  }
-  int crc = 0;
-  UINT32 n;
-  char checksum[80];
-  for (n=start; n<end; n+=4)
-      crc += ReadLong(&ptr[n]);
-  sprintf(checksum,"; crc %x",crc);
-
-  FILE *f = fopen(str,"rb");
-  if (!f) {
-    generate_asm(str,start,end,ptr,checksum,target);
-    f = fopen(str,"rb");
-    myfgets(buf,256,f);
-  } else {
-    myfgets(buf,256,f);
-    if (strcmp(buf,checksum)) {
-      // didn't find the right crc at the top, refresh the file
-      fclose(f);
-      generate_asm(str,start,end,ptr,checksum);
-      f = fopen(str,"rb");
-      myfgets(buf,256,f);
-    }
-  }
-
-  if (!f) {
-    throw "could not generate asm code - no asm support";
-  }
-  return f;
-}
-
-static void get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
-  FILE *f = open_asm(target);
-  int line;
-  fseek(f,get_offs(target,&line),SEEK_SET);
-  int offset;
-  while (!feof(f)) {
-    offset = ftell(f);
-    myfgets(buff,256,f);
-    if (buff[0] == ';')
-      continue;
-    sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
-    if ((target >> 4) == CPU_6502) {
-	char *s = buff;
-	while (*s == ' ' || (*s >= '0' && *s<='9') || (*s >= 'A' && *s <= 'F') || *s == '-' || *s == ' ')
-	    s++;
-	sscanf(s,"%s %s",instruction,args);
-    }
-    if (cur_pc >= target) break;
-    if (!(cur_pc & 0xffff)) set_offs(cur_pc,offset,line);
-    line++;
-  }
-  set_offs(cur_pc,offset,line);
-  if (cur_pc != target)
-    *buff = 0;
-  char buff2[256];
-  offset = ftell(f);
-  myfgets(buff2,256,f);
-  sscanf(buff2,"%x %x",&next_pc,&next_opcode);
-  set_offs(next_pc,offset,++line);
-  fclose(f);
-}
-
+static UINT32 last_list_adr = 0xffffffff, last_list_pc;
 void do_list(int argc, char **argv) {
-  int offset = 0, line;
-  static UINT32 last_list_adr, last_list_pc;
-  static char buffadr[10];
-  int cpu_id = get_cpu_id();
-  UINT32 pc0 = cpu_get_pc(cpu_id);
-  if (argc == 1 && last_list_adr && last_list_pc == pc0) {
-    argc = 2;
-    sprintf(buffadr,"$%x",last_list_adr);
-    argv[1] = buffadr;
-  }
+    int cpu_id = get_cpu_id();
+    static char buffadr[10]; // required static otherwise asan makes a nervous breakdown on parse !
+    UINT32 pc0 = cpu_get_pc(cpu_id);
 
-  if (argc == 1) {
-    if (cur_pc != pc0) {
-      get_instruction();
-      if (cur_pc != pc0) {
-	  char str[1024];
-	  get_asm_file(str);
-	  unlink(str);
-	  get_instruction();
-      }
-      if (cur_pc != pc0) {
-	cons->print("pc=%x not found in asm file",pc0);
-	return;
-      }
+    if (argc == 1 && last_list_adr != 0xffffffff && last_list_pc == pc0) {
+	// use last_list_adr to continue the list...
+	argc = 2;
+	sprintf(buffadr,"$%x",last_list_adr);
+	argv[1] = buffadr;
     }
-    offset = get_offs(pc0,&line);
-    int prev_line;
-    if (line > 3) {
-      prev_line = line-3;
-      int actual_line = prev_line;
-      get_line_offset(&actual_line,&offset,pc0/0x10000);
-      if (actual_line < prev_line) {
-	FILE *f = open_asm(pc0);
-	fseek(f,offset,SEEK_SET);
-	myfgets(buff,256,f);
-	if (offset == 0)  myfgets(buff,256,f);
-	while (actual_line < prev_line) {
-	  offset = ftell(f);
-	  actual_line++;
-	  myfgets(buff,256,f);
-	  sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
-	}
-	set_offs(cur_pc,offset,actual_line);
-	fclose(f);
-      }
-    } else {
-      prev_line = 1;
-      offset = 0;
+    if (argc == 2)
+	pc0 = parse(argv[1]);
+    for (int n=0; n<6; n++) {
+	int ret = get_instruction(pc0);
+	if (pc0 == cpu_get_pc(cpu_id))
+	    cons->print("\E[32m%s\E[0m",buff);
+	else
+	    cons->print(buff);
+	pc0 += (ret & 0xff);
     }
-  } else if (argc == 2) {
-    int target = parse(argv[1]);
-    get_instruction(target);
-    offset = get_offs(cur_pc,&line);
-  }
-  FILE *f = open_asm(cur_pc);
-  fseek(f,offset,SEEK_SET);
-  if (offset == 0)  myfgets(buff,256,f);
-  int n;
-  for (n=1; n<=10 && !feof(f); n++) {
-    offset = ftell(f);
-    myfgets(buff,256,f);
-    line++;
-    sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
-    if (cur_pc == pc0)
-      cons->print("\E[32m%s\E[0m",buff);
-    else
-      cons->print("%s",buff);
-  }
-  offset = ftell(f);
-  myfgets(buff,256,f);
-  line++;
-  sscanf(buff,"%x %x %s %s",&cur_pc,&opcode,instruction,args);
-  set_offs(cur_pc,offset,line);
-  last_list_adr = cur_pc;
-  last_list_pc = pc0;
-  fclose(f);
+    last_list_adr = next_pc;
+    last_list_pc = cpu_get_pc(cpu_id);
 }
 
 void disp_instruction() {
     if (!cons->is_visible()) return;
-  get_instruction();
-  UINT32 pc1 = cpu_get_pc(get_cpu_id());
-  if (cur_pc != pc1) {
-      char str[1024];
-      get_asm_file(str);
-      unlink(str);
-      get_instruction();
-  }
-  if (cur_pc != pc1)
-    cons->print("pc=%x not found in asm file",pc1);
-  else
+    get_instruction();
     cons->print(buff);
 }
 
@@ -760,7 +511,7 @@ void do_next(int argc, char **argv) {
       }
       break;
   case CPU_Z80:
-      if (!strcasecmp(instruction,"CALL")) {
+      if (!strcasecmp(instruction,"CALL") || strcasestr(buff,"jr   nz,")) { // heavily dependant on the disassembler output !
 	  while (cpu_get_pc(cpu) != next_pc) {
 	      do_cycles();
 	  }

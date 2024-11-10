@@ -63,8 +63,13 @@ static void init_cpuid() {
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
    }
 #endif
-       else if (sh2Engine)
-	   cpu_id = CPU_SH2_0;
+#if HAVE_6502
+  if (M6502Engine >= 1) {
+      cpu_id = CPU_M6502_0;
+  }
+#endif
+  if (sh2Engine)
+      cpu_id = CPU_SH2_0;
   switch_cpu(cpu_id);
 }
 
@@ -1602,6 +1607,8 @@ int do_console(int sel) {
 	cons->set_visible();
 	if (cpu_id)
 	    cons->print("using %s",get_cpu_name_from_cpu_id(cpu_id));
+	if (current_game)
+	    disp_instruction();
     }
     if (goto_debuger >= 0) {
 	cons->execute();

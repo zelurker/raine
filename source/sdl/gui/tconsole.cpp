@@ -239,7 +239,7 @@ void TConsole::print(const char *format, ...)
 
   if (nb_items == nb_alloc) {
     free((void*)menu[0].label);
-    memcpy(&menu[0],&menu[1],(nb_items-1)*sizeof(menu_item_t));
+    memmove(&menu[0],&menu[1],(nb_items-1)*sizeof(menu_item_t));
     /* The beauty of this thing is that the child array doesn't have to be
      * changed : its elements point to menu entries which don't move, it's the
      * contents of the menu entries which move, not the menu entries themselves

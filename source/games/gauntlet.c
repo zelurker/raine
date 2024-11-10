@@ -506,8 +506,10 @@ static void load_gauntlet() {
     AddWriteByte(0xaa0000, 0xaa0000, myStop68000, NULL);
 
     finish_conf_68000(0);
+#if USE_MUSASHI == 2
     m68k_set_cpu_type(M68K_CPU_TYPE_68010);
     m68k_get_context(&M68000_context[0]);
+#endif
 
 #ifdef MAME_6502
     m6502_init();

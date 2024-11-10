@@ -66,9 +66,6 @@ void z80_release_time_slice();
 void z80_get_context (void *dst);
 void z80_set_context (void *src);
 void z80_set_irq_line(int irq_vector, int irqline, int state);
-#ifdef ENABLE_DEBUGGER
-extern unsigned z80_dasm(char *buffer, offs_t pc, const UINT8 *oprom, const UINT8 *opram);
-#endif
 
 
 #endif

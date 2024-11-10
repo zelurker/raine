@@ -37,6 +37,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "m68k.h"
+#include "m68kcpu.h"
 
 #ifndef DECL_SPEC
 #define DECL_SPEC
@@ -257,8 +258,10 @@ static uint dasm_read_imm_8(uint advance)
 	uint result;
 	if (g_rawop)
 		result = g_rawop[g_cpu_pc + 1 - g_rawbasepc];
+#if USE_MUSASHI
 	else
-		result = m68k_read_disassembler_16(g_cpu_pc & g_address_mask) & 0xff;
+		result = m68ki_cpu.read_im16(g_cpu_pc & g_address_mask) & 0xff;
+#endif
 	g_cpu_pc += advance;
 	return result;
 }
@@ -269,8 +272,10 @@ static uint dasm_read_imm_16(uint advance)
 	if (g_rawop)
 		result = (g_rawop[g_cpu_pc + 0 - g_rawbasepc] << 8) |
 		          g_rawop[g_cpu_pc + 1 - g_rawbasepc];
+#if USE_MUSASHI
 	else
-		result = m68k_read_disassembler_16(g_cpu_pc & g_address_mask) & 0xffff;
+		result = m68ki_cpu.read_im16(g_cpu_pc & g_address_mask) & 0xffff;
+#endif
 	g_cpu_pc += advance;
 	return result;
 }
@@ -283,8 +288,10 @@ static uint dasm_read_imm_32(uint advance)
 		         (g_rawop[g_cpu_pc + 1 - g_rawbasepc] << 16) |
 		         (g_rawop[g_cpu_pc + 2 - g_rawbasepc] << 8) |
 		          g_rawop[g_cpu_pc + 3 - g_rawbasepc];
+#if USE_MUSASHI
 	else
-		result = m68k_read_disassembler_32(g_cpu_pc & g_address_mask) & 0xffffffff;
+		result = m68ki_cpu.read_im32(g_cpu_pc & g_address_mask) & 0xffffffff;
+#endif
 	g_cpu_pc += advance;
 	return result;
 }
@@ -3494,10 +3501,9 @@ char* m68ki_disassemble_quick(unsigned int pc, unsigned int cpu_type)
 	return buff;
 }
 
-unsigned int m68k_disassemble_raw(char* str_buff, unsigned int pc, const unsigned char* opdata, const unsigned char* argdata, unsigned int cpu_type)
+unsigned int m68k_disassemble_raw(char* str_buff, unsigned int pc, const unsigned char* opdata, unsigned int cpu_type)
 {
 	unsigned int result;
-	(void)argdata;
 
 	g_rawop = opdata;
 	g_rawbasepc = pc;

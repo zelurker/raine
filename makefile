@@ -623,25 +623,27 @@ OBJDIRS=$(OBJDIR)                \
 	locale/it/LC_MESSAGES
 
 OBJDIRS += $(OBJDIR)/z80
-ifdef MAME_Z80
 OBJDIRS += $(OBJDIR)/mame/z80
+OBJS += $(OBJDIR)/mame/z80/z80dasm.o
+
+ifdef MAME_Z80
 DEFINE += -DMAME_Z80
 endif
 
-ifdef MAME_6502
 OBJDIRS += $(OBJDIR)/mame/6502
+OBJS += $(OBJDIR)/mame/6502/6502dasm.o
+
+ifdef MAME_6502
 DEFINE += -DMAME_6502
 endif
 
-ifdef USE_MUSASHI
-	OBJDIRS += $(OBJDIR)/Musashi
-endif
+OBJDIRS += $(OBJDIR)/Musashi
+OBJS += $(OBJDIR)/Musashi/m68kdasm.o
 
 ifdef GENS_SH2
 	OBJDIRS += $(OBJDIR)/gens_sh2
-else
-	OBJDIRS += $(OBJDIR)/mame/sh2
 endif
+OBJDIRS += $(OBJDIR)/mame/sh2
 
 OBJDIRS += $(OBJDIR)/68020
 
@@ -1247,6 +1249,7 @@ OBJS += $(OBJDIR)/leds.o
 endif
 
 OBJS += $(SH2)
+OBJS += $(OBJDIR)/mame/sh2/sh2dasm.o
 
 ifdef GENS_SH2
 	AFLAGS += -Isource/gens_sh2

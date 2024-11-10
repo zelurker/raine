@@ -1,3 +1,5 @@
+#ifndef DEBUG_H
+#define DEBUG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,7 +26,7 @@ void close_debug(void);
 
 #else
 
-#define print_debug(format, ...) 
+#define print_debug(format, ...)
 /* You can use this for a macro with variable number of arguments : */
 /* fprintf (stderr, format, __VA_ARGS__) */
 /* see http://gcc.gnu.org/onlinedocs/gcc/Variadic-Macros.html */
@@ -33,4 +35,5 @@ void close_debug(void);
 
 #ifdef __cplusplus
 }
+#endif
 #endif

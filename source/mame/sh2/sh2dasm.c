@@ -1,12 +1,10 @@
-#include "emu.h"
-#include "debugger.h"
+#include <stdio.h>
+#include "debug.h"
 #include "sh2.h"
+#include "dasm.h"
 
 #define SIGNX8(x)   (((INT32)(x) << 24) >> 24)
 #define SIGNX12(x)  (((INT32)(x) << 20) >> 20)
-
-#define Rn ((opcode >> 8) & 15)
-#define Rm ((opcode >> 4) & 15)
 
 static const char *const regname[16] = {
 	"R0", "R1", "R2", "R3", "R4", "R5", "R6", "R7",
@@ -602,7 +600,3 @@ unsigned DasmSH2(char *buffer, unsigned pc, UINT16 opcode)
 	return 2 | flags | DASMFLAG_SUPPORTED;
 }
 
-CPU_DISASSEMBLE( sh2 )
-{
-	return DasmSH2( buffer, pc, (oprom[0] << 8) | oprom[1] );
-}
