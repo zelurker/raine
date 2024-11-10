@@ -6494,36 +6494,6 @@ msgstr "Année : -"
 msgid "Year: 2006"
 msgstr "Année : 2006"
 
-#: source/sdl/dialogs/video_info.cpp:27
-#: source/sdl/dialogs/sound_commands.cpp:273
-#: source/sdl/dialogs/video_options.cpp:109
-#: source/sdl/dialogs/video_options.cpp:111
-#: source/sdl/dialogs/video_options.cpp:170
-#: source/sdl/dialogs/video_options.cpp:172
-#: source/sdl/dialogs/video_options.cpp:174
-#: source/sdl/dialogs/video_options.cpp:176
-#: source/sdl/dialogs/video_options.cpp:178
-#: source/sdl/dialogs/video_options.cpp:226
-#: source/sdl/dialogs/video_options.cpp:272
-#: source/sdl/dialogs/video_options.cpp:274
-#: source/sdl/dialogs/video_options.cpp:282
-#: source/sdl/dialogs/video_options.cpp:289
-#: source/sdl/dialogs/gui_options.cpp:47 source/sdl/dialogs/gui_options.cpp:48
-#: source/sdl/dialogs/gui_options.cpp:49
-#: source/sdl/dialogs/sound_options.cpp:72
-#: source/sdl/dialogs/sound_options.cpp:75
-#: source/sdl/dialogs/sound_options.cpp:79
-#: source/sdl/dialogs/sound_options.cpp:80
-#: source/sdl/dialogs/game_selection.cpp:48
-#: source/sdl/dialogs/neocd_options.cpp:184
-#: source/sdl/dialogs/neocd_options.cpp:190 source/sdl/gui/menu.cpp:154
-#: source/sdl/gui/menu.cpp:155 source/sdl/gui/menu.cpp:157
-#: source/sdl/gui/menu.cpp:158 source/sdl/control.c:2001
-#: source/sdl2/gui/menu.cpp:129 source/sdl2/gui/menu.cpp:130
-#: source/sdl2/gui/menu.cpp:131
-msgid "Yes"
-msgstr "Oui"
-
 #: source/sdl/dialogs/video_options.cpp:168
 msgid "Yes (adaptive)"
 msgstr "Oui (adaptatif)"

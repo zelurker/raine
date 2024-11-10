@@ -6951,10 +6951,6 @@ msgid "Yes (adaptive)"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:270
-msgid "Yes"
-msgstr "Sì"
-
-#: source/sdl/dialogs/video_options.cpp:270
 msgid "Yes (real)"
 msgstr ""
 
