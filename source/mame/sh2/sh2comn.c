@@ -28,12 +28,290 @@ sh2_context S_SH2;
 
 // static const int div_tab[4] = { 3, 5, 7, 0 };
 
-static inline UINT32 RL(sh2_context *sh2, u32 A)
+static inline UINT32 read_internal(u32 offset) {
+    sh2_context *sh2 = &M_SH2;
+    offset = (offset & 0x1fc)>>2;
+    switch( offset )
+    {
+    case 0x00:
+	break;
+    case 0x01:
+	return sh2->m[1] | 0x80000000; // TDRE: Trasmit Data Register Empty. Force it to be '1' for the time being.
+
+    case 0x04: // TIER, FTCSR, FRC
+#if 0
+	if ( mem_mask == 0x00ff0000 )
+	{
+	    if ( sh2->ftcsr_read_callback != NULL )
+	    {
+		sh2->ftcsr_read_callback( (sh2->m[4] & 0xffff0000) | sh2->frc );
+	    }
+	}
+	sh2_timer_resync(sh2);
+#endif
+	return (sh2->m[4] & 0xffff0000) | sh2->frc;
+    case 0x05: // OCRx, TCR, TOCR
+	if(sh2->m[5] & 0x10)
+	    return (sh2->ocrb << 16) | (sh2->m[5] & 0xffff);
+	else
+	    return (sh2->ocra << 16) | (sh2->m[5] & 0xffff);
+    case 0x06: // ICR
+	return sh2->icr << 16;
+
+    case 0x20:
+	return (((sh2->wtcsr | 0x18) & 0xff) << 24)  | ((sh2->wtcnt & 0xff) << 16);
+
+    case 0x24: // SBYCR, CCR
+	return sh2->m[0x24] & ~0x3000; /* bit 4-5 of CCR are always zero */
+
+    case 0x38: // ICR, IPRA
+	return (sh2->m[0x38] & 0x7fffffff) | (sh2->nmi_line_state == ASSERT_LINE ? 0 : 0x80000000);
+
+    case 0x78: // BCR1
+	return sh2->is_slave ? 0x00008000 : 0;
+
+    case 0x41: // dvdntl mirrors
+    case 0x47:
+	return sh2->m[0x45];
+
+    case 0x46: // dvdnth mirror
+	return sh2->m[0x44];
+    }
+    return sh2->m[offset];
+}
+
+static inline void write_internal_l(u32 offset,u32 data) {
+    sh2_context *sh2 = &M_SH2;
+    offset = (offset & 0x1fc)>>2;
+    UINT32 old;
+
+    old = sh2->m[offset];
+    sh2->m[offset] = data;
+
+    //  if(offset != 0x20)
+    //      logerror("sh2_internal_w:  Write %08x (%x), %08x @ %08x\n", 0xfffffe00+offset*4, offset, data, mem_mask);
+
+    //    if(offset != 0x20)
+    //        printf("sh2_internal_w:  Write %08x (%x), %08x @ %08x (PC %x)\n", 0xfffffe00+offset*4, offset, data, mem_mask, space.device().safe_pc());
+
+    switch( offset )
+    {
+    case 0x00:
+	//if(mem_mask == 0xff)
+	//  printf("%c",data & 0xff);
+	break;
+    case 0x01:
+	//printf("%08x %02x %02x\n",mem_mask,offset,data);
+	break;
+	// Timers
+    case 0x04: // TIER, FTCSR, FRC
+#if 0
+	if((mem_mask & 0x00ffffff) != 0)
+	{
+	    sh2_timer_resync(sh2);
+	}
+#endif
+	//      printf("SH2.%s: TIER write %04x @ %04x\n", "0", data >> 16, mem_mask>>16);
+	sh2->m[4] = (sh2->m[4] & ~(ICF|OCFA|OCFB|OVF)) | (old & sh2->m[4] & (ICF|OCFA|OCFB|OVF));
+	sh2->frc = data;
+	/* if((mem_mask & 0x00ffffff) != 0)
+	    sh2_timer_activate(sh2); */
+	sh2_recalc_irq(sh2);
+	break;
+    case 0x05: // OCRx, TCR, TOCR
+	       //      printf("SH2.%s: TCR write %08x @ %08x\n", "0", data, mem_mask);
+	// sh2_timer_resync(sh2);
+	if(sh2->m[5] & 0x10)
+	    sh2->ocrb = data >> 16;
+	else
+	    sh2->ocra = data >> 16;
+	// sh2_timer_activate(sh2);
+	break;
+
+    case 0x06: // ICR
+	break;
+
+	// Interrupt vectors
+    case 0x18: // IPRB, VCRA
+    case 0x19: // VCRB, VCRC
+    case 0x1a: // VCRD
+	sh2_recalc_irq(sh2);
+	break;
+
+	// DMA
+    case 0x1c: // DRCR0, DRCR1
+	break;
+
+	// Watchdog
+    case 0x20: // WTCNT, RSTCSR
+	if((sh2->m[0x20] & 0xff000000) == 0x5a000000)
+	    sh2->wtcnt = (sh2->m[0x20] >> 16) & 0xff;
+
+	if((sh2->m[0x20] & 0xff000000) == 0xa5000000)
+	{
+	    /*
+	       WTCSR
+	       x--- ---- Overflow in IT mode
+	       -x-- ---- Timer mode (0: IT 1: watchdog)
+	       --x- ---- Timer enable
+	       ---1 1---
+	       ---- -xxx Clock select
+	       */
+
+	    sh2->wtcsr = (sh2->m[0x20] >> 16) & 0xff;
+	}
+
+	if((sh2->m[0x20] & 0x0000ff00) == 0x00005a00)
+	{
+	    // -x-- ---- RSTE (1: resets wtcnt when overflows 0: no reset)
+	    // --x- ---- RSTS (0: power-on reset 1: Manual reset)
+	    // ...
+	}
+
+	if((sh2->m[0x20] & 0x0000ff00) == 0x0000a500)
+	{
+	    // clear WOVF
+	    // ...
+	}
+
+
+
+	break;
+
+	// Standby and cache
+    case 0x24: // SBYCR, CCR
+	/*
+	   CCR
+	   xx-- ---- ---- ---- Way 0/1
+	   ---x ---- ---- ---- Cache Purge (CP)
+	   ---- x--- ---- ---- Two-Way Mode (TW)
+	   ---- -x-- ---- ---- Data Replacement Disable (OD)
+	   ---- --x- ---- ---- Instruction Replacement Disable (ID)
+	   ---- ---x ---- ---- Cache Enable (CE)
+	   */
+	break;
+
+	// Interrupt vectors cont.
+    case 0x38: // ICR, IRPA
+	break;
+    case 0x39: // VCRWDT
+	break;
+
+	// Division box
+    case 0x40: // DVSR
+	break;
+    case 0x41: // DVDNT
+	{
+	    INT32 a = sh2->m[0x41];
+	    INT32 b = sh2->m[0x40];
+	    LOG(("SH2 '%s' div+mod %d/%d\n", "0", a, b));
+	    if (b)
+	    {
+		sh2->m[0x45] = a / b;
+		sh2->m[0x44] = a % b;
+	    }
+	    else
+	    {
+		sh2->m[0x42] |= 0x00010000;
+		sh2->m[0x45] = 0x7fffffff;
+		sh2->m[0x44] = 0x7fffffff;
+		sh2_recalc_irq(sh2);
+	    }
+	    break;
+	}
+    case 0x42: // DVCR
+	sh2->m[0x42] = (sh2->m[0x42] & ~0x00001000) | (old & sh2->m[0x42] & 0x00010000);
+	sh2_recalc_irq(sh2);
+	break;
+    case 0x43: // VCRDIV
+	sh2_recalc_irq(sh2);
+	break;
+    case 0x44: // DVDNTH
+	break;
+    case 0x45: // DVDNTL
+	{
+	    INT64 a = sh2->m[0x45] | ((UINT64)(sh2->m[0x44]) << 32);
+	    INT64 b = (INT32)sh2->m[0x40];
+	    LOG(("SH2 '%s' div+mod %" I64FMT "d/%" I64FMT "d\n", "0", a, b));
+	    if (b)
+	    {
+		INT64 q = a / b;
+		if (q != (INT32)q)
+		{
+		    sh2->m[0x42] |= 0x00010000;
+		    sh2->m[0x45] = 0x7fffffff;
+		    sh2->m[0x44] = 0x7fffffff;
+		    sh2_recalc_irq(sh2);
+		}
+		else
+		{
+		    sh2->m[0x45] = q;
+		    sh2->m[0x44] = a % b;
+		}
+	    }
+	    else
+	    {
+		sh2->m[0x42] |= 0x00010000;
+		sh2->m[0x45] = 0x7fffffff;
+		sh2->m[0x44] = 0x7fffffff;
+		sh2_recalc_irq(sh2);
+	    }
+	    break;
+	}
+
+	// DMA controller
+    case 0x60: // SAR0
+    case 0x61: // DAR0
+	break;
+    case 0x62: // DTCR0
+	sh2->m[0x62] &= 0xffffff;
+	break;
+    case 0x63: // CHCR0
+	sh2->m[0x63] = (sh2->m[0x63] & ~2) | (old & sh2->m[0x63] & 2);
+	printf("check dmac ?\n");
+	// sh2_dmac_check(sh2, 0);
+	break;
+    case 0x64: // SAR1
+    case 0x65: // DAR1
+	break;
+    case 0x66: // DTCR1
+	sh2->m[0x66] &= 0xffffff;
+	break;
+    case 0x67: // CHCR1
+	sh2->m[0x67] = (sh2->m[0x67] & ~2) | (old & sh2->m[0x67] & 2);
+	printf("check dmac 2 ?\n");
+	// sh2_dmac_check(sh2, 1);
+	break;
+    case 0x68: // VCRDMA0
+    case 0x6a: // VCRDMA1
+	sh2_recalc_irq(sh2);
+	break;
+    case 0x6c: // DMAOR
+	sh2->m[0x6c] = (sh2->m[0x6c] & ~6) | (old & sh2->m[0x6c] & 6);
+	printf("check dmac 3 ?\n");
+	// sh2_dmac_check(sh2, 0);
+	// sh2_dmac_check(sh2, 1);
+	break;
+
+	// Bus controller
+    case 0x78: // BCR1
+    case 0x79: // BCR2
+    case 0x7a: // WCR
+    case 0x7b: // MCR
+    case 0x7c: // RTCSR
+    case 0x7d: // RTCNT
+    case 0x7e: // RTCOR
+	break;
+
+    default:
+	logerror("sh2_internal_w:  Unmapped write %08x, %08x @ %08x\n", 0xfffffe00+offset*4, data, mem_mask);
+	break;
+    }
+}
+
+static inline UINT32 RL(sh2_context *sh2, u32 A) // I/O
 {
 #if 0
-	if (A >= 0xe0000000) /* I/O */
-		return sh2_internal_r(*sh2->internal, (A & 0x1fc)>>2, 0xffffffff);
-
 	if (A >= 0xc0000000) /* Cache Data Array */
 		return sh2->program->read_dword(A);
 
@@ -53,12 +331,6 @@ static inline UINT32 RL(sh2_context *sh2, u32 A)
 static inline void WL(sh2_context *sh2, u32 A, UINT32 V)
 {
 #if 0
-	if (A >= 0xe0000000) /* I/O */
-	{
-		sh2_internal_w(*sh2->internal, (A & 0x1fc)>>2, V, 0xffffffff);
-		return;
-	}
-
 	if (A >= 0xc0000000) /* Cache Data Array */
 	{
 		sh2->program->write_dword(A,V);
@@ -527,282 +799,6 @@ static void sh2_dmac_check(sh2_context *sh2, int dma)
 	}
 }
 
-WRITE32_HANDLER( sh2_internal_w )
-{
-	sh2_context *sh2 = GET_SH2(&space.device());
-	UINT32 old;
-
-	old = sh2->m[offset];
-	COMBINE_DATA(sh2->m+offset);
-
-	//  if(offset != 0x20)
-	//      logerror("sh2_internal_w:  Write %08x (%x), %08x @ %08x\n", 0xfffffe00+offset*4, offset, data, mem_mask);
-
-//    if(offset != 0x20)
-//        printf("sh2_internal_w:  Write %08x (%x), %08x @ %08x (PC %x)\n", 0xfffffe00+offset*4, offset, data, mem_mask, space.device().safe_pc());
-
-	switch( offset )
-	{
-	case 0x00:
-		//if(mem_mask == 0xff)
-		//  printf("%c",data & 0xff);
-		break;
-	case 0x01:
-		//printf("%08x %02x %02x\n",mem_mask,offset,data);
-		break;
-		// Timers
-	case 0x04: // TIER, FTCSR, FRC
-		if((mem_mask & 0x00ffffff) != 0)
-		{
-			sh2_timer_resync(sh2);
-		}
-//      printf("SH2.%s: TIER write %04x @ %04x\n", "0", data >> 16, mem_mask>>16);
-		sh2->m[4] = (sh2->m[4] & ~(ICF|OCFA|OCFB|OVF)) | (old & sh2->m[4] & (ICF|OCFA|OCFB|OVF));
-		COMBINE_DATA(&sh2->frc);
-		if((mem_mask & 0x00ffffff) != 0)
-			sh2_timer_activate(sh2);
-		sh2_recalc_irq(sh2);
-		break;
-	case 0x05: // OCRx, TCR, TOCR
-//      printf("SH2.%s: TCR write %08x @ %08x\n", "0", data, mem_mask);
-		sh2_timer_resync(sh2);
-		if(sh2->m[5] & 0x10)
-			sh2->ocrb = (sh2->ocrb & (~mem_mask >> 16)) | ((data & mem_mask) >> 16);
-		else
-			sh2->ocra = (sh2->ocra & (~mem_mask >> 16)) | ((data & mem_mask) >> 16);
-		sh2_timer_activate(sh2);
-		break;
-
-	case 0x06: // ICR
-		break;
-
-		// Interrupt vectors
-	case 0x18: // IPRB, VCRA
-	case 0x19: // VCRB, VCRC
-	case 0x1a: // VCRD
-		sh2_recalc_irq(sh2);
-		break;
-
-		// DMA
-	case 0x1c: // DRCR0, DRCR1
-		break;
-
-		// Watchdog
-	case 0x20: // WTCNT, RSTCSR
-		if((sh2->m[0x20] & 0xff000000) == 0x5a000000)
-			sh2->wtcnt = (sh2->m[0x20] >> 16) & 0xff;
-
-		if((sh2->m[0x20] & 0xff000000) == 0xa5000000)
-		{
-			/*
-			WTCSR
-			x--- ---- Overflow in IT mode
-			-x-- ---- Timer mode (0: IT 1: watchdog)
-			--x- ---- Timer enable
-			---1 1---
-			---- -xxx Clock select
-			*/
-
-			sh2->wtcsr = (sh2->m[0x20] >> 16) & 0xff;
-		}
-
-		if((sh2->m[0x20] & 0x0000ff00) == 0x00005a00)
-		{
-			// -x-- ---- RSTE (1: resets wtcnt when overflows 0: no reset)
-			// --x- ---- RSTS (0: power-on reset 1: Manual reset)
-			// ...
-		}
-
-		if((sh2->m[0x20] & 0x0000ff00) == 0x0000a500)
-		{
-			// clear WOVF
-			// ...
-		}
-
-
-
-		break;
-
-		// Standby and cache
-	case 0x24: // SBYCR, CCR
-		/*
-		    CCR
-		    xx-- ---- ---- ---- Way 0/1
-		    ---x ---- ---- ---- Cache Purge (CP)
-		    ---- x--- ---- ---- Two-Way Mode (TW)
-		    ---- -x-- ---- ---- Data Replacement Disable (OD)
-		    ---- --x- ---- ---- Instruction Replacement Disable (ID)
-		    ---- ---x ---- ---- Cache Enable (CE)
-		*/
-		break;
-
-		// Interrupt vectors cont.
-	case 0x38: // ICR, IRPA
-		break;
-	case 0x39: // VCRWDT
-		break;
-
-		// Division box
-	case 0x40: // DVSR
-		break;
-	case 0x41: // DVDNT
-		{
-			INT32 a = sh2->m[0x41];
-			INT32 b = sh2->m[0x40];
-			LOG(("SH2 '%s' div+mod %d/%d\n", "0", a, b));
-			if (b)
-			{
-				sh2->m[0x45] = a / b;
-				sh2->m[0x44] = a % b;
-			}
-			else
-			{
-				sh2->m[0x42] |= 0x00010000;
-				sh2->m[0x45] = 0x7fffffff;
-				sh2->m[0x44] = 0x7fffffff;
-				sh2_recalc_irq(sh2);
-			}
-			break;
-		}
-	case 0x42: // DVCR
-		sh2->m[0x42] = (sh2->m[0x42] & ~0x00001000) | (old & sh2->m[0x42] & 0x00010000);
-		sh2_recalc_irq(sh2);
-		break;
-	case 0x43: // VCRDIV
-		sh2_recalc_irq(sh2);
-		break;
-	case 0x44: // DVDNTH
-		break;
-	case 0x45: // DVDNTL
-		{
-			INT64 a = sh2->m[0x45] | ((UINT64)(sh2->m[0x44]) << 32);
-			INT64 b = (INT32)sh2->m[0x40];
-			LOG(("SH2 '%s' div+mod %" I64FMT "d/%" I64FMT "d\n", "0", a, b));
-			if (b)
-			{
-				INT64 q = a / b;
-				if (q != (INT32)q)
-				{
-					sh2->m[0x42] |= 0x00010000;
-					sh2->m[0x45] = 0x7fffffff;
-					sh2->m[0x44] = 0x7fffffff;
-					sh2_recalc_irq(sh2);
-				}
-				else
-				{
-					sh2->m[0x45] = q;
-					sh2->m[0x44] = a % b;
-				}
-			}
-			else
-			{
-				sh2->m[0x42] |= 0x00010000;
-				sh2->m[0x45] = 0x7fffffff;
-				sh2->m[0x44] = 0x7fffffff;
-				sh2_recalc_irq(sh2);
-			}
-			break;
-		}
-
-		// DMA controller
-	case 0x60: // SAR0
-	case 0x61: // DAR0
-		break;
-	case 0x62: // DTCR0
-		sh2->m[0x62] &= 0xffffff;
-		break;
-	case 0x63: // CHCR0
-		sh2->m[0x63] = (sh2->m[0x63] & ~2) | (old & sh2->m[0x63] & 2);
-		sh2_dmac_check(sh2, 0);
-		break;
-	case 0x64: // SAR1
-	case 0x65: // DAR1
-		break;
-	case 0x66: // DTCR1
-		sh2->m[0x66] &= 0xffffff;
-		break;
-	case 0x67: // CHCR1
-		sh2->m[0x67] = (sh2->m[0x67] & ~2) | (old & sh2->m[0x67] & 2);
-		sh2_dmac_check(sh2, 1);
-		break;
-	case 0x68: // VCRDMA0
-	case 0x6a: // VCRDMA1
-		sh2_recalc_irq(sh2);
-		break;
-	case 0x6c: // DMAOR
-		sh2->m[0x6c] = (sh2->m[0x6c] & ~6) | (old & sh2->m[0x6c] & 6);
-		sh2_dmac_check(sh2, 0);
-		sh2_dmac_check(sh2, 1);
-		break;
-
-		// Bus controller
-	case 0x78: // BCR1
-	case 0x79: // BCR2
-	case 0x7a: // WCR
-	case 0x7b: // MCR
-	case 0x7c: // RTCSR
-	case 0x7d: // RTCNT
-	case 0x7e: // RTCOR
-		break;
-
-	default:
-		logerror("sh2_internal_w:  Unmapped write %08x, %08x @ %08x\n", 0xfffffe00+offset*4, data, mem_mask);
-		break;
-	}
-}
-
-READ32_HANDLER( sh2_internal_r )
-{
-	sh2_context *sh2 = GET_SH2(&space.device());
-
-//  logerror("sh2_internal_r:  Read %08x (%x) @ %08x\n", 0xfffffe00+offset*4, offset, mem_mask);
-	switch( offset )
-	{
-	case 0x00:
-		break;
-	case 0x01:
-		return sh2->m[1] | 0x80000000; // TDRE: Trasmit Data Register Empty. Force it to be '1' for the time being.
-
-	case 0x04: // TIER, FTCSR, FRC
-		if ( mem_mask == 0x00ff0000 )
-		{
-			if ( sh2->ftcsr_read_callback != NULL )
-			{
-				sh2->ftcsr_read_callback( (sh2->m[4] & 0xffff0000) | sh2->frc );
-			}
-		}
-		sh2_timer_resync(sh2);
-		return (sh2->m[4] & 0xffff0000) | sh2->frc;
-	case 0x05: // OCRx, TCR, TOCR
-		if(sh2->m[5] & 0x10)
-			return (sh2->ocrb << 16) | (sh2->m[5] & 0xffff);
-		else
-			return (sh2->ocra << 16) | (sh2->m[5] & 0xffff);
-	case 0x06: // ICR
-		return sh2->icr << 16;
-
-	case 0x20:
-		return (((sh2->wtcsr | 0x18) & 0xff) << 24)  | ((sh2->wtcnt & 0xff) << 16);
-
-	case 0x24: // SBYCR, CCR
-		return sh2->m[0x24] & ~0x3000; /* bit 4-5 of CCR are always zero */
-
-	case 0x38: // ICR, IPRA
-		return (sh2->m[0x38] & 0x7fffffff) | (sh2->nmi_line_state == ASSERT_LINE ? 0 : 0x80000000);
-
-	case 0x78: // BCR1
-		return sh2->is_slave ? 0x00008000 : 0;
-
-	case 0x41: // dvdntl mirrors
-	case 0x47:
-		return sh2->m[0x45];
-
-	case 0x46: // dvdnth mirror
-		return sh2->m[0x44];
-	}
-	return sh2->m[offset];
-}
-
 void sh2_set_ftcsr_read_callback(device_t *device, void (*callback)(UINT32))
 {
 	sh2_context *sh2 = GET_SH2(device);
@@ -998,56 +994,10 @@ void sh2_exception(sh2_context *sh2, const char *message, int irqline)
 UINT8 FASTCALL
 Def_READB (UINT32 adr)
 {
-  print_debug ("SH2 read byte at %.8lx\n", adr); return 0;
+  print_debug ("SH2 read byte at %.8lx\n", adr);
+  return 0;
 }
 
-UINT8 FASTCALL
-SH2_Read_Byte_C0 (UINT32 adr)
-{
-    printf("read_byte_c0 %x\n",adr);
-    exit(1);
-    return 0;
-}
-
-UINT16 FASTCALL
-SH2_Read_Word_C0 (UINT32 adr)
-{
-    printf("read_word_c0 %x\n",adr);
-    exit(1);
-    return 0;
-}
-
-UINT32 FASTCALL
-SH2_Read_Long_C0 (UINT32 adr)
-{
-    printf("read_long_c0 %x\n",adr);
-    exit(1);
-    return 0;
-}
-
-UINT8 FASTCALL
-SH2_Read_Byte_FF (UINT32 adr)
-{
-    printf("read_byte_ff %x\n",adr);
-    exit(1);
-    return 0;
-}
-
-UINT16 FASTCALL
-SH2_Read_Word_FF (UINT32 adr)
-{
-    printf("read_word_ff %x\n",adr);
-    exit(1);
-    return 0;
-}
-
-UINT32 FASTCALL
-SH2_Read_Long_FF (UINT32 adr)
-{
-    printf("read_long_ff %x\n",adr);
-    exit(1);
-    return 0;
-}
 UINT16 FASTCALL
 Def_READW (UINT32 adr)
 {
@@ -1134,25 +1084,12 @@ void SH2_Init(sh2_context *sh2, int is_slave)
 
   SH2_Add_ReadB (sh2, 0x00, 0xFF, Def_READB);
   SH2_Add_ReadW (sh2, 0x00, 0xFF, Def_READW);
-  SH2_Add_ReadL (sh2, 0x00, 0xFF, Def_READL);
+  SH2_Add_ReadL (sh2, 0x00, 0xdF, Def_READL);
   SH2_Add_WriteB (sh2, 0x00, 0xFF, Def_WRITEB);
   SH2_Add_WriteW (sh2, 0x00, 0xFF, Def_WRITEW);
-  SH2_Add_WriteL (sh2, 0x00, 0xFF, Def_WRITEL);
-
-  SH2_Add_ReadB (sh2, 0xC0, 0xC0, SH2_Read_Byte_C0);
-  SH2_Add_ReadW (sh2, 0xC0, 0xC0, SH2_Read_Word_C0);
-  SH2_Add_ReadL (sh2, 0xC0, 0xC0, SH2_Read_Long_C0);
-  //SH2_Add_WriteB (sh2, 0xC0, 0xC0, SH2_Write_Byte_C0);
-  //SH2_Add_WriteW (sh2, 0xC0, 0xC0, SH2_Write_Word_C0);
-  //SH2_Add_WriteL (sh2, 0xC0, 0xC0, SH2_Write_Long_C0);
-
-  SH2_Add_ReadB (sh2, 0xFF, 0xFF, SH2_Read_Byte_FF);
-  SH2_Add_ReadW (sh2, 0xFF, 0xFF, SH2_Read_Word_FF);
-  SH2_Add_ReadL (sh2, 0xFF, 0xFF, SH2_Read_Long_FF);
-  //SH2_Add_WriteB (sh2, 0xFF, 0xFF, SH2_Write_Byte_FF);
-  //SH2_Add_WriteW (sh2, 0xFF, 0xFF, SH2_Write_Word_FF);
-  //SH2_Add_WriteL (sh2, 0xFF, 0xFF, SH2_Write_Long_FF);
-
+  SH2_Add_WriteL (sh2, 0x00, 0xdF, Def_WRITEL);
+  SH2_Add_ReadL (sh2, 0xe0, 0xff, read_internal);
+  SH2_Add_WriteL (sh2, 0xe0, 0xff, write_internal_l);
 }
 
 u32 SH2_Get_PC(sh2_context *sh2) {
