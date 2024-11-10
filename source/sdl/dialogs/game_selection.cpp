@@ -33,7 +33,7 @@ static char *avail;
 // The list of driver names, which must follow the alphabetical order of the
 // driver names in options[] below.
 char *drivers[] =
-{ "cave.c", "cps1drv.c", "cps2drv.c","neogeo.c", "nmk.c", "gunbird.c", "seta.c",
+{ "cave.c", "cps1drv.c", "cps2drv.c","neogeo.c", "nmk.c", "gunbird.c", "psikyosh.c", "seta.c",
   "taito_f2.c", "lsystem.c", "xsystem2.c", "toaplan1.c", "toaplan2.c" };
 
 static menu_item_t options[] =
@@ -42,8 +42,8 @@ static menu_item_t options[] =
 { _("Status"), NULL, &status, 4, {0, 1, 2, 3}, {_("All status"), _("Only working games"), _("Only partially working games"), _("Only not working games")} },
 { _("Category"), NULL, &category, NB_GAME_TYPE, }, // this one is finished dynamically
 { _("Company"), NULL, &company, }, // finished dynamically also
-{ _("Driver"), NULL, &driver, 13, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
-{ _("All drivers"), _("Cave"), _("Capcom CPS1"), _("Capcom CPS2"), _("Neo-Geo"), _("NMK"), _("Psikyo (gunbird)"), _("Seta"), _("Taito F2"), _("Taito L-System"), _("Taito X-System 2"), _("Toaplan 1"), _("Toaplan 2") } },
+{ _("Driver"), NULL, &driver, 14, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+{ _("All drivers"), "Cave", "Capcom CPS1", "Capcom CPS2", "Neo-Geo", "NMK", "Psikyo (gunbird)", "Psikyo SH2", "Seta", "Taito F2", "Taito L-System", "Taito X-System 2", "Toaplan 1", "Toaplan 2" } },
 { _("Clones"), NULL, &clones, 2, {0, 1 }, { _("Without"), _("With") } },
 { _("Display short names too"), &change_names, &short_names, 2, {0, 1}, {_("No"), _("Yes")} },
 { _("ROM directories..."), &do_romdir },
