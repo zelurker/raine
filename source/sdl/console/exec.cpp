@@ -511,7 +511,8 @@ void do_next(int argc, char **argv) {
       }
       break;
   case CPU_Z80:
-      if (!strcasecmp(instruction,"CALL") || strcasestr(buff,"jr   nz,")) { // heavily dependant on the disassembler output !
+      strlwr(buff); // no strcasestr in mingw32 !!!
+      if (!strcasecmp(instruction,"CALL") || strstr(buff,"jr   nz,")) { // heavily dependant on the disassembler output !
 	  while (cpu_get_pc(cpu) != next_pc) {
 	      do_cycles();
 	  }
