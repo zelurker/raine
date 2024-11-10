@@ -38,6 +38,12 @@
 #include <string.h>
 #include "m68k.h"
 #include "m68kcpu.h"
+#if !USE_MUSASHI
+#include "raine.h"
+#include "starhelp.h"
+
+extern u8 *R24[0x100];
+#endif
 
 #ifndef DECL_SPEC
 #define DECL_SPEC
@@ -212,6 +218,7 @@ static uint g_cpu_pc;        /* program counter */
 static uint g_cpu_ir;        /* instruction register */
 static uint g_cpu_type;
 static uint g_opcode_type;
+static int g_cpu_id;
 static const unsigned char* g_rawop;
 static uint g_rawbasepc;
 
@@ -261,6 +268,13 @@ static uint dasm_read_imm_8(uint advance)
 #if USE_MUSASHI
 	else
 		result = m68ki_cpu.read_im16(g_cpu_pc & g_address_mask) & 0xff;
+#else
+	else {
+	    if (g_cpu_type != TYPE_68020)
+		result = star_read_im16(g_cpu_id,g_cpu_pc & g_address_mask) & 0xff;
+	    else
+		result = R24[g_cpu_pc >> 16][g_cpu_pc & 0xffff];
+	}
 #endif
 	g_cpu_pc += advance;
 	return result;
@@ -274,7 +288,12 @@ static uint dasm_read_imm_16(uint advance)
 		          g_rawop[g_cpu_pc + 1 - g_rawbasepc];
 #if USE_MUSASHI
 	else
-		result = m68ki_cpu.read_im16(g_cpu_pc & g_address_mask) & 0xffff;
+	    result = m68ki_cpu.read_im16(g_cpu_pc & g_address_mask) & 0xffff;
+#else
+	if (g_cpu_type != TYPE_68020)
+	    result = star_read_im16(g_cpu_id,g_cpu_pc & g_address_mask) & 0xffff;
+	else
+	    result = ReadWord68k(&R24[g_cpu_pc >> 16][g_cpu_pc & 0xffff]);
 #endif
 	g_cpu_pc += advance;
 	return result;
@@ -290,7 +309,12 @@ static uint dasm_read_imm_32(uint advance)
 		          g_rawop[g_cpu_pc + 3 - g_rawbasepc];
 #if USE_MUSASHI
 	else
-		result = m68ki_cpu.read_im32(g_cpu_pc & g_address_mask) & 0xffffffff;
+	    result = m68ki_cpu.read_im32(g_cpu_pc & g_address_mask) & 0xffffffff;
+#else
+	    if (g_cpu_type != TYPE_68020)
+		result = star_read_im32(g_cpu_id, g_cpu_pc & g_address_mask);
+	    else
+		result = ReadLong68k(&R24[g_cpu_pc >> 16][g_cpu_pc & 0xffff]);
 #endif
 	g_cpu_pc += advance;
 	return result;
@@ -3447,13 +3471,14 @@ static void build_opcode_table(void)
 /* ======================================================================== */
 
 /* Disasemble one instruction at pc and store in str_buff */
-unsigned int m68k_disassemble(char* str_buff, unsigned int pc, unsigned int cpu_type)
+unsigned int m68k_disassemble(int cpu_id, char* str_buff, unsigned int pc, unsigned int cpu_type)
 {
 	if(!g_initialized)
 	{
 		build_opcode_table();
 		g_initialized = 1;
 	}
+	g_cpu_id = cpu_id;
 	switch(cpu_type)
 	{
 		case M68K_CPU_TYPE_68000:
@@ -3497,7 +3522,7 @@ char* m68ki_disassemble_quick(unsigned int pc, unsigned int cpu_type)
 {
 	static char buff[100];
 	buff[0] = 0;
-	m68k_disassemble(buff, pc, cpu_type);
+	m68k_disassemble(0,buff, pc, cpu_type);
 	return buff;
 }
 
@@ -3507,7 +3532,7 @@ unsigned int m68k_disassemble_raw(char* str_buff, unsigned int pc, const unsigne
 
 	g_rawop = opdata;
 	g_rawbasepc = pc;
-	result = m68k_disassemble(str_buff, pc, cpu_type);
+	result = m68k_disassemble(0,str_buff, pc, cpu_type);
 	g_rawop = NULL;
 	return result;
 }

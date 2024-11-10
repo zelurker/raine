@@ -404,7 +404,7 @@ static int get_instruction(UINT32 target = cpu_get_pc(get_cpu_id())) {
   else
       type = M68K_CPU_TYPE_68020;
 #endif
-  ret = m68k_disassemble(buff, target, type);
+  ret = m68k_disassemble(cpu_id,buff, target, type);
      break;
   case CPU_SH2:
      ret = DasmSH2(buff, target, ReadWord68k(&ptr[target]));

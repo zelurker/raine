@@ -120,6 +120,40 @@ void *get_userfunc(UINT32 cpu, int read, int size, int off_start, UINT32 offset)
   return NULL;
 }
 
+u16 star_read_im16(u32 cpu, u32 offset) {
+    int n;
+    cpu &= 0xf;
+    for (n=0; n<program_count[cpu]; n++) {
+	if (M68000_programregion[cpu][n].lowaddr <= offset &&
+		offset <= M68000_programregion[cpu][n].highaddr ) {
+#if USE_MUSASHI < 2
+	    return ReadWord(&((u8*)M68000_programregion[cpu][n].offset)[offset]);
+#else
+	    return ReadWord(&M68000_programregion[cpu][n].offset[offset]);
+#endif
+	}
+    }
+    printf("no immediate read16 for cpu %d offset %x\n",cpu,offset);
+    return 0xffff;
+}
+
+u32 star_read_im32(u32 cpu, u32 offset) {
+    int n;
+    cpu &= 0xf;
+    for (n=0; n<program_count[cpu]; n++) {
+	if (M68000_programregion[cpu][n].lowaddr <= offset &&
+		offset <= M68000_programregion[cpu][n].highaddr ) {
+#if USE_MUSASHI < 2
+	    return ReadLongSc(&((u8*)M68000_programregion[cpu][n].offset)[offset]);
+#else
+	    return ReadLongSc(&M68000_programregion[cpu][n].offset[offset]);
+#endif
+	}
+    }
+    printf("no immediate read32 for cpu %d offset %x\n",cpu,offset);
+    return 0xffffffff;
+}
+
 void add_68000_program_region(UINT32 cpu, UINT32 d0, UINT32 d1, UINT8 *d2)
 {
 	int n;

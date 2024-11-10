@@ -121,6 +121,9 @@ void del_ww(int cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void del_rb(int cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 void del_rw(int cpu, UINT32 d0, UINT32 d1, void *d2, UINT8 *d3);
 
+u16 star_read_im16(u32 cpu, u32 offset);
+u32 star_read_im32(u32 cpu, u32 offset);
+
 #ifdef __cplusplus
 }
 #endif
