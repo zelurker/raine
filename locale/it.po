@@ -3572,8 +3572,8 @@ msgid "Fullheight + double width"
 msgstr "Massima altezza + Doppia larghezza"
 
 #: source/sdl/dialogs/video_options.cpp:270 source/sdl/control.c:674
-msgid "Fullscreen"
-msgstr "Schermo intero"
+msgid "Enable fullscreen mode (borderless window)"
+msgstr "Abilita la modalità a schermo intero (finestra senza bordi)"
 
 #: source/sdl/dialogs/video_options.cpp:272
 #, fuzzy
@@ -6951,8 +6951,8 @@ msgid "Yes (adaptive)"
 msgstr ""
 
 #: source/sdl/dialogs/video_options.cpp:270
-msgid "Yes (desktop)"
-msgstr ""
+msgid "Yes"
+msgstr "Sì"
 
 #: source/sdl/dialogs/video_options.cpp:270
 msgid "Yes (real)"
