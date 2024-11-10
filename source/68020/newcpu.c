@@ -224,7 +224,7 @@ void init_m68k(void)
     MC68020 = 1;
 #ifdef USE_MUSASHI
     m68k_init();
-    m68k_set_cpu_type(M68K_CPU_TYPE_68020);
+    m68k_set_cpu_type(M68K_CPU_TYPE_68EC020); // apparently taitof3, mustangp and gunbird all use 68ec020 instead of 68020... not sure about the difference !
     m68k_get_context(&m68020_context);
     // Avoid the pointers at the end of the struct... they should already be initialized
     AddSaveData(SAVE_M68020_0, (UINT8 *) &m68ki_cpu, (UINT8*)&m68ki_cpu.cyc_instruction - ((UINT8*)&m68ki_cpu));
