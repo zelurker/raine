@@ -3377,8 +3377,8 @@ msgid "Fullheight + double width"
 msgstr "Pleine hauteur + double largeur"
 
 #: source/sdl/dialogs/video_options.cpp:270 source/sdl/control.c:674
-msgid "Fullscreen"
-msgstr "Plein écran"
+msgid "Enable fullscreen mode (borderless window)"
+msgstr "Activer le mode plein écran (fenêtre sans bordure)"
 
 #: source/sdl/dialogs/video_options.cpp:272
 msgid "Fullscreen hack for Intel"
@@ -6529,8 +6529,8 @@ msgid "Yes (adaptive)"
 msgstr "Oui (adaptatif)"
 
 #: source/sdl/dialogs/video_options.cpp:270
-msgid "Yes (desktop)"
-msgstr "Oui (bureau)"
+msgid "Yes"
+msgstr "Oui"
 
 #: source/sdl/dialogs/video_options.cpp:270
 msgid "Yes (real)"

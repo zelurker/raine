@@ -3486,8 +3486,8 @@ msgid "Fullheight + double width"
 msgstr "Altura máxima + O dobro da largura"
 
 #: source/sdl/dialogs/video_options.cpp:272 source/sdl/control.c:674
-msgid "Fullscreen"
-msgstr "Tela cheia"
+msgid "Enable fullscreen mode (borderless window)"
+msgstr "Ativar o modo de tela cheia (janela sem bordas)"
 
 #: source/sdl/dialogs/video_options.cpp:274
 msgid "Fullscreen hack for Intel"
@@ -6799,8 +6799,8 @@ msgid "Yes (adaptive)"
 msgstr "Sim (adaptativo)"
 
 #: source/sdl/dialogs/video_options.cpp:272
-msgid "Yes (desktop)"
-msgstr "Sim (área de trabalho)"
+msgid "Yes"
+msgstr "Sim"
 
 #: source/sdl/dialogs/video_options.cpp:272
 msgid "Yes (real)"
