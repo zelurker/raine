@@ -2843,7 +2843,7 @@ msgstr "Doble buffer habilitado"
 #: source/loadroms.c:1219
 #, c-format
 msgid "Downloading %s.zip"
-msgstr ""
+msgstr "Descargando %s.zip"
 
 #: source/games/seta.c:2351
 msgid "Dragon Unit"

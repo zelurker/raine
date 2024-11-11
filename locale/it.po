@@ -2982,7 +2982,7 @@ msgstr "Doppio buffer disponibile"
 #: source/loadroms.c:1219
 #, c-format
 msgid "Downloading %s.zip"
-msgstr ""
+msgstr "Scaricamento di %s.zip"
 
 #: source/games/seta.c:2351
 msgid "Dragon Unit"

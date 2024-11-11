@@ -2819,7 +2819,7 @@ msgstr "Double buffer activé"
 #: source/loadroms.c:1219
 #, c-format
 msgid "Downloading %s.zip"
-msgstr ""
+msgstr "Téléchargement de %s.zip"
 
 #: source/games/seta.c:2351
 msgid "Dragon Unit"
@@ -6725,7 +6725,7 @@ msgstr "Couleur 1er plan cadre des dialogues"
 
 #: source/sdl/gui.cpp:292
 msgid "from internet archive"
-msgstr "venant d'intrnet archive"
+msgstr "venant d'internet archive"
 
 #: source/sdl/dialogs/colors.cpp:43
 msgid "green"
