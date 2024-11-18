@@ -142,6 +142,35 @@ int enh_stereo = 0;
 
 extern int max_mixer_volume;
 static void my_callback(void *userdata, Uint8 *stream, int len);
+int devs_audio = -1;
+
+void detect_soundcard(char **name) {
+    if (devs_audio < 0) devs_audio = SDL_GetNumAudioDevices(0); // This function can trigger a redetection of all audio devices so it's best to call it only once
+    if (RaineSoundCard >= 0) {
+	printf("RaineSoundCard already contains %d, keeping it instead of autodetect\n",RaineSoundCard);
+	if (RaineSoundCard > 0)
+	    *name = (char*)SDL_GetAudioDeviceName(RaineSoundCard-1,0);
+	else
+	    *name = "None";
+	printf("name kept %s\n",*name);
+	return;
+    }
+    SDL_GetDefaultAudioInfo(name,&gotspec,0);
+    for (int n=0; n<devs_audio; n++) {
+	const char *name2 = SDL_GetAudioDeviceName(n,0);
+	if (!strcmp(name2,*name)) {
+	    RaineSoundCard = n+1;
+	    printf("RaineSoundCard detected %d name %s\n",RaineSoundCard,*name);
+	    break;
+	}
+    }
+    if (RaineSoundCard < 0) {
+	printf("couldn't find RaineSoundCard for name %s\n",*name);
+	printf("using RaineSoundCard = 1 (forced)\n");
+	RaineSoundCard = 1;
+	*name = (char*)SDL_GetAudioDeviceName(0,0);
+    }
+}
 
 /******************************************/
 /*    setup sound			  */
@@ -179,10 +208,12 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
        int i = soundcard;
-       const char *name;
-       if (i < 0) name = NULL;
+       char *name;
+       if (i < 0) {
+	   detect_soundcard(&name);
+       }
        else if (i==0) name = "None";
-       else name = SDL_GetAudioDeviceName(i-1,0);
+       else name = (char*)SDL_GetAudioDeviceName(i-1,0);
        SDL_GetAudioDeviceSpec(i > 0 ? i-1 : 0,0,&spec);
        spec.userdata = NULL;
        spec.callback = my_callback;

@@ -193,11 +193,13 @@ typedef struct SOUND_CHIP
 } SOUND_CHIP;
 
 extern struct SOUND_CHIP sound_chip_list[];
+extern int devs_audio; // numùber of audio devices because the related function must be called only once
 
 extern SoundRec      *SndMachine, snd_entry;
 
 /**** prottype ****/
 void saUpdateSound( int nowclock );
+void detect_soundcard(char **name); // init RaineSoundCard if possible
 BOOL saInitSoundCard( int soundcard, int sample_rate );
 
 char *get_sound_chip_name(UINT32 id);
