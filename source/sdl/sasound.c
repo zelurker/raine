@@ -178,9 +178,12 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        SDL_AudioSpec spec;
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
-       int i = soundcard -1;
-       const char *name = (i <= -2 ? NULL : SDL_GetAudioDeviceName(i,0));
-       SDL_GetAudioDeviceSpec(i >= 0 ? i : 0,0,&spec);
+       int i = soundcard;
+       const char *name;
+       if (i < 0) name = NULL;
+       else if (i==0) name = "None";
+       else name = SDL_GetAudioDeviceName(i-1,0);
+       SDL_GetAudioDeviceSpec(i > 0 ? i-1 : 0,0,&spec);
        spec.userdata = NULL;
        spec.callback = my_callback;
        if (sample_rate) {
@@ -190,7 +193,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
        spec.format = AUDIO_S16LSB;
        spec.channels = 2;
-       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,0)) <= 0 )
+       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,SDL_AUDIO_ALLOW_ANY_CHANGE)) <= 0 )
 #else
 	   spec.userdata = NULL;
        spec.callback = my_callback;
@@ -208,7 +211,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 	   return 0;
        }
        printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x dev %d\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format,dev);
-       RaineSoundCard = dev-1;
+       // Don't change RaineSoundCard here, because the returned value from SDL_OpenAudioDevice is either > 0 which means success, or 0 to mean error, but no device id !
        audio_sample_rate = gotspec.freq;
        opened_audio = 1;
 #if HAS_NEO

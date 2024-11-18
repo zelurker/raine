@@ -372,7 +372,7 @@ void TMenu::update_label(int nb, char *str,int (*menu_func)(int)) {
 void TMenu::update_list_label(int nb, int index, char *str) {
     // Actually this is used only in the sound options menu so far
     menu[nb].values_list_label[index] = str;
-    menu[nb].values_list[index] = index;
+    // menu[nb].values_list[index] = index;
 }
 
 void TMenu::free_hchild() {
