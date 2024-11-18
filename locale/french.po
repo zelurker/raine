@@ -3377,12 +3377,12 @@ msgid "Fullheight + double width"
 msgstr "Pleine hauteur + double largeur"
 
 #: source/sdl/dialogs/video_options.cpp:270 source/sdl/control.c:674
-msgid "Fullscreen"
-msgstr "Plein Ecran"
+msgid "Enable fullscreen mode"
+msgstr "Activer le mode plein écran"
 
 #: source/sdl/dialogs/video_options.cpp:272
 msgid "Fullscreen hack for Intel"
-msgstr "hack plein écran pour intel"
+msgstr "Hack plein écran pour intel"
 
 #: source/games/toaplan2.c:272
 msgid "Fully-auto"

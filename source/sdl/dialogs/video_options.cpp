@@ -263,7 +263,7 @@ static menu_item_t video_items[] =
 #endif
 #endif
     // fullscreen from here is a nuisance, it's easier to handle from the keyboard handler
-{ _("Fullscreen"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes") }},
+{ _("Enable fullscreen mode"), &my_toggle_fullscreen, &display_cfg.fullscreen, 2, {0, 1}, {_("No"), _("Yes") }},
 #ifdef RAINE_UNIX
 { _("Fullscreen hack for Intel"), NULL, &hack_fs, 2, {0, 1}, {_("No"),_("Yes")}},
 #endif

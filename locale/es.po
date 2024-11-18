@@ -3405,8 +3405,8 @@ msgid "Fullheight + double width"
 msgstr "Alto completo + Doble ancho"
 
 #: source/sdl/dialogs/video_options.cpp:270 source/sdl/control.c:674
-msgid "Fullscreen"
-msgstr "Pantalla completa"
+msgid "Enable fullscreen mode"
+msgstr "Activar el modo de pantalla completa"
 
 #: source/sdl/dialogs/video_options.cpp:272
 #, fuzzy

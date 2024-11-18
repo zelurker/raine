@@ -719,7 +719,7 @@ static void cold_boot() {
 struct DEF_INPUT_EMU def_input_emu[] =
 {
  { SDL_SCANCODE_S ,       0x00,           _("Save Screenshot"), KMOD_CTRL, key_save_screen     },
- { SDL_SCANCODE_RETURN ,       0x00,           _("Fullscreen"), KMOD_ALT, toggle_fullscreen_keyboard     },
+ { SDL_SCANCODE_RETURN ,       0x00,           _("Toggle fullscreen"), KMOD_ALT, toggle_fullscreen_keyboard     },
  { SDL_SCANCODE_PAGEUP,    0x00,           _("Increase frameskip"), 0, frame_skip_up  },
  { SDL_SCANCODE_PAGEDOWN,    0x00,           _("Decrease frameskip"), 0, frame_skip_down  },
  { SDL_SCANCODE_HOME,    0x00,           _("Increase CPU skip"),    0, cpu_speed_up},
