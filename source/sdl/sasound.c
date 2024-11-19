@@ -213,7 +213,14 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
 	   detect_soundcard(&name);
        }
        else if (i==0) name = "None";
-       else name = (char*)SDL_GetAudioDeviceName(i-1,0);
+       else {
+	   name = (char*)SDL_GetAudioDeviceName(i-1,0);
+	   if (!name) {
+	       // The soundcard recorded in the config isn't available apparently, force a redetection then...
+	       RaineSoundCard = -1; // force re-assignment
+	       detect_soundcard(&name);
+	   }
+       }
        SDL_GetAudioDeviceSpec(i > 0 ? i-1 : 0,0,&spec);
        spec.userdata = NULL;
        spec.callback = my_callback;
