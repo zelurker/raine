@@ -110,7 +110,15 @@ static void init_sound_driver(int changed) {
     }
     // Must also init the names of the devices, they depend on the driver... !
     char *name;
-    if (devs_audio < 0) detect_soundcard(&name);
+    if (devs_audio < 0) {
+	if (RaineSoundCard > 0) {
+	    const char *name = SDL_GetAudioDeviceName(RaineSoundCard-1,0);
+	    if (!name) { // card not available !
+		RaineSoundCard = -1; // force redetect
+	    }
+	}
+	detect_soundcard(&name);
+    }
     sound_menu[1].values_list_size = devs_audio+1;
     sound_menu[1].values_list_label[0] = "None";
     if (menu) {
