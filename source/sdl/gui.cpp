@@ -81,6 +81,9 @@ static int autostart_drivers, ips_enabled;
 TRaineDesktop::TRaineDesktop() : TDesktop()
 {
     tgame = 0;
+#if SDL == 2
+    desktop_w = w; desktop_h = h;
+#endif
 }
 
 void TRaineDesktop::preinit() {
@@ -1163,16 +1166,16 @@ void StartGUI(void)
     if (display_cfg.screen_x > desktop_w) {
 	display_cfg.screen_x = desktop_w;
     }
-    if (display_cfg.screen_y > desktop_h)
+    if (display_cfg.screen_y > desktop_h) {
 	display_cfg.screen_y = desktop_h;
-    if (display_cfg.screen_x + display_cfg.posx > desktop_w) {
+    }
+    if (display_cfg.screen_x + display_cfg.posx > desktop_w && !display_cfg.fullscreen) {
 	display_cfg.screen_x = desktop_w - display_cfg.posx;
     }
-    if (display_cfg.screen_y + display_cfg.posy > desktop_h) {
+    if (display_cfg.screen_y + display_cfg.posy > desktop_h && !display_cfg.fullscreen) {
 	display_cfg.screen_y = desktop_h - display_cfg.screen_y;
     }
-    if (!display_cfg.fullscreen)
-	resize(0,display_cfg.screen_x, display_cfg.screen_y);
+    resize(0,display_cfg.screen_x, display_cfg.screen_y);
     gui_end_hook = &gui_end;
     gui_start_hook = &gui_start;
     event_hook = &my_event;

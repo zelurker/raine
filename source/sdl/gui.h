@@ -11,9 +11,6 @@ class TMain_menu : public TMenu
   TMain_menu(char *my_title, menu_item_t *mymenu) :
     TMenu(my_title,mymenu)
     {
-#if SDL == 2
-	desktop_w = desktop->w; desktop_h = desktop->h;
-#endif
     }
   int can_be_displayed(int n);
   char *get_bot_frame_text();
