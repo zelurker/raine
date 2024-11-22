@@ -12,8 +12,8 @@ int max_mixer_volume;
 #endif
 
 void sound_load_cfg() {
-   int id;
 #ifdef ALLEGRO_SOUND
+   int id;
    _DRIVER_INFO *digi;
    int i;
 #endif
@@ -33,7 +33,7 @@ void sound_load_cfg() {
 #endif
 #ifndef ALLEGRO_SOUND
    // sdl, default to sound enabled (1)
-   id = raine_get_config_id(    "Sound",        "sound_card",  -1);
+   RaineSoundCard = raine_get_config_string(    "Sound",        "sound_card",  NULL);
 #else
 #ifdef RAINE_WIN32
    id = raine_get_config_id(    "Sound",        "sound_card",  DIGI_DIRECTAMX(0));
@@ -53,8 +53,8 @@ void sound_load_cfg() {
      }
      remove_sound(); // the sound is not installed here.
    } else
-#endif
      RaineSoundCard = id;
+#endif
 
    /* It's better to default to 44Khz in sdl in win32 because of the buggy sound drivers
       in this os (they oblige to have quite a big sound buffer, which produces a
@@ -90,7 +90,7 @@ void sound_save_cfg() {
 #if SDL == 2
     raine_set_config_string("Sound","driver",(char*)SDL_GetCurrentAudioDriver());
 #endif
-   raine_set_config_id( 	"Sound",        "sound_card",           sound_card_id(RaineSoundCard));
+   raine_set_config_string( 	"Sound",        "sound_card",           RaineSoundCard);
    raine_set_config_int(	"Sound",        "sample_rate",          audio_sample_rate);
 #ifdef RAINE_DOS
    raine_set_config_int(	"Sound",        "YM3812Emulation",          use_emulated_ym3812);

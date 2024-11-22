@@ -75,7 +75,7 @@ static char driver_name[40];
 static int fade_vol;
 #endif
 
-int RaineSoundCard;
+char *RaineSoundCard;
 
 /* Avoid to uncomment USE_8BITS unless you finish 8bit support... which is
     pretty useless nowdays ! */
@@ -126,7 +126,7 @@ void saSetPan( int channel, int data )
 void saUpdateSound( int nowclock )
 {
    if( ! GameSound ) return;
-   if( ! RaineSoundCard ) return;
+   if( ! RaineSoundCard || !strcmp(RaineSoundCard,"None") ) return;
    if( ! audio_sample_rate ) return;
    if( ! SndMachine ) return;
 
@@ -144,38 +144,36 @@ extern int max_mixer_volume;
 static void my_callback(void *userdata, Uint8 *stream, int len);
 int devs_audio = -1;
 
-void detect_soundcard(char **name) {
+void detect_soundcard() {
     if (devs_audio < 0) devs_audio = SDL_GetNumAudioDevices(0); // This function can trigger a redetection of all audio devices so it's best to call it only once
-    if (RaineSoundCard >= 0) {
-	printf("RaineSoundCard already contains %d, keeping it instead of autodetect\n",RaineSoundCard);
-	if (RaineSoundCard > 0)
-	    *name = (char*)SDL_GetAudioDeviceName(RaineSoundCard-1,0);
-	else
-	    *name = "None";
-	printf("name kept %s\n",*name);
+    if (RaineSoundCard && !strcmp(RaineSoundCard,"None"))
 	return;
+    if (!RaineSoundCard)
+	SDL_GetDefaultAudioInfo(&RaineSoundCard,&gotspec,0);
+    int isdig = 1;
+    for (int n=0; n<strlen(RaineSoundCard); n++) {
+	if (!isdigit(RaineSoundCard[n])) isdig = 0;
     }
-    SDL_GetDefaultAudioInfo(name,&gotspec,0);
+    if (isdig && atoi(RaineSoundCard) < devs_audio) // old setting was a number -> try to convert it
+	RaineSoundCard = (char*)SDL_GetAudioDeviceName(atoi(RaineSoundCard),0);
     for (int n=0; n<devs_audio; n++) {
 	const char *name2 = SDL_GetAudioDeviceName(n,0);
-	if (!strcmp(name2,*name)) {
-	    RaineSoundCard = n+1;
-	    printf("RaineSoundCard detected %d name %s\n",RaineSoundCard,*name);
-	    break;
+	int l = strlen(name2);
+	while (name2[l-1] == ' ' && l>0)
+	    l--; // skip trailing spaces, because they are removed when reading a string value from the config file !
+	if (!strncmp(name2,RaineSoundCard,l)) {
+	    RaineSoundCard = name2; // re-init RaineSoundCard to the found name in case there are trailing spaces, everything counts here !
+	    return;
 	}
     }
-    if (RaineSoundCard < 0) {
-	printf("couldn't find RaineSoundCard for name %s\n",*name);
-	printf("using RaineSoundCard = 1 (forced)\n");
-	RaineSoundCard = 1;
-	*name = (char*)SDL_GetAudioDeviceName(0,0);
-    }
+    // We couldn't find what's in RaineSoundCard, so make a detection
+    SDL_GetDefaultAudioInfo(&RaineSoundCard,&gotspec,0);
 }
 
 /******************************************/
 /*    setup sound			  */
 /******************************************/
-BOOL saInitSoundCard( int soundcard, int sample_rate )
+BOOL saInitSoundCard( char* soundcard, int sample_rate )
 {
    int i;
    if (opened_audio)
@@ -207,20 +205,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        SDL_AudioSpec spec;
        // printf("openaudio: samples calculated : %d/%g = %d, pow2 %d\n",sample_rate,fps,len,spec.samples);
 #if SDL == 2
-       int i = soundcard;
-       char *name;
-       if (i < 0) {
-	   detect_soundcard(&name);
-       }
-       else if (i==0) name = "None";
-       else {
-	   name = (char*)SDL_GetAudioDeviceName(i-1,0);
-	   if (!name) {
-	       // The soundcard recorded in the config isn't available apparently, force a redetection then...
-	       RaineSoundCard = -1; // force re-assignment
-	       detect_soundcard(&name);
-	   }
-       }
+       detect_soundcard();
        SDL_GetAudioDeviceSpec(i > 0 ? i-1 : 0,0,&spec);
        spec.userdata = NULL;
        spec.callback = my_callback;
@@ -231,7 +216,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        }
        spec.format = AUDIO_S16LSB;
        spec.channels = 2;
-       if ( (dev=SDL_OpenAudioDevice(name,0,&spec, &gotspec,SDL_AUDIO_ALLOW_ANY_CHANGE)) <= 0 )
+       if ( (dev=SDL_OpenAudioDevice(RaineSoundCard,0,&spec, &gotspec,SDL_AUDIO_ALLOW_ANY_CHANGE)) <= 0 )
 #else
 	   spec.userdata = NULL;
        spec.callback = my_callback;
@@ -245,7 +230,7 @@ BOOL saInitSoundCard( int soundcard, int sample_rate )
        {
 
 	   fprintf(stderr,"Couldn't open audio: %s\n", SDL_GetError());
-	   RaineSoundCard = 0;
+	   RaineSoundCard = "None";
 	   return 0;
        }
        printf("openaudio: desired samples %d, got %d freq %d,%d format %x,%x dev %d\n",spec.samples,gotspec.samples,spec.freq,gotspec.freq,spec.format,gotspec.format,dev);
@@ -1136,29 +1121,6 @@ void saResetPlayChannels( void )
    reserved_channel = 0;
 }
 
-/******************************************************************************/
-/*									      */
-/*			    SOUND CARD INFORMATION			      */
-/*									      */
-/******************************************************************************/
-
-char *sound_card_name( int num )
-{
-   int id = num;
-
-   if (id == 0)
-     return "Silence";
-   if (!driver_name[0]) {
-     strcpy(driver_name,"SDL <autodetect>");
-   }
-   return driver_name;
-}
-
-int sound_card_id( int i )
-{
-  return i; // for now no id in sdl
-	    // Still here for compatibility with old sound ids from allegro
-}
-
+// sound_card_name and sound_card_id removed in sdl version
 /******************************* END OF FILE **********************************/
 

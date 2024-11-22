@@ -59,8 +59,10 @@ enum {
 
 #ifndef SDL
 extern int RaineSoundCardTotal;
-#endif
 extern int RaineSoundCard;
+#else
+extern char *RaineSoundCard;
+#endif
 
 /**** add hiro-shi 10/30/98 ****/
 
@@ -199,8 +201,12 @@ extern SoundRec      *SndMachine, snd_entry;
 
 /**** prottype ****/
 void saUpdateSound( int nowclock );
-void detect_soundcard(char **name); // init RaineSoundCard if possible
+void detect_soundcard(); // init RaineSoundCard if possible, sdl2 only
+#ifdef SDL
+BOOL saInitSoundCard( char* soundcard, int sample_rate );
+#else
 BOOL saInitSoundCard( int soundcard, int sample_rate );
+#endif
 
 char *get_sound_chip_name(UINT32 id);
 
