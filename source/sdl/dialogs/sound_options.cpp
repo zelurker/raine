@@ -25,6 +25,7 @@ static int set_default_volumes(int sel) {
 #endif
 
 static void init_sound_driver(int changed);
+static int driver_id,scard_id;
 
 #if SDL == 2
 static int choose_driver(int sel) {
@@ -60,15 +61,31 @@ static int choose_driver(int sel) {
     init_sound_driver(1);
     return 0;
 }
-#endif
 
-static int driver_id,scard_id;
+extern "C" SDL_AudioSpec gotspec; // streams.c
+
+static int choose_card(int sel) {
+    if (scard_id > 1)
+	RaineSoundCard = (char*)SDL_GetAudioDeviceName(scard_id-2,0);
+    else if (scard_id == 0)
+	RaineSoundCard = "None";
+    else if (scard_id == 1) // Autodetect
+	RaineSoundCard = "Autodetect";
+    detect_soundcard();
+    if (gotspec.freq) {
+	audio_sample_rate = gotspec.freq;
+	if (menu)
+	    menu->draw();
+    }
+    return 0;
+}
+#endif
 
 menu_item_t sound_menu[] =
 {
 #if SDL == 2
     { _("Sound driver"), &choose_driver,&driver_id  },
-  { _("Sound device"), NULL, &scard_id, 1, { 0 }, { _("No") } },
+  { _("Sound device"), &choose_card, &scard_id, 1, { 0 }, { _("No") } },
 #endif
   { _("Sample rate"), NULL, &audio_sample_rate, 4, { 11025, 22050, 44100, 48000 }},
 #if HAS_ES5506
@@ -101,38 +118,36 @@ static void init_sound_driver(int changed) {
 	if (!strcmp(driver,SDL_GetAudioDriver(i)) && changed) {
 	    // If the driver was just changed and it has a default audio frequency, then change audio_sample_rate
 	    driver_id = i;
-	    SDL_AudioSpec spec;
-	    spec.freq = 0;
-	    SDL_GetAudioDeviceSpec(i,0,&spec);
-	    if (spec.freq)
-		audio_sample_rate = spec.freq;
 	}
     }
     // Must also init the names of the devices, they depend on the driver... !
     detect_soundcard();
-    scard_id = 0; // Choose none if soundcard not found
+    scard_id = 1; // Choose Autodetect if soundcard not found
     for (int n=0; n<devs_audio; n++) {
 	const char *name2 = SDL_GetAudioDeviceName(n,0);
 	int l = strlen(name2);
 	while (name2[l-1] == ' ' && l>0)
 	    l--; // skip trailing spaces, because they are removed when reading a string value from the config file !
 	if (!strncmp(name2,RaineSoundCard,l)) {
-	    scard_id = n+1;
+	    scard_id = n+2;
 	}
     }
 
-    sound_menu[1].values_list_size = devs_audio+1;
+    sound_menu[1].values_list_size = devs_audio+2;
     sound_menu[1].values_list_label[0] = "None";
-    if (menu) {
+    if (menu)
 	menu->update_list_label(1,0,_("None"));
-	menu->update_list_size(1,sound_menu[1].values_list_size);
-    }
+    sound_menu[1].values_list_label[1] = "Autodetect";
+    sound_menu[1].values_list[0] = 0;
+    sound_menu[1].values_list[1] = 1;
+    if (menu)
+	menu->update_list_label(1,1,_("Autodetect"));
     for (int i = 0; i < devs_audio; i++) {
-	if (sound_menu[1].values_list_label[i+1])
-	    free(sound_menu[1].values_list_label[i+1]);
-	sound_menu[1].values_list_label[i+1] = strdup(SDL_GetAudioDeviceName(i, 0));
-	sound_menu[1].values_list[i+1] = i+1;
-	if (menu) menu->update_list_label(1,i+1,sound_menu[1].values_list_label[i+1]);
+	if (sound_menu[1].values_list_label[i+2])
+	    free(sound_menu[1].values_list_label[i+2]);
+	sound_menu[1].values_list_label[i+2] = strdup(SDL_GetAudioDeviceName(i, 0));
+	sound_menu[1].values_list[i+2] = i+2;
+	if (menu) menu->update_list_label(1,i+2,sound_menu[1].values_list_label[i+2]);
     }
     if (menu)
 	menu->draw();
@@ -170,11 +185,10 @@ int do_sound_options(int sel) {
   menu->execute();
   delete menu;
   menu = NULL;
-  if (scard_id)
-      RaineSoundCard = (char*)SDL_GetAudioDeviceName(scard_id-1,0);
-  else
-      RaineSoundCard = "None";
-  for (int i=1; i<sound_menu[1].values_list_size; i++) {
+  int rate = audio_sample_rate;
+  choose_card(1);
+  audio_sample_rate = rate; // otherwise it's overwritten by choose_card and then detect_soundcard
+  for (int i=2; i<sound_menu[1].values_list_size; i++) {
       free(sound_menu[1].values_list_label[i]);
       sound_menu[1].values_list_label[i] = NULL;
   }
