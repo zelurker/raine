@@ -82,7 +82,9 @@ TRaineDesktop::TRaineDesktop() : TDesktop()
 {
     tgame = 0;
 #if SDL == 2
-    desktop_w = w; desktop_h = h;
+    SDL_Rect r;
+    SDL_GetDisplayUsableBounds(0,&r); // I won't try to handle multiple displays for now, so display 0 here
+    desktop_w = r.w; desktop_h = r.h;
 #endif
 }
 
@@ -1164,6 +1166,7 @@ void StartGUI(void)
     desktop = new TRaineDesktop();
     // Try to adjust video config for laptops which change display configuration... !
     if (display_cfg.screen_x > desktop_w) {
+	printf("resize1 screen_x %d > %d\n",display_cfg.screen_x,desktop_w);
 	display_cfg.screen_x = desktop_w;
     }
     if (display_cfg.screen_y > desktop_h) {
