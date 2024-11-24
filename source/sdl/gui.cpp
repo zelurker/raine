@@ -83,7 +83,7 @@ TRaineDesktop::TRaineDesktop() : TDesktop()
     tgame = 0;
 #if SDL == 2
     SDL_Rect r;
-    SDL_GetDisplayUsableBounds(0,&r); // I won't try to handle multiple displays for now, so display 0 here
+    SDL_GetDisplayBounds(0,&r); // I won't try to handle multiple displays for now, so display 0 here
     desktop_w = r.w; desktop_h = r.h;
 #endif
 }
