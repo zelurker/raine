@@ -36,6 +36,7 @@
 static UINT8 *font;
 static int gl_format,gl_type;
 static int desk_w,desk_h;
+GLuint tex;
 
 void check_error(char *msg) {
 #ifdef RAINE_DEBUG
@@ -160,6 +161,7 @@ void opengl_reshape(int w, int h) {
     glPixelStorei(GL_UNPACK_LSB_FIRST,0);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
     if (ogl.render == 1) {
+	glBindTexture(GL_TEXTURE_2D,tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
     }
@@ -274,6 +276,8 @@ void get_ogl_infos() {
 #else
 	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
 #endif
+	glGenTextures(1,&tex);
+	printf("texture %d\n",tex);
 	check_error("End ogl_infos");
 }
 
@@ -281,6 +285,7 @@ void render_texture(int linear) {
     // glPushMatrix();
     // glTranslated((area_overlay.x+area_overlay.w-1),0,0);
     // glRotatef(90.0,0.0,0.0,1.0);
+    glBindTexture(GL_TEXTURE_2D,tex);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear);
 	glTexImage2D(GL_TEXTURE_2D,0, GL_RGB,

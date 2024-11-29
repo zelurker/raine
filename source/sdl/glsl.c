@@ -21,6 +21,12 @@
 
 // glsl shaders
 
+extern GLuint tex; // opengl.c
+static const GLfloat mvp_ortho[16] = { 2.0f,  0.0f,  0.0f,  0.0f,
+                                       0.0f,  2.0f,  0.0f,  0.0f,
+                                       0.0f,  0.0f, -1.0f,  0.0f,
+                                      -1.0f, -1.0f,  0.0f,  1.0f };
+
 struct gl_ortho
 {
    GLfloat left;
@@ -30,7 +36,6 @@ struct gl_ortho
    GLfloat znear;
    GLfloat zfar;
 };
-static math_matrix mvp;
 static int modern;
 static GLuint vertexshader; // only one
 #ifdef RAINE_WIN32
@@ -72,7 +77,7 @@ typedef struct {
     int vertex;
     // locations
     GLint input_size,output_size,texture_size,mvp,texture;
-    GLint orig_texture_size,orig_input_size,frame_count,tex_coord;
+    GLint orig_texture_size,orig_input_size,frame_count,frame_direction,tex_coord;
 
 } tpass;
 
@@ -211,10 +216,11 @@ static int attach(GLuint shader) {
 
 static int set_fragment_shader(const char *program) {
     int ret = 1;
-    char *define = "#define FRAGMENT\n";
+    char *define = "#define FRAGMENT\n#define PARAMETER_UNIFORM\n";
     GLuint fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
     const char *source[] = { define, program };
     glShaderSource(fragmentshader, ARRAY_SIZE(source), source, NULL);
+    print_debug("compiling fragment shader %d\n",fragmentshader);
     glCompileShader(fragmentshader);
 
     GLint tmp;
@@ -237,7 +243,7 @@ static int set_fragment_shader(const char *program) {
 static int set_vertex_shader(const char *program) {
     int ret = 1;
     vertexshader = glCreateShader(GL_VERTEX_SHADER);
-    char *define = "#define VERTEX\n";
+    char *define = "#define VERTEX\n#define PARAMETER_UNIFORM\n";
 
     const char *source[] = { define, program };
     glShaderSource(vertexshader, ARRAY_SIZE(source), source, NULL);
@@ -279,6 +285,7 @@ void delete_shaders() {
 	    }
 	    if (vertexshader) glDetachShader(pass[n].glprogram,vertexshader);
 	    glDeleteProgram(pass[n].glprogram);
+	    glDeleteTextures(1,&tex);
 	    print_debug("delete program %d\n",pass[n].glprogram);
 	    pass[n].fragmentshader = pass[n].glprogram = 0;
 	}
@@ -579,13 +586,16 @@ shader_end:
 		}
 		print_debug("validation glprogram %d pass %d ok\n",pass[n].glprogram,n);
 		GLuint glprogram = pass[n].glprogram;
+		glUseProgram(glprogram); // mandatory for mvp parameter below
 		pass[n].input_size = get_uniform_loc(glprogram, "InputSize");
 		pass[n].output_size = get_uniform_loc(glprogram, "OutputSize");
 		pass[n].texture_size = get_uniform_loc(glprogram, "TextureSize");
 		pass[n].orig_texture_size = get_uniform_loc(glprogram, "OrigTextureSize");
 		pass[n].orig_input_size = get_uniform_loc(glprogram, "OrigInputSize");
 		pass[n].frame_count = get_uniform_loc(glprogram, "FrameCount");
+		pass[n].frame_direction = get_uniform_loc(glprogram, "FrameDirection");
 		pass[n].texture = get_uniform_loc(glprogram, "Texture");
+		pass[n].tex_coord = get_attrib_loc(glprogram, "TexCoord");
 		GLint loc = get_attrib_loc(glprogram, "VertexCoord");
 		if (loc > -1) {
 		    printf("VertexCoord... %d,%d\n",area_overlay.w,area_overlay.h);
@@ -598,24 +608,20 @@ shader_end:
 
 		    glEnableVertexAttribArray(loc);
 		    glVertexAttribPointer(loc,2,GL_FLOAT,GL_FALSE,0,vertexes);
+		} else {
+		    printf("no vertexcoord, for pass %d/%d\n",n,nb_pass);
+		    printf("texture_size %d\n",pass[n].texture_size);
+		    printf("frame_direction %d\n",pass[n].frame_direction);
+		    printf("frame_count %d\n",pass[n].frame_count);
+		    printf("tex_coord %d\n",pass[n].tex_coord);
 		}
 		loc = pass[n].mvp = get_uniform_loc(glprogram, "MVPMatrix");
 		if (loc > -1) {
-		    printf("init mvp\n");
-		    struct gl_ortho ortho = {0, 1, 0, 1, -1, 1};
-#if 1
-		    matrix_ortho(&mvp,ortho.left,ortho.right,
-			    ortho.bottom,ortho.top,ortho.znear,ortho.zfar);
-#else
-		    matrix_ortho(&mvp,area_overlay.x,
-			    area_overlay.x+area_overlay.w-1,
-			    area_overlay.y,
-			    area_overlay.y+area_overlay.h-1,
-			    -1,1);
-#endif
+		    printf("init mvp %d\n",loc);
+		    glUniformMatrix4fv(loc, 1, GL_FALSE, mvp_ortho);
+		    check_error("mvp");
 		} else
 		    printf("no MVPMatrix: %d\n",loc);
-		loc = pass[n].tex_coord = get_attrib_loc(glprogram, "TexCoord");
 	    }
 
 	    goto flee;
@@ -636,7 +642,7 @@ flee:
 }
 
 void reset_shaders() {
-    // stop all shaders eventually used by sdl !
+    // stop all shaders eventually used by sdl ! It's not exactly a reset though, we switch to no program here, but the linked program still exists with all its attachments
     glUseProgram(0);
 }
 
@@ -647,7 +653,7 @@ void draw_shader(int linear)
     if (pass[0].glprogram) {
 
 	int n;
-	myglActiveTexture(GL_TEXTURE0 + 1); // Used as texture shader parameter !
+	myglActiveTexture(GL_TEXTURE0 + 1); // mandatory for .shader shaders
 	for (n=0; n<=nb_pass; n++) {
 
 	    GLuint glprogram = pass[n].glprogram;
@@ -657,10 +663,6 @@ void draw_shader(int linear)
 		glEnableVertexAttribArray(pass[n].tex_coord);
 		glVertexAttribPointer(pass[n].tex_coord,2,GL_FLOAT,GL_FALSE,0,tex_coords);
 		check_error("texcoord");
-	    }
-	    if (pass[n].mvp > -1) {
-		glUniformMatrix4fv(pass[n].mvp, 1, GL_FALSE, mvp.data);
-		check_error("mvp init");
 	    }
 	    if (pass[n].input_size > -1) {
 		float inputSize[2];
@@ -684,8 +686,7 @@ void draw_shader(int linear)
 		// unit to another, which is not the case for now, so avoid
 		// these shaders for now !
 
-		// extern GLuint texture; // opengl.c
-		glUniform1i(pass[n].texture, 1);
+		glUniform1i(pass[n].texture, tex); // is this thing really used ???
 	    }
 #endif
 	    if (pass[n].orig_input_size > -1) {
@@ -723,6 +724,11 @@ void draw_shader(int linear)
 		extern UINT32 cpu_frame_count; // profile.c
 		glUniform1i(pass[n].frame_count, cpu_frame_count);
 	    }
+	    if (pass[n].frame_direction > -1) {
+		glUniform1i(pass[n].frame_direction,1);
+		printf("frame direction found\n");
+	    }
+
 	    if (pass[n].filter == 2) // explicit nearest
 		linear = GL_NEAREST;
 	    else
