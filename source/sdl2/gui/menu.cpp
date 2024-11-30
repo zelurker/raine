@@ -106,6 +106,7 @@
 #include "control_internal.h"
 #include "profile.h"
 #include "IMG_png.h"
+#include <list>
 
 #define SPACE_HEADER 10 // space between the header and the normal menu entries
 
@@ -272,10 +273,12 @@ static char* my_get_shared(char *s) {
 char * (*get_shared_hook)(char *name) = &my_get_shared;
 void (*gui_end_hook)();
 void (*gui_start_hook)();
+static std::list<TMenu *> active;
 
 TMenu::TMenu(char *my_title, menu_item_t *my_menu, char *myfont, int myfg, int mybg, int myfg_frame, int mybg_frame,int to_translate) {
     if (!desktop)
 	desktop = new TDesktop();
+    active.push_front(this);
     header = NULL;
     h_child = NULL;
     focus = 0;
@@ -385,6 +388,7 @@ void TMenu::free_hchild() {
 }
 
 TMenu::~TMenu() {
+    active.remove(this);
     if (caller == this) {
 	/* Actually the only known case for this is loading_dialog for now ! */
 	caller = NULL;
@@ -952,6 +956,19 @@ void TMenu::do_update(SDL_Rect *region) {
 
 void TMenu::draw() {
 
+    // Find if the parent is still in the active list
+    // for normal menus the parent is always active
+    // but for menus which stay active forever like the console, the parent can disappear, creating problems !
+    int found = 0;
+    for (std::list<TMenu *>::iterator it=active.begin(); it!=active.end(); it++) {
+	if (*it == parent) {
+	    found = 1;
+	    break;
+	}
+    }
+    if (!found) {
+	parent = NULL;
+    }
   desktop->draw(this);
   draw_frame();
 
