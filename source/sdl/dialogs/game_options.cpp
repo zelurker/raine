@@ -280,6 +280,7 @@ class TGame_options : public TMenu {
 };
 
 int do_game_options(int sel) {
+    exit_options = 0;
     if (fabs(default_fps) < 1e-4)
 	default_fps = fps;
     TGame_options *menu = new TGame_options("",game_options);
