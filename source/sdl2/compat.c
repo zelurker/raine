@@ -136,6 +136,7 @@ SDL_PixelFormat *color_format;
 SDL_Window *win;
 SDL_Renderer *rend;
 SDL_Surface *sdl_screen;
+static int my_mouse_x,my_mouse_y;
 
 /* About -fsanitize=address here : it creates an error in SDL_Init, and seems to ignore the __attribute__((no_sanitize_address))
  * Workaround for now : set ASAN_OPTIONS=detect_stack_use_after_return=0
@@ -242,6 +243,7 @@ void  sdl_init() {
 	// default color_format for emudx games
 	color_format = SDL_AllocFormat( sdl2_color_format);
 	atexit(sdl_done);
+	SDL_GetGlobalMouseState( &my_mouse_x, &my_mouse_y);
     }
 }
 
@@ -269,6 +271,10 @@ void sdl_done() {
   opengl_done();
   SDL_FreeFormat(color_format);
   save_game_stats();
+  SDL_DestroyWindow(win);
+  // For some unknown reason the mouse is warped to the bottom of the screen when exiting at least in linux, noticed lately when changing my window manager and using guake
+  // It seems to happen when leaving a fullscreen mode, so I restore the mouse here, just after closing the main window...
+  SDL_WarpMouseGlobal(my_mouse_x,my_mouse_y);
   SDL_Quit();
 #ifdef RAINE_UNIX
   done_leds();
