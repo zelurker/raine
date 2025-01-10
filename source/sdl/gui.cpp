@@ -1138,12 +1138,12 @@ static void do_main_menu() {
   int old_region;
   // init romsw
   if (current_game && current_game->romsw) {
-    main_items[5].values_list_size = LanguageSw.Count;
-    main_items[5].value_int = &region_code;
+    main_items[4].values_list_size = LanguageSw.Count;
+    main_items[4].value_int = &region_code;
     old_region = region_code = GetLanguageSwitch();
     for (int n=0; n<LanguageSw.Count; n++) {
-      main_items[5].values_list[n] = n;
-      main_items[5].values_list_label[n] = LanguageSw.data[n].Mode;
+      main_items[4].values_list[n] = n;
+      main_items[4].values_list_label[n] = LanguageSw.data[n].Mode;
     }
   }
 
