@@ -796,6 +796,7 @@
 
 // neogeo.c
   DRV(neogeo)
+    DRV(shinobin)
   DRV(nam1975)
   DRV(bstars)
   DRV(bstarsh)

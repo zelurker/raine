@@ -250,6 +250,22 @@ static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
 
 CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT);
 
+static struct ROM_INFO rom_shinobin[] = /* MVS AND AES VERSION clone of neogeo */
+{
+  LOAD_SW16( CPU1, "1337-p1.p1", 0x000000, 0x080000, 0x3bf8e303),
+  LOAD( FIXED, "1337-s1.s1", 0x000000, 0x20000, 0x6b8c8124),
+  LOAD( ROM2, "1337-m1.m1", 0x00000, 0x10000, 0x6b52f62d),
+	// AES has different label, data is the same: 001-v1.v1
+  LOAD( SMP1, "1337-v1.v1", 0x000000, 0x400000, 0x67480d87),
+	// AES has different label, data is the same: 001-v2.v21
+  LOAD( YMSND_DELTAT, "1337-v2.v2", 0x000000, 0x400000, 0xb335aa46),
+  LOAD_16_8( SPRITES, "1337-c1.c1", 0x000000, 0x80000, 0x74227c08),
+  LOAD_16_8( SPRITES, "1337-c2.c2", 0x000001, 0x80000, 0xdf4104e6),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( shinobin, neogeo, "Shinobi (neogeo by TTE)", HACK, 2024, GAME_MISC);
+
 static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
 {
   LOAD_SW16( CPU1, "002-pg.p1", 0x000000, 0x080000, 0xc100b5f5),
