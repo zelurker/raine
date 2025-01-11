@@ -1588,14 +1588,9 @@ ifeq ("${target}","i686-pc-msdosdjgpp")
 	# multiple lines not allowed here...
 	cp -fv `find $(NATIVE) -name star.exe|head -n 1` $(OBJDIR)/68000
 else
-	sh -c "if [ -f $(NATIVE)/object/68000/star.exe ]; then
-	  cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/
-	elif [ -f $(NATIVE)/objectd/68000/star.exe ]; then
-	  cp -fv $(NATIVE)/objectd/68000/star.exe $(OBJDIR)/68000/
-	else
-	  @echo -n you will need to generate star.exe from a native build, not cross compilation
-	  exit 1
-	fi"
+	@cp -fv $(NATIVE)/object/68000/star.exe $(OBJDIR)/68000/ || \
+	@cp -fv $(NATIVE)/objectd/68000/star.exe $(OBJDIR)/68000/ || \
+	(@echo -n you will need to generate star.exe from a native build, not cross compilation && exit 1)
 endif
 else
 $(OBJDIR)/68000/s68000.asm: $(OBJDIR)/68000/star.o
@@ -1623,14 +1618,9 @@ $(OBJDIR)/z80/mz80.asm:
 ifeq ("${target}","i686-pc-msdosdjgpp")
 	cp `find $(NATIVE) -name makez80.exe|head -n 1` $(OBJDIR)/z80
 else
-	sh -c "if [ -f $(NATIVE)/object/z80/makez80.exe ]; then
-	  cp -fv $(NATIVE)/object/z80/makez80.exe $(OBJDIR)/z80/
-	elif [ -f $(NATIVE)/objectd/z80/makez80.exe ]; then
-	  cp -fv $(NATIVE)/objectd/z80/makez80.exe $(OBJDIR)/z80/
-	else
-	  @echo you will need to generate makez80.exe from a native build, not cross compilation
-	  exit 1
-	fi"
+	@cp -fv $(NATIVE)/object/z80/makez80.exe $(OBJDIR)/z80/ || \
+	@cp -fv $(NATIVE)/objectd/z80/makez80.exe $(OBJDIR)/z80/ || \
+	( @@echo you will need to generate makez80.exe from a native build, not cross compilation && @exit 1 )
 endif
 else
 $(OBJDIR)/z80/mz80.asm: $(OBJDIR)/z80/makez80.o
