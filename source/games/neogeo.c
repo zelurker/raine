@@ -264,7 +264,17 @@ static struct ROM_INFO rom_shinobin[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( shinobin, neogeo, "Shinobi (neogeo by TTE)", HACK, 2024, GAME_MISC);
+static struct DIR_INFO dir_shinobin[] =
+{
+   { "shinobin", },
+   { "TTE23-ShinobiNeoGeo-v1.1" }, // allow to load directly from the big archive on the site !
+				   // Notice : the url is obfuscated to oblige people to register to itch to download the thing, so it can't be downloaded by raine
+   { ROMOF( "neogeo" ), },
+   { CLONEOF( "neogeo" ), },
+   { NULL, },
+};
+
+CLNE( shinobin, neogeo, "Shinobi (neogeo by TTE)", HACK, 2024, GAME_MISC);
 
 static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
 {
