@@ -252,7 +252,7 @@ CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT);
 
 static struct ROM_INFO rom_shinobin[] = /* MVS AND AES VERSION clone of neogeo */
 {
-  LOAD_SW16( CPU1, "1337-p1.p1", 0x000000, 0x080000, 0x3bf8e303),
+  LOAD_SW16( CPU1, "1337-p1.p1", 0x000000, 0x080000, 0x05fd9434),
   LOAD( FIXED, "1337-s1.s1", 0x000000, 0x20000, 0x6b8c8124),
   LOAD( ROM2, "1337-m1.m1", 0x00000, 0x10000, 0x6b52f62d),
 	// AES has different label, data is the same: 001-v1.v1
