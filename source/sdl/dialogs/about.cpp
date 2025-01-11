@@ -656,28 +656,9 @@ void TAbout_menu::update_fg_layer(int nb_to_update) {
 
 static menu_item_t *menu;
 
-static void goto_url(char *url) {
-#ifdef RAINE_UNIX
-    // at least when using compiz, you can't switch to any other window while
-    // in fullscreen mode, so it's better to leave it first !
-    if (display_cfg.fullscreen)
-	toggle_fullscreen();
-#endif
-    char cmd[2048];
-#ifdef RAINE_UNIX
-    // Now use xdg-open instead of www-browser
-    // normally xdg-open knows about urls and lanches the best application...
-    sprintf(cmd,"xdg-open \"%s\" &",url);
-#else
-    // windows
-    sprintf(cmd,"explorer \"%s\"",url);
-#endif
-    system(cmd);
-}
-
 static int menu_goto_url(int sel) {
     if (menu[sel].values_list_label[0])
-	goto_url(menu[sel].values_list_label[0]);
+	SDL_OpenURL(menu[sel].values_list_label[0]);
     return 0;
 }
 
@@ -686,11 +667,11 @@ static int about_game(int sel);
 
 static int strategy_guide(int sel) {
     if (is_current_game("galaxian"))
-	goto_url("https://gamefaqs.gamespot.com/pc/225937-galaxian/faqs/32227");
+	SDL_OpenURL("https://gamefaqs.gamespot.com/pc/225937-galaxian/faqs/32227");
     else if (is_current_game("puckman") || is_current_game("pacman") || is_current_game("pacplus"))
-	goto_url("https://gamefaqs.gamespot.com/arcade/589548-pac-man/faqs/43959");
+	SDL_OpenURL("https://gamefaqs.gamespot.com/arcade/589548-pac-man/faqs/43959");
     else if (is_current_game("ddonpach"))
-	goto_url("https://gamefaqs.gamespot.com/arcade/566978-dodonpachi/faqs/45969");
+	SDL_OpenURL("https://gamefaqs.gamespot.com/arcade/566978-dodonpachi/faqs/45969");
     return 0;
 }
 
@@ -870,7 +851,7 @@ static int about_game(int sel) {
 		  "in linux ~/.raine or /usr/share/games/raine\n")
 		  ,_("Open this page now!|Later maybe..."));
 	  if (ret == 1)
-	      goto_url("http://www.arcade-history.com/index.php?page=download");
+	      SDL_OpenURL("http://www.arcade-history.com/index.php?page=download");
       }
   }
 
