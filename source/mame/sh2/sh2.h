@@ -39,6 +39,7 @@
 
 #else //__GNUC__
 
+#undef FASTCALL
 #define FASTCALL __attribute__ ((regparm(2)))
 #define DECL_FASTCALL(type, name)	type name __attribute__ ((regparm(2)))
 
