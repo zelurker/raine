@@ -277,7 +277,6 @@ void get_ogl_infos() {
 	GetAttribute( SDL_GL_SWAP_CONTROL, &ogl.infos.vbl );
 #endif
 	glGenTextures(1,&tex);
-	printf("texture %d\n",tex);
 	check_error("End ogl_infos");
 }
 
