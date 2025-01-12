@@ -50,6 +50,9 @@ msgstr "%d - Emplacement de sauvegarde libre"
 msgid "%s is not recognised"
 msgstr "%s n'est pas reconnu"
 
+msgid "Autodetect"
+msgstr "Autodétection"
+
 #: source/demos.c:283
 #, c-format
 msgid "%s is too ancient!"
