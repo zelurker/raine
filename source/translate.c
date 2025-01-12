@@ -687,6 +687,10 @@ char *get_win_lang()
 	language = "fr";
     else if (!strncmp(language,"es",2))
 	language = "es";
+    else if (!strncmp(language,"pt",2))
+	language = "pt";
+    else if (!strncmp(language,"it",2))
+	language = "it";
     else
 	language = "C";
     return language;
