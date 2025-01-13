@@ -1299,6 +1299,7 @@ int neocd_id;
 // There seems to be a majority of games using 304x224, so the default value
 // for the width is 304 (when left blank).
 // Default is set to 320 for neogeo games (when left blank or not in the table).
+// official neogeo list : https://www.neo-geo.com/snk/masterlist.htm
 const NEOCD_GAME games[] =
 {
   { "nam1975",    0x0001 },
@@ -1312,6 +1313,7 @@ const NEOCD_GAME games[] =
   { "cyberlip",   0x0010 },
   { "superspy",   0x0011 },
   { "mutnat",     0x0014 },
+  { "kotm",       0x0016 },
   { "sengoku",    0x0017, 320 },
   { "burningf",   0x0018 },
   { "lbowling",   0x0019 },
@@ -1402,6 +1404,7 @@ const NEOCD_GAME games[] =
   { "kof99",      0x0251, 304 },
   { "fatfury3",   0x069c, 320 },
   { "neogeocd",   0x0000 },
+  { "shinobin",   0x1337, 320 }, // stupid id ! This one is not official at all, it's the hack from hoffman, shinobi neogeo
   { NULL, 0 }
 };
 
@@ -1508,6 +1511,12 @@ void neogeo_read_gamename(void)
   char neocd_wm_title[160];
   snprintf(neocd_wm_title,160,"Raine %s - %s",VERSION,config_game_name);
   SDL_WM_SetCaption(neocd_wm_title,neocd_wm_title);
+  if (neocd_id == 0x1337) { // stupid id !
+      // All rom addresses are -4 compared to neogeo (no idea why !)
+      WriteWord(&RAM[0x1099a-4],0x4e75); // Just abort the 1st one...
+      WriteWord(&RAM[0x22da2-4],0x4e71); // 2nd rom checksum, same treatment !
+      RAM[(0x22da8 ^ 1)-4] = 0x60; // force result
+  }
 }
 
 static struct ROMSW_DATA romsw_data_neocd[] =
@@ -4633,11 +4642,9 @@ void decrypt_kf2k5uni( )
 void load_neocd() {
     if (is_current_game("shinobin")) {
 	// Without this, any speed hack or rom cheat would break the game at mission 2 (blue background)
-	WriteWord68k(&ROM[0x109a2], 0x4e71); // skip rom checksum loop
-	ROM[0x10910] = 0x60; // force correct
+	WriteWord68k(&ROM[0x1099a],0x4e75); // Just abort the 1st one...
 	WriteWord68k(&ROM[0x22da2],0x4e71); // 2nd rom checksum, same treatment !
-	ROM[0x22da8] = 0x60;
-	printf("shinobin patched\n");
+	ROM[0x22da8] = 0x60; // force result
     }
     if (is_current_game("ghostlop"))
 	end_screen = 240+START_SCREEN; // don't know why...
