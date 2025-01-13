@@ -575,6 +575,14 @@ static void do_watch(int argc, char **argv) {
     add_watch(adr,1,read);
     if (add_watch(adr,2,read) && (cpu == CPU_68000 || cpu == CPU_68020))
       cons->print("watch #%d & %d added",nb_watch,nb_watch-1);
+#if USE_MUSASHI == 2
+    // Specific to musashi : it will use direct read long when possible, so if you want to intercept a read word on the lowest word
+    // you need to set a watch for the corresponding long ! I didn't add all the cases, just the word here
+    if (adr & 3 && (cpu == CPU_68000 || cpu == CPU_68020)) {
+	add_watch(adr & (~3),4,read);
+	cons->print("watch %d added for readlong",nb_watch);
+    }
+#endif
   }
 }
 
