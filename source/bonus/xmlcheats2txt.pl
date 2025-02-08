@@ -70,8 +70,12 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-z]+)/dpeek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-z]+)/lpeek($1)/gi;
 
-	$cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie;
-	$cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
+	$cond = handle_subarg($cond);
+	# I might have overthought this, stuck in too many regexes... !
+	# noramly handle_subarg should be able to handle the whole expression, now I hope I didn't forget any case... !
+	# without this an expression like ((xxxx)*1c won't convert the *1c in the end (truxton2 case)
+	# $cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie;
+	# $cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
 
 	$cond;
 }
@@ -140,6 +144,8 @@ sub handle_action {
 				elsif ($mode eq "w") { print "dpoke "; }
 				elsif ($mode eq "q") {
 					# gros bazar quad word, 64 bits quoi...
+					# pour le z80 l'ordre est 0,8 puis 8,0
+					# mais c'est l'inverse pour le z80, je laisse par défaut le 68000, seul cas connu pour le z80 jusqu'ici : dkong, kill screen fix, lpoke en rom
 					if ($val =~ /^[ 0-9a-fA-F]+$/) {
 						say "lpoke \$$adr \$",substr($val,0,8);
 						$adr = sprintf("%x",hex($adr)+4);
