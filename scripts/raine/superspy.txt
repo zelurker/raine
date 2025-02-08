@@ -31,8 +31,8 @@ script "Select Starting Mission" \
  "0x02/Mission 2"\
  "0x03/End Sequence" 
 on:
-    temp0l=lpeek(0D16)
-    temp0h=lpeek($d1a
+    temp0l=lpeek($0D16)
+    temp0h=lpeek($d1a)
 run:
     if param==$01
       lpoke $0D16 temp0l

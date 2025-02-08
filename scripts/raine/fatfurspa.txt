@@ -25,53 +25,53 @@ off:
 script "Always have Easy Supers" \
  "comm:For all characters; Back, Forward, A+C performs Desperation Move."  
 on:
-    temp0l=lpeek(038BBA)
-    temp0h=lpeek($38bbe
+    temp0l=lpeek($038BBA)
+    temp0h=lpeek($38bbe)
     temp1=lpeek($038BC2)
-    temp2l=lpeek(038C52)
-    temp2h=lpeek($38c56
+    temp2l=lpeek($038C52)
+    temp2h=lpeek($38c56)
     temp3=lpeek($038C5A)
-    temp4l=lpeek(038D00)
-    temp4h=lpeek($38d04
+    temp4l=lpeek($038D00)
+    temp4h=lpeek($38d04)
     temp5=lpeek($038D08)
-    temp6l=lpeek(038D78)
-    temp6h=lpeek($38d7c
+    temp6l=lpeek($038D78)
+    temp6h=lpeek($38d7c)
     temp7=lpeek($038D80)
-    temp8l=lpeek(038DFC)
-    temp8h=lpeek($38e00
+    temp8l=lpeek($038DFC)
+    temp8h=lpeek($38e00)
     temp9=lpeek($038E04)
-    temp10l=lpeek(038E66)
-    temp10h=lpeek($38e6a
+    temp10l=lpeek($038E66)
+    temp10h=lpeek($38e6a)
     temp11=lpeek($038E6E)
-    temp12l=lpeek(038EEC)
-    temp12h=lpeek($38ef0
+    temp12l=lpeek($038EEC)
+    temp12h=lpeek($38ef0)
     temp13=lpeek($038EF4)
-    temp14l=lpeek(038F80)
-    temp14h=lpeek($38f84
+    temp14l=lpeek($038F80)
+    temp14h=lpeek($38f84)
     temp15=lpeek($038F88)
-    temp16l=lpeek(039014)
-    temp16h=lpeek($39018
+    temp16l=lpeek($039014)
+    temp16h=lpeek($39018)
     temp17=lpeek($03901C)
-    temp18l=lpeek(0390A6)
-    temp18h=lpeek($390aa
+    temp18l=lpeek($0390A6)
+    temp18h=lpeek($390aa)
     temp19=lpeek($0390AE)
-    temp20l=lpeek(039142)
-    temp20h=lpeek($39146
+    temp20l=lpeek($039142)
+    temp20h=lpeek($39146)
     temp21=lpeek($03914A)
-    temp22l=lpeek(0391CA)
-    temp22h=lpeek($391ce
+    temp22l=lpeek($0391CA)
+    temp22h=lpeek($391ce)
     temp23=lpeek($0391D2)
-    temp24l=lpeek(03923E)
-    temp24h=lpeek($39242
+    temp24l=lpeek($03923E)
+    temp24h=lpeek($39242)
     temp25=lpeek($039246)
-    temp26l=lpeek(0392D6)
-    temp26h=lpeek($392da
+    temp26l=lpeek($0392D6)
+    temp26h=lpeek($392da)
     temp27=lpeek($0392DE)
-    temp28l=lpeek(039390)
-    temp28h=lpeek($39394
+    temp28l=lpeek($039390)
+    temp28h=lpeek($39394)
     temp29=lpeek($039398)
-    temp30l=lpeek(039430)
-    temp30h=lpeek($39434
+    temp30l=lpeek($039430)
+    temp30h=lpeek($39434)
     temp31=lpeek($039438)
 run:
     temp32=$0F0400000C0F030C
@@ -200,7 +200,7 @@ script "P1 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)and((peek($100034)&$01)==$01)
+    if ((dpeek($100010)==$49D8))and(((peek($100034)&$01)==$01))
       temp0=$01
     endif
     if (temp0==$01)
@@ -210,6 +210,11 @@ on:
       poke $100058 $01
       poke $10B2F3 $10
     endif
+script "P1 Alternate Outfit"  
+run:
+    poke $1041A2 $70
+off:
+    poke $1041A2 $00
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -237,7 +242,7 @@ script "P2 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)and((peek($100034)&$02)==$02)
+    if ((dpeek($100010)==$49D8))and(((peek($100034)&$02)==$02))
       temp0=$01
     endif
     if (temp0==$01)
@@ -247,6 +252,11 @@ on:
       poke $100059 $01
       poke $10B2F3 $10
     endif
+script "P2 Alternate Outfit"  
+run:
+    poke $1041A3 $70
+off:
+    poke $1041A3 $00
 script " "  
 script "No Background Music"  
 run:
@@ -256,9 +266,9 @@ run:
 script "Hide Background" \
  "comm:Activate before match start"  
 run:
-    poke $1051E1 peek($1051E0)&7F
+    poke $1051E1 peek($1051E0)&$7F
     dpoke $401FFE $0000
-    if ((peek($100003)&$9F)>90and(peek($100003)&$40)==$00)
+    if (((peek($100003)&$9F)>$90)and((peek($100003)&$40)==$00))
       poke $1051E1 $10
       poke $100920 $20
       poke $10092B $3C
@@ -268,7 +278,7 @@ run:
     endif
 off:
     poke $100920 $40
-    poke $1051E1 peek($1051E0)&7F
+    poke $1051E1 peek($1051E0)&$7F
     dpoke $401FFE $0000
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

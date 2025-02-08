@@ -8,8 +8,8 @@ script "Select Starting Mission" \
  "0x5C79/Mission 4-1"\
  "0x5E79/Mission 4-2" 
 on:
-    temp0l=lpeek(02132)
-    temp0h=lpeek($2136
+    temp0l=lpeek($02132)
+    temp0h=lpeek($2136)
 run:
     dpoke $02132 $42B9
     dpoke $02138 param

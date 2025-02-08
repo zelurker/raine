@@ -199,57 +199,59 @@ off:
 script "Always have Easy Super Moves" \
  "comm:For all characters; Down, Down, A performs Super Move."
 on:
-    temp0l=lpeek(6EAF2)
-    temp0h=lpeek($6eaf6
-    temp1l=lpeek(6EAFA)
-    temp1h=lpeek($6eafe
-    temp2l=lpeek(6E9B2)
-    temp2h=lpeek($6e9b6
-    temp3l=lpeek(6E9BA)
-    temp3h=lpeek($6e9be
-    temp4l=lpeek(6EAB2)
-    temp4h=lpeek($6eab6
-    temp5l=lpeek(6EABA)
-    temp5h=lpeek($6eabe
-    temp6l=lpeek(6EA72)
-    temp6h=lpeek($6ea76
-    temp7l=lpeek(6EA7A)
-    temp7h=lpeek($6ea7e
-    temp8l=lpeek(6E9D2)
-    temp8h=lpeek($6e9d6
-    temp9l=lpeek(6E9DA)
-    temp9h=lpeek($6e9de
-    temp10l=lpeek(6EA52)
-    temp10h=lpeek($6ea56
-    temp11l=lpeek(6EA5A)
-    temp11h=lpeek($6ea5e
-    temp12l=lpeek(6E992)
-    temp12h=lpeek($6e996
-    temp13l=lpeek(6E99A)
-    temp13h=lpeek($6e99e
-    temp14l=lpeek(6EA92)
-    temp14h=lpeek($6ea96
-    temp15l=lpeek(6EA9A)
-    temp15h=lpeek($6ea9e
-    temp16l=lpeek(6EA32)
-    temp16h=lpeek($6ea36
-    temp17l=lpeek(6EA3A)
-    temp17h=lpeek($6ea3e
-    temp18l=lpeek(6EAD2)
-    temp18h=lpeek($6ead6
-    temp19l=lpeek(6EADA)
-    temp19h=lpeek($6eade
-    temp20l=lpeek(6EA12)
-    temp20h=lpeek($6ea16
-    temp21l=lpeek(6EA1A)
-    temp21h=lpeek($6ea1e
-    temp22l=lpeek(6E9F2)
-    temp22h=lpeek($6e9f6
-    temp23l=lpeek(6E9FA)
-    temp23h=lpeek($6e9fe
+    temp0l=lpeek($6EAF2)
+    temp0h=lpeek($6eaf6)
+    temp1l=lpeek($6EAFA)
+    temp1h=lpeek($6eafe)
+    temp2l=lpeek($6E9B2)
+    temp2h=lpeek($6e9b6)
+    temp3l=lpeek($6E9BA)
+    temp3h=lpeek($6e9be)
+    temp4l=lpeek($6EAB2)
+    temp4h=lpeek($6eab6)
+    temp5l=lpeek($6EABA)
+    temp5h=lpeek($6eabe)
+    temp6l=lpeek($6EA72)
+    temp6h=lpeek($6ea76)
+    temp7l=lpeek($6EA7A)
+    temp7h=lpeek($6ea7e)
+    temp8l=lpeek($6E9D2)
+    temp8h=lpeek($6e9d6)
+    temp9l=lpeek($6E9DA)
+    temp9h=lpeek($6e9de)
+    temp10l=lpeek($6EA52)
+    temp10h=lpeek($6ea56)
+    temp11l=lpeek($6EA5A)
+    temp11h=lpeek($6ea5e)
+    temp12l=lpeek($6E992)
+    temp12h=lpeek($6e996)
+    temp13l=lpeek($6E99A)
+    temp13h=lpeek($6e99e)
+    temp14l=lpeek($6EA92)
+    temp14h=lpeek($6ea96)
+    temp15l=lpeek($6EA9A)
+    temp15h=lpeek($6ea9e)
+    temp16l=lpeek($6EA32)
+    temp16h=lpeek($6ea36)
+    temp17l=lpeek($6EA3A)
+    temp17h=lpeek($6ea3e)
+    temp18l=lpeek($6EAD2)
+    temp18h=lpeek($6ead6)
+    temp19l=lpeek($6EADA)
+    temp19h=lpeek($6eade)
+    temp20l=lpeek($6EA12)
+    temp20h=lpeek($6ea16)
+    temp21l=lpeek($6EA1A)
+    temp21h=lpeek($6ea1e)
+    temp22l=lpeek($6E9F2)
+    temp22h=lpeek($6e9f6)
+    temp23l=lpeek($6E9FA)
+    temp23h=lpeek($6e9fe)
 run:
-    temp24=$0F0200000F020011
-    temp25=$F010000E00000000
+    temp24h=$0F020000
+	temp24l=$0F020011
+    temp25h=$F010000E
+	temp25l=$00000000
     lpoke $6EAF2 temp24l
     lpoke $6eaf6 temp24h
     lpoke $6EAFA temp25l
@@ -299,25 +301,25 @@ run:
     lpoke $6E9FA temp25l
     lpoke $6e9fe temp25h
 off:
-    lpoke $6EAF2 temp0 l
+    lpoke $6EAF2 temp0l
     lpoke $6eaf6 temp0h
-    lpoke $6EAFA temp1 l
+    lpoke $6EAFA temp1l
     lpoke $6eafe temp1h
-    lpoke $6E9B2 temp2 l
+    lpoke $6E9B2 temp2l
     lpoke $6e9b6 temp2h
-    lpoke $6E9BA temp3 l
+    lpoke $6E9BA temp3l
     lpoke $6e9be temp3h
-    lpoke $6EAB2 temp4 l
+    lpoke $6EAB2 temp4l
     lpoke $6eab6 temp4h
-    lpoke $6EABA temp5 l
+    lpoke $6EABA temp5l
     lpoke $6eabe temp5h
-    lpoke $6EA72 temp6 l
+    lpoke $6EA72 temp6l
     lpoke $6ea76 temp6h
-    lpoke $6EA7A temp7 l
+    lpoke $6EA7A temp7l
     lpoke $6ea7e temp7h
-    lpoke $6E9D2 temp8 l
+    lpoke $6E9D2 temp8l
     lpoke $6e9d6 temp8h
-    lpoke $6E9DA temp9 l
+    lpoke $6E9DA temp9l
     lpoke $6e9de temp9h
     lpoke $6EA52 temp10l
     lpoke $6ea56 temp10h
@@ -350,62 +352,62 @@ off:
 script "Always have Easy Transformation Moves" \
  "comm:For all characters; Down, Down, C performs Transformation Move."
 on:
-    temp0l=lpeek(6E952)
-    temp0h=lpeek($6e956
-    temp1l=lpeek(6E95A)
-    temp1h=lpeek($6e95e
-    temp2l=lpeek(6E90E)
-    temp2h=lpeek($6e912
-    temp3l=lpeek(6E916)
-    temp3h=lpeek($6e91a
-    temp4l=lpeek(6E8EE)
-    temp4h=lpeek($6e8f2
-    temp5l=lpeek(6E8F6)
-    temp5h=lpeek($6e8fa
-    temp6l=lpeek(6E8A6)
-    temp6h=lpeek($6e8aa
-    temp7l=lpeek(6E8AE)
-    temp7h=lpeek($6e8b2
-    temp8l=lpeek(6E81A)
-    temp8h=lpeek($6e81e
-    temp9l=lpeek(6E822)
-    temp9h=lpeek($6e826
-    temp10l=lpeek(6E886)
-    temp10h=lpeek($6e88a
-    temp11l=lpeek(6E88E)
-    temp11h=lpeek($6e892
-    temp12l=lpeek(6E7B2)
-    temp12h=lpeek($6e7b6
-    temp13l=lpeek(6E7BA)
-    temp13h=lpeek($6e7be
-    temp14l=lpeek(6E7F6)
-    temp14h=lpeek($6e7fa
-    temp15l=lpeek(6E7FE)
-    temp15h=lpeek($6e802
-    temp16l=lpeek(6E8CA)
-    temp16h=lpeek($6e8ce
-    temp17l=lpeek(6E8D2)
-    temp17h=lpeek($6e8d6
-    temp18l=lpeek(6E83E)
-    temp18h=lpeek($6e842
-    temp19l=lpeek(6E846)
-    temp19h=lpeek($6e84a
-    temp20l=lpeek(6E7D6)
-    temp20h=lpeek($6e7da
-    temp21l=lpeek(6E7DE)
-    temp21h=lpeek($6e7e2
-    temp22l=lpeek(6E92E)
-    temp22h=lpeek($6e932
-    temp23l=lpeek(6E936)
-    temp23h=lpeek($6e93a
-    temp24l=lpeek(6E862)
-    temp24h=lpeek($6e866
-    temp25l=lpeek(6E86A)
-    temp25h=lpeek($6e86e
-    temp26l=lpeek(6E972)
-    temp26h=lpeek($6e976
-    temp27l=lpeek(6E97A)
-    temp27h=lpeek($6e97e
+    temp0l=lpeek($6E952)
+    temp0h=lpeek($6e956)
+    temp1l=lpeek($6E95A)
+    temp1h=lpeek($6e95e)
+    temp2l=lpeek($6E90E)
+    temp2h=lpeek($6e912)
+    temp3l=lpeek($6E916)
+    temp3h=lpeek($6e91a)
+    temp4l=lpeek($6E8EE)
+    temp4h=lpeek($6e8f2)
+    temp5l=lpeek($6E8F6)
+    temp5h=lpeek($6e8fa)
+    temp6l=lpeek($6E8A6)
+    temp6h=lpeek($6e8aa)
+    temp7l=lpeek($6E8AE)
+    temp7h=lpeek($6e8b2)
+    temp8l=lpeek($6E81A)
+    temp8h=lpeek($6e81e)
+    temp9l=lpeek($6E822)
+    temp9h=lpeek($6e826)
+    temp10l=lpeek($6E886)
+    temp10h=lpeek($6e88a)
+    temp11l=lpeek($6E88E)
+    temp11h=lpeek($6e892)
+    temp12l=lpeek($6E7B2)
+    temp12h=lpeek($6e7b6)
+    temp13l=lpeek($6E7BA)
+    temp13h=lpeek($6e7be)
+    temp14l=lpeek($6E7F6)
+    temp14h=lpeek($6e7fa)
+    temp15l=lpeek($6E7FE)
+    temp15h=lpeek($6e802)
+    temp16l=lpeek($6E8CA)
+    temp16h=lpeek($6e8ce)
+    temp17l=lpeek($6E8D2)
+    temp17h=lpeek($6e8d6)
+    temp18l=lpeek($6E83E)
+    temp18h=lpeek($6e842)
+    temp19l=lpeek($6E846)
+    temp19h=lpeek($6e84a)
+    temp20l=lpeek($6E7D6)
+    temp20h=lpeek($6e7da)
+    temp21l=lpeek($6E7DE)
+    temp21h=lpeek($6e7e2)
+    temp22l=lpeek($6E92E)
+    temp22h=lpeek($6e932)
+    temp23l=lpeek($6E936)
+    temp23h=lpeek($6e93a)
+    temp24l=lpeek($6E862)
+    temp24h=lpeek($6e866)
+    temp25l=lpeek($6E86A)
+    temp25h=lpeek($6e86e)
+    temp26l=lpeek($6E972)
+    temp26h=lpeek($6e976)
+    temp27l=lpeek($6E97A)
+    temp27h=lpeek($6e97e)
 run:
     temp28=$0F0200000F020011
     temp29=$F040000E00000000
@@ -560,6 +562,19 @@ script "P1 Select Character" \
  "0x11/Kuroko"
 run:
     poke $100D0B param
+script "P1 Alternate Outfit"
+run:
+    lpoke $1009FA $12121212
+    lpoke $1009fe $12121212
+    lpoke $100A02 $12121212
+    lpoke $100a06 $12121212
+    dpoke $100A0A $1212
+off:
+    lpoke $1009FA $00000000
+    lpoke $1009fe $00000000
+    lpoke $100A02 $00000000
+    lpoke $100a06 $00000000
+    dpoke $100A0A $0000
 script " "
 script "P2 Infinite Energy"
 run:
@@ -598,6 +613,19 @@ script "P2 Select Character" \
  "0x11/Kuroko"
 run:
     poke $100D1B param
+script "P2 Alternate Outfit"
+run:
+    lpoke $100A0C $12121212
+    lpoke $100a10 $12121212
+    lpoke $100A14 $12121212
+    lpoke $100a18 $12121212
+    dpoke $100A1C $1212
+off:
+    lpoke $100A0C $00000000
+    lpoke $100a10 $00000000
+    lpoke $100A14 $00000000
+    lpoke $100a18 $00000000
+    dpoke $100A1C $0000
 script " "
 script "No Background Music"
 run:

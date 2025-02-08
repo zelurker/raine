@@ -5,14 +5,14 @@ script "Select Starting Area" \
  "comm:Areas 1-6 are Stage 1, Areas 7-12 are Stage 2, and so on." \
  inter=1,99, 
 on:
-    temp0l=lpeek(2308A)
-    temp0h=lpeek($2308e
+    temp0l=lpeek($2308A)
+    temp0h=lpeek($2308e)
     temp1=lpeek($23092)
 run:
     dpoke $2308A $1B7C
-    dpoke $2308C ((param-$1)%$6)*1C
+    dpoke $2308C ((param-$1)%$6)*$1C
     lpoke $2308E $000D1B7C
-    dpoke $23092 (param-$1)/6
+    dpoke $23092 (param-$1)/$6
     dpoke $23094 $0181
 off:
     lpoke $2308A temp0l

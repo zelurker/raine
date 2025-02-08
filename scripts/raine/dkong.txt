@@ -1,10 +1,10 @@
-script "Infinite Credits"
+script "Infinite Credits"  
 run:
     poke $6001 $90
-script "Infinite Lives"
+script "Infinite Lives"  
 run:
     poke $6228 $06
-script "Invincibility"
+script "Invincibility"  
 on:
     temp0=dpeek($1C57)
     temp1=peek($2817)
@@ -20,12 +20,12 @@ off:
     poke $2817 temp1
     poke $277F temp2
     poke $2A1B temp3
-script "Infinite hammer upon pickup"
+script "Infinite hammer upon pickup"  
 run:
     if (frame%60==$0)
       poke $6394 $0F
     endif
-script "Freeze Bonus Timer"
+script "Freeze Bonus Timer"  
 on:
     temp0=peek($06A9)
     poke $06A9 $00
@@ -40,42 +40,42 @@ off:
     if (peek($6200)!=$00)
       poke $62B1 temp1
     endif
-    if (peek($6200)!=$00)and(temp1==$0)
+    if ((peek($6200)!=$00))and((temp1==$0))
       poke $6386 $02
     endif
-script "No fireballs on ramps"
+script "No fireballs on ramps"  
 run:
     poke $62B9 $00
-script "No fireballs on factory"
+script "No fireballs on factory"  
 run:
     poke $6403 $00
-script "No pies on factory"
+script "No pies on factory"  
 run:
     poke $65A0 $00
-script "No fireballs on rivets"
+script "No fireballs on rivets"  
 run:
     poke $6400 $00
-script "No jacks on elevators"
+script "No jacks on elevators"  
 run:
     poke $6500 $00
-script "No barrels on ramps"
+script "No barrels on ramps"  
 run:
     poke $6392 $00
-script "Always climb"
+script "Always climb"  
 run:
     poke $6215 $01
 off:
     poke $6215 $00
-script "Hammer"
+script "Hammer"  
 run:
     poke $6217 $01
     poke $6691 $01
-script "Finish this Level Now!"
+script "Finish this Level Now!"  
 on:
     poke $6290 $00
     poke $6205 $30
 script "Select Starting Level" \
- inter=1,99,1
+ inter=1,99,1 
 change:
     poke $095E (param)
     if (param==$1)
@@ -94,4 +94,25 @@ change:
       poke $095F $73
     endif
 off:
-    dpoke $095E $0165
+    dpoke $095E $6501
+script " "  
+script "Fix Kill Screen Bug" \
+ "comm:Fixes the bug which kills you on level 22 regardless, see here - http://donhodges.com/how_high_can_you_get.htm"  
+on:
+    temp0l=lpeek($0F7D)
+    temp0h=lpeek($f81)
+    temp1l=lpeek($0F85)
+    temp1h=lpeek($f89)
+    temp2=peek($0F8D)
+run:
+    lpoke $0F7D $023804FE
+    lpoke $f81 $A747043E
+    lpoke $0F85 $A717A717
+    lpoke $f89 $C6808017
+    poke $0F8D $28
+off:
+    lpoke $0F7D temp0l
+    lpoke $f81 temp0h
+    lpoke $0F85 temp1l
+    lpoke $f89 temp1h
+    poke $0F8D temp2
