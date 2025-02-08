@@ -161,8 +161,8 @@ sub handle_action {
 			} elsif ($action =~ /(.+)=maincpu.[mopr]p?(.)@(.+)/) {
 				$action = handle_arg($action);
 				if ($action =~ /(.+)=maincpu.[mopr]p?q@(.+)/) {
-					say "$1l=lpeek($2)";
-					say " "x$indent,"$1h=lpeek(\$",sprintf("%x",hex($2)+4);
+					say "$1l=lpeek(\$$2)";
+					say " "x$indent,"$1h=lpeek(\$",sprintf("%x",hex($2)+4),")";
 				} else {
 					say $action;
 				}
