@@ -48,6 +48,7 @@ pzloop2jr1:
 
 ;dkongf:******Donkey Kong Foundry (hack)
 dkong:
+dkongex:
 @:maincpu,program,6100,aa,94,76
 @:maincpu,program,60b8,03,50,00
 @:maincpu,program,7641,01,00,00
