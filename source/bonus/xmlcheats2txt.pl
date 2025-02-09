@@ -53,7 +53,7 @@ sub handle_arg {
 			if ($n & 1) {
 				$arg[$n] = lc($arg[$n]);
 			} else {
-				$arg[$n] = "($arg[$n])";
+				$arg[$n] = "($arg[$n])" if ($arg[$n] !~ /^\(.+\)$/);
 			}
 		}
 		$cond = join("",@arg);
@@ -70,12 +70,9 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-z]+)/dpeek($1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-z]+)/lpeek($1)/gi;
 
-	$cond = handle_subarg($cond);
-	# I might have overthought this, stuck in too many regexes... !
-	# noramly handle_subarg should be able to handle the whole expression, now I hope I didn't forget any case... !
-	# without this an expression like ((xxxx)*1c won't convert the *1c in the end (truxton2 case)
-	# $cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie;
-	# $cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
+	$cond = handle_subarg($cond); # handle external
+	$cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie; # and then internal
+	$cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
 
 	$cond;
 }
@@ -134,6 +131,7 @@ sub handle_action {
 			print " "x$indent;
 			if ($action =~ /(maincpu|audiocpu).[mopr]p?(.)@(.+)=(.+)/) {
 				my ($_cpu,$mode,$adr,$val) = ($1,$2,$3,$4);
+				$val =~ s/ +$//; # remove spaces in the end
 				if ($_cpu eq "audiocpu" && !$cpu) {
 					say "cpu audio";
 					print " "x$indent;
@@ -144,8 +142,9 @@ sub handle_action {
 				elsif ($mode eq "w") { print "dpoke "; }
 				elsif ($mode eq "q") {
 					# gros bazar quad word, 64 bits quoi...
-					# pour le z80 l'ordre est 0,8 puis 8,0
-					# mais c'est l'inverse pour le z80, je laisse par défaut le 68000, seul cas connu pour le z80 jusqu'ici : dkong, kill screen fix, lpoke en rom
+					# pour le z80 l'ordre est 8,8 puis 0,8
+					# mais c'est l'inverse pour le 68k, je laisse par défaut le 68000, seul cas connu pour le z80 jusqu'ici : dkong, kill screen fix, lpoke en rom
+					# Tant que je n'ai pas de façon d'identifier le cpu ici il faudra faire le changement à la main, vu que le cas du z80 est hyper rare, ça devrait aller
 					if ($val =~ /^[ 0-9a-fA-F]+$/) {
 						say "lpoke \$$adr \$",substr($val,0,8);
 						$adr = sprintf("%x",hex($adr)+4);

@@ -468,25 +468,25 @@ run:
     lpoke $6E97A temp29l
     lpoke $6e97e temp29h
 off:
-    lpoke $6E952 temp0 l
+    lpoke $6E952 temp0l
     lpoke $6e956 temp0h
-    lpoke $6E95A temp1 l
+    lpoke $6E95A temp1l
     lpoke $6e95e temp1h
     lpoke $6E90E temp2l
     lpoke $6e912 temp2h
-    lpoke $6E916 temp3 l
+    lpoke $6E916 temp3l
     lpoke $6e91a temp3h
-    lpoke $6E8EE temp4 l
+    lpoke $6E8EE temp4l
     lpoke $6e8f2 temp4h
-    lpoke $6E8F6 temp5 l
+    lpoke $6E8F6 temp5l
     lpoke $6e8fa temp5h
     lpoke $6E8A6 temp6l
     lpoke $6e8aa temp6h
-    lpoke $6E8AE temp7 l
+    lpoke $6E8AE temp7l
     lpoke $6e8b2 temp7h
-    lpoke $6E81A temp8 l
+    lpoke $6E81A temp8l
     lpoke $6e81e temp8h
-    lpoke $6E822 temp9 l
+    lpoke $6E822 temp9l
     lpoke $6e826 temp9h
     lpoke $6E886 temp10l
     lpoke $6e88a temp10h

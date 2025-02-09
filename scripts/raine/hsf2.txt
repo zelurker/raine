@@ -3,7 +3,7 @@ run:
     poke $FF830A $09
 script "Infinite Time"  
 run:
-    if peek($FF8BFC)>01
+    if peek($FF8BFC)>$01
       dpoke $FF8BFC $9928
       dpoke $FF1E4C $503C
     endif
@@ -70,7 +70,7 @@ script "Select Ending" \
  "0100/No Continues (Dictator)"\
  "00/Normal (Dictator)" 
 run:
-    if param>00
+    if param>$00
       dpoke ($FF833C+$34E) param
       dpoke ($FF873C+$34E) param
     endif
@@ -1003,8 +1003,8 @@ run:
 script "Hide Background" \
  "comm:Activate before match start; set to Claw or Dictator stage for no BG sprites"  
 on:
-    temp0=peek($FF8041)&0F
-    temp1=peek($FF8047)&0F
+    temp0=peek($FF8041)&$0F
+    temp1=peek($FF8047)&$0F
     temp2=dpeek($00B2A8)
     temp3=lpeek($00B2AA)
     temp4=dpeek($00B2AE)
@@ -1032,9 +1032,9 @@ run:
       dpoke $00B31E $601A
       lpoke $01283C $4E754E71
     endif
-    if (((lpeek($FF8004)==$00080000&&lpeek($ff8008)==$00020000))and(peek($FF8366)==$0)and(peek($FF8766)==$0))
-      poke $FF8041 peek($FF8041)&F0
-      poke $FF8047 peek($FF8047)&F0
+    if ((lpeek($FF8004)==$00080000&&lpeek($ff8008)==$00020000)and(peek($FF8366)==$0)and(peek($FF8766)==$0))
+      poke $FF8041 peek($FF8041)&$F0
+      poke $FF8047 peek($FF8047)&$F0
       lpoke $00864C $4E714E71
       dpoke $008840 $4E71
     endif

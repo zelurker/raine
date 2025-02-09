@@ -354,7 +354,7 @@ script "P1 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."
 on:
-    if ((dpeek($100010)==$49D8))and(((peek($100034)&$01)==$01))
+    if (dpeek($100010)==$49D8)and((peek($100034)&$01)==$01)
       temp0=$01
     endif
     if (temp0==$01)
@@ -396,7 +396,7 @@ script "P2 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."
 on:
-    if ((dpeek($100010)==$49D8))and(((peek($100034)&$02)==$02))
+    if (dpeek($100010)==$49D8)and((peek($100034)&$02)==$02)
       temp0=$01
     endif
     if (temp0==$01)
@@ -422,7 +422,7 @@ script "Hide Background" \
 run:
     poke $1051E1 peek($1051E0)&$7F
     dpoke $401FFE $0000
-    if (((peek($100003)&$9F)>$90)and((peek($100003)&$40)==$00))
+    if (((peek($100003)&$9F)>$90)and(peek($100003)&$40)==$00)
       poke $1051E1 $10
       poke $100920 $20
       poke $10092B $3C

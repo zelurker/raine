@@ -32,7 +32,7 @@ on:
     poke $6386 $00
 run:
     if (peek($62B1)==$01)
-      poke $62B1 peek($62B0)-1
+      poke $62B1 peek($62B0)-$1
     endif
 off:
     poke $06A9 temp0
@@ -40,7 +40,7 @@ off:
     if (peek($6200)!=$00)
       poke $62B1 temp1
     endif
-    if ((peek($6200)!=$00))and((temp1==$0))
+    if (peek($6200)!=$00)and(temp1==$0)
       poke $6386 $02
     endif
 script "No fireballs on ramps"  
