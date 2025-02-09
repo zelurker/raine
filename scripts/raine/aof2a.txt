@@ -92,8 +92,8 @@ on:
     temp3=dpeek($01837A)
     temp4=peek($01838D)
     temp5=dpeek($017A7A)
-    temp6l=lpeek(0182FC)
-    temp6h=lpeek($18300
+    temp6l=lpeek($0182FC)
+    temp6h=lpeek($18300)
     temp7=peek($108448)
     temp8=dpeek($01767C)
 run:
@@ -105,7 +105,7 @@ run:
     dpoke $017A7A $6002
     lpoke $0182FC $1B7C0000
     lpoke $18300 $04CD600A
-    if (peek($109FC3)==$3C)and(peek($10843B)==$03)
+    if (peek($109FC3)==$3C)and(peek($10843B)==03)
       poke $108448 $01
       dpoke $1767C $4E71
     endif
@@ -116,7 +116,7 @@ off:
     dpoke $1837A temp3
     poke $1838D temp4
     dpoke $17A7A temp5
-    lpoke $182FC temp6 l
+    lpoke $182FC temp6l
     lpoke $18300 temp6h
     poke $108448 temp7
     dpoke $1767C temp8
@@ -215,6 +215,13 @@ script "P1 Select Character" \
  "0x0D/Geese Howard" 
 change:
     poke $1092E3 param
+script "P1 Select Outfit" \
+ "0x00/Regular"\
+ "0x01/Alternate 1"\
+ "0x02/Alternate 2"\
+ "0x03/Alternate 3" 
+run:
+    poke $1094F7 param
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -276,6 +283,13 @@ script "P2 Select Character" \
  "0x0D/Geese Howard" 
 change:
     poke $1093E3 param
+script "P2 Select Outfit" \
+ "0x00/Regular"\
+ "0x01/Alternate 1"\
+ "0x02/Alternate 2"\
+ "0x03/Alternate 3" 
+run:
+    poke $1095F7 param
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

@@ -1,176 +1,3 @@
-script "Console Mode Plus" \
-"comm:On the mode select screen, press left or right to select the extra modes.
-In practice mode, pause the game then press start to change character."
-run:
-if (peek($108421)==$18)
-   if (peek($109EC0)==$00)
-      #Restore rom#
-      if (dpeek($C1852C)==$1A39) #For Unibios#
-         poke $C1852F $34
-         poke $C18537 $30
-         poke $C1854B $34
-         poke $C18553 $30
-      endif
-      if (dpeek($C16F46)==$1A39) #For Japan AES#
-         poke $C16F49 $34
-         poke $C16F51 $30
-         poke $C16F65 $34
-         poke $C16F6D $30
-      endif
-      if (dpeek($C16BFA)==$1A39) #For Asia AES#
-         poke $C16BFD $34
-         poke $C16C05 $30
-         poke $C16C19 $34
-         poke $C16C21 $30
-      endif
-      poke $19A69 $85
-      lpoke $FC43C $48455245
-      poke $BEB3 $3C
-      poke $FD02F "PLAYER VS COM"
-      poke $FD045 "P1 VS 2P"
-   endif
-   if (peek($109EC0)==$01)
-      if (peek($10FFE1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
-         poke $10FFE1 $00
-      endif  
-      if (dpeek($10FFE0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08)or(peek($10FD95)==$04)or(peek($10FD9B)==$04))
-         poke $FD02F "VS CPU PLAY  "
-         poke $FD045 "PRACTICE"
-         dpoke $10FFE0 $01FF
-         poke $108421 $98 #Refresh#
-      endif
-      if (dpeek($10FFE0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08)or(peek($10FD95)==$04)or(peek($10FD9B)==$04))
-         poke $FD02F "PLAYER VS COM"
-         poke $FD045 "P1 VS 2P"
-         dpoke $10FFE0 $00FF
-         poke $108421 $98 #Refresh#
-      endif
-   endif
-   if (peek($109EC0)==$02)
-      if (peek($10FFE0)==$00)and(peek($10809B)==$50)
-         poke $10FFF0 $00 #Arcade#
-      endif
-      if (peek($10FFE0)==$00)and(peek($10809B)==$66)
-         poke $10FFF0 $01 #VS#
-      endif
-      if (peek($10FFE0)==$01)and(peek($10809B)==$50)
-         poke $10FFF0 $02 #VS CPU#
-         poke $109ED5 $01 #Second choice#
-      endif
-      if (peek($10FFE0)==$01)and(peek($10809B)==$66)
-         poke $10FFF0 $03 #Practice#
-      endif
-   endif
-endif
-if (peek($108421)==$11) #Restore rom#
-   poke $FD02F "PLAYER VS COM"
-   poke $FD045 "P1 VS 2P"
-endif
-#VS Mode, VS CPU Common Part #
-if (peek($10FFF0)==$01)or(peek($10FFF0)==$02)
-   poke $108420 $03 ##Alway 2 players#
-   if (peek($10FDB6)==$02)or(peek($10FDB7)==$02)
-      poke $19A69 $92 #Always VS Mode#
-      lpoke $FC43C $01200000 #Remove text#
-      poke $BEB3 $01 #Shorten wait time#
-      dpoke $10FDB6 $0101
-    endif  
-    if (dpeek($108420)==$0312)and(dpeek($109EC4)==$0930) #Restore rom#
-      poke $109EA9 $00 #Deselect characters#
-      poke $109FA9 $00
-      poke $19A69 $85 #Restore rom#
-      lpoke $FC43C $48455245
-      poke $BEB3 $3C
-    endif
-endif
-#VS CPU#
-if (peek($10FFF0)==$02)
-   if (dpeek($108420)==$0312)
-      if (peek($109EB9)==$01)and(peek($109FB9)==$00)
-         poke $108800 $02 #P2 is CPU#
-      endif
-      if (peek($109EB9)==$00)and(peek($109FB9)==$01)
-         poke $108800 $01 #P1 is CPU#
-      endif
-   endif
-endif
-#Practice, VS CPU Common Part#
-if (peek($10FFF0)>=$02)
-   poke $108420 $03 ##Alway 2 players#
-   if (dpeek($108420)==$0312)
-      poke $109EA9 $00 #Deselect characters#
-      poke $109FA9 $00
-      if (peek($109EB9)==$01)and(peek($109FB9)==$00)
-         poke $10FFD0 $00 #P1 as main player#
-         dpoke $108426 $0000 #P2 Stage#
-      endif
-      if (peek($109EB9)==$00)and(peek($109FB9)==$01)
-         poke $10FFD0 $01 #P2 as main player#
-         dpoke $108426 $0001 #P1 Stage#
-      endif
-      if ((peek($109EB9))!=(peek($109FB9)))and(peek($10FD96)==$00)and(peek($10FD9C)==$00) #Switch control#
-         if (dpeek($C1852C)==$1A39) #For Unibios#
-            poke $C1852F $30
-            poke $C18537 $34
-            poke $C1854B $30
-            poke $C18553 $34
-         endif
-         if (dpeek($C16F46)==$1A39) #For Japan AES#
-            poke $C16F49 $30
-            poke $C16F51 $34
-            poke $C16F65 $30
-            poke $C16F6D $34
-         endif
-         if (dpeek($C16BFA)==$1A39) #For Asia AES#
-            poke $C16BFD $30
-            poke $C16C05 $34
-            poke $C16C19 $30
-            poke $C16C21 $34
-         endif
-      endif
-      if (peek($109EB9)==$01)and(peek($109FB9)==$01) #Restore control#
-         if (dpeek($C1852C)==$1A39) #For Unibios#
-            poke $C1852F $34
-            poke $C18537 $30
-            poke $C1854B $34
-            poke $C18553 $30
-         endif
-         if (dpeek($C16F46)==$1A39) #For Japan AES#
-            poke $C16F49 $34
-            poke $C16F51 $30
-            poke $C16F65 $34
-            poke $C16F6D $30
-         endif
-         if (dpeek($C16BFA)==$1A39) #For Asia AES#
-            poke $C16BFD $34
-            poke $C16C05 $30
-            poke $C16C19 $34
-            poke $C16C21 $30
-         endif
-      endif
-   endif
-endif
-#"Practice Mode#
-if (peek($10FFF0)==$03)
-   if (dpeek($108420)==$0310)
-      poke $108407 $11 #Infinite time#
-      if (peek($10FFD0)==$00)
-         poke $1092ED $1F #P1 Low HP#
-         poke $1093ED $80 #P2 Infinite HP#
-      endif
-      if (peek($10FFD0)==$01)
-         poke $1092ED $80 #P1 Infinite HP#
-         poke $1093ED $1F #P2 Low HP#
-      endif
-      poke $1094A4 $80 #Infinite Power#
-      poke $1095A4 $80
-      if (peek($10818B)==$01)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04))
-         poke $10818B $00
-         dpoke $108420 $0392 #Return#
-      endif
-   endif
-endif
-
 script "Infinite Time (Turn OFF on the Bonus Stage!)"  
 run:
     poke $108406 $99
@@ -265,8 +92,8 @@ on:
     temp3=dpeek($01837A)
     temp4=peek($01838D)
     temp5=dpeek($017A7A)
-    temp6l=lpeek(0182FC)
-    temp6h=lpeek($18300
+    temp6l=lpeek($0182FC)
+    temp6h=lpeek($18300)
     temp7=peek($108448)
     temp8=dpeek($1767C)
 run:
@@ -278,7 +105,7 @@ run:
     dpoke $017A7A $6002
     lpoke $0182FC $1B7C0000
     lpoke $18300 $04CD600A
-    if (peek($109FC3)==$3C)and(peek($10843B)==$03)
+    if (peek($109FC3)==$3C)and(peek($10843B)==03)
       poke $108448 $01
       dpoke $1767C $4E71
     endif
@@ -289,7 +116,7 @@ off:
     dpoke $01837A temp3
     poke $01838D temp4
     dpoke $017A7A temp5
-    lpoke $0182FC temp6 l
+    lpoke $0182FC temp6l
     lpoke $18300 temp6h
     poke $108448 temp7
     dpoke $01767C temp8
@@ -404,6 +231,13 @@ script "P1 Select Character" \
  "0x0D/Geese Howard" 
 change:
     poke $1092E3 param
+script "P1 Select Outfit" \
+ "0x00/Regular"\
+ "0x01/Alternate 1"\
+ "0x02/Alternate 2"\
+ "0x03/Alternate 3" 
+run:
+    poke $1094F7 param
 script " "  
 script "P2 Infinite Energy"  
 run:
@@ -465,6 +299,13 @@ script "P2 Select Character" \
  "0x0D/Geese Howard" 
 change:
     poke $1093E3 param
+script "P2 Select Outfit" \
+ "0x00/Regular"\
+ "0x01/Alternate 1"\
+ "0x02/Alternate 2"\
+ "0x03/Alternate 3" 
+run:
+    poke $1095F7 param
 script " "  
 script "Select Cartridge/NeoGeo Type" \
  "comm:Use in conjunction with the 'Skip RAM/ROM Checks' cheat for the best effect, then enable it and reset. The Home (NEOGEO) setting may open up other aspects of the game or it may even make the game unplayable." \

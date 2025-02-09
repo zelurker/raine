@@ -11,12 +11,12 @@ script "Always have Loaded Gun" \
 on:
     temp0=lpeek($02780C)
     temp1=peek($02B47C)
-    temp2l=lpeek(02B764)
-    temp2h=lpeek($2b768
-    temp3l=lpeek(07F000)
-    temp3h=lpeek($7f004
-    temp4l=lpeek(07F008)
-    temp4h=lpeek($7f00c
+    temp2l=lpeek($02B764)
+    temp2h=lpeek($2b768)
+    temp3l=lpeek($07F000)
+    temp3h=lpeek($7f004)
+    temp4l=lpeek($07F008)
+    temp4h=lpeek($7f00c)
 run:
     lpoke $02780C $4E714E71
     poke $02B47C $60
@@ -29,11 +29,11 @@ run:
 off:
     lpoke $02780C temp0
     poke $02B47C temp1
-    lpoke $02B764 temp2 l
+    lpoke $02B764 temp2l
     lpoke $2b768 temp2h
-    lpoke $07F000 temp3 l
+    lpoke $07F000 temp3l
     lpoke $7f004 temp3h
-    lpoke $07F008 temp4 l
+    lpoke $07F008 temp4l
     lpoke $7f00c temp4h
 script " "  
 script "P1 Infinite Lives"  
