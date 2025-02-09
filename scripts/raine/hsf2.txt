@@ -1,9 +1,9 @@
-script "Infinite Credits"  
+script "Infinite Credits"
 run:
     poke $FF830A $09
-script "Infinite Time"  
+script "Infinite Time"
 run:
-    if peek($FF8BFC)>$01
+    if peek($FF8BFC)>01
       dpoke $FF8BFC $9928
       dpoke $FF1E4C $503C
     endif
@@ -13,10 +13,10 @@ run:
     if (dpeek($FF87BE)==$0202)or(dpeek($FF87BE)==$0402)
       dpoke $FF875A $0384
     endif
-script "Finish this Round Now!"  
+script "Finish this Round Now!"
 on:
     dpoke $FF8BFC $0101
-script "Disable projectile impact slowdown"  
+script "Disable projectile impact slowdown"
 run:
     if (peek($FF8366)!=$FF)and(peek($FF8766)!=$FF)
       poke $FF8C29 $00
@@ -37,9 +37,9 @@ script "Select Background" \
  "0x0C/Cammy"\
  "0x0D/T.Hawk"\
  "0x0E/Fei Long"\
- "0x0F/Dee Jay" 
+ "0x0F/Dee Jay"
 run:
-    if (dpeek($FF8004)==$4)or(dpeek($FF8004)==$E)
+    if (dpeek($FF8004)==4)or(dpeek($FF8004)==$E)
       dpoke $FF8B64 param
       poke $FFBDF2 param
       poke $FFBEB2 param
@@ -58,7 +58,7 @@ script "Select Starting Stage" \
  "0x08/Stage 9 (Boxer)"\
  "0x09/Stage 10 (Claw)"\
  "0x0A/Stage 11 (Sagat)"\
- "0x0B/Stage 12 (Dictator)" 
+ "0x0B/Stage 12 (Dictator)"
 on:
     temp0=peek($003FB7)
 run:
@@ -68,45 +68,45 @@ off:
 script "Select Ending" \
  "0101/No Losses (Akuma/Gouki)"\
  "0100/No Continues (Dictator)"\
- "00/Normal (Dictator)" 
+ "00/Normal (Dictator)"
 run:
-    if param>$00
+    if param>00
       dpoke ($FF833C+$34E) param
       dpoke ($FF873C+$34E) param
     endif
-    if param==$0
+    if param==0
       poke ($FF833C+$34E) $00
       poke ($FF873C+$34E) $00
     endif
-script " "  
-script "P1 Infinite Energy"  
+script " "
+script "P1 Infinite Energy"
 run:
-    if (dpeek($FF8366)<$60)and((peek($FF833F)&$10)==$00)
+    if (dpeek($FF8366)<$60)and((peek($FF833F)&$10)==00)
       dpoke $FF8366 $90
       dpoke $FF84F8 $90
     endif
 script "P1 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF8398 param
     dpoke $FF839A param
-script "P1 Drain All Energy Now!"  
+script "P1 Drain All Energy Now!"
 on:
     poke $FF8367 $00
     poke $FF84F9 $00
-script "P1 Infinite Power"  
+script "P1 Infinite Power"
 run:
-    if dpeek($FF8008)==$2
+    if dpeek($FF8008)==2
       poke $FF85F0 $30
     endif
-script "P1 Always have No Power"  
+script "P1 Always have No Power"
 run:
     poke $FF85F0 $00
-script "P1 Drain All Power Now!"  
+script "P1 Drain All Power Now!"
 on:
     poke $FF85F0 $00
-script "P1 Allow special moves during jump"  
+script "P1 Allow special moves during jump"
 run:
     poke $FF84BD $00
 script "P1 Select Character" \
@@ -127,16 +127,16 @@ script "P1 Select Character" \
  "0x0D/T. Hawk"\
  "0x0E/Fei Long"\
  "0x0F/Dee Jay"\
- "0x10/#Akuma/Gouki" 
+ "0x10/#Akuma/Gouki"
 run:
     poke $FF8667 param
-    if (param>=$08)and(peek($FF8666)==$04)
+    if (param>=08)and(peek($FF8666)==04)
       poke $FF8666 $06
     endif
-    if (param>=$0C)and(peek($FF8666)>=$04)
+    if (param>=$0C)and(peek($FF8666)>=04)
       poke $FF8666 $02
     endif
-    if (param>=$10)and(peek($FF8666)!=$00)
+    if (param>=$10)and(peek($FF8666)!=00)
       poke $FF8666 $00
     endif
 script "P1 Select SuperT Colour" \
@@ -147,64 +147,64 @@ script "P1 Select SuperT Colour" \
  "0x04/MK button"\
  "0x05/HK button"\
  "0x06/Start button"\
- "0x07/Hold any P/K button" 
+ "0x07/Hold any P/K button"
 run:
     poke $FF8668 param
-    if (peek($FF8666)!=$0)or(peek($FF8667)==$10)
-      poke $FF8668 (param&$01)
+    if (peek($FF8666)!=0)or(peek($FF8667)==$10)
+      poke $FF8668 (param&01)
     endif
-script "P1 Easy charge moves"  
+script "P1 Easy charge moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if (temp0==$1)and(temp1!=$0)
+    if (temp0==1)and(temp1!=0)
       poke ($FF833C+$81) $01
     endif
-    if (temp0==$1)and(temp1!=$0)and(peek(FF833C+$AA)<=$02)
+    if (temp0==1)and(temp1!=0)and(peek($FF833C+$AA)<=02)
       poke ($FF833C+$AB) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$88)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$88)<=02)
       poke ($FF833C+$89) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$90)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$90)<=02)
       poke ($FF833C+$91) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$94)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$94)<=02)
       poke ($FF833C+$95) $01
     endif
-    if temp0==$2
+    if temp0==2
       poke ($FF833C+$81) $01
       poke ($FF833C+$B4) $01
       poke ($FF833C+$BA) $01
       poke ($FF833C+$C2) $01
     endif
-    if temp0==$3
+    if temp0==3
       poke ($FF833C+$81) $01
       poke ($FF833C+$87) $01
       poke ($FF833C+$95) $01
     endif
-    if temp0==$5
+    if temp0==5
       poke ($FF833C+$81) $01
     endif
-    if (temp0==$5)and(temp1==$0)and(peek(FF833C+$B0)<=$02)
+    if (temp0==5)and(temp1==0)and(peek($FF833C+$B0)<=02)
       poke ($FF833C+$B1) $01
     endif
-    if (temp0==$5)and(peek(FF833C+$BA)<=$02)
+    if (temp0==5)and(peek($FF833C+$BA)<=02)
       poke ($FF833C+$BB) $01
     endif
-    if (temp0==$5)and(peek(FF833C+$BF)<=$02)
+    if (temp0==5)and(peek($FF833C+$BF)<=02)
       poke ($FF833C+$C0) $01
     endif
-    if temp0==$8
+    if temp0==8
       poke ($FF833C+$81) $01
       poke ($FF833C+$89) $01
       poke ($FF833C+$92) $01
       poke ($FF833C+$C6) $01
     endif
-    if (temp0==$8)and(peek(FF833C+$AC)<=$02)
+    if (temp0==8)and(peek($FF833C+$AC)<=02)
       poke ($FF833C+$AD) $01
     endif
     if temp0==$A
@@ -215,71 +215,71 @@ run:
       poke ($FF833C+$DE) $01
       dpoke ($FF833C+$B2) $0101
     endif
-    if (temp0==$A)and(temp1==$0)and(peek(FF833C+$D4)<=$02)
+    if (temp0==$A)and(temp1==0)and(peek($FF833C+$D4)<=02)
       poke ($FF833C+$D5) $01
     endif
     if temp0==$B
       poke ($FF833C+$81) $01
     endif
-    if (temp0==$B)and(peek(FF833C+$88)<=$02)
+    if (temp0==$B)and(peek($FF833C+$88)<=02)
       poke ($FF833C+$89) $01
     endif
-    if (temp0==$B)and(peek(FF833C+$8C)<=$02)
+    if (temp0==$B)and(peek($FF833C+$8C)<=02)
       poke ($FF833C+$8D) $01
     endif
-    if (temp0==$B)and(peek(FF833C+$90)<=$02)
+    if (temp0==$B)and(peek($FF833C+$90)<=02)
       poke ($FF833C+$91) $01
     endif
-    if (temp0==$B)and(temp1==$0)and(peek(FF833C+$99)<=$02)
+    if (temp0==$B)and(temp1==0)and(peek($FF833C+$99)<=02)
       poke ($FF833C+$9A) $01
     endif
-    if (temp0==$B)and(temp1==$0)and(peek(FF833C+$9D)<=$02)
+    if (temp0==$B)and(temp1==0)and(peek($FF833C+$9D)<=02)
       poke ($FF833C+$9E) $01
     endif
-    if (temp0==$F)and(peek(FF833C+$92)<=$02)
+    if (temp0==$F)and(peek($FF833C+$92)<=02)
       poke ($FF833C+$93) $01
     endif
-    if (temp0==$F)and(peek(FF833C+$96)<=$02)
+    if (temp0==$F)and(peek($FF833C+$96)<=02)
       poke ($FF833C+$97) $01
     endif
-    if (temp0==$F)and(peek(FF833C+$A6)<=$02)
+    if (temp0==$F)and(peek($FF833C+$A6)<=02)
       poke ($FF833C+$A7) $01
     endif
-    if (temp0==$F)and(temp1==$0)and(peek(FF833C+$AB)<=$02)
+    if (temp0==$F)and(temp1==0)and(peek($FF833C+$AB)<=02)
       poke ($FF833C+$AC) $01
     endif
-    if (temp0==$F)and(temp1==$0)and(peek(FF833C+$AF)<=$02)
+    if (temp0==$F)and(temp1==0)and(peek($FF833C+$AF)<=02)
       poke ($FF833C+$B0) $01
     endif
-script "P1 Easy QCF + QCB moves"  
+script "P1 Easy QCF + QCB moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$4)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==4)or(temp0==$10))and(temp1<=2)
       poke ($FF833C+$90) $04
       poke ($FF833C+$94) $04
     endif
-    if ((temp0==$0)or(temp0==$4))and(temp1>$2)
+    if ((temp0==0)or(temp0==4))and(temp1>2)
       poke ($FF833C+$90) $04
       poke ($FF833C+$98) $04
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF833C+$E6) $04
     endif
-    if (temp0==$7)and(temp1<=$2)
+    if (temp0==7)and(temp1<=2)
       poke ($FF833C+$80) $04
     endif
-    if (temp0==$7)and(temp1>$2)
+    if (temp0==7)and(temp1>2)
       lpoke ($FF833C+$90) $02080004
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF833C+$88) $04
       poke ($FF833C+$8C) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF833C+$90) $02080004
       lpoke ($FF833C+$A0) $02080004
     endif
@@ -290,23 +290,23 @@ run:
       poke ($FF833C+$90) $04
       poke ($FF833C+$A0) $04
     endif
-script "P1 Easy F,D,DF + B,D,DB moves"  
+script "P1 Easy F,D,DF + B,D,DB moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$4)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==4)or(temp0==$10))and(temp1<=2)
       poke ($FF833C+$98) $04
     endif
-    if ((temp0==$0)or(temp0==$4))and(temp1>$2)
+    if ((temp0==0)or(temp0==4))and(temp1>2)
       poke ($FF833C+$A0) $04
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF833C+$80) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF833C+$98) $02080004
     endif
     if temp0==$C
@@ -318,90 +318,90 @@ run:
     if temp0==$E
       poke ($FF833C+$94) $04
     endif
-    if (temp0==$7)and(temp1<=$2)and((dpeek(FF833C+$314)&$2)>$0)
+    if (temp0==7)and(temp1<=2)and((dpeek($FF833C+$314)&2)>0)
       dpoke ($FF833C+$88) $0608
       poke ($FF833C+$8D) $05
     endif
-    if (temp0==$7)and(temp1<=$2)and((dpeek(FF833C+$314)&$1)>$0)
+    if (temp0==7)and(temp1<=2)and((dpeek($FF833C+$314)&1)>0)
       dpoke ($FF833C+$88) $0608
       poke ($FF833C+$8D) $06
     endif
-    if (temp0==$7)and(temp1==$8)and((dpeek(FF833C+$314)&$2)>$0)
+    if (temp0==7)and(temp1==8)and((dpeek($FF833C+$314)&2)>0)
       dpoke ($FF833C+$C8) $0608
       poke ($FF833C+$D3) $05
     endif
-    if (temp0==$7)and(temp1==$8)and((dpeek(FF833C+$314)&$1)>$0)
+    if (temp0==7)and(temp1==8)and((dpeek($FF833C+$314)&1)>0)
       dpoke ($FF833C+$C8) $0608
       poke ($FF833C+$D3) $06
     endif
-    if (temp0==$10)and((dpeek(FF833C+$314)&$2)>$0)
+    if (temp0==$10)and((dpeek($FF833C+$314)&2)>0)
       dpoke ($FF833C+$9E) $0608
       poke ($FF833C+$A5) $05
     endif
-    if (temp0==$10)and((dpeek(FF833C+$314)&$1)>$0)
+    if (temp0==$10)and((dpeek($FF833C+$314)&1)>0)
       dpoke ($FF833C+$9E) $0608
       poke ($FF833C+$A5) $06
     endif
-script "P1 Easy 360 + half-circle moves"  
+script "P1 Easy 360 + half-circle moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==$10))and(temp1<=2)
       poke ($FF833C+$E0) $08
     endif
-    if (temp0==$1)and(temp1==$0)
+    if (temp0==1)and(temp1==0)
       poke ($FF833C+$96) $06
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF833C+$EA) $08
     endif
-    if (temp0==$5)and(temp1==$8)
+    if (temp0==5)and(temp1==8)
       poke ($FF833C+$B0) $08
     endif
-    if (temp0==$7)and(temp1<=$2)
+    if (temp0==7)and(temp1<=2)
       poke ($FF833C+$84) $08
       poke ($FF833C+$9A) $08
     endif
-    if (temp0==$7)and(temp1>$2)
+    if (temp0==7)and(temp1>2)
       lpoke ($FF833C+$98) $02080008
     endif
     if temp0==$C
       poke ($FF833C+$A2) $04
     endif
-    if (temp0==$6)and(peek(FF833C+$12)!=$0)
+    if (temp0==6)and(peek($FF833C+$12)!=0)
       lpoke ($FF833C+$80) $06060800
       lpoke ($FF833C+$9B) $06040800
     endif
-    if (temp0==$6)and(peek(FF833C+$12)==$0)
+    if (temp0==6)and(peek($FF833C+$12)==0)
       lpoke ($FF833C+$80) $06070800
       lpoke ($FF833C+$9B) $06050800
     endif
-    if (temp0==$D)and(peek(FF833C+$12)!=$0)
+    if (temp0==$D)and(peek($FF833C+$12)!=0)
       lpoke ($FF833C+$91) $04060800
     endif
-    if (temp0==$D)and(peek(FF833C+$12)==$0)
+    if (temp0==$D)and(peek($FF833C+$12)==0)
       lpoke ($FF833C+$91) $05060800
     endif
-script "P1 Easy F,DF,D + tiger-knee moves"  
+script "P1 Easy F,DF,D + tiger-knee moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF833C+$E8) $04
     endif
-    if (temp0==$6)and(temp1==$0)
+    if (temp0==6)and(temp1==0)
       poke ($FF833C+$B3) $04
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF833C+$84) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF833C+$A8) $02080004
     endif
     if temp0==$C
@@ -410,43 +410,43 @@ run:
     if temp0==$E
       poke ($FF833C+$B4) $06
     endif
-script "P1 Easy super moves"  
+script "P1 Easy super moves"
 run:
     temp0=dpeek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if temp0==$0
+    if temp0==0
       poke ($FF833C+$A0) $0A
     endif
-    if temp0==$1
+    if temp0==1
       poke ($FF833C+$94) $0A
     endif
-    if temp0==$2
+    if temp0==2
       poke ($FF833C+$C1) $0A
     endif
-    if temp0==$3
+    if temp0==3
       poke ($FF833C+$94) $0A
     endif
-    if temp0==$4
+    if temp0==4
       poke ($FF833C+$A0) $08
     endif
-    if temp0==$5
+    if temp0==5
       poke ($FF833C+$BF) $0A
     endif
-    if (temp0==$6)and(peek(FF833C+$12)!=$0)
+    if (temp0==6)and(peek($FF833C+$12)!=0)
       dpoke ($FF833C+$AC) $0E06
     endif
-    if (temp0==$6)and(peek(FF833C+$12)==$0)
+    if (temp0==6)and(peek($FF833C+$12)==0)
       dpoke ($FF833C+$AC) $0E07
     endif
-    if temp0==$7
+    if temp0==7
       poke ($FF833C+$96) $10
     endif
-    if temp0==$8
+    if temp0==8
       poke ($FF833C+$C5) $0A
     endif
-    if temp0==$9
+    if temp0==9
       poke ($FF833C+$9E) $08
     endif
     if temp0==$A
@@ -458,10 +458,10 @@ run:
     if temp0==$C
       poke ($FF833C+$A6) $08
     endif
-    if (temp0==$D)and(peek(FF833C+$12)!=$0)
+    if (temp0==$D)and(peek($FF833C+$12)!=0)
       dpoke ($FF833C+$9E) $0E06
     endif
-    if (temp0==$D)and(peek(FF833C+$12)==$0)
+    if (temp0==$D)and(peek($FF833C+$12)==0)
       dpoke ($FF833C+$9E) $0E07
     endif
     if temp0==$E
@@ -470,56 +470,56 @@ run:
     if temp0==$F
       poke ($FF833C+$AF) $0A
     endif
-script "P1 Easy button tap moves"  
+script "P1 Easy button tap moves"
 run:
     temp0=peek($FF833C+$32B)
     temp1=peek($FF833C+$32A)
-    if peek($FF833C)==$0
+    if peek($FF833C)==0
       temp0=$FF
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF833C+$9A)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF833C+$9A)<2)
       poke ($FF833C+$9A) $6
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF833C+$9C)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF833C+$9C)<2)
       poke ($FF833C+$9C) $6
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF833C+$9E)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF833C+$9E)<2)
       poke ($FF833C+$9E) $6
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF833C+$9A)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF833C+$9A)<2)
       poke ($FF833C+$9A) $2
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF833C+$9C)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF833C+$9C)<2)
       poke ($FF833C+$9C) $2
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF833C+$9E)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF833C+$9E)<2)
       poke ($FF833C+$9E) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$C6)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$C6)<2)
       poke ($FF833C+$C6) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$C8)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$C8)<2)
       poke ($FF833C+$C8) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF833C+$CA)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF833C+$CA)<2)
       poke ($FF833C+$CA) $2
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF833C+$9A)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF833C+$9A)<3)
       poke ($FF833C+$9A) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF833C+$9C)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF833C+$9C)<3)
       poke ($FF833C+$9C) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF833C+$9E)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF833C+$9E)<3)
       poke ($FF833C+$9E) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF833C+$9A)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF833C+$9A)<3)
       poke ($FF833C+$9A) $3
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF833C+$9C)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF833C+$9C)<3)
       poke ($FF833C+$9C) $3
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF833C+$9E)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF833C+$9E)<3)
       poke ($FF833C+$9E) $3
     endif
 script "P1 Set Boxer Turnpunch level" \
@@ -530,41 +530,41 @@ script "P1 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if peek($FF833C+$32B)==$0A
       dpoke ($FF833C+$B6) param
       dpoke ($FF833C+$B8) param
     endif
-script " "  
-script "P2 Infinite Energy"  
+script " "
+script "P2 Infinite Energy"
 run:
-    if (dpeek($FF8766)<$60)and((peek($FF873F)&$10)==$00)
+    if (dpeek($FF8766)<$60)and((peek($FF873F)&$10)==00)
       dpoke $FF8766 $90
       dpoke $FF88F8 $90
     endif
 script "P2 Dizzy Status" \
  "0x00/Never get dizzied"\
- "0x40/Always get dizzied" 
+ "0x40/Always get dizzied"
 run:
     dpoke $FF8798 param
     dpoke $FF879A param
-script "P2 Drain All Energy Now!"  
+script "P2 Drain All Energy Now!"
 on:
     poke $FF8767 $00
     poke $FF88F9 $00
-script "P2 Infinite Power"  
+script "P2 Infinite Power"
 run:
-    if dpeek($FF8008)==$2
+    if dpeek($FF8008)==2
       poke $FF89F0 $30
     endif
-script "P2 Always have No Power"  
+script "P2 Always have No Power"
 run:
     poke $FF89F0 $00
-script "P2 Drain All Power Now!"  
+script "P2 Drain All Power Now!"
 on:
     poke $FF89F0 $00
-script "P2 Allow special moves during jump"  
+script "P2 Allow special moves during jump"
 run:
     poke $FF88BD $00
 script "P2 Select Character" \
@@ -585,16 +585,16 @@ script "P2 Select Character" \
  "0x0D/T. Hawk"\
  "0x0E/Fei Long"\
  "0x0F/Dee Jay"\
- "0x10/#Akuma/Gouki" 
+ "0x10/#Akuma/Gouki"
 run:
     poke $FF8A67 param
-    if (param>=$08)and(peek($FF8A66)==$04)
+    if (param>=08)and(peek($FF8A66)==04)
       poke $FF8A66 $06
     endif
-    if (param>=$0C)and(peek($FF8A66)>=$04)
+    if (param>=$0C)and(peek($FF8A66)>=04)
       poke $FF8A66 $02
     endif
-    if (param>=$10)and(peek($FF8A66)!=$00)
+    if (param>=$10)and(peek($FF8A66)!=00)
       poke $FF8A66 $00
     endif
 script "P2 Select SuperT Colour" \
@@ -605,64 +605,64 @@ script "P2 Select SuperT Colour" \
  "0x04/MK button"\
  "0x05/HK button"\
  "0x06/Start button"\
- "0x07/Hold any P/K button" 
+ "0x07/Hold any P/K button"
 run:
     poke $FF8A68 param
-    if (peek($FF8A66)!=$0)or(peek($FF8A67)==$10)
-      poke $FF8A68 (param&$01)
+    if (peek($FF8A66)!=0)or(peek($FF8A67)==$10)
+      poke $FF8A68 (param&01)
     endif
-script "P2 Easy charge moves"  
+script "P2 Easy charge moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if (temp0==$1)and(temp1!=$0)
+    if (temp0==1)and(temp1!=0)
       poke ($FF873C+$81) $01
     endif
-    if (temp0==$1)and(temp1!=$0)and(peek(FF873C+$AA)<=$02)
+    if (temp0==1)and(temp1!=0)and(peek($FF873C+$AA)<=02)
       poke ($FF873C+$AB) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$88)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$88)<=02)
       poke ($FF873C+$89) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$90)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$90)<=02)
       poke ($FF873C+$91) $01
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$94)<=$02)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$94)<=02)
       poke ($FF873C+$95) $01
     endif
-    if temp0==$2
+    if temp0==2
       poke ($FF873C+$81) $01
       poke ($FF873C+$B4) $01
       poke ($FF873C+$BA) $01
       poke ($FF873C+$C2) $01
     endif
-    if temp0==$3
+    if temp0==3
       poke ($FF873C+$81) $01
       poke ($FF873C+$87) $01
       poke ($FF873C+$95) $01
     endif
-    if temp0==$5
+    if temp0==5
       poke ($FF873C+$81) $01
     endif
-    if (temp0==$5)and(temp1==$0)and(peek(FF873C+$B0)<=$02)
+    if (temp0==5)and(temp1==0)and(peek($FF873C+$B0)<=02)
       poke ($FF873C+$B1) $01
     endif
-    if (temp0==$5)and(peek(FF873C+$BA)<=$02)
+    if (temp0==5)and(peek($FF873C+$BA)<=02)
       poke ($FF873C+$BB) $01
     endif
-    if (temp0==$5)and(peek(FF873C+$BF)<=$02)
+    if (temp0==5)and(peek($FF873C+$BF)<=02)
       poke ($FF873C+$C0) $01
     endif
-    if temp0==$8
+    if temp0==8
       poke ($FF873C+$81) $01
       poke ($FF873C+$89) $01
       poke ($FF873C+$92) $01
       poke ($FF873C+$C6) $01
     endif
-    if (temp0==$8)and(peek(FF873C+$AC)<=$02)
+    if (temp0==8)and(peek($FF873C+$AC)<=02)
       poke ($FF873C+$AD) $01
     endif
     if temp0==$A
@@ -673,71 +673,71 @@ run:
       poke ($FF873C+$DE) $01
       dpoke ($FF873C+$B2) $0101
     endif
-    if (temp0==$A)and(temp1==$0)and(peek(FF873C+$D4)<=$02)
+    if (temp0==$A)and(temp1==0)and(peek($FF873C+$D4)<=02)
       poke ($FF873C+$D5) $01
     endif
     if temp0==$B
       poke ($FF873C+$81) $01
     endif
-    if (temp0==$B)and(peek(FF873C+$88)<=$02)
+    if (temp0==$B)and(peek($FF873C+$88)<=02)
       poke ($FF873C+$89) $01
     endif
-    if (temp0==$B)and(peek(FF873C+$8C)<=$02)
+    if (temp0==$B)and(peek($FF873C+$8C)<=02)
       poke ($FF873C+$8D) $01
     endif
-    if (temp0==$B)and(peek(FF873C+$90)<=$02)
+    if (temp0==$B)and(peek($FF873C+$90)<=02)
       poke ($FF873C+$91) $01
     endif
-    if (temp0==$B)and(temp1==$0)and(peek(FF873C+$99)<=$02)
+    if (temp0==$B)and(temp1==0)and(peek($FF873C+$99)<=02)
       poke ($FF873C+$9A) $01
     endif
-    if (temp0==$B)and(temp1==$0)and(peek(FF873C+$9D)<=$02)
+    if (temp0==$B)and(temp1==0)and(peek($FF873C+$9D)<=02)
       poke ($FF873C+$9E) $01
     endif
-    if (temp0==$F)and(peek(FF873C+$92)<=$02)
+    if (temp0==$F)and(peek($FF873C+$92)<=02)
       poke ($FF873C+$93) $01
     endif
-    if (temp0==$F)and(peek(FF873C+$96)<=$02)
+    if (temp0==$F)and(peek($FF873C+$96)<=02)
       poke ($FF873C+$97) $01
     endif
-    if (temp0==$F)and(peek(FF873C+$A6)<=$02)
+    if (temp0==$F)and(peek($FF873C+$A6)<=02)
       poke ($FF873C+$A7) $01
     endif
-    if (temp0==$F)and(temp1==$0)and(peek(FF873C+$AB)<=$02)
+    if (temp0==$F)and(temp1==0)and(peek($FF873C+$AB)<=02)
       poke ($FF873C+$AC) $01
     endif
-    if (temp0==$F)and(temp1==$0)and(peek(FF873C+$AF)<=$02)
+    if (temp0==$F)and(temp1==0)and(peek($FF873C+$AF)<=02)
       poke ($FF873C+$B0) $01
     endif
-script "P2 Easy QCF + QCB moves"  
+script "P2 Easy QCF + QCB moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$4)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==4)or(temp0==$10))and(temp1<=2)
       poke ($FF873C+$90) $04
       poke ($FF873C+$94) $04
     endif
-    if ((temp0==$0)or(temp0==$4))and(temp1>$2)
+    if ((temp0==0)or(temp0==4))and(temp1>2)
       poke ($FF873C+$90) $04
       poke ($FF873C+$98) $04
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF873C+$E6) $04
     endif
-    if (temp0==$7)and(temp1<=$2)
+    if (temp0==7)and(temp1<=2)
       poke ($FF873C+$80) $04
     endif
-    if (temp0==$7)and(temp1>$2)
+    if (temp0==7)and(temp1>2)
       lpoke ($FF873C+$90) $02080004
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF873C+$88) $04
       poke ($FF873C+$8C) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF873C+$90) $02080004
       lpoke ($FF873C+$A0) $02080004
     endif
@@ -748,23 +748,23 @@ run:
       poke ($FF873C+$90) $04
       poke ($FF873C+$A0) $04
     endif
-script "P2 Easy F,D,DF + B,D,DB moves"  
+script "P2 Easy F,D,DF + B,D,DB moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$4)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==4)or(temp0==$10))and(temp1<=2)
       poke ($FF873C+$98) $04
     endif
-    if ((temp0==$0)or(temp0==$4))and(temp1>$2)
+    if ((temp0==0)or(temp0==4))and(temp1>2)
       poke ($FF873C+$A0) $04
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF873C+$80) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF873C+$98) $02080004
     endif
     if temp0==$C
@@ -776,90 +776,90 @@ run:
     if temp0==$E
       poke ($FF873C+$94) $04
     endif
-    if (temp0==$7)and(temp1<=$2)and((dpeek(FF873C+$314)&$2)>$0)
+    if (temp0==7)and(temp1<=2)and((dpeek($FF873C+$314)&2)>0)
       dpoke ($FF873C+$88) $0608
       poke ($FF873C+$8D) $05
     endif
-    if (temp0==$7)and(temp1<=$2)and((dpeek(FF873C+$314)&$1)>$0)
+    if (temp0==7)and(temp1<=2)and((dpeek($FF873C+$314)&1)>0)
       dpoke ($FF873C+$88) $0608
       poke ($FF873C+$8D) $06
     endif
-    if (temp0==$7)and(temp1==$8)and((dpeek(FF873C+$314)&$2)>$0)
+    if (temp0==7)and(temp1==8)and((dpeek($FF873C+$314)&2)>0)
       dpoke ($FF873C+$C8) $0608
       poke ($FF873C+$D3) $05
     endif
-    if (temp0==$7)and(temp1==$8)and((dpeek(FF873C+$314)&$1)>$0)
+    if (temp0==7)and(temp1==8)and((dpeek($FF873C+$314)&1)>0)
       dpoke ($FF873C+$C8) $0608
       poke ($FF873C+$D3) $06
     endif
-    if (temp0==$10)and((dpeek(FF873C+$314)&$2)>$0)
+    if (temp0==$10)and((dpeek($FF873C+$314)&2)>0)
       dpoke ($FF873C+$9E) $0608
       poke ($FF873C+$A5) $05
     endif
-    if (temp0==$10)and((dpeek(FF873C+$314)&$1)>$0)
+    if (temp0==$10)and((dpeek($FF873C+$314)&1)>0)
       dpoke ($FF873C+$9E) $0608
       poke ($FF873C+$A5) $06
     endif
-script "P2 Easy 360 + half-circle moves"  
+script "P2 Easy 360 + half-circle moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if ((temp0==$0)or(temp0==$10))and(temp1<=$2)
+    if ((temp0==0)or(temp0==$10))and(temp1<=2)
       poke ($FF873C+$E0) $08
     endif
-    if (temp0==$1)and(temp1==$0)
+    if (temp0==1)and(temp1==0)
       poke ($FF873C+$96) $06
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF873C+$EA) $08
     endif
-    if (temp0==$5)and(temp1==$8)
+    if (temp0==5)and(temp1==8)
       poke ($FF873C+$B0) $08
     endif
-    if (temp0==$7)and(temp1<=$2)
+    if (temp0==7)and(temp1<=2)
       poke ($FF873C+$84) $08
       poke ($FF873C+$9A) $08
     endif
-    if (temp0==$7)and(temp1>$2)
+    if (temp0==7)and(temp1>2)
       lpoke ($FF873C+$98) $02080008
     endif
     if temp0==$C
       poke ($FF873C+$A2) $04
     endif
-    if (temp0==$6)and(peek(FF873C+$12)!=$0)
+    if (temp0==6)and(peek($FF873C+$12)!=0)
       lpoke ($FF873C+$80) $06060800
       lpoke ($FF873C+$9B) $06040800
     endif
-    if (temp0==$6)and(peek(FF873C+$12)==$0)
+    if (temp0==6)and(peek($FF873C+$12)==0)
       lpoke ($FF873C+$80) $06070800
       lpoke ($FF873C+$9B) $06050800
     endif
-    if (temp0==$D)and(peek(FF873C+$12)!=$0)
+    if (temp0==$D)and(peek($FF873C+$12)!=0)
       lpoke ($FF873C+$91) $04060800
     endif
-    if (temp0==$D)and(peek(FF873C+$12)==$0)
+    if (temp0==$D)and(peek($FF873C+$12)==0)
       lpoke ($FF873C+$91) $05060800
     endif
-script "P2 Easy F,DF,D + tiger-knee moves"  
+script "P2 Easy F,DF,D + tiger-knee moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if (temp0==$4)and(temp1==$0)
+    if (temp0==4)and(temp1==0)
       poke ($FF873C+$E8) $04
     endif
-    if (temp0==$6)and(temp1==$0)
+    if (temp0==6)and(temp1==0)
       poke ($FF873C+$B3) $04
     endif
-    if (temp0==$9)and(temp1<=$2)
+    if (temp0==9)and(temp1<=2)
       poke ($FF873C+$84) $04
     endif
-    if (temp0==$9)and(temp1>$2)
+    if (temp0==9)and(temp1>2)
       lpoke ($FF873C+$A8) $02080004
     endif
     if temp0==$C
@@ -868,43 +868,43 @@ run:
     if temp0==$E
       poke ($FF873C+$B4) $06
     endif
-script "P2 Easy super moves"  
+script "P2 Easy super moves"
 run:
     temp0=dpeek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if temp0==$0
+    if temp0==0
       poke ($FF873C+$A0) $0A
     endif
-    if temp0==$1
+    if temp0==1
       poke ($FF873C+$94) $0A
     endif
-    if temp0==$2
+    if temp0==2
       poke ($FF873C+$C1) $0A
     endif
-    if temp0==$3
+    if temp0==3
       poke ($FF873C+$94) $0A
     endif
-    if temp0==$4
+    if temp0==4
       poke ($FF873C+$A0) $08
     endif
-    if temp0==$5
+    if temp0==5
       poke ($FF873C+$BF) $0A
     endif
-    if (temp0==$6)and(peek(FF873C+$12)!=$0)
+    if (temp0==6)and(peek($FF873C+$12)!=0)
       dpoke ($FF873C+$AC) $0E06
     endif
-    if (temp0==$6)and(peek(FF873C+$12)==$0)
+    if (temp0==6)and(peek($FF873C+$12)==0)
       dpoke ($FF873C+$AC) $0E07
     endif
-    if temp0==$7
+    if temp0==7
       poke ($FF873C+$96) $10
     endif
-    if temp0==$8
+    if temp0==8
       poke ($FF873C+$C5) $0A
     endif
-    if temp0==$9
+    if temp0==9
       poke ($FF873C+$9E) $08
     endif
     if temp0==$A
@@ -916,10 +916,10 @@ run:
     if temp0==$C
       poke ($FF873C+$A6) $08
     endif
-    if (temp0==$D)and(peek(FF873C+$12)!=$0)
+    if (temp0==$D)and(peek($FF873C+$12)!=0)
       dpoke ($FF873C+$9E) $0E06
     endif
-    if (temp0==$D)and(peek(FF873C+$12)==$0)
+    if (temp0==$D)and(peek($FF873C+$12)==0)
       dpoke ($FF873C+$9E) $0E07
     endif
     if temp0==$E
@@ -928,56 +928,56 @@ run:
     if temp0==$F
       poke ($FF873C+$AF) $0A
     endif
-script "P2 Easy button tap moves"  
+script "P2 Easy button tap moves"
 run:
     temp0=peek($FF873C+$32B)
     temp1=peek($FF873C+$32A)
-    if peek($FF873C)==$0
+    if peek($FF873C)==0
       temp0=$FF
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF873C+$9A)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF873C+$9A)<2)
       poke ($FF873C+$9A) $6
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF873C+$9C)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF873C+$9C)<2)
       poke ($FF873C+$9C) $6
     endif
-    if (temp0==$1)and(temp1==$4)and(peek(FF873C+$9E)<$2)
+    if (temp0==1)and(temp1==4)and(peek($FF873C+$9E)<2)
       poke ($FF873C+$9E) $6
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF873C+$9A)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF873C+$9A)<2)
       poke ($FF873C+$9A) $2
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF873C+$9C)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF873C+$9C)<2)
       poke ($FF873C+$9C) $2
     endif
-    if (temp0==$1)and((temp1==$2)or(temp1==$6)or(temp1==$8))and(peek(FF873C+$9E)<$2)
+    if (temp0==1)and((temp1==2)or(temp1==6)or(temp1==8))and(peek($FF873C+$9E)<2)
       poke ($FF873C+$9E) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$C6)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$C6)<2)
       poke ($FF873C+$C6) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$C8)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$C8)<2)
       poke ($FF873C+$C8) $2
     endif
-    if (temp0==$1)and(temp1==$0)and(peek(FF873C+$CA)<$2)
+    if (temp0==1)and(temp1==0)and(peek($FF873C+$CA)<2)
       poke ($FF873C+$CA) $2
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF873C+$9A)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF873C+$9A)<3)
       poke ($FF873C+$9A) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF873C+$9C)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF873C+$9C)<3)
       poke ($FF873C+$9C) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1==$4)and(peek(FF873C+$9E)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1==4)and(peek($FF873C+$9E)<3)
       poke ($FF873C+$9E) $8
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF873C+$9A)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF873C+$9A)<3)
       poke ($FF873C+$9A) $3
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF873C+$9C)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF873C+$9C)<3)
       poke ($FF873C+$9C) $3
     endif
-    if ((temp0==$2)or(temp0==$5))and(temp1!=$4)and(peek(FF873C+$9E)<$3)
+    if ((temp0==2)or(temp0==5))and(temp1!=4)and(peek($FF873C+$9E)<3)
       poke ($FF873C+$9E) $3
     endif
 script "P2 Set Boxer Turnpunch level" \
@@ -988,20 +988,20 @@ script "P2 Set Boxer Turnpunch level" \
  "0961/Five"\
  "1441/Six"\
  "1921/Seven"\
- "2401/Final" 
+ "2401/Final"
 run:
     if peek($FF873C+$32B)==$0A
       dpoke ($FF873C+$B6) param
       dpoke ($FF873C+$B8) param
     endif
-script " "  
-script "No Background Music"  
+script " "
+script "No Background Music"
 run:
     cpu audio
     dpoke $F018 $0000
     cpu main
 script "Hide Background" \
- "comm:Activate before match start; set to Claw or Dictator stage for no BG sprites"  
+ "comm:Activate before match start; set to Claw or Dictator stage for no BG sprites"
 on:
     temp0=peek($FF8041)&$0F
     temp1=peek($FF8047)&$0F
@@ -1028,11 +1028,11 @@ run:
     lpoke $00B2B0 $4E714E71
     dpoke $00CE04 $4E71
     lpoke $00CE06 $4E714E71
-    if ((dpeek($FF8004)==$0008)and(peek($FF8366)==$0)and(peek($FF8766)==$0))
+    if ((dpeek($FF8004)==0008)and(peek($FF8366)==0)and(peek($FF8766)==0))
       dpoke $00B31E $601A
       lpoke $01283C $4E754E71
     endif
-    if ((lpeek($FF8004)==$00080000&&lpeek($ff8008)==$00020000)and(peek($FF8366)==$0)and(peek($FF8766)==$0))
+    if ((lpeek($FF8004)==00080000&&lpeek($ff8008)==$00020000)and(peek($FF8366)==0)and(peek($FF8766)==0))
       poke $FF8041 peek($FF8041)&$F0
       poke $FF8047 peek($FF8047)&$F0
       lpoke $00864C $4E714E71
@@ -1051,12 +1051,3 @@ off:
     lpoke $01283C temp9
     lpoke $00864C temp10
     dpoke $008840 temp11
-script "Select Region" \
- "comm:This cheat sets the machine region - the effectiveness may vary! You have to enable this ASAP - ON or before the ROM check screen! Or enable + RESET" \
- "0x00/Japan"\
- "0x02/USA"\
- "0x04/Euro"\
- "0x06/Hispanic"\
- "0x08/Asia" 
-run:
-    poke $FF82FB param

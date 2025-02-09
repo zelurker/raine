@@ -16,7 +16,7 @@ sub handle_subarg {
 	# confondre avec des variables, un vrai bordel !
 	my $arg = shift;
 	$arg =~ s/^([0-9a-f]+)([\+\-\*\%]|$)/\$$1$2/i if (!/^0x/);
-	while ($arg =~ s/(\+|\-|\/|\*|\%|\&|\~|>|<|>=|<=|==|!=)([0-9a-f]+)([\+\-\*\%\)]|$)/$1\$$2$3/i) {}
+	$arg =~ s/(\+|\-|\/|\*|\%|\&|\~|>|<|>=|<=|==|!=)([0-9a-f]+)([\+\-\*\%\)]|$)/(hex($2) > 9 ? "$1\$$2$3" : "$1$2$3")/egi;
 	$arg;
 }
 
@@ -35,7 +35,7 @@ sub handle_arg {
 		my $valh = substr($val,8);
 		$cond =~ s/maincpu.[mopr]p?q@([0-9a-f]+) ?== ?([0-9a-f]+)/\(lpeek(\$$1)==$vall&&lpeek(\$$adr2)==$valh)/gi;
 	}
-	$cond =~ s/= *([0-9a-f])/=\$$1/gi;
+	$cond =~ s/= *([0-9a-f])/(hex($1)>9 ? "=\$$1" : "=$1")/gei;
 	$cond =~ s/maincpu.[mopr]p?b@([0-9a-f]+)/peek(\$$1)/gi;
 	$cond =~ s/maincpu.[mopr]p?w@([0-9a-f]+)/dpeek(\$$1)/gi;
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-f]+)/lpeek(\$$1)/gi;
@@ -71,7 +71,7 @@ sub handle_arg {
 	$cond =~ s/maincpu.[mopr]p?d@([0-9a-z]+)/lpeek($1)/gi;
 
 	$cond = handle_subarg($cond); # handle external
-	$cond =~ s/\((.+)\)/"(".handle_subarg($1).")"/gie; # and then internal
+	$cond =~ s/\(([0-9a-f]+)([\+-\/\*%\)]|$)/(hex($1) > 9 ? "(\$$1$2" : "($1$2")/gei;
 	$cond = handle_subarg($cond) if ($cond !~ /\(/ && $cond =~ /[\+\-\/\%]/);
 
 	$cond;

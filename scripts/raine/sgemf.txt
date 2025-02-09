@@ -362,7 +362,7 @@ run:
 script "Select next round" \
  inter=1,8,1
 change:
-    poke $FF8193 (param-$1)
+    poke $FF8193 (param-1)
 script "Move Round Announce"
 run:
     poke $FF818E $00
@@ -615,7 +615,7 @@ run:
     lpoke $01D3D6 temp1
     dpoke $01C15C temp2
     dpoke $01C328 temp3
-    if ((dpeek($FF8189)!=$0)and(dpeek($FF818E)==$0))
+    if ((dpeek($FF8189)!=0)and(dpeek($FF818E)==0))
       lpoke $01E970 $4E714E71
       lpoke $1e974 $4E714E71
       lpoke $01D3D6 $4E714E71

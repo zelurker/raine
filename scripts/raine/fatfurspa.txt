@@ -74,7 +74,7 @@ on:
     temp30h=lpeek($39434)
     temp31=lpeek($039438)
 run:
-    temp32=$0F0400000C0F030C
+    temp32=0F0400000C0F030C
     temp33=$F00EFF09
     lpoke $038BBA temp32l
     lpoke $38bbe temp32h
@@ -125,19 +125,19 @@ run:
     lpoke $39434 temp32h
     lpoke $039438 temp33
 off:
-    lpoke $038BBA temp0 l
+    lpoke $038BBA temp0l
     lpoke $38bbe temp0h
     lpoke $038BC2 temp1
-    lpoke $038C52 temp2 l
+    lpoke $038C52 temp2l
     lpoke $38c56 temp2h
     lpoke $038C5A temp3
-    lpoke $038D00 temp4 l
+    lpoke $038D00 temp4l
     lpoke $38d04 temp4h
     lpoke $038D08 temp5
-    lpoke $038D78 temp6 l
+    lpoke $038D78 temp6l
     lpoke $38d7c temp6h
     lpoke $038D80 temp7
-    lpoke $038DFC temp8 l
+    lpoke $038DFC temp8l
     lpoke $38e00 temp8h
     lpoke $038E04 temp9
     lpoke $038E66 temp10l
@@ -200,10 +200,10 @@ script "P1 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)and((peek($100034)&$01)==$01)
-      temp0=$01
+    if (dpeek($100010)==$49D8)and((peek($100034)&01)==01)
+      temp0=01
     endif
-    if (temp0==$01)
+    if (temp0==01)
       poke $10049A $01
       poke $10059A $00
       dpoke $10092A $0001
@@ -242,10 +242,10 @@ script "P2 See Endsequence Now!" \
  "comm:Set it ingame, in a Round.
   NOTE: If ONLY ONE credit is used; then after the endsequence all characters' quotes are also displayed."  
 on:
-    if (dpeek($100010)==$49D8)and((peek($100034)&$02)==$02)
-      temp0=$01
+    if (dpeek($100010)==$49D8)and((peek($100034)&02)==02)
+      temp0=01
     endif
-    if (temp0==$01)
+    if (temp0==01)
       poke $10059A $01
       poke $10049A $00
       dpoke $10092A $0001
@@ -268,7 +268,7 @@ script "Hide Background" \
 run:
     poke $1051E1 peek($1051E0)&$7F
     dpoke $401FFE $0000
-    if (((peek($100003)&$9F)>$90)and(peek($100003)&$40)==$00)
+    if (((peek($100003)&$9F)>$90)and(peek($100003)&$40)==00)
       poke $1051E1 $10
       poke $100920 $20
       poke $10092B $3C

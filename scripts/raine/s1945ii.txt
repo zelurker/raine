@@ -4,7 +4,7 @@ run:
 script "Select Starting Stage" \
  inter=1,8,1 
 change:
-    poke $600C674 (param-$1)
+    poke $600C674 (param-1)
 script "Select 1st Stage" \
  "0x00/Huge Flying Boat"\
  "0x01/Super Carrier"\

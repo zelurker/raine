@@ -186,7 +186,7 @@ script "Select Starting Stage" \
  "0x0C/Final Stage"\
  "0x0D/Special Stage(Kuroko, S Stage)"
 run:
-    if (peek($100AEE)==$00)
+    if (peek($100AEE)==00)
       poke $100AEE param
     endif
 script "Hit Anywhere (Both Players)"
@@ -248,10 +248,8 @@ on:
     temp23l=lpeek($6E9FA)
     temp23h=lpeek($6e9fe)
 run:
-    temp24h=$0F020000
-	temp24l=$0F020011
-    temp25h=$F010000E
-	temp25l=$00000000
+    temp24=0F0200000F020011
+    temp25=$F010000E00000000
     lpoke $6EAF2 temp24l
     lpoke $6eaf6 temp24h
     lpoke $6EAFA temp25l
@@ -409,7 +407,7 @@ on:
     temp27l=lpeek($6E97A)
     temp27h=lpeek($6e97e)
 run:
-    temp28=$0F0200000F020011
+    temp28=0F0200000F020011
     temp29=$F040000E00000000
     lpoke $6E952 temp28l
     lpoke $6e956 temp28h
@@ -530,7 +528,7 @@ run:
     temp0=peek((lpeek($100A46))+$BB)
     if temp0NEtemp1
       poke ((lpeek($100A46))+$BB) $80
-      temp1=temp0-$2
+      temp1=temp0-2
     endif
 script "P1 Drain All Energy Now!"
 on:
@@ -581,7 +579,7 @@ run:
     temp0=peek((lpeek($100A4A))+$BB)
     if temp0NEtemp1
       poke ((lpeek($100A4A))+$BB) $80
-      temp1=temp0-$2
+      temp1=temp0-2
     endif
 script "P2 Drain All Energy Now!"
 on:

@@ -22,7 +22,7 @@ off:
     poke $2A1B temp3
 script "Infinite hammer upon pickup"  
 run:
-    if (frame%60==$0)
+    if (frame%60==0)
       poke $6394 $0F
     endif
 script "Freeze Bonus Timer"  
@@ -31,16 +31,16 @@ on:
     poke $06A9 $00
     poke $6386 $00
 run:
-    if (peek($62B1)==$01)
-      poke $62B1 peek($62B0)-$1
+    if (peek($62B1)==01)
+      poke $62B1 peek($62B0)-1
     endif
 off:
     poke $06A9 temp0
-    temp1=(peek($638C)-(peek($638C)/$10)*$6)
-    if (peek($6200)!=$00)
+    temp1=(peek($638C)-(peek($638C)/$10)*6)
+    if (peek($6200)!=00)
       poke $62B1 temp1
     endif
-    if (peek($6200)!=$00)and(temp1==$0)
+    if (peek($6200)!=00)and(temp1==0)
       poke $6386 $02
     endif
 script "No fireballs on ramps"  
@@ -78,19 +78,19 @@ script "Select Starting Level" \
  inter=1,99,1 
 change:
     poke $095E (param)
-    if (param==$1)
+    if (param==1)
       poke $095F $65
     endif
-    if (param==$2)
+    if (param==2)
       poke $095F $67
     endif
-    if (param==$3)
+    if (param==3)
       poke $095F $6A
     endif
-    if (param==$4)
+    if (param==4)
       poke $095F $6E
     endif
-    if (param>$4)
+    if (param>4)
       poke $095F $73
     endif
 off:

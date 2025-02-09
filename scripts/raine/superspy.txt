@@ -34,15 +34,15 @@ on:
     temp0l=lpeek($0D16)
     temp0h=lpeek($d1a)
 run:
-    if param==$01
+    if param==01
       lpoke $0D16 temp0l
       lpoke $d1a temp0h
     endif
-    if param==$02
+    if param==02
       lpoke $0D16 $4EF90001
       lpoke $d1a $3C540000
     endif
-    if param==$03
+    if param==03
       lpoke $0D16 $4EF90000
       lpoke $d1a $7E4C0000
     endif
