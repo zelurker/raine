@@ -624,6 +624,7 @@ void update_scripts() {
 	run_console_command("");
     int n;
     try {
+	get_regs(); // Required in case a script execute a cpu command !
 	for (n=0; n<nb_scripts; n++) {
 	    if (script[n].status) {
 		init_script_param(n);
