@@ -686,7 +686,11 @@ void draw_shader(int linear)
 		// unit to another, which is not the case for now, so avoid
 		// these shaders for now !
 
-		glUniform1i(pass[n].texture, tex); // is this thing really used ???
+		// So it's actually used by something like scanline-3x.shader
+		// if switcing from no shader to this one while ingame and passing tex here: black screen
+		// if passing 1 instead: it works.
+		// So let's leave 1 for now !
+		glUniform1i(pass[n].texture, 1);
 	    }
 #endif
 	    if (pass[n].orig_input_size > -1) {
