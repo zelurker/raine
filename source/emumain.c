@@ -60,6 +60,7 @@
 #include "console/scripts.h"
 #endif
 #include "gens_sh2/sh2.h"
+#include "glsl.h"
 
 /* Including control.h in windows makes a collision with windows.h. Sigh...
    I can avoid to fix this by just adding these declarations here : */
@@ -499,6 +500,9 @@ UINT32 run_game_emulation(void)
    stop_ingame_timer();
 
    print_debug("run_game_emulation(): Completed.\n");
+
+   // Delete the shaders : because if we reach this point then sdl takes priority with its stuff, and the shaders have to be recreated when the emulation continues
+   delete_shaders();
 
    return quit_loop - 1;
 }
