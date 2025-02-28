@@ -1853,9 +1853,8 @@ void do_lua(int argc, char **argv) {
     } else {
 	int nb,line; char *sect;
 	if (get_running_script_info(&nb, &line, &sect)) {
-	    char *title_temp = get_script_title(nb);
-	    char title[200];
-	    snprintf(title,200,"%s_%s",title_temp,sect);
+	    char title[30];
+	    snprintf(title,30,"%x_%s",nb,sect);
 	    lua_pushstring(L,title);
 	    lua_gettable(L,LUA_REGISTRYINDEX);
 	    if (!lua_isfunction(L,-1)) {
