@@ -1,632 +1,634 @@
-script "Console Mode" \
+luascript "Console Mode [lua]" \
  "comm:On the title screen, press up or down to select modes. Coin button is used for pause.
 In training mode, start button can restore HP, pause the game and then press start to select character."
 run:
-#Start-up#
-if (peek($FF4499)==$00)
-    poke $54F8 "PRESS START"
-    poke $D35 $4D #Restore initial value#
-    poke $D45 $4F
-    poke $D3D $4C
-    poke $D5B $4E
-    lpoke $D1A $1B40C450 #Restore start button#
-    dpoke $CC8 $13FC #Restore music code#
-    poke $FF44A0 $01 #1 coin 1 credit#
-    if (peek($804020)==$FE)or(peek($804020)==$FD) #Start button start#
-      poke $FF0010 $01
-    endif
-    if (peek($804020)==$FF)and(peek($FF0010)==$01) #Start button start cont.#
-      poke $FF0010 $00
-      poke $FF4499 $09 #Max Credit#
-    endif
-endif
-#Menu in the Title screen#
-if (peek($FF44A4)==$FF)and(dpeek($FF4100)==$0000)and(peek($FF4499)>$00)
-   if (peek($FF1002)==$00)
-      lpoke $D1A $00000000 #Disable original start button#
-      poke $FF4499 $09 #Max Credit#
-   endif
-   if (lpeek($D1A)==$00000000)and(peek($FF1002)==$00)
-      if (peek($804020)==$FD)or(peek($804020)==$FE)
-         poke $618001 $00 #sound effect#
-         poke $618003 $30
-         poke $61801F $00
-         poke $FF1002 $01
-      endif
-   endif
-   if (peek($FF1002)==$01)and(peek($804020)==$FF)
-      region=peek($FF44B3)
-      poke $FF1002 $02
-   endif
-   if (peek($FF1002)>=$01)
-      poke $FF4464 $02 #Remove original text#
-      poke $FF4474 $08 #Remove logo part 1#
-      if (peek($90C020)!=$68) #Remove logo part 2#
-         for i=0 i<=$5F0 i=i+$4 dpoke $90C000+i $6800
-      endif
-       lpoke $90C268 $6A110000+peek($FF1020) #Arcade Mode#
-       lpoke $90C2A8 $6A220000+peek($FF1020)
-       lpoke $90C2E8 $6A130000+peek($FF1020)
-       lpoke $90C328 $6A110000+peek($FF1020)
-       lpoke $90C368 $6A140000+peek($FF1020)
-       lpoke $90C3A8 $6A150000+peek($FF1020)
-       lpoke $90C26C $6A260000+peek($FF1021) #Versus Mode#
-       lpoke $90C2AC $6A150000+peek($FF1021)
-       lpoke $90C2EC $6A220000+peek($FF1021)
-       lpoke $90C32C $6A230000+peek($FF1021)
-       lpoke $90C36C $6A250000+peek($FF1021)
-       lpoke $90C3AC $6A230000+peek($FF1021)
-       lpoke $90C230 $6A240000+peek($FF1022) #Training Mode#
-       lpoke $90C270 $6A220000+peek($FF1022)
-       lpoke $90C2B0 $6A110000+peek($FF1022)
-       lpoke $90C2F0 $6A190000+peek($FF1022)
-       lpoke $90C330 $6A1E0000+peek($FF1022)
-       lpoke $90C370 $6A190000+peek($FF1022)
-       lpoke $90C3B0 $6A1E0000+peek($FF1022)
-       lpoke $90C3F0 $6A170000+peek($FF1022)
-       lpoke $90C274 $6A1F0000+peek($FF1023) #Option Mode#
-       lpoke $90C2B4 $6A200000+peek($FF1023)
-       lpoke $90C2F4 $6A240000+peek($FF1023)
-       lpoke $90C334 $6A190000+peek($FF1023)
-       lpoke $90C374 $6A1F0000+peek($FF1023)
-       lpoke $90C3B4 $6A1E0000+peek($FF1023)
-         if (peek($FF1000)==$00) #Arcade Mode Pointer#
-            poke $FF1020 $00
-            poke $FF1021 $0B
-            poke $FF1022 $0B
-            poke $FF1023 $0B
-         elsif (peek($FF1000)==$01) #Versus Mode Pointer#
-            poke $FF1020 $0B
-            poke $FF1021 $00
-            poke $FF1022 $0B
-            poke $FF1023 $0B
-         elsif (peek($FF1000)==$02) #Training Mode Pointer#
-            poke $FF1020 $0B
-            poke $FF1021 $0B
-            poke $FF1022 $00
-            poke $FF1023 $0B
-         elsif (peek($FF1000)==$03) #Option Mode Pointer#
-            poke $FF1020 $0B
-            poke $FF1021 $0B
-            poke $FF1022 $0B
-            poke $FF1023 $00
-         endif
-   endif
-   if (peek($FF1002)==$02)
-       if ((peek($FF444D)==$00)and(peek($FF444F)==$00))and(peek($FF1001)==$FF)
-         poke $FF1001 $00
-         poke $FF1024 $00 #Act as music 'stopper'#
-       endif
-       if (peek($FF444D)==$04)or(peek($FF444F)==$04)
-          if peek($FF1024)==$00 #Sound effect#
-             poke $618001 $00
-             poke $618003 $36
-             poke $61801F $00
-             poke $FF1024 $FF
-          endif
-          if (dpeek($FF1000)==$0000)
-            dpoke $FF1000 $01FF
-          elsif (dpeek($FF1000)==$0100)
-            dpoke $FF1000 $02FF
-          elsif (dpeek($FF1000)==$0200)
-            dpoke $FF1000 $03FF
-          elsif (dpeek($FF1000)==$0300)
-            dpoke $FF1000 $00FF
-          endif
-       endif
-       if (peek($FF444D)==$08)or(peek($FF444F)==$08)
-          if peek($FF1024)==$00 #Sound effect#
-             poke $618001 $00
-             poke $618003 $36
-             poke $61801F $00
-             poke $FF1024 $FF
-          endif
-          if (dpeek($FF1000)==$0000)
-            dpoke $FF1000 $03FF
-          elsif (dpeek($FF1000)==$0300)
-            dpoke $FF1000 $02FF
-          elsif (dpeek($FF1000)==$0200)
-            dpoke $FF1000 $01FF
-          elsif (dpeek($FF1000)==$0100)
-            dpoke $FF1000 $00FF
-          endif
-       endif
-       if (dpeek($FF444C)>=$0010) #1P press button#
-          lpoke $D1A $1B40C450 #Restore start button#
-          poke $FF4450 $01 #1P auto press start#
-       endif
-       if (dpeek($FF444E)>=$0010) #2P press button#
-          lpoke $D1A $1B40C450 #Restore start button#
-          poke $FF4450 $02 #2P auto press start#
-       endif
-       if (dpeek($FF444C)>=$0010)or(dpeek($FF444E)>=$0010)
-          poke $618001 $00 #Sound effect#
-          poke $618003 $37
-          poke $61801F $00
-          if (peek($FF1000)==$03)
-             dpoke $CC8 $0000 #Disable music code#
-          endif
-          if (peek($FF1000)!=$03)
-             dpoke $CC8 $13FC #Restore music code#
-             poke $FF1002 $03
-          endif
-       endif
-   endif
-endif
-#Restore Value#
-if (peek($FF4105)==$04) #At character screen#
-   poke $FF1002 $00
-   poke $FF4464 $00
-   poke $FF4499 $09 #Infinity Credits#
-endif
-#Versus Mode Script#
-if (peek($FF1000)==$01)
-    if (peek($FF4105)==$04)and(peek($FF4101)>$00) #Activate 1P & 2P#
-       poke $FF4101 $03
-       poke $FF4124 $03
-       poke $FF3003 $01
-       poke $FF3403 $01
-       if (peek($FF4180)==$0B)and(peek($FF41B0)<$0B) #Stage music#
-         poke $FF4103 $02
-       endif
-       if (peek($FF41B0)==$0B)and(peek($FF4180)<$0B)
-         poke $FF4103 $01
-       endif
-    endif
-    if (peek($FF4105)>=$0A) #Prevent cont. text & preparation#
-      poke $FF4101 $03
-      poke $FF4124 $03
-      poke $FF32B0 $00
-      poke $FF36B0 $00
-      poke $FF3003 $01
-      poke $FF3403 $01
-      poke $FF1003 $01
-    endif
-    if (peek($FF4105)==$10) #For draw game case#
-       poke $FF4101 $03
-       poke $FF4105 $00
-    endif
-    if (peek($FF4105)==$04)and(peek($FF1003)==$01) #Return to char screen#
-      poke $FF4105 $00
-      poke $FF1003 $00
-      poke $FF4103 $00
-    endif
-endif
-#Training Mode Script#
-if (peek($FF1000)==$02)
-    if (peek($FF4105)==$04)and(peek($FF4101)>$00) #Activate 1P & 2P#
-    poke $FF4101 $03
-    poke $FF4124 $03
-    poke $FF3003 $01
-    poke $FF3403 $01
-    endif
-    if (peek($FF4105)==$04)
-      if ((peek($FF4180)==$0A)and(peek($FF41B0)<$0A))or((peek($FF41B0)==$0A)and(peek($FF4180)<$0A)) #Switching control#
-      poke $D35 $4F
-      poke $D45 $4D
-      poke $D3D $4E
-      poke $D5B $4C
-      endif
-      if (peek($FF4180)==$0B)and(peek($FF41B0)==$0B) #Restoring control#
-      poke $D35 $4D
-      poke $D45 $4F
-      poke $D3D $4C
-      poke $D5B $4E
-      endif
-      if (peek($FF4180)==$0B)and(peek($FF41B0)<$0B)
-      poke $FF4103 $02
-      endif
-      if (peek($FF41B0)==$0B)and(peek($FF4180)<$0B)
-      poke $FF4103 $01
-      endif
-    endif
-   if (peek($FF4000)>=$02)
-      poke $FF4009 $28 #Other battle parameters#
-      poke $FF3274 $03
-      poke $FF4A74 $03
-      poke $FF3674 $03
-      poke $FF3E74 $03
-      poke $FF32C6 $09
-      poke $FF36C6 $09
-   endif
-   if (peek($FF4000)==$04)or(peek($FF4269)==$0A)
-      poke $FF3271 $FF #Increase HP before start#
-      poke $FF3671 $FF
-      poke $FF3A71 $FF
-      poke $FF3E71 $FF
-      lpoke $FF1040 $00000000 #Restore value#
-   endif
-   if (peek($FF4000)==$08)
-   #HP recovery for 1P 1st character#
-      poke $FFF823 peek($FF3271)-$6F
-      if (peek($FF3271)<$6F)
-         dpoke $FFF822 $0000
-         poke $FF327B $01
-         poke $FF1040 $01
-      endif
-      if (peek($804020)==$FD)and(peek($FF3271)!=$FF)
-         poke $FF1040 $02
-      endif
-      if ((peek($FF1040)==$01)and(peek($FF3271)<$FF)and(peek($FF3007)==$00))or(peek($FF1040)==$02)
-         poke $FF3271 peek($FF3271)+$1
-      endif
-      if (peek($FF3271)==$FF)
-         poke $FF1040 $00
-         poke $FF327B $90
-      endif
-   #HP recovery for 2P 1st character#
-      poke $FFF8C3 peek($FF3671)-$6F
-      if (peek($FF3671)<$6F)
-         dpoke $FFF8C2 $0000
-         poke $FF367B $01
-         poke $FF1041 $01
-      endif
-      if (peek($804020)==$FE)and(peek($FF3671)!=$FF)
-         poke $FF1041 $02
-      endif
-      if ((peek($FF1041)==$01)and(peek($FF3671)<$FF)and(peek($FF3407)==$00))or(peek($FF1041)==$02)
-         poke $FF3671 peek($FF3671)+$1
-      endif
-      if (peek($FF3671)==$FF)
-         poke $FF1041 $00
-         poke $FF367B $90
-      endif
-   #HP recovery for 1P 2nd character#
-      poke $FFF873 peek($FF3A71)-$6F
-      if (peek($FF3A71)<$6F)
-         dpoke $FFF872 $0000
-         poke $FF3A7B $01
-         poke $FF1042 $01
-      endif
-      if (peek($804020)==$FD)and(peek($FF3A71)!=$FF)
-         poke $FF1042 $02
-      endif
-      if ((peek($FF1042)==$01)and(peek($FF3A71)<$FF)and(peek($FF3807)==$00))or(peek($FF1042)==$02)
-         poke $FF3A71 peek($FF3A71)+$1
-      endif
-      if (peek($FF3A71)==$FF)
-         poke $FF1042 $00
-         poke $FF3A7B $90
-      endif
-   #HP recovery for 2P 2nd character#
-      poke $FFF913 peek($FF3E71)-$6F
-      if (peek($FF3E71)<$6F)
-         dpoke $FFF912 $0000
-         poke $FF3E7B $01
-         poke $FF1043 $01
-      endif
-      if (peek($804020)==$FE)and(peek($FF3E71)!=$FF)
-         poke $FF1043 $02
-      endif
-      if ((peek($FF1043)==$01)and(peek($FF3E71)<$FF)and(peek($FF3C07)==$00))or(peek($FF1043)==$02)
-         poke $FF3E71 peek($FF3E71)+$1
-      endif
-      if (peek($FF3E71)==$FF)
-         poke $FF1043 $00
-         poke $FF3E7B $90
-      endif
-   #HP recovery for inactive character#
-      if (peek($FF3281)==$00) #P1 not switched#
-         poke $FF3A71 $FF
-      endif
-      if (peek($FF3281)==$01) #P1 switched#
-         poke $FF3271 $FF
-      endif
-      if (peek($FF3681)==$00) #P2 not switched#
-         poke $FF3E71 $FF
-      endif
-      if (peek($FF3681)==$01) #P2 switched#
-         poke $FF3671 $FF
-      endif
-   #Return to char screen#
-      if (peek($FF4106)==$0F)and((peek($FF4450)==$01)or(peek($FF4450)==$02))
-         poke $FF4106 $00
-         poke $FF4105 $00
-         poke $FF4103 $00
-      endif
-   endif
-endif
-#Option Mode Script#
-if (peek($FF1000)==$03)
-   if (peek($FF4101)>$00)
-      poke $FF4451 $02
-      poke $FF44B3 $02 #English menu#
-      poke $FF1003 $01
-   endif
-   if (peek($FF44A4)!=$FF)and(dpeek($FF4100)==$0000)and(peek($FF1003)==$01) #Restart#
-      poke $FF4499 $09 #Increase credit#
-      poke $FF042B $00 #Shorten wait time#
-      poke $FF082B $00
-      poke $FF0C2B $00
-      poke $FF4474 $00 #Hide text#
-      poke $FF44B3 region
-   endif
-   if (peek($FF44A4)==$FF)and(dpeek($FF4100)==$0000)and(peek($FF1003)==$01) #Restore#
-      poke $FF4474 $08
-      poke $FF1003 $02
-      poke $FF1002 $02 #Menu screen#
-      lpoke $D1A $00000000 #Disable original start button#
-      dpoke $CC8 $0000 #Disable music code#
-   endif
-endif
-#Pause Function Script#
-    if (peek($FF4000)==$08)and(peek($FF4100)>$00)
-       if (peek($FF4450)==$00)
-       poke $FF1002 $00
-       endif
-       if (peek($FF4106)==$00)and((peek($FF4450)==$10)or(peek($FF4450)==$20))and(peek($FF1002)==$00)
-       poke $FF4106 $0F
-       poke $FF1002 $FF
-       endif
-       if (peek($FF4106)==$0F)and((peek($FF4450)==$10)or(peek($FF4450)==$20))and(peek($FF1002)==$00)
-       poke $FF4106 $00
-       poke $FF1002 $FF
-       endif
-    endif
+-- Start-up --
+if (peek(0xFF4499)==0x00) then
+    poke(0x54F8,"PRESS START")
+    poke(0xD35,0x4D) -- Restore initial value --
+    poke(0xD45,0x4F)
+    poke(0xD3D,0x4C)
+    poke(0xD5B,0x4E)
+    lpoke(0xD1A,0x1B40C450) -- Restore start button --
+    dpoke(0xCC8,0x13FC) -- Restore music code --
+    poke(0xFF44A0,0x01) -- 1 coin 1 credit --
+    if (peek(0x804020)==0xFE) or (peek(0x804020)==0xFD) then -- Start button start --
+      poke(0xFF0010,0x01)
+    end
+    if (peek(0x804020)==0xFF) and (peek(0xFF0010)==0x01) then -- Start button start cont. --
+      poke(0xFF0010,0x00)
+      poke(0xFF4499,0x09) -- Max Credit --
+    end
+end
+-- Menu in the Title screen --
+if (peek(0xFF44A4)==0xFF) and (dpeek(0xFF4100)==0x0000) and (peek(0xFF4499)>0x00) then
+   if (peek(0xFF1002)==0x00) then
+      lpoke(0xD1A,0x00000000) -- Disable original start button --
+      poke(0xFF4499,0x09) -- Max Credit --
+   end
+   if (lpeek(0xD1A)==0x00000000) and (peek(0xFF1002)==0x00) then
+      if (peek(0x804020)==0xFD) or (peek(0x804020)==0xFE) then
+         poke(0x618001,0x00) -- sound effect --
+         poke(0x618003,0x30)
+         poke(0x61801F,0x00)
+         poke(0xFF1002,0x01)
+      end
+   end
+   if (peek(0xFF1002)==0x01) and (peek(0x804020)==0xFF) then
+      region=peek(0xFF44B3)
+      poke(0xFF1002,0x02)
+   end
+   if (peek(0xFF1002)>=0x01) then
+      poke(0xFF4464,0x02) -- Remove original text --
+      poke(0xFF4474,0x08) -- Remove logo part 1 --
+      if (peek(0x90C020)~=0x68) then -- Remove logo part 2 --
+         for i=0,0x5F0,0x4 do
+            dpoke(0x90C000+i,0x6800)
+         end
+      end
+       lpoke(0x90C268,0x6A110000+peek(0xFF1020)) -- Arcade Mode --
+       lpoke(0x90C2A8,0x6A220000+peek(0xFF1020))
+       lpoke(0x90C2E8,0x6A130000+peek(0xFF1020))
+       lpoke(0x90C328,0x6A110000+peek(0xFF1020))
+       lpoke(0x90C368,0x6A140000+peek(0xFF1020))
+       lpoke(0x90C3A8,0x6A150000+peek(0xFF1020))
+       lpoke(0x90C26C,0x6A260000+peek(0xFF1021)) -- Versus Mode --
+       lpoke(0x90C2AC,0x6A150000+peek(0xFF1021))
+       lpoke(0x90C2EC,0x6A220000+peek(0xFF1021))
+       lpoke(0x90C32C,0x6A230000+peek(0xFF1021))
+       lpoke(0x90C36C,0x6A250000+peek(0xFF1021))
+       lpoke(0x90C3AC,0x6A230000+peek(0xFF1021))
+       lpoke(0x90C230,0x6A240000+peek(0xFF1022)) -- Training Mode --
+       lpoke(0x90C270,0x6A220000+peek(0xFF1022))
+       lpoke(0x90C2B0,0x6A110000+peek(0xFF1022))
+       lpoke(0x90C2F0,0x6A190000+peek(0xFF1022))
+       lpoke(0x90C330,0x6A1E0000+peek(0xFF1022))
+       lpoke(0x90C370,0x6A190000+peek(0xFF1022))
+       lpoke(0x90C3B0,0x6A1E0000+peek(0xFF1022))
+       lpoke(0x90C3F0,0x6A170000+peek(0xFF1022))
+       lpoke(0x90C274,0x6A1F0000+peek(0xFF1023)) -- Option Mode --
+       lpoke(0x90C2B4,0x6A200000+peek(0xFF1023))
+       lpoke(0x90C2F4,0x6A240000+peek(0xFF1023))
+       lpoke(0x90C334,0x6A190000+peek(0xFF1023))
+       lpoke(0x90C374,0x6A1F0000+peek(0xFF1023))
+       lpoke(0x90C3B4,0x6A1E0000+peek(0xFF1023))
+         if (peek(0xFF1000)==0x00) then -- Arcade Mode Pointer --
+            poke(0xFF1020,0x00)
+            poke(0xFF1021,0x0B)
+            poke(0xFF1022,0x0B)
+            poke(0xFF1023,0x0B)
+         elseif (peek(0xFF1000)==0x01) then -- Versus Mode Pointer --
+            poke(0xFF1020,0x0B)
+            poke(0xFF1021,0x00)
+            poke(0xFF1022,0x0B)
+            poke(0xFF1023,0x0B)
+         elseif (peek(0xFF1000)==0x02) then -- Training Mode Pointer --
+            poke(0xFF1020,0x0B)
+            poke(0xFF1021,0x0B)
+            poke(0xFF1022,0x00)
+            poke(0xFF1023,0x0B)
+         elseif (peek(0xFF1000)==0x03) then -- Option Mode Pointer --
+            poke(0xFF1020,0x0B)
+            poke(0xFF1021,0x0B)
+            poke(0xFF1022,0x0B)
+            poke(0xFF1023,0x00)
+         end
+   end
+   if (peek(0xFF1002)==0x02) then
+       if ((peek(0xFF444D)==0x00) and (peek(0xFF444F)==0x00)) and (peek(0xFF1001)==0xFF) then
+         poke(0xFF1001,0x00)
+         poke(0xFF1024,0x00) -- Act as music 'stopper' --
+       end
+       if (peek(0xFF444D)==0x04) or (peek(0xFF444F)==0x04) then
+          if peek(0xFF1024)==0x00 then -- Sound effect --
+             poke(0x618001,0x00)
+             poke(0x618003,0x36)
+             poke(0x61801F,0x00)
+             poke(0xFF1024,0xFF)
+          end
+          if (dpeek(0xFF1000)==0x0000) then
+            dpoke(0xFF1000,0x01FF)
+          elseif (dpeek(0xFF1000)==0x0100) then
+            dpoke(0xFF1000,0x02FF)
+          elseif (dpeek(0xFF1000)==0x0200) then
+            dpoke(0xFF1000,0x03FF)
+          elseif (dpeek(0xFF1000)==0x0300) then
+            dpoke(0xFF1000,0x00FF)
+          end
+       end
+       if (peek(0xFF444D)==0x08) or (peek(0xFF444F)==0x08) then
+          if peek(0xFF1024)==0x00 then -- Sound effect --
+             poke(0x618001,0x00)
+             poke(0x618003,0x36)
+             poke(0x61801F,0x00)
+             poke(0xFF1024,0xFF)
+          end
+          if (dpeek(0xFF1000)==0x0000) then
+            dpoke(0xFF1000,0x03FF)
+          elseif (dpeek(0xFF1000)==0x0300) then
+            dpoke(0xFF1000,0x02FF)
+          elseif (dpeek(0xFF1000)==0x0200) then
+            dpoke(0xFF1000,0x01FF)
+          elseif (dpeek(0xFF1000)==0x0100) then
+            dpoke(0xFF1000,0x00FF)
+          end
+       end
+       if (dpeek(0xFF444C)>=0x0010) then -- 1P press button --
+          lpoke(0xD1A,0x1B40C450) -- Restore start button --
+          poke(0xFF4450,0x01) -- 1P auto press start --
+       end
+       if (dpeek(0xFF444E)>=0x0010) then -- 2P press button --
+          lpoke(0xD1A,0x1B40C450) -- Restore start button --
+          poke(0xFF4450,0x02) -- 2P auto press start --
+       end
+       if (dpeek(0xFF444C)>=0x0010) or (dpeek(0xFF444E)>=0x0010) then
+          poke(0x618001,0x00) -- Sound effect --
+          poke(0x618003,0x37)
+          poke(0x61801F,0x00)
+          if (peek(0xFF1000)==0x03) then
+             dpoke(0xCC8,0x0000) -- Disable music code --
+          end
+          if (peek(0xFF1000)~=0x03) then
+             dpoke(0xCC8,0x13FC) -- Restore music code --
+             poke(0xFF1002,0x03)
+          end
+       end
+   end
+end
+-- Restore Value --
+if (peek(0xFF4105)==0x04) then -- At character screen --
+   poke(0xFF1002,0x00)
+   poke(0xFF4464,0x00)
+   poke(0xFF4499,0x09) -- Infinity Credits --
+end
+-- Versus Mode Script --
+if (peek(0xFF1000)==0x01) then
+    if (peek(0xFF4105)==0x04) and (peek(0xFF4101)>0x00) then -- Activate 1P & 2P --
+       poke(0xFF4101,0x03)
+       poke(0xFF4124,0x03)
+       poke(0xFF3003,0x01)
+       poke(0xFF3403,0x01)
+       if (peek(0xFF4180)==0x0B) and (peek(0xFF41B0)<0x0B) then -- Stage music --
+         poke(0xFF4103,0x02)
+       end
+       if (peek(0xFF41B0)==0x0B) and (peek(0xFF4180)<0x0B) then
+         poke(0xFF4103,0x01)
+       end
+    end
+    if (peek(0xFF4105)>=0x0A) then -- Prevent cont. text & preparation --
+      poke(0xFF4101,0x03)
+      poke(0xFF4124,0x03)
+      poke(0xFF32B0,0x00)
+      poke(0xFF36B0,0x00)
+      poke(0xFF3003,0x01)
+      poke(0xFF3403,0x01)
+      poke(0xFF1003,0x01)
+    end
+    if (peek(0xFF4105)==0x10) then -- For draw game case --
+       poke(0xFF4101,0x03)
+       poke(0xFF4105,0x00)
+    end
+    if (peek(0xFF4105)==0x04) and (peek(0xFF1003)==0x01) then -- Return to char screen --
+      poke(0xFF4105,0x00)
+      poke(0xFF1003,0x00)
+      poke(0xFF4103,0x00)
+    end
+end
+-- Training Mode Script --
+if (peek(0xFF1000)==0x02) then
+    if (peek(0xFF4105)==0x04) and (peek(0xFF4101)>0x00) then -- Activate 1P & 2P --
+    poke(0xFF4101,0x03)
+    poke(0xFF4124,0x03)
+    poke(0xFF3003,0x01)
+    poke(0xFF3403,0x01)
+    end
+    if (peek(0xFF4105)==0x04) then
+      if ((peek(0xFF4180)==0x0A) and (peek(0xFF41B0)<0x0A)) or ((peek(0xFF41B0)==0x0A) and (peek(0xFF4180)<0x0A)) then -- Switching control --
+      poke(0xD35,0x4F)
+      poke(0xD45,0x4D)
+      poke(0xD3D,0x4E)
+      poke(0xD5B,0x4C)
+      end
+      if (peek(0xFF4180)==0x0B) and (peek(0xFF41B0)==0x0B) then -- Restoring control --
+      poke(0xD35,0x4D)
+      poke(0xD45,0x4F)
+      poke(0xD3D,0x4C)
+      poke(0xD5B,0x4E)
+      end
+      if (peek(0xFF4180)==0x0B) and (peek(0xFF41B0)<0x0B) then
+      poke(0xFF4103,0x02)
+      end
+      if (peek(0xFF41B0)==0x0B) and (peek(0xFF4180)<0x0B) then
+      poke(0xFF4103,0x01)
+      end
+    end
+   if (peek(0xFF4000)>=0x02) then
+      poke(0xFF4009,0x28) -- Other battle parameters --
+      poke(0xFF3274,0x03)
+      poke(0xFF4A74,0x03)
+      poke(0xFF3674,0x03)
+      poke(0xFF3E74,0x03)
+      poke(0xFF32C6,0x09)
+      poke(0xFF36C6,0x09)
+   end
+   if (peek(0xFF4000)==0x04) or (peek(0xFF4269)==0x0A) then
+      poke(0xFF3271,0xFF) -- Increase HP before start --
+      poke(0xFF3671,0xFF)
+      poke(0xFF3A71,0xFF)
+      poke(0xFF3E71,0xFF)
+      lpoke(0xFF1040,0x00000000) -- Restore value --
+   end
+   if (peek(0xFF4000)==0x08) then
+   -- HP recovery for 1P 1st character --
+      poke(0xFFF823,peek(0xFF3271)-0x6F)
+      if (peek(0xFF3271)<0x6F) then
+         dpoke(0xFFF822,0x0000)
+         poke(0xFF327B,0x01)
+         poke(0xFF1040,0x01)
+      end
+      if (peek(0x804020)==0xFD) and (peek(0xFF3271)~=0xFF) then
+         poke(0xFF1040,0x02)
+      end
+      if ((peek(0xFF1040)==0x01) and (peek(0xFF3271)<0xFF) and (peek(0xFF3007)==0x00)) or (peek(0xFF1040)==0x02) then
+         poke(0xFF3271,peek(0xFF3271)+0x1)
+      end
+      if (peek(0xFF3271)==0xFF) then
+         poke(0xFF1040,0x00)
+         poke(0xFF327B,0x90)
+      end
+   -- HP recovery for 2P 1st character --
+      poke(0xFFF8C3,peek(0xFF3671)-0x6F)
+      if (peek(0xFF3671)<0x6F) then
+         dpoke(0xFFF8C2,0x0000)
+         poke(0xFF367B,0x01)
+         poke(0xFF1041,0x01)
+      end
+      if (peek(0x804020)==0xFE) and (peek(0xFF3671)~=0xFF) then
+         poke(0xFF1041,0x02)
+      end
+      if ((peek(0xFF1041)==0x01) and (peek(0xFF3671)<0xFF) and (peek(0xFF3407)==0x00)) or (peek(0xFF1041)==0x02) then
+         poke(0xFF3671,peek(0xFF3671)+0x1)
+      end
+      if (peek(0xFF3671)==0xFF) then
+         poke(0xFF1041,0x00)
+         poke(0xFF367B,0x90)
+      end
+   -- HP recovery for 1P 2nd character --
+      poke(0xFFF873,peek(0xFF3A71)-0x6F)
+      if (peek(0xFF3A71)<0x6F) then
+         dpoke(0xFFF872,0x0000)
+         poke(0xFF3A7B,0x01)
+         poke(0xFF1042,0x01)
+      end
+      if (peek(0x804020)==0xFD) and (peek(0xFF3A71)~=0xFF) then
+         poke(0xFF1042,0x02)
+      end
+      if ((peek(0xFF1042)==0x01) and (peek(0xFF3A71)<0xFF) and (peek(0xFF3807)==0x00)) or (peek(0xFF1042)==0x02) then
+         poke(0xFF3A71,peek(0xFF3A71)+0x1)
+      end
+      if (peek(0xFF3A71)==0xFF) then
+         poke(0xFF1042,0x00)
+         poke(0xFF3A7B,0x90)
+      end
+   -- HP recovery for 2P 2nd character --
+      poke(0xFFF913,peek(0xFF3E71)-0x6F)
+      if (peek(0xFF3E71)<0x6F) then
+         dpoke(0xFFF912,0x0000)
+         poke(0xFF3E7B,0x01)
+         poke(0xFF1043,0x01)
+      end
+      if (peek(0x804020)==0xFE) and (peek(0xFF3E71)~=0xFF) then
+         poke(0xFF1043,0x02)
+      end
+      if ((peek(0xFF1043)==0x01) and (peek(0xFF3E71)<0xFF) and (peek(0xFF3C07)==0x00)) or (peek(0xFF1043)==0x02) then
+         poke(0xFF3E71,peek(0xFF3E71)+0x1)
+      end
+      if (peek(0xFF3E71)==0xFF) then
+         poke(0xFF1043,0x00)
+         poke(0xFF3E7B,0x90)
+      end
+   -- HP recovery for inactive character --
+      if (peek(0xFF3281)==0x00) then -- P1 not switched --
+         poke(0xFF3A71,0xFF)
+      end
+      if (peek(0xFF3281)==0x01) then -- P1 switched --
+         poke(0xFF3271,0xFF)
+      end
+      if (peek(0xFF3681)==0x00) then -- P2 not switched --
+         poke(0xFF3E71,0xFF)
+      end
+      if (peek(0xFF3681)==0x01) then -- P2 switched --
+         poke(0xFF3671,0xFF)
+      end
+   -- Return to char screen --
+      if (peek(0xFF4106)==0x0F) and ((peek(0xFF4450)==0x01) or (peek(0xFF4450)==0x02)) then
+         poke(0xFF4106,0x00)
+         poke(0xFF4105,0x00)
+         poke(0xFF4103,0x00)
+      end
+   end
+end
+-- Option Mode Script --
+if (peek(0xFF1000)==0x03) then
+   if (peek(0xFF4101)>0x00) then
+      poke(0xFF4451,0x02)
+      poke(0xFF44B3,0x02) -- English menu --
+      poke(0xFF1003,0x01)
+   end
+   if (peek(0xFF44A4)~=0xFF) and (dpeek(0xFF4100)==0x0000) and (peek(0xFF1003)==0x01) then -- Restart --
+      poke(0xFF4499,0x09) -- Increase credit --
+      poke(0xFF042B,0x00) -- Shorten wait time --
+      poke(0xFF082B,0x00)
+      poke(0xFF0C2B,0x00)
+      poke(0xFF4474,0x00) -- Hide text --
+      poke(0xFF44B3,region)
+   end
+   if (peek(0xFF44A4)==0xFF) and (dpeek(0xFF4100)==0x0000) and (peek(0xFF1003)==0x01) then -- Restore --
+      poke(0xFF4474,0x08)
+      poke(0xFF1003,0x02)
+      poke(0xFF1002,0x02) -- Menu screen --
+      lpoke(0xD1A,0x00000000) -- Disable original start button --
+      dpoke(0xCC8,0x0000) -- Disable music code --
+   end
+end
+-- Pause Function Script --
+    if (peek(0xFF4000)==0x08) and (peek(0xFF4100)>0x00) then
+       if (peek(0xFF4450)==0x00) then
+       poke(0xFF1002,0x00)
+       end
+       if (peek(0xFF4106)==0x00) and ((peek(0xFF4450)==0x10) or (peek(0xFF4450)==0x20)) and (peek(0xFF1002)==0x00) then
+       poke(0xFF4106,0x0F)
+       poke(0xFF1002,0xFF)
+       end
+       if (peek(0xFF4106)==0x0F) and ((peek(0xFF4450)==0x10) or (peek(0xFF4450)==0x20)) and (peek(0xFF1002)==0x00) then
+       poke(0xFF4106,0x00)
+       poke(0xFF1002,0xFF)
+       end
+    end
 off:
-    poke $54F8 "INSERT COIN"
-    poke $D35 $4D
-    poke $D45 $4F
-    poke $D3D $4C
-    poke $D5B $4E
-    lpoke $D1A $1B40C450 #Restore start button#
-    dpoke $CC8 $13FC #Restore music code#
+    poke(0x54F8,"INSERT COIN")
+    poke(0xD35,0x4D)
+    poke(0xD45,0x4F)
+    poke(0xD3D,0x4C)
+    poke(0xD5B,0x4E)
+    lpoke(0xD1A,0x1B40C450) -- Restore start button --
+    dpoke(0xCC8,0x13FC) -- Restore music code --
 
-script "Enable Hidden Characters"\
+luascript "Enable Hidden Characters [lua]"\
  "comm:When play as Onslaught, no 2nd form transformation, but the HP is double. The change partner command for Onslaught is disable (Human control case only)."
 on:
-#.03 rom hack#
-poke $B0AD $22
-poke $B0BF $22
-poke $B0D1 $22
-poke $B0E3 $22
-poke $12F45 $22
-poke $12F67 $22
-poke $12F89 $22
-poke $12FAB $22
-poke $162B0 $6E
-poke $7AD1F $00 #Arcade mode sprite fix during stage progress screen#
-#.04 rom hack#
-poke $E2C81 $42 #Boss grip choice#
-lpoke $E2C8E $013000E0 #Boss grip position#
-poke $E2C97 $2C
-poke $E2CAF $22
-poke $E2CB7 $2A
-poke $E2CD5 $26
-poke $E2CE5 $24
-poke $E2CF5 $28
-poke $E2D13 $10
-poke $E2D15 $08
-poke $E2D17 $22
-poke $E2D19 $2C
-poke $E2D1B $22
-poke $E2D23 $26
-poke $E2D29 $24
-poke $E2D2B $28
-poke $E2D31 $26
-poke $E2D3B $2C
-poke $E2D41 $2A
-poke $E2D43 $22
-dpoke $E351E $0000
+-- .03 rom hack --
+poke(0xB0AD,0x22)
+poke(0xB0BF,0x22)
+poke(0xB0D1,0x22)
+poke(0xB0E3,0x22)
+poke(0x12F45,0x22)
+poke(0x12F67,0x22)
+poke(0x12F89,0x22)
+poke(0x12FAB,0x22)
+poke(0x162B0,0x6E)
+poke(0x7AD1F,0x00) -- Arcade mode sprite fix during stage progress screen --
+-- .04 rom hack --
+poke(0xE2C81,0x42) -- Boss grip choice --
+lpoke(0xE2C8E,0x013000E0) -- Boss grip position --
+poke(0xE2C97,0x2C)
+poke(0xE2CAF,0x22)
+poke(0xE2CB7,0x2A)
+poke(0xE2CD5,0x26)
+poke(0xE2CE5,0x24)
+poke(0xE2CF5,0x28)
+poke(0xE2D13,0x10)
+poke(0xE2D15,0x08)
+poke(0xE2D17,0x22)
+poke(0xE2D19,0x2C)
+poke(0xE2D1B,0x22)
+poke(0xE2D23,0x26)
+poke(0xE2D29,0x24)
+poke(0xE2D2B,0x28)
+poke(0xE2D31,0x26)
+poke(0xE2D3B,0x2C)
+poke(0xE2D41,0x2A)
+poke(0xE2D43,0x22)
+dpoke(0xE351E,0x0000)
 run:
-#Selection of Onslaught#
-if (peek($FF4105)==$04)
-    if (peek($FF4180)==$02)and(peek($FF3053)==$22) #P1 Onslaught#
-       poke $FF3853 $22
-       poke $FF40B3 $22
-       poke $FF4185 $08
-    endif
-    if (peek($FF4180)==$04)and(peek($FF3053)!=$22)and(peek($FF3853)==$22) #P1 Onslaught - late selection#
-       poke $FF3053 $22
-       poke $FF40B1 $22
-       poke $FF4185 $08
-    endif
-    if (peek($FF41B0)==$02)and(peek($FF3453)==$22) #P2 Onslaught#
-      poke $FF3C53 $22
-      poke $FF40B7 $22
-      poke $FF41B5 $08
-    endif
-    if (peek($FF41B0)==$04)and(peek($FF3453)!=$22)and(peek($FF3C53)==$22) #P2 Onslaught - late selection#
-      poke $FF3453 $22
-      poke $FF40B5 $22
-      poke $FF41B5 $08
-    endif
-#Skip assistant select in Arcade mode#
-   if (peek($FF4140)==$01)and(((peek($FF3053)==$22)and(peek($FF4101)==$01)and(peek($FF4180)==$00))or((peek($FF3453)==$22)and(peek($FF4101)==$02)and(peek($FF41B0)==$00))) #P1 or P2 single play progress#
-      poke $FF5B6F $00
-   endif
-   if (peek($FF4140)==$00)and(peek($FF4160)==$01)and(peek($FF4180)==$00)and(peek($FF3053)==$22) #P1 challenged by P2#
-      if (peek($FF41B0)==$04)
-         poke $FF618F $00
-      endif
-   endif
-   if (peek($FF4140)==$00)and(peek($FF4160)==$02)and(peek($FF41B0)==$00)and(peek($FF3453)==$22) #P2 challenged by P1#
-      if (peek($FF4180)==$04)
-         poke $FF60AF $00
-      endif
-   endif
-#Colour fix - Always P1 colour#
-   if (peek($FF3053)==$22) #P1#
-      poke $FF3277 $00
-      poke $FF3A77 $00
-   endif
-   if (peek($FF3453)==$22) #P2#
-      poke $FF3677 $00
-      poke $FF3E77 $00
-   endif
-endif
-#1st Form Onslaught only case#
-if (peek($FF4113)!=$09)or((peek($FF3053)==$22)and(peek($FF3453)==$22))
-   if (peek($FF4000)==$02)and(peek($FF1000)!=$02)
-      if (peek($FF3053)==$22) #P1 Boss Green HP Bar#
-         poke $91426A $F9
-         poke $92E26A $F9
-      endif
-      if (peek($FF3453)==$22) #P2 Boss Green HP Bar#
-         poke $914272 $F9
-         poke $92E272 $F9
-      endif
-   endif
-   if (peek($FF4000)==$06)and(peek($FF1000)!=$02)
-      if (peek($FF3053)==$22) #P1 Boss double HP#
-         dpoke $FF3270 $0120
-      endif
-      if (peek($FF3453)==$22) #P2 Boss double HP#
-         dpoke $FF3670 $0120
-      endif
-   endif
-   if (peek($FF4000)>=$08)and(peek($FF4000)<=$10)
-      if (peek($FF3053)==$22)and(peek($FF1000)!=$02) #P1 Boss HP Display#
-         dpoke $FFF822 dpeek($FF3270)/2
-         if (dpeek($FF3270)!=$0000)
-            dpoke $FF327A dpeek($FFF822)+($90-dpeek($FFF822))/3
-         endif
-         if (dpeek($FF3270)<=$0001)
-            dpoke $FF327A $0000
-         endif
-      endif
-      if (peek($FF3453)==$22)and(peek($FF1000)!=$02) #P2 Boss HP Display#
-         dpoke $FFF8C2 dpeek($FF3670)/2
-         if (dpeek($FF3670)!=$0000)
-            dpoke $FF367A dpeek($FFF8C2)+($90-dpeek($FFF8C2))/3
-         endif
-         if (dpeek($FF3670)<=$0001)
-            dpoke $FF367A $0000
-         endif
-      endif
-      if (peek($FF3053)==$22)and(peek($FF30E6)==$0E)and(peek($FF3003)==$01) #P1 Boss no partner change#
-         poke $FF30E6 $00
-         dpoke $FF30B0 $0000
-      endif
-      if (peek($FF3453)==$22)and(peek($FF34E6)==$0E)and(peek($FF3403)==$01) #P2 Boss no partner change#
-         poke $FF34E6 $00
-         dpoke $FF34B0 $0000
-      endif
-      #Fix when HP 1 is added when defeat#
-      if (dpeek($FF3270)==$0001)and(dpeek($FF327A)==$0000) #P1#
-         poke $FF3271 $00
-      endif
-      if (dpeek($FF3670)==$0001)and(dpeek($FF367A)==$0000) #P2#
-         poke $FF3671 $00
-      endif
-   endif
-endif
-#2nd Form Onslaught skip when both sides are bosses#
-if (peek($FF4113)==$09)and(peek($FF4000)==$08)and(peek($FF3053)==$22)and(peek($FF3453)==$22)
-    if (peek($FF3003)==$01)and(dpeek($FF3270)<=$0003) #P1 Human Lose#
-       poke $FF3271 $00
-       poke $FF3C30 $00
-       poke $CE11D $01 #Disable special death effect for 1st form#
-    endif
-    if (peek($FF3403)==$01)and(dpeek($FF3670)<=$0003) #P2 Human Lose#
-       poke $FF3671 $00
-       poke $FF3830 $00
-    endif
-    if (peek($FF3003)==$00)and(dpeek($FF3270)<=$0003) #P1 CPU Lose#
-       poke $FF411B $FF
-       poke $FF4002 $01
-       poke $FF4005 $01
-       poke $FF3271 $00
-       poke $CE11D $01 #Disable special death effect for 1st form#
-    endif
-    if (peek($FF3403)==$00)and(dpeek($FF3670)<=$0003) #P2 CPU Lose#
-       poke $FF411B $FF
-       poke $FF4002 $01
-       poke $FF4005 $01
-       poke $FF3671 $00
-    endif
-endif
-if (peek($FF4000)==$0E)
-   poke $CE11D $06 #Restore value#
-endif
-#Fix CPU character display after challenge by human using Onslaught#
-if (peek($FF4105)==$0C)and(peek($FF4103)>$00)
-   if (peek($FF36B0)==$08) #P2#
-      poke $FF40B7 $20 
-   endif
-   if (peek($FF32B0)==$08) #P1#
-      poke $FF40B3 $20 
-   endif
-endif
+-- Selection of Onslaught --
+if (peek(0xFF4105)==0x04) then
+    if (peek(0xFF4180)==0x02) and (peek(0xFF3053)==0x22) then -- P1 Onslaught --
+       poke(0xFF3853,0x22)
+       poke(0xFF40B3,0x22)
+       poke(0xFF4185,0x08)
+    end
+    if (peek(0xFF4180)==0x04) and (peek(0xFF3053)~=0x22) and (peek(0xFF3853)==0x22) then -- P1 Onslaught - late selection --
+       poke(0xFF3053,0x22)
+       poke(0xFF40B1,0x22)
+       poke(0xFF4185,0x08)
+    end
+    if (peek(0xFF41B0)==0x02) and (peek(0xFF3453)==0x22) then -- P2 Onslaught --
+      poke(0xFF3C53,0x22)
+      poke(0xFF40B7,0x22)
+      poke(0xFF41B5,0x08)
+    end
+    if (peek(0xFF41B0)==0x04) and (peek(0xFF3453)~=0x22) and (peek(0xFF3C53)==0x22) then -- P2 Onslaught - late selection --
+      poke(0xFF3453,0x22)
+      poke(0xFF40B5,0x22)
+      poke(0xFF41B5,0x08)
+    end
+-- Skip assistant select in Arcade mode --
+   if (peek(0xFF4140)==0x01) and (((peek(0xFF3053)==0x22) and (peek(0xFF4101)==0x01) and (peek(0xFF4180)==0x00)) or ((peek(0xFF3453)==0x22) and (peek(0xFF4101)==0x02) and (peek(0xFF41B0)==0x00))) then -- P1 or P2 single play progress --
+      poke(0xFF5B6F,0x00)
+   end
+   if (peek(0xFF4140)==0x00) and (peek(0xFF4160)==0x01) and (peek(0xFF4180)==0x00) and (peek(0xFF3053)==0x22) then -- P1 challenged by P2 --
+      if (peek(0xFF41B0)==0x04) then
+         poke(0xFF618F,0x00)
+      end
+   end
+   if (peek(0xFF4140)==0x00) and (peek(0xFF4160)==0x02) and (peek(0xFF41B0)==0x00) and (peek(0xFF3453)==0x22) then -- P2 challenged by P1 --
+      if (peek(0xFF4180)==0x04) then
+         poke(0xFF60AF,0x00)
+      end
+   end
+-- Colour fix - Always P1 colour --
+   if (peek(0xFF3053)==0x22) then -- P1 --
+      poke(0xFF3277,0x00)
+      poke(0xFF3A77,0x00)
+   end
+   if (peek(0xFF3453)==0x22) then -- P2 --
+      poke(0xFF3677,0x00)
+      poke(0xFF3E77,0x00)
+   end
+end
+-- 1st Form Onslaught only case --
+if (peek(0xFF4113)~=0x09) or ((peek(0xFF3053)==0x22) and (peek(0xFF3453)==0x22)) then
+   if (peek(0xFF4000)==0x02) and (peek(0xFF1000)~=0x02) then
+      if (peek(0xFF3053)==0x22) then -- P1 Boss Green HP Bar --
+         poke(0x91426A,0xF9)
+         poke(0x92E26A,0xF9)
+      end
+      if (peek(0xFF3453)==0x22) then -- P2 Boss Green HP Bar --
+         poke(0x914272,0xF9)
+         poke(0x92E272,0xF9)
+      end
+   end
+   if (peek(0xFF4000)==0x06) and (peek(0xFF1000)~=0x02) then
+      if (peek(0xFF3053)==0x22) then -- P1 Boss double HP --
+         dpoke(0xFF3270,0x0120)
+      end
+      if (peek(0xFF3453)==0x22) then -- P2 Boss double HP --
+         dpoke(0xFF3670,0x0120)
+      end
+   end
+   if (peek(0xFF4000)>=0x08) and (peek(0xFF4000)<=0x10) then
+      if (peek(0xFF3053)==0x22) and (peek(0xFF1000)~=0x02) then -- P1 Boss HP Display --
+         dpoke(0xFFF822,dpeek(0xFF3270)/2)
+         if (dpeek(0xFF3270)~=0x0000) then
+            dpoke(0xFF327A,dpeek(0xFFF822)+(0x90-dpeek(0xFFF822))/3)
+         end
+         if (dpeek(0xFF3270)<=0x0001) then
+            dpoke(0xFF327A,0x0000)
+         end
+      end
+      if (peek(0xFF3453)==0x22) and (peek(0xFF1000)~=0x02) then -- P2 Boss HP Display --
+         dpoke(0xFFF8C2,dpeek(0xFF3670)/2)
+         if (dpeek(0xFF3670)~=0x0000) then
+            dpoke(0xFF367A,dpeek(0xFFF8C2)+(0x90-dpeek(0xFFF8C2))/3)
+         end
+         if (dpeek(0xFF3670)<=0x0001) then
+            dpoke(0xFF367A,0x0000)
+         end
+      end
+      if (peek(0xFF3053)==0x22) and (peek(0xFF30E6)==0x0E) and (peek(0xFF3003)==0x01) then -- P1 Boss no partner change --
+         poke(0xFF30E6,0x00)
+         dpoke(0xFF30B0,0x0000)
+      end
+      if (peek(0xFF3453)==0x22) and (peek(0xFF34E6)==0x0E) and (peek(0xFF3403)==0x01) then -- P2 Boss no partner change --
+         poke(0xFF34E6,0x00)
+         dpoke(0xFF34B0,0x0000)
+      end
+      -- Fix when HP 1 is added when defeat --
+      if (dpeek(0xFF3270)==0x0001) and (dpeek(0xFF327A)==0x0000) then -- P1 --
+         poke(0xFF3271,0x00)
+      end
+      if (dpeek(0xFF3670)==0x0001) and (dpeek(0xFF367A)==0x0000) then -- P2 --
+         poke(0xFF3671,0x00)
+      end
+   end
+end
+-- 2nd Form Onslaught skip when both sides are bosses --
+if (peek(0xFF4113)==0x09) and (peek(0xFF4000)==0x08) and (peek(0xFF3053)==0x22) and (peek(0xFF3453)==0x22) then
+    if (peek(0xFF3003)==0x01) and (dpeek(0xFF3270)<=0x0003) then -- P1 Human Lose --
+       poke(0xFF3271,0x00)
+       poke(0xFF3C30,0x00)
+       poke(0xCE11D,0x01) -- Disable special death effect for 1st form --
+    end
+    if (peek(0xFF3403)==0x01) and (dpeek(0xFF3670)<=0x0003) then -- P2 Human Lose --
+       poke(0xFF3671,0x00)
+       poke(0xFF3830,0x00)
+    end
+    if (peek(0xFF3003)==0x00) and (dpeek(0xFF3270)<=0x0003) then -- P1 CPU Lose --
+       poke(0xFF411B,0xFF)
+       poke(0xFF4002,0x01)
+       poke(0xFF4005,0x01)
+       poke(0xFF3271,0x00)
+       poke(0xCE11D,0x01) -- Disable special death effect for 1st form --
+    end
+    if (peek(0xFF3403)==0x00) and (dpeek(0xFF3670)<=0x0003) then -- P2 CPU Lose --
+       poke(0xFF411B,0xFF)
+       poke(0xFF4002,0x01)
+       poke(0xFF4005,0x01)
+       poke(0xFF3671,0x00)
+    end
+end
+if (peek(0xFF4000)==0x0E) then
+   poke(0xCE11D,0x06) -- Restore value --
+end
+-- Fix CPU character display after challenge by human using Onslaught --
+if (peek(0xFF4105)==0x0C) and (peek(0xFF4103)>0x00) then
+   if (peek(0xFF36B0)==0x08) then -- P2 --
+      poke(0xFF40B7,0x20) 
+   end
+   if (peek(0xFF32B0)==0x08) then -- P1 --
+      poke(0xFF40B3,0x20) 
+   end
+end
 
-script "Onslaught Mode"\
+luascript "Onslaught Mode [lua]"\
  "comm:Similar to the DC/PS ver. Onsluaght can transform to 2nd form. The change partner command (214P) is now for transformation, but not for the case of same characters."
 run:
-#Main#
-if (peek($FF3053)==$22)or(peek($FF3453)==$22)
-   poke $FF4113 $09 #Onslaught's stage#
-   if (peek($FF4081)!=$07)and(dpeek($FF4006)>=$0210) #No starting dialogue#
-      dpoke $FF4006 $0000
-   endif
-   if (peek($FF4269)==$0A) #No transformation dialogue#
-      poke $FF4269 $0E
-   endif
-endif
-if (peek($FF4113)==$09)and(peek($FF4000)==$08)and(peek($FF4081)!=$07)
-#Play the character music#
-   if (dpeek($FF3270)==$0000) #P1 1st character lose#
-      if (peek($FF3000)==$01)
-         poke $FF1030 peek($FF3853)
-      endif
-      if (dpeek($FF327C)==$012C)
-         poke $618001 $00
-         poke $618003 peek($FF1031)
-         poke $61801F $00
-         dpoke $FF327C $0000
-      endif
-   endif
-   if (dpeek($FF3A70)==$0000) #P1 2nd character lose#
-      if (peek($FF3800)==$01)
-         poke $FF1030 peek($FF3053)
-      endif
-      if (dpeek($FF3A7C)==$012C)
-         poke $618001 $00
-         poke $618003 peek($FF1031)
-         poke $61801F $00
-         dpoke $FF3A7C $0000
-      endif
-   endif
-   if (dpeek($FF3670)==$0000) #P2 1st character lose#
-      if (peek($FF3400)==$01)
-         poke $FF1030 peek($FF3C53)
-      endif
-      if (dpeek($FF367C)==$012C)
-         poke $618001 $00
-         poke $618003 peek($FF1031)
-         poke $61801F $00
-         dpoke $FF367C $0000
-      endif
-   endif
-   if (dpeek($FF3E70)==$0000) #P2 2nd character lose#
-      if (peek($FF3C00)==$01)
-         poke $FF1030 peek($FF3453)
-      endif
-      if (dpeek($FF3E7C)==$012C)
-         poke $618001 $00
-         poke $618003 peek($FF1031)
-         poke $61801F $00
-         dpoke $FF3E7C $0000
-      endif
-   endif
-#Get music code number#
-   if (peek($FF1030)>=$02)or(peek($FF1030)<=$20) #Normal Characters#
-      poke $FF1031 (peek($FF1030))/2+$0C
-   endif
-   if peek($FF1030)>=$24 #Hidden Characters#
-      poke $FF1031 $2D
-   endif
-#Trasnform to 2nd form by command#
-   if (peek($FF3053)==$22)and(peek($FF30E6)==$0E) #P1 Boss to 2nd form#
-      dpoke $FF30B0 $0000
-      poke $FF403E $02
-      poke $FF30E6 $00
-   endif
-   if (peek($FF3453)==$22)and(peek($FF34E6)==$0E) #P2 Boss to 2nd form#
-      dpoke $FF34B0 $0000
-      poke $FF403E $02
-      poke $FF34E6 $00
-   endif
-endif
+-- Main --
+if (peek(0xFF3053)==0x22) or (peek(0xFF3453)==0x22) then
+   poke(0xFF4113,0x09) -- Onslaught's stage --
+   if (peek(0xFF4081)~=0x07) and (dpeek(0xFF4006)>=0x0210) then -- No starting dialogue --
+      dpoke(0xFF4006,0x0000)
+   end
+   if (peek(0xFF4269)==0x0A) then -- No transformation dialogue --
+      poke(0xFF4269,0x0E)
+   end
+end
+if (peek(0xFF4113)==0x09) and (peek(0xFF4000)==0x08) and (peek(0xFF4081)~=0x07) then
+-- Play the character music --
+   if (dpeek(0xFF3270)==0x0000) then -- P1 1st character lose --
+      if (peek(0xFF3000)==0x01) then
+         poke(0xFF1030,peek(0xFF3853))
+      end
+      if (dpeek(0xFF327C)==0x012C) then
+         poke(0x618001,0x00)
+         poke(0x618003,peek(0xFF1031))
+         poke(0x61801F,0x00)
+         dpoke(0xFF327C,0x0000)
+      end
+   end
+   if (dpeek(0xFF3A70)==0x0000) then -- P1 2nd character lose --
+      if (peek(0xFF3800)==0x01) then
+         poke(0xFF1030,peek(0xFF3053))
+      end
+      if (dpeek(0xFF3A7C)==0x012C) then
+         poke(0x618001,0x00)
+         poke(0x618003,peek(0xFF1031))
+         poke(0x61801F,0x00)
+         dpoke(0xFF3A7C,0x0000)
+      end
+   end
+   if (dpeek(0xFF3670)==0x0000) then -- P2 1st character lose --
+      if (peek(0xFF3400)==0x01) then
+         poke(0xFF1030,peek(0xFF3C53))
+      end
+      if (dpeek(0xFF367C)==0x012C) then
+         poke(0x618001,0x00)
+         poke(0x618003,peek(0xFF1031))
+         poke(0x61801F,0x00)
+         dpoke(0xFF367C,0x0000)
+      end
+   end
+   if (dpeek(0xFF3E70)==0x0000) then -- P2 2nd character lose --
+      if (peek(0xFF3C00)==0x01) then
+         poke(0xFF1030,peek(0xFF3453))
+      end
+      if (dpeek(0xFF3E7C)==0x012C) then
+         poke(0x618001,0x00)
+         poke(0x618003,peek(0xFF1031))
+         poke(0x61801F,0x00)
+         dpoke(0xFF3E7C,0x0000)
+      end
+   end
+-- Get music code number --
+   if (peek(0xFF1030)>=0x02) or (peek(0xFF1030)<=0x20) then -- Normal Characters --
+      poke(0xFF1031,(peek(0xFF1030))/2+0x0C)
+   end
+   if peek(0xFF1030)>=0x24 then -- Hidden Characters --
+      poke(0xFF1031,0x2D)
+   end
+-- Trasnform to 2nd form by command --
+   if (peek(0xFF3053)==0x22) and (peek(0xFF30E6)==0x0E) then -- P1 Boss to 2nd form --
+      dpoke(0xFF30B0,0x0000)
+      poke(0xFF403E,0x02)
+      poke(0xFF30E6,0x00)
+   end
+   if (peek(0xFF3453)==0x22) and (peek(0xFF34E6)==0x0E) then -- P2 Boss to 2nd form --
+      dpoke(0xFF34B0,0x0000)
+      poke(0xFF403E,0x02)
+      poke(0xFF34E6,0x00)
+   end
+end
 
 script "Allow same characters"  
 on:
