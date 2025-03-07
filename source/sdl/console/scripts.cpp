@@ -415,6 +415,22 @@ int get_running_script_info(int *nb, int *line, char **sect) {
     return 0;
 }
 
+static void run_off_section(int n) {
+    if (script[n].off) {
+	running++;
+	section = "off";
+	for (sline=0; script[n].off[sline]; sline++)
+	    run_console_command(script[n].off[sline]);
+	running--;
+    } else if (script[n].off_lua) {
+	char *argv[2];
+	section = "off";
+	argv[0] = "luascript";
+	argv[1] = script[n].off_lua;
+	do_lua(2,argv);
+    }
+}
+
 static void run_script(int n) {
     // It's annoying, in case of error in an on: clause then the error can be caught only here so we must duplicate the try...catch system !
     try {
@@ -458,19 +474,7 @@ static void run_script(int n) {
 		}
 		return;
 	    }
-	    if (script[n].off) {
-		running++;
-		section = "off";
-		for (sline=0; script[n].off[sline]; sline++)
-		    run_console_command(script[n].off[sline]);
-		running--;
-	    } else if (script[n].off_lua) {
-		char *argv[2];
-		section = "off";
-		argv[0] = "luascript";
-		argv[1] = script[n].off_lua;
-		do_lua(2,argv);
-	    }
+	    run_off_section(n);
 	    return;
 	}
 	if (script[n].on) {
@@ -793,8 +797,10 @@ void do_script(int argc, char **argv) {
 
 void stop_scripts() {
     // Stop scripts which run every frame, useful after an error in a script
-    for (int n=0; n<nb_scripts; n++)
+    for (int n=0; n<nb_scripts; n++) {
+	run_off_section(n);
 	script[n].status = 0;
+    }
     running = 0;
 }
 
