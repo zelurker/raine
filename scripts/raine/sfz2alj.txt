@@ -1,14 +1,15 @@
 luascript "Console Mode [lua]" \
-"comm:In training mode, press select and then start to select character.
+"comm:Coin button is used for pause. In training mode, start button can restore HP, pause the game and then press start to select character..
 Shin Akuma/Gouki is unlockable by start button in all modes."
 run:
 -- Start up --
 if (peek(0xFF8076)==0x00) then
+   dpoke(0xFF8072,0x0109) -- 1 coin 9 credits --
    if (peek(0xFF0000)~=0x06) then -- Restore original values at start in case of reset --
        poke(0x185A4,0x04)
        poke(0x185B2,0x08)
-       p1win=0X00
-       p2win=0X00
+       p1win=0x00
+       p2win=0x00
        lpoke(0x1426,0x2B400060)
        lpoke(0x143C,0x1B410060)
        lpoke(0x1430,0x2B400064)
@@ -18,6 +19,8 @@ if (peek(0xFF8076)==0x00) then
        dpoke(0x920FC,0x3B40)
        lpoke(0x7F92A,0x1D6C0082)
        dpoke(0x7F92E,0x0003)
+       poke(0x87C18,0x00) -- Retore HP code --
+       poke(0x87C4E,0x00)
    end
    if (peek(0xFF8001)>=0x0C) then -- Start button start --
        if (peek(0x804020)<0xFF) then
@@ -298,7 +301,7 @@ if (peek(0xFFB31E)==0x9A) then
        lpoke(0x143C,0x1B410060)
        lpoke(0x1430,0x2B400064)
        lpoke(0x1448,0x1B400064)
-       -- #poke(0xFF0005,0x00) #restore counter used in option## --
+       -- --poke(0xFF0005,0x00) #restore counter used in option## --
    end
 end
 -- Infinity Credits --
@@ -340,24 +343,70 @@ if (peek(0xFF0000)==0x02) then
     poke(0x185B2,0x08)
     end
     if (peek(0xFF8109)>=0x62) then
+       if (peek(0xFF800D)==0x00) then -- At start --
+          poke(0x87C18,0x03) -- Change HP code --
+          poke(0x87C4E,0x03)
+          lpoke(0xFF8450,0x00FF0090) -- Increase HP --
+          lpoke(0xFF8850,0x00FF0090)
+       end
+      -- 1P HP restore --
+       if (peek(0xFF8451)>=0x6F) then
+          poke(0xFF8751,peek(0xFF8451)-0x6F)
+       end
+       if (peek(0xFF8451)<0x6F) then
+          poke(0xFF8451,0x6E)
+          dpoke(0xFF8750,0x0000)
+       end
+       if ((peek(0xFF8451)<0x6F) and (peek(0xFF8405)==0x00)) or (peek(0x804020)==0xFD) then
+          poke(0xFF8453,peek(0xFF8751))
+          poke(0xFF0030,0x01)
+       end
+       if (peek(0xFF0030)==0x01) and (peek(0xFF8451)<0xFF) then
+          poke(0xFF8451,peek(0xFF8451)+0x1)
+          poke(0xFF8453,peek(0xFF8453)+0x1)
+       end
+       if (peek(0xFF8451)==0xFF) then
+          poke(0xFF8453,0x90)
+          poke(0xFF0030,0x00)
+       end
+      -- 2P HP restore --
+       if (peek(0xFF8851)>=0x6F) then
+          poke(0xFF8B51,peek(0xFF8851)-0x6F)
+       end
+       if (peek(0xFF8851)<0x6F) then
+          poke(0xFF8851,0x6E)
+          dpoke(0xFF8B50,0x0000)
+       end
+       if ((peek(0xFF8851)<0x6F) and (peek(0xFF8805)==0x00)) or (peek(0x804020)==0xFE) then
+          poke(0xFF8853,peek(0xFF8B51))
+          poke(0xFF0031,0x01)
+       end
+       if (peek(0xFF0031)==0x01) and (peek(0xFF8851)<0xFF) then
+          poke(0xFF8851,peek(0xFF8851)+0x1)
+          poke(0xFF8853,peek(0xFF8853)+0x1)
+       end
+       if (peek(0xFF8851)==0xFF) then
+          poke(0xFF8853,0x90)
+          poke(0xFF0031,0x00)
+       end
+       -- Other battle parameters --
        poke(0xFF810A,0x30)
-       poke(0xFF8451,0x90)
-       poke(0xFF8453,0x90)
-       poke(0xFF8851,0x90)
-       poke(0xFF8853,0x90)
        poke(0xFF849F,0x90)
        poke(0xFF889F,0x90)
     end
     if (peek(0xFF8009)==0x04) and (peek(0xFF800D)==0x02) then
        if (peek(0xFF8000)==0x01) and ((peek(0xFF849C)==0x80) or (peek(0xFF889C)==0x80)) then
-       poke(0xFF8480,0x00)
-       poke(0xFF8880,0x00)
+          poke(0xFF8480,0x00)
+          poke(0xFF8880,0x00)
        end
        if (peek(0xFF8000)==0x01) and (peek(0xFF8885)==0x02) then
-       poke(0xFF8484,0x04)
-       poke(0xFF8884,0x04)
-       poke(0xFF80AC,0x00)
-       poke(0xFF8109,0x00)
+          poke(0xFF8484,0x04)
+          poke(0xFF8884,0x04)
+          poke(0xFF80AC,0x00)
+          poke(0xFF8109,0x00)
+          poke(0x87C18,0x00) -- Retore HP code --
+          poke(0x87C4E,0x00)
+          dpoke(0xFF0030,0x0000)
        end
     end
 end
@@ -429,7 +478,7 @@ if (peek(0xFF0000)==0x06) then
     end
 end
 -- Pause Function Script. --
-    if (peek(0xFF8009)==0x04) and (peek(0xFF800D)==0x02) then
+    if ((peek(0xFF8009)==0x04) or (peek(0xFF8009)==0x0A)) and (peek(0xFF800D)==0x02) then
        if (peek(0x804020)==0xFF) then
        poke(0xFF0002,0x00)
        end
@@ -530,114 +579,224 @@ off:
     dpoke(0x920FC,0x3B40)
     lpoke(0x7F92A,0x1D6C0082)
     dpoke(0x7F92E,0x0003)
+    poke(0x87C18,0x00) -- Retore HP code --
+    poke(0x87C4E,0x00)
 
-script "Green Player Select Screen" \
-"comm:Activiate and then close it. The effect will be lasting until the emulator is closed.
+luascript "Original Title Screen [lua]"
+run:
+if (dpeek(0xFFB31E)==0x9A76) or (dpeek(0xFFB31E)==0x9A86) or (dpeek(0xFFB31E)==0x9AA6) then
+    dpoke(0xFF8012,0x0000) -- Stop flashing --
+    dpoke(0xFF8054,0x0000) -- Stop scrolling --
+    for i=0,0x17C,0x4 do
+       poke(0x908003+i,0x05)
+    end
+    dpoke(0x908000,0x1108) 
+    dpoke(0x908004,0x110E) 
+    dpoke(0x908008,0x1113) 
+    dpoke(0x90800C,0x111A) 
+    dpoke(0x908010,0x090A) 
+    dpoke(0x908014,0x090A) 
+    dpoke(0x908018,0x090A) 
+    dpoke(0x90801C,0x1108) 
+    dpoke(0x908020,0x1109) 
+    dpoke(0x908024,0x110F) 
+    dpoke(0x908028,0x1114) 
+    dpoke(0x90802C,0x111B) 
+    dpoke(0x908030,0x090A) 
+    dpoke(0x908034,0x090A) 
+    dpoke(0x908038,0x090A) 
+    dpoke(0x90803C,0x1109) 
+    dpoke(0x908040,0x110A) 
+    dpoke(0x908044,0x090A) 
+    dpoke(0x908048,0x1115) 
+    dpoke(0x90804C,0x090A) 
+    dpoke(0x908050,0x090A) 
+    dpoke(0x908054,0x1116) 
+    dpoke(0x908058,0x111C) 
+    dpoke(0x90805C,0x110A) 
+    dpoke(0x908060,0x110A) 
+    dpoke(0x908064,0x090A) 
+    dpoke(0x908068,0x090A) 
+    dpoke(0x90806C,0x090A) 
+    dpoke(0x908070,0x1110) 
+    dpoke(0x908074,0x1117) 
+    dpoke(0x908078,0x111D) 
+    dpoke(0x90807C,0x110A) 
+    dpoke(0x908080,0x110B) 
+    dpoke(0x908084,0x090A) 
+    dpoke(0x908088,0x1116) 
+    dpoke(0x90808C,0x111C) 
+    dpoke(0x908090,0x111F) 
+    dpoke(0x908094,0x1121) 
+    dpoke(0x908098,0x090A) 
+    dpoke(0x90809C,0x110B) 
+    dpoke(0x9080A0,0x090A) 
+    dpoke(0x9080A4,0x1110) 
+    dpoke(0x9080A8,0x1117) 
+    dpoke(0x9080AC,0x111D) 
+    dpoke(0x9080B0,0x090A) 
+    dpoke(0x9080B4,0x1122) 
+    dpoke(0x9080B8,0x090A) 
+    dpoke(0x9080BC,0x090A) 
+    dpoke(0x9080C0,0x110C) 
+    dpoke(0x9080C4,0x1111) 
+    dpoke(0x9080C8,0x1118) 
+    dpoke(0x9080CC,0x1116) 
+    dpoke(0x9080D0,0x111C) 
+    dpoke(0x9080D4,0x1123) 
+    dpoke(0x9080D8,0x090A) 
+    dpoke(0x9080DC,0x110C) 
+    dpoke(0x9080E0,0x110D) 
+    dpoke(0x9080E4,0x1112) 
+    dpoke(0x9080E8,0x1119) 
+    dpoke(0x9080EC,0x111E) 
+    dpoke(0x9080F0,0x1120) 
+    dpoke(0x9080F4,0x1124) 
+    dpoke(0x9080F8,0x090A) 
+    dpoke(0x9080FC,0x110D) 
+    dpoke(0x908100,0x1125) 
+    dpoke(0x908104,0x1129) 
+    dpoke(0x908108,0x112D) 
+    dpoke(0x90810C,0x1131) 
+    dpoke(0x908110,0x1135) 
+    dpoke(0x908114,0x1139) 
+    dpoke(0x908118,0x090A) 
+    dpoke(0x90811C,0x1125) 
+    dpoke(0x908120,0x1126) 
+    dpoke(0x908124,0x112A) 
+    dpoke(0x908128,0x112E) 
+    dpoke(0x90812C,0x1132) 
+    dpoke(0x908130,0x1136) 
+    dpoke(0x908134,0x113A) 
+    dpoke(0x908138,0x1122) 
+    dpoke(0x90813C,0x1126) 
+    dpoke(0x908140,0x1127) 
+    dpoke(0x908144,0x112B) 
+    dpoke(0x908148,0x112F) 
+    dpoke(0x90814C,0x1133) 
+    dpoke(0x908150,0x1137) 
+    dpoke(0x908154,0x113B) 
+    dpoke(0x908158,0x113D) 
+    dpoke(0x90815C,0x1127) 
+    dpoke(0x908160,0x1128) 
+    dpoke(0x908164,0x112C) 
+    dpoke(0x908168,0x1130) 
+    dpoke(0x90816C,0x1134) 
+    dpoke(0x908170,0x1138) 
+    dpoke(0x908174,0x113C) 
+    dpoke(0x908178,0x113E) 
+    dpoke(0x90817C,0x1128) 
+  -- For opening part --
+    if (peek(0xFF8076)==0x00) then
+       for i=0,0x17F,0x4 do
+          lpoke(0x908200+i,lpeek(0x908000+i))
+       end
+       dpoke(0xFF8010,0x0080)
+       dpoke(0xFF8028,0x0100)
+    end
+end
+
+luascript "Green Player Select Screen [lua]" \
+"comm:The effect will be lasting until the emulator is closed.
 This work on the modes that originally have yellow Player Select Screen.
 Effect can be overrided by 'Blue Player Select Screen' or 'Special Player Select Screen'."
 on:
-if (peek($2A6112)!=$02)
-    lpoke $2A6112 $02C304D2
-    lpoke $2A6116 $06E108F0
-    lpoke $2A611A $0AF00CF0
-    lpoke $2A611E $0DF002C3
-    lpoke $2A6122 $04D206E1
-    lpoke $2A6126 $08F00AF0
-    lpoke $2A612A $0CF00DF0
-    lpoke $2A6132 $02B402C3
-    lpoke $2A6136 $04D206E1
-    lpoke $2A613A $08F00AF0
-    lpoke $2A613E $0CF002C3
-    lpoke $2A6142 $04D206E1
-    lpoke $2A6146 $08F00FF0
-    lpoke $2A614A $0CF00DF0
-    lpoke $2A6152 $02A502B4
-    lpoke $2A6156 $02C304D2
-    lpoke $2A615A $06E108F0
-    lpoke $2A615E $0AF002B4
-    lpoke $2A6162 $02C304D2
-    lpoke $2A6166 $06E108F0
-    lpoke $2A616A $0AF00CF0
-    lpoke $2A6172 $029602A5
-    lpoke $2A6176 $02B402C3
-    lpoke $2A617A $04D206E1
-    lpoke $2A617E $08F002A5
-    lpoke $2A6182 $02B402C3
-    lpoke $2A6186 $04D206E1
-    lpoke $2A618A $08F00AF0
-    lpoke $2A6192 $02870296
-    lpoke $2A6196 $02A502B4
-    lpoke $2A619A $02C304D2
-    lpoke $2A619E $06E10296
-    lpoke $2A61A2 $02A502B4
-    lpoke $2A61A6 $02C304D2
-    lpoke $2A61AA $06E108F0
-    lpoke $2A61B2 $02780287
-    lpoke $2A61B6 $029602A5
-    lpoke $2A61BA $02B402C3
-    lpoke $2A61BE $04D20287
-    lpoke $2A61C2 $029602A5
-    lpoke $2A61C6 $02B402C3
-    lpoke $2A61CA $04D206E1
-    lpoke $2A61D2 $02790278
-    lpoke $2A61D6 $02870296
-    lpoke $2A61DA $02A502B4
-    lpoke $2A61DE $02C30278
-    lpoke $2A61E2 $02870296
-    lpoke $2A61E6 $02A502B4
-    lpoke $2A61EA $02C304D2
-    lpoke $2A61F2 $027A0279
-    lpoke $2A61F6 $02780287
-    lpoke $2A61FA $029602A5
-    lpoke $2A61FE $02B40279
-    lpoke $2A6202 $02780287
-    lpoke $2A6206 $029602A5
-    lpoke $2A620A $02B402C3
-endif
+    lpoke(0x2A6112,0x02C304D2)
+    lpoke(0x2A6116,0x06E108F0)
+    lpoke(0x2A611A,0x0AF00CF0)
+    lpoke(0x2A611E,0x0DF002C3)
+    lpoke(0x2A6122,0x04D206E1)
+    lpoke(0x2A6126,0x08F00AF0)
+    lpoke(0x2A612A,0x0CF00DF0)
+    lpoke(0x2A6132,0x02B402C3)
+    lpoke(0x2A6136,0x04D206E1)
+    lpoke(0x2A613A,0x08F00AF0)
+    lpoke(0x2A613E,0x0CF002C3)
+    lpoke(0x2A6142,0x04D206E1)
+    lpoke(0x2A6146,0x08F00FF0)
+    lpoke(0x2A614A,0x0CF00DF0)
+    lpoke(0x2A6152,0x02A502B4)
+    lpoke(0x2A6156,0x02C304D2)
+    lpoke(0x2A615A,0x06E108F0)
+    lpoke(0x2A615E,0x0AF002B4)
+    lpoke(0x2A6162,0x02C304D2)
+    lpoke(0x2A6166,0x06E108F0)
+    lpoke(0x2A616A,0x0AF00CF0)
+    lpoke(0x2A6172,0x029602A5)
+    lpoke(0x2A6176,0x02B402C3)
+    lpoke(0x2A617A,0x04D206E1)
+    lpoke(0x2A617E,0x08F002A5)
+    lpoke(0x2A6182,0x02B402C3)
+    lpoke(0x2A6186,0x04D206E1)
+    lpoke(0x2A618A,0x08F00AF0)
+    lpoke(0x2A6192,0x02870296)
+    lpoke(0x2A6196,0x02A502B4)
+    lpoke(0x2A619A,0x02C304D2)
+    lpoke(0x2A619E,0x06E10296)
+    lpoke(0x2A61A2,0x02A502B4)
+    lpoke(0x2A61A6,0x02C304D2)
+    lpoke(0x2A61AA,0x06E108F0)
+    lpoke(0x2A61B2,0x02780287)
+    lpoke(0x2A61B6,0x029602A5)
+    lpoke(0x2A61BA,0x02B402C3)
+    lpoke(0x2A61BE,0x04D20287)
+    lpoke(0x2A61C2,0x029602A5)
+    lpoke(0x2A61C6,0x02B402C3)
+    lpoke(0x2A61CA,0x04D206E1)
+    lpoke(0x2A61D2,0x02790278)
+    lpoke(0x2A61D6,0x02870296)
+    lpoke(0x2A61DA,0x02A502B4)
+    lpoke(0x2A61DE,0x02C30278)
+    lpoke(0x2A61E2,0x02870296)
+    lpoke(0x2A61E6,0x02A502B4)
+    lpoke(0x2A61EA,0x02C304D2)
+    lpoke(0x2A61F2,0x027A0279)
+    lpoke(0x2A61F6,0x02780287)
+    lpoke(0x2A61FA,0x029602A5)
+    lpoke(0x2A61FE,0x02B40279)
+    lpoke(0x2A6202,0x02780287)
+    lpoke(0x2A6206,0x029602A5)
+    lpoke(0x2A620A,0x02B402C3)
 
-script "Blue Player Select Screen" \
+luascript "Blue Player Select Screen [lua]" \
 "comm:Not work on hidden modes."
 run:
-    if (dpeek($FF802A)==$0040)
-    poke $FF8052 $06
-    endif
+    if (dpeek(0xFF802A)==0x0040) then
+    poke(0xFF8052,0x06)
+    end
 
-script "Special Player Select Screen" \
+luascript "Special Player Select Screen [lua]" \
 "comm:Not work on hidden modes."
 run:
-    if (dpeek($FF802A)==$0040)or(dpeek($FF802A)==$0640)
-    poke $FF8052 $04
-    endif
+    if (dpeek(0xFF802A)==0x0040) or (dpeek(0xFF802A)==0x0640) then
+    poke(0xFF8052,0x04)
+    end
 
-script "Brown Title Screen" \
-"comm:Activiate before Title screen and then close it. The effect will be lasting until the emulator is closed."
+luascript "Brown Title Screen [lua]" \
+"comm:Activiate before Title screen. The effect will be lasting until the emulator is closed."
 on:
-if (peek($28E3F0)!=$02)
-    lpoke $28E3F0 $02100210
-    lpoke $28E3F4 $02100210
-    lpoke $28E3F8 $02100420
-    lpoke $28E3FC $06310853
-    lpoke $28E400 $09740CA7
-    lpoke $28E404 $02100210
-endif
+    lpoke(0x28E3F0,0x02100210)
+    lpoke(0x28E3F4,0x02100210)
+    lpoke(0x28E3F8,0x02100420)
+    lpoke(0x28E3FC,0x06310853)
+    lpoke(0x28E400,0x09740CA7)
+    lpoke(0x28E404,0x02100210)
 
-script "Light Blue Title Screen" \
-"comm:Activiate before Title screen and then close it. The effect will be lasting until the emulator is closed."
+luascript "Light Blue Title Screen [lua]" \
+"comm:Activiate before Title screen. The effect will be lasting until the emulator is closed."
 on:
-if (peek($28E3F0)!=$04)
-    lpoke $28E3F0 $048D048D
-    lpoke $28E3F4 $048D048D
-    lpoke $28E3F8 $048D03AB
-    lpoke $28E3FC $03BA03C9
-    lpoke $28E400 $03D804F6
-    lpoke $28E404 $048D048D
-endif
+    lpoke(0x28E3F0,0x048D048D)
+    lpoke(0x28E3F4,0x048D048D)
+    lpoke(0x28E3F8,0x048D03AB)
+    lpoke(0x28E3FC,0x03BA03C9)
+    lpoke(0x28E400,0x03D804F6)
+    lpoke(0x28E404,0x048D048D)
 
-script "Stop Flashing on Title Screen"
+luascript "Stop Flashing on Title Screen [lua]"
 run:
-    if (peek($FFB31E)==$9A)
-    dpoke $FF8012 $0000
-    endif
+    if (peek(0xFFB31E)==0x9A) then
+    dpoke(0xFF8012,0x0000)
+    end
 
 script "Free Play Mode 'ON'"
 run:

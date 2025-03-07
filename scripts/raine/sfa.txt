@@ -1,8 +1,9 @@
 luascript "Console Mode [lua]" \
- "comm:Coin button is used for pause. In training mode, pause the game and then press start to change character."
+ "comm:Coin button is used for pause. In training mode, start button can restore HP, pause the game and then press start to select character."
 run:
    -- Start up --
    if (peek(0xFF8170)==0x00) then
+      dpoke(0xFF816C,0x0109) -- 1 coin 9 credits --
       poke(0x1571d,0x50) -- Restore original values at start in case of reset --
       poke(0x15723,0x54)
       p1win=peek(0xFF84D0)
@@ -11,6 +12,8 @@ run:
       lpoke(0x1624,0x1B400058)
       lpoke(0x1618,0x2B40005C)
       lpoke(0x1632,0x1B40005C)
+      poke(0x165C0,0x00) -- Restore HP function --
+      lpoke(0x16606,0x3D400040)
       if (peek(0xFF8001)>=0x0C) then -- Start button start --
          if (peek(0x804020)<0xFF) then
             if (peek(0xFF8005)==0x0C) then -- skip title screen if press start lately --
@@ -307,9 +310,48 @@ run:
          poke(0x15723,0x54)
       end
       if (peek(0xFFAE2C)>=0x01) then
-         poke(0xFFAE0A,0x3B) -- Battle parameters. --
-         poke(0xFF8441,0x90)
-         poke(0xFF8841,0x90)
+       if (peek(0xFF800D)==0x00) then -- At start --
+          poke(0x165C0,0x03) -- Change HP code --
+          lpoke(0x16606,0x00000000)
+          lpoke(0xFF8440,0x00FF0090) -- Increase HP --
+          lpoke(0xFF8840,0x00FF0090)
+       end
+      -- 1P HP restore --
+       if (peek(0xFF8441)>=0x6F) then
+          poke(0xFF8741,peek(0xFF8441)-0x6F)
+       end
+       if (peek(0xFF8441)<0x6F) then
+          poke(0xFF8441,0x6E)
+          dpoke(0xFF8740,0x0000)
+       end
+       if ((peek(0xFF8441)<0x6F) and (peek(0xFF8405)==0x00)) or (peek(0x804020)==0xFD) then
+          poke(0xFF0040,0x01)
+       end
+       if (peek(0xFF0040)==0x01) and (peek(0xFF8441)<0xFF) then
+          poke(0xFF8441,peek(0xFF8441)+0x1)
+       end
+       if (peek(0xFF8441)==0xFF) then
+          poke(0xFF0040,0x00)
+       end
+      -- 2P HP restore --
+       if (peek(0xFF8841)>=0x6F) then
+          poke(0xFF8B41,peek(0xFF8841)-0x6F)
+       end
+       if (peek(0xFF8841)<0x6F) then
+          poke(0xFF8841,0x6E)
+          dpoke(0xFF8B40,0x0000)
+       end
+       if ((peek(0xFF8841)<0x6F) and (peek(0xFF8805)==0x00)) or (peek(0x804020)==0xFE) then
+          poke(0xFF0041,0x01)
+       end
+       if (peek(0xFF0041)==0x01) and (peek(0xFF8841)<0xFF) then
+          poke(0xFF8841,peek(0xFF8841)+0x1)
+       end
+       if (peek(0xFF8841)==0xFF) then
+          poke(0xFF0041,0x00)
+       end
+         -- Other battle parameters. --
+         poke(0xFFAE0A,0x3B)
          poke(0xFF84BF,0x90)
          poke(0xFF88BF,0x90)
       end
@@ -324,6 +366,9 @@ run:
          if (peek(0xFF84A5)==0x02) and (peek(0xFF88A5)==0x02) then -- Returning to char. screen --
             poke(0xFF84A4,0x04)
             poke(0xFF88A4,0x04)
+            dpoke(0xFA0E,0xFFFF) -- Restore HP function --
+            lpoke(0x16606,0x3D400040)
+            dpoke(0xFF0040,0x0000)
          end
       end
    end
@@ -433,6 +478,150 @@ off:
    lpoke(0x1624,0x1B400058)
    lpoke(0x1618,0x2B40005C)
    lpoke(0x1632,0x1B40005C)
+   poke(0x165C0,0x00) -- Restore HP function --
+   lpoke(0x16606,0x3D400040)
+
+luascript "Enable Bosses [lua]" \
+ "comm:Press Down button at the ?box"
+run:
+if (dpeek(0xFFA322)==0x3876) or (dpeek(0xFFA322)==0x2D82) then
+    -- For P1 --
+    if (peek(0xFF8434)==0x0D) or (peek(0xFF8434)==0x14) then
+      poke(0xFF0003,0x00)
+    end
+    if (peek(0xFF8434)==0x13) and ((peek(0xFF81AC)==0x00) or (peek(0xFF81AC)==0x02)) then
+       if (peek(0xFF8051)==0x00) and (peek(0xFF0003)==0x00) then
+         poke(0xFF0003,0x01)
+       end
+       if (peek(0xFF84BB)==0x04) then
+         if peek(0xFF0006)==0x00 then -- Sound effect --
+           poke(0x618001,0x00)
+           poke(0x618003,0xF8)
+           poke(0x61801F,0x00)
+           poke(0xFF0006,0xFF)
+         end
+         if (peek(0xFF0003)==0x01) then
+           lpoke(0xFF843E,0x00000000)
+           poke(0xFF84A2,0x0A)
+           poke(0xFF843B,0x00)
+           poke(0xFF0003,0x02)
+          end
+         if (peek(0xFF0003)==0x03) then
+           lpoke(0xFF843E,0x00000000)
+           poke(0xFF84A2,0x02)
+           poke(0xFF0003,0x04)
+         end
+         if (peek(0xFF0003)==0x05) then
+           lpoke(0xFF843E,0x00000000)
+           poke(0xFF84A2,0x0C)
+           poke(0xFF0003,0x06)
+         end
+       end
+       if (peek(0xFF84BB)==0x00) then
+         poke(0xFF0006,0x00) -- Act as music 'stopper' --
+         if (peek(0xFF0003)==0x02) or (peek(0xFF0003)==0x03) then
+           lpoke(0xFF843E,0x0100FF00)
+           poke(0xFF0003,0x03)
+         end
+         if (peek(0xFF0003)==0x04) or (peek(0xFF0003)==0x05) then
+           lpoke(0xFF843E,0x0100FF00)
+           poke(0xFF0003,0x05)
+         end
+         if (peek(0xFF0003)==0x06) or (peek(0xFF84A2)==0x0C) then
+           lpoke(0xFF843E,0x0100FF00)
+           poke(0xFF0003,0x01)
+         end
+       end
+    end
+    -- For P2 --
+     if (peek(0xFF8834)==0x10) or (peek(0xFF8834)==0x15) then
+      poke(0xFF0004,0x00)
+    end
+    if (peek(0xFF8834)==0x16) and ((peek(0xFF81AC)==0x00) or (peek(0xFF81AC)==0x01)) then
+       if (peek(0xFF88BB)==0x00) and (peek(0xFF0004)==0x00) then
+         poke(0xFF0004,0x01)
+       end
+       if (peek(0xFF88BB)==0x04) then
+         if peek(0xFF0006)==0x00 then -- Sound effect --
+           poke(0x618001,0x00)
+           poke(0x618003,0xF8)
+           poke(0x61801F,0x00)
+           poke(0xFF0006,0xFF)
+         end
+         if (peek(0xFF0004)==0x01) then
+           lpoke(0xFF883E,0x00000000)
+           poke(0xFF88A2,0x0A)
+           poke(0xFF883B,0x00)
+           poke(0xFF0004,0x02)
+          end
+         if (peek(0xFF0004)==0x03) then
+           lpoke(0xFF883E,0x00000000)
+           poke(0xFF88A2,0x02)
+           poke(0xFF0004,0x04)
+         end
+         if (peek(0xFF0004)==0x05) then
+           lpoke(0xFF883E,0x00000000)
+           poke(0xFF88A2,0x0C)
+           poke(0xFF0004,0x06)
+         end
+       end
+       if (peek(0xFF88BB)==0x00) then
+         poke(0xFF0006,0x00) -- Act as music 'stopper' --
+         if (peek(0xFF0004)==0x02) or (peek(0xFF0004)==0x03) then
+           lpoke(0xFF883E,0x0100FF00)
+           poke(0xFF0004,0x03)
+         end
+         if (peek(0xFF0004)==0x04) or (peek(0xFF0004)==0x05) then
+           lpoke(0xFF883E,0x0100FF00)
+           poke(0xFF0004,0x05)
+         end
+         if (peek(0xFF0004)==0x06) or (peek(0xFF88A2)==0x0C) then
+           lpoke(0xFF883E,0x0100FF00)
+           poke(0xFF0004,0x01)
+         end
+       end
+    end
+end
+
+luascript "Single Dramatic Battle - Play as Ryu [lua]" \
+ "comm:Control Ryu using controler 1 and CPU as Ken. Use with the Console Mode."
+run:
+if (peek(0xFF0000)==0x04) and (peek(0xFF81A8)==0x03) then
+    if (peek(0xFFAE2C)==0x04) then
+    poke(0xFF84C5,0x00)
+    poke(0xFF88C5,0x01)
+    end
+end
+
+luascript "Single Dramatic Battle - Play as Ken [lua]" \
+ "comm:Control Ken using controler 1 and CPU as Ryu. Use with the Console Mode. Remember to turn off after use!!!"
+run:
+if (peek(0xFF0000)==0x04) and (peek(0xFF81A8)==0x03) then
+    if (peek(0xFFAE2C)==0x04) then
+    poke(0xFF84C5,0x01)
+    poke(0xFF88C5,0x00)
+    end
+    poke(0x1571d,0x50)
+    poke(0x15723,0x50)
+end
+off:
+    poke(0x1571d,0x50)
+    poke(0x15723,0x54)
+
+luascript "Single Dramatic Battle - Simultaneous [lua]" \
+ "comm:Control Ryu & Ken at the same time using controler 1. Use with the Console Mode. Remember to turn off after use!!!"
+run:
+if (peek(0xFF0000)==0x04) and (peek(0xFF81A8)==0x03) then
+    if (peek(0xFFAE2C)==0x04) then
+    poke(0xFF84C5,0x00)
+    poke(0xFF88C5,0x00)
+    end
+    poke(0x1571d,0x50)
+    poke(0x15723,0x50)
+end
+off:
+    poke(0x1571d,0x50)
+    poke(0x15723,0x54)
 
 script "Infinite Time"
 run:

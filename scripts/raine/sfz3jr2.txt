@@ -1,9 +1,9 @@
 luascript "Console Mode [lua]" \
- "comm:On the title screen, press up or down to select modes. Coin button is used for pause.
-In training mode, pause the game and then press start to select character."
+ "comm:Coin button is used for pause. In training mode, start button can restore HP, pause the game and then press start to select character."
 run:
 -- Start-up --
 if (peek(0xFF8076)==0x00) and (peek(0xFF2000)~=0x06) then
+    dpoke(0xFF8072,0x0109) -- 1 coin 9 credits --
     poke(0x1D7D8,"PRESS START")
     poke(0x1B044,0x05) -- Restore initial value --
     poke(0x1B052,0x09)
@@ -14,6 +14,8 @@ if (peek(0xFF8076)==0x00) and (peek(0xFF2000)~=0x06) then
     dpoke(0x30FE,0x13F4)
     lpoke(0x1470,0x2B400060)
     lpoke(0x1486,0x1B410060)
+    poke(0xB8D43,0x28) -- Restore original HP function --
+    poke(0xB8E51,0x2C)
     if (peek(0xFF8001)>=0x0C) and (peek(0xFF8060)>0x00) then -- Start button start --
       poke(0x618001,0x00) -- Sound effect --
       poke(0x618003,0x81)
@@ -302,19 +304,65 @@ if (peek(0xFF2000)==0x02) then
     if (peek(0xFF8005)==0x04) and (peek(0xFF8009)==0x04) then -- Select stage of later selected side --
       poke(0xFF8101,peek(0xFF8173))
     end
-    if (peek(0xFF8009)==0x06) and (peek(0xFF800D)==0x06) then
+    if (peek(0xFF8009)==0x06) and (peek(0xFF800D)==0x04) then -- Before battle start --
+       poke(0xB8D43,0x20) -- Disable original HP function --
+       poke(0xB8E51,0x20)
+       poke(0xFF8451,0xFF) -- Increase --
+       poke(0xFF8851,0xFF)
+    end
+    if (peek(0xFF8009)==0x06) and (peek(0xFF800D)>=0x04) then
+    -- P1 HP recovery --
+       if (peek(0xFF8451)>=0x6F) then -- HP bar display --
+          poke(0xFFDC29,peek(0xFF8451)-0x6F)
+       end
+       if (peek(0xFF8451)<0x6F) then -- When HP bar rearch 0 --
+          poke(0xFF8451,0x6F)
+          poke(0xFF2030,0x01)
+       end
+       if (peek(0x804020)==0xFD) then -- Start button retore HP --
+          poke(0xFF2030,0x01)
+       end
+       if (peek(0xFF8451)<0xFF) and (peek(0xFF8405)==0x00) and (peek(0xFF2030)==0x01) then -- Restore HP --
+          poke(0xFF8451,peek(0xFF8451)+0x1)
+       end
+       if (peek(0xFF8451)==0xFF) then
+          poke(0xFF2030,0x00)
+       end
+   -- P2 HP recovery --
+       if (peek(0xFF8851)>=0x6F) then -- HP bar display --
+          poke(0xFFDC2D,peek(0xFF8851)-0x6F)
+       end
+       if (peek(0xFF8851)<0x6F) then -- When HP bar rearch 0 --
+          poke(0xFF8851,0x6F)
+          poke(0xFF2031,0x01)
+       end
+       if (peek(0x804020)==0xFE) then -- Start button retore HP --
+          poke(0xFF2031,0x01)
+       end
+       if (peek(0xFF8851)<0xFF) and (peek(0xFF8805)==0x00) and (peek(0xFF2031)==0x01) then -- Restore HP --
+          poke(0xFF8851,peek(0xFF8851)+0x1)
+       end
+       if (peek(0xFF8851)==0xFF) then
+          poke(0xFF2031,0x00)
+       end
+   -- Other battle parameter --
        poke(0xFF810A,0x28) -- Timer --
-       lpoke(0xFF8450,0x00900090) -- P1 energy --
-       lpoke(0xFF8850,0x00900090) -- P2 energy --
        poke(0xFF851F,0x90) -- P1 Power --
        poke(0xFF891F,0x90) -- P2 Power --
-       if (peek(0xFF8005)==0x03) and ((peek(0xFF8060)==0x01) or (peek(0xFF8060)==0x02)) then -- Return to char screen --
+   -- Return to char screen --
+       if (peek(0xFF8005)==0x03) and ((peek(0xFF8060)==0x01) or (peek(0xFF8060)==0x02)) then
          poke(0xFF8009,0x00)
          poke(0xFF800D,0x00)
          poke(0xFF8001,0x00)
          poke(0xFF8005,0x00)
          dpoke(0xFF2012,0x0000) -- Deselect Final Bison/Vega --
          poke(0xFF2005,0x01)
+         poke(0xB8D43,0x28) -- Restore original HP function --
+         poke(0xB8E51,0x2C)
+         dpoke(0xFF2030,0x0000)
+         poke(0x618001,0xFF) -- Remove sound --
+         poke(0x618003,0x00)
+         poke(0x61801F,0x00)
        end
     end
     if (dpeek(0xFFBCE2)==0xB47E) and (peek(0xFF2005)==0x01) then -- Re-load last round characters --
@@ -415,6 +463,8 @@ off:
     dpoke(0x30FE,0x13F4)
     lpoke(0x1470,0x2B400060)
     lpoke(0x1486,0x1B410060)
+    poke(0xB8D43,0x28) -- Restore original HP function --
+    poke(0xB8E51,0x2C)
 
 luascript "Enable Bosses [lua]" \
  "comm:Hold start button on Bison/Vega to select his final form.
