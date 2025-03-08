@@ -3782,6 +3782,17 @@ static struct ROMSW_DATA romswd_1944[] =
   { NULL,                    0    },
 };
 
+static struct ROMSW_DATA romswd_xmcota[] =
+{
+  { "Japan", 0x0},
+  { "USA",0x2},
+  { "Euro", 0x4},
+  { "Asia",0x6},
+  { "Hispanic",0x8},
+  { "Brazil",0xa},
+  { NULL,                    0    },
+};
+
 static struct ROMSW_DATA romswd_vhunt2[] =
 {
   { "Japan", 0x0},
@@ -3811,6 +3822,12 @@ static struct ROMSW_INFO romsw_msh[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_mshvsf[] =
+{
+   { 0xc3, 0x08, romswd_msh },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_INFO romsw_choko[] =
 {
    { 0x1f51, 0x00, romswd_vhunt2 },
@@ -3832,6 +3849,12 @@ static struct ROMSW_INFO romsw_dimahoo[] =
 static struct ROMSW_INFO romsw_1944[] =
 {
    { 0xc3, 0x02, romswd_1944 },
+   { 0,        0,    NULL },
+};
+
+static struct ROMSW_INFO romsw_xmcota[] =
+{
+   { 0xd27, 0x04, romswd_xmcota },
    { 0,        0,    NULL },
 };
 
@@ -4165,7 +4188,8 @@ CLNEI( pgearr1, armwar, "Powered Gear: Strategic Variant Armor Equipment (Japan 
   .input = input_p3b3);
 CLNEI( armwara, armwar, "Armored Warriors (Asia 940920)", CAPCOM, 1994, GAME_BEAT,
   .input = input_p3b3);
-GMEI( xmcota, "X-Men: Children of the Atom (Euro 950331)", CAPCOM, 1994, GAME_BEAT);
+GMEI( xmcota, "X-Men: Children of the Atom (Euro 950331)", CAPCOM, 1994, GAME_BEAT,
+	.romsw = romsw_xmcota);
 CLNEI( xmcotar1, xmcota, "X-Men: Children of the Atom (Euro 950105)", CAPCOM, 1994, GAME_BEAT);
 CLNEI( xmcotau, xmcota, "X-Men: Children of the Atom (USA 950105)", CAPCOM, 1994, GAME_BEAT);
 CLNEI( xmcotah, xmcota, "X-Men: Children of the Atom (Hispanic 950331)", CAPCOM, 1994, GAME_BEAT);
@@ -4311,7 +4335,8 @@ CLNEI( vsavu, vsav, "Vampire Savior: The Lord of Vampire (USA 970519)", CAPCOM, 
 CLNEI( vsavj, vsav, "Vampire Savior: The Lord of Vampire (Japan 970519)", CAPCOM, 1997, GAME_BEAT);
 CLNEI( vsava, vsav, "Vampire Savior: The Lord of Vampire (Asia 970519)", CAPCOM, 1997, GAME_BEAT);
 CLNEI( vsavh, vsav, "Vampire Savior: The Lord of Vampire (Hispanic 970519)", CAPCOM, 1997, GAME_BEAT);
-GMEI( mshvsf, "Marvel Super Heroes Vs. Street Fighter (Euro 970625)", CAPCOM, 1997, GAME_BEAT);
+GMEI( mshvsf, "Marvel Super Heroes Vs. Street Fighter (Euro 970625)", CAPCOM, 1997, GAME_BEAT,
+	.romsw=romsw_mshvsf);
 CLNEI( mshvsfu, mshvsf, "Marvel Super Heroes Vs. Street Fighter (USA 970827)", CAPCOM, 1997, GAME_BEAT);
 CLNEI( mshvsfu1, mshvsf, "Marvel Super Heroes Vs. Street Fighter (USA 970625)", CAPCOM, 1997, GAME_BEAT);
 CLNEI( mshvsfj, mshvsf, "Marvel Super Heroes Vs. Street Fighter (Japan 970707)", CAPCOM, 1997, GAME_BEAT);
