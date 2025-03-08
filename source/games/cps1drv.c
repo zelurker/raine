@@ -5306,7 +5306,7 @@ static struct SOUND_INFO sound_forgottn[] =
 #define dsw_sf2ce dsw_sf2
 #define dsw_mbombrd dsw_slammast
 
-static struct ROMSW_DATA romswd_sf2hf[] =
+static struct ROMSW_DATA romswd_sf2[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
@@ -5314,9 +5314,21 @@ static struct ROMSW_DATA romswd_sf2hf[] =
   { NULL,                    0    },
 };
 
+static ROMSW_INFO romsw_sf2[] =
+{
+    { 0x981, 4, romswd_sf2 },
+    { 0, 0, NULL },
+};
+
+static ROMSW_INFO romsw_sf2ce[] =
+{
+    { 0x191, 4, romswd_sf2 },
+    { 0, 0, NULL },
+};
+
 static ROMSW_INFO romsw_sf2hf[] =
 {
-    { 0x40441, 4, romswd_sf2hf },
+    { 0x40441, 4, romswd_sf2 },
     { 0, 0, NULL },
 };
 
@@ -5407,7 +5419,8 @@ CLNEI( cawingu, cawing, "Carrier Air Wing (USA 901012)", CAPCOM, 1990, GAME_SHOO
 CLNEI( cawingj, cawing, "U.S. Navy (Japan 901012)", CAPCOM, 1990, GAME_SHOOT);
 GMEI( nemo, "Nemo (World 901130)", CAPCOM, 1990, GAME_BEAT);
 CLNEI( nemoj, nemo, "Nemo (Japan 901120)", CAPCOM, 1990, GAME_BEAT);
-GMEI( sf2, "Street Fighter II: The World Warrior (World 910522)", CAPCOM, 1991, GAME_BEAT);
+GMEI( sf2, "Street Fighter II: The World Warrior (World 910522)", CAPCOM, 1991, GAME_BEAT,
+  .romsw = romsw_sf2);
 CLNEI( sf2eb, sf2, "Street Fighter II: The World Warrior (World 910214)", CAPCOM, 1991, GAME_BEAT);
 CLNEI( sf2ee, sf2, "Street Fighter II: The World Warrior (World 910228)", CAPCOM, 1991, GAME_BEAT);
 CLNEI( sf2ua, sf2, "Street Fighter II: The World Warrior (USA 910206)", CAPCOM, 1991, GAME_BEAT);
@@ -5454,7 +5467,8 @@ CLNEI( knightsja, knights, "Knights of the Round (Japan 911127, B-Board 89625B-1
 #define input_sf2mix NULL
 GMEI( sf2ce, "Street Fighter II': Champion Edition (World 920513)", CAPCOM, 1992, GAME_BEAT,
   .input = input_sf2, .dsw = dsw_sf2,
-  .load_game = load_cps1_12);
+  .load_game = load_cps1_12,
+  .romsw = romsw_sf2ce);
 GMEI( sf2mix, "Street Fighter II Mix from Zero800 v1.3", CAPCOM, 2023, GAME_BEAT,
   .input = input_sf2,
   .load_game = load_cps1_12);
