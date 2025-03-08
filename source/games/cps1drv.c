@@ -5306,6 +5306,20 @@ static struct SOUND_INFO sound_forgottn[] =
 #define dsw_sf2ce dsw_sf2
 #define dsw_mbombrd dsw_slammast
 
+static struct ROMSW_DATA romswd_sf2hf[] =
+{
+  { "Japan", 0x0},
+  { "USA",0x2},
+  { "Euro (ETC)", 4},
+  { NULL,                    0    },
+};
+
+static ROMSW_INFO romsw_sf2hf[] =
+{
+    { 0x40441, 4, romswd_sf2hf },
+    { 0, 0, NULL },
+};
+
 static struct ROMSW_DATA romswd_sfzch[] =
 {
   { "Japan", 0x0},
@@ -5563,7 +5577,8 @@ CLNEI( wofhfh, wof, "Huo Feng Huang (Chinese bootleg of Sangokushi II)", BOOTLEG
 #define dsw_sf2hf NULL
 GMEI( sf2hf, "Street Fighter II': Hyper Fighting (World 921209)", CAPCOM, 1992, GAME_BEAT,
   .input = input_sf2, .dsw = dsw_sf2,
-  .load_game = load_cps1_12);
+  .load_game = load_cps1_12,
+  .romsw = romsw_sf2hf);
 CLNEI( sf2hfu, sf2hf, "Street Fighter II': Hyper Fighting (USA 921209)", CAPCOM, 1992, GAME_BEAT,
   .input = input_sf2, .dsw = dsw_sf2,
   .load_game = load_cps1_12);
