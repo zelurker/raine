@@ -3817,6 +3817,12 @@ static struct ROMSW_INFO romsw_choko[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_sfa[] =
+{
+   { 0x107b, 0x08, romswd_msh },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_INFO romsw_dimahoo[] =
 {
    { 0x7f8b, 0x08, romswd_msh },
@@ -4186,7 +4192,8 @@ CLNEI( cybotsu, cybots, "Cyberbots: Fullmetal Madness (USA 950424)", CAPCOM, 199
   .input = input_p2b4);
 CLNEI( cybotsj, cybots, "Cyberbots: Fullmetal Madness (Japan 950420)", CAPCOM, 1995, GAME_BEAT,
   .input = input_p2b4);
-GMEI( sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950727)", CAPCOM, 1995, GAME_BEAT);
+GMEI( sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950727)", CAPCOM, 1995, GAME_BEAT,
+	.romsw = romsw_sfa);
 CLNEI( sfar1, sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950718)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( sfar2, sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950627)", CAPCOM, 1995, GAME_BEAT);
 CLNEI( sfar3, sfa, "Street Fighter Alpha: Warriors' Dreams (Euro 950605)", CAPCOM, 1995, GAME_BEAT);
