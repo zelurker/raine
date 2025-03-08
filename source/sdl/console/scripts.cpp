@@ -798,7 +798,8 @@ void do_script(int argc, char **argv) {
 void stop_scripts() {
     // Stop scripts which run every frame, useful after an error in a script
     for (int n=0; n<nb_scripts; n++) {
-	run_off_section(n);
+	if (script[n].status)
+	    run_off_section(n);
 	script[n].status = 0;
     }
     running = 0;
