@@ -3841,7 +3841,7 @@ static struct ROMSW_INFO romsw_xmvsf[] =
 
 static struct ROMSW_INFO romsw_mshvsf[] =
 {
-   { 0xc3, 0x08, romswd_msh },
+   { 0xc3, 0x08, romswd_mvsc },
    { 0,        0,    NULL },
 };
 
