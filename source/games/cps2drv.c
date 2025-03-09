@@ -3764,6 +3764,17 @@ static struct ROMSW_DATA romswd_msh[] =
 {
   { "Japan", 0x0},
   { "USA",0x2},
+  { "Euro", 0x4},
+  { "Brazil",0x6},
+  { "Hispanic",0x8},
+  { "Asia",0xa},
+  { NULL,                    0    },
+};
+
+static struct ROMSW_DATA romswd_mvsc[] =
+{
+  { "Japan", 0x0},
+  { "USA",0x2},
   { "Hispanic", 0x4},
   { "Asia",0x6},
   { "Euro",0x8},
@@ -3822,9 +3833,21 @@ static struct ROMSW_INFO romsw_msh[] =
    { 0,        0,    NULL },
 };
 
+static struct ROMSW_INFO romsw_xmvsf[] =
+{
+   { 0xc3, 0x08, romswd_msh },
+   { 0,        0,    NULL },
+};
+
 static struct ROMSW_INFO romsw_mshvsf[] =
 {
    { 0xc3, 0x08, romswd_msh },
+   { 0,        0,    NULL },
+};
+
+static struct ROMSW_INFO romsw_mvsc[] =
+{
+   { 0xc3, 0x04, romswd_mvsc },
    { 0,        0,    NULL },
 };
 
@@ -3918,6 +3941,16 @@ static struct ROMSW_DATA romsd_ssf2t[] =
     { "Hispanic", 6 },
     { "Asia", 8 },
     { "Asia TW", 10 },
+    { NULL, 0 },
+};
+
+static struct ROMSW_DATA romsd_hsf2[] =
+{
+    { "Japan", 0 },
+    { "USA", 2 },
+    { "Euro", 4 },
+    { "Hispanic", 6 },
+    { "Asia", 8 },
     { NULL, 0 },
 };
 
@@ -4078,6 +4111,12 @@ static struct ROMSW_INFO romsw_ssf2j[] =
 static struct ROMSW_INFO romsw_ssf2[] =
 {
     { 0x18d, 4, romsd_ssf2t },
+    { 0, 0, NULL },
+};
+
+static struct ROMSW_INFO romsw_hsf2[] =
+{
+    { 0x12a1, 2, romsd_hsf2 },
     { 0, 0, NULL },
 };
 
@@ -4312,7 +4351,8 @@ CLNEI( megaman2h, megaman2, "Mega Man 2: The Power Fighters (Hispanic 960712)", 
   .input = input_p2b3);
 GMEI( qndream, "Quiz Nanairo Dreams: Nijiirochou no Kiseki (Japan 960826)", CAPCOM, 1996, GAME_QUIZZ,
   .input = input_qndream);
-GMEI( xmvsf, "X-Men Vs. Street Fighter (Euro 961004)", CAPCOM, 1996, GAME_BEAT);
+GMEI( xmvsf, "X-Men Vs. Street Fighter (Euro 961004)", CAPCOM, 1996, GAME_BEAT,
+	.romsw = romsw_xmvsf);
 CLNEI( xmvsfr1, xmvsf, "X-Men Vs. Street Fighter (Euro 960910)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( xmvsfu, xmvsf, "X-Men Vs. Street Fighter (USA 961023)", CAPCOM, 1996, GAME_BEAT);
 CLNEI( xmvsfur1, xmvsf, "X-Men Vs. Street Fighter (USA 961004)", CAPCOM, 1996, GAME_BEAT);
@@ -4362,7 +4402,8 @@ GMEI( sgemf, "Super Gem Fighter Mini Mix (USA 970904)", CAPCOM, 1997, GAME_BEAT,
 GMEI( vhunt2, "Vampire Hunter 2: Darkstalkers Revenge (Japan 970929)", CAPCOM, 1997, GAME_BEAT, .romsw = romsw_vhunt2);
 CLNEI( vhunt2r1, vhunt2, "Vampire Hunter 2: Darkstalkers Revenge (Japan 970913)", CAPCOM, 1997, GAME_BEAT);
 GMEI( vsav2, "Vampire Savior 2: The Lord of Vampire (Japan 970913)", CAPCOM, 1997, GAME_BEAT);
-GMEI( mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)", CAPCOM, 1998, GAME_BEAT);
+GMEI( mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123)", CAPCOM, 1998, GAME_BEAT,
+	.romsw = romsw_mvsc);
 CLNEI( mvscr1, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (Euro 980112)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( mvscu, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 980123)", CAPCOM, 1998, GAME_BEAT);
 CLNEI( mvscur1, mvsc, "Marvel Vs. Capcom: Clash of Super Heroes (USA 971222)", CAPCOM, 1998, GAME_BEAT);
@@ -4387,7 +4428,8 @@ CLNEI( sfz3jr2, sfa3, "Street Fighter Zero 3 (Japan 980629)", CAPCOM, 1998, GAME
 CLNEI( sfz3ar1, sfa3, "Street Fighter Zero 3 (Asia 980701)", CAPCOM, 1998, GAME_BEAT);
 GMEI( jyangoku, "Jyangokushi: Haoh no Saihai (Japan 990527)", CAPCOM, 1999, GAME_PUZZLE,
   .input = input_p1b2);
-GMEI( hsf2, "Hyper Street Fighter 2: The Anniversary Edition (USA 040202)", CAPCOM, 2004, GAME_BEAT);
+GMEI( hsf2, "Hyper Street Fighter 2: The Anniversary Edition (USA 040202)", CAPCOM, 2004, GAME_BEAT,
+	.romsw = romsw_hsf2);
 CLNEI( hsf2a, hsf2, "Hyper Street Fighter 2: The Anniversary Edition (Asia 040202)", CAPCOM, 2004, GAME_BEAT);
 CLNEI( hsf2j, hsf2, "Hyper Street Fighter 2: The Anniversary Edition (Japan 031222)", CAPCOM, 2004, GAME_BEAT);
 GMEI( gigawing, "Giga Wing (USA 990222)", TAKUMI, 1999, GAME_SHOOT,
