@@ -42,7 +42,7 @@ class TCheatDlg : public TMenu
 	    int w=0,h=0;
 	    if (font) font->dimensions(cheat_info,&w,&h);
 	    if (w > sdl_screen->w || h > sdl_screen->h-base) {
-		if (event->button.y > base)
+		if (event->button.y + fgdst.y > base) // event coordinates are relative to fgdst, it's been like that for very long now... !
 		    raine_mbox("info",cheat_info,"OK");
 	    }
 	}
