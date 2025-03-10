@@ -2522,6 +2522,8 @@ void load_cps2() {
     default_frame = CPU_FRAME_MHz(16,60);
   size_code = get_region_size(REGION_ROM1);
   ByteSwap(ROM, size_code );
+  if (is_current_game("mshvsf")) // activates norimaro in the character selection screen (reserved for japan version only otherwise)
+      ROM[0xcd ^ 1] = 1;
   /* Phoenix games seem to get the region from the eeprom ! and changing the eeprom is a nightmare, so the easiest workaround is to change their code to get it from the rom in the end
    * then assign a region switch to this address */
   sfz3mix = 0;
