@@ -3847,7 +3847,7 @@ static struct ROMSW_INFO romsw_mshvsf[] =
 
 static struct ROMSW_INFO romsw_mvsc[] =
 {
-   { 0xc3, 0x04, romswd_mvsc },
+   { 0xc3, 0x04, romswd_msh }, // Paradox ! but romswd_mvsc is used by quite a few games already... !
    { 0,        0,    NULL },
 };
 
