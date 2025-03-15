@@ -598,7 +598,8 @@ int main(int argc,char *argv[])
    // KEYBOARD DEFAULT
 
    load_default_keys("default_game_" KEYCONF);
-   int mouse_sens = raine_get_config_int( "default_game_" KEYCONF,      "mouse_sensitivity",           33);
+   mouse_sens = raine_get_config_int( "default_game_" KEYCONF,      "mouse_sensitivity",           33);
+   jdead_zone = raine_get_config_int( "default_game_" KEYCONF, "jdead_zone", 16000);
    extern float mouse_scale;
    mouse_scale = mouse_sens / 100.0;
 
@@ -864,6 +865,7 @@ int main(int argc,char *argv[])
    save_default_keys("default_game_" KEYCONF);
    mouse_sens = mouse_scale * 100;
    raine_set_config_int("default_game_" KEYCONF,"mouse_sensitivity",mouse_sens);
+   raine_set_config_int("default_game_" KEYCONF,"jdead_zone",jdead_zone);
 
 #ifndef SDL
    // JOYSTICK DEFAULT

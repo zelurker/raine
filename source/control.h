@@ -10,7 +10,7 @@ extern "C" {
 
 #include "deftypes.h"
 
-extern int GameMouse;
+extern int GameMouse,mouse_sens,jdead_zone;
 
 /******************************************************************************/
 

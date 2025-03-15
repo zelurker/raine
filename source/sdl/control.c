@@ -1671,7 +1671,7 @@ int gui_key(int input, int modifier) {
 
 static void handle_joy_axis(int which, int axis, int value) {
     int jevent = 0;
-    if (value <= -16000 && joy[which].jstate.pos_axis[axis] > -1) {
+    if (value <= -jdead_zone && joy[which].jstate.pos_axis[axis] > -1) {
 	if (joy[which].jstate.pos_axis[axis] == 1) {
 	    /* Special case for joysticks : sometimes they move so fast from one
 	     * side to the other that we get nothing for the central position.
@@ -1681,13 +1681,13 @@ static void handle_joy_axis(int which, int axis, int value) {
 	}
 	joy[which].jstate.pos_axis[axis] = -1;
 	add_joy_event((jevent = get_joy_input(which,AXIS_LEFT(axis),0,0)));
-    } else if (value >= 16000 && joy[which].jstate.pos_axis[axis] < 1) {
+    } else if (value >= jdead_zone && joy[which].jstate.pos_axis[axis] < 1) {
 	if (joy[which].jstate.pos_axis[axis] == -1)
 	    remove_joy_event(get_joy_input(which,AXIS_LEFT(axis),0,0));
 	joy[which].jstate.pos_axis[axis] = 1;
 	add_joy_event((jevent = get_joy_input(which,AXIS_RIGHT(axis),0,0)));
-    } else if ((joy[which].jstate.pos_axis[axis] == -1 && value >= -16000) ||
-	    (joy[which].jstate.pos_axis[axis] == 1 && value <= 16000)) {
+    } else if ((joy[which].jstate.pos_axis[axis] == -1 && value >= -jdead_zone) ||
+	    (joy[which].jstate.pos_axis[axis] == 1 && value <= jdead_zone)) {
 	/* With my choice to encode joystick events, there is no way to know
 	 * if this is the end of a right or left movement. So I end both of
 	 * them !
@@ -1723,16 +1723,16 @@ void control_handle_event(SDL_Event *event) {
       if (hat_for_moves) {
 	  switch (btn) {
 	  case SDL_CONTROLLER_BUTTON_DPAD_UP:
-	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-16000);
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,-jdead_zone);
 	      return;
 	  case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,16000);
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTY,jdead_zone);
 	      return;
 	  case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,-16000);
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,-jdead_zone);
 	      return;
 	  case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,16000);
+	      handle_joy_axis(which,SDL_CONTROLLER_AXIS_LEFTX,jdead_zone);
 	      return;
 	  }
       }
@@ -1778,7 +1778,7 @@ void control_handle_event(SDL_Event *event) {
       axis = event->caxis.axis;
       value = event->caxis.value;
       if (joy[which].cancel_sticks) {
-	  if (abs(value) < 16000) {
+	  if (abs(value) < jdead_zone) {
 	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
 	      return;
 	  }
@@ -1996,7 +1996,7 @@ void control_handle_event(SDL_Event *event) {
       axis = event->jaxis.axis;
       value = event->jaxis.value;
       if (joy[which].cancel_sticks) {
-	  if (abs(value) < 16000) {
+	  if (abs(value) < jdead_zone) {
 	      event->type = SDL_FIRSTEVENT; // for the gui, just cancel the event
 	      return;
 	  }

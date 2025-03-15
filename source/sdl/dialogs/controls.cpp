@@ -1041,14 +1041,20 @@ static int get_inputs(int sel) {
     return 0;
 }
 
-int mouse_sens;
+int mouse_sens,jdead_zone;
 extern "C" float mouse_scale; // controls.c
-static char label_mouse[80];
+static char label_mouse[80],label_joy[80];
 
 static int set_mouse_sens(int sel) {
     if (mouse_sens < 5) mouse_sens = 5;
     mouse_scale = mouse_sens/100.0;
     sprintf(label_mouse,_("Mouse Sensitivity: %d%%"),mouse_sens);
+    return 0;
+}
+
+static int set_jdead_zone(int sel) {
+    if (jdead_zone < 5) jdead_zone = 5;
+    sprintf(label_joy,_("Joysticks dead zones: %d"),jdead_zone);
     return 0;
 }
 
@@ -1205,6 +1211,7 @@ static menu_item_t controls_menu[] =
   { _("Save inputs as..."), &do_save },
   { _("Get inputs from another game"), &get_inputs },
   { _("Controller mapping..."), &do_mapping },
+  { _("Joysticks dead zones"), &set_jdead_zone, &jdead_zone, ITEM_SLIDER, {31000, 1000, 300, 0, 0, 0} },
   { NULL },
 };
 
@@ -1237,11 +1244,14 @@ static int switch_to_custom(int sel) {
 
 int do_controls(int sel) {
     mouse_sens = mouse_scale * 100;
-    controls_menu[6].values_list[3] = cslider_border;
-    controls_menu[6].values_list[5] = cslider_lift;
-    controls_menu[6].values_list[4] = mymakecol(160,160,160);
+    controls_menu[6].values_list[3] = controls_menu[13].values_list[3] = cslider_border;
+    controls_menu[6].values_list[5] = controls_menu[13].values_list[5] = cslider_lift;
+    controls_menu[6].values_list[4] = controls_menu[13].values_list[4] = mymakecol(160,160,160);
     controls_menu[6].label = label_mouse;
+    controls_menu[13].label = label_joy;
     sprintf(label_mouse,_("Mouse sensitivity: %d%%"),mouse_sens);
+    sprintf(label_joy,_("Joysticks dead zones: %d"),jdead_zone);
+
   if (use_custom_keys) {
     switch_to_custom(0);
   } else if (current_game) {
