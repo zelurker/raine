@@ -256,15 +256,14 @@ if (peek(0xFF2000)==0x02) then
        end
        if (peek(0xFF83F9)<0x6F)  then -- When HP bar rearch 0 --
           dpoke(0xFF858A,0x0000)
-          poke(0xFF2030,0x01)
           if (peek(0xFF83F9)<0x4F) then -- Prevent killed by combos --
              poke(0xFF83F9,0x6F)
           end
        end
-       if (peek(0x804020)==0xFD) then -- Start button retore HP --
+       if ((peek(0xFF83F9)<0x6F) and (peek(0xFF83D1)==0x00)) or (peek(0x804020)==0xFD) then -- Condition to restore --
           poke(0xFF2030,0x01)
        end
-       if (peek(0xFF83F9)<0xFF) and (peek(0xFF2030)==0x01) and (peek(0xFF83D1)==0x00) then -- Restore HP --
+       if (peek(0xFF83F9)<0xFF) and (peek(0xFF2030)==0x01) then -- Restore HP --
           poke(0xFF83F9,peek(0xFF83F9)+0x1)
           poke(0xFF83FB,peek(0xFF83FB)+0x1)
        end
@@ -277,15 +276,14 @@ if (peek(0xFF2000)==0x02) then
        end
        if (peek(0xFF87F9)<0x6F)  then -- When HP bar rearch 0 --
           dpoke(0xFF898A,0x0000)
-          poke(0xFF2031,0x01)
           if (peek(0xFF87F9)<0x4F) then -- Prevent killed by combos --
              poke(0xFF87F9,0x6F)
           end
        end
-       if (peek(0x804020)==0xFE) then -- Start button retore HP --
+       if ((peek(0xFF87F9)<0x6F) and (peek(0xFF87D1)==0x00)) or (peek(0x804020)==0xFE) then -- Condition to restore --
           poke(0xFF2031,0x01)
        end
-       if (peek(0xFF87F9)<0xFF) and (peek(0xFF2031)==0x01) and (peek(0xFF87D1)==0x00) then -- Restore HP --
+       if (peek(0xFF87F9)<0xFF) and (peek(0xFF2031)==0x01) then -- Restore HP --
           poke(0xFF87F9,peek(0xFF87F9)+0x1)
           poke(0xFF87FB,peek(0xFF87FB)+0x1)
        end

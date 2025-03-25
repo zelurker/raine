@@ -248,15 +248,14 @@ if (peek(0xFF1000)==0x02) then
        end
        if (peek(0xFF83F1)<0x6F)  then -- When HP bar rearch 0 --
           dpoke(0xFF8582,0x0000)
-          poke(0xFF1020,0x01)
           if (peek(0xFF83F1)<0x4F) then -- Prevent killed by combos --
              poke(0xFF83F1,0x6F)
           end
        end
-       if (peek(0x800018)==0xDF) then -- Start button retore HP --
+       if ((peek(0xFF83F1)<0x6F) and (peek(0xFF83C9)==0x00)) or (peek(0x800018)==0xDF) then -- Condition to restore --
           poke(0xFF1020,0x01)
        end
-       if (peek(0xFF83F1)<0xFF) and (peek(0xFF1020)==0x01) and (peek(0xFF83C9)==0x00) then -- Restore HP --
+       if (peek(0xFF83F1)<0xFF) and (peek(0xFF1020)==0x01) then -- Restore HP --
           poke(0xFF83F1,peek(0xFF83F1)+0x1)
           poke(0xFF83F3,peek(0xFF83F3)+0x1)
        end
@@ -269,15 +268,14 @@ if (peek(0xFF1000)==0x02) then
        end
        if (peek(0xFF86F1)<0x6F)  then -- When HP bar rearch 0 --
           dpoke(0xFF8882,0x0000)
-          poke(0xFF1021,0x01)
           if (peek(0xFF86F1)<0x4F) then -- Prevent killed by combos --
              poke(0xFF86F1,0x6F)
           end
        end
-       if (peek(0x800018)==0xEF) then -- Start button retore HP --
+       if ((peek(0xFF86F1)<0x6F) and (peek(0xFF86C9)==0x00)) or (peek(0x800018)==0xEF) then -- Condition to restore --
           poke(0xFF1021,0x01)
        end
-       if (peek(0xFF86F1)<0xFF) and (peek(0xFF1021)==0x01) and (peek(0xFF86C9)==0x00) then -- Restore HP --
+       if (peek(0xFF86F1)<0xFF) and (peek(0xFF1021)==0x01) then -- Restore HP --
           poke(0xFF86F1,peek(0xFF86F1)+0x1)
           poke(0xFF86F3,peek(0xFF86F3)+0x1)
        end
@@ -331,18 +329,18 @@ off:
 luascript "Select Same Character (By coin button) [lua]"
 run:
     if (peek(0x25C1)==0x82) and (peek(0xFFD1E6)==0x3D) then -- For Normal Control --
-       if (peek(0xFF8655)==0x00) and (peek(0xFF8076)==0x01) then
+       if (peek(0xFF8655)==0x00) and (peek(0xFF8672)==0x00) and (peek(0xFF8076)==0x01) then
          poke(0xFF8657,peek(0xFF8957))
        end
-       if (peek(0xFF8955)==0x00) and (peek(0xFF8076)==0x02) then
+       if (peek(0xFF8955)==0x00) and (peek(0xFF8972)==0x00) and (peek(0xFF8076)==0x02) then
          poke(0xFF8957,peek(0xFF8657))
        end
     end
     if (peek(0x25C1)==0x7E) and (peek(0xFFD1E6)==0x3D) then -- For Switched Control --
-       if (peek(0xFF8955)==0x00) and (peek(0xFF8076)==0x01) then
+       if (peek(0xFF8955)==0x00) and (peek(0xFF8972)==0x00) and (peek(0xFF8076)==0x01) then
          poke(0xFF8957,peek(0xFF8657))
        end
-       if (peek(0xFF8655)==0x00) and (peek(0xFF8076)==0x02) then
+       if (peek(0xFF8655)==0x00) and (peek(0xFF8672)==0x00) and (peek(0xFF8076)==0x02) then
          poke(0xFF8657,peek(0xFF8957))
        end
     end
