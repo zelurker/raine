@@ -1,11 +1,16 @@
 script "Console Mode Plus" \
 "comm:On the mode select screen, press left or right to select practice mode.
-In practice mode, pause the game then press start to change character."
+In practice mode, start button can restore HP, pause the game and then press start to select character."
 run:
 #Menu Screen Script#
-if (dpeek($108502)==$DE5A) #Restore control to prevent problem when reset#
-   poke $3948F $30
+if (dpeek($108502)==$DE5A)
+   poke $3948F $30 #Restore control to prevent problem when reset#
    poke $39497 $34
+   poke $958B $20 #Restore original HP function#
+   poke $9599 $20
+   poke $959F $20
+   lpoke $95A4 $526C0122
+   poke $3ED73 $17 #Restore bosses related#
 endif
 if (dpeek($108502)==$DF14)
    if (peek($1000A1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
@@ -36,12 +41,12 @@ if (dpeek($108502)==$DF14)
     dpoke $108502 $DEC6
    endif
 endif
+if (peek($1000A0)==$01) #Go to Single VS when on 2nd page of the menu#
+   poke $10A83F $02
+endif
 if (dpeek($108502)==$EF12) #At how to play select screen#
-   if (peek($1000A0)==$01) #Go to Single VS#
-      poke $10A7EF $03
-      poke $10A83F $02
-   endif
    lpoke $3DF46 $102C00D0 #Restore rom image#
+   poke $5BA86 $2A
    poke $5BA88  "SINGLE PLAY"
    poke $5BA95 $2D
    poke $5BAA3 $30
@@ -51,6 +56,7 @@ endif
 #Pracice Mode script#
 if (peek($1000A0)==$01)
    if (dpeek($108502)==$E830)
+      poke $3ED73 $19 #For memorize the bosses#
       if (peek($10A78F)==$07)and(peek($10FD96)==$00) #1P control 2P#
          poke $39497 $30
         poke $10E799 $00 #Choose stage of P2#
@@ -65,21 +71,109 @@ if (peek($1000A0)==$01)
       endif
    endif
    if (dpeek($108502)==$9C04)
-     poke $10A836 $60 #Timer#
-     if (peek($10E799)==$00) #1P red blood#
-       poke $108221 $3F
-       poke $108421 $CF
-     endif
-     if (peek($10E799)==$01) #2P red blood#
-       poke $108221 $CF
-       poke $108421 $3F
-     endif
-    if (peek($10A782)==$82)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to Char. Screen#
-      poke $10A782 $1A
-      dpoke $108502 $E3F6
-    endif
+      if (dpeek($10A83A)==$0380) #At battle start#
+         poke $958B $10 #Change original HP function#
+         poke $9599 $10
+         poke $959F $10
+         lpoke $95A4 $00000000
+         dpoke $108220 $01CF #Increase HP at start#
+         dpoke $108420 $01CF
+      endif
+      poke $10A836 $60 #Timer#
+      if (peek($10E799)==$00) #P1 as main player#
+      #P1 red blood#
+         lpoke $108220 $003F003F
+      #P2 HP recovery#
+         if (dpeek($108420)>=$0100) #HP bar display#
+            dpoke $108410 dpeek($108420)-$0100
+         endif
+         if (dpeek($108420)<$0100) #When HP bar below 0#
+            dpoke $108422 $FFFF
+         endif
+         if ((dpeek($108420)<$0100)and(peek($108400)==$07))or(peek($10FDAC)==$01) #Condition to restore#
+            poke $1000B1 $01
+         endif
+         if (dpeek($108420)<$01CF)and(peek($1000B1)==$01) #Restore HP#
+            dpoke $108420 dpeek($108420)+$1
+            dpoke $108422 dpeek($108422)+$1
+         endif
+         if (dpeek($108420)==$01CF)
+            poke $1000B1 $00
+         endif
+      endif
+      if (peek($10E799)==$01) #P2 as main player#
+      #P2 red blood#
+         lpoke $108420 $003F003F
+      #P1 HP recovery#
+         if (dpeek($108220)>=$0100) #HP bar display#
+            dpoke $108210 dpeek($108220)-$0100
+         endif
+         if (dpeek($108220)<$0100) #When HP bar below 0#
+            dpoke $108222 $FFFF
+         endif
+         if ((dpeek($108220)<$0100)and(peek($108200)==$07))or(peek($10FDAC)==$04) #Condition to restore#
+            poke $1000B0 $01
+         endif
+         if (dpeek($108220)<$01CF)and(peek($1000B0)==$01) #Restore HP#
+            dpoke $108220 dpeek($108220)+$1
+            dpoke $108222 dpeek($108222)+$1
+         endif
+         if (dpeek($108220)==$01CF)
+            poke $1000B0 $00
+         endif
+      endif
+      if (peek($10A782)==$82)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to Char. Screen#
+         poke $10A782 $1A
+         poke $958B $20 #Restore original HP function#
+         poke $9599 $20
+         poke $959F $20
+         lpoke $95A4 $526C0122
+         dpoke $1000B0 $0000
+         dpoke $108502 $E3F6 #Return#
+      endif
+   endif
+#Boss stage#
+   if (peek($10E799)==$00) #P1 as mian player#
+      if (peek($10A853)>=$18) #P2 Bosses#
+         poke $10A7E8 $08 #Boss stage#
+      endif
+      if (peek($10A853)==$19)and(dpeek($10A83A)==$0380) #P2 Rugal#
+         if (peek($320000)==$5D)
+            poke $320000 $37 #Rugal bgm - $2D or $37#
+         endif
+      endif
+   endif
+   if (peek($10E799)==$01) #P2 as mian player#
+      if (peek($10A843)>=$18) #P1 Bosses#
+         poke $10A7E8 $08 #Boss stage#
+      endif
+      if (peek($10A843)==$19)and(dpeek($10A83A)==$0380) #P1 Rugal#
+         if (peek($320000)==$5D)
+            poke $320000 $37 #Rugal bgm - $2D or $37#
+         endif
+      endif
    endif
 endif
+off:
+   lpoke $3DF46 $102C00D0
+   poke $5BA86 $2A
+   poke $5BA88  "SINGLE PLAY"
+   poke $5BA95 $2D
+   poke $5BAA3 $30
+   poke $5BAB1 $33
+   poke $5BABE $56
+   poke $3948F $30 #Restore control#
+   poke $39497 $34
+   poke $958B $20 #Restore original HP function#
+   poke $9599 $20
+   poke $959F $20
+   lpoke $95A4 $526C0122
+   poke $3ED73 $17 #Restore bosses related#
+
+script "Enable hidden characters" \
+ "comm:Adds the extra two hidden characters to the selection screen"
+run:
+    poke $10E79A $01
 
 script "Infinite Time"
 on:
@@ -94,10 +188,6 @@ on:
 script "Boss code + Timer stop"
 run:
     poke $100000 $04
-script "Enable hidden characters" \
- "comm:Adds the extra two hidden characters to the selection screen"
-run:
-    poke $10E79A $01
 script "Always Ready Special Move"
 on:
     temp0=peek($00492E)

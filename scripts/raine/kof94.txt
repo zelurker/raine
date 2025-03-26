@@ -1,9 +1,11 @@
 script "Console Mode Plus" \
-"comm:On the Game Select screen, press left or right to select modes.
-In practice mode, pause the game then press start to change character."
+"comm:Compatible with original rom and kof94 team edit v1.4.2.
+On the Game Select screen, press left or right to select modes.
+In practice mode, start button can restore HP, pause the game and then press start to select character."
 run:
 #Menu part#
 if (dpeek($108586)==$B0BA)
+#Restore rom#
    poke $32C8D $30
    poke $32C93 $34
    poke $37137 $00
@@ -26,6 +28,10 @@ if (dpeek($108586)==$B0BA)
       poke $C16C19 $34
       poke $C16C21 $30
    endif
+   poke $93BF $20 #Restore original HP function#
+   poke $93CD $20
+   poke $93D3 $20
+   lpoke $93D8 $526C0122
   if (peek($1000A1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
     poke $1000A1 $00
   endif
@@ -97,8 +103,8 @@ endif
 if (dpeek($108586)==$1558)
    poke $380000 peek($380000)&$8F #Restore memory card#
 endif
-#VS Mode Script for normal rom#
-if (peek($1000A0)==$01)and(dpeek($2B90BC)==$0000)
+#VS Mode Script#
+if (peek($1000A0)==$01)
    if (peek($1087E6)==$0C) #Save characters#
       poke $1000B0 peek($1081C0)
       poke $1000B1 peek($1083C0)
@@ -114,6 +120,7 @@ if (peek($1000A0)==$01)and(dpeek($2B90BC)==$0000)
        dpoke $1087EC $B9CA
        dpoke $1087F0 $B9E0
        poke $1087E5 $03
+       dpoke $10FDB6 $0101
        poke $10881C $00
        poke $10880C $00
     endif
@@ -121,13 +128,8 @@ if (peek($1000A0)==$01)and(dpeek($2B90BC)==$0000)
       poke $37137 $00 #Restore rom#
       poke $37155 $07
    endif
-   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
-      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
-         poke $320000 $2B
-      endif
-   endif
 endif
-#Practice Mode Script for normal rom#
+#Practice Mode Script for normal rom - Switch control#
 if (peek($1000A0)==$02)and(dpeek($2B90BC)==$0000)
    if ((peek($1087E6)==$06)or(peek($1087E6)==$1E))and(peek($10FD96)==$00) #1P controls 2P#
      poke $32C93 $30
@@ -147,52 +149,11 @@ if (peek($1000A0)==$02)and(dpeek($2B90BC)==$0000)
      poke $32C8D $30
      poke $32C93 $34
    endif
-   poke $10882E $60 #Timer#
-   if (peek($1000C0)==$00) #1P red blood#
-    poke $108221 $3F
-    poke $108421 $CF
-   endif
-   if (peek($1000C0)==$01) #2P red blood#
-    poke $108221 $CF
-    poke $108421 $3F
-   endif
-   if (peek($108786)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to char. screen#
-      poke $108786 $00 #Resume from pause#
-      poke $1087E6 $03 #Deselect characters#
-      poke $37137 peek($1000B0) #Load previous characters#
-      poke $37155 peek($1000B1)
-      dpoke $108586 $6E66
-   endif
-   if (dpeek($108586)==$7046)and(peek($1087E6)==$03)
-      poke $37137 $00 #Restore rom#
-      poke $37155 $07
-   endif
-   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
-      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
-         poke $320000 $2B
-      endif
-   endif
 endif
-#VS Mode Script for Team Edit Hack#
-if (peek($1000A0)==$01)and(dpeek($2B90BC)==$4EB9)
-    if (dpeek($108586)==$42D8)
-      poke $1087E6 $03 #Deselect characters#
-    endif
-    if (peek($10FDB6)==$02)or(peek($10FDB7)==$02) #No continue text and activate players#
-       poke $108230 $81
-       poke $108430 $82
-       dpoke $1087EC $B9CA
-       dpoke $1087F0 $B9E0
-       poke $1087E5 $03
-       dpoke $10FDB6 $0101
-       poke $10881C $00
-       poke $10880C $00
-    endif
-endif
-#Practice Mode Script for Team Edit Hack#
-if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
+#Practice Mode Script for Team Edit Hack - Switch control and Stage music#
+if (peek($1000A0)==$02)and(dpeek($2B90BC)!=$0000)
    #Switch control in part 1#
-   if (dpeek($108586)==$7046)
+   if (dpeek($108586)==$CAB4)
       if (peek($10E832)==$01)and(peek($10E8D2)==$00) #P1 as main players#
          poke $1000C0 $00
          poke $1000D0 $01 #Go to switch control routine#
@@ -252,20 +213,6 @@ if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
       poke $32C93 $34
       poke $32C8D $30
    endif
-   poke $10882E $60 #Timer#
-   if (peek($1000C0)==$00) #1P red blood#
-    poke $108221 $3F
-    poke $108421 $CF
-   endif
-   if (peek($1000C0)==$01) #2P red blood#
-    poke $108221 $CF
-    poke $108421 $3F
-   endif
-   if (peek($108786)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to char. screen#
-      poke $108786 $00 #Resume from pause#
-      poke $1087E6 $03 #Deselect characters#
-      dpoke $108586 $6E66
-   endif
    #Stage/Music select script#
    if (dpeek($108586)==$7F38)
       if (peek($1000C0)==$00)
@@ -302,21 +249,235 @@ if (peek($1000A0)==$02)and(dpeek($2B90BC)==$4EB9)
          poke $1087DE $08 #Rugal#
       endif
    endif
-   if (dpeek($108586)==$51EE) #Fix for Rugal's 2nd form music#
-      if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
+endif
+#Practice Mode Script - Common part - HP recovery & Return routine#
+if (peek($1000A0)==$02)
+   if (dpeek($108586)==$51EE) #At battle start#
+      poke $93BF $10 #Change original HP function#
+      poke $93CD $10
+      poke $93D3 $10
+      lpoke $93D8 $00000000
+      lpoke $108220 $01CF00CF #Increase HP at start#
+      lpoke $108420 $01CF00CF
+   endif
+   if (dpeek($108586)==$3FEC)
+      poke $10882E $60 #Timer#
+      if (peek($1000C0)==$00) #P1 as main player#
+      #P1 red blood#
+         lpoke $108220 $003F003F
+      #P2 HP recovery#
+         if (dpeek($108420)>=$0100) #HP bar display#
+            dpoke $108410 dpeek($108420)-$0100
+         endif
+         if (dpeek($108420)<$0100) #When HP bar below 0#
+            dpoke $108422 $0000
+         endif
+         if ((dpeek($108420)<$0100)and(peek($108400)==$07))or(peek($10FDAC)==$01) #Condition to restore#
+            poke $1000F1 $01
+         endif
+         if (dpeek($108420)<$01CF)and(peek($1000F1)==$01) #Restore HP#
+            dpoke $108420 dpeek($108420)+$1
+            dpoke $108422 dpeek($108422)+$1
+         endif
+         if (dpeek($108420)==$01CF)
+            dpoke $108422 $00CF
+            poke $1000F1 $00
+         endif
+      endif
+      if (peek($1000C0)==$01) #P2 as main player#
+      #P2 red blood#
+         lpoke $108420 $003F003F
+      #P1 HP recovery#
+         if (dpeek($108220)>=$0100) #HP bar display#
+            dpoke $108210 dpeek($108220)-$0100
+         endif
+         if (dpeek($108220)<$0100) #When HP bar below 0#
+            dpoke $108222 $0000
+         endif
+         if ((dpeek($108220)<$0100)and(peek($108200)==$07))or(peek($10FDAC)==$04) #Condition to restore#
+            poke $1000F0 $01
+         endif
+         if (dpeek($108220)<$01CF)and(peek($1000F0)==$01) #Restore HP#
+            dpoke $108220 dpeek($108220)+$1
+            dpoke $108222 dpeek($108222)+$1
+         endif
+         if (dpeek($108220)==$01CF)
+            dpoke $108222 $00CF
+            poke $1000F0 $00
+         endif
+      endif
+   endif
+   if (peek($108786)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to char. screen#
+      poke $108786 $00 #Resume from pause#
+      poke $1087E6 $03 #Deselect characters#
+      poke $37137 peek($1000B0) #Load previous characters#
+      poke $37155 peek($1000B1)
+      poke $93BF $20 #Restore original HP function#
+      poke $93CD $20
+      poke $93D3 $20
+      lpoke $93D8 $526C0122
+      if (peek($108200)==$00)or(peek($108400)==$00)
+         dpoke $108654 $0018 #Add some wait time to prevent slow down#
+      endif
+      dpoke $108586 $3E3E #To return routine#
+   endif
+   if (dpeek($108586)==$7046)and(peek($1087E6)==$03)
+      poke $37137 $00 #Restore rom#
+      poke $37155 $07
+   endif
+   if (dpeek($108586)==$51EE)and(peek($1087DE)==$08) #Fix for Rugal's 2nd form music#
+      if ((peek($1000C0)==$00)and(peek($108432)==$19))or((peek($1000C0)==$01)and(peek($108232)==$19))
          poke $320000 $2B
       endif
    endif
 endif
+off:
+   poke $32C8D $30
+   poke $32C93 $34
+   poke $37137 $00
+   poke $37155 $07
+   poke $3B1AB $02
+   poke $541C4 $6C
+   poke $541C6 "TEAM PLAY"
+   poke $541D3 "SINGLE PLAY"
+   if (dpeek($C1852C)==$1A39) #For Unibios#
+      poke $C1852F $34
+      poke $C18537 $30
+      poke $C1854B $34
+      poke $C18553 $30
+   endif
+   if (dpeek($C16F46)==$1A39) #For Japan AES#
+      poke $C16F49 $34
+      poke $C16F51 $30
+      poke $C16F65 $34
+      poke $C16F6D $30
+   endif
+   if (dpeek($C16BFA)==$1A39) #For Asia AES#
+      poke $C16BFD $34
+      poke $C16C05 $30
+      poke $C16C19 $34
+      poke $C16C21 $30
+   endif
+   poke $93BF $20 #Restore original HP function#
+   poke $93CD $20
+   poke $93D3 $20
+   lpoke $93D8 $526C0122
 
-script "Enable Rugal"
+script "Enable Rugal" \
+"comm:When using neogeo unibios, it affects the activation of other dip-switch"
 run:
-   if (dpeek($108586)==$7046)and(peek($100000)!=$08)
+   if (dpeek($108586)==$7046)or(dpeek($108586)==$CAB4)
       poke $100000 $08
    endif
    if (dpeek($108586)==$7EDC)
       poke $100000 $00
    endif
+off:
+   poke $100000 $00
+
+script "Rugal 2nd form as single fighter if on 1st place & Music fix" \
+"comm:Auto select the 2nd & 3rd order of Rugal. When start as 2nd form, there is only 1 fighter,
+but the denfense is increased. Also fix the music for 2nd form and skip the lose cutscene"
+run:
+if (peek($108837)==$01) #For team mode only#
+   if (dpeek($108586)==$7EDC)
+    #P1 - Auto-select for 2nd & 3rd in ordr select#
+      if (peek($108231)==$08)and(peek($1081D3)==$00)
+         poke $1081D3 $02
+      endif
+      if (peek($108234)==$18)and(peek($1081D3)==$04)
+         lpoke $108232 $18191918
+         poke $1081D3 $03
+      endif
+      if (peek($108234)==$19)and(peek($1081D3)==$04)
+         lpoke $108232 $19191818
+         poke $1081D3 $03
+      endif
+   endif 
+    #P2 - Auto-select for 2nd & 3rd in ordr select#
+      if (peek($108431)==$08)and(peek($1083D3)==$00)
+         poke $1083D3 $02
+      endif
+      if (peek($108434)==$18)and(peek($1083D3)==$04)
+         lpoke $108432 $18191918
+         poke $1083D3 $03
+      endif
+      if (peek($108434)==$19)and(peek($1083D3)==$04)
+         lpoke $108432 $19191818
+         poke $1083D3 $03
+      endif
+   endif 
+ #P1 - Rugal 2nd form as single fighter if on 1st place#
+   if (dpeek($108586)==$51EE)and(peek($108232)==$19)
+      poke $108238 $00 #1 round fight only for 2nd form Rugal#
+   endif
+   if (dpeek($108586)==$3FEC)and(peek($108232)==$19)
+      poke $10C7CA $78 #Increased defense#
+   endif
+ #P2 - Rugal 2nd form as single fighter if on 1st place#
+   if (peek($108431)==$08)and(peek($1083D3)==$01) 
+      #poke $10B9E6 $F0#
+   endif
+   if (dpeek($108586)==$51EE)and(peek($108432)==$19)
+      poke $108438 $00 #1 round fight only for 2nd form Rugal#
+   endif
+   if (dpeek($108586)==$3FEC)and(peek($108432)==$19)
+      poke $10CBCA $78 #Increased defense#
+   endif
+endif
+#Correct music for Rugal 2nd form & no lose cutscene for 1st form in Rugal stage#
+if (dpeek($1087DE)!=$08FF)and(peek($1000A0)!=$02) #Not affect final stage in acrade & practice mode#
+   poke $353F5 $FF #No Rugal lose cutscene#
+   poke $3541F $FF
+   if (peek($1087DE)==$08)and(dpeek($1087A0)==$7438)
+      if ((dpeek($108586)==$51EE)or(dpeek($108586)==$530E))and(peek($1000B2)==$00)
+         poke $320000 $2B
+         poke $1000B2 $01 #To ensure rugal 2nd bgm not repeat#
+      endif
+   endif
+   if (dpeek($108586)==$7EDC)
+      poke $1000B2 $00
+   endif
+endif
+if (dpeek($1087DE)==$08FF) #Restore at final stage of arcade mode#
+   poke $353F5 $08
+   poke $3541F $08
+endif
+off:
+   poke $353F5 $08
+   poke $3541F $08
+
+script "Edited cutscenes for Rugal" \
+"comm:Remove part of the cutscenes where the dialogue is unmatched.
+Also skip the cutscene for lose of Rugal. Work for original rom."
+run:
+#No 1st form lose cutscene in 2P mode in Rugal stage#
+if (lpeek($108584)==$00041C28)and(peek($1087E5)==$03)
+   lpoke $108584 $00041D4A
+endif
+#Edited cutscenes for Rugal for kof94 original rom#
+if (peek($1000A0)==$00)and(dpeek($2B90BC)==$0000)
+   if ((peek($108231)==$08)and(peek($1087E5)==$01))or((peek($108431)==$08)and(peek($1087E5)==$02))
+    #Boss invitation#
+      if (lpeek($108584)==$00041E96)
+         lpoke $108584 $00035060
+      endif
+    #Ending#
+      if (dpeek($1087DE)==$08FF)and(dpeek($1085BC)==$BFB4)
+         if (lpeek($108644)==$0003E876)and(peek($1000C0)==$00)
+            lpoke $108644 $0003E8EE #Switch to cutscene for Japan team#
+            poke $1000C0 $01
+         endif
+         if (lpeek($108584)==$0003E618)and(peek($1000C0)==$01)
+            lpoke $108584 $0003E636
+            poke $1000C0 $00
+         endif
+         if (lpeek($108584)==$0003CE5A)
+            lpoke $108584 $000443FC
+         endif
+      endif
+   endif
+endif
 
 script "Infinite Time"
 on:
