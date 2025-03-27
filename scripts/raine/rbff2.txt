@@ -1,3 +1,274 @@
+script "Console Mode Plus" \
+"comm:On the title screen, hightlight 'Game Start', press left or right to select modes.
+In practice mode, start button can restore HP, pause the game and then press start to select character."
+run:
+#Menu Screen Script#
+if (dpeek($100002)==$E71E)
+   poke $CC71 $95 #Restore control#
+   poke $CCA1 $9B
+   dpoke $5B5B6 $1B7C #Restore original HP function#
+   poke $5B477 $FF
+   dpoke $5B47A $6100
+ #Shift original text and add own text in menu#
+   dpoke $1951C $71FF #Shift original text#
+   dpoke $1953A $71FF
+    dpoke $3C0000 $71F9 # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $2F47 # value
+    dpoke $3C0002 $2F41
+    dpoke $3C0002 $2F4D
+    dpoke $3C0002 $2F45
+    dpoke $3C0002 $2F20
+    dpoke $3C0002 $2F53
+    dpoke $3C0002 $2F54
+    dpoke $3C0002 $2F41
+    dpoke $3C0002 $2F52
+    dpoke $3C0002 $2F54
+    dpoke $3C0000 $721A # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $2F56 # value
+    dpoke $3C0002 $2F53
+    dpoke $3C0002 $2F20
+    dpoke $3C0002 $2F20
+    dpoke $3C0002 $2F4D
+    dpoke $3C0002 $2F4F
+    dpoke $3C0002 $2F44
+    dpoke $3C0002 $2F45
+    dpoke $3C0000 $721B # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $2F50 # value
+    dpoke $3C0002 $2F52
+    dpoke $3C0002 $2F41
+    dpoke $3C0002 $2F43
+    dpoke $3C0002 $2F54
+    dpoke $3C0002 $2F49
+    dpoke $3C0002 $2F43
+    dpoke $3C0002 $2F45
+    dpoke $3C0000 $723C # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $2F4F # value
+    dpoke $3C0002 $2F50
+    dpoke $3C0002 $2F54
+    dpoke $3C0002 $2F49
+    dpoke $3C0002 $2F4F
+    dpoke $3C0002 $2F4E
+ #Control in menu#
+   if (peek($100041)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+      poke $100041 $00
+   endif
+   if (dpeek($100040)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $100040 $01FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $100040 $02FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0200)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $100040 $03FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0300)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $100040 $00FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0000)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $100040 $03FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0300)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $100040 $02FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0200)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $100040 $01FF
+      poke $320000 $60
+   endif
+   if (dpeek($100040)==$0100)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $100040 $00FF
+      poke $320000 $60
+   endif
+ #Hightlighted mode display#
+   if (peek($100040)==$00) #Arcade#
+      poke $10A8CF $00 #Game Start#
+      poke $380000 peek($380000)&$8F #Restore memory card#
+      if (peek($10FD9F)>=$05)
+         dpoke $3C0000 $71F9 # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $3F47 # value
+         dpoke $3C0002 $3F41
+         dpoke $3C0002 $3F4D
+         dpoke $3C0002 $3F45
+         dpoke $3C0002 $3F20
+         dpoke $3C0002 $3F53
+         dpoke $3C0002 $3F54
+         dpoke $3C0002 $3F41
+         dpoke $3C0002 $3F52
+         dpoke $3C0002 $3F54
+      endif
+   endif
+   if (peek($100040)==$01) #VS#
+      poke $10A8CF $00 #Game Start#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      if (peek($10FD9F)>=$05)
+         dpoke $3C0000 $721A # address
+	      dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $3F56 # value
+         dpoke $3C0002 $3F53
+         dpoke $3C0002 $3F20
+         dpoke $3C0002 $3F20
+         dpoke $3C0002 $3F4D
+         dpoke $3C0002 $3F4F
+         dpoke $3C0002 $3F44
+         dpoke $3C0002 $3F45
+      endif
+   endif
+   if (peek($100040)==$02) #Practice#
+      poke $10A8CF $00 #Game Start#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      if (peek($10FD9F)>=$05)
+         dpoke $3C0000 $721B # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $3F50 # value
+         dpoke $3C0002 $3F52
+         dpoke $3C0002 $3F41
+         dpoke $3C0002 $3F43
+         dpoke $3C0002 $3F54
+         dpoke $3C0002 $3F49
+         dpoke $3C0002 $3F43
+         dpoke $3C0002 $3F45
+      endif
+   endif
+   if (peek($100040)==$03) #Option#
+      poke $10A8CF $01 #Option#
+      if (peek($10FD9F)>=$05)
+         dpoke $3C0000 $723C # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $3F4F # value
+         dpoke $3C0002 $3F50
+         dpoke $3C0002 $3F54
+         dpoke $3C0002 $3F49
+         dpoke $3C0002 $3F4F
+         dpoke $3C0002 $3F4E
+      endif
+   endif
+endif
+#Restore rom when leaving menu#
+if (dpeek($100002)==$E802)
+   dpoke $1951C $71F9 #Restore original text#
+   dpoke $1953A $71F9
+endif
+#VS Mode Script#
+if (peek($100040)==$01)
+   if (dpeek($100002)==$EA94)
+      poke $100024 $03 #Activate both player#
+      dpoke $10FDB6 $0101
+   endif
+   if (dpeek($100002)==$EC06)
+      if (peek($100026)==$01) #Music form P2#
+         poke $100025 $02
+      endif
+      if (peek($100026)==$02) #Music from P1#
+         poke $100025 $01
+      endif
+    endif
+    if (dpeek($100002)==$F532)
+       poke $100025 $03
+    endif
+   if (dpeek($100002)==$F908) #Back to char screen step 1#
+      dpoke $100002 $F9A8
+   endif
+   if (lpeek($100000)==$00010122) #Back to char screen step 2#
+      dpoke $10FDB6 $0101
+      poke $100024 $03
+      dpoke $100026 $0003
+      lpoke $100000 $0000EB90 #Return#
+   endif
+endif
+#Practice Mode Script#
+if (peek($100040)==$02)
+   if (dpeek($100002)==$EA94)
+      poke $10E024 $03 #Infinity time#
+      poke $10E018 $AA
+      poke $100024 $03
+      dpoke $10FDB6 $0101
+      dpoke $5B5B6 $4E75 #Change original HP function#
+      poke $5B477 $00
+      dpoke $5B47A $4E75
+   endif
+   if (dpeek($100002)==$EC06)
+      if (peek($100026)==$01) #P1 as main player#
+         poke $CC71 $9B
+         poke $CCA1 $95
+         poke $100025 $02
+      endif
+      if (peek($100026)==$02) #P2 as main player#
+         poke $CC71 $9B
+         poke $CCA1 $95
+         poke $100025 $01
+      endif
+      if (peek($100026)==$03) #Restore original control#
+         poke $CC71 $95
+         poke $CCA1 $9B
+      endif
+   endif
+   if (dpeek($100002)==$F55A) #Battle parameters#
+      poke $1004BC $3C #Infinite Power#
+      poke $1005BC $3C
+      if (peek($100025)==$02) #P1 as main player#
+         poke $10048B $60 #P1 red blood#
+         #P2 HP Recovery#
+         if ((peek($10058B)==$00)and(dpeek($100560)<=$0001))or(peek($10FDAC)==$01) #Condition to restore#
+            poke $100051 $01
+         endif
+         if (peek($100051)==$01)and(peek($10058B)<$C0) #Restore HP#
+            poke $10058B peek($10058B)+$1
+         endif
+         if (peek($10058B)==$C0) #Finish restore#
+            poke $100051 $00
+         endif
+      endif
+      if (peek($100025)==$01) #P2 as main player#
+         poke $10058B $60 #P2 red blood#
+         #P1 HP Recovery#
+         if ((peek($10048B)==$00)and(dpeek($100460)<=$0001))or(peek($10FDAC)==$04) #Condition to restore#
+            poke $100050 $01
+         endif
+         if (peek($100050)==$01)and(peek($10048B)<$C0) #Restore HP#
+            poke $10048B peek($10048B)+$1
+         endif
+         if (peek($10048B)==$C0) #Finish restore#
+            poke $100050 $00
+         endif
+      endif
+   endif
+   if (dpeek($100002)==$F55A)and(peek($1041D2)==$FF)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Back to char screen step 1#
+      poke $1041D2 $00
+      dpoke $100002 $F9A8
+   endif
+   if (lpeek($100000)==$00010122) #Back to char screen step 2#
+      dpoke $10FDB6 $0101
+      poke $100024 $03
+      dpoke $100026 $0003
+      lpoke $100000 $0000EB90 #Return#
+   endif
+endif
+off:
+   dpoke $1951C $71F9 #Restore original text#
+   dpoke $1953A $71F9
+   poke $CC71 $95 #Restore control#
+   poke $CCA1 $9B
+   dpoke $5B5B6 $1B7C #Restore original HP function#
+   poke $5B477 $FF
+   dpoke $5B47A $6100
+
+script "Enable Stage Select" \
+"comm:When using neogeo unibios, it affects the activation of other dip-switch"  
+run:
+   poke $10E000 $04
+off:
+   poke $10E000 $00
+
 script "Infinite Time"  
 run:
     poke $107C28 $99
