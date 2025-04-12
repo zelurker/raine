@@ -307,6 +307,25 @@ if (peek($10FFF0)==$02)and(dpeek($108006)>=$D03E)and(dpeek($108006)<=$D076)and(p
       dpoke $3C0002 $5320
    endif
 endif
+#Bosses's Stage in VS & Practice Mode#
+if (peek($10FFF0)==$01)or(peek($10FFF0)==$02)
+   if (peek($1080CD)==$02)
+      if (peek($108323)==$0B) #Amakusa's stage#
+         poke $108B2B $09
+      endif
+      if (peek($108323)==$0D) #Zankuro's stage#
+         poke $108B2B $0A
+      endif
+   endif
+   if (peek($1080CD)==$01)
+      if (peek($108322)==$0B) #Amakusa's stage#
+         poke $108B2B $09
+      endif
+      if (peek($108322)==$0D) #Zankuro's stage#
+         poke $108B2B $0A
+      endif
+   endif
+endif
 off:
    poke $B60F $94 #Restore control#
    poke $B625 $9A
