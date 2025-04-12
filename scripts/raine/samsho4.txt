@@ -1,82 +1,171 @@
 script "Console Mode Plus" \
-"comm:On the mode select screen, press left or right to select modes.
-In practice mode, pause the game then press start to change character."
+"comm:In practice mode, start button can restore HP, during pause, press up/down to select power option or press start to select character."
 run:
 #Menu Screen Script#
 if (dpeek($108006)==$C5A4)
-  poke $B60F $94 #Restore control#
-  poke $B625 $9A
-  if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
-    poke $10FFF1 $00
-  endif
-  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $01FF
-    poke $320000 $70
-  endif
-  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $02FF
-    poke $320000 $70
-  endif
-  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $00FF
-    poke $320000 $70
-  endif
-  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $02FF
-    poke $320000 $70
-  endif
-  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $01FF
-    poke $320000 $70
-  endif
-  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $00FF
-    poke $320000 $70
-  endif
-endif
-if (dpeek($108006)==$C5A4)or(dpeek($108006)==$C604)
-  if (peek($10FFF0)==$00) #Normal#
-    dpoke $3C0000 $721D # address
+   poke $B60F $94 #Restore control#
+   poke $B625 $9A
+   poke $28DF5 $42 #Restore HP function#
+   poke $28E1B $42
+   poke $4224F $30
+ #Shift original text and add own text in menu#
+   dpoke $15E6A $71FF #Shift original text#
+   dpoke $15EA4 $71FF
+   dpoke $15EDE $71FF
+   dpoke $15E86 $71FF
+   dpoke $15EC0 $71FF
+   dpoke $15EFA $71FF
+    dpoke $3C0000 $71F6 # address
 	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $5320 # value
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-  endif
-  if (peek($10FFF0)==$01) #VS#
-    dpoke $3C0000 $721D # address
+    dpoke $3C0002 $3347 # value
+    dpoke $3C0002 $3341
+    dpoke $3C0002 $334D
+    dpoke $3C0002 $3345
+    dpoke $3C0002 $3320
+    dpoke $3C0002 $3353
+    dpoke $3C0002 $3354
+    dpoke $3C0002 $3341
+    dpoke $3C0002 $3352
+    dpoke $3C0002 $3354
+    dpoke $3C0000 $7217 # address
 	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $5320 # value
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5356
-    dpoke $3C0002 $5353
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-    dpoke $3C0002 $5320
-  endif
-  if (peek($10FFF0)==$02) #Practice#
-    dpoke $3C0000 $721D # address
+    dpoke $3C0002 $3356 # value
+    dpoke $3C0002 $3353
+    dpoke $3C0002 $3320
+    dpoke $3C0002 $3320
+    dpoke $3C0002 $334D
+    dpoke $3C0002 $334F
+    dpoke $3C0002 $3344
+    dpoke $3C0002 $3345
+    dpoke $3C0000 $71F8 # address
 	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $5350 # value
-    dpoke $3C0002 $5352
-    dpoke $3C0002 $5341
-    dpoke $3C0002 $5343
-    dpoke $3C0002 $5354
-    dpoke $3C0002 $5349
-    dpoke $3C0002 $5343
-    dpoke $3C0002 $5345
-  endif
+    dpoke $3C0002 $3320 # value
+    dpoke $3C0002 $3350
+    dpoke $3C0002 $3352
+    dpoke $3C0002 $3341
+    dpoke $3C0002 $3343
+    dpoke $3C0002 $3354
+    dpoke $3C0002 $3349
+    dpoke $3C0002 $3343
+    dpoke $3C0002 $3345
+    dpoke $3C0000 $7239 # address
+	dpoke $3c0004 $20   # modulo
+    dpoke $3C0002 $334F # value
+    dpoke $3C0002 $3350
+    dpoke $3C0002 $3354
+    dpoke $3C0002 $3349
+    dpoke $3C0002 $334F
+    dpoke $3C0002 $334E
+ #Control in menu#
+   if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+      poke $10FFF1 $00
+   endif
+   if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $01FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $02FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $03FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0300)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $00FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $03FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0300)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $02FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $01FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $00FF
+      poke $320000 $70
+   endif
+ #Hightlighted mode display#
+   if (peek($10FFF0)==$00) #Arcade#
+      dpoke $108034 $0000 #Game Start#
+      poke $380000 peek($380000)&$8F #Restore memory card#
+      if (peek($10FD9F)>=$03)
+         dpoke $3C0000 $71F6 # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $5347 # value
+         dpoke $3C0002 $5341
+         dpoke $3C0002 $534D
+         dpoke $3C0002 $5345
+         dpoke $3C0002 $5320
+         dpoke $3C0002 $5353
+         dpoke $3C0002 $5354
+         dpoke $3C0002 $5341
+         dpoke $3C0002 $5352
+         dpoke $3C0002 $5354
+      endif
+   endif
+   if (peek($10FFF0)==$01) #VS#
+      dpoke $108034 $0000 #Game Start#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      if (peek($10FD9F)>=$03)
+         dpoke $3C0000 $7217 # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $5356 # value
+         dpoke $3C0002 $5353
+         dpoke $3C0002 $5320
+         dpoke $3C0002 $5320
+         dpoke $3C0002 $534D
+         dpoke $3C0002 $534F
+         dpoke $3C0002 $5344
+         dpoke $3C0002 $5345
+      endif
+   endif
+   if (peek($10FFF0)==$02) #Practice#
+      dpoke $108034 $0000 #Game Start#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      if (peek($10FD9F)>=$03)
+         dpoke $3C0000 $71F8 # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $5320 # value
+         dpoke $3C0002 $5350
+         dpoke $3C0002 $5352
+         dpoke $3C0002 $5341
+         dpoke $3C0002 $5343
+         dpoke $3C0002 $5354
+         dpoke $3C0002 $5349
+         dpoke $3C0002 $5343
+         dpoke $3C0002 $5345
+      endif
+   endif
+   if (peek($10FFF0)==$03) #Option#
+      dpoke $108034 $FFFF #Option#
+      if (peek($10FD9F)>=$03)
+         dpoke $3C0000 $7239 # address
+	     dpoke $3c0004 $20   # modulo
+         dpoke $3C0002 $534F # value
+         dpoke $3C0002 $5350
+         dpoke $3C0002 $5354
+         dpoke $3C0002 $5349
+         dpoke $3C0002 $534F
+         dpoke $3C0002 $534E
+      endif
+   endif
 endif
-if (dpeek($108006)==$C626)and(peek($10FFF0)>=$01)
-   poke $380000 peek($380000)|$70 #Disable memory card#
-endif
-if (dpeek($108006)==$C860)
-   poke $380000 peek($380000)&$8F #Restore memory card#
+#Restore rom when leaving menu#
+if (dpeek($108006)==$DC3A)
+   dpoke $15E6A $71F6 #Restore original text#
+   dpoke $15EA4 $71F6
+   dpoke $15EDE $71F6
+   dpoke $15E86 $71F8
+   dpoke $15EC0 $71F8
+   dpoke $15EFA $71F8
 endif
 #VS Mode Script#
 if (peek($10FFF0)==$01)
@@ -95,7 +184,7 @@ if (peek($10FFF0)==$01)
          poke $1080CD $01 #Music from P1#
       endif
     endif
-   if (dpeek($108006)==$D2EE) #Prevent continue text#
+   if (dpeek($108006)==$D2EE)or(dpeek($108006)==$C8FC) #Prevent continue text#
       dpoke $1002C2 $0000
       dpoke $1002C8 $0000
       dpoke $1002E2 $0000
@@ -130,18 +219,106 @@ if (peek($10FFF0)==$02)
          poke $B60F $94 #Restore control#
          poke $B625 $9A
       endif
+      poke $10E016 $FF #Infinite time#
    endif
-   if (peek($10830E)==$80)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04)) #Return to Char. Screen#
+   if (dpeek($108006)>=$D03E)and(dpeek($108006)<=$D076)
+      if (peek($10FFF2)==$01) #Infinite Power#
+         poke $10844C $40
+         poke $10864C $40
+      endif
+      poke $28DF5 $F0 #Change HP function#
+      poke $28E1B $F0
+      poke $4224F $DE
+    #P2 HP Recovery#
+      if (dpeek($1086F0)>$FF00)
+         dpoke $1086F0 $0000 #Set HP to 0 when it is -ve#
+      endif
+      if ((dpeek($1086F0)==$0000)and(peek($108619)==$00))or(peek($10FDAC)==$01)
+         dpoke $108654 $00FF #HP recovery#
+      endif
+      if (dpeek($1086F0)>$00FC)and(dpeek($1086F0)<$FF00) #When over-recover#
+         dpoke $108654 $0000 #Stop recovering#
+         dpoke $1086F0 $00FC #Back to normal full HP#
+      endif
+    #P1 HP Recovery#
+      if (dpeek($1084F0)>$FF00)
+         dpoke $1084F0 $0000 #Set HP to 0 when it is -ve#
+      endif
+      if ((dpeek($1084F0)==$0000)and(peek($108419)==$00))or(peek($10FDAC)==$04)
+         dpoke $108454 $00FF #HP recovery#
+      endif
+      if (dpeek($1084F0)>$00FC)and(dpeek($1084F0)<$FF00) #When over-recover#
+         dpoke $108454 $0000 #Stop recovering#
+         dpoke $1084F0 $00FC #Back to normal full HP#
+      endif
+    #Remove menu text when resume#
+      if (peek($10FFF4)==$01)
+         dpoke $3C0000 $723C # address
+             dpoke $3c0004 $20   # modulo
+         for i=0 i<=$5 i=i+$1 dpoke $3C0002 $5320
+         poke $10FFF4 $00
+      endif
+   endif
+endif
+#Practice Menu Script#
+if (peek($10FFF0)==$02)and(dpeek($108006)>=$D03E)and(dpeek($108006)<=$D076)and(peek($10830E)==$80)
+   poke $10FFF4 $01
+ #To character select#
+   if (peek($10FDAC)==$01)or(peek($10FDAC)==$04)
       poke $10830E $00
       poke $1080D0 $00
       dpoke $108006 $C8B2
+      poke $10FFF4 $00
+      poke $28DF5 $42 #Restore HP function#
+      poke $28E1B $42
+      poke $4224F $30
    endif
-   poke $10E016 $FF #Infinite time#
-   poke $108443 $FC #Infinite HP#
-   poke $108643 $FC
-   poke $10844C $40 #Infinite Power#
-   poke $10864C $40
+ #Control in menu#
+   if (peek($10FFF3)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+      poke $10FFF3 $00
+   endif
+   if (dpeek($10FFF2)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02)or(peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF2 $01FF
+      poke $320000 $70
+   endif
+   if (dpeek($10FFF2)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02)or(peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF2 $00FF
+      poke $320000 $70
+   endif
+ #Add text#
+   if (peek($10FFF2)==$00) #Normal#
+      dpoke $3C0000 $723C # address
+          dpoke $3c0004 $20   # modulo
+      dpoke $3C0002 $534E # value
+      dpoke $3C0002 $534F
+      dpoke $3C0002 $5352
+      dpoke $3C0002 $534D
+      dpoke $3C0002 $5341
+      dpoke $3C0002 $534C
+   endif
+   if (peek($10FFF2)==$01) #Max#
+      dpoke $3C0000 $723C # address
+          dpoke $3c0004 $20   # modulo
+      dpoke $3C0002 $5320 # value
+      dpoke $3C0002 $5320
+      dpoke $3C0002 $534D
+      dpoke $3C0002 $5341
+      dpoke $3C0002 $5358
+      dpoke $3C0002 $5320
+   endif
 endif
+off:
+   poke $B60F $94 #Restore control#
+   poke $B625 $9A
+   poke $28DF5 $42 #Restore HP function#
+   poke $28E1B $42
+   poke $4224F $30
+   dpoke $15E6A $71F6 #Restore original text#
+   dpoke $15EA4 $71F6
+   dpoke $15EDE $71F6
+   dpoke $15E86 $71F8
+   dpoke $15EC0 $71F8
+   dpoke $15EFA $71F8
 
 script "Infinite Time"
 run:

@@ -1,84 +1,143 @@
 script "Console Mode Plus" \
-"comm:On the level select screen, press left or right to select modes.
-In practice mode, pause the game then press start to change character."
+"comm:In practice mode, start button can restore HP, during pause, press up/down to select power option or press start to select character.
+With some minor boss fix."
+on:
+   dpoke $22EC4 $0000 #Fix boss's selection box#
 run:
 #Menu Screen Script#
-if (dpeek($102144)==$1312)and(peek($101099)==$32)
-  poke $FBF $96 #Restore rom#
-  poke $FD5 $9C
-  poke $22CA1 $0B
-  poke $22CAF $2B
-  if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
-    poke $10FFF1 $00
-  endif
-  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $01FF
-    poke $320000 $62
-  endif
-  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $02FF
-    poke $320000 $62
-  endif
-  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$08)or(peek($10FD9B)==$08))
-    dpoke $10FFF0 $00FF
-    poke $320000 $62
-  endif
-  if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $02FF
-    poke $320000 $62
-  endif
-  if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $01FF
-    poke $320000 $62
-  endif
-  if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$04)or(peek($10FD9B)==$04))
-    dpoke $10FFF0 $00FF
-    poke $320000 $62
-  endif
-  if (peek($10FFF0)==$00) #Normal#
-    dpoke $3C0000 $721D # address
-	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $7320 # value
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-  endif
-  if (peek($10FFF0)==$01) #VS#
-    dpoke $3C0000 $721D # address
-	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $7320 # value
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7356
-    dpoke $3C0002 $7353
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-    dpoke $3C0002 $7320
-  endif
-  if (peek($10FFF0)==$02) #Practice#
-    dpoke $3C0000 $721D # address
-	dpoke $3c0004 $20   # modulo
-    dpoke $3C0002 $7350 # value
-    dpoke $3C0002 $7352
-    dpoke $3C0002 $7341
-    dpoke $3C0002 $7343
-    dpoke $3C0002 $7354
-    dpoke $3C0002 $7349
-    dpoke $3C0002 $7343
-    dpoke $3C0002 $7345
-  endif
-  if (peek($10FD96)==$10)or(peek($10FD9C)==$10)
-     if (peek($10FFF0)>=$01)
-        poke $380000 peek($380000)|$70 #Disable memory card#
-     endif
-  endif
+if ((dpeek($102144)==$10A8)or(dpeek($102144)==$1136)or(dpeek($102144)==$11CE))and(peek($10FDAE)==$02) #At opening#
+   poke $FBF $96 #Restore rom#
+   poke $FD5 $9C
+   poke $22CA1 $0B
+   poke $22CAF $2B
+   dpoke $5A62 $B26E #Restore HP function#
+   poke $10FDAF $03 #Prevent proceed normally#
+   if (peek($10FDAC)>$00) #When pressing start#
+      dpoke $2F73C $71FF #Shift SNK logo#
+      dpoke $2F740 $71FF
+      dpoke $2F744 $71FF
+      dpoke $2F748 $71FF #Shift company text#
+      dpoke $2F5C2 $71FF #Shift time text#
+      dpoke $2F5E8 $71FF #Shift timer text#
+      dpoke $2FA1E $71FF #Shift press start text#
+      dpoke $2F74E $71FF #Shift SNK logo US#
+      dpoke $2F752 $71FF
+      dpoke $2F756 $71FF
+      dpoke $2F75A $71FF #Shift company text US#
+      poke $10FDAE $03 #Prepare to jump to MVS title screen#
+      dpoke $102144 $0122 #Jump#
+   endif
 endif
-if (dpeek($102144)==$136C)
-   poke $380000 peek($380000)&$8F #Restore memory card#
+if (dpeek($102140)==$7C26)and(dpeek($10FDAE)==$0301) #At MVS title screen#
+ #Add New Text#
+   dpoke $3C0000 $71F8 # address
+       dpoke $3c0004 $20   # modulo
+   dpoke $3C0002 $1347 # value
+   dpoke $3C0002 $1341
+   dpoke $3C0002 $134D
+   dpoke $3C0002 $1345
+   dpoke $3C0002 $1320
+   dpoke $3C0002 $1353
+   dpoke $3C0002 $1354
+   dpoke $3C0002 $1341
+   dpoke $3C0002 $1352
+   dpoke $3C0002 $1354
+   dpoke $3C0000 $71FA # address
+       dpoke $3c0004 $20   # modulo
+   dpoke $3C0002 $1356 # value
+   dpoke $3C0002 $1353
+   dpoke $3C0002 $1320
+   dpoke $3C0002 $134D
+   dpoke $3C0002 $134F
+   dpoke $3C0002 $1344
+   dpoke $3C0002 $1345
+   dpoke $3C0000 $71FC # address
+       dpoke $3c0004 $20   # modulo
+   dpoke $3C0002 $1350 # value
+   dpoke $3C0002 $1352
+   dpoke $3C0002 $1341
+   dpoke $3C0002 $1343
+   dpoke $3C0002 $1354
+   dpoke $3C0002 $1349
+   dpoke $3C0002 $1343
+   dpoke $3C0002 $1345
+ #Control in menu#
+   if (peek($10FFF1)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+      poke $10FFF1 $00
+   endif
+   if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $01FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $02FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$02)or(peek($10FD9B)==$02))
+      dpoke $10FFF0 $00FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF0)==$0000)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $02FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF0)==$0200)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $01FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF0)==$0100)and((peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF0 $00FF
+      poke $320000 $62
+   endif
+ #Arrow display for highlighted mode#
+   if (peek($10FFF0)==$00) #Arcade#
+      poke $380000 peek($380000)&$8F #Restore memory card#
+      dpoke $3C0000 $71DA
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71DC
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71D8
+      dpoke $3C0002 $133E
+   endif
+   if (peek($10FFF0)==$01) #VS#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      dpoke $3C0000 $71D8
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71DC
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71DA
+      dpoke $3C0002 $133E
+   endif
+   if (peek($10FFF0)==$02) #Practice#
+      poke $380000 peek($380000)|$70 #Disable memory card#
+      dpoke $3C0000 $71D8
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71DA
+      dpoke $3C0002 $1320
+      dpoke $3C0000 $71DC
+      dpoke $3C0002 $133E
+   endif
+endif
+if (dpeek($102144)==$121A)and(dpeek($10FDAE)==$0302) #After selected a mode#
+   poke $320000 $61 #Sound effec#
+   if (peek($10FFF0)>=$01) #For non-arcade modes#
+      dpoke $102144 $132A #Skip level select#
+   endif
+   if (peek($10FFF0)==$00) #For arcade modes#
+      dpoke $102144 $12EA #Prevent sound cut#
+   endif
+   poke $10FDAE $02 #Restore value#
+   dpoke $2F73C $707A #Restore rom for text in MVS mode#
+   dpoke $2F740 $707B
+   dpoke $2F744 $707C
+   dpoke $2F748 $71BC
+   dpoke $2F5C2 $725A
+   dpoke $2F5E8 $727B
+   dpoke $2FA1E $70F8
+   dpoke $2F74E $7079 
+   dpoke $2F752 $707A
+   dpoke $2F756 $707B
+   dpoke $2F75A $70BC
 endif
 #Skip cutscene for boss in story mode#
 if (peek($10FFF0)==$00)
@@ -147,17 +206,97 @@ if (peek($10FFF0)==$02)
    endif
    if (dpeek($102144)==$1844)
       dpoke $100A08 $0055 #Infinite time#
-      poke ((lpeek($100A0A))+$A5) $80 #Infinite HP#
-      poke ((lpeek($100A0E))+$A5) $80
-      if (dpeek($10214A)==$FFFF)and((peek($10FDAC)==$01)or(peek($10FDAC)==$04))
-         poke $100A85 $00
-         dpoke $10214A $0000
-         poke $10100D $00 #Deselect characters#
-         poke $10102D $00
-         dpoke $102144 $19A0 #Return#
+      if (peek($10FFF2)==$01) #Infinite Power#
+         poke ((lpeek($100A0A))+$CD) $20
+         poke ((lpeek($100A0E))+$CD) $20
+      endif
+      dpoke $5A62 $4E75 #No death#
+    #P2 HP recovery#
+      if ((peek(((lpeek($100A0E))+$A5))==$00)and(dpeek(((lpeek($100A0E))+$A8))==$0000))or(peek($10FDAC)==$01)
+         poke ((lpeek($100A0E))+$A7) $80 #HP recovery#
+      endif
+      if (peek(((lpeek($100A0E))+$A5))==$80)
+         dpoke ((lpeek($100A0E))+$A6) $0000 #Stop recovery if HP is full#
+      endif
+    #P1 HP recovery#
+      if ((peek(((lpeek($100A0A))+$A5))==$00)and(dpeek(((lpeek($100A0A))+$A8))==$0000))or(peek($10FDAC)==$04)
+         poke ((lpeek($100A0A))+$A7) $80 #HP recovery#
+      endif
+      if (peek(((lpeek($100A0A))+$A5))==$80)
+         dpoke ((lpeek($100A0A))+$A6) $0000 #Stop recovery if HP is full#
+      endif
+    #Remove menu text when resume#
+      if (peek($10FFF4)==$01)
+         dpoke $3C0000 $723C # address
+             dpoke $3c0004 $20   # modulo
+         for i=0 i<=$5 i=i+$1 dpoke $3C0002 $5320
+         poke $10FFF4 $00
       endif
    endif
 endif
+#Practice Menu Script#
+if (peek($10FFF0)==$02)and(dpeek($102144)==$1844)and(dpeek($10214A)==$FFFF)
+   poke $10FFF4 $01
+ #To character select#
+   if (peek($10FDAC)==$01)or(peek($10FDAC)==$04)
+      poke $100A85 $00
+      dpoke $10214A $0000
+      poke $10100D $00 #Deselect characters#
+      poke $10102D $00
+      dpoke $102144 $19A0 #Return#
+      poke $10FFF4 $00
+   endif
+ #Control in menu#
+   if (peek($10FFF3)==$FF)and((peek($10FD95)==$00)and(peek($10FD9B)==$00))
+      poke $10FFF3 $00
+   endif
+   if (dpeek($10FFF2)==$0000)and((peek($10FD95)==$02)or(peek($10FD9B)==$02)or(peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF2 $01FF
+      poke $320000 $62
+   endif
+   if (dpeek($10FFF2)==$0100)and((peek($10FD95)==$02)or(peek($10FD9B)==$02)or(peek($10FD95)==$01)or(peek($10FD9B)==$01))
+      dpoke $10FFF2 $00FF
+      poke $320000 $62
+   endif
+ #Add text#
+   if (peek($10FFF2)==$00) #Normal#
+      dpoke $3C0000 $723C # address
+          dpoke $3c0004 $20   # modulo
+      dpoke $3C0002 $034E # value
+      dpoke $3C0002 $034F
+      dpoke $3C0002 $0352
+      dpoke $3C0002 $034D
+      dpoke $3C0002 $0341
+      dpoke $3C0002 $034C
+   endif
+   if (peek($10FFF2)==$01) #Max#
+      dpoke $3C0000 $723C # address
+          dpoke $3c0004 $20   # modulo
+      dpoke $3C0002 $0320 # value
+      dpoke $3C0002 $0320
+      dpoke $3C0002 $034D
+      dpoke $3C0002 $0341
+      dpoke $3C0002 $0358
+      dpoke $3C0002 $0320
+   endif
+endif
+off:
+   poke $FBF $96 #Restore rom#
+   poke $FD5 $9C
+   poke $22CA1 $0B
+   poke $22CAF $2B
+   dpoke $5A62 $B26E #Restore HP function#
+   dpoke $2F73C $707A #Restore rom for text in MVS mode#
+   dpoke $2F740 $707B
+   dpoke $2F744 $707C
+   dpoke $2F748 $71BC
+   dpoke $2F5C2 $725A
+   dpoke $2F5E8 $727B
+   dpoke $2FA1E $70F8
+   dpoke $2F74E $7079 
+   dpoke $2F752 $707A
+   dpoke $2F756 $707B
+   dpoke $2F75A $70BC
 
 script "Infinite Time"
 run:
