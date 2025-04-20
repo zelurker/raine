@@ -1,26 +1,26 @@
 script "Select Next Level" \
- inter=0,153,1 
+ inter=0,153,1
 change:
     poke $904001 (param)
-script "Infinite Time Bonus Levels"  
+script "Infinite Time Bonus Levels"
 run:
     poke $90484C $04
 script "Open all doors Now!" \
- "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"  
+ "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"
 on:
     poke $904B16 $0A
     poke $904B17 $7B
 script "Turn walls to Exits Now!" \
- "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"  
+ "comm:Activate this cheat when you are not killing or about to be hit otherwise it may not work on the first activation"
 on:
     poke $904B22 $2E
     poke $904B23 $CF
 script "Freeze All Enemies" \
- "comm:Not strictly true they will head the direction they are pointing till they hit a wall and they will then stop"  
+ "comm:Not strictly true they will head the direction they are pointing till they hit a wall and they will then stop"
 run:
     poke $904007 $35
 script "Walk Through Walls" \
- "comm:Any part of a wall you walk through will leave behind invisible gaps for anything else to walk through too."  
+ "comm:Any part of a wall you walk through will leave behind invisible gaps for anything else to walk through too."
 on:
     temp0=lpeek($009914)
     temp1=lpeek($006E00)
@@ -75,167 +75,170 @@ off:
     lpoke $006E30 temp14
     lpoke $006E34 temp15
     lpoke $006E38 temp16
-script " "  
-script "Infinite Health (Warrior)"  
+script " "
+script "Infinite Health (Warrior)"
 run:
     poke $9048D6 $27
     poke $9048D9 $10
-script "Always have No Power-Up (Warrior)"  
+script "Warrior 2000 HP (like on ST!)"
+on:
+	lpoke $9048d6 2000
+script "Always have No Power-Up (Warrior)"
 run:
     poke $904AF9 $00
-script "Get Partial Invisibility Now! (Warrior)"  
+script "Get Partial Invisibility Now! (Warrior)"
 on:
     poke $904AF9 $01|(peek($904AF9)&~$01)
-script "Get Extra Shot Power Now! (Warrior)"  
+script "Get Extra Shot Power Now! (Warrior)"
 on:
     poke $904AF9 $02|(peek($904AF9)&~$02)
-script "Get Extra Magic Power Now! (Warrior)"  
+script "Get Extra Magic Power Now! (Warrior)"
 on:
     poke $904AF9 $04|(peek($904AF9)&~$04)
-script "Get Extra Shot Speed Now! (Warrior)"  
+script "Get Extra Shot Speed Now! (Warrior)"
 on:
     poke $904AF9 $08|(peek($904AF9)&~$08)
-script "Get Sun Now! (Warrior)"  
+script "Get Sun Now! (Warrior)"
 on:
     poke $904AF9 $16|(peek($904AF9)&~$16)
-script "Get Extra Shield Now! (Warrior)"  
+script "Get Extra Shield Now! (Warrior)"
 on:
     poke $904AF9 $32|(peek($904AF9)&~$32)
-script "Get Extra Speed Now! (Warrior)"  
+script "Get Extra Speed Now! (Warrior)"
 on:
     poke $904AF9 $64|(peek($904AF9)&~$64)
-script "Get Maximum Power Now! (Warrior)"  
+script "Get Maximum Power Now! (Warrior)"
 on:
     poke $904AF9 $7E
-script "Infinite Keys (Warrior)"  
+script "Infinite Keys (Warrior)"
 run:
     poke $9048EA $05
-script "Never Have Keys (Warrior)"  
+script "Never Have Keys (Warrior)"
 run:
     poke $9048EA $00
-script "Infinite Potions (Warrior)"  
+script "Infinite Potions (Warrior)"
 run:
     poke $9048E6 $06
-script " "  
-script "Infinite Health (Valkyrie)"  
+script " "
+script "Infinite Health (Valkyrie)"
 run:
     poke $9048DA $27
     poke $9048DD $10
-script "Always have No Power-Up (Valkyrie)"  
+script "Always have No Power-Up (Valkyrie)"
 run:
     poke $904AFB $00
-script "Get Partial Invisibility Now! (Valkyrie)"  
+script "Get Partial Invisibility Now! (Valkyrie)"
 on:
     poke $904AFB $01|(peek($904AFB)&~$01)
-script "Get Extra Shot Power Now! (Valkyrie)"  
+script "Get Extra Shot Power Now! (Valkyrie)"
 on:
     poke $904AFB $02|(peek($904AFB)&~$02)
-script "Get Extra Magic Power Now! (Valkyrie)"  
+script "Get Extra Magic Power Now! (Valkyrie)"
 on:
     poke $904AFB $04|(peek($904AFB)&~$04)
-script "Get Extra Shot Speed Now! (Valkyrie)"  
+script "Get Extra Shot Speed Now! (Valkyrie)"
 on:
     poke $904AFB $08|(peek($904AFB)&~$08)
-script "Get Sun Now! (Valkyrie)"  
+script "Get Sun Now! (Valkyrie)"
 on:
     poke $904AFB $16|(peek($904AFB)&~$16)
-script "Get Extra Shield Now! (Valkyrie)"  
+script "Get Extra Shield Now! (Valkyrie)"
 on:
     poke $904AFB $32|(peek($904AFB)&~$32)
-script "Get Extra Speed Now! (Valkyrie)"  
+script "Get Extra Speed Now! (Valkyrie)"
 on:
     poke $904AFB $64|(peek($904AFB)&~$64)
-script "Get Maximum Power Now! (Valkyrie)"  
+script "Get Maximum Power Now! (Valkyrie)"
 on:
     poke $904AFB $7E
-script "Infinite Keys (Valkyrie)"  
+script "Infinite Keys (Valkyrie)"
 run:
     poke $9048EB $05
-script "Never Have Keys (Valkyrie)"  
+script "Never Have Keys (Valkyrie)"
 run:
     poke $9048EB $00
-script "Infinite Potions (Valkyrie)"  
+script "Infinite Potions (Valkyrie)"
 run:
     poke $9048E7 $06
-script " "  
-script "Infinite Health (Wizard)"  
+script " "
+script "Infinite Health (Wizard)"
 run:
     poke $9048DE $27
     poke $9048E1 $10
-script "Always have No Power-Up (Wizard)"  
+script "Always have No Power-Up (Wizard)"
 run:
     poke $904AFD $00
-script "Get Partial Invisibility Now! (Wizard)"  
+script "Get Partial Invisibility Now! (Wizard)"
 on:
     poke $904AFD $01|(peek($904AFD)&~$01)
-script "Get Extra Shot Power Now! (Wizard)"  
+script "Get Extra Shot Power Now! (Wizard)"
 on:
     poke $904AFD $02|(peek($904AFD)&~$02)
-script "Get Extra Magic Power Now! (Wizard)"  
+script "Get Extra Magic Power Now! (Wizard)"
 on:
     poke $904AFD $04|(peek($904AFD)&~$04)
-script "Get Extra Shot Speed Now! (Wizard)"  
+script "Get Extra Shot Speed Now! (Wizard)"
 on:
     poke $904AFD $08|(peek($904AFD)&~$08)
-script "Get Sun Now! (Wizard)"  
+script "Get Sun Now! (Wizard)"
 on:
     poke $904AFD $16|(peek($904AFD)&~$16)
-script "Get Extra Shield Now! (Wizard)"  
+script "Get Extra Shield Now! (Wizard)"
 on:
     poke $904AFD $32|(peek($904AFD)&~$32)
-script "Get Extra Speed Now! (Wizard)"  
+script "Get Extra Speed Now! (Wizard)"
 on:
     poke $904AFD $64|(peek($904AFD)&~$64)
-script "Get Maximum Power Now! (Wizard)"  
+script "Get Maximum Power Now! (Wizard)"
 on:
     poke $904AFD $7E
-script "Infinite Keys (Wizard)"  
+script "Infinite Keys (Wizard)"
 run:
     poke $9048EC $05
-script "Never Have Keys (Wizard)"  
+script "Never Have Keys (Wizard)"
 run:
     poke $9048EC $00
-script "Infinite Potions (Wizard)"  
+script "Infinite Potions (Wizard)"
 run:
     poke $9048E8 $06
-script " "  
-script "Infinite Health (Elf)"  
+script " "
+script "Infinite Health (Elf)"
 run:
     poke $9048E2 $27
     poke $9048E5 $10
-script "Always have No Power-Up (Elf)"  
+script "Always have No Power-Up (Elf)"
 run:
     poke $904AFF $00
-script "Get Partial Invisibility Now! (Elf)"  
+script "Get Partial Invisibility Now! (Elf)"
 on:
     poke $904AFF $01|(peek($904AFF)&~$01)
-script "Get Extra Shot Power Now! (Elf)"  
+script "Get Extra Shot Power Now! (Elf)"
 on:
     poke $904AFF $02|(peek($904AFF)&~$02)
-script "Get Extra Magic Power Now! (Elf)"  
+script "Get Extra Magic Power Now! (Elf)"
 on:
     poke $904AFF $04|(peek($904AFF)&~$04)
-script "Get Extra Shot Speed Now! (Elf)"  
+script "Get Extra Shot Speed Now! (Elf)"
 on:
     poke $904AFF $08|(peek($904AFF)&~$08)
-script "Get Sun Now! (Elf)"  
+script "Get Sun Now! (Elf)"
 on:
     poke $904AFF $16|(peek($904AFF)&~$16)
-script "Get Extra Shield Now! (Elf)"  
+script "Get Extra Shield Now! (Elf)"
 on:
     poke $904AFF $32|(peek($904AFF)&~$32)
-script "Get Extra Speed Now! (Elf)"  
+script "Get Extra Speed Now! (Elf)"
 on:
     poke $904AFF $64|(peek($904AFF)&~$64)
-script "Get Maximum Power Now! (Elf)"  
+script "Get Maximum Power Now! (Elf)"
 on:
     poke $904AFF $7E
-script "Infinite Keys (Elf)"  
+script "Infinite Keys (Elf)"
 run:
     poke $9048ED $05
-script "Never Have Keys (Elf)"  
+script "Never Have Keys (Elf)"
 run:
     poke $9048ED $00
-script "Infinite Potions (Elf)"  
+script "Infinite Potions (Elf)"
 run:
     poke $9048E9 $06

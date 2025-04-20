@@ -31,7 +31,11 @@ static UINT32 nb_search, nb_alloc_search, *search;
 #define getadr(a) ((cpu_id>>4) == 1 ? ((a)^1) : (a))
 
 int get_cpu_id() { return cpu_id; }
-void set_cpu_id(int cpu) { cpu_id = cpu; } // when initialized from breakpoints !
+void set_cpu_id(int cpu) { cpu_id = cpu;
+    // When cpu_id is initialized prior to running scripts, ram must be initialized too!
+    // (unused for now, but normally these 2 should go together)
+    cpu_get_ram(cpu_id,ram,&nb_ram);
+} // when initialized from breakpoints !
 
 #define MAX_WATCH 10
 
@@ -61,7 +65,7 @@ static void init_cpuid() {
        cpu_id = CPU_Z80_0;
        if (!Z80_context[0].z80Base)
 	   cpu_id++; // why did Antiriad skip the 1st z80 sometimes ???
-   }
+   } else
 #endif
 #if HAVE_6502
   if (M6502Engine >= 1) {
