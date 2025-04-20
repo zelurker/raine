@@ -80,9 +80,6 @@ script "Infinite Health (Warrior)"
 run:
     poke $9048D6 $27
     poke $9048D9 $10
-script "Warrior 2000 HP (like on ST!)"
-on:
-	lpoke $9048d6 2000
 script "Always have No Power-Up (Warrior)"
 run:
     poke $904AF9 $00
