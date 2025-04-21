@@ -1593,14 +1593,19 @@ int do_console(int sel) {
 	if (ptr) {
 	    if (watch[n].size == 1) {
 		if (watch[n].read)
-		    cons->print("watch #%d byte at %x has just been read from %x",n,watch[n].adr,watch[n].pc);
+		    cons->print("watch #%d byte at $%x has just been read from %x",n,watch[n].adr,watch[n].pc);
 		else
-		    cons->print("watch #%d: byte at %x changed, new value: %x",n,watch[n].adr,ptr[getadr(watch[n].adr) ]);
-	    } else { // word
+		    cons->print("watch #%d: byte at $%x changed, new value: $%x",n,watch[n].adr,ptr[getadr(watch[n].adr) ]);
+	    } else if (watch[n].size == 2) { // word
 		if (watch[n].read)
-		    cons->print("watch #%d word at %x has just been read from %x",n,watch[n].adr,watch[n].pc);
+		    cons->print("watch #%d word at $%x has just been read from %x",n,watch[n].adr,watch[n].pc);
 		else
-		    cons->print("watch #%d: word at %x changed, new value: %x",n,watch[n].adr,ReadWord(&ptr[watch[n].adr]));
+		    cons->print("watch #%d: word at $%x changed, new value: $%x",n,watch[n].adr,ReadWord(&ptr[watch[n].adr]));
+	    } else  if (watch[n].size > 2) {
+		if (watch[n].read)
+		    cons->print("watch #%d long at $%x has just been read from %x",n,watch[n].adr,watch[n].pc);
+		else
+		    cons->print("watch #%d: long at $%x changed, new value: $%x (%d)",n,watch[n].adr,ReadLongSc(&ptr[watch[n].adr]),ReadLongSc(&ptr[watch[n].adr]));
 	    }
 	} else {
 	    cons->print("watch %d: for adr:%x, size:%d, but no direct mapping",n,watch[n].adr,watch[n].size);
