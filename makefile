@@ -17,7 +17,7 @@
 VERSION = "0.97.5"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
 # VERBOSE = 1
@@ -1716,7 +1716,7 @@ $(OBJDIR)/68000/star.o: source/68000/star.c
 
 $(OBJDIR)/z80/makez80.o: source/z80/makez80.c
 	@echo Compiling mz80...
-	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -c $< -o $@
+	$(CCV) $(INCDIR) $(DEFINE) $(CFLAGS_MCU) -Wno-incompatible-pointer-types -c $< -o $@
 
 $(OBJDIR)/6502/make6502.o: source/6502/make6502.c
 	@echo Compiling make6502...
