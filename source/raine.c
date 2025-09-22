@@ -197,7 +197,7 @@ static void winprotect(void *adr) {
    int ret = VirtualQuery(adr,&info,sizeof(info));
    if (ret) {
        DWORD old;
-       printf("got base %x length %d\n",info.BaseAddress,info.RegionSize);
+       // printf("got base %x length %d\n",info.BaseAddress,info.RegionSize);
        ret = VirtualProtect(info.BaseAddress,info.RegionSize,PAGE_EXECUTE_READWRITE, &old);
        if (!ret) {
 	   fatal_error("virtualprotect fails !");
