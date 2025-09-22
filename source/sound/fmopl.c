@@ -71,7 +71,7 @@ Revision History:
 #include <stdlib.h>
 #include <math.h>
 #include <string.h> // memset
-#include "savegame.h" // state_save... 
+#include "savegame.h" // state_save...
 
 #include "driver.h"		/* use M.A.M.E. */
 #include "sasound.h"
@@ -1548,7 +1548,7 @@ static FM_OPL *OPLCreate(int type, UINT32 clock, UINT32 rate)
 	return OPL;
 }
 
-static void OPL_postload(int param)
+static void OPL_postload()
 {
 	FM_OPL *OPL = myOPL;
 	int slot, ch;
