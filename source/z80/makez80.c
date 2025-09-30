@@ -944,7 +944,7 @@ struct sOp CBOps[] =
 	{0xffffffff, NULL}
 };
 
-static void LDHLHandler() {
+static void LDHLHandler(UINT32 dwOpcode) {
     MiscHandler(0x2a); // branch to ld (hl),adr handler
 }
 
