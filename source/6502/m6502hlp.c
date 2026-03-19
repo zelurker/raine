@@ -324,8 +324,8 @@ void AddM6502BROMBase(UINT8 *d0)
    m6502.m6502Base = d0;
    m6502_get_context(&M6502_context[1]);
 #else
-   m6502_data[1].base_ram = M6502_context[1].m6502Base;
    M6502_context[1].m6502Base=d0;
+   m6502_data[1].base_ram = M6502_context[1].m6502Base;
 #endif
 }
 
@@ -376,7 +376,7 @@ void AddM6502BWriteByte(UINT32 d0, UINT32 d1, void *d2, UINT8 *d3)
 void AddM6502BInit(void)
 {
 #ifdef MAME_6502
-   AddSaveData(SAVE_M6502_0, (UINT8 *) &M6502_context[0], (UINT8*)&M6502_context[9].m6502Base - (UINT8*)&M6502_context[0]);
+   AddSaveData(SAVE_M6502_1, (UINT8 *) &M6502_context[1], (UINT8*)&M6502_context[1].m6502Base - (UINT8*)&M6502_context[1]);
 #else
    M6502_context[1].m6502MemoryRead  = M6502_memory_rb[1];
    M6502_context[1].m6502MemoryWrite = M6502_memory_wb[1];
@@ -403,8 +403,8 @@ void AddM6502CROMBase(UINT8 *d0)
    m6502.m6502Base = d0;
    m6502_get_context(&M6502_context[2]);
 #else
-   m6502_data[2].base_ram = M6502_context[2].m6502Base;
    M6502_context[2].m6502Base=d0;
+   m6502_data[2].base_ram = M6502_context[2].m6502Base;
 #endif
 }
 
