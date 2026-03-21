@@ -460,7 +460,7 @@ void del_sample(int n) {
 	SDL_DestroySemaphore(samp[n].sem);
 	samp[n].sem = NULL;
     }
-    while (!samp[nb_samples-1].src && nb_samples > 0)
+    while (nb_samples > 0 && !samp[nb_samples-1].src)
 	nb_samples--;
 }
 
