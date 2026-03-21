@@ -253,9 +253,9 @@ static void matmania_sh_command_w(UINT32 offset, UINT16 data)
   switch_cpu(CPU_M6502_0);
 }
 
-static void matmania_dac_w(UINT32 offset, UINT16 data)
+static void matmania_dac_w(UINT32 offset, UINT8 data)
 {
-  DAC_signed_data_w(0,data & 0xff);
+  DAC_signed_data_w(0,data);
 }
 
 static UINT16 private_pal[10*8],palette_updated;
@@ -606,10 +606,10 @@ static void execute_matmania() {
   stopped_6502 = 0;
   for (slice=0; slice<SLICES; slice++) {
     if (!stopped_6502) {
-      cpu_execute_cycles(CPU_M6502_0, CPU_FRAME_MHz(1.8,60)/SLICES); // a little more than 1.5 Mhz
+      cpu_execute_cycles(CPU_M6502_0, CPU_FRAME_MHz(1.5,60)/SLICES); // a little more than 1.5 Mhz
       print_debug("M6502_PC:%04x\n",m6502pc);
     }
-    cpu_execute_cycles(CPU_M6502_1, CPU_FRAME_MHz(1.4,60)/SLICES); // a little more than 1.5 Mhz
+    cpu_execute_cycles(CPU_M6502_1, CPU_FRAME_MHz(1.2,60)/SLICES); // a little more than 1.5 Mhz
     print_debug("M6502_PC2:%04x\n",m6502pc);
     cpu_int_nmi(CPU_M6502_1);
   }
