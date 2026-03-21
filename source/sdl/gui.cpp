@@ -108,8 +108,13 @@ void TRaineDesktop::end_preinit() {
     // so to be safe we save the context if there is only 1 cpu in a category
     // Trouble between 68020 & 68000 if using musashi for both... !
     if (MZ80Engine >= 1) {
-	switch_cpu(CPU_Z80_0);
-	mz80GetContext(&Z80_context[0]);
+	if (Z80_context[0].z80Base) {
+	    switch_cpu(CPU_Z80_0);
+	    mz80GetContext(&Z80_context[0]);
+	} else {
+	    switch_cpu(CPU_Z80_1);
+	    mz80GetContext(&Z80_context[1]);
+	}
     }
     if (StarScreamEngine >= 1) {
 	switch_cpu(CPU_68K_0);

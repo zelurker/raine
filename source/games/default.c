@@ -67,7 +67,10 @@ void LoadDefault(void)
   ExitOnEI = 0;
   Z80Has16bitsPorts = 0;
   MouseB = &mouse_b;
-  setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
+  if (Z80_context[0].z80Base)
+      setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
+  else if (Z80_context[1].z80Base)
+      setup_z80_frame(CPU_Z80_1,CPU_FRAME_MHz(4,60));
   z80_offdata = 0; // code location = data location
   reset_timers();
   reset_z80_banks();
