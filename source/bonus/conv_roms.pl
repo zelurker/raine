@@ -61,6 +61,10 @@ my $comment = undef;
 while ($_ = shift @file) {
 	chomp;
 	s/\r//;
+	if (/^[ \t]*\/\*.+\*\/[ \t]*$/ || /^[ \t]*\/\//) {
+		say;
+		next;
+	}
 	if ($comment) {
 		$comment = undef if (/\*\//);
 		say;
@@ -240,7 +244,7 @@ while ($_ = shift @file) {
 								print "  { $oldname, $oldsize, $oldcrc, $region_name, $oldbase, $function }, $oldsuf\n";
 							}
 							last;
-						} elsif (/^[ \t]*\/\*/ && !/\*\//) {
+						} elsif (/^[ \t]*\/\*/ && !/\*\// && !/\/\/\*/) {
 							print;
 							$comment = 1;
 							next;
@@ -323,7 +327,7 @@ while ($_ = shift @file) {
 			my $genre = genres::get_genre($args[2],$long);
 			say "CLNEI( $args[1],$args[2],$args[$rot+2],$args[$rot+1],$args[0], $genre );";
 		}
-	} elsif (/\/\*/ && !/\*\//) {
+	} elsif (/\/\*/ && !/\*\// && !/\/\/\*/) {
 		$comment = 1;
 		say;
 	}
