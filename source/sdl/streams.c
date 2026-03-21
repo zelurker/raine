@@ -210,7 +210,7 @@ void streams_sh_update(void)
 	} else if (pos) {
 	    buflen = buflen*0.8;
 	}
-	buflen &= ~3; // divide by what exactly ?
+	// buflen &= ~3; // divide by what exactly ?
 	// at least 2 for 16 bits, maybe 4 for 2 channels ? Let's say 4, it seems safer...
       if (stream_buffer_pos[channel] + buflen > gotspec.samples*4)
 	  buflen = gotspec.samples*4-stream_buffer_pos[channel];
