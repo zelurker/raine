@@ -1341,6 +1341,7 @@ static int gfxrom_bank_mapper(int type, trange ranges )
 	ranges[nb].base  = base;
 	ranges[nb].mask  = cps1_game_config->bank_sizes[range->bank] - 1;
 	nb++;
+	if (nb == 3) return nb;
 //	return (base + (code & (cps1_game_config->bank_sizes[range->bank] - 1))) >> shift;
       }
 //    }
