@@ -1,6 +1,7 @@
 #include "../gui/menu.h"
 #include "../gui.h"
 #include "messagebox.h"
+#include "config.h"
 
 static int retval,start_buttons;
 
@@ -19,6 +20,7 @@ static char *cherche(char *s, int len, char c) {
 }
 
 int raine_mbox(char *title, char *the_content, char *mybtn) {
+    if (testing_game) return 0;
   menu_item_t *menu;
   int nb_lines = 0;
   char *content = strdup(the_content);
