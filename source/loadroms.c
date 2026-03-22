@@ -1118,7 +1118,7 @@ beg:
        if (remaining_size >= size) {
 	   memcpy(dest,remaining_b,size);
 	   if (remaining_size > size) {
-	       memcpy(remaining_b,remaining_b+size,remaining_size-size);
+	       memmove(remaining_b,remaining_b+size,remaining_size-size);
 	       remaining_size -= size;
 	   } else {
 	       FreeMem(remaining_b);
