@@ -92,7 +92,6 @@ void init_debug_dips() {
 			if (*s > '9') { // the text continues on the line below
 			    s--; // keep the previous space !
 			    char *dest = (is_high ? high[num] : low[num]);
-			    printf("num %d s %s len(s) %d dest %s len(dest) %d\n",num,s,strlen(s),dest,strlen(dest));
 			    strncat(dest,s,LEN-strlen(dest));
 			    strcpy(&dest[LEN-3],"..");
 			}
