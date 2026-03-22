@@ -3846,7 +3846,7 @@ static void render_scroll3(int mask)
       scroll3y -= 4;
   }
   UINT8 *map,*dest;
-  int n;
+  int n=0;
 
   MAKE_SCROLL_SCROLL3_4_32_YX(scroll3x,scroll3y);
 
@@ -3862,7 +3862,7 @@ static void render_scroll3(int mask)
 	break;
       }
     }
-    if (code < nb_scroll3 && GFX_SPR_SOLID32[code]) { // the range is ok
+    if (GFX_SPR_SOLID32[code]) { // the range is ok
       colour=ReadWord(&RAM_SCROLL3[(zz+2)]);
 
       MAP_PALETTE_MAPPED_NEW(
