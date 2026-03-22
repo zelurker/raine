@@ -25,8 +25,7 @@ static UINT8 *RAM_SPRITE;
 static UINT8 *RAM_PF1;
 static UINT8 *RAM_PF2;
 static UINT8 *RAM_PALETTE;
-static UINT8 *RAM_PFCTRL;
-
+static UINT8 *RAM_PFCTRL,*tilebank;
 
 static struct ROM_INFO rom_crospang[] =
 {
@@ -49,6 +48,8 @@ static struct ROM_INFO rom_heuksun[] =
   LOAD_16_8( CPU1, "ua03.j5", 0x00000, 0x80000, 0xde9f01e8),
   LOAD( ROM2, "us02.r4", 0x00000, 0x10000, 0xc7cc05fa),
   LOAD( SMP1, "us08.u7", 0x00000, 0x40000, 0xae177589),
+
+  // Tiles
   LOAD_16_8( GFX1, "uc08.r11", 0x00001, 0x20000, 0x242cee69),
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x100001, LOAD_CONTINUE },
   { "uc08.r11", 0x20000, 0x242cee69, REGION_GFX1, 0x040001, LOAD_CONTINUE },
@@ -57,6 +58,8 @@ static struct ROM_INFO rom_heuksun[] =
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x100000, LOAD_CONTINUE },
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x040000, LOAD_CONTINUE },
   { "uc07.t11", 0x20000, 0x4d1ed885, REGION_GFX1, 0x140000, LOAD_CONTINUE },
+  FILL(GFX1,0x180000, 0x80000, 0),
+  // Sprites
   LOAD_16_8( GFX2, "ud14.p11", 0x00000, 0x40000, 0x4fc2b574),
   LOAD_16_8( GFX2, "ud15.m11", 0x00001, 0x40000, 0x1d6187a6),
   LOAD_16_8( GFX2, "ud16.l11", 0x80000, 0x40000, 0xeabec43e),
@@ -228,9 +231,20 @@ static gfx_layout tlayout =
 	64*8
 };
 
+static gfx_layout tlayout_alt =
+{
+	16,16,
+	RGN_FRAC(1,2),
+	4,
+	{ 8, 0, RGN_FRAC(1,2)+8, RGN_FRAC(1,2)+0 },
+	{ STEP8(0,1), STEP8(8*2*16,1) },
+	{ STEP16(0,8*2) },
+	64*8
+};
+
 static struct GFX_LIST crospang_gfx[] =
 {
-   { REGION_GFX1, &tlayout, },
+   { REGION_GFX1, &tlayout_alt, },
    { REGION_GFX2, &tlayout, },
    { 0,           NULL,           },
 };
@@ -246,7 +260,7 @@ static UINT8 *map;
 static void draw_solid_layer(int scrollx,int scrolly, int palbase, UINT8 *PFRAM)
 {
 	int x,y;
-	UINT16 tileno;
+	UINT16 tileno,bank;
 	UINT8  colour;
 	int x16,y16,zzz,zzzz;
 	int zz;
@@ -256,9 +270,11 @@ static void draw_solid_layer(int scrollx,int scrolly, int palbase, UINT8 *PFRAM)
 	START_SCROLL_512x512_2_16(BORDER,BORDER,320,240);
 	{
 
-	  tileno = ReadWord(&PFRAM[zz]);
-	  colour = (tileno>>12) + palbase;
-	  tileno &= 0x0fff;
+	  tileno = ReadWord(&PFRAM[zz]) & 0x3ff;
+	  bank = (ReadWord(&PFRAM[zz]) & 0xc00) >> 10;
+	  tileno += tilebank[bank] << 10;
+
+	  colour = (ReadWord(&PFRAM[zz])>>12) + palbase;
 
 	  MAP_PALETTE_MAPPED_NEW(
 				 colour,
@@ -274,7 +290,7 @@ static void draw_solid_layer(int scrollx,int scrolly, int palbase, UINT8 *PFRAM)
 static void crospang_draw_16x16_layer(int scrollx,int scrolly, int palbase, UINT8 *PFRAM)
 {
 	int x,y;
-	UINT16 tileno;
+	UINT16 tileno,bank;
 	UINT8  colour;
 	int x16,y16,zzz,zzzz;
 	int zz;
@@ -284,9 +300,11 @@ static void crospang_draw_16x16_layer(int scrollx,int scrolly, int palbase, UINT
 	START_SCROLL_512x512_2_16(BORDER,BORDER,320,240);
 	{
 
-	  tileno = ReadWord(&PFRAM[zz]);
-	  colour = (tileno>>12) + palbase;
-	  tileno &= 0x0fff;
+	  tileno = ReadWord(&PFRAM[zz]) & 0x3ff;
+	  bank = (ReadWord(&PFRAM[zz]) & 0xc00) >> 10;
+	  tileno += tilebank[bank] << 10;
+
+	  colour = (ReadWord(&PFRAM[zz])>>12) + palbase;
 
 	  if( gfx1_solid[tileno] )
 	    {
@@ -489,94 +507,71 @@ static UINT16 my_speed_hack(UINT32 offset) {
   return ret;
 }
 
+extern struct COLOUR_MAPPER col_map_xrrr_rrgg_gggb_bbbb_rev;
+
+static void write_tbank_b(UINT32 offset, UINT8 data) {
+    printf("bank_b %x,%x\n",offset,data);
+    UINT16 bsel = (ReadWord(&RAM_PFCTRL[0]) >> 8) & 3;
+    tilebank[bsel] = data;
+}
+
 static void load_crospang(void)
 {
-	UINT8 *rom = load_region[REGION_GFX1];
-	int len = get_region_size(REGION_GFX1);
-	int i;
+    /* Calculate how much RAM we need to allocate */
+    RAMSize=0x10000
+	+0x10000
+	+0x00800
+	+0x00800
+	+0x00800
+	+0x00800
+	+0x00010
+	+4; // tile banks
 
-	/* gfx data is in the wrong order */
-	for (i = 0; i < len; i++)
-	{
-		if ((i & 0x20) == 0)
-		{
-			int t = rom[i]; rom[i] = rom[i + 0x20]; rom[i + 0x20] = t;
-		}
-	}
-	/* low/high half are also swapped */
-	for (i = 0; i < len / 2; i++)
-	{
-		int t = rom[i]; rom[i] = rom[i + len / 2]; rom[i + len / 2] = t;
-	}
-	/* In RAINE we allocate one big block of RAM to contain all emulated RAM then set some pointers to it
+    /* Allocate the RAM */
+    if(!(RAM=AllocateMem(RAMSize))) return;
+    // Without the memset here we can even get a crash at startup !
+    memset(RAM,0,RAMSize);
 
-		Z80:
-		0x10000 bytes z80
-
-		68000:
-		0x10000 bytes - MAIN RAM
-		0x00800 bytes - SPRITERAM
-		0x00800 bytes - FG TILEMAP
-		0x00800 bytes - BG TILEMAP
-		0x00800 bytes - PALETTE (actually 0x600)
-		0x00010 bytes - VIDEO REGS
-	*/
-
-	/* Calculate how much RAM we need to allocate */
-	RAMSize=0x10000
-	       +0x10000
-	       +0x00800
-	       +0x00800
-	       +0x00800
-	       +0x00800
-	       +0x00010;
-
-	/* Allocate the RAM */
-	if(!(RAM=AllocateMem(RAMSize))) return;
-	// Without the memset here we can even get a crash at startup !
-	memset(RAM,0,RAMSize);
-
-	/* Set Up the Pointers */
-	RAM_Z80       = &RAM[0x00000];
-	RAM_MAIN      = &RAM[0x00000+0x10000];
-	RAM_SPRITE    = &RAM[0x00000+0x10000+0x10000];
-	RAM_PF1       = &RAM[0x00000+0x10000+0x10000+0x00800];
-	RAM_PF2       = &RAM[0x00000+0x10000+0x10000+0x00800+0x00800];
-	RAM_PALETTE   = &RAM[0x00000+0x10000+0x10000+0x00800+0x00800+0x00800];
-	RAM_PFCTRL    = &RAM[0x00000+0x10000+0x10000+0x00800+0x00800+0x00800+0x00800];
-
+    /* Set Up the Pointers */
+    RAM_Z80       = RAM;
+    RAM_MAIN      = RAM+0x10000;
+    RAM_SPRITE    = RAM_MAIN+0x10000;
+    RAM_PF1       = RAM_SPRITE+0x00800;
+    RAM_PF2       = RAM_PF1+0x00800;
+    RAM_PALETTE   = RAM_PF2+0x00800;
+    RAM_PFCTRL    = RAM_PALETTE+0x00800;
+    tilebank      = RAM_PFCTRL + 0x10;
 
    // Setup Z80 memory map
    // --------------------
 
-	AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
+    AddZ80AROMBase(Z80ROM, 0x0038, 0x0066);
 
-	AddZ80AReadByte (0x0000, 0xbfff, NULL,                     load_region[REGION_ROM2] ); // Z80 ROM
-	AddZ80AReadByte (0xc000, 0xc7ff, NULL,                     RAM_Z80                  );
+    AddZ80AReadByte (0x0000, 0xbfff, NULL,                     load_region[REGION_ROM2] ); // Z80 ROM
+    AddZ80AReadByte (0xc000, 0xc7ff, NULL,                     RAM_Z80                  );
 
-	AddZ80AWriteByte(0xc000, 0xc7ff, NULL,                     RAM_Z80                  ); // Z80 RAM
+    AddZ80AWriteByte(0xc000, 0xc7ff, NULL,                     RAM_Z80                  ); // Z80 RAM
 
-	AddZ80AReadPort (0x00, 0x00, YM3812ReadZ80,                  NULL);
-	AddZ80AReadPort (0x02, 0x02, OKIM6295_status_0_r,            NULL);
-	AddZ80AReadPort (0x06, 0x06, crosspang_soundlatch_r,         NULL);
+    AddZ80AReadPort (0x00, 0x00, YM3812ReadZ80,                  NULL);
+    AddZ80AReadPort (0x02, 0x02, OKIM6295_status_0_r,            NULL);
+    AddZ80AReadPort (0x06, 0x06, crosspang_soundlatch_r,         NULL);
 
-	AddZ80AWritePort(0x00, 0x01, YM3812WriteZ80,                 NULL);
-	AddZ80AWritePort(0x02, 0x02, OKIM6295_data_0_w,              NULL);
+    AddZ80AWritePort(0x00, 0x01, YM3812WriteZ80,                 NULL);
+    AddZ80AWritePort(0x02, 0x02, OKIM6295_data_0_w,              NULL);
 
 
-	AddZ80AReadByte (0x0000, 0xFFFF, DefBadReadZ80,              NULL);
-	AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
-	AddZ80AReadPort (0x00,   0xFF,   DefBadReadZ80,              NULL);
-	AddZ80AWritePort(0x00,   0xFF,   DefBadWriteZ80,             NULL);
-	AddZ80AReadByte (  -1,   -1,     NULL,                       NULL);
-	AddZ80AWriteByte(  -1,   -1,     NULL,                       NULL);
-	AddZ80AReadPort (  -1,   -1,     NULL,                       NULL);
-	AddZ80AWritePort(  -1,   -1,     NULL,                       NULL);
+    AddZ80AReadByte (0x0000, 0xFFFF, DefBadReadZ80,              NULL);
+    AddZ80AWriteByte(0x0000, 0xFFFF, DefBadWriteZ80,             NULL);
+    AddZ80AReadPort (0x00,   0xFF,   DefBadReadZ80,              NULL);
+    AddZ80AWritePort(0x00,   0xFF,   DefBadWriteZ80,             NULL);
+    AddZ80AReadByte (  -1,   -1,     NULL,                       NULL);
+    AddZ80AWriteByte(  -1,   -1,     NULL,                       NULL);
+    AddZ80AReadPort (  -1,   -1,     NULL,                       NULL);
+    AddZ80AWritePort(  -1,   -1,     NULL,                       NULL);
 
-	AddZ80AInit();
+    AddZ80AInit();
 
-	setup_z80_frame(CPU_Z80_0,FRAME_Z80); // for the Z80 we need to set up the speed here..
-
+    setup_z80_frame(CPU_Z80_0,FRAME_Z80); // for the Z80 we need to set up the speed here..
 
 	/* Setup Starscream 68000 core */
 
@@ -587,11 +582,12 @@ static void load_crospang(void)
 	AddMemFetch (0x320000, 0x32ffff,                        RAM_MAIN-0x320000        ); // note: you need to subtract the address?!
 
 	/* Set Up the RAM, we allow all types of READ/WRITE operations */
-	AddRWBW     (0x100000, 0x10000f,     NULL,              RAM_PFCTRL      );   // scroll regs etc.
+	AddRWBW     (0x100000, 0x10000d,     NULL,              RAM_PFCTRL      );   // scroll regs etc.
+	AddWriteByte(0x10000e, 0x10000f, write_tbank_b, NULL);
 
 	AddRWBW     (0x120000, 0x120fff,     NULL,              RAM_PF1         );   // PLAYFIELD 1 DATA
 	AddRWBW     (0x122000, 0x122fff,     NULL,              RAM_PF2         );   // PLAYFIELD 2 DATA
-	AddRWBW     (0x200000, 0x2007ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
+	AddRWBW     (0x200000, 0x2005ff,     NULL,              RAM_PALETTE     );   // PALETTE RAM
 	AddRWBW     (0x210000, 0x2107ff,     NULL,              RAM_SPRITE      );   // SPRITE RAM
 
 	AddWriteWord(0x270000, 0x270001,     sound_crospang16_w,NULL            );   // sound
