@@ -31,7 +31,6 @@
 void load_gunbird(void);
 void execute_gunbird(void);
 void DrawGunbird();
-void draw_tengai();
 void load_btlkroad(void);
 void load_samuraia(void);
 
