@@ -149,7 +149,7 @@ static void load_othunder(void)
    int ta,tb,tc,td,te,tf;
    UINT8 *TMP;
 
-   if(!(TMP=AllocateMem(0x2CBA00))) return;
+   if(!(TMP=AllocateMem(0x300000))) return;
    if(!(GFX=AllocateMem(0x100000+0x459000+0x2000+0x4000))) return;
 
    tb=0x80000;
