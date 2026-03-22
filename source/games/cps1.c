@@ -3835,7 +3835,8 @@ static void cps1_render_scroll2(int mask)
 
 static void render_scroll3(int mask)
 {
-  int x,y,code;
+  int x,y;
+  UINT32 code;
   UINT32 zzz,zzzz,zz,x16,y16;
   UINT16 scroll3x=cps1_port[CPS1_SCROLL3_SCROLLX]+scroll3xoff+64;
   UINT16 scroll3y=cps1_port[CPS1_SCROLL3_SCROLLY], colour;
@@ -3860,7 +3861,7 @@ static void render_scroll3(int mask)
 	break;
       }
     }
-    if (n < nb_scroll3 && GFX_SPR_SOLID32[code]) { // the range is ok
+    if (code < nb_scroll3 && GFX_SPR_SOLID32[code]) { // the range is ok
       colour=ReadWord(&RAM_SCROLL3[(zz+2)]);
 
       MAP_PALETTE_MAPPED_NEW(
