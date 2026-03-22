@@ -147,7 +147,7 @@ static void load_bublbob2(void)
        GFX_BG0 = load_region[REGION_GFX2];
 
    GFX_BG0_SOLID = make_solid_mask_16x16(GFX_BG0, 0x4000);
-   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, 0x4000);
+   GFX_SPR_SOLID = make_solid_mask_16x16(GFX_SPR, get_region_size(REGION_GFX1)/0x100);
 
    // Setup 68020 Memory Map
    // ----------------------
