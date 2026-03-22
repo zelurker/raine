@@ -507,8 +507,6 @@ static UINT16 my_speed_hack(UINT32 offset) {
   return ret;
 }
 
-extern struct COLOUR_MAPPER col_map_xrrr_rrgg_gggb_bbbb_rev;
-
 static void write_tbank_b(UINT32 offset, UINT8 data) {
     printf("bank_b %x,%x\n",offset,data);
     UINT16 bsel = (ReadWord(&RAM_PFCTRL[0]) >> 8) & 3;
