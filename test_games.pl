@@ -6,7 +6,7 @@ open(F,"./raine -gl-avail|") || die "can't run raine -gl-avail";
 my $list = 0;
 while (<F>) {
 	chomp;
-	if (/^dfeveron/) {
+	if (/^list/) {
 		$list = 1;
 		next;
 	}
