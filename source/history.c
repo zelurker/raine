@@ -129,7 +129,7 @@ void hist_open(char *name,const char *game) {
 	      *q++ = '-';
 	      memmove(q,q+1,strlen(q+1)+1);
 	  }
-	  hist_add(str);
+	  hist_add("%s",str);
       }
   } // while ...
   if (f) fclose(f);
