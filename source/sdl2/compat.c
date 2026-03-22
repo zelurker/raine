@@ -174,7 +174,8 @@ void  sdl_init() {
 	if (display_cfg.maximized) {
 	    status |= SDL_WINDOW_MAXIMIZED;
 	}
-	if (display_cfg.fullscreen)
+	if (testing_game) status |= SDL_WINDOW_MINIMIZED|SDL_WINDOW_HIDDEN;
+	if (display_cfg.fullscreen && !testing_game)
 #ifdef RAINE_WIN32
 	    win = SDL_CreateWindow(title,
 		    display_cfg.prev_posx,
@@ -214,7 +215,7 @@ void  sdl_init() {
 	// Must be set before creating the renderer
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 #else
-	if (display_cfg.fullscreen && !hack_fs)
+	if (!testing_game && display_cfg.fullscreen && !hack_fs)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif
 	if (!win) {
@@ -239,7 +240,6 @@ void  sdl_init() {
 
 	inputs_preinit();
 
-	if (testing_game) SDL_MinimizeWindow(win);
 	sdl2_color_format = SDL_PIXELFORMAT_RGB565;
 	// sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
 	// default color_format for emudx games
