@@ -38,7 +38,9 @@
 #endif
 #include <dirent.h>
 #include "sdl/glsl.h"
+#include "sdl/dialogs/game_selection.h"
 
+int testing_game;
 static int ArgCount;		// Number of arguments in the command line
 static int ArgPosition;		// Current position in the argument list
 static char *ArgList[256];	// Pointers to each argument string
@@ -77,6 +79,9 @@ static void CLI_Help(void)
 	"-gamelist/-gl [-rol/-ror]      : Quick list of all games\n"
 	"                                 with -rol display games rotated at 90°\n"
 	"                                 with -ror display games rotated at 270°\n"
+	"-gl-avail                      : display available games only\n"
+	"-test [game name]              : testing a game only, will automatically\n"
+	"                                 exit after 60 frames\n"
 	"-gameinfo/-listinfo|-li <gamename> : List info for a game, or all games\n"
 	"-romcheck/-rc <gamename>       : Check roms are valid for a game, or all games\n"
 	"-romcheck-full/-rcf <gamename> : like romcheck, but load all the games, very slow now\n"
@@ -911,6 +916,25 @@ static void CLI_game_list(void)
    free_cache();
 
    exit(0);
+}
+
+static void CLI_avail() {
+    char *avail = get_avail_list();
+    printf("list start:\n"); // so that a script can search for that before starting to process what comes next
+    for (int n=0; n<game_count; n++) {
+	if (avail[n]) printf("%s\n",game_list[n]->main_name); // only short game names, that's all which is required for a script
+    }
+    free_cache();
+    exit(0);
+}
+
+static void CLI_test() {
+    testing_game = 1;
+    display_cfg.fullscreen = 0;
+    display_cfg.screen_x = 640;
+    display_cfg.screen_y = 480;
+    raine_cfg.no_gui = 1;
+    // The window will also be minimized by sdl_init
 }
 
 // CLI_Verbose():
@@ -1756,6 +1780,8 @@ static CLI_OPTION cli_commands[] =
 {
    { "-gamelist",	CLI_game_list		},
    { "-gl",		CLI_game_list		},
+   { "-gl-avail",       CLI_avail },
+   { "-test",           CLI_test },
    { "-gameinfo",	CLI_game_info		},
    { "-listinfo",	CLI_game_info		},
    { "-li",		CLI_game_info		},

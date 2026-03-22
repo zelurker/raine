@@ -22,6 +22,7 @@
 #include <SDL_image.h>
 #include "files.h"
 #include "leds.h"
+#include "config.h"
 
 void sdl_fatal_error(const char *file, const char *func, int line, char *format, ...) {
     char msg[512];
@@ -238,6 +239,7 @@ void  sdl_init() {
 
 	inputs_preinit();
 
+	if (testing_game) SDL_MinimizeWindow(win);
 	sdl2_color_format = SDL_PIXELFORMAT_RGB565;
 	// sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
 	// default color_format for emudx games

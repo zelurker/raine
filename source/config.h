@@ -9,6 +9,8 @@ extern "C" {
 /* Command Line Processing                                    */
 /**************************************************************/
 
+extern int testing_game;
+
 void parse_command_line(int argc, char *argv[]);
 
 #ifdef RAINE_DOS

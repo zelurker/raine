@@ -9,13 +9,14 @@ Taken from xmame 37b7.1
 #include "arpro.h"
 #include "conf-cpu.h"
 #include "files.h"
+#include "config.h"
 
 #define MAX_CONFIG_LINE_SIZE 48
 
 // #define VERBOSE 1
 
 #if VERBOSE || defined(RAINE_DEBUG)
-#define LOG(x)	fprintf(stderr,x)
+#define LOG(x)	if (!testing_game) fprintf(stderr,x)
 #else
 #define LOG(x)
 #endif
@@ -188,7 +189,7 @@ static int safe_to_load (void)
 			mem_range->start_value)
 		{
 #ifdef RAINE_DEBUG
-		    printf("hiscores: bad addr %x\n",mem_range->addr);
+		    if (!testing_game) printf("hiscores: bad addr %x\n",mem_range->addr);
 #endif
 			return 0;
 		}
@@ -196,7 +197,7 @@ static int safe_to_load (void)
 			mem_range->end_value)
 		{
 #ifdef RAINE_DEBUG
-		    printf("hiscores: bad end %x\n",mem_range->addr + mem_range->num_bytes - 1);
+		    if (!testing_game) printf("hiscores: bad end %x\n",mem_range->addr + mem_range->num_bytes - 1);
 #endif
 			return 0;
 		}

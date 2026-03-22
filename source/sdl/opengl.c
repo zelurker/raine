@@ -24,6 +24,7 @@
 #include "newmem.h"
 #include "raine.h" // ReadWord/WriteWord
 #include "glsl.h"
+#include "config.h"
 #ifdef raine_mbox
 #undef raine_mbox
 #endif
@@ -41,6 +42,7 @@ GLuint tex;
 void check_error(char *msg) {
 #ifdef RAINE_DEBUG
     // No need to display this in non debug builds
+    if (testing_game) return;
     int gl_error = glGetError( );
 
     if( gl_error != GL_NO_ERROR ) {

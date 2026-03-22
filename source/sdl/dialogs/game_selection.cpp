@@ -566,12 +566,20 @@ static void compute_avail() {
 	avail[n] = game_exists(game_list,n);
 }
 
-int recompute_list() {
+static int recompute_list() {
     // options
     compute_avail();
     game_sel->regen();
     game_sel->draw();
     return 0;
+}
+
+char *get_avail_list() {
+    if (!avail) {
+	avail = (char*)malloc(game_count);
+	compute_avail();
+    }
+    return avail;
 }
 
 int do_game_sel(int sel) {

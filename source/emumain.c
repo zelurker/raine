@@ -293,6 +293,8 @@ UINT32 run_game_emulation(void)
 
       draw_screen = 0;
       cpu_frame_count ++;
+      if (testing_game && cpu_frame_count >= 60)
+	  exit(0);
       skip_frame_count ++;
       // extern UINT32 pc_timer;
       // printf("pc_timer %d render %d cpu %d skip %d\n",read_ingame_timer(),render_frame_count,cpu_frame_count,skip_frame_count);
