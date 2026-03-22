@@ -63,6 +63,7 @@
 #include "m6502hlp.h"
 #include "ips.h"
 #include "curl.h"
+#include "timer.h"
 
 // #define DEBUG_WINDOW_EVENTS 1
 
@@ -453,7 +454,7 @@ static void load_game_proc()
 	loading_dialog->draw();
     }
 
-    load_game_rom_info();
+    load_game_rom_info(); // also calls driver loading function
 
     if (!(load_error & LOAD_FATAL_ERROR)) {
 	init_inputs();
@@ -462,6 +463,10 @@ static void load_game_proc()
 	init_sound();
 	read_bld();
 	current_game->nb_loaded++;
+	if (Z80_context[0].z80Base)
+	    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
+	else if (Z80_context[1].z80Base)
+	    setup_z80_frame(CPU_Z80_1,CPU_FRAME_MHz(4,60));
     }
 }
 
