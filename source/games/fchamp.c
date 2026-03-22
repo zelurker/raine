@@ -557,10 +557,6 @@ static void execute_footchmp(void)
    //cpu_interrupt(CPU_68K_0, 6);
 
    Taito2610_Frame();			// Z80 and YM2610
-
-   IntF3System();
-
-   debug_tc0006vcu();
 }
 
 
