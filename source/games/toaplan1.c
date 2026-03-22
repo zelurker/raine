@@ -741,7 +741,7 @@ static struct ROM_INFO rom_truxton[] =
 
 static struct DSW_DATA dsw_data_truxton_2[] =
 {
-  { _("Territory"), 0x07, 6 },
+  { _("Territory"), 0x07, 4 },
   { _("Europe") , 0x02},
   { _("US") , 0x05},
   { _("USA Romstar License") , 0x01},
