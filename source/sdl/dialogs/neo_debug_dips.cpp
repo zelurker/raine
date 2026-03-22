@@ -13,8 +13,8 @@
 #include "neo_debug_dips.h"
 
 #define LEN 85
-static char high[8][LEN];
-static char low[8][LEN];
+static char high[8][LEN+1];
+static char low[8][LEN+1];
 
 static struct DSW_DATA def_0[] =
 {
@@ -92,7 +92,8 @@ void init_debug_dips() {
 			if (*s > '9') { // the text continues on the line below
 			    s--; // keep the previous space !
 			    char *dest = (is_high ? high[num] : low[num]);
-			    strncat(dest,s,LEN);
+			    printf("num %d s %s len(s) %d dest %s len(dest) %d\n",num,s,strlen(s),dest,strlen(dest));
+			    strncat(dest,s,LEN-strlen(dest));
 			    strcpy(&dest[LEN-3],"..");
 			}
 		    }
