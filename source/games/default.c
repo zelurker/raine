@@ -47,6 +47,7 @@
 
 void LoadDefault(void)
 {
+    audio_cpu = 0;
   memset(tc0100scn,0,sizeof(tc0100scn));
   read_region_byte = NULL;
   write_region_byte = NULL;

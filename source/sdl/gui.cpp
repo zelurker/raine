@@ -463,10 +463,13 @@ static void load_game_proc()
 	init_sound();
 	read_bld();
 	current_game->nb_loaded++;
-	if (Z80_context[0].z80Base)
-	    setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
-	else if (Z80_context[1].z80Base)
-	    setup_z80_frame(CPU_Z80_1,CPU_FRAME_MHz(4,60));
+	if (!audio_cpu) {
+	    // audio_cpu is cleared in LoadDefault, if it's still 0 here, it means the loading function didn't initialize it, so we can try to guess...
+	    if (Z80_context[0].z80Base)
+		setup_z80_frame(CPU_Z80_0,CPU_FRAME_MHz(4,60));
+	    else if (Z80_context[1].z80Base)
+		setup_z80_frame(CPU_Z80_1,CPU_FRAME_MHz(4,60));
+	}
     }
 }
 
