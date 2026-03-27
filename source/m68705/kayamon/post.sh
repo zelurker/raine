@@ -1,7 +1,3 @@
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 #!/bin/sh
 
 if [ "$1" == "" ]; then
@@ -16,7 +12,3 @@ awk -f post2.awk p=1 mcu.tmp p=2 input.tmp >$1
 rm -f input.tmp
 rm -f mcu.tmp
 
-
-#ifdef __cplusplus
-}
-#endif
