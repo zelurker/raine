@@ -135,7 +135,8 @@ FILE *MakeJumpTable(char *filename)
    f = fopen(filename, "r");
    if (!f)
    {
-      fatal_error("%s not found", filename);
+      printf("%s not found", filename);
+      exit(1);
    }
    if (fscanf(f, "%s %x", &buf[0], &init_pc) != 2) return NULL;
 
