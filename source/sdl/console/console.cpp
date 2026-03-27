@@ -338,7 +338,7 @@ void TRaineConsole::execute() {
     }
     UINT8 *ptr = get_userdata(cpu_id,ram[n]);
     if (ptr)
-	memcpy(ram_buf[n/2],ptr+ram[n],size);
+	memcpy(ram_buf[n/2],ptr+ram[n],size-1);
   }
   pointer_on = 0;
 }
