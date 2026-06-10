@@ -67,6 +67,12 @@ extern "C" {
 #undef sint
 #undef uint
 
+#ifdef __APPLE__
+/* macOS sys/types.h typedefs uint; pull it in now so the include guard
+   prevents it being parsed again after uint is macro-defined below */
+#include <sys/types.h>
+#endif
+
 #define sint8  signed   char			/* ASG: changed from char to signed char */
 #define sint16 signed   short
 #define sint32 signed   int			/* AWJ: changed from long to int */

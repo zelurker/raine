@@ -24,6 +24,7 @@
 */
 
 #include <SDL.h>
+#include <limits.h>
 #include "deftypes.h"
 #include "games.h"
 #include "control.h"

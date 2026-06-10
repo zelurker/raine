@@ -133,7 +133,11 @@ static void init_recent() {
 		ret = stat(s,&buf);
 	    }
 	    if (!ret) {
+#ifdef __APPLE__
+		game_list[n]->last_played = buf.st_atimespec.tv_sec;
+#else
 		game_list[n]->last_played = buf.st_atim.tv_sec;
+#endif
 	    }
 	}
     }
