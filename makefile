@@ -1787,7 +1787,7 @@ else
 		bitmaps/controllermap.bmp bitmaps/controllermap_back.bmp $(bitmaps_dir)
 	@echo installing shaders in $(shaders_dir)
 	$(INSTALL_DATA) shaders/*.shader $(shaders_dir)
-	@cp -rfva scripts/* $(scripts_dir)
+	@cp -Rfv scripts/* $(scripts_dir)
 	$(INSTALL_DATA) gamecontrollerdb.txt $(rainedata)
 	$(INSTALL_DATA) command.dat $(rainedata)
 #	$(INSTALL_DATA) blend/* $(bld_dir)
