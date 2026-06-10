@@ -182,6 +182,11 @@ else
     LD=$(CXX)
 endif
 endif
+# arm64 (Apple Silicon) : the x86_64 sysctl test above doesn't match,
+# make sure we link with the compiler driver, not raw ld
+ifeq ("$(LD)","ld")
+  LD=$(CXX)
+endif
 endif # darwin
 
 ifeq ("$(OSTYPE)","msys")
@@ -468,6 +473,9 @@ ALLEGRO_CFLAGS = "$(shell allegro-config --cflags)"
 endif
 
    INCDIR += $(PNG_CFLAGS) $(ALLEGRO_CFLAGS)
+ifdef DARWIN
+   INCDIR += -I/opt/homebrew/include
+endif
 
 
    DEFINE = -D__RAINE__ \
@@ -483,9 +491,9 @@ ifndef SDL
    LIBS_STATIC = -lz $(shell allegro-config --static) $(shell libpng-config --static --ldflags) -lm
 else
 ifdef DARWIN
-   LIBS = -lz /usr/local/lib/libpng.a -lm
-   LIBS_DEBUG = -lz /usr/local/lib/libpng.a -lm
-   LIBS_STATIC = -lz /usr/local/lib/libpng.a -lm
+   LIBS = -lz $(shell libpng-config --ldflags) -lm -L/opt/homebrew/lib -lintl -framework OpenGL
+   LIBS_DEBUG = -lz $(shell libpng-config --ldflags) -lm -L/opt/homebrew/lib -lintl -framework OpenGL
+   LIBS_STATIC = -lz $(shell libpng-config --ldflags) -lm -L/opt/homebrew/lib -lintl -framework OpenGL
 else
    LIBS = -lz $(shell libpng-config --ldflags) -lm
    LIBS_DEBUG = -lz $(shell libpng-config --ldflags) -lm
@@ -1827,7 +1835,7 @@ $(OBJDIR)/Musashi/m68kmake: $(OBJDIR)/Musashi/m68kmake.o
 ifdef CROSSCOMPILE
 	cp -fv $(NATIVE)/object/Musashi/m68kmake $(OBJDIR)/Musashi || cp -fv $(NATIVE)/objectd/Musashi/m68kmake $(OBJDIR)/Musashi
 else
-	$(LD) -o $@ $<
+	$(CC) -o $@ $<
 endif
 
 $(OBJDIR)/Musashi/m68kcpu.o: source/Musashi/m68kops.h source/Musashi/m68kops.c source/Musashi/m68kcpu.c
