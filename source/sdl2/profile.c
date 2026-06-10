@@ -229,6 +229,13 @@ void UpdateProfile(void)
 
 #endif
 
+#ifndef RDTSC_PROFILE
+/* No rdtsc instruction on this architecture (e.g. arm64) :
+   profiling sections become no-ops */
+void ProfileStart(UINT8 mode) { (void)mode; }
+void ProfileStop(UINT8 mode) { (void)mode; }
+#endif
+
 static void update_fps(int quiet)
 {
   if(raine_cfg.show_fps_mode>4) raine_cfg.show_fps_mode=0;

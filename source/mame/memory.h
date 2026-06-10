@@ -9,7 +9,11 @@ extern "C" {
     // There is a way to test endianness with sdl, but including SDL.h slows noticeably down the compilation
     // and it's not the case with endian.h... now I hope it's windows compatible... !
 #ifdef RAINE_UNIX
+#ifdef __APPLE__
+#include <machine/endian.h>
+#else
 #include <endian.h>
+#endif
 #else
 #ifdef RAINE_WIN32
 #include <sys/param.h>

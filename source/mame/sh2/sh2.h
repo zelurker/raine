@@ -40,8 +40,14 @@
 #else //__GNUC__
 
 #undef FASTCALL
+#if defined(__i386__) || defined(__x86_64__)
 #define FASTCALL __attribute__ ((regparm(2)))
 #define DECL_FASTCALL(type, name)	type name __attribute__ ((regparm(2)))
+#else
+/* regparm is x86-only; no-op on arm64 and other architectures */
+#define FASTCALL
+#define DECL_FASTCALL(type, name)	type name
+#endif
 
 #endif //!__GNUC__
 

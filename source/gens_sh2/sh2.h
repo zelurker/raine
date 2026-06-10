@@ -1,7 +1,7 @@
 /**********************************************************/
 /*                                                        */
 /* SH2 emulator 1.40 (Hearder part)                       */
-/* Copyright 2002 Stéphane Dallongeville                  */
+/* Copyright 2002 Stï¿½phane Dallongeville                  */
 /* Used for the 32X emulation in Gens                     */
 /*                                                        */
 /**********************************************************/
@@ -31,8 +31,14 @@
 
 #else //__GNUC__
 
+#if defined(__i386__) || defined(__x86_64__)
 #define FASTCALL __attribute__ ((regparm(2)))
 #define DECL_FASTCALL(type, name)	type name __attribute__ ((regparm(2)))
+#else
+/* regparm is x86-only; no-op on arm64 and other architectures */
+#define FASTCALL
+#define DECL_FASTCALL(type, name)	type name
+#endif
 
 #endif //!__GNUC__
 
