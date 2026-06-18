@@ -481,6 +481,12 @@ endif
    DEFINE = -D__RAINE__ \
 	   -DRAINE_UNIX
 
+ifdef DARWIN
+   # source files test #ifdef DARWIN (bundle paths in raine.c, video, 7z...)
+   # but nothing ever passed it to the compiler
+   DEFINE += -DDARWIN
+endif
+
 ifdef USE_MEMWATCH
 	DEFINE += -DMEMWATCH -DMW_STDIO
 endif

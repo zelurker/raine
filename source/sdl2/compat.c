@@ -215,6 +215,13 @@ void  sdl_init() {
 	// Must be set before creating the renderer
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 #else
+#ifdef DARWIN
+	// The gui uses the sdl renderer while the game blitter drives a raw
+	// opengl context on the same window. On macOS the renderer defaults
+	// to metal, which can't share the window with an opengl context and
+	// everything renders black, so force the opengl renderer like win32.
+	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+#endif
 	if (!testing_game && display_cfg.fullscreen && !hack_fs)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);
 #endif

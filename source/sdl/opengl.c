@@ -191,6 +191,19 @@ static const char* myglGetString( GLenum id) {
 }
 
 void get_ogl_infos() {
+#if SDL == 2
+	/* ScreenChange calls this before opengl_reshape has created the
+	 * context. On linux gl calls without a current context are no-ops,
+	 * on macOS they crash (SIGSEGV in the CGL dispatch), so make sure
+	 * the context exists before any gl call. */
+	if (!context) {
+	    context = SDL_GL_CreateContext(win);
+	    if (!context) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_GL_CreateContext(): %s\n", SDL_GetError());
+		exit(2);
+	    }
+	}
+#endif
 	check_error("start ogl_infos");
 	int format_error = 0;
 #if SDL==1

@@ -382,14 +382,6 @@ int main(int argc,char *argv[])
        // If lauched from a bundle the share path becomes the Ressources dir
        strncpy(dir_cfg.share_path,argv[0],256);
        strcpy(dir_cfg.share_path+(s - argv[0]),"Resources/");
-       strncpy(dir_cfg.m68kdis,argv[0],256);
-       strncpy(dir_cfg.dz80,argv[0],256);
-       strcpy(dir_cfg.m68kdis+(s - argv[0]+6),"m68kdis");
-       strcpy(dir_cfg.dz80+(s - argv[0]+6),"dz80");
-       if (!exists(dir_cfg.m68kdis))
-	   strcpy(dir_cfg.m68kdis,"m68kdis");
-       if (!exists(dir_cfg.dz80))
-	   strcpy(dir_cfg.dz80,"dz80");
    }
 #endif
 
@@ -723,7 +715,7 @@ int main(int argc,char *argv[])
 	"\n"
 	"ISSUES:\n"
 	"\n"
-	"þ This is an alpha release - I expect there are bugs and the\n"
+	"ï¿½ This is an alpha release - I expect there are bugs and the\n"
 	"  docs are a bit out of date. This is due to lack of time, a\n"
 	"  problem that will effect raine for these last few days of\n"
 	"  it's life.\n"

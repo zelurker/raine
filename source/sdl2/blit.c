@@ -220,16 +220,6 @@ void ReClipScreen(void)
 	 bezel_fix_screen_size(&xxx2,&yyy2);
 	 bezel_fix_screen_coordinates(&destx2,&desty2,xxx2,yyy2,display_cfg.screen_x,display_cfg.screen_y);
 #endif
-#ifdef DARWIN
-	 if (display_cfg.video_mode == 1 && overlays_workarounds) {
-	     // I have a bug here which makes the overlay invisible if it doesn't start
-	     // at the top of the screen !!!
-	     // It seems so stupid that it's probably a bug of my video driver, but to
-	     // be sure I'll put a fix here, it's better than a black screen...
-	     area_overlay.x = destx2 = 0;
-	     area_overlay.y = desty2 = 0;
-	 }
-#endif
 	 if (display_cfg.keep_ratio) {
 	     area_overlay.x = destx2;
 	     area_overlay.y = desty2;
