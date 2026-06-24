@@ -31,8 +31,12 @@ class TVideo : public TMenu
     TMenu(my_title,mymenu)
     {}
   int can_be_selected(int n) {
+#ifndef DARWIN
       if (n == 1) // fullscreen
         return (display_cfg.maximized == 0);
+      // On macOS the borderless fullscreen window posts spurious MAXIMIZED
+      // events, so don't make the Fullscreen item unselectable from that.
+#endif
       return TMenu::can_be_selected(n);
   }
 };
@@ -295,9 +299,32 @@ int do_video_options(int sel) {
 #endif
 #endif
     // int oldx = display_cfg.screen_x,oldy = display_cfg.screen_y;
+#ifdef DARWIN
+    // The SDL window and renderer are created once at startup for the chosen
+    // mode (opengl needs a GL window + opengl renderer; SDL2-native uses
+    // metal) and can't be swapped on a live window on macOS. If the menu wrote
+    // straight to display_cfg.video_mode, a redraw while still in the menu
+    // would take the GL path on a metal window and abort the app. So bind the
+    // "Video renderer" item to a scratch variable; the live video_mode never
+    // changes mid-session, and any new choice is parked for the next launch.
+    static int menu_video_mode;
+    menu_video_mode = display_cfg.video_mode;
+    for (menu_item_t *it = video_items; it->label; it++)
+	if (it->value_int == (int*)&display_cfg.video_mode) { it->value_int = &menu_video_mode; break; }
+#endif
     video_options = new TVideo("", video_items);
     video_options->execute();
     delete video_options;
+#ifdef DARWIN
+    for (menu_item_t *it = video_items; it->label; it++)
+	if (it->value_int == &menu_video_mode) { it->value_int = (int*)&display_cfg.video_mode; break; }
+    if (menu_video_mode != (int)display_cfg.video_mode) {
+	pending_video_mode = menu_video_mode;
+	raine_mbox(_("Restart required"),
+		_("The video renderer change will take effect\nnext time you start Raine."),
+		_("OK"));
+    }
+#endif
 #if defined(RAINE_WIN32) && SDL==1
     if (old_driver != display_cfg.video_driver) {
 	if (sdl_overlay) {
