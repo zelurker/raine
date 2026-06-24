@@ -14,6 +14,7 @@ extern int hack_fs;
 
 void display_read_config();
 void display_write_config();
+extern int pending_video_mode; // parked renderer change, applied next launch
 void load_screen_settings(char *section);
 void save_screen_settings(char *section);
 

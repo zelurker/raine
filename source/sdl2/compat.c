@@ -216,11 +216,16 @@ void  sdl_init() {
 	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 #else
 #ifdef DARWIN
-	// The gui uses the sdl renderer while the game blitter drives a raw
-	// opengl context on the same window. On macOS the renderer defaults
-	// to metal, which can't share the window with an opengl context and
-	// everything renders black, so force the opengl renderer like win32.
-	SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
+	// Only the OpenGL video mode needs the opengl SDL renderer: there the
+	// game blitter drives a raw opengl context on the same window, and the
+	// macOS default (metal) renderer can't share the window with it, so
+	// everything renders black. In the SDL2-native video mode (the macOS
+	// default) there is no raw GL context, so leave the renderer on metal:
+	// the opengl renderer's framebuffer render-targets fail
+	// (glFramebufferTexture2DEXT) after a fullscreen transition, which
+	// breaks the GUI; metal render-targets don't have that problem.
+	if (display_cfg.video_mode == 0)
+	    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 #endif
 	if (!testing_game && display_cfg.fullscreen && !hack_fs)
 	    SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN_DESKTOP);

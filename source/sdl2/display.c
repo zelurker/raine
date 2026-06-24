@@ -36,7 +36,16 @@ int hack_fs;
 
 void display_read_config() {
    hack_fs = raine_get_config_int( "Display", "hack_fs", 0); // hack_fs : don't call SDL_SetWindowFullscreen
+#ifdef DARWIN
+   // On macOS default to the SDL2 native renderer. The OpenGL video mode
+   // runs Raine's own GL context alongside SDL's renderer on the same
+   // window; macOS handles that badly (black screen, render-target failures
+   // in the GUI after fullscreen/resize). The SDL2 renderer has none of
+   // those problems. OpenGL mode stays selectable for GLSL shaders.
+   display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 3);
+#else
    display_cfg.video_mode = raine_get_config_int( "Display", "video_mode", 0); // default = opengl, the most tested
+#endif
    if (display_cfg.video_mode != 0 && display_cfg.video_mode != 3)
        display_cfg.video_mode = 3;
    int x = 0,y = 0;
@@ -86,10 +95,17 @@ void set_opengl_filter(int filter) {
 	ogl.filter = GL_NEAREST; // default
 }
 
+// When the video renderer is changed at runtime it can't be applied to the
+// live session (the SDL window/renderer are created once at startup), so the
+// new value is parked here and written to the config on exit, to take effect
+// at the next launch. -1 means "no pending change".
+int pending_video_mode = -1;
+
 void display_write_config() {
 
    raine_set_config_int("Display", "hack_fs", hack_fs);
-   raine_set_config_int("Display", "video_mode", display_cfg.video_mode);
+   raine_set_config_int("Display", "video_mode",
+	   pending_video_mode >= 0 ? pending_video_mode : display_cfg.video_mode);
    print_debug("display_write_config: screen_x %d screen_y %d\n",display_cfg.screen_x,display_cfg.screen_y);
    raine_set_config_int("Display", "screen_x", display_cfg.screen_x);
    raine_set_config_int("Display", "screen_y", display_cfg.screen_y);
@@ -171,14 +187,27 @@ SDL_Texture *game_tex;
 
 void ScreenChange(void)
 {
-    get_ogl_infos();
+    // get_ogl_infos()/opengl_reshape() set up Raine's raw GL context, which is
+    // only used by the OpenGL video mode's blitter. In the SDL2-native video
+    // mode there is no raw GL context (and on macOS the window may be a metal
+    // window, where creating one fails), so skip them.
+    if (display_cfg.video_mode == 0)
+	get_ogl_infos();
     int w,h;
     SDL_GetRendererOutputSize(rend,&w,&h);
     ReClipScreen();
     if (sdl_screen) {
 	sdl_screen->w = w; sdl_screen->h = h;
     }
-    opengl_reshape(w,h);
+    if (display_cfg.video_mode == 0) {
+	opengl_reshape(w,h);
+	// opengl_reshape() makes Raine's raw GL context current, which steals
+	// the current context from the SDL renderer. On macOS the next
+	// render-target bind (update_fg_layer) then fails with
+	// glFramebufferTexture2DEXT. Bind the default target to force the
+	// renderer's own context current again.
+	SDL_SetRenderTarget(rend, NULL);
+    }
 }
 
 int resize(int call,int sx,int sy) {
