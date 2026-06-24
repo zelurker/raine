@@ -437,17 +437,8 @@ static void toggle_limit_speed() {
 extern void key_stop_emulation_esc(void);
 extern void key_stop_emulation_tab(void);
 
-void toggle_fullscreen() {
-    if (display_cfg.maximized) return; // too crazy in windows if window is maximized
-				       // you are almost sure to loose pos, size or both
-#if SDL == 1
-  resize(1);
-  SetupScreenBitmap();
-  if (current_game) {
-    init_video_core();
-    reset_ingame_timer();
-  }
-#else
+#if SDL != 1
+static void apply_fullscreen(void) {
   // For some totally unknown reason, SDL_SetWindowFullscreen here is totally broken on my laptop but works on my desktop !
   // they both have very similar software configuration, windowmaker, same xorg, just the desktop uses some nvidia card and the laptop an intel
   // anyway the problem is the window receives quite a few events when going to fullscreen, in the end it's minimized and hidden, and bye bye, if I try to force call
@@ -468,7 +459,10 @@ void toggle_fullscreen() {
       SDL_SetWindowFullscreen(win,SDL_WINDOW_FULLSCREEN);
   } else {
       SDL_SetWindowFullscreen(win,0);
-#ifndef RAINE_WIN32
+#if !defined(RAINE_WIN32) && !defined(DARWIN)
+      // macOS native fullscreen restores the pre-fullscreen frame itself on
+      // exit; forcing size/position here races that async transition and
+      // can leave the window the wrong size or borderless.
       SDL_SetWindowSize(win,display_cfg.prev_sx,display_cfg.prev_sy);
       SDL_SetWindowPosition(win,display_cfg.posx,display_cfg.posy);
 #endif
@@ -485,11 +479,33 @@ void toggle_fullscreen() {
       display_cfg.prev_posy = display_cfg.posy;
   }
   ScreenChange();
+}
+#endif
+
+void toggle_fullscreen() {
+#ifndef DARWIN
+    if (display_cfg.maximized) return; // too crazy in windows if window is maximized
+				       // you are almost sure to loose pos, size or both
+#endif
+    // On macOS a screen-covering window can make the OS post spurious
+    // MAXIMIZED events; gating the toggle on display_cfg.maximized would
+    // jam fullscreen permanently after one cycle, so don't gate it here.
+#if SDL == 1
+  resize(1);
+  SetupScreenBitmap();
+  if (current_game) {
+    init_video_core();
+    reset_ingame_timer();
+  }
+#else
+  apply_fullscreen();
 #endif
 }
 
 static void toggle_fullscreen_keyboard() {
+#ifndef DARWIN
     if (display_cfg.maximized) return;
+#endif
   if (display_cfg.fullscreen) {
     display_cfg.fullscreen = 0;
   } else {
@@ -1945,7 +1961,13 @@ void control_handle_event(SDL_Event *event) {
       else if (event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
 	  display_cfg.lost_focus = 1;
       if (event->window.event == SDL_WINDOWEVENT_MAXIMIZED) {
-	  display_cfg.maximized = 1;
+	  // A screen-covering fullscreen window (macOS) can make the OS post a
+	  // spurious MAXIMIZED event. Treating that as "maximized" latches
+	  // display_cfg.maximized=1, which then blocks every further fullscreen
+	  // toggle (toggle_fullscreen early-returns and the menu item becomes
+	  // unselectable). A fullscreen window is never maximized.
+	  if (!display_cfg.fullscreen)
+	      display_cfg.maximized = 1;
       } else if (event->window.event == SDL_WINDOWEVENT_MINIMIZED) {
 	  display_cfg.maximized = 2;
       } else if (event->window.event == SDL_WINDOWEVENT_RESTORED) {
