@@ -88,7 +88,13 @@ static int sort_recent(const void *a, const void *b) {
 class TRecent : public TMenu
 {
   public:
-    TRecent(char *title, menu_item_t *items) : TMenu(title,items) {}
+    TRecent(char *title, menu_item_t *items) : TMenu(title,items) {
+        // Recent game names are generally ASCII. Select the configured
+        // Japanese font if the translated dialog title contains UTF-8.
+        // The game selection dialog uses the same approach.
+        if (jap_font && jap_font[0] && test_utf((const unsigned char *)title))
+            font_name = jap_font;
+    }
   void call_handler() {
       raine_cfg.req_load_game = 1;
       raine_cfg.req_game_index = menu[sel].values_list[2];
@@ -106,14 +112,14 @@ static int do_recent(int sel) {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->nb_loaded) nb_most++;
 	if (nb_most == 0) {
-	    raine_mbox("Error","No most played games yet","OK");
+	    raine_mbox(_("Info"),_("No most played games yet"),_("OK"));
 	    return 0;
 	}
     } else {
 	for (n=0; n<game_count; n++)
 	    if (game_list[n]->last_played) nb_most++;
 	if (nb_most == 0) {
-	    raine_mbox("Error","No recent games yet","OK");
+	    raine_mbox(_("Info"),_("No recent games yet"),_("OK"));
 	    return 0;
 	}
     }
@@ -134,13 +140,47 @@ static int do_recent(int sel) {
 	    menu[n2].value_int = &bidon;
 	    menu[n2].values_list_size = 1;
 	    char s[512];
-	    if (most_played)
-		sprintf(s,"%d time%s for ",game_list[n]->nb_loaded,(game_list[n]->nb_loaded > 1 ? "s" : ""));
-	    else
-		*s = 0;
+	    // Japanese: show readable time units. Preserve the original
+	    // English colon-based formatting for all other languages.
+	    const int japanese_time = (!strcmp(language, "ja"));
+	    if (japanese_time) {
+		if (most_played)
+		    snprintf(s,sizeof(s),_("%d play(s), total "),game_list[n]->nb_loaded);
+		else
+		    *s = 0;
+	    } else {
+		if (most_played)
+		    snprintf(s,sizeof(s),"%d time%s for ",game_list[n]->nb_loaded,(game_list[n]->nb_loaded > 1 ? "s" : ""));
+		else
+		    *s = 0;
+	    }
 	    int t = (most_played ? game_list[n]->time_played : time(NULL)-game_list[n]->last_played);
 	    int y = t/(24*3600*365);
-	    if (y) {
+	    if (japanese_time) {
+		if (y) {
+		    snprintf(&s[strlen(s)],512-strlen(s),_("%d years"),y);
+		} else {
+		    int d = t/(24*3600);
+		    if (d) {
+			snprintf(&s[strlen(s)],512-strlen(s),_("%d days "),d);
+			t %= 24*3600;
+		    }
+		    int h = t/3600;
+		    if (h) {
+			snprintf(&s[strlen(s)],512-strlen(s),_("%d hours "),h);
+			t %= 3600;
+		    }
+		    int m = t/60;
+		    if (m) {
+			snprintf(&s[strlen(s)],512-strlen(s),_("%d minutes "),m);
+			t %= 60;
+		    }
+		    if (t || (!d && !h && !m))
+			snprintf(&s[strlen(s)],512-strlen(s),_("%d seconds"),t);
+		}
+		if (!most_played)
+		    snprintf(&s[strlen(s)],512-strlen(s),"%s",_(" ago"));
+	    } else if (y) {
 		snprintf(&s[strlen(s)],512-strlen(s),"%d year%s",y,(y > 1 ? "s" : ""));
 	    } else {
 		int d = t/(24*3600);
@@ -243,6 +283,11 @@ class TGame_sel : public TMenu
 
   public:
     TGame_sel(char *title, menu_item_t *items) : TMenu(title,items) {
+	// Game names are often ASCII, so the generic menu font detection
+	// can miss Japanese text in this dialog title, header, and footer.
+	// Reuse the Japanese font already selected in GUI options.
+	if (jap_font && jap_font[0] && test_utf((const unsigned char *)title))
+	    font_name = jap_font;
 	regen_menu(0);
 	last_sel = -1;
 	current_picture[0] = 0;
@@ -433,15 +478,16 @@ void TGame_sel::compute_nb_items() {
 
 void TGame_sel::draw_top_frame() {
   char mytitle[80];
-  char *s;
   int w_title;
   int fw = HMARGIN;
+  // Translate the whole count including its unit and punctuation.
+  // The original English layout remains unchanged by default.
   switch(game_list_mode) {
-    case 0: s = _("All"); break;
-    case 1: s = _("Available"); break;
-    case 2: s = _("Missing"); break;
+    case 0: snprintf(mytitle,sizeof(mytitle),_("All %d"),nb_disp_items); break;
+    case 1: snprintf(mytitle,sizeof(mytitle),_("Available %d"),nb_disp_items); break;
+    case 2: snprintf(mytitle,sizeof(mytitle),_("Missing %d"),nb_disp_items); break;
+    default: mytitle[0] = 0; break;
   }
-  snprintf(mytitle,80,"%s %d",s,nb_disp_items);
   font->dimensions(mytitle,&w_title,&h_title);
 #if SDL==2
   boxColor(sdl_screen,0,0,sdl_screen->w,h_title-1,bg_frame_gfx);
@@ -470,7 +516,7 @@ void TGame_sel::draw_bot_frame() {
   company_string[99] = 0;
   if (sel >= 0) {
     snprintf(year_string,80,_("Year: %d"),game_list[sel]->year);
-    sprintf(category_string,_("Category:"));
+    snprintf(category_string,sizeof(category_string),"%s",_("Category:"));
     int n;
     for (n=1; n<=NB_GAME_TYPE; n++) {
       if (game_list[sel]->flags & (1<<(n-1))) {
@@ -478,8 +524,8 @@ void TGame_sel::draw_bot_frame() {
       }
     }
   } else {
-    sprintf(year_string,_("Year: -"));
-    sprintf(category_string,_("Category: -"));
+    snprintf(year_string,sizeof(year_string),"%s",_("Year: -"));
+    snprintf(category_string,sizeof(category_string),"%s",_("Category: -"));
   }
   int fw = HMARGIN;
   font->put_string(fw,base,game_string,fg_frame,bg_frame);

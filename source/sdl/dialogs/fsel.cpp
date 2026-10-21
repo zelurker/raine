@@ -162,6 +162,8 @@ int qsort_menu(const void *a, const void *b) {
 TFileSel::TFileSel(char *my_title, char *mypath, char **myext, char *res_str, int opts,char *mytitle2) :
   TMain_menu(my_title,NULL)
 {
+    if (jap_font && jap_font[0])
+        font_name = jap_font;
   char *s;
   title2 = mytitle2;
   options = opts;

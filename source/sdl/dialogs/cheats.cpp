@@ -1,4 +1,5 @@
 #include "gui/menu.h"
+extern char *jap_font;
 #include "arpro.h"
 #include "compat.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"
@@ -17,7 +18,10 @@ class TCheatDlg : public TMenu
 {
   public:
     TCheatDlg(char *title, menu_item_t *menu) : TMenu(title,menu)
-    {}
+    {
+      if (jap_font && jap_font[0])
+        font_name = jap_font;
+    }
 #if SDL == 1
     void disp_menu(int n,int y,int w,int h) {
       TMenu::disp_menu(n,y,w,h);

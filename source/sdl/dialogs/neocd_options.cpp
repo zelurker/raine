@@ -53,10 +53,10 @@ static int select_bios(int sel);
 static int memcard(int sel) {
     int inserted = !(input_buffer[5] & 0x70);
     if (inserted) {
-	if (raine_mbox("Info",_("Memory card is inserted"),_("Eject it|Do nothing")) == 1)
+	if (raine_mbox(_("Info"),_("Memory card is inserted"),_("Eject it|Do nothing")) == 1)
 	    input_buffer[5] |= 0x70;
     } else {
-	if (raine_mbox("Info",_("Memory card is ejected"),_("insert it|Do nothing")) == 1)
+	if (raine_mbox(_("Info"),_("Memory card is ejected"),_("insert it|Do nothing")) == 1)
 	    input_buffer[5] &= 0x8f;
     }
     return 0;

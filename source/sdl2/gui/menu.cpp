@@ -1992,7 +1992,7 @@ void TBitmap_menu::setup_font(unsigned int len_frame) {
       h2 = (sdl_screen->h-bmp->h-2)/(nb_items + 4 + 6); // margin
       if (h2 < font->get_font_height() && h2 < font->get_font_width()) {
 	  delete font;
-	  font = new TFont_ttf(h2);
+	  font = new TFont_ttf(h2,font_name);
 	  compute_width_from_font();
       }
   }

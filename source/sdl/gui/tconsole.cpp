@@ -1,3 +1,4 @@
+extern char *jap_font;
 #include <stdio.h>
 #include <stdarg.h>
 #include "console/muParser.h"
@@ -92,7 +93,7 @@ TConsole::TConsole(char *my_title, char *init_label, int maxlen, int maxlines, c
   menu = (menu_item_t*)malloc(sizeof(menu_item_t) * (nb_alloc+1));
   memset(&menu[0],0,sizeof(menu_item_t) * (nb_alloc+1));
   nb_items = 0;
-  font_name = "VeraMono.ttf";
+  if (jap_font && jap_font[0]) font_name = jap_font; else font_name = "VeraMono.ttf";
   len_max = maxlen;
   field = new char[MAX_FIELD];
   *field = 0;

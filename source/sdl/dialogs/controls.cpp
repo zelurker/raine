@@ -1,3 +1,4 @@
+extern char *jap_font;
 #include "../gui/menu.h"
 #include "compat.h"
 #include "control.h"
@@ -700,6 +701,15 @@ static int revert_to_default(int);
 static int switch_to_custom(int);
 static TControl *ctrl;
 
+class TJapaneseAutofireMenu : public TMenu {
+public:
+    TJapaneseAutofireMenu(char *title, menu_item_t *items)
+        : TMenu(title, items) {
+        if (jap_font && jap_font[0])
+            font_name = jap_font;
+    }
+};
+
 static int setup_autofire(int sel) {
   int nb = InputCount,mynb,x,n;
   menu_item_t *menu = (menu_item_t*)malloc(sizeof(menu_item_t)*(nb+1));
@@ -735,7 +745,7 @@ static int setup_autofire(int sel) {
     free(menu);
     return 0;
   }
-  TMenu *controls = new TMenu("",menu);
+  TMenu *controls = new TJapaneseAutofireMenu("",menu);
   controls->execute();
   delete controls;
   // Now we must check if autofire was disabled for a newly created control

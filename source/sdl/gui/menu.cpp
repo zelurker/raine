@@ -2125,7 +2125,7 @@ void TBitmap_menu::setup_font(unsigned int len_frame) {
     h = (sdl_screen->h-bmp->h-2)/(nb_items + 4 + 6); // margin
     if (h < font->get_font_height() && h < font->get_font_width()) {
       delete font;
-      font = new TFont_ttf(h);
+      font = new TFont_ttf(h,font_name);
       compute_width_from_font();
     }
   }
