@@ -1,4 +1,3 @@
-extern char *jap_font;
 #include <stdio.h>
 #include <stdarg.h>
 #include "console/muParser.h"

@@ -1,5 +1,4 @@
 #include "gui/menu.h"
-extern char *jap_font;
 #include "arpro.h"
 #include "compat.h"
 #include "SDL_gfx/SDL_gfxPrimitives.h"

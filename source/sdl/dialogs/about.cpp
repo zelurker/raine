@@ -1,4 +1,3 @@
-extern char *jap_font;
 #include "profile.h"
 #include "conf-sound.h"
 #include "../gui/menu.h"

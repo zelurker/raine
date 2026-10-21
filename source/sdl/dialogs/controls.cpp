@@ -1,4 +1,3 @@
-extern char *jap_font;
 #include "../gui/menu.h"
 #include "compat.h"
 #include "control.h"
