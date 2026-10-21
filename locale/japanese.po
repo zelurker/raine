@@ -5378,7 +5378,7 @@ msgstr "セーブスロットの切り替え"
 
 #: source/sdl/dialogs/controls.cpp
 msgid "Switch to custom game controls"
-msgstr ""
+msgstr "ゲーム別の操作設定に切り替え"
 
 #: source/games/cps1drv.c
 msgid "TEST MODE"
