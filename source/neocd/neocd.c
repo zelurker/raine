@@ -3727,7 +3727,7 @@ static void neogeo_gfx_decrypt(int extra_xor)
 	UINT8 *rom;
 	int rpos;
 
-	load_message(_("decrypting sprites (kof99 type)"));
+	load_message(gettext("decrypting sprites (kof99 type)"));
 	rom_size = get_region_size(REGION_SPRITES);
 
 	buf = AllocateMem(rom_size);
@@ -3791,7 +3791,7 @@ static void neogeo_sfix_decrypt()
 	int tx_size = get_region_size(REGION_FIXED);
 	UINT8 *src = load_region[REGION_SPRITES]+rom_size-tx_size;
 	UINT8 *dst = load_region[REGION_FIXED];
-	load_message(_("recreating fixed layer"));
+	load_message(gettext("recreating fixed layer"));
 
 	for (i = 0;i < tx_size;i++)
 		dst[i] = src[(i & ~0x1f) + ((i & 7) << 2) + ((~i & 8) >> 2) + ((i & 0x10) >> 4)];
@@ -4684,7 +4684,7 @@ void load_neocd() {
 	// standard load_game_proc so it ignores the fps field from video_info
 	print_debug("loading neocd game\n");
 	use_music = 1;
-	current_game->long_name = _("No game loaded yet");
+	current_game->long_name = gettext("No game loaded yet");
 	current_game->main_name = "neocd";
 	RAMSize = 0x200000 + // main ram
 	    0x010000 + // z80 ram
@@ -4763,16 +4763,16 @@ void load_neocd() {
 	nb_sprites = size/0x100;
 	if (is_current_game("kof97oro")) {
 	    // 1) order of the bytes altered !
-	    load_message(_("kof97oro decrypt rom..."));
+	    load_message(gettext("kof97oro decrypt rom..."));
 	    UINT16 *tmp = AllocateMem(0x500000);
 	    int i;
 	    for (i=0; i<0x500000/2; i++)
 		tmp[i] = ReadWord(&ROM[(i ^ 0x7ffef)*2]);
 	    memcpy(ROM,tmp,0x500000);
 	    FreeMem(tmp);
-	    load_message(_("kof97oro decrypt fix..."));
+	    load_message(gettext("kof97oro decrypt fix..."));
 	    neogeo_bootleg_sx_decrypt(1);
-	    load_message(_("kof97oro decrypt sprites..."));
+	    load_message(gettext("kof97oro decrypt sprites..."));
 	    neogeo_bootleg_cx_decrypt();
 	} else if (is_current_game("zupapa")) {
 	    fixed_layer_bank_type = 1;
@@ -4879,7 +4879,7 @@ void load_neocd() {
 	fix_conv(tmp, load_region[REGION_FIXEDBIOS], 0x20000, bios_fix_usage);
 
 	if(!(video_spr_usage=AllocateMem(nb_sprites))) return;
-	load_message(_("Sprites conversion..."));
+	load_message(gettext("Sprites conversion..."));
 	spr_conv(load_region[REGION_SPRITES],tmp,get_region_size(REGION_SPRITES),video_spr_usage);
 	GFX = tmp;
 	FreeMem(load_region[REGION_SPRITES]);
