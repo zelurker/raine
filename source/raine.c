@@ -408,6 +408,7 @@ int main(int argc,char *argv[])
    // i18n : path for catalog file
 #ifndef RAINE_DOS
    bindtextdomain("raine",get_shared("locale"));
+   bind_textdomain_codeset("raine", "UTF-8");
    textdomain("raine");
 #endif
 

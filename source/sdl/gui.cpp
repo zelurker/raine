@@ -308,6 +308,15 @@ int add_gui_options(menu_item_t *menu) {
   return 3;
 }
 
+class TJapaneseLoadingDialog : public TDialog {
+public:
+    TJapaneseLoadingDialog(char *title, menu_item_t *items)
+        : TDialog(title, items) {
+        if (jap_font && jap_font[0])
+            font_name = jap_font;
+    }
+};
+
 static TDialog *loading_dialog;
 static int progress_count;
 static int curl_progress;
@@ -357,7 +366,7 @@ void setup_curl_dlg(char *name,char *url) {
     } else
 	load_items[5].label = _("from internet archive");
 
-    loading_dialog = new TDialog(_("Loading Game"),load_items);
+    loading_dialog = new TJapaneseLoadingDialog(_("Loading Game"),load_items);
     loading_dialog->pseudo_execute();
     loading_dialog->draw();
 }
@@ -449,7 +458,7 @@ static void load_game_proc()
 #if SDL == 1
 	adjust_gui_resolution();
 #endif
-	loading_dialog = new TDialog(_("Loading game"),load_items);
+	loading_dialog = new TJapaneseLoadingDialog(_("Loading game"),load_items);
 	loading_dialog->pseudo_execute();
 	loading_dialog->draw();
     }

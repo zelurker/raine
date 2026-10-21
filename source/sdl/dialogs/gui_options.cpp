@@ -23,6 +23,7 @@ static int set_lang(int sel) {
     case 2: locale = "es"; break;
     case 3: locale = "it"; break;
     case 4: locale = "pt"; break;
+    case 5: locale = "ja"; break;
     default: locale = "C"; break;
     }
     strcpy(language,locale);
@@ -34,7 +35,7 @@ static int set_lang(int sel) {
 
 static menu_item_t gui_menu[MAX_GUI] =
 {
-{  _("Language"), &set_lang, &lang_int, 5, {0, 1, 2, 3, 4 }, { _("Default (English)"), _("French"),_("Spanish"),_("Italian"), _("Brazilian Portuguese")} },
+{  _("Language"), &set_lang, &lang_int, 6, {0, 1, 2, 3, 4, 5 }, { _("Default (English)"), _("French"),_("Spanish"),_("Italian"), _("Brazilian Portuguese"), _("Japanese")} },
 };
 
 extern int add_gui_options(menu_item_t *menu);
@@ -144,6 +145,7 @@ int do_gui_options(int sel) {
   else if (strstr(language,"es")) lang_int = 2;
   else if (strstr(language,"it")) lang_int = 3;
   else if (strstr(language,"pt")) lang_int = 4;
+  else if (strstr(language,"ja")) lang_int = 5;
   else {
       lang_int = 0;
       printf("Unknown lang %s\n",language);

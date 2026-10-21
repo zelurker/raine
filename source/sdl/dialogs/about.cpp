@@ -1,3 +1,4 @@
+extern char *jap_font;
 #include "profile.h"
 #include "conf-sound.h"
 #include "../gui/menu.h"
@@ -541,6 +542,8 @@ class TMoves_menu : public TMenu
 
 TAbout_menu::TAbout_menu(char *mytitle, menu_item_t *myitem, char *path) :
   TBitmap_menu(mytitle,myitem,path) {
+  if (jap_font && jap_font[0])
+    font_name = jap_font;
 
   /* This cycling color is inspired by the picture given by NoLogic on the
    * rainemu forum. The idea is to allow a cycling of color on any paletized

@@ -368,7 +368,14 @@ void TFont_ttf::load_font(char *myfont) {
   if (!strstr(myfont,"ttf"))
     myfont = "Vera.ttf";
   char tpath[1024];
-  if (myfont[0] == '/')
+  // The font picker returns an absolute Windows path (for example C:\\fonts\\Noto.ttf).
+  // Treat that path as absolute, instead of prefixing it with "fonts/".
+  if (myfont[0] == '/'
+#ifdef RAINE_WIN32
+      || (strlen(myfont) >= 3 && myfont[1] == ':' &&
+          (myfont[2] == '\\' || myfont[2] == '/'))
+#endif
+      )
       ttf = TTF_OpenFont(myfont,charHeight*3/2);
   else {
       sprintf(tpath,"fonts/%s",myfont);
