@@ -2021,7 +2021,10 @@ void TBitmap_menu::skip_fglayer_header(int &y) {
 
 TDialog::TDialog(char *my_title, menu_item_t *mymenu) :
   TMenu(my_title,mymenu)
-{ htitle = 0; moving = 0;
+{
+    htitle = 0; moving = 0;
+    if (jap_font && jap_font[0])
+	font_name = jap_font;
 }
 
 void TDialog::compute_width_from_font() {
