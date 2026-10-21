@@ -1975,7 +1975,7 @@ msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp
 msgid "CPU frame skip (1=no skip) "
-msgstr ""
+msgstr "CPUフレームスキップ（1＝スキップなし）"
 
 #: source/sdl/control.c
 msgid "Cabinet"
@@ -3070,7 +3070,7 @@ msgstr "FPSカウンター有効"
 
 #: source/sdl/dialogs/game_options.cpp
 msgid "FPS counter"
-msgstr ""
+msgstr "FPSカウンター"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "FSAA (multisampling)"
@@ -3317,7 +3317,7 @@ msgstr ""
 
 #: source/sdl/dialogs/game_options.cpp
 msgid "Graphical layers..."
-msgstr ""
+msgstr "グラフィックレイヤー..."
 
 #: source/sdl/dialogs/colors.cpp
 msgid "Green"
