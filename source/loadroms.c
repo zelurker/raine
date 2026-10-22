@@ -1254,6 +1254,7 @@ beg:
 	       // There is a raine all roms directory for 0.91.4 !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/Raine v0.91.4 Fullroms.zip/roms/%s.zip",dir);
 	   printf("would try %s rom %s\n",url,dir);
+	   print_debug("would try %s rom %s for path %s\n",url,dir,path);
 	   char name[80];
 	   snprintf(name,80,_("Downloading %s.zip"),dir);
 	   setup_curl_dlg(name,url);
