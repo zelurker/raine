@@ -136,7 +136,7 @@ int get_url(char *file, char *url)
       curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
       printf("curl: got response code %d\n",response_code);
       if (response_code >= 400) {
-	  sprintf(load_debug+strlen(load_debug),gettext("curl error code: %d\n"),response_code);
+	  sprintf(load_debug+strlen(load_debug),gettext("curl error code: %d for %s\n"),response_code,url);
 	  load_error |= LOAD_FATAL_ERROR;
 	  return 1;
       }
