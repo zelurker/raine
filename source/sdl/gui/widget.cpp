@@ -217,7 +217,7 @@ void TProgressBar::disp(SDL_Surface *s, TFont *font, int x, int y, int w,int h,
     prev = cur;
   }
   rectangleColor(s,x,y,x+w-1,y+h-1,mymakecol(255,255,255));
-  char buff[8];
+  char buff[12];
   sprintf(buff,"%d %%",*(menu->value_int));
   int myw,myh;
   font->dimensions(buff,&myw,&myh);
