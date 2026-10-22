@@ -181,11 +181,11 @@ static int do_recent(int sel) {
 		if (!most_played)
 		    snprintf(&s[strlen(s)],512-strlen(s),"%s",_(" ago"));
 	    } else if (y) {
-		snprintf(&s[strlen(s)],512-strlen(s),"%d year%s",y,(y > 1 ? "s" : ""));
+		snprintf(&s[strlen(s)],512-strlen(s),_("%d year%s"),y,(y > 1 ? "s" : ""));
 	    } else {
 		int d = t/(24*3600);
 		if (d) {
-		    snprintf(&s[strlen(s)],512-strlen(s),"%d days ",d);
+		    snprintf(&s[strlen(s)],512-strlen(s),_("%d days "),d);
 		    t %= 24*3600;
 		}
 		int h = t/3600;
@@ -206,8 +206,6 @@ static int do_recent(int sel) {
 	    }
 	    menu[n2].values_list[0] = 0;
 	    menu[n2].values_list_label[0] = strdup(s);
-	    if (!strcmp(menu[n2].label,"bbakraid"))
-		printf("bakraid : %d\n",t);
 	    menu[n2].values_list[1] = (most_played ? game_list[n]->time_played : time(NULL)-game_list[n]->last_played);
 	    menu[n2].values_list[2] = n;
 	    n2++;
