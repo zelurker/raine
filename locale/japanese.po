@@ -1538,7 +1538,7 @@ msgstr "Raineについて"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "Acceleration"
-msgstr ""
+msgstr "ハードウェアアクセラレーション"
 
 #: source/games/chasehq.c
 msgid "Accelerator"
@@ -3073,7 +3073,7 @@ msgstr "FPSカウンター"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "FSAA (multisampling)"
-msgstr ""
+msgstr "FSAA（マルチサンプリング）"
 
 #: source/games/cps1drv.c source/games/ctribebl.c source/games/darius2d.c
 #: source/games/ninjaw.c source/games/spacegun.c source/games/taito_f2.c
@@ -4247,7 +4247,7 @@ msgstr "OpenGL設定"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL double buffer"
-msgstr ""
+msgstr "OpenGLダブルバッファ"
 
 #: source/sdl/glsl.c source/sdl/opengl.c
 msgid "OpenGL error"
@@ -4263,11 +4263,11 @@ msgstr "メニューの重ね表示"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL vendor"
-msgstr ""
+msgstr "OpenGLの製造元"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL VSync"
-msgstr ""
+msgstr "OpenGL垂直同期"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "OpenGL blits"
@@ -4844,7 +4844,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "Renderer"
-msgstr ""
+msgstr "描画デバイス"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "None"
@@ -5923,7 +5923,7 @@ msgstr ""
 
 #: source/games/toaplan2.c source/sdl/dialogs/video_info.cpp
 msgid "Version"
-msgstr ""
+msgstr "バージョン"
 
 #: source/games/lsystem.c
 msgid "Versus Mode"
