@@ -6806,3 +6806,8 @@ msgstr "取り出す|何もしない"
 
 msgid "insert it|Do nothing"
 msgstr "挿入する|何もしない"
+
+#: source/sdl/dialogs/about.cpp
+msgid "Edit this entry"
+msgstr "この項目を編集"
+
