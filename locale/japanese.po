@@ -3122,7 +3122,7 @@ msgstr "画面比率を4:3に補正"
 
 #: source/neocd/neocd.c
 msgid "Fixed layer"
-msgstr ""
+msgstr "固定レイヤー"
 
 #: source/games/seta.c
 msgid "Flight Distance"
@@ -5270,7 +5270,7 @@ msgstr "スプライトを変換中..."
 
 #: source/neocd/neocd.c
 msgid "Sprites layer"
-msgstr ""
+msgstr "スプライトレイヤー"
 
 #: source/games/lsystem.c
 msgid "Stage & Timer Start"
