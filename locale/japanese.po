@@ -1995,9 +1995,8 @@ msgid "Can't create %s"
 msgstr ""
 
 #: source/neocd/neocd.c
-#, fuzzy
 msgid "Can't save the backup RAM, it's unlocked"
-msgstr ""
+msgstr "バックアップRAMのロックが解除されているため、保存できません。"
 
 #: source/sdl/dialogs/game_selection.cpp
 msgid "Capcom CPS1"
@@ -6006,7 +6005,7 @@ msgstr ""
 #: source/sdl/dialogs/neo_softdips.cpp source/sdl/dialogs/video_options.cpp
 #: source/sdl/dsw.c source/sdl/glsl.c
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: source/sdl/dialogs/controls.cpp
 msgid "What do you want to do?"
