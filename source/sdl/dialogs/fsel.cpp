@@ -71,7 +71,10 @@ class TPathDlg : public TMenu
   public:
   TPathDlg(char *my_title, menu_item_t *menu) :
     TMenu(my_title,menu, NULL,-1, -1,-1,-1, /* to_translate */ 0)
-  {}
+  {
+    if (jap_font && jap_font[0])
+        font_name = jap_font;
+  }
   char *get_top_string() {
     return fsel_dlg->get_top_string();
   }
