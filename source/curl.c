@@ -35,6 +35,8 @@
 #include "version.h"
 #include "compat.h"
 #include "curl.h"
+#include "loadroms.h"
+#include "translate.h"
 
 // It's impossible to include raine.h here in windows, because windows is too dumb !!!
 typedef struct DIR_CFG
@@ -74,6 +76,8 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
     return written;
 }
 
+static char curl_error[CURL_ERROR_SIZE];
+
 int get_url(char *file, char *url)
 {
   FILE *pagefile;
@@ -108,6 +112,7 @@ int get_url(char *file, char *url)
   curl_easy_setopt(curl_handle, CURLOPT_NOBODY, 1);
   curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, agent);
+  curl_easy_setopt(curl_handle, CURLOPT_ERRORBUFFER, curl_error);
 
   /* open the file */
   // Since the download from internet archive doesn't give the size before the download, I need to get it from the static index of their files...
@@ -121,10 +126,21 @@ int get_url(char *file, char *url)
 
   ret = curl_easy_perform(curl_handle);
   char *ct = NULL;
-  if (ret == CURLE_ABORTED_BY_CALLBACK)
+  if (ret == CURLE_ABORTED_BY_CALLBACK) {
+      printf("got aborted by callback, curl_error:%s curl_easy_strerror:%s\n",curl_error, curl_easy_strerror(ret));
       return ret;
-  if (ret == CURLE_OK)
+  }
+  int response_code;
+  if (ret == CURLE_OK) {
       curl_easy_getinfo(curl_handle,CURLINFO_CONTENT_TYPE,&ct);
+      curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
+      printf("curl: got response code %d\n",response_code);
+      if (response_code >= 400) {
+	  sprintf(load_debug+strlen(load_debug),gettext("curl error code: %d\n"),response_code);
+	  load_error |= LOAD_FATAL_ERROR;
+	  return 1;
+      }
+  }
   if (strcmp(ct,"application/zip") && url[strlen(url)-1] != '/') {
       printf("curl: didn't get application/zip, aborting... (%s) ret=%x\n",ct,ret);
       return 1;
