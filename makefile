@@ -636,7 +636,8 @@ OBJDIRS=$(OBJDIR)                \
 	locale/fr/LC_MESSAGES \
 	locale/es/LC_MESSAGES \
 	locale/pt_BR/LC_MESSAGES \
-	locale/it/LC_MESSAGES
+	locale/it/LC_MESSAGES \
+	locale/ja/LC_MESSAGES
 
 OBJDIRS += $(OBJDIR)/z80
 OBJDIRS += $(OBJDIR)/mame/z80
@@ -1408,7 +1409,8 @@ all:	source/version.h cpuinfo message maketree depend $(RAINE_EXE) \
 	locale/fr/LC_MESSAGES/raine.mo \
 	locale/es/LC_MESSAGES/raine.mo \
 	locale/pt_BR/LC_MESSAGES/raine.mo \
-	locale/it/LC_MESSAGES/raine.mo
+	locale/it/LC_MESSAGES/raine.mo \
+	locale/ja/LC_MESSAGES/raine.mo
 
 locale/raine.pot:
 	xgettext --omit-header -C -k_ -kgettext -d raine -s -o locale/tmp `find source -name '*.c*'|grep -v source/Musashi`
@@ -1416,6 +1418,9 @@ locale/raine.pot:
 	rm -f locale/tmp
 
 locale/fr/LC_MESSAGES/raine.mo: locale/french.po
+	msgfmt -c -v -o $@ $<
+
+locale/ja/LC_MESSAGES/raine.mo: locale/japanese.po
 	msgfmt -c -v -o $@ $<
 
 locale/pt_BR/LC_MESSAGES/raine.mo: locale/pt_br.po
