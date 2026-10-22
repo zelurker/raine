@@ -765,7 +765,7 @@ menu_item_t *get_menu_from_text(char *buff, TFont_ttf *font, int *used,int max_w
 		if (end) {
 		    old = *end;
 		    *end = 0;
-		    menu[*used].label = strdup(q);
+		    menu[*used].label = strdup(!strcmp(q,"Edit this entry") ? _("Edit this entry") : q);
 		    *end = old;
 		    menu[*used].menu_func = &menu_goto_url;
 		    goto end_loop;

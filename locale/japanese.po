@@ -1538,7 +1538,7 @@ msgstr "Raineについて"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "Acceleration"
-msgstr ""
+msgstr "ハードウェアアクセラレーション"
 
 #: source/games/chasehq.c
 msgid "Accelerator"
@@ -1995,9 +1995,8 @@ msgid "Can't create %s"
 msgstr ""
 
 #: source/neocd/neocd.c
-#, fuzzy
 msgid "Can't save the backup RAM, it's unlocked"
-msgstr ""
+msgstr "バックアップRAMのロックが解除されているため、保存できません。"
 
 #: source/sdl/dialogs/game_selection.cpp
 msgid "Capcom CPS1"
@@ -3074,7 +3073,7 @@ msgstr "FPSカウンター"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "FSAA (multisampling)"
-msgstr ""
+msgstr "FSAA（マルチサンプリング）"
 
 #: source/games/cps1drv.c source/games/ctribebl.c source/games/darius2d.c
 #: source/games/ninjaw.c source/games/spacegun.c source/games/taito_f2.c
@@ -3083,7 +3082,7 @@ msgstr ""
 
 #: source/neocd/neocd.c
 msgid "Fatal error"
-msgstr ""
+msgstr "重大なエラー"
 
 #: source/games/megasys1.c
 msgid "Female & Male"
@@ -3111,9 +3110,11 @@ msgstr "ネオジオCD BIOSを探す"
 
 #: source/neocd/neocd.c
 msgid ""
-"Find the NeoCD bios (neocd.bin).\n"
-"Ask Google if you can't find it !"
+"Find the Neo-Geo CD BIOS (neocd.bin).\n"
+"Ask Google if you can't find it!"
 msgstr ""
+"Neo-Geo CDのBIOS（neocd.bin）が見つかりません。\n"
+"見つからない場合は、Googleで検索してください。"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "Fix aspect ratio to 4:3"
@@ -3121,7 +3122,7 @@ msgstr "画面比率を4:3に補正"
 
 #: source/neocd/neocd.c
 msgid "Fixed layer"
-msgstr ""
+msgstr "固定レイヤー"
 
 #: source/games/seta.c
 msgid "Flight Distance"
@@ -4246,7 +4247,7 @@ msgstr "OpenGL設定"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL double buffer"
-msgstr ""
+msgstr "OpenGLダブルバッファ"
 
 #: source/sdl/glsl.c source/sdl/opengl.c
 msgid "OpenGL error"
@@ -4262,11 +4263,11 @@ msgstr "メニューの重ね表示"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL vendor"
-msgstr ""
+msgstr "OpenGLの製造元"
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "OpenGL VSync"
-msgstr ""
+msgstr "OpenGL垂直同期"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "OpenGL blits"
@@ -4843,7 +4844,7 @@ msgstr ""
 
 #: source/sdl/dialogs/video_info.cpp
 msgid "Renderer"
-msgstr ""
+msgstr "描画デバイス"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "None"
@@ -5058,7 +5059,7 @@ msgstr ""
 #: source/loadroms.c
 #, c-format
 msgid "Search path:\n"
-msgstr ""
+msgstr "検索先:\n"
 
 #: source/games/terrac.c
 msgid "Second Life at"
@@ -5269,7 +5270,7 @@ msgstr "スプライトを変換中..."
 
 #: source/neocd/neocd.c
 msgid "Sprites layer"
-msgstr ""
+msgstr "スプライトレイヤー"
 
 #: source/games/lsystem.c
 msgid "Stage & Timer Start"
@@ -5740,7 +5741,7 @@ msgstr "読み込めません：%s"
 #: source/loadroms.c
 #, c-format, python-format
 msgid "Unable to open '%s' crc32:%x\n"
-msgstr ""
+msgstr "'%s' を開けません CRC32:%x\n"
 
 #: source/demos.c
 #, c-format, python-format
@@ -5922,7 +5923,7 @@ msgstr ""
 
 #: source/games/toaplan2.c source/sdl/dialogs/video_info.cpp
 msgid "Version"
-msgstr ""
+msgstr "バージョン"
 
 #: source/games/lsystem.c
 msgid "Versus Mode"
@@ -6004,7 +6005,7 @@ msgstr ""
 #: source/sdl/dialogs/neo_softdips.cpp source/sdl/dialogs/video_options.cpp
 #: source/sdl/dsw.c source/sdl/glsl.c
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: source/sdl/dialogs/controls.cpp
 msgid "What do you want to do?"
@@ -6805,3 +6806,8 @@ msgstr "取り出す|何もしない"
 
 msgid "insert it|Do nothing"
 msgstr "挿入する|何もしない"
+
+#: source/sdl/dialogs/about.cpp
+msgid "Edit this entry"
+msgstr "この項目を編集"
+

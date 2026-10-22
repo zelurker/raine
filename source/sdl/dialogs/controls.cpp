@@ -1117,7 +1117,7 @@ extern "C" char *my_map(SDL_Joystick *joy);
 static int do_mapping(int sel) {
     int nb = SDL_NumJoysticks();
     if (nb <= 0) {
-	raine_mbox("Error", "This command is to map the controls of a\njoystick, and none is detected","Ok");
+	raine_mbox(_("Error"), _("This command is to map the controls of a\njoystick, and none is detected"), _("OK"));
 	return 0;
     }
     if (nb > 1) {
