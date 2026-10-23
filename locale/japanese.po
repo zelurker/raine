@@ -1657,11 +1657,11 @@ msgstr ""
 
 #: source/sdl/gui.cpp
 msgid "Applying graphics layouts and stuff..."
-msgstr ""
+msgstr "グラフィック配置などを適用中..."
 
 #: source/loadroms.c
 msgid "Applying graphics layouts..."
-msgstr ""
+msgstr "グラフィック配置を適用中..."
 
 #: source/sdl/dialogs/dirs.cpp
 msgid "Artwork directory"
@@ -2547,7 +2547,7 @@ msgstr ""
 
 #: source/games/cave.c
 msgid "Decrypting sprites"
-msgstr ""
+msgstr "スプライトを復号中"
 
 #: source/games/wwfsstar.c
 msgid "Default"
@@ -2717,7 +2717,7 @@ msgstr ""
 #: source/loadroms.c
 #, c-format, python-format
 msgid "Downloading %s.zip"
-msgstr ""
+msgstr "%s.zipをダウンロード中"
 
 #: source/games/seta.c
 msgid "Dragon Unit"
@@ -3766,10 +3766,14 @@ msgstr "名前を指定してステートを読み込む"
 
 #: source/loadroms.c
 msgid "Loading CPU code"
-msgstr ""
+msgstr "CPUコードを読み込み中"
 
 #: source/sdl/gui.cpp
 msgid "Loading game"
+msgstr "ゲーム読み込み中"
+
+#: source/sdl/gui.cpp
+msgid "Loading Game"
 msgstr "ゲーム読み込み中"
 
 #: source/sdl/dialogs/neocd_options.cpp
@@ -6244,7 +6248,7 @@ msgstr ""
 
 #: source/neocd/neocd.c
 msgid "decrypting sprites (kof99 type)"
-msgstr ""
+msgstr "スプライトを復号中（KOF99方式）"
 
 #: source/sdl/dialogs/video_options.cpp
 msgid "DirectX (good for hardware overlays/blits)"
@@ -6320,7 +6324,7 @@ msgstr "上下バーの文字色"
 
 #: source/sdl/gui.cpp
 msgid "from internet archive"
-msgstr ""
+msgstr "Internet Archiveから"
 
 #: source/sdl/dialogs/colors.cpp
 msgid "green"
