@@ -343,6 +343,10 @@ void setup_curl_dlg(char *name,char *url) {
     // I thought the labels were copied because of the translations, but maybe not after all... !
     static char final[30];
     load_items[3].label = name;
+
+    if (!name)
+        load_items[0].label = _("Applying graphics layouts and stuff...");
+
     if (raine_cfg.no_gui)
 	return;
     delete loading_dialog;
