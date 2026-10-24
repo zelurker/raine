@@ -31,7 +31,7 @@ class TVideo : public TMenu
     TMenu(my_title,mymenu)
     {}
   int can_be_selected(int n) {
-#ifndef DARWIN
+#ifdef RAINE_WIN32
       if (n == 1) // fullscreen
         return (display_cfg.maximized == 0);
       // On macOS the borderless fullscreen window posts spurious MAXIMIZED

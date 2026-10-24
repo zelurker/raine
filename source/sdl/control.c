@@ -483,7 +483,7 @@ static void apply_fullscreen(void) {
 #endif
 
 void toggle_fullscreen() {
-#ifndef DARWIN
+#ifdef RAINE_WIN32
     if (display_cfg.maximized) return; // too crazy in windows if window is maximized
 				       // you are almost sure to loose pos, size or both
 #endif
@@ -503,7 +503,7 @@ void toggle_fullscreen() {
 }
 
 static void toggle_fullscreen_keyboard() {
-#ifndef DARWIN
+#ifdef RAINE_WIN32
     if (display_cfg.maximized) return;
 #endif
   if (display_cfg.fullscreen) {
@@ -1943,13 +1943,13 @@ void control_handle_event(SDL_Event *event) {
 #else
     case SDL_WINDOWEVENT:
       if ((event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) &&
-	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2) &&
-	      !display_cfg.maximized) {
+	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2) /* &&
+	      !display_cfg.maximized */) {
 	  display_cfg.prev_sx = display_cfg.screen_x;
 	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
-      } else if (event->window.event == SDL_WINDOWEVENT_MOVED && !display_cfg.maximized) {
-	  if (!display_cfg.maximized && !display_cfg.fullscreen && !display_cfg.lost_focus && (display_cfg.posx != event->window.data1 || display_cfg.posy != event->window.data2)) {
+      } else if (event->window.event == SDL_WINDOWEVENT_MOVED /* && !display_cfg.maximized */) {
+	  if (/* !display_cfg.maximized && */ !display_cfg.fullscreen && !display_cfg.lost_focus && (display_cfg.posx != event->window.data1 || display_cfg.posy != event->window.data2)) {
 	      display_cfg.prev_posx = display_cfg.posx;
 	      display_cfg.prev_posy = display_cfg.posy;
 	      display_cfg.posx = event->window.data1;

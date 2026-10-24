@@ -1070,14 +1070,14 @@ static void my_event(SDL_Event *event) {
     case SDL_WINDOWEVENT:
 	if (event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 	    debug("resized\n");
-	    if (!display_cfg.maximized && !display_cfg.fullscreen && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
+	    if (/* !display_cfg.maximized && */ !display_cfg.fullscreen && (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)) {
 		display_cfg.prev_sx = display_cfg.screen_x;
 		display_cfg.prev_sy = display_cfg.screen_y;
 		resize(1,event->window.data1,event->window.data2);
 	    }
 	} else if (event->window.event == SDL_WINDOWEVENT_MOVED) {
 	    debug("moved\n");
-	    if (!display_cfg.maximized && !display_cfg.fullscreen) {
+	    if (/* !display_cfg.maximized && */ !display_cfg.fullscreen) {
 		/* There was a && !display_cfg.lost_focus here, mainly for linux with windowmaker because otherwise if you start with a maximized window, then restores it, you'll loose the position.
 		 * Now in windows you get a lost_focus when launching from the explorer and playing with the maximize button, which is extremely annoying.
 		 * I am not going to test multiple window managers in linux, so I just remove the test on lost_focus for now. Eventually one day improve this if some other window manager is tested */
