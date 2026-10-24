@@ -2285,6 +2285,7 @@ static void neogeo_hreset(void)
       if (!neogeo_cdrom_process_ipl(NULL)) {
 	  ErrorMsg("Error: Error while processing IPL.TXT.\n");
 	  ClearDefault();
+	  current_game = NULL;
 	  return;
       }
 #endif
