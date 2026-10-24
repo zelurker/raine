@@ -23,8 +23,6 @@ void reset_savegames();
 void GameSave(void);
 void GameSaveName(void);
 void do_save_state(char *name); // with a given name
-void NewSave(gzFile fout);
-void NewLoad(gzFile fin);
 
 // Attempt to Load Current Game
 

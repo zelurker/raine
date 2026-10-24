@@ -28,6 +28,9 @@
 #include "profile.h" // timer, cpu_frame_count
 #include "blit.h"
 
+// From savegame.c, sadly intf from zconf.h collides with many intf in the sound interface so it's best to avoid to include zlib.h in a header
+void NewSave(gzFile fout);
+void NewLoad(gzFile fin);
 int recording_demo = 0, reading_demo = 0;
 
 static gzFile fdemo;
