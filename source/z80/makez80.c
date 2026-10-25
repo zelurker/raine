@@ -4655,12 +4655,11 @@ void EmitFDInstructions(void)
 
 /* These are the meta routines */
 
-#ifdef DARWIN
 static void align_stack(char *reg1, char *reg2) {
 	fprintf(fp, "           push   ebp\n");
 	fprintf(fp, "           mov    ebp,esp\n");
 	fprintf(fp, "           sub    esp,32     ; stack aligned on 32\n");
-	fprintf(fp, "           and    esp,0xffffffc0 \n");
+	fprintf(fp, "           and    esp,0xffffffe0 \n");
 	fprintf(fp, "           mov    [esp],%s \n",reg1);
 	if (reg2)
 	  fprintf(fp, "           mov    [esp+4],%s \n",reg2);
@@ -4670,7 +4669,6 @@ static void restore_stack(char *reg) {
 	fprintf(fp, "           mov    %s,[esp] \n",reg);
 	fprintf(fp, "           leave\n");
 }
-#endif
 
 static void ReadMemoryByteHandler(void)
 {
@@ -4696,7 +4694,7 @@ static void ReadMemoryByteHandler(void)
 	fprintf(fp, "           sub     [dwOriginalExec], esi\n");
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#ifdef DARWIN
+#if 1 // def DARWIN
 	align_stack("edx",NULL);
 #else
 	fprintf(fp, "           push    edx     ; And our desired address\n");
@@ -4710,7 +4708,7 @@ static void ReadMemoryByteHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 8] ; Go call our handler\n");
 
-#ifdef DARWIN
+#if 1 // def DARWIN
 	restore_stack("edx");
 #else
 	fprintf(fp, "           pop     edx     ; Restore our address\n");
@@ -4755,7 +4753,7 @@ void WriteMemoryByteHandler(void)
 		fprintf(fp, "           sub     [dwOriginalExec], esi\n");
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#ifdef DARWIN
+#if 1 // def DARWIN
 	align_stack("edx","eax");
 #else
 	if (bUseStack)
@@ -4772,7 +4770,7 @@ void WriteMemoryByteHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 8] ; Go call our handler\n");
 
-#ifdef DARWIN
+#if 1
 	restore_stack("edx");
 #else
 	fprintf(fp, "           pop     edx     ; Restore our address\n");
@@ -4868,7 +4866,7 @@ void ReadIoHandler(void)
 
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#ifdef DARWIN
+#if 1 // def DARWIN
 	align_stack("edx",NULL);
 #else
 	fprintf(fp, "           push    edx     ; And our desired I/O port\n");
@@ -4882,7 +4880,7 @@ void ReadIoHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 4] ; Go call our handler\n");
 
-#ifdef DARWIN
+#if 1 // def DARWIN
 	restore_stack("edx");
 #else
 	fprintf(fp, "           pop     edx     ; Restore our address\n");
@@ -4929,7 +4927,7 @@ void WriteIoHandler(void)
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
 
-#ifdef DARWIN
+#if 1 // def DARWIN
 	align_stack("edx","eax");
 #else
 	if (bUseStack)
@@ -4946,7 +4944,7 @@ void WriteIoHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 4] ; Go call our handler\n");
 
-#ifdef DARWIN
+#if 1 // def DARWIN
 	restore_stack("edx");
 #else
 	fprintf(fp, "           pop     edx     ; Restore our address\n");
