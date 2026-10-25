@@ -1943,13 +1943,22 @@ void control_handle_event(SDL_Event *event) {
 #else
     case SDL_WINDOWEVENT:
       if ((event->window.event == SDL_WINDOWEVENT_RESIZED || event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) &&
-	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2) /* &&
-	      !display_cfg.maximized */) {
+	      (display_cfg.screen_x != event->window.data1 || display_cfg.screen_y != event->window.data2)
+#ifdef RAINE_WIN32
+	      /* Apparently windows sends bad resizing events when switching from/to maximized, but not tiling window managers like hyprland */
+	      /* So for now I just keep windows out of this */
+	      && !display_cfg.maximized
+#endif
+	 ) {
 	  display_cfg.prev_sx = display_cfg.screen_x;
 	  display_cfg.prev_sy = display_cfg.screen_y;
 	  resize(1,event->window.data1,event->window.data2);
-      } else if (event->window.event == SDL_WINDOWEVENT_MOVED /* && !display_cfg.maximized */) {
-	  if (/* !display_cfg.maximized && */ !display_cfg.fullscreen && !display_cfg.lost_focus && (display_cfg.posx != event->window.data1 || display_cfg.posy != event->window.data2)) {
+      } else if (event->window.event == SDL_WINDOWEVENT_MOVED
+#ifdef RAINE_WIN32
+	      && !display_cfg.maximized
+#endif
+	      ) {
+	  if (!display_cfg.fullscreen && !display_cfg.lost_focus && (display_cfg.posx != event->window.data1 || display_cfg.posy != event->window.data2)) {
 	      display_cfg.prev_posx = display_cfg.posx;
 	      display_cfg.prev_posy = display_cfg.posy;
 	      display_cfg.posx = event->window.data1;
