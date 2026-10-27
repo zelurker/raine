@@ -4655,6 +4655,8 @@ void EmitFDInstructions(void)
 
 /* These are the meta routines */
 
+/* Got a stack alignment issue initially with osx, requiring alignment on 32 byte boundaries, so this code was in an ifdef.
+ * Then starting with gcc-6.2, gcc requires alignment on 16 bytes boundaries, so I just made this code available to everyone, so everyone is aligned on 32 bytes now */
 static void align_stack(char *reg1, char *reg2) {
 	fprintf(fp, "           push   ebp\n");
 	fprintf(fp, "           mov    ebp,esp\n");
@@ -4694,11 +4696,7 @@ static void ReadMemoryByteHandler(void)
 	fprintf(fp, "           sub     [dwOriginalExec], esi\n");
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#if 1 // def DARWIN
 	align_stack("edx",NULL);
-#else
-	fprintf(fp, "           push    edx     ; And our desired address\n");
-#endif
 
 	if (FALSE == bUseStack)
 	{
@@ -4708,11 +4706,7 @@ static void ReadMemoryByteHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 8] ; Go call our handler\n");
 
-#if 1 // def DARWIN
 	restore_stack("edx");
-#else
-	fprintf(fp, "           pop     edx     ; Restore our address\n");
-#endif
 	fprintf(fp, "           pop     edi     ; Restore our handler's address\n");
 
 	fprintf(fp, "           xor     ebx, ebx        ; Zero our future HL\n");
@@ -4753,14 +4747,7 @@ void WriteMemoryByteHandler(void)
 		fprintf(fp, "           sub     [dwOriginalExec], esi\n");
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#if 1 // def DARWIN
 	align_stack("edx","eax");
-#else
-	if (bUseStack)
-		fprintf(fp, "           push    eax     ; Data to write\n");
-
-	fprintf(fp, "           push    edx     ; And our desired address\n");
-#endif
 
 	if (FALSE == bUseStack)
 	{
@@ -4770,14 +4757,7 @@ void WriteMemoryByteHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 8] ; Go call our handler\n");
 
-#if 1
 	restore_stack("edx");
-#else
-	fprintf(fp, "           pop     edx     ; Restore our address\n");
-
-	if (bUseStack)
-		fprintf(fp, "           pop     eax     ; Restore our data written\n");
-#endif
 
 	fprintf(fp, "           pop     edi     ; Save our structure address\n");
 
@@ -4866,11 +4846,7 @@ void ReadIoHandler(void)
 
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
-#if 1 // def DARWIN
 	align_stack("edx",NULL);
-#else
-	fprintf(fp, "           push    edx     ; And our desired I/O port\n");
-#endif
 
 	if (FALSE == bUseStack)
 	{
@@ -4880,11 +4856,7 @@ void ReadIoHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 4] ; Go call our handler\n");
 
-#if 1 // def DARWIN
 	restore_stack("edx");
-#else
-	fprintf(fp, "           pop     edx     ; Restore our address\n");
-#endif
 	fprintf(fp, "           pop     edi     ; Restore our handler's address\n");
 
 	fprintf(fp, "           xor     ebx, ebx        ; Zero our future HL\n");
@@ -4927,14 +4899,7 @@ void WriteIoHandler(void)
 
 	fprintf(fp, "           push    edi     ; Save our structure address\n");
 
-#if 1 // def DARWIN
 	align_stack("edx","eax");
-#else
-	if (bUseStack)
-		fprintf(fp, "           push    eax     ; Data to write\n");
-
-	fprintf(fp, "           push    edx     ; And our desired I/O address\n");
-#endif
 
 	if (FALSE == bUseStack)
 	{
@@ -4944,14 +4909,7 @@ void WriteIoHandler(void)
 
 	fprintf(fp, "           call    dword [edi + 4] ; Go call our handler\n");
 
-#if 1 // def DARWIN
 	restore_stack("edx");
-#else
-	fprintf(fp, "           pop     edx     ; Restore our address\n");
-
-	if (bUseStack)
-		fprintf(fp, "           pop     eax     ; Restore our data written\n");
-#endif
 
 	fprintf(fp, "           pop     edi     ; Save our structure address\n");
 
