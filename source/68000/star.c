@@ -1571,12 +1571,11 @@ static void supervisor(void){
 
 /***************************************************************************/
 
-#ifdef DARWIN
 static void align_stack(char *reg1, char *reg2) {
   emit("     push   ebp\n");
   emit("     mov    ebp,esp\n");
   emit("     sub    esp,32     ; stack aligned on 32\n");
-  emit("     and    esp,0xffffffc0 \n");
+  emit("     and    esp,0xffffffe0 \n");
   emit("     mov    [esp],%s \n",reg1);
   if (reg2)
     emit("     mov    [esp+4],%s \n",reg2);
@@ -1587,7 +1586,6 @@ static void restore_stack(char *reg) {
     emit("     mov    %s,[esp] \n",reg);
   emit("     leave\n");
 }
-#endif
 
 static void gen_readbw(int size){
 	char z='x';
@@ -1641,20 +1639,9 @@ static void gen_readbw(int size){
 	*/
 	emit("mov eax,edx\n"); /* address */
 	emit("mov edx,ecx\n"); /* pointer to structure */
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[edx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 8\n");
-#endif
 	emit("mov ecx,eax\n");
 	airlock_enter();
 	emit("mov edx,[__access_address]\n");
@@ -1727,38 +1714,16 @@ static void gen_readl(void){
 	emit("mov edx,ecx\n"); /* pointer to structure */
 	emit("push eax\n");
 	emit("push edx\n");
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[edx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 8\n");
-#endif
 	emit("pop edx\n");
 	emit("xchg eax,[esp]\n");
 	emit("add eax,byte 2\n");
 /*	maskaddress("eax");*/ /* this case would force a split read anyway */
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[edx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 8\n");
-#endif
 	emit("pop ecx\n");
 	emit("shl ecx,16\n");
 	emit("mov cx,ax\n");
@@ -1852,21 +1817,9 @@ static void gen_writebw(int size){
 	emit("mov eax,edx\n");      /* address */
 	emit("xor edx,edx\n");      /* data */
 	emit("mov %s,[esp+%d]\n",x86dx[size],airlock_stacksize);
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push ebx\n");
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[ebx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 12\n");
-#endif
 	airlock_enter();
 
 	emit("write%c_end:\n",z);
@@ -1957,42 +1910,18 @@ static void gen_writel(void){
 	emit("mov dx,[esp+%d]\n",airlock_stacksize+2);
 	emit("push eax\n");
 	emit("push ebx\n");
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push ebx\n");
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[ebx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 12\n");
-#endif
 	emit("pop ebx\n");
 	emit("pop eax\n");
 	emit("add eax,byte 2\n");
 /*	maskaddress("eax");*/ /*this case would force a split write anyway */
 	emit("xor edx,edx\n");    /* data */
 	emit("mov dx,[esp+%d]\n",airlock_stacksize);
-#ifdef DARWIN
 	align_stack("eax","edx");
-#else
-	if(use_stack){
-		emit("push ebx\n");
-		emit("push edx\n");
-		emit("push eax\n");
-	}
-#endif
 	emit("call dword[ebx+8]\n");
-#ifdef DARWIN
 	restore_stack(NULL);
-#else
-	if(use_stack)emit("add esp,byte 12\n");
-#endif
 	airlock_enter();
 
 	emit("writel_end:\n");
