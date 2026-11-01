@@ -1267,6 +1267,7 @@ beg:
 	   if (ret && !strstr(url,"FinalBurn")) {
 	       // Other url : finalburn. Start by this one because the neogeo roms for fbneo include all the neogeo bioses which makes the roms larger !
 	       snprintf(url,512,"https://archive.org/download/efarcadeversionroms/Arcade Version Roms/FinalBurn v0.2.97.43 FullRoms.zip/%s.zip",dir);
+	       print_debug("try alternate url: %s\n",url);
 	       ret = get_url(path,url);
 	       if (ret == CURLE_ABORTED_BY_CALLBACK) {
 		   abort_curl(path);
@@ -1276,6 +1277,7 @@ beg:
 	   if (ret && !strstr(url,"fbnarca")) {
 	       // Last option : fbneo, the big archives...
 	       snprintf(url,512,"https://archive.org/download/fbnarcade-fullnonmerged/arcade/%s.zip",dir);
+	       print_debug("try alternate url: %s\n",url);
 	       ret = get_url(path,url);
 	       if (ret == CURLE_ABORTED_BY_CALLBACK) {
 		   abort_curl(path);
