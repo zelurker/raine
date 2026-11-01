@@ -6815,3 +6815,15 @@ msgstr "挿入する|何もしない"
 msgid "Edit this entry"
 msgstr "この項目を編集"
 
+
+msgid "(unauthorized)"
+msgstr "（認証が必要です）"
+
+msgid "(forbidden)"
+msgstr "（アクセスが拒否されました）"
+
+msgid "(not found)"
+msgstr "（見つかりません）"
+
+msgid "(service unavailable)"
+msgstr "（サービスが一時的に利用できません）"
