@@ -136,14 +136,15 @@ int get_url(char *file, char *url)
       curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
       printf("curl: got response code %d\n",response_code);
       if (response_code >= 400) {
-	  sprintf(load_debug+strlen(load_debug),gettext("http %d for %s "),response_code,url);
-	  if (response_code == 401) sprintf(load_debug+strlen(load_debug),gettext("(unauthorized)"));
-	  if (response_code == 404) sprintf(load_debug+strlen(load_debug),gettext("(not found)"));
-	  if (response_code == 503) sprintf(load_debug+strlen(load_debug),gettext("(service unavailable)"));
-	  sprintf(load_debug+strlen(load_debug),"\n");
-	  load_error |= LOAD_FATAL_ERROR;
-	  return 1;
-      }
+    sprintf(load_debug+strlen(load_debug),"HTTP %d ",response_code);
+    if (response_code == 401) sprintf(load_debug+strlen(load_debug),gettext("(unauthorized)"));
+    if (response_code == 403) sprintf(load_debug+strlen(load_debug),gettext("(forbidden)"));
+    if (response_code == 404) sprintf(load_debug+strlen(load_debug),gettext("(not found)"));
+    if (response_code == 503) sprintf(load_debug+strlen(load_debug),gettext("(service unavailable)"));
+    sprintf(load_debug+strlen(load_debug),"\n%s\n",url);
+    load_error |= LOAD_FATAL_ERROR;
+    return 1;
+  }
   }
   if (strcmp(ct,"application/zip") && url[strlen(url)-1] != '/') {
       printf("curl: didn't get application/zip, aborting... (%s) ret=%x\n",ct,ret);
