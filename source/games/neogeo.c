@@ -653,6 +653,42 @@ static struct ROM_INFO rom_bjourney[] = /* MVS AND AES VERSION clone of neogeo *
 
 CLNEI( bjourney, neogeo, "Blue's Journey / Raguy (ALM-001)(ALH-001)", ALPHA, 1990, GAME_PLATFORM);
 
+/****************************************
+ ID-0023
+ . NGM-023
+ NEO-MVS PROG42G / NEO-MVS CHA42G
+ NEO-MVS PROGTOP / NEO-MVS CHA-256
+ Boards used for the Korean release
+ . NGH-023
+ NEO-AEG PROG42G-1 / NEO-AEG CHA42G-1
+****************************************/
+static struct ROM_INFO rom_quizdais[] = /* MVS AND AES VERSION */
+{
+  LOAD_SW16( CPU1, "023-p1.p1", 0x000000, 0x100000, 0xc488fda3), /* TC538200 */
+  LOAD( FIXED, "023-s1.s1", 0x000000, 0x20000, 0xac31818a),
+  LOAD( ROM2, "023-m1.m1", 0x00000, 0x20000, 0x2a2105e0),
+  LOAD( SMP1, "023-v1.v1", 0x000000, 0x100000, 0xa53e5bd3), /* TC538200 */
+  LOAD_16_8( SPRITES, "023-c1.c1", 0x000000, 0x100000, 0x2999535a), /* Plane 0,1 */ /* TC538200 */
+  LOAD_16_8( SPRITES, "023-c2.c2", 0x000001, 0x100000, 0x876a99e6), /* Plane 2,3 */ /* TC538200 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( quizdais, neogeo, "Quiz Daisousa Sen - The Last Count Down (NGM-023 ~ NGH-023)",SNK,1991, GAME_QUIZZ );
+
+static struct ROM_INFO rom_quizdaisk[] = /* KOREAN VERSION clone of quizdais */
+{
+  LOAD_SW16( CPU1, "123-p1.p1", 0x000000, 0x100000, 0xa6f35eae),
+  LOAD( FIXED, "123-s1.s1", 0x000000, 0x20000, 0x53de938a),
+  LOAD( ROM2, "123-m1.m1", 0x00000, 0x20000, 0xd67f53f9),
+  LOAD( ROM2, "123-m1.m1", 0x10000, 0x20000, 0xd67f53f9),
+  LOAD( SMP1, "123-v1.v1", 0x000000, 0x200000, 0x986f4af9),
+  LOAD_16_8( SPRITES, "123-c1.c1", 0x000000, 0x100000, 0xe579a606), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "123-c2.c2", 0x000001, 0x100000, 0xe182c837), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( quizdaisk,quizdais,"Quiz Salibtamjeong - The Last Count Down (Korean localized Quiz Daisousa Sen)",SNK,1995, GAME_QUIZZ );
+
 static struct ROM_INFO rom_lresort[] = // clone of neogeo
 {
   LOAD_SW16( CPU1, "024-p1.p1", 0x000000, 0x080000, 0x89c4ab97),

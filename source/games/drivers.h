@@ -823,6 +823,8 @@
   DRV(gpilotsh)
   DRV(joyjoy)
   DRV(bjourney)
+    DRV(quizdais)
+    DRV(quizdaisk)
   DRV(lresort)
   DRV(eightman)
   DRV(legendos)
