@@ -680,7 +680,6 @@ static struct ROM_INFO rom_quizdaisk[] = /* KOREAN VERSION clone of quizdais */
   LOAD_SW16( CPU1, "123-p1.p1", 0x000000, 0x100000, 0xa6f35eae),
   LOAD( FIXED, "123-s1.s1", 0x000000, 0x20000, 0x53de938a),
   LOAD( ROM2, "123-m1.m1", 0x00000, 0x20000, 0xd67f53f9),
-  LOAD( ROM2, "123-m1.m1", 0x10000, 0x20000, 0xd67f53f9),
   LOAD( SMP1, "123-v1.v1", 0x000000, 0x200000, 0x986f4af9),
   LOAD_16_8( SPRITES, "123-c1.c1", 0x000000, 0x100000, 0xe579a606), /* Plane 0,1 */
   LOAD_16_8( SPRITES, "123-c2.c2", 0x000001, 0x100000, 0xe182c837), /* Plane 2,3 */
