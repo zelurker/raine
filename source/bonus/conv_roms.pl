@@ -124,6 +124,7 @@ while ($_ = shift @file) {
 				if ((my ($size,$region_name,$thing) = split(/\, */,$args))) {
 					$size =~ s/^ *//;
 					$region_name =~ s/ \| .+//;
+					$region_name =~ s/cslot1://;
 					$region_name = $raine_regions{$region_name} if ($raine_regions{$region_name});
 					if ($region_name !~ /REGION/) {
 						$region_name =~ s/"//g;
