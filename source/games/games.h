@@ -16,6 +16,7 @@
 #include "dsw.h"
 #include <time.h>
 
+// if changing company_num then edit company_name in games.c to add the corresponding company name
 enum company_num
 {
    COMPANY_ID_UNKNOWN = 0,
@@ -92,7 +93,8 @@ enum company_num
    COMPANY_ID_KYLE_HODGETTS,
    COMPANY_ID_F2,
    COMPANY_ID_ATARI,
-   COMPANY_ID_ARIKA
+   COMPANY_ID_ARIKA,
+   COMPANY_ID_NG
 };
 
 extern const int nb_companies;

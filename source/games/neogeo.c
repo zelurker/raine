@@ -331,6 +331,32 @@ static struct ROM_INFO rom_tpgolf[] = /* MVS AND AES VERSION */
 
 CLNEI( tpgolf, neogeo, "Top Player's Golf (NGM-003)(NGH-003)", SNK, 1990, GAME_SPORTS);
 
+/****************************************
+ ID-0004
+ . NGM-004
+ NEO-MVS PROG-EP / NEO-MVS CHA-32
+ . NGH-004
+ NEO-AEG PROG B  / NEO-AEG CHA-32
+****************************************/
+static struct ROM_INFO rom_mahretsu[] = /* MVS AND AES VERSION */
+{
+  LOAD_SW16( CPU1, "004-p1.p1", 0x000000, 0x080000, 0xfc6f53db), /* TC534200 */
+  LOAD( FIXED, "004-s1.s1", 0x000000, 0x20000, 0x2bd05a06),
+  LOAD( ROM2, "004-m1.m1", 0x00000, 0x20000, 0xc71fbb3b),
+  LOAD( SMP1, "004-v11.v11", 0x000000, 0x080000, 0xb2fb2153), /* CXK384001 */
+  LOAD( SMP1, "004-v12.v12", 0x080000, 0x080000, 0x8503317b), /* CXK384001 */
+  LOAD( SMP2, "004-v21.v21", 0x000000, 0x080000, 0x4999fb27), /* CXK384001 */
+  LOAD( SMP2, "004-v22.v22", 0x080000, 0x080000, 0x776fa2a2), /* CXK384001 */
+  LOAD( SMP2, "004-v23.v23", 0x100000, 0x080000, 0xb3e7eeea), /* CXK384001 */
+  LOAD_16_8( SPRITES, "004-c1.c1", 0x000000, 0x80000, 0xf1ae16bc), /* Plane 0,1 */ /* MB834200 */
+  LOAD_16_8( SPRITES, "004-c2.c2", 0x000001, 0x80000, 0xbdc13520), /* Plane 2,3 */ /* MB834200 */
+  LOAD_16_8( SPRITES, "004-c3.c3", 0x100000, 0x80000, 0x9c571a37), /* Plane 0,1 */ /* MB834200 */
+  LOAD_16_8( SPRITES, "004-c4.c4", 0x100001, 0x80000, 0x7e81cb29), /* Plane 2,3 */ /* MB834200 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( mahretsu, neogeo, "Mahjong Kyo Retsuden (NGM-004 ~ NGH-004)",SNK,1990, GAME_PUZZLE );
+
 static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
 {
   LOAD_SW16( CPU1, "005-pg1.p1", 0x000000, 0x080000, 0xbd0a492d),
@@ -910,6 +936,29 @@ static struct ROM_INFO rom_bstars2[] = // clone of neogeo
 };
 
 CLNEI( bstars2, neogeo, "Baseball Stars 2", SNK, 1992, GAME_SPORTS);
+
+/****************************************
+ ID-0042
+ . NGM-042
+ NEO-MVS PROG42G-1 / NEO-MVS CHA42G-1
+ . NGH-042
+ NEO-AEG PROG42G-1 / NEO-AEG CHA42G-1
+****************************************/
+static struct ROM_INFO rom_quizdai2[] = /* MVS AND AES VERSION */
+{
+  LOAD_SW16( CPU1, "042-p1.p1", 0x000000, 0x100000, 0xed719dcf), /* TC538200 */
+  LOAD( FIXED, "042-s1.s1", 0x000000, 0x20000, 0x164fd6e6),
+  LOAD( ROM2, "042-m1.m1", 0x00000, 0x20000, 0xbb19995d),
+  LOAD( SMP1, "042-v1.v1", 0x000000, 0x100000, 0xaf7f8247), /* TC538200 */
+  LOAD( SMP1, "042-v2.v2", 0x100000, 0x100000, 0xc6474b59), /* TC538200 */
+  LOAD_16_8( SPRITES, "042-c1.c1", 0x000000, 0x100000, 0xcb5809a1), /* Plane 0,1 */ /* TC538200 */
+  LOAD_16_8( SPRITES, "042-c2.c2", 0x000001, 0x100000, 0x1436dfeb), /* Plane 2,3 */ /* TC538200 */
+  LOAD_16_8( SPRITES, "042-c3.c3", 0x200000, 0x080000, 0xbcd4a518), /* Plane 0,1 */ /* TC534200 */
+  LOAD_16_8( SPRITES, "042-c4.c4", 0x200001, 0x080000, 0xd602219b), /* Plane 2,3 */ /* TC534200 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( quizdai2, neogeo, "Quiz Meitantei Neo & Geo - Quiz Daisousa Sen part 2 (NGM-042 ~ NGH-042)",SNK,1992, GAME_QUIZZ );
 
 static struct ROM_INFO rom_3countb[] = // clone of neogeo
 {
@@ -1560,6 +1609,49 @@ static struct ROM_INFO rom_strhoop[] = /* MVS AND AES VERSION clone of neogeo */
 };
 
 CLNEI( strhoop, neogeo, "Street Hoop / Street Slam / Dunk Dream (DEM-004) (DEH-004)", DECO, 1994, GAME_SPORTS);
+
+/****************************************
+ ID-0080
+ . SAM-080
+ NEO-MVS PROGGSC / NEO-MVS CHA256
+ NEO-MVS PROGTOP / NEO-MVS CHA256
+ Boards used for the Korean release
+ . SAH-080
+ NEO-AEG PROGTOP2 / NEO-AEG CHA256 B
+****************************************/
+static struct ROM_INFO rom_quizkof[] = /* MVS AND AES VERSION */
+{
+  LOAD_SW16( CPU1, "080-p1.p1", 0x000000, 0x100000, 0x4440315e), /* mask rom TC538200 */
+  LOAD( FIXED, "080-s1.s1", 0x000000, 0x20000, 0xd7b86102),
+  LOAD( ROM2, "080-m1.m1", 0x00000, 0x20000, 0xf5f44172),
+  LOAD( SMP1, "080-v1.v1", 0x000000, 0x200000, 0x0be18f60), /* mask rom TC5316200 */
+  LOAD( SMP1, "080-v2.v2", 0x200000, 0x200000, 0x4abde3ff), /* mask rom TC5316200 */
+  LOAD( SMP1, "080-v3.v3", 0x400000, 0x200000, 0xf02844e2), /* mask rom TC5316200 */
+  LOAD_16_8( SPRITES, "080-c1.c1", 0x000000, 0x200000, 0xea1d764a), /* Plane 0,1 */ /* mask rom TC5316200 */
+  LOAD_16_8( SPRITES, "080-c2.c2", 0x000001, 0x200000, 0xd331d4a4), /* Plane 2,3 */ /* mask rom TC5316200 */
+  LOAD_16_8( SPRITES, "080-c3.c3", 0x400000, 0x200000, 0xb4851bfe), /* Plane 0,1 */ /* mask rom TC5316200 */
+  LOAD_16_8( SPRITES, "080-c4.c4", 0x400001, 0x200000, 0xca6f5460), /* Plane 2,3 */ /* mask rom TC5316200 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( quizkof, neogeo, "Quiz King of Fighters (SAM-080 ~ SAH-080)",SAURUS,1995, GAME_QUIZZ );
+
+static struct ROM_INFO rom_quizkofk[] = /* KOREAN VERSION clone of quizkof */
+{
+  LOAD_SW16( CPU1, "vic-080-p1.p1", 0x000000, 0x100000, 0x2589488e),
+  LOAD( FIXED, "vic-080-s1.s1", 0x000000, 0x20000, 0xaf72c30f),
+  LOAD( ROM2, "vic-080-m1.m1", 0x00000, 0x20000, 0x4f157e9a),
+  LOAD( SMP1, "080-v1.v1", 0x000000, 0x200000, 0x0be18f60), /* mask rom TC5316200 */
+  LOAD( SMP1, "vic-080-v2.v2", 0x200000, 0x200000, 0x719fee5b), /* mask rom TC5316200 */
+  LOAD( SMP1, "vic-080-v3.v3", 0x400000, 0x200000, 0x64b7efde), /* mask rom TC5316200 */
+  LOAD_16_8( SPRITES, "vic-080-c1.c1", 0x000000, 0x200000, 0x94d90170), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "vic-080-c2.c2", 0x000001, 0x200000, 0x297f25a1), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "vic-080-c3.c3", 0x400000, 0x200000, 0xcf484c4f), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "vic-080-c4.c4", 0x400001, 0x200000, 0x36e5d997), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( quizkofk,quizkof,"Quiz King of Fighters (Korea)",SAURUS,1996, GAME_QUIZZ );
 
 static struct ROM_INFO rom_ssideki3[] = // clone of neogeo
 {
@@ -3413,6 +3505,21 @@ static struct ROM_INFO rom_diggerma[] = /* Unlicensed Prototype, no official gam
 };
 
 CLNEI( diggerma, neogeo, "Digger Man (prototype)", KYLE_HODGETTS, 2000, GAME_MAZE);
+
+static struct ROM_INFO rom_lasthope[] =
+{
+  LOAD_SW16( CPU1, "ngdt-300-p1.bin", 0x000000, 0x100000, 0x3776a88f),
+  LOAD( FIXED, "ngdt-300-s1.bin", 0x000000, 0x10000, 0x0c0ff9e6),
+  LOAD( ROM2, "ngdt-300-m1.bin", 0x00000, 0x20000, 0x113c870f),
+  LOAD( SMP1, "ngdt-300-v1.bin", 0x000000, 0x200000, 0xb765bafe),
+  LOAD( SMP1, "ngdt-300-v2.bin", 0x200000, 0x200000, 0x9fd0d559),
+  LOAD( SMP1, "ngdt-300-v3.bin", 0x400000, 0x200000, 0x6d5107e2),
+  LOAD_16_8( SPRITES, "ngdt-300-c1.bin", 0x000000, 0x400000, 0x53ef41b5), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "ngdt-300-c2.bin", 0x000001, 0x400000, 0xf9b15ab3), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( lasthope, neogeo, "Last Hope (bootleg AES to MVS conversion,no coin support)",NG,2005, GAME_SHOOT );
 
 static struct ROM_INFO rom_kof97pls[] = // clone of kof97
 {

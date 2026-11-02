@@ -111,6 +111,7 @@ char *company_name[] =
    "F2 System",
    "Atari",
    "Arika",
+   "Ng",
 };
 
 const int nb_companies = sizeof(company_name)/4;
