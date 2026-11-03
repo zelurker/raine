@@ -829,6 +829,7 @@
     DRV(marukodq)
   DRV(lresort)
   DRV(eightman)
+  DRV(minasan)
   DRV(legendos)
   DRV(2020bb)
   DRV(socbrawl)
