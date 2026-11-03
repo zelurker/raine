@@ -3532,6 +3532,8 @@ static struct ROM_INFO rom_lasthope[] =
   LOAD( SMP1, "ngdt-300-v3.bin", 0x400000, 0x200000, 0x6d5107e2),
   LOAD_16_8( SPRITES, "ngdt-300-c1.bin", 0x000000, 0x400000, 0x53ef41b5), /* Plane 0,1 */
   LOAD_16_8( SPRITES, "ngdt-300-c2.bin", 0x000001, 0x400000, 0xf9b15ab3), /* Plane 2,3 */
+  LOAD_16_8( SPRITES, "ngdt-300-c3.bin", 0x800000, 0x400000, 0x50cc21cf),
+  LOAD_16_8( SPRITES, "ngdt-300-c4.bin", 0x800001, 0x400000, 0x8486ad9e),
   { NULL, 0, 0, 0, 0, 0 }
 };
 

@@ -983,6 +983,7 @@
   DRV(samsh5sph)
   DRV(lans2004)
   DRV(diggerma)
+  DRV(lasthope)
   DRV(kof97pls)
   DRV(kof97oro)
   DRV(wh2j)
