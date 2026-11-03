@@ -645,7 +645,8 @@ static int cpu_readcoin(int addr)
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
-    return input_buffer[6] | (coinflip << 6) | (databit << 7);
+    // Last Hope seems to test the 0x18 bits here, they are expected to be 0 (aes), otherwise the game reboots in loop
+    return (aes ? 7 : 0x1f) | (coinflip << 6) | (databit << 7);
   }
   {
     int res = result_code;
@@ -2213,9 +2214,7 @@ static void neogeo_hreset(void)
     // Setting these 2 to 255 emulates standard inputs, it's not really required, but it makes a cleaner test mode for inputs
     mx = my = 255;
     if (GameMouse == 3) mx = 0;
-    aes = (neogeo_bios == 22 || neogeo_bios == 23);
-    if (is_current_game("lasthope") && !aes)
-	raine_mbox(gettext("Last hope"), gettext("This game is a hack and requires the AES bios\nchoose one of the AES bios in neocd options\nIt can't work otherwise"),gettext("OK"));
+    aes = (neogeo_bios == 22 || neogeo_bios == 23 || is_current_game("lasthope"));
 
     if (aes)
 	input_buffer[5] &= 0x7f;
