@@ -114,7 +114,7 @@ static struct {
 } saveram;
 
 static int capture_mode = 0,start_line,screen_cleared,load_sdips,fix_mask,
-	   fix_banked,aes;
+	   fix_banked,aes,fix_usage_mask,lasthope_ack;
 static int capture_block; // block to be shown...
 int allowed_speed_hacks = 1,disable_irq1 = 0,shared_saveram;
 static int one_palette,sprites_mask,nb_sprites;
@@ -714,6 +714,12 @@ static void update_interrupts(void)
 	   // necessary for last blade 2
 	   // Without this, the stack is filled !!!
 	   debug(DBG_IRQ,"received vbl, still waiting for ack sr=%x\n",s68000_sr);
+	   if ((s68000_sr & 0x700) == 0 && lasthope_ack) {
+	       /* When launched on mvs, the interrupts are blocked because an
+		* ack is never received. Just send the ack, required only once */
+	       irq.wait_for_vbl_ack = 0;
+	       lasthope_ack = 0;
+	   }
 	   return;
        }
     }
@@ -870,7 +876,7 @@ static void write_videoreg(UINT32 offset, UINT32 data) {
     case    5: neo_irq1pos_w(1,data); /* timer low */    break;
     case    6:    /* IRQ acknowledge */
 	       if (data & 0x01) irq3_pending = 0;
-	       debug(DBG_IRQ,"irq ack %d\n",data);
+	       debug(DBG_IRQ,"irq ack %d from %x\n",data,s68000_read_pc);
 	       if (data & 0x02) display_position_interrupt_pending = 0;
 	       if (data & 0x04) vblank_interrupt_pending = 0;
 	       update_interrupts();
@@ -973,7 +979,7 @@ static void watchdog_w(UINT32 offset, UINT16 data)
     /* Ok, maybe there is a watchdog after all, it takes 0.13s from mame to
      * reset the hardware, which is 8 frames. With 8, mslug resets at the
      * beginning of stage 3, 9 seems to be ok. I'll keep this value for now */
-  watchdog_counter = 9;
+	watchdog_counter = 9;
 }
 
 #define NEO_VECTORS 0x80
@@ -983,7 +989,7 @@ static UINT8 game_vectors[NEO_VECTORS], game_vectors_set;
 static void    neogeo_select_bios_vectors (int bit) {
     if (is_neocd()) {
 	if (bit) {
-	    print_debug("set game vectors\n");
+	    print_debug("set game vectors sr %x\n",s68000_sr);
 	    if (game_vectors_set) {
 		print_debug("already set\n");
 	    } else {
@@ -1003,7 +1009,7 @@ static void    neogeo_select_bios_vectors (int bit) {
     // In neogeo it's easier for once, game_vectors are set once only
     if (bit) {
 	if (!game_vectors_set) {
-	    print_debug("set game vectors\n");
+	    print_debug("set game vectors sr %x\n",s68000_sr);
 	    memcpy(ROM,game_vectors,NEO_VECTORS);
 	    game_vectors_set = 1;
 	}
@@ -1601,7 +1607,7 @@ void video_draw_fix(void)
 	      break;
 	  }
       }
-      if(fix_usage[code]) {
+      if(fix_usage[code & fix_usage_mask]) {
 	// printf("%d,%d,%x,%x\n",x,y,fixarea[x << 5],0x7002+(x<<5));
 	MAP_PALETTE_MAPPED_NEW(colour,16,map);
 	Draw8x8_Trans_Packed_Mapped_Rot(&neogeo_fix_memory[code<<5],(x<<3)+offx,(y<<3)+16,map);
@@ -2214,9 +2220,8 @@ static void neogeo_hreset(void)
     // Setting these 2 to 255 emulates standard inputs, it's not really required, but it makes a cleaner test mode for inputs
     mx = my = 255;
     if (GameMouse == 3) mx = 0;
-    aes = (neogeo_bios == 22 || neogeo_bios == 23 || is_current_game("lasthope"));
-    if ((neogeo_bios <= 10 || neogeo_bios == 24) && is_current_game("lasthope"))
-	raine_mbox(gettext("Last hope"), gettext("This game requires AES, but this bios can't run in a forced AES mode\nSelect the Universe Bios or an AES bios\nin the neogeo/neocd options"),gettext("OK"));
+    aes = (neogeo_bios == 22 || neogeo_bios == 23); //  || is_current_game("lasthope"));
+    lasthope_ack = is_current_game("lasthope");
 
     if (aes)
 	input_buffer[5] &= 0x7f;
@@ -2229,6 +2234,7 @@ static void neogeo_hreset(void)
   spr_min = 0x800000;
   spr_max = 0;
   fix_mask = get_region_size(REGION_FIXED)-1;
+  fix_usage_mask = get_region_size(REGION_FIXED)/32-1; // packed
   fix_banked = fix_mask > 0x1ffff;
   if (saved_fix)
     restore_fix(0);
