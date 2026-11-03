@@ -826,6 +826,7 @@
   DRV(bjourney)
     DRV(quizdais)
     DRV(quizdaisk)
+    DRV(marukodq)
   DRV(lresort)
   DRV(eightman)
   DRV(legendos)

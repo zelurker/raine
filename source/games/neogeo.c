@@ -2054,6 +2054,23 @@ static struct ROM_INFO rom_puzzledp[] = /* MVS ONLY RELEASE clone of neogeo */
 
 CLNEI( puzzledp, neogeo, "Puzzle De Pon!", TAITO, 1995, GAME_PUZZLE);
 
+/* --- Chibi Marukochan Deluxe Quiz (NGM-206) --- */
+static struct ROM_INFO rom_marukodq[] =
+{
+  LOAD_SW16( CPU1, "206-p1.p1", 0x000000, 0x100000, 0xc33ed21e),
+  LOAD( FIXED, "206-s1.s1", 0x000000, 0x20000, 0xf0b68780),
+  LOAD( ROM2, "206-m1.m1", 0x000000, 0x20000, 0x0e22902e),
+  LOAD( SMP1, "206-v1.v1", 0x000000, 0x200000, 0x5385eca8),
+  LOAD( SMP1, "206-v2.v2", 0x200000, 0x200000, 0xf8c55404),
+  LOAD_16_8( SPRITES, "206-c1.c1", 0x000000, 0x400000, 0x846e4e8e),
+  LOAD_16_8( SPRITES, "206-c2.c2", 0x000001, 0x400000, 0x1cba876d),
+  LOAD_16_8( SPRITES, "206-c3.c3", 0x800000, 0x100000, 0x79aa2b48),
+  LOAD_16_8( SPRITES, "206-c4.c4", 0x800001, 0x100000, 0x55e1314d),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( marukodq, neogeo, "Chibi Marukochan Deluxe Quiz (NGM-206)", TAKARA, 1995, GAME_QUIZZ );
+
 static struct ROM_INFO rom_neomrdo[] = /* MVS ONLY RELEASE */
 {
   LOAD_SW16( CPU1, "207-p1.p1", 0x000000, 0x100000, 0x334ea51e),
