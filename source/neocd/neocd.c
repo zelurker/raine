@@ -2215,6 +2215,8 @@ static void neogeo_hreset(void)
     mx = my = 255;
     if (GameMouse == 3) mx = 0;
     aes = (neogeo_bios == 22 || neogeo_bios == 23 || is_current_game("lasthope"));
+    if ((neogeo_bios <= 10 || neogeo_bios == 24) && is_current_game("lasthope"))
+	raine_mbox(gettext("Last hope"), gettext("This game requires AES, but this bios can't run in a forced AES mode\nSelect the Universe Bios or an AES bios\nin the neogeo/neocd options"),gettext("OK"));
 
     if (aes)
 	input_buffer[5] &= 0x7f;
