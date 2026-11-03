@@ -2214,6 +2214,9 @@ static void neogeo_hreset(void)
     mx = my = 255;
     if (GameMouse == 3) mx = 0;
     aes = (neogeo_bios == 22 || neogeo_bios == 23);
+    if (is_current_game("lasthope") && !aes)
+	raine_mbox(gettext("Last hope"), gettext("This game is a hack and requires the AES bios\nchoose one of the AES bios in neocd options\nIt can't work otherwise"),gettext("OK"));
+
     if (aes)
 	input_buffer[5] &= 0x7f;
     else
