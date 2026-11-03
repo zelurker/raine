@@ -95,7 +95,8 @@ enum company_num
    COMPANY_ID_ATARI,
    COMPANY_ID_ARIKA,
    COMPANY_ID_NG,
-   COMPANY_ID_TAKARA
+   COMPANY_ID_TAKARA,
+   COMPANY_ID_MONOLITH
 };
 
 extern const int nb_companies;

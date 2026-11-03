@@ -113,6 +113,7 @@ char *company_name[] =
    "Arika",
    "Ng",
    "Takara",
+   "Monolith Corp.",
 };
 
 const int nb_companies = sizeof(company_name)/4;

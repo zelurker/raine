@@ -746,6 +746,23 @@ static struct ROM_INFO rom_eightman[] = /* MVS AND AES VERSION clone of neogeo *
 
 CLNEI( eightman, neogeo, "Eight Man (NGM-025)(NGH-025)", SNK, 1991, GAME_BEAT);
 
+/* --- Minasan no Okagesamadesu! Dai Sugoroku Taikai (NGM-027) --- */
+static struct ROM_INFO rom_minasan[] =
+{
+  LOAD_SW16( CPU1, "027-p1.p1", 0x000000, 0x080000, 0xc8381327),
+  LOAD( FIXED, "027-s1.s1", 0x000000, 0x20000, 0xe5824baa),
+  LOAD( ROM2, "027-m1.m1", 0x000000, 0x20000, 0xadd5a226),
+  LOAD( SMP1, "027-v11.v11", 0x000000, 0x100000, 0x59ad4459),
+  LOAD( SMP2, "027-v21.v21", 0x000000, 0x100000, 0xdf5b4eeb),
+  LOAD_16_8( SPRITES, "027-c1.c1", 0x000000, 0x100000, 0xd0086f94),
+  LOAD_16_8( SPRITES, "027-c2.c2", 0x000001, 0x100000, 0xda61f5a6),
+  LOAD_16_8( SPRITES, "027-c3.c3", 0x200000, 0x100000, 0x08df1228),
+  LOAD_16_8( SPRITES, "027-c4.c4", 0x200001, 0x100000, 0x54e87696),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( minasan, neogeo, "Minasan no Okagesamadesu! Dai Sugoroku Taikai (NGM-027)", MONOLITH, 1990, GAME_PUZZLE );
+
 static struct ROM_INFO rom_legendos[] = // clone of neogeo
 {
   LOAD_SW16( CPU1, "029-p1.p1", 0x000000, 0x080000, 0x9d563f19),
