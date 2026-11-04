@@ -6827,3 +6827,7 @@ msgstr "（見つかりません）"
 
 msgid "(service unavailable)"
 msgstr "（サービスが一時的に利用できません）"
+
+#: source/loadroms.c
+msgid "curl transfer aborted by user"
+msgstr "ダウンロードをキャンセルしました"
