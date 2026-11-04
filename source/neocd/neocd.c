@@ -1411,6 +1411,7 @@ const NEOCD_GAME games[] =
   { "fatfury3",   0x069c, 320 },
   { "neogeocd",   0x0000 },
   { "shinobin",   0x1337, 320 }, // stupid id ! This one is not official at all, it's the hack from hoffman, shinobi neogeo
+  { "goldenaxeng", 0x1338, 304 }, // golden axe neogeo
   { NULL, 0 }
 };
 
