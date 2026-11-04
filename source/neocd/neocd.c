@@ -645,8 +645,7 @@ static int cpu_readcoin(int addr)
      */
     int coinflip = pd4990a_testbit_r(0);
     int databit = pd4990a_databit_r(0);
-    // Last Hope seems to test the 0x18 bits here, they are expected to be 0 (aes), otherwise the game reboots in loop
-    return (aes ? 7 : 0x1f) | (coinflip << 6) | (databit << 7);
+    return input_buffer[6] | (coinflip << 6) | (databit << 7);
   }
   {
     int res = result_code;
