@@ -3806,3 +3806,17 @@ static struct ROM_INFO rom_kf2k5uni[] = // clone of kof2002
 
 CLNEI( kf2k5uni,kof2002,"The King of Fighters 10th Anniversary 2005 Unique (The King of Fighters 2002 bootleg)",BOOTLEG,2004, GAME_BEAT );
 
+static struct ROM_INFO rom_goldenaxeng[] = // clone of kof2002
+{
+  LOAD_SW16( CPU1, "1338-p1.p1", 0x000000, 0x100000, 0x3c3ed057),
+  LOAD( FIXED, "1338-s1.s1",0x000000, 0x020000, 0x707d91c0),
+  LOAD( ROM2, "1338-m1.m1", 0x000000, 0x010000, 0x7805d21b),
+  LOAD( SMP1, "1338-v1.v1", 0x000000, 0x400000, 0x5ed99267),
+  LOAD( SMP1, "1338-v2.v2", 0x400000, 0x400000, 0xd30632dd),
+  LOAD_16_8( SPRITES, "1338-c1.c1", 0x0000000, 0x200000, 0x7540f3d6), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "1338-c2.c2", 0x0000001, 0x200000, 0xa78a6647), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( goldenaxeng,neogeo,"Golden Axe Neo Geo by Hoffman",BOOTLEG,2025, GAME_BEAT );
+

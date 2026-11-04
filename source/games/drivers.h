@@ -1000,6 +1000,7 @@
   DRV(kof2k1bs)
   DRV(kf2k3ps2)
   DRV(kf2k5uni)
+    DRV(goldenaxeng)
 
 // ninjak.c
   DRV(ninjak)
