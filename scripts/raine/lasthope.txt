@@ -1,0 +1,11 @@
+script "Infinite Lives"
+run:
+    dpoke $100172 $0063
+script "Invincibility"
+on:
+    temp0=peek($00F751)
+run:
+    poke $100580 $00
+    poke $00F751 $00
+off:
+    poke $00F751 temp0
