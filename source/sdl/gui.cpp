@@ -1002,7 +1002,7 @@ char *TMain_menu::get_bot_frame_text() {
   static char game[200];
   snprintf(game,200,"%s",(current_game ? current_game->long_name :_("No game loaded")));
   if (current_game) {
-      if (is_neocd())
+      if (is_neocd() || !strcmp(parent_name(),"neogeo"))
 	  snprintf(&game[strlen(game)], 200-strlen(game),
 		  " (%s:%x)",current_game->main_name,neocd_id);
       else
