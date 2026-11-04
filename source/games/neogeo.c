@@ -867,6 +867,23 @@ static struct ROM_INFO rom_fbfrenzy[] = /* MVS AND AES VERSION clone of neogeo *
 
 CLNEI( fbfrenzy, neogeo, "Football Frenzy (NGM-034)(NGH-034)", SNK, 1992, GAME_SPORTS);
 
+/* --- Bakatonosama Mahjong Manyuuki (NGM-036) --- */
+static struct ROM_INFO rom_bakatono[] =
+{
+  LOAD_SW16( CPU1, "036-p1.p1", 0x000000, 0x080000, 0x1c66b6fa),
+  LOAD( FIXED, "036-s1.s1", 0x000000, 0x20000, 0xf3ef4485),
+  LOAD( ROM2, "036-m1.m1", 0x000000, 0x20000, 0xf1385b96),
+  LOAD( SMP1, "036-v1.v1", 0x000000, 0x100000, 0x1c335dce),
+  LOAD( SMP1, "036-v2.v2", 0x100000, 0x100000, 0xbbf79342),
+  LOAD_16_8( SPRITES, "036-c1.c1", 0x000000, 0x100000, 0xfe7f1010),
+  LOAD_16_8( SPRITES, "036-c2.c2", 0x000001, 0x100000, 0xbbf003f5),
+  LOAD_16_8( SPRITES, "036-c3.c3", 0x200000, 0x100000, 0x9ac0708e),
+  LOAD_16_8( SPRITES, "036-c4.c4", 0x200001, 0x100000, 0xf2577d22),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( bakatono, neogeo, "Bakatonosama Mahjong Manyuuki (MOM-002)(MOH-002)", MONOLITH, 1991, GAME_PUZZLE );
+
 static struct ROM_INFO rom_crsword[] = /* MVS AND AES VERSION clone of neogeo */
 {
   LOAD_SW16( CPU1, "037-p1.p1", 0x000000, 0x080000, 0xe7f2553c),

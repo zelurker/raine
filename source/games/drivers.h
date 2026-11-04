@@ -837,6 +837,7 @@
   DRV(fatfury1)
   DRV(roboarmy)
   DRV(fbfrenzy)
+  DRV(bakatono)
   DRV(crsword)
   DRV(trally)
   DRV(kotm2)
