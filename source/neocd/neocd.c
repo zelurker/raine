@@ -60,6 +60,7 @@
 #define DBG_RASTER 1
 #define DBG_IRQ    2
 #define DBG_SPRITES 4
+// DBG_LEVEL is a mask of the values above, or 0 for no debuging
 #define DBG_LEVEL 0
 
 // BOOT_BIOS : boots the bios, but stays in the bios if doing that, you never reach the game
@@ -672,7 +673,7 @@ typedef struct {
 
 static const NEOCD_GAME *game;
 static int current_neo_frame, desired_68k_speed, stopped_68k,rolled;
-static int do_not_stop,end_screen,start_frame;
+static int do_not_stop,end_screen,start_frame,cycles_offset;
 
 static void get_scanline() {
   if (!raster_frame) {
@@ -687,7 +688,7 @@ static void get_scanline() {
     // so we just return 0 here, I'll see if I find a spot where it doesn't work.
     // Actually with this the music is back during the neogeo logo in a game like aodk when calling s68000tripOdometer at the end of starscream frame, which should be the case by default.
     // scanline = (scanline == 0 ? 100 : 0); // cycles * NB_LINES / current_neo_frame + 0xf0;
-      int cycles = s68000readOdometer() - start_frame;
+      int cycles = s68000readOdometer() - start_frame + cycles_offset;
       scanline = cycles * NB_LINES / current_neo_frame;
   }
 }
@@ -5379,6 +5380,7 @@ void loading_progress_function() {
 
 void execute_neocd() {
     start_frame = s68000readOdometer();
+    cycles_offset = 0;
     switch(GameMouse) {
     case 1: {
 		init1 = input_buffer[1];
@@ -5548,6 +5550,9 @@ void execute_neocd() {
 	  return;
       }
       stopped_68k = 0;
+      // Each call to cpu_execute_cycles resets the odometer, so we must use cycles_offset here to be able to return a correct scanline number for the end part
+      // of the frame!
+      cycles_offset = first_part;
       cpu_execute_cycles(CPU_68K_0, rest);
       if (allowed_speed_hacks) {
 	  /* Speed hacks are searched ONLY in the normal frame because we
