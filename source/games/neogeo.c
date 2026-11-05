@@ -248,7 +248,7 @@ static struct ROM_INFO rom_nam1975[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( nam1975, neogeo, "NAM-1975 (NGM-001)(NGH-001)", SNK, 1990, GAME_SHOOT);
+CLNEI( nam1975, neogeo, "NAM-1975 ", SNK, 1990, GAME_SHOOT);
 
 static struct ROM_INFO rom_shinobin[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -295,7 +295,7 @@ static struct ROM_INFO rom_bstars[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI(bstars, neogeo, "Baseball Stars Professional (NGM-002)", SNK, 1990, GAME_SPORTS);
+CLNEI(bstars, neogeo, "Baseball Stars Professional ", SNK, 1990, GAME_SPORTS);
 
 static struct ROM_INFO rom_bstarsh[] = /* AES VERSION clone of bstars */
 {
@@ -303,7 +303,7 @@ static struct ROM_INFO rom_bstarsh[] = /* AES VERSION clone of bstars */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( bstarsh, bstars, "Baseball Stars Professional (NGH-002)", SNK, 1990, GAME_SPORTS);
+CLNEI( bstarsh, bstars, "Baseball Stars Professional ", SNK, 1990, GAME_SPORTS);
 
 static struct ROM_INFO rom_tpgolf[] = /* MVS AND AES VERSION */
 {
@@ -329,7 +329,7 @@ static struct ROM_INFO rom_tpgolf[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( tpgolf, neogeo, "Top Player's Golf (NGM-003)(NGH-003)", SNK, 1990, GAME_SPORTS);
+CLNEI( tpgolf, neogeo, "Top Player's Golf ", SNK, 1990, GAME_SPORTS);
 
 /****************************************
  ID-0004
@@ -355,7 +355,7 @@ static struct ROM_INFO rom_mahretsu[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mahretsu, neogeo, "Mahjong Kyo Retsuden (NGM-004 ~ NGH-004)",SNK,1990, GAME_PUZZLE );
+CLNEI( mahretsu, neogeo, "Mahjong Kyo Retsuden ",SNK,1990, GAME_PUZZLE );
 
 static struct ROM_INFO rom_maglord[] = /* MVS VERSION clone of neogeo */
 {
@@ -380,9 +380,9 @@ static struct ROM_INFO rom_maglordh[] = /* AES VERSION clone of maglord */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( maglord, neogeo, "Magician Lord (NGM-005)", ALPHA, 1990, GAME_PLATFORM);
+CLNEI( maglord, neogeo, "Magician Lord ", ALPHA, 1990, GAME_PLATFORM);
 
-CLNEI( maglordh, maglord, "Magician Lord (NGH-005)", ALPHA, 1990, GAME_PLATFORM);
+CLNEI( maglordh, maglord, "Magician Lord ", ALPHA, 1990, GAME_PLATFORM);
 
 static struct ROM_INFO rom_ridhero[] = /* MVS AND AES VERSION */
 {
@@ -409,7 +409,7 @@ static struct ROM_INFO rom_ridheroh[] = // clone of ridhero
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ridhero, neogeo, "Riding Hero (NGM-006)(NGH-006)", SNK, 1990, GAME_RACE);
+CLNEI( ridhero, neogeo, "Riding Hero ", SNK, 1990, GAME_RACE);
 CLNEI( ridheroh, ridhero, "Riding Hero (set 2)", SNK, 1990, GAME_RACE);
 
 static struct ROM_INFO rom_alpham2[] = /* MVS AND AES VERSION */
@@ -449,7 +449,7 @@ static struct ROM_INFO rom_alpham2p[] = /* early prototype - all roms were hand 
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( alpham2, neogeo, "Alpha Mission II / ASO II - Last Guardian (NGM-007)(NGH-007)", SNK, 1991, GAME_SHOOT);
+CLNEI( alpham2, neogeo, "Alpha Mission II / ASO II - Last Guardian ", SNK, 1991, GAME_SHOOT);
 CLNEI( alpham2p, alpham2, "Alpha Mission II / ASO II - Last Guardian (prototype)", SNK, 1991, GAME_SHOOT);
 
 static struct ROM_INFO rom_ncombat[] = /* MVS VERSION clone of neogeo */
@@ -470,7 +470,7 @@ static struct ROM_INFO rom_ncombat[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ncombat, neogeo, "Ninja Combat (NGM-009)", ALPHA, 1990, GAME_BEAT);
+CLNEI( ncombat, neogeo, "Ninja Combat ", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_ncombath[] = /* AES VERSION clone of ncombat */
 {
@@ -478,7 +478,7 @@ static struct ROM_INFO rom_ncombath[] = /* AES VERSION clone of ncombat */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ncombath, ncombat, "Ninja Combat (NGH-009)", ALPHA, 1990, GAME_BEAT);
+CLNEI( ncombath, ncombat, "Ninja Combat ", ALPHA, 1990, GAME_BEAT);
 
 static struct ROM_INFO rom_cyberlip[] = // clone of neogeo
 {
@@ -499,7 +499,7 @@ static struct ROM_INFO rom_cyberlip[] = // clone of neogeo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( cyberlip, neogeo, "Cyber-Lip (NGM-010)", SNK, 1990, GAME_PLATFORM);
+CLNEI( cyberlip, neogeo, "Cyber-Lip ", SNK, 1990, GAME_PLATFORM);
 
 static struct ROM_INFO rom_superspy[] = /* MVS AND AES VERSION */
 {
@@ -517,7 +517,7 @@ static struct ROM_INFO rom_superspy[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( superspy, neogeo, "The Super Spy (NGM-011)(NGH-011)", SNK, 1990, GAME_FIGHT);
+CLNEI( superspy, neogeo, "The Super Spy ", SNK, 1990, GAME_FIGHT);
 
 static struct ROM_INFO rom_mutnat[] = /* MVS AND AES VERSION */
 {
@@ -533,7 +533,7 @@ static struct ROM_INFO rom_mutnat[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mutnat, neogeo, "Mutation Nation (NGM-014)(NGH-014)", SNK, 1992, GAME_BEAT);
+CLNEI( mutnat, neogeo, "Mutation Nation ", SNK, 1992, GAME_BEAT);
 
 static struct ROM_INFO rom_kotm[] = /* MVS VERSION */
 {
@@ -582,8 +582,8 @@ static struct ROM_INFO rom_sengokuh[] = /* AES VERSION (US) clone of sengoku */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( sengoku, neogeo, "Sengoku / Sengoku Denshou (NGM-017)(NGH-017)", SNK, 1991, GAME_BEAT);
-CLNEI( sengokuh, sengoku, "Sengoku / Sengoku Denshou (NGH-017)(US)", SNK, 1991, GAME_BEAT);
+CLNEI( sengoku, neogeo, "Sengoku / Sengoku Denshou ", SNK, 1991, GAME_BEAT);
+CLNEI( sengokuh, sengoku, "Sengoku / Sengoku Denshou (US)", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_burningf[] = /* MVS AND AES VERSION */
 {
@@ -605,8 +605,8 @@ static struct ROM_INFO rom_burningfh[] = /* AES VERSION (US) clone of burningf *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( burningf, neogeo, "Burning Fight (NGM-018)(NGH-018)", SNK, 1991, GAME_BEAT);
-CLNEI( burningfh, burningf, "Burning Fight (NGH-018)(US)", SNK, 1991, GAME_BEAT);
+CLNEI( burningf, neogeo, "Burning Fight ", SNK, 1991, GAME_BEAT);
+CLNEI( burningfh, burningf, "Burning Fight (US)", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_lbowling[] = /* MVS AND AES VERSION */
 {
@@ -621,7 +621,7 @@ static struct ROM_INFO rom_lbowling[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( lbowling, neogeo, "League Bowling (NGM-019)(NGH-019)", SNK, 1990, GAME_SPORTS);
+CLNEI( lbowling, neogeo, "League Bowling ", SNK, 1990, GAME_SPORTS);
 
 static struct ROM_INFO rom_gpilots[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -646,8 +646,8 @@ static struct ROM_INFO rom_gpilotsh[] = /* AES VERSION (US) clone of gpilots */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( gpilots, neogeo, "Ghost Pilots (NGM-020)(NGH-020)", SNK, 1991, GAME_SHOOT);
-CLNEI( gpilotsh, gpilots, "Ghost Pilots (NGH-020)(US)", SNK, 1991, GAME_SHOOT);
+CLNEI( gpilots, neogeo, "Ghost Pilots ", SNK, 1991, GAME_SHOOT);
+CLNEI( gpilotsh, gpilots, "Ghost Pilots (US)", SNK, 1991, GAME_SHOOT);
 
 static struct ROM_INFO rom_joyjoy[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -661,7 +661,7 @@ static struct ROM_INFO rom_joyjoy[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( joyjoy, neogeo, "Puzzled / Joy Joy Kid (NGM-021)(NGH-021)", SNK, 1990, GAME_PUZZLE);
+CLNEI( joyjoy, neogeo, "Puzzled / Joy Joy Kid ", SNK, 1990, GAME_PUZZLE);
 
 static struct ROM_INFO rom_bjourney[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -699,7 +699,7 @@ static struct ROM_INFO rom_quizdais[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( quizdais, neogeo, "Quiz Daisousa Sen - The Last Count Down (NGM-023 ~ NGH-023)",SNK,1991, GAME_QUIZZ );
+CLNEI( quizdais, neogeo, "Quiz Daisousa Sen - The Last Count Down ",SNK,1991, GAME_QUIZZ );
 
 static struct ROM_INFO rom_quizdaisk[] = /* KOREAN VERSION clone of quizdais */
 {
@@ -744,9 +744,9 @@ static struct ROM_INFO rom_eightman[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( eightman, neogeo, "Eight Man (NGM-025)(NGH-025)", SNK, 1991, GAME_BEAT);
+CLNEI( eightman, neogeo, "Eight Man ", SNK, 1991, GAME_BEAT);
 
-/* --- Minasan no Okagesamadesu! Dai Sugoroku Taikai (NGM-027) --- */
+/* --- Minasan no Okagesamadesu! Dai Sugoroku Taikai  --- */
 static struct ROM_INFO rom_minasan[] =
 {
   LOAD_SW16( CPU1, "027-p1.p1", 0x000000, 0x080000, 0xc8381327),
@@ -761,7 +761,7 @@ static struct ROM_INFO rom_minasan[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( minasan, neogeo, "Minasan no Okagesamadesu! Dai Sugoroku Taikai (NGM-027)", MONOLITH, 1990, GAME_PUZZLE );
+CLNEI( minasan, neogeo, "Minasan no Okagesamadesu! Dai Sugoroku Taikai ", MONOLITH, 1990, GAME_PUZZLE );
 
 static struct ROM_INFO rom_legendos[] = // clone of neogeo
 {
@@ -808,7 +808,7 @@ static struct ROM_INFO rom_socbrawl[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( socbrawl, neogeo, "Soccer Brawl (NGM-031)", SNK, 1991, GAME_SPORTS);
+CLNEI( socbrawl, neogeo, "Soccer Brawl ", SNK, 1991, GAME_SPORTS);
 
 static struct ROM_INFO rom_socbrawlh[] = /* AES VERSION clone of socbrawl */
 {
@@ -816,7 +816,7 @@ static struct ROM_INFO rom_socbrawlh[] = /* AES VERSION clone of socbrawl */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( socbrawlh, socbrawl, "Soccer Brawl (NGH-031)", SNK, 1991, GAME_SPORTS);
+CLNEI( socbrawlh, socbrawl, "Soccer Brawl ", SNK, 1991, GAME_SPORTS);
 
 static struct ROM_INFO rom_fatfury1[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -833,7 +833,7 @@ static struct ROM_INFO rom_fatfury1[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fatfury1, neogeo, "Fatal Fury - King of Fighters / Garou Densetsu - shukumei no tatakai (NGM-033)(NGH-033)", SNK, 1991, GAME_BEAT);
+CLNEI( fatfury1, neogeo, "Fatal Fury - King of Fighters / Garou Densetsu - shukumei no tatakai ", SNK, 1991, GAME_BEAT);
 
 static struct ROM_INFO rom_roboarmy[] = // clone of neogeo
 {
@@ -865,9 +865,9 @@ static struct ROM_INFO rom_fbfrenzy[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fbfrenzy, neogeo, "Football Frenzy (NGM-034)(NGH-034)", SNK, 1992, GAME_SPORTS);
+CLNEI( fbfrenzy, neogeo, "Football Frenzy ", SNK, 1992, GAME_SPORTS);
 
-/* --- Bakatonosama Mahjong Manyuuki (NGM-036) --- */
+/* --- Bakatonosama Mahjong Manyuuki  --- */
 static struct ROM_INFO rom_bakatono[] =
 {
   LOAD_SW16( CPU1, "036-p1.p1", 0x000000, 0x080000, 0x1c66b6fa),
@@ -933,7 +933,7 @@ static struct ROM_INFO rom_kotm2[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kotm2, neogeo, "King of the Monsters 2 - The Next Thing (NGM-039)(NGH-039)", SNK, 1992, GAME_BEAT);
+CLNEI( kotm2, neogeo, "King of the Monsters 2 - The Next Thing ", SNK, 1992, GAME_BEAT);
 
 static struct ROM_INFO rom_sengoku2[] = // clone of neogeo
 {
@@ -991,7 +991,7 @@ static struct ROM_INFO rom_quizdai2[] = /* MVS AND AES VERSION */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( quizdai2, neogeo, "Quiz Meitantei Neo & Geo - Quiz Daisousa Sen part 2 (NGM-042 ~ NGH-042)",SNK,1992, GAME_QUIZZ );
+CLNEI( quizdai2, neogeo, "Quiz Meitantei Neo & Geo - Quiz Daisousa Sen part 2 ",SNK,1992, GAME_QUIZZ );
 
 static struct ROM_INFO rom_3countb[] = // clone of neogeo
 {
@@ -1012,7 +1012,7 @@ static struct ROM_INFO rom_3countb[] = // clone of neogeo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( 3countb, neogeo, "3 Count Bout / Fire Suplex (NGM-043)(NGH-043)", SNK, 1993, GAME_FIGHT);
+CLNEI( 3countb, neogeo, "3 Count Bout / Fire Suplex ", SNK, 1993, GAME_FIGHT);
 
 static struct ROM_INFO rom_aof[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -1032,7 +1032,7 @@ static struct ROM_INFO rom_aof[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( aof, neogeo, "Art of Fighting / Ryuuko no Ken (NGM-044)(NGH-044)", SNK, 1992, GAME_BEAT);
+CLNEI( aof, neogeo, "Art of Fighting / Ryuuko no Ken ", SNK, 1992, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho[] = /* MVS VERSION clone of neogeo */
 {
@@ -1051,7 +1051,7 @@ static struct ROM_INFO rom_samsho[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho, neogeo, "Samurai Shodown / Samurai Spirits (NGM-045)", SNK, 1993, GAME_BEAT);
+CLNEI( samsho, neogeo, "Samurai Shodown / Samurai Spirits ", SNK, 1993, GAME_BEAT);
 
 static struct ROM_INFO rom_samshoh[] = /* AES VERSION clone of samsho */
 {
@@ -1066,7 +1066,7 @@ static struct ROM_INFO rom_samshoh[] = /* AES VERSION clone of samsho */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samshoh, samsho, "Samurai Shodown / Samurai Spirits (NGH-045)", SNK, 1993, GAME_BEAT);
+CLNEI( samshoh, samsho, "Samurai Shodown / Samurai Spirits ", SNK, 1993, GAME_BEAT);
 
 static struct ROM_INFO rom_tophuntr[] = /* MVS VERSION clone of neogeo */
 {
@@ -1089,7 +1089,7 @@ static struct ROM_INFO rom_tophuntr[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( tophuntr, neogeo, "Top Hunter - Roddy & Cathy (NGM-046)", SNK, 1994, GAME_PLATFORM);
+CLNEI( tophuntr, neogeo, "Top Hunter - Roddy & Cathy ", SNK, 1994, GAME_PLATFORM);
 
 static struct ROM_INFO rom_fatfury2[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -1110,7 +1110,7 @@ static struct ROM_INFO rom_fatfury2[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fatfury2, neogeo, "Fatal Fury 2 / Garou Densetsu 2 - arata-naru tatakai (NGM-047)(NGH-047)", SNK, 1992, GAME_BEAT);
+CLNEI( fatfury2, neogeo, "Fatal Fury 2 / Garou Densetsu 2 - arata-naru tatakai ", SNK, 1992, GAME_BEAT);
 
 static struct ROM_INFO rom_androdun[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -1124,7 +1124,7 @@ static struct ROM_INFO rom_androdun[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( androdun, neogeo, "Andro Dunos (NGM-049)(NGH-049)", VISCO, 1992, GAME_SHOOT);
+CLNEI( androdun, neogeo, "Andro Dunos ", VISCO, 1992, GAME_SHOOT);
 
 static struct ROM_INFO rom_ncommand[] = // clone of neogeo
 {
@@ -1214,7 +1214,7 @@ static struct ROM_INFO rom_kof94[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof94, neogeo, "The King of Fighters '94 (NGM-055)(NGH-055)", SNK, 1994, GAME_BEAT);
+CLNEI( kof94, neogeo, "The King of Fighters '94 ", SNK, 1994, GAME_BEAT);
 
 static struct ROM_INFO rom_aof2[] = /* MVS VERSION clone of neogeo */
 {
@@ -1236,7 +1236,7 @@ static struct ROM_INFO rom_aof2[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( aof2, neogeo, "Art of Fighting 2 / Ryuuko no Ken 2 (NGM-056)", SNK, 1994, GAME_BEAT);
+CLNEI( aof2, neogeo, "Art of Fighting 2 / Ryuuko no Ken 2 ", SNK, 1994, GAME_BEAT);
 
 static struct ROM_INFO rom_aof2a[] = /* AES VERSION clone of aof2 */
 {
@@ -1255,7 +1255,7 @@ static struct ROM_INFO rom_aof2a[] = /* AES VERSION clone of aof2 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( aof2a, aof2, "Art of Fighting 2 / Ryuuko no Ken 2 (NGH-056)", SNK, 1994, GAME_BEAT);
+CLNEI( aof2a, aof2, "Art of Fighting 2 / Ryuuko no Ken 2 ", SNK, 1994, GAME_BEAT);
 
 static struct ROM_INFO rom_wh2[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -1294,7 +1294,7 @@ static struct ROM_INFO rom_fatfursp[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fatfursp, neogeo, "Fatal Fury Special / Garou Densetsu Special (set 1)(NGM-058)(NGH-058)", SNK, 1993, GAME_BEAT);
+CLNEI( fatfursp, neogeo, "Fatal Fury Special / Garou Densetsu Special (set 1)", SNK, 1993, GAME_BEAT);
 
 static struct ROM_INFO rom_fatfurspa[] = /* MVS AND AES VERSION clone of fatfursp */
 {
@@ -1306,7 +1306,7 @@ static struct ROM_INFO rom_fatfurspa[] = /* MVS AND AES VERSION clone of fatfurs
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fatfurspa, fatfursp, "Fatal Fury Special / Garou Densetsu Special (set 2)(NGM-058)(NGH-058)", SNK, 1993, GAME_BEAT);
+CLNEI( fatfurspa, fatfursp, "Fatal Fury Special / Garou Densetsu Special (set 2)", SNK, 1993, GAME_BEAT);
 
 static struct ROM_INFO rom_savagere[] = // clone of neogeo
 {
@@ -1361,7 +1361,7 @@ static struct ROM_INFO rom_ssideki2[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( ssideki2, neogeo, "Super Sidekicks 2 - The World Championship / Tokuten Ou 2 - real fight football (NGM-061)(NGH-061)", SNK, 1994, GAME_SPORTS);
+CLNEI( ssideki2, neogeo, "Super Sidekicks 2 - The World Championship / Tokuten Ou 2 - real fight football ", SNK, 1994, GAME_SPORTS);
 
 static struct ROM_INFO rom_spinmast[] =
 {
@@ -1404,7 +1404,7 @@ static struct ROM_INFO rom_samsho2[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho2, neogeo, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru jigokuhen (NGM-063)(NGH-063)", SNK, 1994, GAME_BEAT);
+CLNEI( samsho2, neogeo, "Samurai Shodown II / Shin Samurai Spirits - Haohmaru jigokuhen ", SNK, 1994, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho2pe[] = /* samsho2pe, from finalburnneo git, clone of samsho2 of course */
 {
@@ -1494,7 +1494,7 @@ static struct ROM_INFO rom_pspikes2[] = /* MVS ONLY RELEASE clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( pspikes2, neogeo, "Power Spikes II (NGM-068)", VIDEOSYSTEM, 1994, GAME_SPORTS);
+CLNEI( pspikes2, neogeo, "Power Spikes II ", VIDEOSYSTEM, 1994, GAME_SPORTS);
 
 static struct ROM_INFO rom_fatfury3[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -1514,7 +1514,7 @@ static struct ROM_INFO rom_fatfury3[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( fatfury3, neogeo, "Fatal Fury 3 - Road to the Final Victory / Garou Densetsu 3 - haruka-naru tatakai (NGM-069)(NGH-069)", SNK, 1995, GAME_BEAT);
+CLNEI( fatfury3, neogeo, "Fatal Fury 3 - Road to the Final Victory / Garou Densetsu 3 - haruka-naru tatakai ", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_zupapa[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
@@ -1745,7 +1745,7 @@ static struct ROM_INFO rom_pbobblen[] = /* MVS ONLY RELEASE clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( pbobblen, neogeo, "Puzzle Bobble / Bust-A-Move (Neo-Geo) (NGM-083)", TAITO, 1994, GAME_PUZZLE);
+CLNEI( pbobblen, neogeo, "Puzzle Bobble / Bust-A-Move (Neo-Geo) ", TAITO, 1994, GAME_PUZZLE);
 
 static struct ROM_INFO rom_kof95[] = /* MVS VERSION clone of neogeo */
 {
@@ -1769,7 +1769,7 @@ static struct ROM_INFO rom_kof95[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof95, neogeo, "The King of Fighters '95 (NGM-084)", SNK, 1995, GAME_BEAT);
+CLNEI( kof95, neogeo, "The King of Fighters '95 ", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_kof95h[] = /* MVS AND AES VERSION clone of kof95 */
 {
@@ -1780,7 +1780,7 @@ static struct ROM_INFO rom_kof95h[] = /* MVS AND AES VERSION clone of kof95 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof95h, kof95, "The King of Fighters '95 (NGH-084)", SNK, 1995, GAME_BEAT);
+CLNEI( kof95h, kof95, "The King of Fighters '95 ", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_tws96[] = /* MVS ONLY RELEASE */
 {
@@ -1821,7 +1821,7 @@ static struct ROM_INFO rom_samsho3[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho3, neogeo, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken (NGM-087)", SNK, 1995, GAME_BEAT);
+CLNEI( samsho3, neogeo, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken ", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho3h[] = /* AES VERSION clone of samsho3 */
 {
@@ -1837,7 +1837,7 @@ static struct ROM_INFO rom_fswords[] = /* KOREAN VERSION clone of samsho3 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho3h, samsho3, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken (NGH-087)", SNK, 1995, GAME_BEAT);
+CLNEI( samsho3h, samsho3, "Samurai Shodown III / Samurai Spirits - Zankurou Musouken ", SNK, 1995, GAME_BEAT);
 CLNEI( fswords, samsho3, "Fighters Swords (Korean release of Samurai Shodown III)", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_stakwin[] =
@@ -1978,7 +1978,7 @@ static struct ROM_INFO rom_rbff1[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( rbff1, neogeo, "Real Bout Fatal Fury / Real Bout Garou Densetsu (NGM-095)(NGH-095)", SNK, 1995, GAME_BEAT);
+CLNEI( rbff1, neogeo, "Real Bout Fatal Fury / Real Bout Garou Densetsu ", SNK, 1995, GAME_BEAT);
 
 static struct ROM_INFO rom_aof3[] = // clone of neogeo
 {
@@ -2088,7 +2088,7 @@ static struct ROM_INFO rom_puzzledp[] = /* MVS ONLY RELEASE clone of neogeo */
 
 CLNEI( puzzledp, neogeo, "Puzzle De Pon!", TAITO, 1995, GAME_PUZZLE);
 
-/* --- Chibi Marukochan Deluxe Quiz (NGM-206) --- */
+/* --- Chibi Marukochan Deluxe Quiz  --- */
 static struct ROM_INFO rom_marukodq[] =
 {
   LOAD_SW16( CPU1, "206-p1.p1", 0x000000, 0x100000, 0xc33ed21e),
@@ -2103,7 +2103,7 @@ static struct ROM_INFO rom_marukodq[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( marukodq, neogeo, "Chibi Marukochan Deluxe Quiz (NGM-206)", TAKARA, 1995, GAME_QUIZZ );
+CLNEI( marukodq, neogeo, "Chibi Marukochan Deluxe Quiz ", TAKARA, 1995, GAME_QUIZZ );
 
 static struct ROM_INFO rom_neomrdo[] = /* MVS ONLY RELEASE */
 {
@@ -2203,7 +2203,7 @@ static struct ROM_INFO rom_kof96[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof96, neogeo, "The King of Fighters '96 (NGM-214)", SNK, 1996, GAME_BEAT);
+CLNEI( kof96, neogeo, "The King of Fighters '96 ", SNK, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_kof96h[] = // clone of kof96
 {
@@ -2212,7 +2212,7 @@ static struct ROM_INFO rom_kof96h[] = // clone of kof96
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof96h, kof96, "The King of Fighters '96 (NGH-214)", SNK, 1996, GAME_BEAT);
+CLNEI( kof96h, kof96, "The King of Fighters '96 ", SNK, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_ssideki4[] = // clone of neogeo
 {
@@ -2314,7 +2314,7 @@ static struct ROM_INFO rom_pgoal[] = /* MVS ONLY RELEASE clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( pgoal, neogeo, "Pleasure Goal / Futsal - 5 on 5 Mini Soccer (NGM-219)", SAURUS, 1996, GAME_SPORTS);
+CLNEI( pgoal, neogeo, "Pleasure Goal / Futsal - 5 on 5 Mini Soccer ", SAURUS, 1996, GAME_SPORTS);
 
 static struct ROM_INFO rom_ironclad[] = /* Prototype - crcs should match the ones of the unreleased dump. clone of neogeo */
 {
@@ -2374,7 +2374,7 @@ static struct ROM_INFO rom_samsho4[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho4, neogeo, "Samurai Shodown IV - Amakusa's Revenge / Samurai Spirits - Amakusa Kourin (NGM-222)(NGH-222)", SNK, 1996, GAME_BEAT);
+CLNEI( samsho4, neogeo, "Samurai Shodown IV - Amakusa's Revenge / Samurai Spirits - Amakusa Kourin ", SNK, 1996, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho4k[] = /* KOREAN VERSION clone of samsho4 */
 {
@@ -2524,7 +2524,7 @@ static struct ROM_INFO rom_kof97[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof97, neogeo, "The King of Fighters '97 (NGM-2320)", SNK, 1997, GAME_BEAT);
+CLNEI( kof97, neogeo, "The King of Fighters '97 ", SNK, 1997, GAME_BEAT);
 
 static struct ROM_INFO rom_kof97h[] = /* AES VERSION clone of kof97 */
 {
@@ -2533,7 +2533,7 @@ static struct ROM_INFO rom_kof97h[] = /* AES VERSION clone of kof97 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof97h, kof97, "The King of Fighters '97 (NGH-2320)", SNK, 1997, GAME_BEAT);
+CLNEI( kof97h, kof97, "The King of Fighters '97 ", SNK, 1997, GAME_BEAT);
 
 static struct ROM_INFO rom_magdrop3[] = // clone of neogeo
 {
@@ -2577,8 +2577,8 @@ static struct ROM_INFO rom_lastbladh[] = /* AES VERSION clone of lastblad */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( lastblad, neogeo, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGM-2340)", SNK, 1997, GAME_BEAT);
-CLNEI( lastbladh, lastblad, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGH-2340)", SNK, 1997, GAME_BEAT);
+CLNEI( lastblad, neogeo, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi ", SNK, 1997, GAME_BEAT);
+CLNEI( lastbladh, lastblad, "The Last Blade / Bakumatsu Roman - Gekka no Kenshi ", SNK, 1997, GAME_BEAT);
 
 static struct ROM_INFO rom_puzzldpr[] = /* MVS ONLY RELEASE clone of puzzledp */
 {
@@ -2689,8 +2689,8 @@ static struct ROM_INFO rom_rbff2h[] = /* AES VERSION clone of rbff2 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( rbff2, neogeo, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers (NGM-2400)", SNK, 1998, GAME_BEAT);
-CLNEI( rbff2h, rbff2, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers (NGH-2400)", SNK, 1998, GAME_BEAT);
+CLNEI( rbff2, neogeo, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers ", SNK, 1998, GAME_BEAT);
+CLNEI( rbff2h, rbff2, "Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers ", SNK, 1998, GAME_BEAT);
 
 static struct ROM_INFO rom_mslug2[] = /* MVS AND AES VERSION clone of neogeo */
 {
@@ -2707,7 +2707,7 @@ static struct ROM_INFO rom_mslug2[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug2, neogeo, "Metal Slug 2 - Super Vehicle-001/II (NGM-2410)(NGH-2410)", SNK, 1998, GAME_SHOOT);
+CLNEI( mslug2, neogeo, "Metal Slug 2 - Super Vehicle-001/II ", SNK, 1998, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof98[] = /* encrypted code + protection clone of neogeo */
  /* MVS VERSION */{
@@ -2730,7 +2730,7 @@ static struct ROM_INFO rom_kof98[] = /* encrypted code + protection clone of neo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof98, neogeo, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends (NGM-2420)", SNK, 1998, GAME_BEAT);
+CLNEI( kof98, neogeo, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends ", SNK, 1998, GAME_BEAT);
 
 static struct ROM_INFO rom_kof98h[] = /* AES VERSION clone of kof98 */
 {
@@ -2740,7 +2740,7 @@ static struct ROM_INFO rom_kof98h[] = /* AES VERSION clone of kof98 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof98h, kof98, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends (NGH-2420)", SNK, 1998, GAME_BEAT);
+CLNEI( kof98h, kof98, "The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends ", SNK, 1998, GAME_BEAT);
 
 static struct ROM_INFO rom_lastbld2[] = /* MVS AND AES VERSION clone of neogeo */
  /* later revision */{
@@ -2761,7 +2761,7 @@ static struct ROM_INFO rom_lastbld2[] = /* MVS AND AES VERSION clone of neogeo *
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( lastbld2, neogeo, "The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka no Kenshi (NGM-2430)(NGH-2430)", SNK, 1998, GAME_BEAT);
+CLNEI( lastbld2, neogeo, "The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka no Kenshi ", SNK, 1998, GAME_BEAT);
 
 static struct ROM_INFO rom_neocup98[] = // clone of neogeo
 {
@@ -2880,7 +2880,7 @@ static struct ROM_INFO rom_mslugx[] = /* MVS AND AES VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslugx, neogeo, "Metal Slug X - Super Vehicle-001 (NGM-2500)(NGH-2500)", SNK, 1999, GAME_SHOOT);
+CLNEI( mslugx, neogeo, "Metal Slug X - Super Vehicle-001 ", SNK, 1999, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX clone of neogeo */
  /* MVS VERSION */{
@@ -2906,7 +2906,7 @@ static struct ROM_INFO rom_kof99[] = /* Original Version - Encrypted Code & GFX 
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof99, neogeo, "The King of Fighters '99 - Millennium Battle (NGM-2510)" , SNK, 1999, GAME_BEAT);
+CLNEI( kof99, neogeo, "The King of Fighters '99 - Millennium Battle " , SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_kof99h[] = /* Original Version - Encrypted Code & GFX clone of kof99 */
  /* AES VERSION */{
@@ -2919,7 +2919,7 @@ static struct ROM_INFO rom_kof99h[] = /* Original Version - Encrypted Code & GFX
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof99h, kof99, "The King of Fighters '99 - Millennium Battle (NGH-2510)" , SNK, 1999, GAME_BEAT);
+CLNEI( kof99h, kof99, "The King of Fighters '99 - Millennium Battle " , SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_ganryu[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
@@ -2963,7 +2963,7 @@ static struct ROM_INFO rom_garou[] = /* Original Version - Encrypted GFX clone o
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( garou, neogeo, "Garou - Mark of the Wolves (NGM-2530)" , SNK, 1999, GAME_BEAT);
+CLNEI( garou, neogeo, "Garou - Mark of the Wolves " , SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_garouh[] = /* Original Version - Encrypted GFX clone of garou */
  /* MVS AND AES VERSION - earlier revision */{
@@ -2976,7 +2976,7 @@ static struct ROM_INFO rom_garouh[] = /* Original Version - Encrypted GFX clone 
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( garouh, garou, "Garou - Mark of the Wolves (NGM-2530)(NGH-2530)" , SNK, 1999, GAME_BEAT);
+CLNEI( garouh, garou, "Garou - Mark of the Wolves " , SNK, 1999, GAME_BEAT);
 
 static struct ROM_INFO rom_s1945p[] = /* Original Version, Encrypted GFX Roms */ /* MVS ONLY RELEASE */
 {
@@ -3048,7 +3048,7 @@ static struct ROM_INFO rom_mslug3[] = /* Original Version - Encrypted Code & GFX
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug3, neogeo, "Metal Slug 3 (NGM-2560)" , SNK, 2000, GAME_SHOOT);
+CLNEI( mslug3, neogeo, "Metal Slug 3 " , SNK, 2000, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslug3h[] = /* Original Version - Encrypted GFX clone of mslug3 */
  /* revision 2000.3.17 */ /* AES VERSION */{
@@ -3057,7 +3057,7 @@ static struct ROM_INFO rom_mslug3h[] = /* Original Version - Encrypted GFX clone
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug3h, mslug3, "Metal Slug 3 (NGH-2560)" , SNK, 2000, GAME_SHOOT);
+CLNEI( mslug3h, mslug3, "Metal Slug 3 " , SNK, 2000, GAME_SHOOT);
 
 static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sound + GFX Roms clone of neogeo */
  /* MVS AND AES VERSION */{
@@ -3085,7 +3085,7 @@ static struct ROM_INFO rom_kof2000[] = /* Original Version, Encrypted Code + Sou
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2000, neogeo, "The King of Fighters 2000 (NGM-2570) (NGH-2570)" , SNK, 2000, GAME_BEAT);
+CLNEI( kof2000, neogeo, "The King of Fighters 2000  " , SNK, 2000, GAME_BEAT);
 
 static struct ROM_INFO rom_bangbead[] = /* Original Version - Encrypted GFX */ /* MVS ONLY RELEASE */
 {
@@ -3164,7 +3164,7 @@ static struct ROM_INFO rom_kof2001[] = /* MVS VERSION clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2001, neogeo, "The King of Fighters 2001 (NGM-262?)" , EOLITH_S, 2001, GAME_BEAT);
+CLNEI( kof2001, neogeo, "The King of Fighters 2001 " , EOLITH_S, 2001, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2001h[] = /* AES VERSION clone of kof2001 */
 {
@@ -3173,7 +3173,7 @@ static struct ROM_INFO rom_kof2001h[] = /* AES VERSION clone of kof2001 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2001h, kof2001, "The King of Fighters 2001 (NGH-2621)" , EOLITH_S, 2001, GAME_BEAT);
+CLNEI( kof2001h, kof2001, "The King of Fighters 2001 " , EOLITH_S, 2001, GAME_BEAT);
 
 static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone of neogeo */
  /* MVS VERSION */{
@@ -3197,7 +3197,7 @@ static struct ROM_INFO rom_mslug4[] = /* Original Version - Encrypted GFX clone 
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug4, neogeo, "Metal Slug 4 (NGM-2630)", MEGA_P, 2002, GAME_SHOOT);
+CLNEI( mslug4, neogeo, "Metal Slug 4 ", MEGA_P, 2002, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslug4h[] = /* Original Version - Encrypted GFX clone of mslug4 */
  /* AES VERSION */{
@@ -3206,7 +3206,7 @@ static struct ROM_INFO rom_mslug4h[] = /* Original Version - Encrypted GFX clone
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug4h, mslug4, "Metal Slug 4 (NGH-2630)", MEGA_P, 2002, GAME_SHOOT);
+CLNEI( mslug4h, mslug4, "Metal Slug 4 ", MEGA_P, 2002, GAME_SHOOT);
 
 static struct ROM_INFO rom_rotd[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
@@ -3231,7 +3231,7 @@ static struct ROM_INFO rom_rotd[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( rotd, neogeo, "Rage of the Dragons (NGM-264?)", EVOGA_P, 2002, GAME_BEAT);
+CLNEI( rotd, neogeo, "Rage of the Dragons ", EVOGA_P, 2002, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2002[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
@@ -3257,7 +3257,7 @@ static struct ROM_INFO rom_kof2002[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2002, neogeo, "The King of Fighters 2002 (NGM-2650)(NGH-2650)" , EOLITH_P, 2002, GAME_BEAT);
+CLNEI( kof2002, neogeo, "The King of Fighters 2002 " , EOLITH_P, 2002, GAME_BEAT);
 
 static struct ROM_INFO rom_matrim[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
@@ -3283,7 +3283,7 @@ static struct ROM_INFO rom_matrim[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( matrim, neogeo, "Matrimelee / Shin Gouketsuji Ichizoku Toukon (NGM-2660) (NGH-2660)", NOISE, 2002, GAME_BEAT);
+CLNEI( matrim, neogeo, "Matrimelee / Shin Gouketsuji Ichizoku Toukon  ", NOISE, 2002, GAME_BEAT);
 
 static struct ROM_INFO rom_pnyaa[] = /* Encrypted Set */ /* MVS ONLY RELEASE */
 {
@@ -3325,7 +3325,7 @@ static struct ROM_INFO rom_mslug5[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug5, neogeo, "Metal Slug 5 (NGM-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT);
+CLNEI( mslug5, neogeo, "Metal Slug 5 ", SNK_PLAYMORE, 2003, GAME_SHOOT);
 
 static struct ROM_INFO rom_mslug5h[] = /* Encrypted Set clone of mslug5 */
  /* AES release of the game but is also found in later MVS carts */{
@@ -3334,7 +3334,7 @@ static struct ROM_INFO rom_mslug5h[] = /* Encrypted Set clone of mslug5 */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( mslug5h, mslug5, "Metal Slug 5 (NGH-2680)", SNK_PLAYMORE, 2003, GAME_SHOOT);
+CLNEI( mslug5h, mslug5, "Metal Slug 5 ", SNK_PLAYMORE, 2003, GAME_SHOOT);
 
 static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
  /* MVS AND AES VERSION */{
@@ -3359,7 +3359,7 @@ static struct ROM_INFO rom_svc[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( svc, neogeo, "SNK vs. Capcom - SVC Chaos (NGM-2690)(NGH-2690)", SNK_PLAYMORE, 2003, GAME_BEAT);
+CLNEI( svc, neogeo, "SNK vs. Capcom - SVC Chaos ", SNK_PLAYMORE, 2003, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho5[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
@@ -3384,7 +3384,7 @@ static struct ROM_INFO rom_samsho5[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho5, neogeo, "Samurai Shodown V / Samurai Spirits Zero (NGM-2700)", SNK_PLAYMORE, 2003, GAME_BEAT);
+CLNEI( samsho5, neogeo, "Samurai Shodown V / Samurai Spirits Zero ", SNK_PLAYMORE, 2003, GAME_BEAT);
 
 static struct ROM_INFO rom_samsho5h[] = /* Encrypted Set, Alternate Set clone of samsho5 */
  /* AES VERSION */{
@@ -3393,7 +3393,7 @@ static struct ROM_INFO rom_samsho5h[] = /* Encrypted Set, Alternate Set clone of
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsho5h, samsho5, "Samurai Shodown V / Samurai Spirits Zero (NGH-2700)", SNK_PLAYMORE, 2003, GAME_BEAT);
+CLNEI( samsho5h, samsho5, "Samurai Shodown V / Samurai Spirits Zero ", SNK_PLAYMORE, 2003, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clone of neogeo */
  /* MVS VERSION */{
@@ -3419,7 +3419,7 @@ static struct ROM_INFO rom_kof2003[] = /* Encrypted Code + Sound + GFX Roms clon
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2003, neogeo, "The King of Fighters 2003 (NGM-2710)", SNK_PLAYMORE, 2003, GAME_BEAT);
+CLNEI( kof2003, neogeo, "The King of Fighters 2003 ", SNK_PLAYMORE, 2003, GAME_BEAT);
 
 static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clone of kof2003 */
  /* AES VERSION */{
@@ -3442,7 +3442,7 @@ static struct ROM_INFO rom_kof2003h[] = /* Encrypted Code + Sound + GFX Roms clo
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( kof2003h, kof2003, "The King of Fighters 2003 (NGH-2710)", SNK_PLAYMORE, 2003, GAME_BEAT);
+CLNEI( kof2003h, kof2003, "The King of Fighters 2003 ", SNK_PLAYMORE, 2003, GAME_BEAT);
 
 static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
  /* MVS VERSION */{
@@ -3467,7 +3467,7 @@ static struct ROM_INFO rom_samsh5sp[] = /* Encrypted Set clone of neogeo */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsh5sp, neogeo, "Samurai Shodown V Special / Samurai Spirits Zero Special (NGM-2720)", SNK_PLAYMORE, 2004, GAME_BEAT);
+CLNEI( samsh5sp, neogeo, "Samurai Shodown V Special / Samurai Spirits Zero Special ", SNK_PLAYMORE, 2004, GAME_BEAT);
 
 static struct ROM_INFO rom_samsh5fe[] =
 {
@@ -3490,7 +3490,7 @@ static struct ROM_INFO rom_samsh5fe[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsh5fe, neogeo, "Samurai Shodown V Special Final Edition (NGM-2720)", SNK_PLAYMORE, 2004, GAME_BEAT);
+CLNEI( samsh5fe, neogeo, "Samurai Shodown V Special Final Edition ", SNK_PLAYMORE, 2004, GAME_BEAT);
 
 static struct ROM_INFO rom_samsh5pf[] =
 {
@@ -3510,7 +3510,7 @@ static struct ROM_INFO rom_samsh5pf[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsh5pf, samsh5fe, "Samurai Shodown V Perfect (NGM-2730)", BOOTLEG, 2020, GAME_BEAT);
+CLNEI( samsh5pf, samsh5fe, "Samurai Shodown V Perfect ", BOOTLEG, 2020, GAME_BEAT);
 
 static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
  /* AES VERSION, 2nd bugfix release */{
@@ -3520,7 +3520,7 @@ static struct ROM_INFO rom_samsh5sph[] = /* Encrypted Set clone of samsh5sp */
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( samsh5sph, samsh5sp, "Samurai Shodown V Special / Samurai Spirits Zero Special (NGH-2720) (2nd release, less censored)", SNK_PLAYMORE, 2004, GAME_BEAT);
+CLNEI( samsh5sph, samsh5sp, "Samurai Shodown V Special / Samurai Spirits Zero Special  (2nd release, less censored)", SNK_PLAYMORE, 2004, GAME_BEAT);
 
 static struct ROM_INFO rom_lans2004[] = // clone of shocktr2
 {
