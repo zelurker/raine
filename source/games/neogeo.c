@@ -3820,3 +3820,17 @@ static struct ROM_INFO rom_goldenaxeng[] = // clone of kof2002
 
 CLNEI( goldenaxeng,neogeo,"Golden Axe Neo Geo by Hoffman",BOOTLEG,2025, GAME_BEAT );
 
+// Xeno Crisis - Neo Geo version
+static struct ROM_INFO rom_xenocrisis[] =
+{
+  LOAD_SW16( CPU1, "BB01-p1.p1", 0x000000, 0x100000, 0x637605a6),
+  LOAD_SW16( CPU1, "BB01-p2.p2", 0x100000, 0x100000, 0x84838145),
+  LOAD( FIXED, "BB01-s1.s1", 0x000000, 0x020000, 0x7537ea79),
+  LOAD( ROM2, "BB01-m1.m1", 0x000000, 0x010000, 0x28c13ed9),
+  LOAD( SMP1, "BB01-v1.v1", 0x000000, 0x1000000, 0x60d57867),
+  LOAD_16_8( SPRITES, "BB01-c1.c1", 0x000000, 0x200000, 0xae51ef89),
+  LOAD_16_8( SPRITES, "BB01-c2.c2", 0x000001, 0x200000, 0xa8610100),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( xenocrisis, neogeo, "Xeno Crisis (Bitmap Bureau)", BITMAP_BUREAU, 2021, GAME_SHOOT );
