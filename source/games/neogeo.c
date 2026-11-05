@@ -3834,3 +3834,16 @@ static struct ROM_INFO rom_xenocrisis[] =
 };
 
 CLNEI( xenocrisis, neogeo, "Xeno Crisis (Bitmap Bureau)", BITMAP_BUREAU, 2021, GAME_SHOOT );
+
+static struct ROM_INFO rom_robocopng[] =
+{
+  LOAD_SW16( CPU1, "robocopng-p1.p1", 0x000000, 0x100000, 0x5c1a3070),
+  LOAD( FIXED, "robocop-s1.s1",0x000000, 0x020000, 0x2ad60481),
+  LOAD( ROM2, "robocop-m1.m1", 0x000000, 0x010000, 0x19dab516),
+  LOAD( SMP1, "robocop-v1.v1", 0x000000, 0x1000000, 0x2cbffd4b),
+  LOAD_16_8( SPRITES, "robocop-c1.c1", 0x0000000, 0x80000, 0x44593b72), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "robocop-c2.c2", 0x0000001, 0x80000, 0x03182a3a), /* Plane 2,3 */
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( robocopng,neogeo,"Robocop - Neo Geo Conversion (HB, Beta 13) by Teo Tormo",BOOTLEG,2025, GAME_BEAT );
