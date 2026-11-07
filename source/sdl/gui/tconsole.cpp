@@ -197,10 +197,10 @@ void TConsole::print(const char *format, ...)
   if (!visible) {
     return;
   }
-  char string[2048],*s;
+  char string[4096],*s;
   va_list ap;
   va_start(ap,format);
-  vsprintf(string,format,ap);
+  vsnprintf(string,4096,format,ap);
   va_end(ap);
 
   // 1) split the string at \n if there are some...
