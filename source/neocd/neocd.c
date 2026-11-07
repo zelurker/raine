@@ -1461,7 +1461,8 @@ void neogeo_read_gamename(void)
 
   if (neocd_id == 0x48 || neocd_id == 0x0221 || neocd_id == 0x96 ||
 	  neocd_id == 0x200 || // neo turf master
-	  neocd_id == 0x92 ) { // kabukikl tst/bmi
+	  neocd_id == 0x92 || // kabukikl tst/bmi
+    neocd_id == 0x14a3 ) {  // doubled1
     desired_68k_speed = current_neo_frame; // no speed hack for mahjong quest
     // nor for magical drop 2 (it sets manually the vbl bit for the controls
     // on the main menu to work, which makes the speed hack much more complex!
@@ -3099,7 +3100,7 @@ static void io_control_w(UINT32 offset, UINT32 data) {
 	       //  case 0x33: break; // coui lockout
 
     default:
-//	       logerror("PC: %x  Unmapped I/O control write.  Offset: %x  Data: %x\n", space.device().safe_pc(), offset, data);
+	       // printf("PC: %x  Unmapped I/O control write.  Offset: %x  Data: %x\n", s68000_read_pc, offset, data);
 	       break;
     }
 }
