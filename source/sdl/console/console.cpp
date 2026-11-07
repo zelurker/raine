@@ -411,7 +411,7 @@ void TRaineConsole::handle_mouse(SDL_Event *event) {
 	    while (isdigit(s[x]) || (s[x] >= 'a' && s[x]<='f')) {
 	      x++;
 	    }
-	    if (x == 6 && s[x] == 32) { // dump detected
+	    if (x == 6 && s[x] == 32 && strlen(s) > 20) { // dump detected
 	      if (cx >= 0 && (!pointer_on ||
 		  (pointer_on && (cx != pointer_x || pointer_n != n)))) {
 		if (cx >= 0 && cx < dump_cols) {
