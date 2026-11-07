@@ -375,9 +375,8 @@ int parse(char *orig)
   catch (mu::Parser::exception_type &e)
   {
     parser_error = 1;
-    char msg[240];
-    // apparently the e.GetMsg().c_str() is corrupted in the 2nd throw below,
-    // so we must copy the string to a temp buffer instead of using it directly
+    static char msg[240];
+    // static mandatory to avoid stack use after return error!
     int nb,line;
     char *section;
     if (get_running_script_info(&nb,&line,&section)) {
