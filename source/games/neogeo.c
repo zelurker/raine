@@ -3847,3 +3847,21 @@ static struct ROM_INFO rom_robocopng[] =
 };
 
 CLNEI( robocopng,neogeo,"Robocop - Neo Geo Conversion (HB, Beta 13) by Teo Tormo",BOOTLEG,2025, GAME_BEAT );
+
+// Double Dragon One (HB, Beta 3.2)
+// https://ozzyouzo.itch.io/double-dragon
+
+static struct ROM_INFO rom_doubled1[] =
+{
+  LOAD_SW16( CPU1, "doubled-p1.bin", 0x000000, 0x100000, 0x5991da92),
+  LOAD_SW16( CPU1, "doubled-p2.bin", 0x100000, 0x400000, 0x7e5ed6b8),
+  LOAD( FIXED, "doubled-s1.bin",0x000000, 0x020000, 0x714afb4b),
+  LOAD_16_8( SPRITES, "doubled-c1.bin", 0x0000000, 0x1000000, 0xfd883db8), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "doubled-c2.bin", 0x0000001, 0x1000000, 0x718050d3), /* Plane 2,3 */
+  LOAD( ROM2, "doubled-m1.bin", 0x000000, 0x010000, 0x43295479),
+  LOAD( SMP1, "doubled-v1.bin", 0x000000, 0x0800000, 0xf01e97dc),
+  LOAD( SMP1, "doubled-v2.bin", 0x800000, 0x0800000, 0x79156c41),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( doubled1,neogeo,"Double Dragon One (HB, Beta 3.2) by OzzyOuzo",BOOTLEG,2025, GAME_BEAT );

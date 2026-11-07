@@ -4931,6 +4931,13 @@ void load_neocd() {
 	    WriteWord(&ROM[0xabba],0x6000);
 	else if (is_current_game("ridheroh"))
 	    WriteWord(&ROM[0xabf0],0x6000);
+	if (is_current_game("doubled1"))
+	    // There is a mistake in this rom code, it reads mistakenly
+	    // from unmapped memory. Well unmapped memory is supposed to return 0xff
+	    // but apparently mame has changed that to return 0 sometimes. This read
+	    // is an error because the loop counter is simply badly initialized, here is
+	    // the fix.
+	    WriteWord(&ROM[0x2b95e],0x7c6f);
 #ifndef RAINE_DOS
 	init_debug_dips();
 #endif
@@ -5091,6 +5098,9 @@ void load_neocd() {
     // These 2 are mirrored, used by at least puzzledp
     AddReadWord(0x3c0000, 0x3dffff, read_videoreg, NULL);
     AddWriteWord(0x3c0000, 0x3dffff, write_videoreg, NULL);
+    // There is a write byte as an ack for an irq from doubled1, but it can
+    // be safety ignored. From the docs it shouldn't work anyway.
+    // AddWriteByte(0x3c0000, 0x3dffff, write_videoreg, NULL); //
 
     AddWriteByte(0x320000, 0x320001, write_sound_command, NULL);
     AddWriteWord(0x320000, 0x320000, write_sound_command_word, NULL);

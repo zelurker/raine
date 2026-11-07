@@ -1003,6 +1003,7 @@
     DRV(goldenaxeng)
     DRV(xenocrisis)
     DRV(robocopng)
+    DRV(doubled1)
 
 // ninjak.c
   DRV(ninjak)
