@@ -1125,33 +1125,41 @@ struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
    Map_15bit_RRRRGGGGBBBBRGBx_32,
 };
 
-// Not sure for the dark bit for now it's an experiment, I just use it as a virtual 6th bit of color component
-// I would need to see an image of the original hardware where this bit is used to be able to compare
 // Map_15bit_xRGBRRRRGGGGBBBB
+// About the dark bit: I started by making the colors brighter if dark is 0, but it makes the background of unibios not totally black, contrary to mame
+// so 2nd approach: if black is 1, then the 3 colors coponents are >>1. It actually still generates a color which can't be generated in 15bpp.
 #undef BUILD_MAPPER5
-#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)                            \
-static void NAME(UINT32 bank, UINT32 cols)                             \
-{                                                                      \
-   UINT16 yy;                                                          \
-   UINT16 *ta;                                                         \
-   TYPE *ct,res;                                                       \
-                                                                       \
-   bank_status[bank] = cols;                                           \
-   ta = (UINT16 *) (RAM_PAL+(bank<<5));                                \
-   ct = (TYPE*)coltab[bank];                                           \
-   do{                                                                 \
-      yy = (*ta++);                                                    \
-                                                                       \
-       int dark = ((yy >> 15) ^ 1) << 2;                               \
-      PEN_FUNC( ((((yy >> 14) & 0x1) | ((yy >> 7) & 0x1e))<<3) | dark, \
-                ((((yy >> 13) & 0x1) | ((yy >> 3) & 0x1e))<<3) | dark, \
-                ((((yy >> 12) & 0x1) | ((yy << 1) & 0x1e))<<3) | dark, \
-         res                                                           \
-      );                                                               \
-                                                                       \
-      *ct++ = res;                                                     \
-                                                                       \
-   }while(--cols);
+#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)                        \
+static void NAME(UINT32 bank, UINT32 cols)                         \
+{                                                                  \
+   UINT16 yy;                                                      \
+   UINT16 *ta;                                                     \
+   TYPE *ct,res;                                                   \
+                                                                   \
+   bank_status[bank] = cols;                                       \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));                            \
+   ct = (TYPE*)coltab[bank];                                       \
+   do{                                                             \
+      yy = (*ta++);                                                \
+                                                                   \
+       int dark = (yy >> 15);                                      \
+       int red = ((((yy >> 14) & 0x1) | ((yy >> 7) & 0x1e))<<3);   \
+       int green = ((((yy >> 13) & 0x1) | ((yy >> 3) & 0x1e))<<3); \
+       int blue = ((((yy >> 12) & 0x1) | ((yy << 1) & 0x1e))<<3);  \
+       if (dark) {                                                 \
+           red >>=1;                                               \
+           green>>=1;                                              \
+           blue>>=1;                                               \
+       }                                                           \
+      PEN_FUNC( red,                                               \
+                green,                                             \
+                blue,                                              \
+         res                                                       \
+      );                                                           \
+                                                                   \
+      *ct++ = res;                                                 \
+                                                                   \
+   }while(--cols);                                                 \
 }
 
 BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_8,UINT8,GET_PEN_FOR_COLOUR_8)
