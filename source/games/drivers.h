@@ -1004,6 +1004,7 @@
     DRV(xenocrisis)
     DRV(robocopng)
     DRV(doubled1)
+    DRV(teot)
 
 // ninjak.c
   DRV(ninjak)

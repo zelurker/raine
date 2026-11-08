@@ -3850,6 +3850,7 @@ CLNEI( robocopng,neogeo,"Robocop - Neo Geo Conversion (HB, Beta 13) by Teo Tormo
 
 // Double Dragon One (HB, Beta 3.2)
 // https://ozzyouzo.itch.io/double-dragon
+// Inputs problems, the function which is supposed to read the inputs disappears when stage 1 starts, and I never found why no input is read after that!
 
 static struct ROM_INFO rom_doubled1[] =
 {
@@ -3864,4 +3865,22 @@ static struct ROM_INFO rom_doubled1[] =
   { NULL, 0, 0, 0, 0, 0 }
 };
 
-CLNEI( doubled1,neogeo,"Double Dragon One (HB, Beta 3.2) by OzzyOuzo",BOOTLEG,2025, GAME_BEAT );
+CLNEI( doubled1,neogeo,"Double Dragon One (HB, Beta 3.2) by OzzyOuzo",BOOTLEG,2025, GAME_BEAT|GAME_PARTIALLY_WORKING );
+
+// The Eye of Typhoon (HB, Beta 7 Version)
+// https://ozzyouzo.itch.io/teot
+
+static struct ROM_INFO rom_teot[] =
+{
+  LOAD_SW16( CPU1, "teot-p1.bin", 0x000000, 0x100000, 0xc0ae0a56),
+  LOAD_SW16( CPU1, "teot-p2.bin", 0x100000, 0x800000, 0x68dc7463),
+  LOAD( FIXED, "teot-s1.bin",0x000000, 0x020000, 0x6d05f74b),
+  LOAD_16_8( SPRITES, "teot-c1.bin", 0x0000000, 0x1000000, 0x2fdbfbef), /* Plane 0,1 */
+  LOAD_16_8( SPRITES, "teot-c2.bin", 0x0000001, 0x1000000, 0x4b953a79), /* Plane 2,3 */
+  LOAD( ROM2, "teot-m1.bin", 0x000000, 0x010000, 0x0c17ccac),
+  LOAD( SMP1, "teot-v1.bin", 0x000000, 0x0800000, 0xd2911e9c),
+  LOAD( SMP1, "teot-v2.bin", 0x800000, 0x0800000, 0x49e3afe6),
+  { NULL, 0, 0, 0, 0, 0 }
+};
+
+CLNEI( teot,neogeo,"The Eye of Typhoon (HB, Beta 7 Version) by OzzyOuzo",BOOTLEG,2022, GAME_BEAT );
