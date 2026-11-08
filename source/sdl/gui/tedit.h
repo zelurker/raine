@@ -7,7 +7,7 @@
 
 #include "widget.h"
 
-#define MAX_HISTORY 60
+#define MAX_HISTORY 500
 
 class TEdit : public TStatic
 {
