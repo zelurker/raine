@@ -17,10 +17,10 @@
 VERSION = "0.98"
 
 # Comment out if you don't want the debug features
-RAINE_DEBUG = 1
+# RAINE_DEBUG = 1
 
 # Be verbose ?
-VERBOSE = 1
+# VERBOSE = 1
 
 # Uncomment to use clang instead of gcc.
 # It works, it produces more warnings for the debug builds which allowed me to fix a few things.
