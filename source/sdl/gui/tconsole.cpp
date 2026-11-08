@@ -271,6 +271,8 @@ void TConsole::print(const char *format, ...)
   if (lift) {
       // make a super fast update !
       lift->next_page();
+      if (nb_items == nb_alloc)
+	  draw();
   } else {
       // If there is no lift, then the window will probably grow which means fg_layer will have to be re-created
 #if SDL == 2
