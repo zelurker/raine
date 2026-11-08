@@ -167,6 +167,10 @@ endif
 # in this case they'll have to change the makefile !
 cflags_lua := $(shell $(PKG_CONFIG) --cflags $(lua))
 lflags_lua := $(shell $(PKG_CONFIG) --libs $(lua))
+ifndef lflags_lua
+	# windows package doesn't have a pkg-config file...
+	lflags_lua = -llua
+endif
 
 ifeq ("$(shell uname)","Darwin")
 # Mac os X
