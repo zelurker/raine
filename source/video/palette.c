@@ -1125,53 +1125,33 @@ struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
    Map_15bit_RRRRGGGGBBBBRGBx_32,
 };
 
+// Not sure for the dark bit for now it's an experiment, I just use it as a virtual 6th bit of color component
+// I would need to see an image of the original hardware where this bit is used to be able to compare
 // Map_15bit_xRGBRRRRGGGGBBBB
 #undef BUILD_MAPPER5
-#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)    \
-static void NAME(UINT32 bank, UINT32 cols)     \
-{                                              \
-   UINT16 yy;                                  \
-   UINT16 *ta;                                 \
-   TYPE *ct,res;                               \
-                                               \
-   bank_status[bank] = cols;                   \
-   ta = (UINT16 *) (RAM_PAL+(bank<<5));        \
-   ct = (TYPE*)coltab[bank];                   \
-   do{                                         \
-      yy = (*ta++);                            \
-                                               \
-      PEN_FUNC(                                \
-         ((yy&0x0F00)>>4) | ((yy&0x4000)>>11), \
-         ((yy&0x00F0)>>0) | ((yy&0x2000)>>10), \
-         ((yy&0x000F)<<4) | ((yy&0x1000)>>9),  \
-         res                                   \
-      );                                       \
-                                               \
-      *ct++ = res;                             \
-                                               \
-   }while(--cols);                             \
-}
-
-int get_pen(int red, int green, int blue, int yy) {
-  int result;
-      if(cloc_2a[yy] == 255){                                                \
-         if(talc < 255){                                                     \
-            result = cloc_2a[yy] = cloc[yy] = talc;                          \
-            pal[talc].r = red;                                               \
-            pal[talc].g = green;                                             \
-            pal[talc].b = blue;                                              \
-            talc++;                                                          \
-            while((pmap_2[talc])||(pmap_2a[talc])){ talc++; }                \
-         }                                                                   \
-         else{				                                     \
-            result = closest_colour(red, green, blue);                       \
-         }                                                                   \
-      }                                                                      \
-      else{                                                                  \
-         result = cloc[yy] = cloc_2a[yy];                                    \
-      }                                                                      \
-      pmap[result] = 1;
-      return result;
+#define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)                            \
+static void NAME(UINT32 bank, UINT32 cols)                             \
+{                                                                      \
+   UINT16 yy;                                                          \
+   UINT16 *ta;                                                         \
+   TYPE *ct,res;                                                       \
+                                                                       \
+   bank_status[bank] = cols;                                           \
+   ta = (UINT16 *) (RAM_PAL+(bank<<5));                                \
+   ct = (TYPE*)coltab[bank];                                           \
+   do{                                                                 \
+      yy = (*ta++);                                                    \
+                                                                       \
+       int dark = ((yy >> 15) ^ 1) << 2;                               \
+      PEN_FUNC( ((((yy >> 14) & 0x1) | ((yy >> 7) & 0x1e))<<3) | dark, \
+                ((((yy >> 13) & 0x1) | ((yy >> 3) & 0x1e))<<3) | dark, \
+                ((((yy >> 12) & 0x1) | ((yy << 1) & 0x1e))<<3) | dark, \
+         res                                                           \
+      );                                                               \
+                                                                       \
+      *ct++ = res;                                                     \
+                                                                       \
+   }while(--cols);
 }
 
 BUILD_MAPPER5(Map_15bit_xRGBRRRRGGGGBBBB_8,UINT8,GET_PEN_FOR_COLOUR_8)
@@ -1189,6 +1169,7 @@ struct COLOUR_MAPPER col_Map_15bit_xRGBRRRRGGGGBBBB =
    Map_15bit_xRGBRRRRGGGGBBBB_24,
    Map_15bit_xRGBRRRRGGGGBBBB_32,
 };
+
 #undef BUILD_MAPPER5
 #define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)   \
 static void NAME(UINT32 bank, UINT32 cols)    \
