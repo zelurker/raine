@@ -17,10 +17,10 @@
 VERSION = "0.98"
 
 # Comment out if you don't want the debug features
-# RAINE_DEBUG = 1
+RAINE_DEBUG = 1
 
 # Be verbose ?
-# VERBOSE = 1
+VERBOSE = 1
 
 # Uncomment to use clang instead of gcc.
 # It works, it produces more warnings for the debug builds which allowed me to fix a few things.
@@ -71,7 +71,7 @@ HAS_CONSOLE = 1
 # Defining this allws to use ${target}-gcc for the compiler and includes
 # from /usr/${target}/include, libs in /usr/${target}/lib
 # choosing x86_64 here sets NO_ASM to 1 automatically.
-# target=i686-w64-mingw32
+target=i686-w64-mingw32
 # target=x86_64-w64-mingw32
 # target=i686-pc-msdosdjgpp
 
@@ -1815,7 +1815,7 @@ ifndef DARWIN
 	$(INSTALL_DATA) raine.desktop $(prefix)/share/applications
 endif
 	$(INSTALL_DATA) raine.png $(prefix)/share/pixmaps
-	@cp -rfv locale/pt_BR locale/fr locale/es locale/it $(langdir)
+	@cp -rfv locale/pt_BR locale/fr locale/es locale/it locale/ja $(langdir)
 ifdef DARWIN
 	@echo creating package $(DESTDIR)
 	@cp Info.plist $(prefix)
