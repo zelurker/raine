@@ -79,9 +79,13 @@ static UINT8 white_pen;
 
 void update_pal_banks() {
     int ta;
+    FreeMem(bankmap);
+   int bmsize = pal_banks * bank_cols * (internal_bpp(display_cfg.bpp) / 8);
+   if (!(bankmap = AllocateMem(bmsize ))) return;
    for(ta=0; ta<pal_banks; ta++){
       coltab[ta] = bankmap + (ta * bank_cols * (internal_bpp(display_cfg.bpp) / 8));
    }
+   ClearPaletteMap();
 }
 
 
@@ -1129,6 +1133,13 @@ struct COLOUR_MAPPER col_Map_15bit_RRRRGGGGBBBBRGBx =
 // About the dark bit: I started by making the colors brighter if dark is 0, but it makes the background of unibios not totally black, contrary to mame
 // so 2nd approach: if black is 1, then the 3 colors coponents are >>1. It actually still generates a color which can't be generated in 15bpp.
 #undef BUILD_MAPPER5
+extern UINT8 neo_dark_screen; // neocd.c
+// The problem here : this dark bit actually makes colors brighter, checked on finalburn which is based on mame code for that.
+// My idea was to generate a color outside the 15bpp color space here, but I forgot that most drivers work in 16bpp.
+// Changing the bpp for neogeo also changes the raster_bitmap bpp, slowing things down.
+// So it's way overkill for something which looks like the 16th bit of 16bpp bimaps.
+// As it is now, the color with the dark bit is even closer to the original than what fbneo does ! ff000 -> ff0408
+// For now it will do, this thing is too subtle to spend too much time on it.
 #define BUILD_MAPPER5(NAME, TYPE, PEN_FUNC)                        \
 static void NAME(UINT32 bank, UINT32 cols)                         \
 {                                                                  \
@@ -1147,9 +1158,15 @@ static void NAME(UINT32 bank, UINT32 cols)                         \
        int green = ((((yy >> 13) & 0x1) | ((yy >> 3) & 0x1e))<<3); \
        int blue = ((((yy >> 12) & 0x1) | ((yy << 1) & 0x1e))<<3);  \
        if (dark) {                                                 \
-           red >>=1;                                               \
-           green>>=1;                                              \
-           blue>>=1;                                               \
+           int max = MAX(red,green); max = MAX(max,blue);          \
+           red = MIN(red+max/30,255);                              \
+           green = MIN(green+max/35,255);                          \
+           blue = MIN(blue+max/30,255);                            \
+       }                                                           \
+       if (neo_dark_screen) {                                      \
+           red >>= 1;                                              \
+           green >>= 1;                                            \
+           blue >>= 1;                                             \
        }                                                           \
       PEN_FUNC( red,                                               \
                 green,                                             \

@@ -126,7 +126,7 @@ int capture_new_pictures;
 static al_bitmap *raster_bitmap;
 static void draw_neocd();
 static void draw_sprites(int start, int end, int start_line, int end_line);
-static UINT8 dark_screen; // only neogeo ?
+UINT8 neo_dark_screen; // only neogeo ?
 static int fc;
 static int size_mcard;
 static int neogeo_frame_counter_speed,raster_frame,neogeo_frame_counter,
@@ -1149,7 +1149,7 @@ static void system_control_w(UINT32 offset, UINT16 data)
   switch (offset & 0x07)
   {
     default:
-    case 0x00: dark_screen = bit; break;
+    case 0x00: neo_dark_screen = bit; ClearPaletteMap(); break;
     case 0x01: neogeo_select_bios_vectors(bit); break;
     case 0x05: neogeo_set_fixed_layer_source(bit); break;
     case 0x06: saveram.unlock = bit; break;
