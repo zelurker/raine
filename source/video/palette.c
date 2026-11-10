@@ -1158,10 +1158,9 @@ static void NAME(UINT32 bank, UINT32 cols)                         \
        int green = ((((yy >> 13) & 0x1) | ((yy >> 3) & 0x1e))<<3); \
        int blue = ((((yy >> 12) & 0x1) | ((yy << 1) & 0x1e))<<3);  \
        if (dark) {                                                 \
-           int max = MAX(red,green); max = MAX(max,blue);          \
-           red = MIN(red+max/30,255);                              \
-           green = MIN(green+max/35,255);                          \
-           blue = MIN(blue+max/30,255);                            \
+           red = MIN(red+4,255);                              \
+           green = MIN(green+4,255);                          \
+           blue = MIN(blue+4,255);                            \
        }                                                           \
        if (neo_dark_screen) {                                      \
            red >>= 1;                                              \
