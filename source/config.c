@@ -276,14 +276,14 @@ int actual_load_neo_game(void)
 #ifdef SDL
     }
 #endif
-    SetupScreenBitmap();
-
-    print_debug("Init Video Core...\n");
-    init_video_core();
 
     LoadDefault();
     current_game->load_game();
     if (!(load_error & LOAD_FATAL_ERROR)) {
+	SetupScreenBitmap();
+
+	print_debug("Init Video Core...\n");
+	init_video_core();
       init_inputs();
       init_dsw();
       init_romsw();
