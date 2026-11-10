@@ -46,7 +46,7 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
   UINT32 r=0,g=0,b=0,a=0; // masks if necessary...
   SDL_Surface *s;
 
-  if (bpp > 8) {
+  if (bpp > 8 && sdl2_color_format != SDL_PIXELFORMAT_RGBX8888) {
 
       switch(bpp) {
       case 8:
@@ -59,7 +59,8 @@ struct al_bitmap *sdl_create_bitmap_ex(int bpp, int w, int h) {
 	  sdl2_color_format = SDL_PIXELFORMAT_RGB565;
 	  display_cfg.bpp = 16; // normally this is initialized in InitPaletteMap, assuming the color mapper was defined before that !
 	  if (current_colour_mapper == &col_map_24bit_rgb || // macrossp
-		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb) {// f3 games
+		  current_colour_mapper == &col_map_xxxx_xxxx_rrrr_rrrr_gggg_gggg_bbbb_bbbb || // f3 games
+		  current_colour_mapper == &col_Map_15bit_xRGBRRRRGGGGBBBB) { // neogeo
 	      sdl2_color_format = SDL_PIXELFORMAT_RGBX8888;
 	      display_cfg.bpp = 32;
 	  }
